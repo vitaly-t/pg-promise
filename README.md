@@ -6,18 +6,18 @@ This library unifies [Promise] and [PG] to facilitate writing easy-to-read datab
 * Robust approach to handling results from every single query.
 
 # Install
-```
+```javascript
 $ npm install pg-promise
 ```
 
 # Getting started
 
 ### 1. Load the library
-```
+```javascript
 var pgpLib = require('pg-promise');
 ```
 ### 2. Configure database connection
-```
+```javascript
 var config = {
     host: 'localhost',
     port: 5432,
@@ -30,15 +30,15 @@ The library itself doesn't use this object at all, just passing it on to PG to i
 This also means that you can pass a connection string instead, it is up to [PG] then to figure what it is and process accordingly.
 
 You can replace ```config``` with a connection string variable that uses the syntax as shown below, and it would work exactly the same.
-```
+```javascript
 var conString = "postgres://username:password@host/database";
 ```
 
 ### 3. Initialize the library
-```
+```javascript
 var pgp = pgpLib(config);
 ```
-NOTE: Only one global instance should be used through the application.
+NOTE: Only one global instance should be used throughout the application.
 
 Now you are ready to use it. See chapter Advanced for the use of parameter ```options``` during initialization.
 
@@ -46,7 +46,7 @@ Now you are ready to use it. See chapter Advanced for the use of parameter ```op
 ### The basics
 In order to eliminate the chances of unexpected query results and make code more robust, each request is parametrized with the expected/supported
 return result mask, using type ```queryResult``` as shown below:
-```
+```javascript
 queryResult = {
     one: 1,     // single-row result is expected;
     many: 2,    // multi-row result is expected;
@@ -54,11 +54,11 @@ queryResult = {
 };
 ```
 In the following generic-query example we indicate that the call must return either no records or multiple records:
-```
+```javascript
 pgp.query("select * from users", queryResult.none | queryResult.many);
 ```
 This usage pattern is facilitated through result-specific methods that can be used instead of the generic query:
-```
+```javascript
 pgp.many("select * from users"); // one or more records are expected
 pgp.one("select * from users limit 1"); // one record is expected
 pgp.none("update users set active=TRUE where id=1"); // no records expected
@@ -67,7 +67,7 @@ There are also mixed-result methods, aptly named ```oneOrNone``` and ```manyOrNo
 
 Each of the query calls returns a [Promise] object, as shown below, to be used in the standard way.
 And when the expected and actual results do not match, the call will be rejected.
-```
+```javascript
 pgp.many("select * from users").then(function(data){
     console.log(data); // printing the data received
 },function(reason){
@@ -78,7 +78,7 @@ pgp.many("select * from users").then(function(data){
 In PostgreSQL stored procedures are just functions that usually do not return anything.
 
 Suppose we want to call a function to find audit records by user id and maximum timestamp. We can make the call as shown below:
-```
+```javascript
 pgp.func('findAudit', [
     123,
     new Date()
@@ -94,7 +94,7 @@ Every call shown in chapters above would acquire a new connection from the pool 
 connection, a transaction class is to be used.
 
 Example:
-```
+```javascript
 var promise = require('promise');
 
 var tx = new pgp.tx(); // creating a new transaction object
@@ -118,7 +118,7 @@ In the example above we create a new transaction object and call its method ```e
 ### Type Helpers
 The library provides several helper functions to convert basic javascript types into their proper PostgreSQL presentation that can be passed directly into
 queries or functions as parameters. All of such helper functions are located within namespace ```pgp.as```:
-```
+```javascript
 pgp.as.bool(value); // returns proper PostgreSQL boolean presentation
 
 pgp.as.text(value); // returns proper PostgreSQL text presentation,
@@ -133,7 +133,7 @@ As these helpers are not associated with a connection, and thus can be called fr
 
 ### Initialization options
 Initialization options are supported as shown in the example:
-```
+```javascript
 var options = {
     connect: function(client){
         console.log('New virtual connection established');
@@ -149,7 +149,7 @@ Each event takes parameter ```client```, which is the client connection object. 
 
 ### De-initialization
 When exiting your application, make the following call:
-```
+```javascript
 pgp.end();
 ```
 This will release pg connection pool globally and make sure that the process terminates without delay.
@@ -160,7 +160,7 @@ The library exposes method ```connect``` in case of some unique reason that you 
 doing it for you automatically.
 
 Usage example:
-```
+```javascript
 pgp.connect().then(function(db){
     // connection was established successfully;
 
