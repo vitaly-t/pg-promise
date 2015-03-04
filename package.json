@@ -1,10 +1,17 @@
 {
   "name": "pg-promise",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "PG + Promise made easy, with transactions support.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VitalyTomilov/pg-promise.git"
+  },
+  "bugs": {
+    "url": "https://github.com/VitalyTomilov/pg-promise/issues"
   },
   "keywords": [
     "postgresql",
@@ -16,29 +23,13 @@
     "name": "Vitaly Tomilov",
     "email": "vitaly.tomilov@gmail.com"
   },
-  "license": "ISC",
+  "license": "MIT",
+  "engines" : {
+    "node" : ">=0.10.x",
+    "npm": ">=1.4.x"
+  },
   "dependencies": {
     "promise": ">=6.1.0",
     "pg": ">=4.3.0"
-  },
-  "_id": "pg-promise@0.1.1",
-  "_shasum": "1fefc02e4859a1cef8a4f22bbeb1b8478a6cee59",
-  "_from": "pg-promise@0.1.1",
-  "_npmVersion": "1.4.28",
-  "_npmUser": {
-    "name": "vitaly.tomilov",
-    "email": "vitaly.tomilov@gmail.com"
-  },
-  "maintainers": [
-    {
-      "name": "vitaly.tomilov",
-      "email": "vitaly.tomilov@gmail.com"
-    }
-  ],
-  "dist": {
-    "shasum": "1fefc02e4859a1cef8a4f22bbeb1b8478a6cee59",
-    "tarball": "http://registry.npmjs.org/pg-promise/-/pg-promise-0.1.1.tgz"
-  },
-  "directories": {},
-  "_resolved": "https://registry.npmjs.org/pg-promise/-/pg-promise-0.1.1.tgz"
+  }
 }
