@@ -1,0 +1,45 @@
+{
+  "name": "pg-promise",
+  "version": "0.0.4",
+  "description": "PostgreSQL in and out of transactions using Promise",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "postgre",
+    "postgresql",
+    "pg",
+    "transaction",
+    "promise"
+  ],
+  "author": {
+    "name": "Vitaly Tomilov",
+    "email": "vitaly.tomilov@gmail.com"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "promise": ">=6.0.1",
+    "pg": ">=4.3.0"
+  },
+  "_id": "pg-promise@0.0.3",
+  "_shasum": "425f22c07484d44adeee70b94764ce30ac1437a6",
+  "_from": "pg-promise@0.0.3",
+  "_npmVersion": "1.4.28",
+  "_npmUser": {
+    "name": "vitaly.tomilov",
+    "email": "vitaly.tomilov@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "vitaly.tomilov",
+      "email": "vitaly.tomilov@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "425f22c07484d44adeee70b94764ce30ac1437a6",
+    "tarball": "http://registry.npmjs.org/pg-promise/-/pg-promise-0.0.3.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/pg-promise/-/pg-promise-0.0.3.tgz"
+}
