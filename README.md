@@ -1,12 +1,12 @@
 # Introduction
-This library unifies [Promise] and [PG] to facilitate writing easy-to-read database code that relies on promises:
+This library unifies [Promise] and [PG] to help writing easy-to-read database code that relies on promises:
 * Simplistic approach to organizing streamlined database code, thanks to full [Promise] integration;
 * Database connections are managed automatically, in every usage case;
 * Functions, Procedures and Transactions are all fully supported;
 * Robust approach to handling results from every single query.
 
 # Install
-```javascript
+```
 $ npm install pg-promise
 ```
 
@@ -180,8 +180,8 @@ pgp.connect().then(function(db){
 * It reached first Beta version 0.1.0 on March 4th, 2015.
 * The first draft v0.0.1 was published on March 3rd, 2015, and then rapidly incremented due to many initial changes that had to come in, mostly documentation.
 
-[PG]:https://www.npmjs.com/package/pg
-[Promise]:https://www.npmjs.com/package/promise
+[PG]:https://github.com/brianc/node-postgres
+[Promise]:https://github.com/then/promise
 
 # License
 

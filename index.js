@@ -1,3 +1,6 @@
+// Cannot declare 'use strict' here, because queryResult
+// needs to be exported into the global namespace.
+
 var npm = {
     promise: require('promise'),
     pg: require('pg')
@@ -22,16 +25,15 @@ queryResult = {
 // 1. config (required) - either configuration
 //    object or connection string. Either way,
 //    it is merely passed on to PG and not used
-//    by this library in any way.
-// 2. options (optional) - object with optional
-//    configuration properties:
+//    by this library.
+// 2. options (optional) -
 //    {
 //       connect: function(client){
-//           connection-notify event;
+//           on-connect event;
 //           client - pg connection object.
 //       },
 //       disconnect: function(client){
-//           disconnection-notify event;
+//           on-disconnect event;
 //           client - pg connection object.
 //       }
 //    }
@@ -47,6 +49,7 @@ module.exports = function (config, options) {
     };
 
     var $self = {
+
         // IMPORTANT: The caller must invoke done() after requests are finished.
         connect: function () {
             return $p(function (resolve, reject) {
@@ -62,10 +65,13 @@ module.exports = function (config, options) {
                 });
             });
         },
+
+        // Terminates pg library; call it when exiting the application.
         end: function(){
-            npm.pg.end(); // Terminates pg library;
+            npm.pg.end();
         },
-        // Simple query, with opening and closing connection;
+
+        // Generic query request;
         query: function (query, qr) {
             return $p(function (resolve, reject) {
                 $self.connect()
@@ -113,6 +119,7 @@ module.exports = function (config, options) {
             return this.oneOrNone($prop.createFuncQuery(procName, params));
         },
 
+        // Namespace for type conversion helpers;
         as: {
             bool: function (val) {
                 if ($prop.isNull(val)) {
@@ -138,6 +145,7 @@ module.exports = function (config, options) {
             }
         },
 
+        // Transaction class;
         tx: function () {
 
             var tx = this;
@@ -317,30 +325,35 @@ module.exports = function (config, options) {
         },
         query: function (client, query, qr) {
             return $p(function (resolve, reject) {
-                client.query(query, function (err, result) {
-                    if (err) {
-                        reject(err.message);
-                    } else {
-                        var data = result.rows;
-                        var l = result.rows.length;
-                        if (l) {
-                            if (l > 1 && !(qr & queryResult.many)) {
-                                reject("Single record was expected from query: '" + query + "'");
+                var badMask = queryResult.one | queryResult.many;
+                if((qr & badMask) === badMask){
+                    reject("Invalid query result mask: one + many");
+                }else {
+                    client.query(query, function (err, result) {
+                        if (err) {
+                            reject(err.message);
+                        } else {
+                            var data = result.rows;
+                            var l = result.rows.length;
+                            if (l) {
+                                if (l > 1 && !(qr & queryResult.many)) {
+                                    reject("Single row was expected from query: '" + query + "'");
+                                } else {
+                                    if (!(qr & queryResult.many)) {
+                                        data = result.rows[0];
+                                    }
+                                }
                             } else {
-                                if (!(qr & queryResult.many)) {
-                                    data = result.rows[0];
+                                if (qr & queryResult.none) {
+                                    data = null;
+                                } else {
+                                    reject("No rows returned from query: '" + query + "'");
                                 }
                             }
-                        } else {
-                            if (qr & queryResult.none) {
-                                data = null;
-                            } else {
-                                reject("No records returned from query: '" + query + "'");
-                            }
+                            resolve(data);
                         }
-                        resolve(data);
-                    }
-                });
+                    });
+                }
             });
         }
     };

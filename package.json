@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "homepage": "https://github.com/VitalyTomilov/pg-promise",
   "repository": {
     "type": "git",
     "url": "https://github.com/VitalyTomilov/pg-promise.git"
