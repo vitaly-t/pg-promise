@@ -124,8 +124,10 @@ tx.exec(function(){
 In the example above we create a new transaction object and call its method ```exec```, passing it a call-back function that must do all the queries needed and return a [Promise] object. In the example we use ````promise.all```` to indicate that we want both queries inside the transaction to succeed to consider it a success; otherwise the transaction is to be rolled back.
 
 <b>Notes</b>
-1. While inside a transaction, we make calls to the same-named methods as outside of transactions, except we do it on the transaction object instance now, as opposed to the global ````pgp```` object, which gives us access to the shared connection object. The same goes for calling functions and procedures within transactions, using ````tx.func```` and ````tx.proc```` accordingly.
-2. Just for flexibility, the transaction call-back function takes one parameter - client connection object.
+* While inside a transaction, we make calls to the same-named methods as outside of transactions, except we do it on the transaction object instance now,
+as opposed to the global ```pgp``` object, which gives us access to the shared connection object. The same goes for calling functions and procedures within
+transactions, using ```tx.func``` and ```tx.proc``` accordingly.
+* Just for flexibility, the transaction call-back function takes one parameter - client connection object.
 
 ### Type Helpers
 The library provides several helper functions to convert basic javascript types into their proper PostgreSQL presentation that can be passed directly into
