@@ -53,17 +53,24 @@ queryResult = {
     none: 4     // no rows expected.
 };
 ```
-In the following generic-query example we indicate that the call must return either no records or multiple records:
+In the following generic-query example we indicate that the call can return any number of rows:
 ```javascript
 pgp.query("select * from users", queryResult.none | queryResult.many);
 ```
+which is equivalent to calling:
+```javascript
+pgp.manyOrNone("select * from users");
+```
+
 This usage pattern is facilitated through result-specific methods that can be used instead of the generic query:
 ```javascript
 pgp.many("select * from users"); // one or more records are expected
 pgp.one("select * from users limit 1"); // one record is expected
 pgp.none("update users set active=TRUE where id=1"); // no records expected
 ```
-There are also mixed-result methods, aptly named ```oneOrNone``` and ```manyOrNone```.
+The mixed-result methods are:
+* ```oneOrNone``` - expects 1 or 0 rows to be returned;
+* ```manyOrNone``` - any number of rows can be returned, including 0.
 
 Each of the query calls returns a [Promise] object, as shown below, to be used in the standard way.
 And when the expected and actual results do not match, the call will be rejected.
@@ -77,14 +84,14 @@ pgp.many("select * from users").then(function(data){
 ### Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
 
-Suppose we want to call a function to find audit records by user id and maximum timestamp. We can make the call as shown below:
+Suppose we want to call a function to find <i>audit</i> records by <i>user id</i> and maximum timestamp. We can make the call as shown below:
 ```javascript
 pgp.func('findAudit', [
     123,
     new Date()
 ]);
 ```
-We passed it user Id = 123, plus current Date/Time as the timestamp. We assume that the function signature matches the parameters that we passed.
+We passed it <i>user id</i> = 123, plus current Date/Time as the timestamp. We assume that the function signature matches the parameters that we passed.
 All values passed are serialized automatically to comply with PostgreSQL requirements.
 
 And when you are not expecting any return results, call ```pgp.proc``` instead. Both methods return a promise object.
@@ -98,15 +105,20 @@ Example:
 var promise = require('promise');
 
 var tx = new pgp.tx(); // creating a new transaction object
+
 tx.exec(function(){
-    return promise.all([
-        tx.none("update users set active=TRUE where id=123"),
-        tx.one("insert into audit(entity, id) values('users', 123) returning id")
-    ]);
+
+    // creating sequence of queries while inside the transaction:
+    var query1 = tx.none("update users set active=TRUE where id=123");
+    var query2 = tx.one("insert into audit(entity, id) values('users', 123) returning id");
+
+    // trying to resolve all queries within the transaction:
+    return promise.all([query1, query2]);
+
 }).then(function(data){
     console.log(data); // printing successful transaction output
 }, function(reason){
-    console.log(reason); // printing the reason why the transaction was rejected
+    console.log(reason); // printing the reason why the transaction failed
 });
 ```
 In the example above we create a new transaction object and call its method ```exec```, passing it a call-back function that must do all the queries needed and return a [Promise] object. In the example we use ````promise.all```` to indicate that we want both queries inside the transaction to succeed to consider it a success; otherwise the transaction is to be rolled back.
