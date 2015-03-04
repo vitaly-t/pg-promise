@@ -31,7 +31,7 @@ This also means that you can pass a connection string instead, it is up to [PG] 
 
 You can replace ```config``` with a connection string variable that uses the syntax as shown below, and it would work exactly the same.
 ```javascript
-var conString = "postgres://username:password@host/database";
+var conString = "postgres://username:password@host:port/database";
 ```
 
 ### 3. Initialize the library
@@ -136,10 +136,12 @@ Initialization options are supported as shown in the example:
 ```javascript
 var options = {
     connect: function(client){
-        console.log('New virtual connection established');
+        var cn = client.connectionParameters;
+        console.log("Connected to database '" + cn.database + "'");
     },
     disconnect: function(client){
-        console.log('Virtual connection released');
+        var cn = client.connectionParameters;
+        console.log("Disconnected from database '" + cn.database + "'");
     }
 };
 var pgp = pgpLib(config, options);
@@ -177,6 +179,7 @@ pgp.connect().then(function(db){
 <b>NOTE:</b> When using the direct connection, events ```connect``` and ```disconnect``` won't be fired.
 
 # History
+* First solid Beta, 0.1.2 on March 4th, 2015.
 * It reached first Beta version 0.1.0 on March 4th, 2015.
 * The first draft v0.0.1 was published on March 3rd, 2015, and then rapidly incremented due to many initial changes that had to come in, mostly documentation.
 
