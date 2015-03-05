@@ -154,12 +154,12 @@ Initialization options are supported as shown in the example:
 ```javascript
 var options = {
     connect: function(client){
-        var cn = client.connectionParameters;
-        console.log("Connected to database '" + cn.database + "'");
+        var cp = client.connectionParameters;
+        console.log("Connected to database '" + cp.database + "'");
     },
     disconnect: function(client){
-        var cn = client.connectionParameters;
-        console.log("Disconnected from database '" + cn.database + "'");
+        var cp = client.connectionParameters;
+        console.log("Disconnected from database '" + cp.database + "'");
     }
 };
 var pgp = pgpLib(cn, options);
