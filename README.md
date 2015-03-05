@@ -78,14 +78,14 @@ And when the expected and actual results do not match, the call will be rejected
 ```javascript
 pgp.many("select * from users").then(function(data){
     console.log(data); // printing the data received
-},function(reason){
+}, function(reason){
     console.log(reason); // printing the reason why the call was rejected
 });
 ```
 ### Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
 
-Suppose we want to call a function to find <i>audit</i> records by <i>user id</i> and maximum timestamp.
+Suppose we want to call function ```findAudit``` to find audit records by <i>user id</i> and maximum timestamp.
 We can make such call as shown below:
 ```javascript
 pgp.func('findAudit', [123, new Date()])
