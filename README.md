@@ -85,12 +85,15 @@ pgp.many("select * from users").then(function(data){
 ### Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
 
-Suppose we want to call a function to find <i>audit</i> records by <i>user id</i> and maximum timestamp. We can make the call as shown below:
+Suppose we want to call a function to find <i>audit</i> records by <i>user id</i> and maximum timestamp.
+We can make such call as shown below:
 ```javascript
-pgp.func('findAudit', [
-    123,
-    new Date()
-]);
+pgp.func('findAudit', [123, new Date()])
+    .then(function(data){
+        console.log(data); // print data returned by the function
+    }, function(reason){
+        console.log(reason); // print the reason why the call was rejected
+    });
 ```
 We passed it <i>user id</i> = 123, plus current Date/Time as the timestamp. We assume that the function signature matches the parameters that we passed.
 All values passed are serialized automatically to comply with PostgreSQL type formats.
@@ -109,7 +112,7 @@ var tx = new pgp.tx(); // creating a new transaction object
 
 tx.exec(function(/*client*/){
 
-    // creating sequence of transaction queries:
+    // creating a sequence of transaction queries:
     var query1 = tx.none("update users set active=TRUE where id=123");
     var query2 = tx.one("insert into audit(entity, id) values('users', 123) returning id");
 
