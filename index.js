@@ -67,7 +67,7 @@ module.exports = function (config, options) {
         },
 
         // Terminates pg library; call it when exiting the application.
-        end: function(){
+        end: function () {
             npm.pg.end();
         },
 
@@ -76,13 +76,13 @@ module.exports = function (config, options) {
             return $p(function (resolve, reject) {
                 $self.connect()
                     .then(function (db) {
-                        $prop.monitor(true, db);
-                        $prop.query(db.client, query, qr)
+                        _global.monitor(true, db);
+                        _global.query(db.client, query, qr)
                             .then(function (data) {
-                                $prop.monitor(false, db);
+                                _global.monitor(false, db);
                                 resolve(data);
                             }, function (reason) {
-                                $prop.monitor(false, db);
+                                _global.monitor(false, db);
                                 reject(reason);
                             });
                     }, function (reason) {
@@ -112,35 +112,35 @@ module.exports = function (config, options) {
         },
 
         func: function (funcName, params) {
-            return this.one($prop.createFuncQuery(funcName, params));
+            return this.one(_global.createFuncQuery(funcName, params));
         },
 
         proc: function (procName, params) {
-            return this.oneOrNone($prop.createFuncQuery(procName, params));
+            return this.oneOrNone(_global.createFuncQuery(procName, params));
         },
 
         // Namespace for type conversion helpers;
         as: {
             bool: function (val) {
-                if ($prop.isNull(val)) {
+                if (_global.isNull(val)) {
                     return 'null';
                 }
                 return val ? 'TRUE' : 'FALSE';
             },
             text: function (val) {
-                if ($prop.isNull(val)) {
+                if (_global.isNull(val)) {
                     return 'null';
                 }
-                return $prop.wrapText($prop.fixQuotes(val));
+                return _global.wrapText(_global.fixQuotes(val));
             },
             date: function (val) {
-                if ($prop.isNull(val)) {
+                if (_global.isNull(val)) {
                     return 'null';
                 }
                 if (val instanceof Date) {
-                    return $prop.wrapText(val.toUTCString());
+                    return _global.wrapText(val.toUTCString());
                 } else {
-                    throw new Error($prop.wrapText(val) + " doesn't represent a valid Date object or value");
+                    throw new Error(_global.wrapText(val) + " doesn't represent a valid Date object or value");
                 }
             }
         },
@@ -150,21 +150,44 @@ module.exports = function (config, options) {
 
             var tx = this;
 
+            var _local = {
+                db: null,
+                start: function (db) {
+                    this.db = db;
+                    _global.monitor(true, db);
+                },
+                finish: function () {
+                    _global.monitor(false, this.db);
+                    this.db = null;
+                },
+                call: function (cb) {
+                    if (typeof(cb) !== 'function') {
+                        return npm.promise.reject("Cannot invoke tx.exec() without a callback function.");
+                    }
+                    var result = cb(this.db.client);
+                    if (result && typeof(result.then) === 'function') {
+                        return result;
+                    } else {
+                        return npm.promise.reject("Callback function passed into tx.exec() didn't return a valid promise object.");
+                    }
+                }
+            };
+
             tx.exec = function (cb) {
-                if (tx.$prop.db) {
+                if (_local.db) {
                     throw new Error('Cannot execute an unfinished transaction');
                 }
                 var t_data, t_reason, success;
                 return $p(function (resolve, reject) {
                     $self.connect()
                         .then(function (db) {
-                            tx.$prop.start(db);
+                            _local.start(db);
                             return tx.query('begin', queryResult.none);
                         }, function (reason) {
                             reject(reason); // connection issue;
                         })
                         .then(function () {
-                            tx.$prop.call(cb)
+                            _local.call(cb)
                                 .then(function (data) {
                                     t_data = data;
                                     success = true;
@@ -175,7 +198,7 @@ module.exports = function (config, options) {
                                     return tx.query('rollback', queryResult.none);
                                 })
                                 .then(function () {
-                                    tx.$prop.finish();
+                                    _local.finish();
                                     // either commit or rollback successfully executed;
                                     if (success) {
                                         resolve(t_data);
@@ -184,21 +207,21 @@ module.exports = function (config, options) {
                                     }
                                 }, function (reason) {
                                     // either commit or rollback failed;
-                                    tx.$prop.finish();
+                                    _local.finish();
                                     reject(reason);
                                 });
                         }, function (reason) {
-                            tx.$prop.finish();
+                            _local.finish();
                             reject(reason); // issue with 'begin' command;
                         });
                 });
             };
 
             tx.query = function (query, qr) {
-                if (!tx.$prop.db) {
+                if (!_local.db) {
                     throw new Error('Unexpected call outside of transaction');
                 }
-                return $prop.query(tx.$prop.db.client, query, qr);
+                return _global.query(_local.db.client, query, qr);
             };
 
             tx.none = function (query) {
@@ -222,41 +245,16 @@ module.exports = function (config, options) {
             };
 
             tx.func = function (funcName, params) {
-                return tx.one($prop.createFuncQuery(funcName, params));
+                return tx.one(_global.createFuncQuery(funcName, params));
             };
 
             tx.proc = function (procName, params) {
-                return tx.oneOrNone($prop.createFuncQuery(procName, params));
-            };
-
-            // private properties;
-            tx.$prop = {
-                db: null,
-                start: function (db) {
-                    this.db = db;
-                    $prop.monitor(true, db);
-                },
-                finish: function () {
-                    $prop.monitor(false, this.db);
-                    this.db = null;
-                },
-                call: function (cb) {
-                    if (typeof(cb) !== 'function') {
-                        return npm.promise.reject("Cannot invoke tx.exec() without a callback function.");
-                    }
-                    var result = cb(this.db.client);
-                    if (result && typeof(result.then) === 'function') {
-                        return result;
-                    } else {
-                        return npm.promise.reject("Callback function passed into tx.exec() didn't return a valid promise object.");
-                    }
-                }
+                return tx.oneOrNone(_global.createFuncQuery(procName, params));
             };
         }
     };
 
-    // private properties and functions;
-    var $prop = {
+    var _global = {
         options: options,
         isNull: function (val) {
             return typeof(val) === 'undefined' || val === null;
@@ -326,9 +324,9 @@ module.exports = function (config, options) {
         query: function (client, query, qr) {
             return $p(function (resolve, reject) {
                 var badMask = queryResult.one | queryResult.many;
-                if((qr & badMask) === badMask){
+                if ((qr & badMask) === badMask) {
                     reject("Invalid query result mask: one + many");
-                }else {
+                } else {
                     client.query(query, function (err, result) {
                         if (err) {
                             reject(err.message);
