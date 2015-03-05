@@ -17,7 +17,7 @@ $ npm install pg-promise
 var pgpLib = require('pg-promise');
 ```
 ### 2. Configure database connection
-Use one of the two ways to specify connection details:
+Use one of the two ways to specify connection:
 * Configuration object:
 ```javascript
 var cn = {
@@ -32,7 +32,7 @@ var cn = {
 ```javascript
 var cn = "postgres://username:password@host:port/database";
 ```
-This library doesn't use any of the connection details, it simply passes them on to [PG] when opening a new connection.
+This library doesn't use any of the connection's details, it simply passes them on to [PG] when opening a new connection.
 For more details see [ConnectionParameters] class in [PG], such as additional connection properties supported.
 
 ### 3. Initialize the library
@@ -41,7 +41,7 @@ var pgp = pgpLib(cn);
 ```
 NOTE: Only one global instance should be used throughout the application.
 
-See also chapter Advanced for the use of parameter ```options``` during initialization. But for now you are ready to use the library.
+See also chapter <b>Advanced</b> for the use of parameter ```options``` during initialization. But for now you are ready to use the library.
 
 # Usage
 ### The basics
@@ -131,7 +131,7 @@ we want both queries inside the transaction to resolve before executing a <i>COM
 * While inside a transaction, we make calls to the same-named methods as outside of transactions, except we do it on the transaction object instance now,
 as opposed to the global ```pgp``` object, which gives us access to the shared connection object. The same goes for calling functions and procedures within
 transactions, using ```tx.func``` and ```tx.proc``` accordingly.
-* Just for flexibility, the transaction call-back function takes one parameter - client connection object.
+* Just for flexibility, the transaction call-back function takes parameter ```client``` - the connection object.
 
 ### Type Helpers
 The library provides several helper functions to convert basic javascript types into their proper PostgreSQL presentation that can be passed directly into
