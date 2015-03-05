@@ -1,1 +1,20 @@
 Notes for changes in pg-promise v0.2
+****************************************
+
+Examples of new usage:
+
+var pgp = require('pg-promise')(options);
+
+var db = new pgp(cn);
+
+db.query();
+
+var tx = new db.tx();
+
+*** what this means:
+
+module.exports = function(options){
+   return function(cn){
+    this.query: etc...
+   };
+}
