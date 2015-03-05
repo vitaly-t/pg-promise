@@ -22,10 +22,8 @@ queryResult = {
 //
 // Parameters:
 //
-// 1. config (required) - either configuration
-//    object or connection string. Either way,
-//    it is merely passed on to PG and not used
-//    by this library.
+// 1. cn (required) - either configuration object or connection string.
+//    It is merely passed on to PG and not used by this library.
 // 2. options (optional) -
 //    {
 //       connect: function(client){
@@ -37,23 +35,25 @@ queryResult = {
 //           client - pg connection object.
 //       }
 //    }
-module.exports = function (config, options) {
+module.exports = function (cn, options) {
 
-    if (!config) {
-        throw new Error("Invalid 'config' parameter passed.");
+    if (!cn) {
+        throw new Error("Invalid 'cn' parameter passed.");
     }
 
-    // new promise initializer;
+    // simpler promise instantiation;
     var $p = function (func) {
         return new npm.promise(func);
     };
 
     var $self = {
 
-        // IMPORTANT: The caller must invoke done() after requests are finished.
+        /////////////////////////////////////////////////////////////
+        // Connects to the database;
+        // The caller must invoke done() after requests are finished.
         connect: function () {
             return $p(function (resolve, reject) {
-                npm.pg.connect(config, function (err, client, done) {
+                npm.pg.connect(cn, function (err, client, done) {
                     if (err) {
                         reject(err);
                     } else {
@@ -66,18 +66,21 @@ module.exports = function (config, options) {
             });
         },
 
+        ///////////////////////////////////////////////////////////////
         // Terminates pg library; call it when exiting the application.
         end: function () {
             npm.pg.end();
         },
 
+        //////////////////////////////////////////////////////////////
         // Generic query request;
-        query: function (query, qr) {
+        // qrm is Query Result Mask, combination of queryResult flags.
+        query: function (query, qrm) {
             return $p(function (resolve, reject) {
                 $self.connect()
                     .then(function (db) {
                         _global.monitor(true, db);
-                        _global.query(db.client, query, qr)
+                        _global.query(db.client, query, qrm)
                             .then(function (data) {
                                 _global.monitor(false, db);
                                 resolve(data);
@@ -217,11 +220,11 @@ module.exports = function (config, options) {
                 });
             };
 
-            tx.query = function (query, qr) {
+            tx.query = function (query, qrm) {
                 if (!_local.db) {
                     throw new Error('Unexpected call outside of transaction');
                 }
-                return _global.query(_local.db.client, query, qr);
+                return _global.query(_local.db.client, query, qrm);
             };
 
             tx.none = function (query) {
@@ -321,10 +324,10 @@ module.exports = function (config, options) {
         createFuncQuery: function (funcName, params) {
             return 'select * from ' + funcName + '(' + this.formatValues(params) + ');';
         },
-        query: function (client, query, qr) {
+        query: function (client, query, qrm) {
             return $p(function (resolve, reject) {
                 var badMask = queryResult.one | queryResult.many;
-                if ((qr & badMask) === badMask) {
+                if ((qrm & badMask) === badMask) {
                     reject("Invalid query result mask: one + many");
                 } else {
                     client.query(query, function (err, result) {
@@ -334,15 +337,15 @@ module.exports = function (config, options) {
                             var data = result.rows;
                             var l = result.rows.length;
                             if (l) {
-                                if (l > 1 && !(qr & queryResult.many)) {
+                                if (l > 1 && !(qrm & queryResult.many)) {
                                     reject("Single row was expected from query: '" + query + "'");
                                 } else {
-                                    if (!(qr & queryResult.many)) {
+                                    if (!(qrm & queryResult.many)) {
                                         data = result.rows[0];
                                     }
                                 }
                             } else {
-                                if (qr & queryResult.none) {
+                                if (qrm & queryResult.none) {
                                     data = null;
                                 } else {
                                     reject("No rows returned from query: '" + query + "'");

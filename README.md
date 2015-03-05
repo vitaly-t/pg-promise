@@ -1,9 +1,9 @@
 # Introduction
-This library unifies [Promise] and [PG] to help writing easy-to-read database code that relies on promises:
-* Simplistic approach to organizing streamlined database code, thanks to full [Promise] integration;
-* Database connections are managed automatically, in every usage case;
-* Functions, Procedures and Transactions are all fully supported;
-* Robust approach to handling results from every single query.
+This library joins [Promise] and [PG] to help writing easy-to-read database code that relies on promises:
+* Streamlined database code structure, thanks to full [Promise] integration;
+* Robust, declarative approach to handling results from every single query;
+* Database connections are managed automatically in every usage case;
+* Functions, Procedures and Transactions are all fully supported.
 
 # Install
 ```
@@ -17,35 +17,36 @@ $ npm install pg-promise
 var pgpLib = require('pg-promise');
 ```
 ### 2. Configure database connection
+Use one of the two ways to specify connection details:
+a. Configuration object:
 ```javascript
-var config = {
-    host: 'localhost',
+var cn = {
+    host: 'localhost', // server name or ip address
     port: 5432,
     database: 'my_db_name',
-    user: 'postgres',
-    password: 'bla-bla'
+    user: 'user_name',
+    password: 'user_password'
 };
 ```
-The library itself doesn't use this object at all, just passing it on to PG to interpret and use (see ```ConnectionParameters``` in [PG] package for details).
-This also means that you can pass a connection string instead, it is up to [PG] then to figure what it is and process accordingly.
-
-You can replace ```config``` with a connection string variable that uses the syntax as shown below, and it would work exactly the same.
+b. Connection string:
 ```javascript
-var conString = "postgres://username:password@host:port/database";
+var cn = "postgres://username:password@host:port/database";
 ```
+This library doesn't use any of the connection details, it simply passes them on to [PG] when opening a new connection.
+For more details see [ConnectionParameters] class in [PG], such as additional connection properties supported.
 
 ### 3. Initialize the library
 ```javascript
-var pgp = pgpLib(config);
+var pgp = pgpLib(cn);
 ```
 NOTE: Only one global instance should be used throughout the application.
 
-Now you are ready to use it. See chapter Advanced for the use of parameter ```options``` during initialization.
+See also chapter Advanced for the use of parameter ```options``` during initialization. But for now you are ready to use the library.
 
 # Usage
 ### The basics
 In order to eliminate the chances of unexpected query results and make code more robust, each request is parametrized with the expected/supported
-return result mask, using type ```queryResult``` as shown below:
+<i>Query Result Mask</i>, using type ```queryResult``` as shown below:
 ```javascript
 queryResult = {
     one: 1,     // single-row result is expected;
@@ -92,9 +93,9 @@ pgp.func('findAudit', [
 ]);
 ```
 We passed it <i>user id</i> = 123, plus current Date/Time as the timestamp. We assume that the function signature matches the parameters that we passed.
-All values passed are serialized automatically to comply with PostgreSQL requirements.
+All values passed are serialized automatically to comply with PostgreSQL type formats.
 
-And when you are not expecting any return results, call ```pgp.proc``` instead. Both methods return a promise object.
+And when you are not expecting any return results, call ```pgp.proc``` instead. Both methods return a [Promise] object.
 
 ### Transactions
 Every call shown in chapters above would acquire a new connection from the pool and release it when done. In order to execute a transaction on the same
@@ -106,14 +107,14 @@ var promise = require('promise');
 
 var tx = new pgp.tx(); // creating a new transaction object
 
-tx.exec(function(){
+tx.exec(function(/*client*/){
 
-    // creating sequence of queries while inside the transaction:
+    // creating sequence of transaction queries:
     var query1 = tx.none("update users set active=TRUE where id=123");
     var query2 = tx.one("insert into audit(entity, id) values('users', 123) returning id");
 
-    // trying to resolve all queries within the transaction:
-    return promise.all([query1, query2]);
+    // returning a promise that determines a successful transaction:
+    return promise.all([query1, query2]); // all of the queries are to be resolved;
 
 }).then(function(data){
     console.log(data); // printing successful transaction output
@@ -121,7 +122,10 @@ tx.exec(function(){
     console.log(reason); // printing the reason why the transaction failed
 });
 ```
-In the example above we create a new transaction object and call its method ```exec```, passing it a call-back function that must do all the queries needed and return a [Promise] object. In the example we use ````promise.all```` to indicate that we want both queries inside the transaction to succeed to consider it a success; otherwise the transaction is to be rolled back.
+In the example above we create a new transaction object and call its method ```exec```, passing it a call-back function
+that must do all the queries needed and return a [Promise] object. In the example we use ```promise.all``` to indicate that
+we want both queries inside the transaction to resolve before executing a <i>COMMIT</i>. And if one of the queries fails to resolve,
+<i>ROLLBACK</i> will be executed instead, and the transaction call will be rejected.
 
 <b>Notes</b>
 * While inside a transaction, we make calls to the same-named methods as outside of transactions, except we do it on the transaction object instance now,
@@ -158,7 +162,7 @@ var options = {
         console.log("Disconnected from database '" + cn.database + "'");
     }
 };
-var pgp = pgpLib(config, options);
+var pgp = pgpLib(cn, options);
 ```
 Two events supported at the moment - ```connect``` and ```disconnect```, to notify of virtual connections being established or released accordingly.
 Each event takes parameter ```client```, which is the client connection object. These events are mostly for connection monitoring, while debugging your application.
@@ -193,12 +197,14 @@ pgp.connect().then(function(db){
 <b>NOTE:</b> When using the direct connection, events ```connect``` and ```disconnect``` won't be fired.
 
 # History
+* A refined version 0.1.4 released on March 5th, 2015.
 * First solid Beta, 0.1.2 on March 4th, 2015.
 * It reached first Beta version 0.1.0 on March 4th, 2015.
 * The first draft v0.0.1 was published on March 3rd, 2015, and then rapidly incremented due to many initial changes that had to come in, mostly documentation.
 
 [PG]:https://github.com/brianc/node-postgres
 [Promise]:https://github.com/then/promise
+[ConnectionParameters]:https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js
 
 # License
 
