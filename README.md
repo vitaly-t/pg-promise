@@ -114,16 +114,16 @@ var tx = new pgp.tx(); // creating a new transaction object
 tx.exec(function(/*client*/){
 
     // creating a sequence of transaction queries:
-    var query1 = tx.none("update users set active=TRUE where id=123");
-    var query2 = tx.one("insert into audit(entity, id) values('users', 123) returning id");
+    var q1 = tx.none("update users set active=TRUE where id=123");
+    var q2 = tx.one("insert into audit(entity, id) values('users', 123) returning id");
 
     // returning a promise that determines a successful transaction:
-    return promise.all([query1, query2]); // all of the queries are to be resolved;
+    return promise.all([q1, q2]); // all of the queries are to be resolved;
 
 }).then(function(data){
     console.log(data); // printing successful transaction output
 }, function(reason){
-    console.log(reason); // printing the reason why the transaction failed
+    console.log(reason); // printing the reason why the transaction was rejected
 });
 ```
 In the example above we create a new transaction object and call its method ```exec```, passing it a call-back function
