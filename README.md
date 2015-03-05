@@ -18,7 +18,7 @@ var pgpLib = require('pg-promise');
 ```
 ### 2. Configure database connection
 Use one of the two ways to specify connection details:
-a. Configuration object:
+* Configuration object:
 ```javascript
 var cn = {
     host: 'localhost', // server name or ip address
@@ -28,7 +28,7 @@ var cn = {
     password: 'user_password'
 };
 ```
-b. Connection string:
+* Connection string:
 ```javascript
 var cn = "postgres://username:password@host:port/database";
 ```
