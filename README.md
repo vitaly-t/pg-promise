@@ -76,11 +76,12 @@ The mixed-result methods are:
 Each of the query calls returns a [Promise] object, as shown below, to be used in the standard way.
 And when the expected and actual results do not match, the call will be rejected.
 ```javascript
-pgp.many("select * from users").then(function(data){
-    console.log(data); // printing the data received
-}, function(reason){
-    console.log(reason); // printing the reason why the call was rejected
-});
+pgp.many("select * from users")
+    .then(function(data){
+        console.log(data); // printing the data returned
+    }, function(reason){
+        console.log(reason); // printing the reason why the call was rejected
+    });
 ```
 ### Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
@@ -90,9 +91,9 @@ We can make such call as shown below:
 ```javascript
 pgp.func('findAudit', [123, new Date()])
     .then(function(data){
-        console.log(data); // print data returned by the function
+        console.log(data); // printing the data returned
     }, function(reason){
-        console.log(reason); // print the reason why the call was rejected
+        console.log(reason); // printing the reason why the call was rejected
     });
 ```
 We passed it <i>user id</i> = 123, plus current Date/Time as the timestamp. We assume that the function signature matches the parameters that we passed.
