@@ -183,7 +183,7 @@ module.exports = function (cn, options) {
 
             tx.exec = function (cb) {
                 if (_local.db) {
-                    throw new Error('Cannot execute an unfinished transaction');
+                    throw new Error("Previous call to tx.exec() hasn't finished.");
                 }
                 var t_data, t_reason, success;
                 return $p(function (resolve, reject) {
