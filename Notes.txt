@@ -1,0 +1,1 @@
+Notes for changes in pg-promise v0.2
