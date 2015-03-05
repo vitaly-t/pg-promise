@@ -49,6 +49,11 @@ module.exports = function (cn, options) {
     var $self = {
 
         /////////////////////////////////////////////////////////////
+        // PG library instance;
+        // Exposing it just for flexibility.
+        pg: npm.pg,
+
+        /////////////////////////////////////////////////////////////
         // Connects to the database;
         // The caller must invoke done() after requests are finished.
         connect: function () {
