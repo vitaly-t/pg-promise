@@ -318,7 +318,9 @@ function $wrapText(text) {
 
 // Translates a javascript value into its text presentation,
 // according to the type, compatible with PostgreSQL format.
-// TODO: Add check for types that are not simple: Object, Array, Function
+// Returns null, if the value cannot be translated,
+// such as: function, array or object (non-date).
+// Watch out for a possible 0, not to confuse with null.
 function $wrapValue(val) {
     if ($isNull(val)) {
         return 'null';
@@ -328,11 +330,13 @@ function $wrapValue(val) {
             return $wrap.text(val);
         case 'boolean':
             return $wrap.bool(val);
+        case 'function':
+            return null; // error
         default:
             if (val instanceof Date) {
                 return $wrap.date(val);
             } else {
-                return val;
+                return typeof(val) === 'object' ? null : val;
             }
     }
 }
@@ -346,7 +350,12 @@ function $formatValues(values) {
             if (i > 0) {
                 s += ',';
             }
-            s += $wrapValue(values[i]);
+            var v = $wrapValue(values[i]);
+            if (v === null) {
+                throw new Error("Cannot convert parameter at index=" + i);
+            } else {
+                s += v;
+            }
         }
     }
     return s;
@@ -396,7 +405,6 @@ function $createFuncQuery(funcName, params) {
 // Parses query for $1, $2,... variables and
 // replaces them with the values passed.
 // values can be an array of simple values, or just one value.
-// TODO: Add check for types that are not simple: Object, Array, Function
 function $parseValues(query, values) {
     var q = query;
     var result = {
@@ -408,24 +416,37 @@ function $parseValues(query, values) {
                 var variable = '$' + (i + 1);
                 if (q.indexOf(variable) === -1) {
                     result.success = false;
-                    result.error = 'More values passed than variables in the query';
+                    result.error = "More values passed than variables in the query";
                     break;
                 } else {
                     var value = $wrapValue(values[i]);
+                    if (value === null) {
+                        // one of the complex types passed;
+                        result.success = false;
+                        result.error = "Cannot convert parameter at index=" + i;
+                        break;
+                    } else {
+                        q = q.replace(variable, value);
+                    }
+                }
+            }
+        } else {
+            var variable = '$1';
+            if (q.indexOf(variable) === -1) {
+                result.success = false;
+                result.error = "No variable found in query to replace with the value passed";
+            } else {
+                var value = $wrapValue(values);
+                if(value === null){
+                    result.success = false;
+                    result.error = "Cannot convert a complex type into a query variable value";
+                }else {
                     q = q.replace(variable, value);
                 }
             }
-        }else{
-            var variable = '$1';
-            if (q.indexOf(variable) === -1){
-                result.success = false;
-                result.error = 'No variable found in query to replace with the value passed';
-            }else {
-                q = q.replace(variable, $wrapValue(values));
-            }
         }
     }
-    if(result.success){
+    if (result.success) {
         result.query = q;
     }
     return result;
