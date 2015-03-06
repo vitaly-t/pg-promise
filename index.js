@@ -175,7 +175,7 @@ function dbInit(dbInst, cn, options) {
     dbInst.func = function (funcName, params, qrm) {
         var query = $createFuncQuery(funcName, params);
         if (qrm) {
-            return dbInst.query(query);
+            return dbInst.query(query, qrm);
         } else {
             return dbInst.one(query);
         }
@@ -295,7 +295,7 @@ function dbInit(dbInst, cn, options) {
         tx.func = function (funcName, params, qrm) {
             var query = $createFuncQuery(funcName, params);
             if (qrm) {
-                return tx.query(query);
+                return tx.query(query, qrm);
             } else {
                 return tx.one(query);
             }
