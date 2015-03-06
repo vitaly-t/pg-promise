@@ -44,7 +44,7 @@ For more details see [ConnectionParameters] class in [PG], such as additional co
 
 ### 4. Instantiate your database
 ```javascript
-var db = new pgp(cn); // create a new database instance based on the connection details
+var db = new pgp(cn); // create a new database instance from the connection details
 ```
 There can be multiple database objects instantiated in the application from different connection details.
 
@@ -67,7 +67,7 @@ queryResult = {
 ```
 In the following generic-query example we indicate that the call can return any number of rows:
 ```javascript
-db.query("select * from users", queryResult.none | queryResult.many);
+db.query("select * from users", queryResult.many | queryResult.none);
 ```
 which is equivalent to calling:
 ```javascript
@@ -86,7 +86,7 @@ The mixed-result methods are:
 Each of the query calls returns a [Promise] object, as shown below, to be used in the standard way.
 And when the expected and actual results do not match, the call will be rejected.
 ```javascript
-db.many("select * from users")
+db.manyOrNone("select * from users")
     .then(function(data){
         console.log(data); // printing the data returned
     }, function(reason){
