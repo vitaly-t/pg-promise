@@ -83,6 +83,8 @@ The mixed-result methods are:
 * ```oneOrNone``` - expects 1 or 0 rows to be returned;
 * ```manyOrNone``` - any number of rows can be returned, including 0.
 
+To better understand the effect of such different calls, see section <b>Understanding the query result</b> below.
+
 Each of the query calls returns a [Promise] object, as shown below, to be used in the standard way.
 And when the expected and actual results do not match, the call will be rejected.
 ```javascript
@@ -93,6 +95,19 @@ db.manyOrNone("select * from users")
         console.log(reason); // printing the reason why the call was rejected
     });
 ```
+##### Understanding the query result
+
+Each query function resolves <b>data</b> according to the <b>Query Result Mask</b> that was used, and must be handled accordingly, as explained below.
+* `none` - <b>data</b> is `null`. If the query returns any kind of data, it is rejected.
+* `one` - <b>data</b> is a single object. If the query returns no data or more than one row of data, it is rejected.
+* `many` - <b>data</b> is an array of objects. If the query returns no data, it is rejected.
+* `one` | `none` - <b>data</b> is `null`, if no data was returned; or a single object, if there was one row of data returned. If the query returns more than one row of data, the query is rejected.
+* `many` | `none` - <b>data</b> is `null`, if no data was returned. If there were one or more rows returned, data is an array of objects.
+
+If you try to specify `one` | `many` in the same query, such query will be rejected without executing it, telling you that such mask is not valid.
+
+> This is all about writing robust code, when the client declaratively specifies what kind of data it is ready to handle.
+
 ### Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
 
