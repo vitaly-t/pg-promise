@@ -159,7 +159,7 @@ pgp.as.text(value); // returns proper PostgreSQL text presentation,
 pgp.as.date(value); // returns proper PostgreSQL date/time presentation,
                     // wrapped in quotes.
 ```
-As these helpers are not associated with a connection, they can be called from anywhere.
+As these helpers are not associated with a database, they can be called from anywhere.
 
 # Advanced
 
