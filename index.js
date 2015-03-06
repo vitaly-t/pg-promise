@@ -50,140 +50,8 @@ module.exports = function (options) {
         npm.pg.end();
     };
 
-    return lib;
-};
-
-function dbInit(dbInst, cn, options) {
-
-    // All shared functions have their names start with $
-
-    // Simpler promise instantiation;
-    function $p(func) {
-        return new npm.promise(func);
-    }
-
-    // Null verification;
-    function $isNull(val) {
-        return typeof(val) === 'undefined' || val === null;
-    }
-
-    // Fixes single-quote symbols in text fields;
-    function $fixQuotes(val) {
-        return val.replace("'", "''");
-    }
-
-    // Wraps up text in single quotes;
-    function $wrapText(text) {
-        return "'" + text + "'";
-    }
-
-    // Translates a javascript value into its text presentation,
-    // according to the type, compatible with PostgreSQL format.
-    function $wrapValue(val) {
-        if ($isNull(val)) {
-            return 'null';
-        }
-        switch (typeof(val)) {
-            case 'string':
-                return dbInst.as.text(val);
-            case 'boolean':
-                return dbInst.as.bool(val);
-            default:
-                if (val instanceof Date) {
-                    return dbInst.as.date(val);
-                } else {
-                    return val;
-                }
-        }
-    }
-
-    // Handles database connection acquire/release
-    // events, notifying the client as needed.
-    function $monitor(open, db) {
-        if (open) {
-            if (options) {
-                var func = options.connect;
-                if (func) {
-                    if (typeof(func) !== 'function') {
-                        throw new Error('Function was expected for options.connect');
-                    }
-                    func(db.client); // notify the client;
-                }
-            }
-        } else {
-            if (options) {
-                var func = options.disconnect;
-                if (func) {
-                    if (typeof(func) !== 'function') {
-                        throw new Error('Function was expected for options.disconnect');
-                    }
-                    func(db.client); // notify the client;
-                }
-            }
-            db.done(); // release database connection back to the pool;
-        }
-    }
-
-    // Formats array of javascript-type values into a list of
-    // parameters for a function call, compatible with PostgreSQL.
-    function $formatValues(values) {
-        var s = '';
-        if (Array.isArray(values) && values.length > 0) {
-            for (var i = 0; i < values.length; i++) {
-                if (i > 0) {
-                    s += ',';
-                }
-                s += $wrapValue(values[i]);
-            }
-        }
-        return s;
-    }
-
-    // Formats a proper function call from the parameters.
-    function $createFuncQuery(funcName, params) {
-        return 'select * from ' + funcName + '(' + $formatValues(params) + ');';
-    }
-
-    // Generic, static query call for the specified connection + query + result.
-    function $query(client, query, qrm) {
-        return $p(function (resolve, reject) {
-            var badMask = queryResult.one | queryResult.many;
-            if ((qrm & badMask) === badMask) {
-                reject("Invalid query result mask: one + many");
-            } else {
-                client.query(query, function (err, result) {
-                    if (err) {
-                        reject(err.message);
-                    } else {
-                        var data = result.rows;
-                        var l = result.rows.length;
-                        if (l) {
-                            if (l > 1 && !(qrm & queryResult.many)) {
-                                reject("Single row was expected from query: '" + query + "'");
-                            } else {
-                                if (!(qrm & queryResult.many)) {
-                                    data = result.rows[0];
-                                }
-                            }
-                        } else {
-                            if (qrm & queryResult.none) {
-                                data = null;
-                            } else {
-                                reject("No rows returned from query: '" + query + "'");
-                            }
-                        }
-                        resolve(data);
-                    }
-                });
-            }
-        });
-    }
-
-    /////////////////////////////////////////
-    // database instance-related properties;
-
     // Namespace for type conversion helpers;
-    dbInst.as = {
+    lib.as = {
         bool: function (val) {
             if ($isNull(val)) {
                 return 'null';
@@ -207,6 +75,38 @@ function dbInit(dbInst, cn, options) {
             }
         }
     };
+
+    return lib;
+};
+
+function dbInit(dbInst, cn, options) {
+
+    // Handles database connection acquire/release
+    // events, notifying the client as needed.
+    function monitor(open, db) {
+        if (open) {
+            if (options) {
+                var func = options.connect;
+                if (func) {
+                    if (typeof(func) !== 'function') {
+                        throw new Error('Function was expected for options.connect');
+                    }
+                    func(db.client); // notify the client;
+                }
+            }
+        } else {
+            if (options) {
+                var func = options.disconnect;
+                if (func) {
+                    if (typeof(func) !== 'function') {
+                        throw new Error('Function was expected for options.disconnect');
+                    }
+                    func(db.client); // notify the client;
+                }
+            }
+            db.done(); // release database connection back to the pool;
+        }
+    }
 
     /////////////////////////////////////////////////////////////////
     // Connects to the database;
@@ -233,13 +133,13 @@ function dbInit(dbInst, cn, options) {
         return $p(function (resolve, reject) {
             dbInst.connect()
                 .then(function (db) {
-                    $monitor(true, db);
+                    monitor(true, db);
                     $query(db.client, query, qrm)
                         .then(function (data) {
-                            $monitor(false, db);
+                            monitor(false, db);
                             resolve(data);
                         }, function (reason) {
-                            $monitor(false, db);
+                            monitor(false, db);
                             reject(reason);
                         });
                 }, function (reason) {
@@ -291,10 +191,10 @@ function dbInit(dbInst, cn, options) {
             db: null,
             start: function (db) {
                 this.db = db;
-                $monitor(true, db);
+                monitor(true, db);
             },
             finish: function () {
-                $monitor(false, this.db);
+                monitor(false, this.db);
                 this.db = null;
             },
             call: function (cb) {
@@ -395,4 +295,102 @@ function dbInit(dbInst, cn, options) {
             return tx.oneOrNone($createFuncQuery(procName, params));
         };
     };
+}
+
+////////////////////////////////////////////////
+// Global, reusable functions, all start with $
+
+// Simpler promise instantiation;
+function $p(func) {
+    return new npm.promise(func);
+}
+
+// Null verification;
+function $isNull(val) {
+    return typeof(val) === 'undefined' || val === null;
+}
+
+// Fixes single-quote symbols in text fields;
+function $fixQuotes(val) {
+    return val.replace("'", "''");
+}
+
+// Wraps up text in single quotes;
+function $wrapText(text) {
+    return "'" + text + "'";
+}
+
+// Translates a javascript value into its text presentation,
+// according to the type, compatible with PostgreSQL format.
+function $wrapValue(val) {
+    if ($isNull(val)) {
+        return 'null';
+    }
+    switch (typeof(val)) {
+        case 'string':
+            return dbInst.as.text(val);
+        case 'boolean':
+            return dbInst.as.bool(val);
+        default:
+            if (val instanceof Date) {
+                return dbInst.as.date(val);
+            } else {
+                return val;
+            }
+    }
+}
+
+// Formats array of javascript-type values into a list of
+// parameters for a function call, compatible with PostgreSQL.
+function $formatValues(values) {
+    var s = '';
+    if (Array.isArray(values) && values.length > 0) {
+        for (var i = 0; i < values.length; i++) {
+            if (i > 0) {
+                s += ',';
+            }
+            s += $wrapValue(values[i]);
+        }
+    }
+    return s;
+}
+
+// Formats a proper function call from the parameters.
+function $createFuncQuery(funcName, params) {
+    return 'select * from ' + funcName + '(' + $formatValues(params) + ');';
+}
+
+// Generic, static query call for the specified connection + query + result.
+function $query(client, query, qrm) {
+    return $p(function (resolve, reject) {
+        var badMask = queryResult.one | queryResult.many;
+        if ((qrm & badMask) === badMask) {
+            reject("Invalid query result mask: one + many");
+        } else {
+            client.query(query, function (err, result) {
+                if (err) {
+                    reject(err.message);
+                } else {
+                    var data = result.rows;
+                    var l = result.rows.length;
+                    if (l) {
+                        if (l > 1 && !(qrm & queryResult.many)) {
+                            reject("Single row was expected from query: '" + query + "'");
+                        } else {
+                            if (!(qrm & queryResult.many)) {
+                                data = result.rows[0];
+                            }
+                        }
+                    } else {
+                        if (qrm & queryResult.none) {
+                            data = null;
+                        } else {
+                            reject("No rows returned from query: '" + query + "'");
+                        }
+                    }
+                    resolve(data);
+                }
+            });
+        }
+    });
 }

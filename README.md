@@ -149,14 +149,14 @@ transactions, using ```tx.func``` and ```tx.proc``` accordingly.
 
 ### Type Helpers
 The library provides several helper functions to convert basic javascript types into their proper PostgreSQL presentation that can be passed directly into
-queries or functions as parameters. All of such helper functions are located within namespace ```db.as```:
+queries or functions as parameters. All of such helper functions are located within namespace ```pgp.as```:
 ```javascript
-db.as.bool(value); // returns proper PostgreSQL boolean presentation
+pgp.as.bool(value); // returns proper PostgreSQL boolean presentation
 
-db.as.text(value); // returns proper PostgreSQL text presentation,
+pgp.as.text(value); // returns proper PostgreSQL text presentation,
                     // fixing single-quote symbols, wrapped in quotes
 
-db.as.date(value); // returns proper PostgreSQL date/time presentation,
+pgp.as.date(value); // returns proper PostgreSQL date/time presentation,
                     // wrapped in quotes.
 ```
 As these helpers are not associated with a connection, they can be called from anywhere.
