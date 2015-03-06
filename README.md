@@ -102,11 +102,11 @@ Each query function resolves <b>data</b> according to the <b>Query Result Mask</
 * `one` - <b>data</b> is a single object. If the query returns no data or more than one row of data, it is rejected.
 * `many` - <b>data</b> is an array of objects. If the query returns no rows, it is rejected.
 * `one` | `none` - <b>data</b> is `null`, if no data was returned; or a single object, if there was one row of data returned. If the query returns more than one row of data, the query is rejected.
-* `many` | `none` - <b>data</b> is an array of objects. When no rows returned, `data` is an empty array.
+* `many` | `none` - <b>data</b> is an array of objects. When no rows are returned, <b>data</b> is an empty array.
 
 If you try to specify `one` | `many` in the same query, such query will be rejected without executing it, telling you that such mask is not valid.
 
-> This is all about writing robust code, when the client declaratively specifies what kind of data it is ready to handle.
+> This is all about writing robust code, when the client declaratively specifies what kind of data it is ready to handle, leaving the burden of all extra checks to the library.
 
 ### Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
