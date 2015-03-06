@@ -35,7 +35,7 @@ queryResult = {
 module.exports = function (options) {
 
     var lib = function (cn) {
-        if(!$isEmptyObject(this)){
+        if (!$isEmptyObject(this)) {
             // This makes it easy to locate the most common mistake -
             // skipping keyword 'new' when calling: var db = new pgp(cn);
             throw new Error("Invalid database object instantiation.");
@@ -191,7 +191,7 @@ function dbInit(dbInst, cn, options) {
 
         var tx = this;
 
-        if(!$isEmptyObject(tx)){
+        if (!$isEmptyObject(tx)) {
             // This makes it easy to locate the most common mistake -
             // skipping keyword 'new' when calling: var tx = new db.tx(cn);
             throw new Error("Invalid transaction object instantiation.");
@@ -321,7 +321,7 @@ function $isNull(val) {
 }
 
 // Checks if the object is empty (has no properties);
-function $isEmptyObject(obj){
+function $isEmptyObject(obj) {
     return Object.keys(obj).length === 0;
 }
 
@@ -398,7 +398,7 @@ function $query(client, query, qrm) {
                         }
                     } else {
                         if (qrm & queryResult.none) {
-                            data = null;
+                            data = (qrm & queryResult.many) ? [] : null;
                         } else {
                             reject("No rows returned from query: '" + query + "'");
                         }

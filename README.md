@@ -100,9 +100,9 @@ db.manyOrNone("select * from users")
 Each query function resolves <b>data</b> according to the <b>Query Result Mask</b> that was used, and must be handled accordingly, as explained below.
 * `none` - <b>data</b> is `null`. If the query returns any kind of data, it is rejected.
 * `one` - <b>data</b> is a single object. If the query returns no data or more than one row of data, it is rejected.
-* `many` - <b>data</b> is an array of objects. If the query returns no data, it is rejected.
+* `many` - <b>data</b> is an array of objects. If the query returns no rows, it is rejected.
 * `one` | `none` - <b>data</b> is `null`, if no data was returned; or a single object, if there was one row of data returned. If the query returns more than one row of data, the query is rejected.
-* `many` | `none` - <b>data</b> is `null`, if no data was returned. If there were one or more rows returned, data is an array of objects.
+* `many` | `none` - <b>data</b> is an array of objects. When no rows returned, `data` is an empty array.
 
 If you try to specify `one` | `many` in the same query, such query will be rejected without executing it, telling you that such mask is not valid.
 
