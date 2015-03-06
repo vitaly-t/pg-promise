@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "PG + Promise made easy, with transactions support.",
   "main": "index.js",
   "scripts": {
@@ -15,10 +15,10 @@
     "url": "https://github.com/vitaly-t/pg-promise/issues"
   },
   "keywords": [
-    "postgresql",
     "pg",
+    "promise",
     "transaction",
-    "promise"
+    "postgresql"
   ],
   "author": {
     "name": "Vitaly Tomilov",
