@@ -14,10 +14,17 @@ $ npm install pg-promise
 
 ### 1. Load the library
 ```javascript
-var pgpLib = require('pg-promise');
+var pgpLib = require('pg-promise'); // loading the library;
 ```
-### 2. Configure database connection
-Use one of the two ways to specify connection:
+### 2. Initialize the library
+```javascript
+var pgp = pgpLib(/*options*/); // initializing the library, with optional global settings;
+```
+You can pass additional ```options``` parameter when initilizing the library (see chapter Advanced for details).
+
+<b>NOTE:</b> Only one instance of such ```pgp``` object should exist throughout the application.
+### 3. Configure database connection
+Use one of the two ways to specify connection details:
 * Configuration object:
 ```javascript
 var cn = {
@@ -35,19 +42,23 @@ var cn = "postgres://username:password@host:port/database";
 This library doesn't use any of the connection's details, it simply passes them on to [PG] when opening a new connection.
 For more details see [ConnectionParameters] class in [PG], such as additional connection properties supported.
 
-### 3. Initialize the library
+### 4. Instantiate your database
 ```javascript
-var pgp = pgpLib(cn);
+var db = new pgp(cn); // create a new database instance based on the connection details
 ```
-NOTE: Only one global instance should be used throughout the application.
+There can be multiple database objects instantiated in the application from different connection details.
 
-See also chapter <b>Advanced</b> for the use of parameter ```options``` during initialization. But for now you are ready to use the library.
+You are now ready to make queries against the database.
 
 # Usage
 ### The basics
 In order to eliminate the chances of unexpected query results and make code more robust, each request is parametrized with the expected/supported
 <i>Query Result Mask</i>, using type ```queryResult``` as shown below:
 ```javascript
+///////////////////////////////////////////////////////
+// Query Result Mask flags;
+//
+// Any combination is supported, except for one + many.
 queryResult = {
     one: 1,     // single-row result is expected;
     many: 2,    // multi-row result is expected;
