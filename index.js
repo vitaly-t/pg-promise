@@ -110,12 +110,12 @@ function dbInit(dbInst, cn, options) {
     //////////////////////////////////////////////////////////////
     // Generic query request;
     // qrm is Query Result Mask, combination of queryResult flags.
-    dbInst.query = function (query, qrm) {
+    dbInst.query = function (query, qrm, values) {
         return $p(function (resolve, reject) {
             dbInst.connect()
                 .then(function (db) {
                     monitor(true, db);
-                    $query(db.client, query, qrm)
+                    $query(db.client, query, qrm, values)
                         .then(function (data) {
                             monitor(false, db);
                             resolve(data);
@@ -129,26 +129,27 @@ function dbInit(dbInst, cn, options) {
         });
     };
 
-    dbInst.none = function (query) {
-        return dbInst.query(query, queryResult.none);
+    dbInst.none = function (query, values) {
+        return dbInst.query(query, queryResult.none, values);
     };
 
-    dbInst.one = function (query) {
-        return dbInst.query(query, queryResult.one);
+    dbInst.one = function (query, values) {
+        return dbInst.query(query, queryResult.one, values);
     };
 
-    dbInst.many = function (query) {
-        return dbInst.query(query, queryResult.many);
+    dbInst.many = function (query, values) {
+        return dbInst.query(query, queryResult.many, values);
     };
 
-    dbInst.oneOrNone = function (query) {
-        return dbInst.query(query, queryResult.one | queryResult.none);
+    dbInst.oneOrNone = function (query, values) {
+        return dbInst.query(query, queryResult.one | queryResult.none, values);
     };
 
-    dbInst.manyOrNone = function (query) {
-        return dbInst.query(query, queryResult.many | queryResult.none);
+    dbInst.manyOrNone = function (query, values) {
+        return dbInst.query(query, queryResult.many | queryResult.none, values);
     };
 
+    // TODO: Review the parameters
     dbInst.func = function (funcName, params, qrm) {
         var query = $createFuncQuery(funcName, params);
         if (qrm) {
@@ -158,6 +159,7 @@ function dbInit(dbInst, cn, options) {
         }
     };
 
+    // TODO: Review the parameters
     dbInst.proc = function (procName, params) {
         return dbInst.oneOrNone($createFuncQuery(procName, params));
     };
@@ -242,33 +244,34 @@ function dbInit(dbInst, cn, options) {
             });
         };
 
-        tx.query = function (query, qrm) {
+        tx.query = function (query, qrm, values) {
             if (!local.db) {
                 throw new Error('Unexpected call outside of transaction');
             }
-            return $query(local.db.client, query, qrm);
+            return $query(local.db.client, query, qrm, values);
         };
 
-        tx.none = function (query) {
-            return tx.query(query, queryResult.none);
+        tx.none = function (query, values) {
+            return tx.query(query, queryResult.none, values);
         };
 
-        tx.one = function (query) {
-            return tx.query(query, queryResult.one);
+        tx.one = function (query, values) {
+            return tx.query(query, queryResult.one, values);
         };
 
-        tx.many = function (query) {
-            return tx.query(query, queryResult.many);
+        tx.many = function (query, values) {
+            return tx.query(query, queryResult.many, values);
         };
 
-        tx.oneOrNone = function (query) {
-            return tx.query(query, queryResult.one | queryResult.none);
+        tx.oneOrNone = function (query, values) {
+            return tx.query(query, queryResult.one | queryResult.none, values);
         };
 
-        tx.manyOrNone = function (query) {
-            return tx.query(query, queryResult.many | queryResult.none);
+        tx.manyOrNone = function (query, values) {
+            return tx.query(query, queryResult.many | queryResult.none, values);
         };
 
+        // TODO: Review the parameters
         tx.func = function (funcName, params, qrm) {
             var query = $createFuncQuery(funcName, params);
             if (qrm) {
@@ -278,6 +281,7 @@ function dbInit(dbInst, cn, options) {
             }
         };
 
+        // TODO: Review the parameters
         tx.proc = function (procName, params) {
             return tx.oneOrNone($createFuncQuery(procName, params));
         };
@@ -314,6 +318,7 @@ function $wrapText(text) {
 
 // Translates a javascript value into its text presentation,
 // according to the type, compatible with PostgreSQL format.
+// TODO: Add check for types that are not simple: Object, Array, Function
 function $wrapValue(val) {
     if ($isNull(val)) {
         return 'null';
@@ -388,14 +393,65 @@ function $createFuncQuery(funcName, params) {
     return 'select * from ' + funcName + '(' + $formatValues(params) + ');';
 }
 
+// Parses query for $1, $2,... variables and
+// replaces them with the values passed.
+// values can be an array of simple values, or just one value.
+// TODO: Add check for types that are not simple: Object, Array, Function
+function $parseValues(query, values) {
+    var q = query;
+    var result = {
+        success: true
+    };
+    if (values) {
+        if (Array.isArray(values) && values.length > 0) {
+            for (var i = 0; i < values.length; i++) {
+                var variable = '$' + (i + 1);
+                if (q.indexOf(variable) === -1) {
+                    result.success = false;
+                    result.error = 'More values passed than variables in the query';
+                    break;
+                } else {
+                    var value = $wrapValue(values[i]);
+                    q = q.replace(variable, value);
+                }
+            }
+        }else{
+            var variable = '$1';
+            if (q.indexOf(variable) === -1){
+                result.success = false;
+                result.error = 'No variable found in query to replace with the value passed';
+            }else {
+                q = q.replace(variable, $wrapValue(values));
+            }
+        }
+    }
+    if(result.success){
+        result.query = q;
+    }
+    return result;
+}
+
 // Generic, static query call for the specified connection + query + result.
-function $query(client, query, qrm) {
+function $query(client, query, qrm, values) {
     return $p(function (resolve, reject) {
-        var badMask = queryResult.one | queryResult.many;
-        if ((qrm & badMask) === badMask) {
-            reject("Invalid query result mask: one + many");
+        var errMsg, req;
+        if (!query) {
+            errMsg = "Invalid query specified";
         } else {
-            client.query(query, function (err, result) {
+            var badMask = queryResult.one | queryResult.many;
+            if (!qrm || (qrm & badMask) === badMask) {
+                errMsg = "Invalid Query Result Mask specified";
+            } else {
+                req = $parseValues(query, values);
+                if (!req.success) {
+                    errMsg = req.error;
+                }
+            }
+        }
+        if (errMsg) {
+            reject(errMsg);
+        } else {
+            client.query(req.query, function (err, result) {
                 if (err) {
                     reject(err.message);
                 } else {
