@@ -6,11 +6,10 @@ var npm = {
     pg: require('pg')
 };
 
-//////////////////////////////////////
-// Query result mask flags;
+///////////////////////////////////////////////////////
+// Query Result Mask flags;
 //
-// NOTE: Cannot combine one + many, while the
-// rest of combinations are all supported.
+// Any combination is supported, except for one + many.
 queryResult = {
     one: 1,     // single-row result is expected;
     many: 2,    // multi-row result is expected;
@@ -22,38 +21,32 @@ queryResult = {
 //
 // Parameters:
 //
-// 1. cn (required) - either configuration object or connection string.
-//    It is merely passed on to PG and not used by this library.
-// 2. options (optional) -
-//    {
-//       connect: function(client){
-//           on-connect event;
-//           client - pg connection object.
-//       },
-//       disconnect: function(client){
-//           on-disconnect event;
-//           client - pg connection object.
-//       }
+// options (optional) -
+// {
+//    connect: function(client){
+//        on-connect event;
+//        client - pg connection object.
+//    },
+//    disconnect: function(client){
+//        on-disconnect event;
+//        client - pg connection object.
 //    }
-
+// }
 module.exports = function (options) {
 
     var lib = function (cn) {
         if (cn) {
             return dbInit(this, cn, options);
-        }else{
+        } else {
             throw new Error("Invalid 'cn' parameter passed.");
         }
     };
 
-    /////////////////////////////////////////////////////////////
-    // PG library instance;
-    // Exposing it just for flexibility.
+    // Exposing PG library instance, just for flexibility.
     lib.pg = npm.pg;
 
-    ///////////////////////////////////////////////////////////////
     // Terminates pg library; call it when exiting the application.
-    lib.end = function(){
+    lib.end = function () {
         npm.pg.end();
     };
 
@@ -62,27 +55,30 @@ module.exports = function (options) {
 
 function dbInit(dbInst, cn, options) {
 
-    //////////////////////////////////////////////
-    // Set of shared functions - all start with $
+    // All shared functions have their names start with $
 
-    // simpler promise instantiation;
+    // Simpler promise instantiation;
     function $p(func) {
         return new npm.promise(func);
     }
 
-    // private function and properties;
+    // Null verification;
     function $isNull(val) {
         return typeof(val) === 'undefined' || val === null;
     }
 
+    // Fixes single-quote symbols in text fields;
     function $fixQuotes(val) {
         return val.replace("'", "''");
     }
 
+    // Wraps up text in single quotes;
     function $wrapText(text) {
         return "'" + text + "'";
     }
 
+    // Translates a javascript value into its text presentation,
+    // according to the type, compatible with PostgreSQL format.
     function $wrapValue(val) {
         if ($isNull(val)) {
             return 'null';
@@ -101,6 +97,8 @@ function dbInit(dbInst, cn, options) {
         }
     }
 
+    // Handles database connection acquire/release
+    // events, notifying the client as needed.
     function $monitor(open, db) {
         if (open) {
             if (options) {
@@ -109,7 +107,7 @@ function dbInit(dbInst, cn, options) {
                     if (typeof(func) !== 'function') {
                         throw new Error('Function was expected for options.connect');
                     }
-                    func(db.client);
+                    func(db.client); // notify the client;
                 }
             }
         } else {
@@ -119,13 +117,15 @@ function dbInit(dbInst, cn, options) {
                     if (typeof(func) !== 'function') {
                         throw new Error('Function was expected for options.disconnect');
                     }
-                    func(db.client);
+                    func(db.client); // notify the client;
                 }
             }
-            db.done();
+            db.done(); // release database connection back to the pool;
         }
     }
 
+    // Formats array of javascript-type values into a list of
+    // parameters for a function call, compatible with PostgreSQL.
     function $formatValues(values) {
         var s = '';
         if (Array.isArray(values) && values.length > 0) {
@@ -139,10 +139,12 @@ function dbInit(dbInst, cn, options) {
         return s;
     }
 
+    // Formats a proper function call from the parameters.
     function $createFuncQuery(funcName, params) {
         return 'select * from ' + funcName + '(' + $formatValues(params) + ');';
     }
 
+    // Generic, static query call for the specified connection + query + result.
     function $query(client, query, qrm) {
         return $p(function (resolve, reject) {
             var badMask = queryResult.one | queryResult.many;
@@ -206,9 +208,9 @@ function dbInit(dbInst, cn, options) {
         }
     };
 
-    /////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////
     // Connects to the database;
-    // The caller must invoke done() after requests are finished.
+    // The caller must invoke done() after all requests are finished.
     dbInst.connect = function () {
         return $p(function (resolve, reject) {
             npm.pg.connect(cn, function (err, client, done) {
@@ -266,20 +268,26 @@ function dbInit(dbInst, cn, options) {
         return dbInst.query(query, queryResult.many | queryResult.none);
     };
 
-    dbInst.func = function (funcName, params) {
-        return dbInst.one($createFuncQuery(funcName, params));
+    dbInst.func = function (funcName, params, qrm) {
+        var query = $createFuncQuery(funcName, params);
+        if (qrm) {
+            return dbInst.query(query);
+        } else {
+            return dbInst.one(query);
+        }
     };
 
     dbInst.proc = function (procName, params) {
         return dbInst.oneOrNone($createFuncQuery(procName, params));
     };
 
+    //////////////////////////
     // Transaction class;
     dbInst.tx = function () {
 
         var tx = this;
 
-        var _local = {
+        var local = {
             db: null,
             start: function (db) {
                 this.db = db;
@@ -302,21 +310,22 @@ function dbInit(dbInst, cn, options) {
             }
         };
 
+        // Executes transaction;
         tx.exec = function (cb) {
-            if (_local.db) {
+            if (local.db) {
                 throw new Error("Previous call to tx.exec() hasn't finished.");
             }
             var t_data, t_reason, success;
             return $p(function (resolve, reject) {
                 dbInst.connect()
                     .then(function (db) {
-                        _local.start(db);
+                        local.start(db);
                         return tx.query('begin', queryResult.none);
                     }, function (reason) {
                         reject(reason); // connection issue;
                     })
                     .then(function () {
-                        _local.call(cb)
+                        local.call(cb)
                             .then(function (data) {
                                 t_data = data;
                                 success = true;
@@ -327,7 +336,7 @@ function dbInit(dbInst, cn, options) {
                                 return tx.query('rollback', queryResult.none);
                             })
                             .then(function () {
-                                _local.finish();
+                                local.finish();
                                 // either commit or rollback successfully executed;
                                 if (success) {
                                     resolve(t_data);
@@ -336,21 +345,21 @@ function dbInit(dbInst, cn, options) {
                                 }
                             }, function (reason) {
                                 // either commit or rollback failed;
-                                _local.finish();
+                                local.finish();
                                 reject(reason);
                             });
                     }, function (reason) {
-                        _local.finish();
+                        local.finish();
                         reject(reason); // issue with 'begin' command;
                     });
             });
         };
 
         tx.query = function (query, qrm) {
-            if (!_local.db) {
+            if (!local.db) {
                 throw new Error('Unexpected call outside of transaction');
             }
-            return $query(_local.db.client, query, qrm);
+            return $query(local.db.client, query, qrm);
         };
 
         tx.none = function (query) {
@@ -373,8 +382,13 @@ function dbInit(dbInst, cn, options) {
             return tx.query(query, queryResult.many | queryResult.none);
         };
 
-        tx.func = function (funcName, params) {
-            return tx.one($createFuncQuery(funcName, params));
+        tx.func = function (funcName, params, qrm) {
+            var query = $createFuncQuery(funcName, params);
+            if (qrm) {
+                return tx.query(query);
+            } else {
+                return tx.one(query);
+            }
         };
 
         tx.proc = function (procName, params) {
