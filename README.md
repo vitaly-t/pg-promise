@@ -14,11 +14,13 @@ $ npm install pg-promise
 
 ### 1. Load the library
 ```javascript
-var pgpLib = require('pg-promise'); // loading the library
+// Loading the library:
+var pgpLib = require('pg-promise');
 ```
 ### 2. Initialize the library
 ```javascript
-var pgp = pgpLib(/*options*/); // initializing the library, with optional global settings
+// Initializing the library, with optional global settings:
+var pgp = pgpLib(/*options*/);
 ```
 You can pass additional ```options``` parameter when initilizing the library (see chapter Advanced for details).
 
