@@ -46,38 +46,15 @@ module.exports = function (options) {
         return dbInit(this, cn, options);
     };
 
+    // Namespace for type conversion helpers;
+    lib.as = $wrap;
+
     // Exposing PG library instance, just for flexibility.
     lib.pg = npm.pg;
 
     // Terminates pg library; call it when exiting the application.
     lib.end = function () {
         npm.pg.end();
-    };
-
-    // Namespace for type conversion helpers;
-    lib.as = {
-        bool: function (val) {
-            if ($isNull(val)) {
-                return 'null';
-            }
-            return val ? 'TRUE' : 'FALSE';
-        },
-        text: function (val) {
-            if ($isNull(val)) {
-                return 'null';
-            }
-            return $wrapText($fixQuotes(val));
-        },
-        date: function (val) {
-            if ($isNull(val)) {
-                return 'null';
-            }
-            if (val instanceof Date) {
-                return $wrapText(val.toUTCString());
-            } else {
-                throw new Error($wrapText(val) + " doesn't represent a valid Date object or value");
-            }
-        }
     };
 
     return lib;
@@ -343,12 +320,12 @@ function $wrapValue(val) {
     }
     switch (typeof(val)) {
         case 'string':
-            return dbInst.as.text(val);
+            return $wrap.text(val);
         case 'boolean':
-            return dbInst.as.bool(val);
+            return $wrap.bool(val);
         default:
             if (val instanceof Date) {
-                return dbInst.as.date(val);
+                return $wrap.date(val);
             } else {
                 return val;
             }
@@ -369,6 +346,42 @@ function $formatValues(values) {
     }
     return s;
 }
+
+// Value wrapper to be exposed through 'pgp.as' namespace;
+var $wrap = {
+    text: function (txt) {
+        if ($isNull(txt)) {
+            return 'null';
+        }
+        return $wrapText($fixQuotes(txt));
+    },
+    bool: function (val) {
+        if ($isNull(val)) {
+            return 'null';
+        }
+        return val ? 'TRUE' : 'FALSE';
+    },
+    date: function (d) {
+        if ($isNull(d)) {
+            return 'null';
+        }
+        if (d instanceof Date) {
+            return $wrapText(d.toUTCString());
+        } else {
+            throw new Error($wrapText(d) + " doesn't represent a valid Date object or value");
+        }
+    },
+    csv: function (arr) {
+        if ($isNull(arr)) {
+            return 'null';
+        }
+        if (Array.isArray(arr)) {
+            return $formatValues(arr);
+        } else {
+            throw new Error($wrapText(arr) + " doesn't represent a valid Array object or value");
+        }
+    }
+};
 
 // Formats a proper function call from the parameters.
 function $createFuncQuery(funcName, params) {
