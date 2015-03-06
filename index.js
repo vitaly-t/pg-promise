@@ -35,11 +35,13 @@ queryResult = {
 module.exports = function (options) {
 
     var lib = function (cn) {
-        if (cn) {
-            return dbInit(this, cn, options);
-        } else {
+        if(Object.keys(this).length){
+            throw new Error("Invalid database object instantiation.");
+        }
+        if (!cn) {
             throw new Error("Invalid 'cn' parameter passed.");
         }
+        return dbInit(this, cn, options);
     };
 
     // Exposing PG library instance, just for flexibility.
