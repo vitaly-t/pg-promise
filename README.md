@@ -14,11 +14,11 @@ $ npm install pg-promise
 
 ### 1. Load the library
 ```javascript
-var pgpLib = require('pg-promise'); // loading the library;
+var pgpLib = require('pg-promise'); // loading the library
 ```
 ### 2. Initialize the library
 ```javascript
-var pgp = pgpLib(/*options*/); // initializing the library, with optional global settings;
+var pgp = pgpLib(/*options*/); // initializing the library, with optional global settings
 ```
 You can pass additional ```options``` parameter when initilizing the library (see chapter Advanced for details).
 
@@ -128,7 +128,7 @@ tx.exec(function(/*client*/){
     var q2 = tx.one("insert into audit(entity, id) values('users', 123) returning id");
 
     // returning a promise that determines a successful transaction:
-    return promise.all([q1, q2]); // all of the queries are to be resolved;
+    return promise.all([q1, q2]); // all of the queries are to be resolved
 
 }).then(function(data){
     console.log(data); // printing successful transaction output
