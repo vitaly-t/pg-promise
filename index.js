@@ -35,7 +35,9 @@ queryResult = {
 module.exports = function (options) {
 
     var lib = function (cn) {
-        if(Object.keys(this).length){
+        if(!$isEmptyObject(this)){
+            // This makes it easy to locate the most common mistake -
+            // skipping keyword 'new' when calling: var db = new pgp(cn);
             throw new Error("Invalid database object instantiation.");
         }
         if (!cn) {
@@ -189,6 +191,12 @@ function dbInit(dbInst, cn, options) {
 
         var tx = this;
 
+        if(!$isEmptyObject(tx)){
+            // This makes it easy to locate the most common mistake -
+            // skipping keyword 'new' when calling: var tx = new db.tx(cn);
+            throw new Error("Invalid transaction object instantiation.");
+        }
+
         var local = {
             db: null,
             start: function (db) {
@@ -310,6 +318,11 @@ function $p(func) {
 // Null verification;
 function $isNull(val) {
     return typeof(val) === 'undefined' || val === null;
+}
+
+// Checks if the object is empty (has no properties);
+function $isEmptyObject(obj){
+    return Object.keys(obj).length === 0;
 }
 
 // Fixes single-quote symbols in text fields;
