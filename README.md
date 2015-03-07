@@ -116,7 +116,8 @@ In PostgreSQL stored procedures are just functions that usually do not return an
 Suppose we want to call function ```findAudit``` to find audit records by <i>user id</i> and maximum timestamp.
 We can make such call as shown below:
 ```javascript
-db.func('findAudit', [123, new Date()])
+var qrm = queryResult.many | queryResult.none; // keep query flags out, for simplicity
+db.func('findAudit', qrm, [123, new Date()])
     .then(function(data){
         console.log(data); // printing the data returned
     }, function(reason){
@@ -126,7 +127,7 @@ db.func('findAudit', [123, new Date()])
 We passed it <i>user id</i> = 123, plus current Date/Time as the timestamp. We assume that the function signature matches the parameters that we passed.
 All values passed are serialized automatically to comply with PostgreSQL type formats.
 
-And when you are not expecting any return results, call ```db.proc``` instead. Both methods return a [Promise] object.
+And when you are not expecting any return results, call ```db.proc``` instead. Both methods return a [Promise] object, but ```db.proc``` doesn't take a <b>qrm</b> parameter, always assuming it is `one`|`none`.
 
 ### Transactions
 Every call shown in chapters above would acquire a new connection from the pool and release it when done. In order to execute a transaction on the same
@@ -141,8 +142,8 @@ var tx = new db.tx(); // creating a new transaction object
 tx.exec(function(/*client*/){
 
     // creating a sequence of transaction queries:
-    var q1 = tx.none("update users set active=TRUE where id=123");
-    var q2 = tx.one("insert into audit(entity, id) values('users', 123) returning id");
+    var q1 = tx.none("update users set active=$1 where id=$2", [true, 123]);
+    var q2 = tx.one("insert into audit(entity, id) values($1, $2) returning id", ['users', 123]);
 
     // returning a promise that determines a successful transaction:
     return promise.all([q1, q2]); // all of the queries are to be resolved
