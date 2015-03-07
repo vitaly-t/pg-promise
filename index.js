@@ -70,7 +70,7 @@ function dbInit(dbInst, cn, options) {
                 var func = options.connect;
                 if (func) {
                     if (typeof(func) !== 'function') {
-                        throw new Error('Function was expected for options.connect');
+                        throw new Error("Function was expected for 'options.connect'");
                     }
                     func(db.client); // notify the client;
                 }
@@ -80,7 +80,7 @@ function dbInit(dbInst, cn, options) {
                 var func = options.disconnect;
                 if (func) {
                     if (typeof(func) !== 'function') {
-                        throw new Error('Function was expected for options.disconnect');
+                        throw new Error("Function was expected for 'options.disconnect'");
                     }
                     func(db.client); // notify the client;
                 }
@@ -213,7 +213,7 @@ function dbInit(dbInst, cn, options) {
 
         tx.query = function (query, values, qrm) {
             if (!local.db) {
-                throw new Error('Unexpected call outside of transaction');
+                throw new Error("Unexpected call outside of transaction.");
             }
             return $query(local.db.client, query, values, qrm);
         };
@@ -325,7 +325,7 @@ var $wrap = {
         if (d instanceof Date) {
             return $wrapText(d.toUTCString());
         } else {
-            throw new Error($wrapText(d) + " doesn't represent a valid Date object or value");
+            throw new Error($wrapText(d) + " doesn't represent a valid Date object or value.");
         }
     },
     csv: function (arr) {
@@ -335,7 +335,7 @@ var $wrap = {
         if (Array.isArray(arr)) {
             return $formatValues(arr);
         } else {
-            throw new Error($wrapText(arr) + " doesn't represent a valid Array object or value");
+            throw new Error($wrapText(arr) + " doesn't represent a valid Array object or value.");
         }
     }
 };
@@ -359,7 +359,7 @@ function $parseValues(query, values) {
                 var variable = '$' + (i + 1);
                 if (q.indexOf(variable) === -1) {
                     result.success = false;
-                    result.error = "More values passed than variables in the query";
+                    result.error = "More values passed than variables in the query.";
                     break;
                 } else {
                     var value = $wrapValue(values[i]);
@@ -377,12 +377,12 @@ function $parseValues(query, values) {
             var variable = '$1';
             if (q.indexOf(variable) === -1) {
                 result.success = false;
-                result.error = "No variable found in query to replace with the value passed";
+                result.error = "No variable found in query to replace with the value passed.";
             } else {
                 var value = $wrapValue(values);
                 if (value === null) {
                     result.success = false;
-                    result.error = "Cannot convert type '" + typeof(values) + "' into a query variable value";
+                    result.error = "Cannot convert type '" + typeof(values) + "' into a query variable value.";
                 } else {
                     q = q.replace(variable, value);
                 }
@@ -403,11 +403,11 @@ function $query(client, query, values, qrm) {
         }
         var errMsg, req;
         if (!query) {
-            errMsg = "Invalid query specified";
+            errMsg = "Invalid query specified.";
         } else {
             var badMask = queryResult.one | queryResult.many;
             if (!qrm || (qrm & badMask) === badMask || qrm < 1 || qrm > 6) {
-                errMsg = "Invalid Query Result Mask specified";
+                errMsg = "Invalid Query Result Mask specified.";
             } else {
                 req = $parseValues(query, values);
                 if (!req.success) {
@@ -452,30 +452,42 @@ function $query(client, query, values, qrm) {
 
 // Injects additional methods into an access object.
 function $extendProtocol(obj) {
+
+    // Expects no data to be returned;
     obj.none = function (query, values) {
         return obj.query(query, values, queryResult.none);
     };
+
+    // Expects exactly one row of data;
     obj.one = function (query, values) {
         return obj.query(query, values, queryResult.one);
     };
+
+    // Expects one or more rows of data;
     obj.many = function (query, values) {
         return obj.query(query, values, queryResult.many);
     };
+
+    // Expects 0 or 1 row of data;
     obj.oneOrNone = function (query, values) {
         return obj.query(query, values, queryResult.one | queryResult.none);
     };
+
+    // Expects any kind of return data;
     obj.manyOrNone = function (query, values) {
         return obj.query(query, values, queryResult.many | queryResult.none);
     };
+
+    // Query a function with specified Query Result Mask;
     obj.func = function (funcName, values, qrm) {
         var query = $createFuncQuery(funcName, values);
-        if (qrm) {
-            return obj.query(query, qrm);
-        } else {
-            return obj.one(query);
-        }
+        return obj.query(query, null, qrm);
     };
+
+    // A procedure is expected to return either no rows
+    // or one row that represents a list of OUT values.
     obj.proc = function (procName, values) {
-        return obj.oneOrNone($createFuncQuery(procName, values));
+        var query = $createFuncQuery(procName, values);
+        return obj.query(query, null, queryResult.one | queryResult.none);
     };
 }
