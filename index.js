@@ -149,9 +149,8 @@ function dbInit(dbInst, cn, options) {
         return dbInst.query(query, queryResult.many | queryResult.none, values);
     };
 
-    // TODO: Review the parameters
-    dbInst.func = function (funcName, params, qrm) {
-        var query = $createFuncQuery(funcName, params);
+    dbInst.func = function (funcName, qrm, values) {
+        var query = $createFuncQuery(funcName, values);
         if (qrm) {
             return dbInst.query(query, qrm);
         } else {
@@ -159,9 +158,8 @@ function dbInit(dbInst, cn, options) {
         }
     };
 
-    // TODO: Review the parameters
-    dbInst.proc = function (procName, params) {
-        return dbInst.oneOrNone($createFuncQuery(procName, params));
+    dbInst.proc = function (procName, values) {
+        return dbInst.oneOrNone($createFuncQuery(procName, values));
     };
 
     //////////////////////////
@@ -271,9 +269,8 @@ function dbInit(dbInst, cn, options) {
             return tx.query(query, queryResult.many | queryResult.none, values);
         };
 
-        // TODO: Review the parameters
-        tx.func = function (funcName, params, qrm) {
-            var query = $createFuncQuery(funcName, params);
+        tx.func = function (funcName, qrm, values) {
+            var query = $createFuncQuery(funcName, values);
             if (qrm) {
                 return tx.query(query, qrm);
             } else {
@@ -281,9 +278,8 @@ function dbInit(dbInst, cn, options) {
             }
         };
 
-        // TODO: Review the parameters
-        tx.proc = function (procName, params) {
-            return tx.oneOrNone($createFuncQuery(procName, params));
+        tx.proc = function (procName, values) {
+            return tx.oneOrNone($createFuncQuery(procName, values));
         };
     };
 }
@@ -343,18 +339,27 @@ function $wrapValue(val) {
 
 // Formats array of javascript-type values into a list of
 // parameters for a function call, compatible with PostgreSQL.
+// It can understand both a simple value and an array of simple values.
 function $formatValues(values) {
     var s = '';
-    if (Array.isArray(values) && values.length > 0) {
-        for (var i = 0; i < values.length; i++) {
-            if (i > 0) {
-                s += ',';
+    if (values) {
+        if (Array.isArray(values)) {
+            for (var i = 0; i < values.length; i++) {
+                if (i > 0) {
+                    s += ',';
+                }
+                var v = $wrapValue(values[i]);
+                if (v === null) {
+                    throw new Error("Cannot convert parameter with index " + i);
+                } else {
+                    s += v;
+                }
             }
-            var v = $wrapValue(values[i]);
-            if (v === null) {
-                throw new Error("Cannot convert parameter at index=" + i);
-            } else {
-                s += v;
+        } else {
+            // a simple value is presumed;
+            s = $wrapValue(values);
+            if (s === null) {
+                throw new Error("Cannot convert the value of type '" + typeof(values) + "'");
             }
         }
     }
@@ -398,8 +403,8 @@ var $wrap = {
 };
 
 // Formats a proper function call from the parameters.
-function $createFuncQuery(funcName, params) {
-    return 'select * from ' + funcName + '(' + $formatValues(params) + ');';
+function $createFuncQuery(funcName, values) {
+    return 'select * from ' + funcName + '(' + $formatValues(values) + ');';
 }
 
 // Parses query for $1, $2,... variables and
@@ -423,7 +428,7 @@ function $parseValues(query, values) {
                     if (value === null) {
                         // one of the complex types passed;
                         result.success = false;
-                        result.error = "Cannot convert parameter at index=" + i;
+                        result.error = "Cannot convert parameter with index " + i;
                         break;
                     } else {
                         q = q.replace(variable, value);
@@ -437,10 +442,10 @@ function $parseValues(query, values) {
                 result.error = "No variable found in query to replace with the value passed";
             } else {
                 var value = $wrapValue(values);
-                if(value === null){
+                if (value === null) {
                     result.success = false;
-                    result.error = "Cannot convert a complex type into a query variable value";
-                }else {
+                    result.error = "Cannot convert type '" + typeof(values) + "' into a query variable value";
+                } else {
                     q = q.replace(variable, value);
                 }
             }
