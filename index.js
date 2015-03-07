@@ -110,12 +110,12 @@ function dbInit(dbInst, cn, options) {
     //////////////////////////////////////////////////////////////
     // Generic query request;
     // qrm is Query Result Mask, combination of queryResult flags.
-    dbInst.query = function (query, qrm, values) {
+    dbInst.query = function (query, values, qrm) {
         return $p(function (resolve, reject) {
             dbInst.connect()
                 .then(function (db) {
                     monitor(true, db);
-                    $query(db.client, query, qrm, values)
+                    $query(db.client, query, values, qrm)
                         .then(function (data) {
                             monitor(false, db);
                             resolve(data);
@@ -176,7 +176,7 @@ function dbInit(dbInst, cn, options) {
                 dbInst.connect()
                     .then(function (db) {
                         local.start(db);
-                        return tx.query('begin', queryResult.none);
+                        return tx.query('begin');
                     }, function (reason) {
                         reject(reason); // connection issue;
                     })
@@ -185,11 +185,11 @@ function dbInit(dbInst, cn, options) {
                             .then(function (data) {
                                 t_data = data;
                                 success = true;
-                                return tx.query('commit', queryResult.none);
+                                return tx.query('commit');
                             }, function (reason) {
                                 t_reason = reason;
                                 success = false;
-                                return tx.query('rollback', queryResult.none);
+                                return tx.query('rollback');
                             })
                             .then(function () {
                                 local.finish();
@@ -211,11 +211,11 @@ function dbInit(dbInst, cn, options) {
             });
         };
 
-        tx.query = function (query, qrm, values) {
+        tx.query = function (query, values, qrm) {
             if (!local.db) {
                 throw new Error('Unexpected call outside of transaction');
             }
-            return $query(local.db.client, query, qrm, values);
+            return $query(local.db.client, query, values, qrm);
         };
 
         $extendProtocol(tx);
@@ -396,8 +396,11 @@ function $parseValues(query, values) {
 }
 
 // Generic, static query call for the specified connection + query + result.
-function $query(client, query, qrm, values) {
+function $query(client, query, values, qrm) {
     return $p(function (resolve, reject) {
+        if($isNull(qrm)){
+            qrm = queryResult.many | queryResult.none; // default query result;
+        }
         var errMsg, req;
         if (!query) {
             errMsg = "Invalid query specified";
@@ -446,21 +449,21 @@ function $query(client, query, qrm, values) {
 // Injects additional methods into an access object.
 function $extendProtocol(obj){
     obj.none = function (query, values) {
-        return obj.query(query, queryResult.none, values);
+        return obj.query(query, values, queryResult.none);
     };
     obj.one = function (query, values) {
-        return obj.query(query, queryResult.one, values);
+        return obj.query(query, values, queryResult.one);
     };
     obj.many = function (query, values) {
-        return obj.query(query, queryResult.many, values);
+        return obj.query(query, values, queryResult.many);
     };
     obj.oneOrNone = function (query, values) {
-        return obj.query(query, queryResult.one | queryResult.none, values);
+        return obj.query(query, values, queryResult.one | queryResult.none);
     };
     obj.manyOrNone = function (query, values) {
-        return obj.query(query, queryResult.many | queryResult.none, values);
+        return obj.query(query, values, queryResult.many | queryResult.none);
     };
-    obj.func = function (funcName, qrm, values) {
+    obj.func = function (funcName, values, qrm) {
         var query = $createFuncQuery(funcName, values);
         if (qrm) {
             return obj.query(query, qrm);
