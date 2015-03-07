@@ -398,7 +398,7 @@ function $parseValues(query, values) {
 // Generic, static query call for the specified connection + query + result.
 function $query(client, query, values, qrm) {
     return $p(function (resolve, reject) {
-        if($isNull(qrm)){
+        if ($isNull(qrm)) {
             qrm = queryResult.many | queryResult.none; // default query result;
         }
         var errMsg, req;
@@ -406,7 +406,7 @@ function $query(client, query, values, qrm) {
             errMsg = "Invalid query specified";
         } else {
             var badMask = queryResult.one | queryResult.many;
-            if (!qrm || (qrm & badMask) === badMask) {
+            if (!qrm || (qrm & badMask) === badMask || qrm < 1 || qrm > 6) {
                 errMsg = "Invalid Query Result Mask specified";
             } else {
                 req = $parseValues(query, values);
@@ -425,11 +425,15 @@ function $query(client, query, values, qrm) {
                     var data = result.rows;
                     var l = result.rows.length;
                     if (l) {
-                        if (l > 1 && !(qrm & queryResult.many)) {
+                        if (l > 1 && (qrm & queryResult.one)) {
                             reject("Single row was expected from query: '" + query + "'");
                         } else {
-                            if (!(qrm & queryResult.many)) {
-                                data = result.rows[0];
+                            if (!(qrm & (queryResult.one | queryResult.many))) {
+                                reject("No return data was expected from query: '" + query + "'");
+                            } else {
+                                if (!(qrm & queryResult.many)) {
+                                    data = result.rows[0];
+                                }
                             }
                         }
                     } else {
@@ -447,7 +451,7 @@ function $query(client, query, values, qrm) {
 }
 
 // Injects additional methods into an access object.
-function $extendProtocol(obj){
+function $extendProtocol(obj) {
     obj.none = function (query, values) {
         return obj.query(query, values, queryResult.none);
     };
