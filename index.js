@@ -129,38 +129,7 @@ function dbInit(dbInst, cn, options) {
         });
     };
 
-    dbInst.none = function (query, values) {
-        return dbInst.query(query, queryResult.none, values);
-    };
-
-    dbInst.one = function (query, values) {
-        return dbInst.query(query, queryResult.one, values);
-    };
-
-    dbInst.many = function (query, values) {
-        return dbInst.query(query, queryResult.many, values);
-    };
-
-    dbInst.oneOrNone = function (query, values) {
-        return dbInst.query(query, queryResult.one | queryResult.none, values);
-    };
-
-    dbInst.manyOrNone = function (query, values) {
-        return dbInst.query(query, queryResult.many | queryResult.none, values);
-    };
-
-    dbInst.func = function (funcName, qrm, values) {
-        var query = $createFuncQuery(funcName, values);
-        if (qrm) {
-            return dbInst.query(query, qrm);
-        } else {
-            return dbInst.one(query);
-        }
-    };
-
-    dbInst.proc = function (procName, values) {
-        return dbInst.oneOrNone($createFuncQuery(procName, values));
-    };
+    $extendProtocol(dbInst);
 
     //////////////////////////
     // Transaction class;
@@ -249,38 +218,7 @@ function dbInit(dbInst, cn, options) {
             return $query(local.db.client, query, qrm, values);
         };
 
-        tx.none = function (query, values) {
-            return tx.query(query, queryResult.none, values);
-        };
-
-        tx.one = function (query, values) {
-            return tx.query(query, queryResult.one, values);
-        };
-
-        tx.many = function (query, values) {
-            return tx.query(query, queryResult.many, values);
-        };
-
-        tx.oneOrNone = function (query, values) {
-            return tx.query(query, queryResult.one | queryResult.none, values);
-        };
-
-        tx.manyOrNone = function (query, values) {
-            return tx.query(query, queryResult.many | queryResult.none, values);
-        };
-
-        tx.func = function (funcName, qrm, values) {
-            var query = $createFuncQuery(funcName, values);
-            if (qrm) {
-                return tx.query(query, qrm);
-            } else {
-                return tx.one(query);
-            }
-        };
-
-        tx.proc = function (procName, values) {
-            return tx.oneOrNone($createFuncQuery(procName, values));
-        };
+        $extendProtocol(tx);
     };
 }
 
@@ -503,4 +441,34 @@ function $query(client, query, qrm, values) {
             });
         }
     });
+}
+
+// Injects additional methods into an access object.
+function $extendProtocol(obj){
+    obj.none = function (query, values) {
+        return obj.query(query, queryResult.none, values);
+    };
+    obj.one = function (query, values) {
+        return obj.query(query, queryResult.one, values);
+    };
+    obj.many = function (query, values) {
+        return obj.query(query, queryResult.many, values);
+    };
+    obj.oneOrNone = function (query, values) {
+        return obj.query(query, queryResult.one | queryResult.none, values);
+    };
+    obj.manyOrNone = function (query, values) {
+        return obj.query(query, queryResult.many | queryResult.none, values);
+    };
+    obj.func = function (funcName, qrm, values) {
+        var query = $createFuncQuery(funcName, values);
+        if (qrm) {
+            return obj.query(query, qrm);
+        } else {
+            return obj.one(query);
+        }
+    };
+    obj.proc = function (procName, values) {
+        return obj.oneOrNone($createFuncQuery(procName, values));
+    };
 }
