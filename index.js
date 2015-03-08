@@ -89,30 +89,12 @@ function dbInit(dbInst, cn, options) {
         }
     }
 
-    /////////////////////////////////////////////////////////////////
-    // Connects to the database;
-    // The caller must invoke done() after all requests are finished.
-    dbInst.connect = function () {
-        return $p(function (resolve, reject) {
-            npm.pg.connect(cn, function (err, client, done) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve({
-                        client: client,
-                        done: done
-                    });
-                }
-            });
-        });
-    };
-
     //////////////////////////////////////////////////////////////
     // Generic query request;
     // qrm is Query Result Mask, combination of queryResult flags.
     dbInst.query = function (query, values, qrm) {
         return $p(function (resolve, reject) {
-            dbInst.connect()
+            $connect(cn)
                 .then(function (db) {
                     monitor(true, db);
                     $query(db.client, query, values, qrm)
@@ -173,7 +155,7 @@ function dbInit(dbInst, cn, options) {
             }
             var t_data, t_reason, success;
             return $p(function (resolve, reject) {
-                dbInst.connect()
+                $connect(cn)
                     .then(function (db) {
                         local.start(db);
                         return tx.query('begin');
@@ -449,6 +431,22 @@ function $query(client, query, values, qrm) {
         }
     });
 }
+
+// Connects to the database;
+function $connect (cn) {
+    return $p(function (resolve, reject) {
+        npm.pg.connect(cn, function (err, client, done) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({
+                    client: client,
+                    done: done
+                });
+            }
+        });
+    });
+};
 
 // Injects additional methods into an access object.
 function $extendProtocol(obj) {
