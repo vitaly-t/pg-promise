@@ -24,7 +24,7 @@ var pgp = pgpLib(/*options*/);
 ```
 You can pass additional ```options``` parameter when initilizing the library (see chapter Advanced for details).
 
-<b>NOTE:</b> Only one instance of such ```pgp``` object should exist throughout the application.
+**NOTE:** Only one instance of such ```pgp``` object should exist throughout the application.
 ### 3. Configure database connection
 Use one of the two ways to specify connection details:
 * Configuration object:
@@ -46,7 +46,7 @@ For more details see [ConnectionParameters] class in [PG], such as additional co
 
 ### 4. Instantiate your database
 ```javascript
-var db = new pgp(cn); // create a new database instance from the connection details
+var db = pgp(cn); // create a new database instance from the connection details
 ```
 There can be multiple database objects instantiated in the application from different connection details.
 
@@ -54,7 +54,101 @@ You are now ready to make queries against the database.
 
 # Usage
 
-> Much of the documentation below is now obsolete, not applicable to version 0.4.0 onwards.
+The library supports chaining queries on shared and detached connections. Choosing which one you want depends on the situation and personal preferences.
+
+### Detached Chaining
+
+Queries in a detached chain maintain connection independetly, they each would acquire a connection from the pool, execute the query and then release the connection.
+```javascript
+db.query("select * from users where id=$1", 123) // find the user from id;
+    .then(function(data){
+        // find 'login' records for the user found:
+        return db.query("select * from audit where event=$1 and userId=$2", ["login", data.id]);
+    })
+    .then(function(data){
+        // display found audit records;
+        console.log(data);
+    }, function(reason){
+        console.log(reason); // display reason why the call failed;
+    })
+```
+In a situation where only one request is to be made against the database, a detached chain is the only one that makes sense. But even if you intend to execute multiple queries in a chain, keep in mind that even though each will use its own connection, such will be used from a connection pool, so effectively you end up with the same connection, without a performance penalty.
+
+### Shared Chaining 
+
+A chain with shared connection always starts with the ```connect()``` request, and it must be released when no longer needed.
+```javascript
+var sco; // shared connection object;
+db.connect()
+    .then(function(obj){
+        cso = obj; // save the connection object;
+        // find active users that were created before today:
+        return cso.query("select * from users where active=$1 and created < $2::date", [true, new Date()]);
+    })
+    .then(function(data){
+        console.log(data); // display all the user details;
+    }, function(reason){
+        console.log(reason); // display reason why the call failed;
+    })
+    .done(function(){
+        if(sco){
+            sco.done(); // release the connection, if it was acquired successfully;
+        }
+    });
+```
+Shared chaining is for those who want absolute control over connection, either because they want to execute lots of queries in one go, or because they like squizing every bit of performance out of their code. Other than, the author hasn't seen any real performance difference from detached chaining.
+
+### Transactions
+
+Transactions can be executed within both shared and detached call chains in almost the same way.
+
+Example of a detached transaction:
+```javascript
+var promise = require('promise');
+db.tx(function(ctx){
+
+    // creating a sequence of transaction queries:
+    var q1 = ctx.none("update users set active=$1 where id=$2", [true, 123]);
+    var q2 = ctx.one("insert into audit(entity, id) values($1, $2) returning id", ['users', 123]);
+    
+    // returning a promise that determines a successful transaction:
+    return promise.all([q1, q2]); // all of the queries are to be resolved
+    
+}).then(function(data){
+    console.log(data); // printing successful transaction output
+}, function(reason){
+    console.log(reason); // printing the reason why the transaction was rejected
+});
+```
+And when executing a transaction within a shared connection chain, the only thing that changes is that parameter ```ctx``` becomes the same as parameter ```sco``` from opening a shared connection, so either one can be used inside such a transaction interchangeably:
+```javascript
+var promise = require('promise');
+var sco; // shared connection object;
+db.connect()
+    .then(function(obj){
+        sco = obj;
+        return sco.oneOrNone("select * from users where active=$1 and id=$1", [true, 123]);
+    })
+    .then(function(data){
+        return db.tx(function(ctx){
+    
+            // Because it is a transaction within a shared chain, id doesn't matter whether
+            // the two calls below use object 'ctx' or 'sco', as the are exactly the same:
+            var q1 = ctx.none("update users set active=$1 where id=$2", [false, data.id]);
+            var q2 = sco.one("insert into audit(entity, id) values($1, $2) returning id", ['users', 123]);
+    
+            // returning a promise that determines a successful transaction:
+            return promise.all([q1, q2]); // all of the queries are to be resolved;
+        });
+    }, function(reason){
+        console.log(reason); // printing the reason why the transaction was rejected;
+    })
+    .done(function(){
+        if(sco){
+            sco.done(); // release the connection, if it was acquired successfully;
+        }
+    });
+```
 
 
 ### The basics
