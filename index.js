@@ -89,6 +89,12 @@ function dbInit(dbInst, cn, options) {
         }
     }
 
+    // Detached connection instance to allow chaining
+    // queries under the same connection.
+    dbInst.connect = function () {
+        return new $Connection(cn);
+    };
+
     //////////////////////////////////////////////////////////////
     // Generic query request;
     // qrm is Query Result Mask, combination of queryResult flags.
@@ -433,7 +439,7 @@ function $query(client, query, values, qrm) {
 }
 
 // Connects to the database;
-function $connect (cn) {
+function $connect(cn) {
     return $p(function (resolve, reject) {
         npm.pg.connect(cn, function (err, client, done) {
             if (err) {
@@ -446,6 +452,23 @@ function $connect (cn) {
             }
         });
     });
+};
+
+// Initializes a new connection instance;
+function $Connection(cn) {
+    var db, self = this;
+    self.query = function (query, values, qrm) {
+        return $query(db.client, query, values, qrm);
+    };
+    self.done = function () {
+        db.done();
+    };
+    $extendProtocol(self);
+    return $connect(cn)
+        .then(function (obj) {
+            db = obj;
+            return npm.promise.resolve(self);
+        });
 };
 
 // Injects additional methods into an access object.
