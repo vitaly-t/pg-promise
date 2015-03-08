@@ -163,17 +163,17 @@ If you need to execute just one transaction, the detached transaction pattern is
 
 ### Queries and Parameters
 
-When a new connection is created within shared or detached chain, the same query protocol is injected into each connection context.
+When a new connection is created within a shared or detached chain, the same query protocol is injected into each connection context.
 
-The key method is ```query```, that's defined as shown below:
+The key method is `query`, that's defined as shown below:
 ```javascript
 function query(query, values, qrm);
 ```
-* `query` (required) - is the query string that supports standard variables formatting using $1, $2, ...etc;
+* `query` (required) - is the query string that supports standard variables formatting, using $1, $2, ...etc;
 * `values` (optional) - either a simple value or an array of simple values, to replace the variables in the query;
 * `qrm` - (optional) Query Result Mask, as explained below...
 
-In order to eliminate the chances of unexpected query results and make code more robust, each request supports parameter ```qrm``` (Query Request Mask), via type ```queryResult```:
+In order to eliminate the chances of unexpected query results and make code more robust, each request supports parameter `qrm` (Query Request Mask), via type `queryResult`:
 ```javascript
 ///////////////////////////////////////////////////////
 // Query Result Mask flags;
@@ -216,7 +216,8 @@ If you try to specify `one` | `many` in the same query, such query will be rejec
 
 If `qrm` is not specified when calling generic `query` method, it is assumed to be `many` | `none`, i.e. any kind of data expected.
 
-> This is all about writing robust code, when the client declaratively specifies what kind of data it is ready to handle, leaving the burden of all extra checks to the library.
+> This is all about writing robust code, when the client specifies what kind of data it is ready to handle on the declarative level,
+leaving the burden of all extra checks to the library.
 
 ### Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
@@ -235,7 +236,8 @@ db.func('findAudit', [123, new Date()], qrm)
 We passed it **user id** = 123, plus current Date/Time as the timestamp. We assume that the function signature matches the parameters that we passed.
 All values passed are serialized automatically to comply with PostgreSQL type formats.
 
-And when you are not expecting any return results, call ```db.proc``` instead. Both methods return a [Promise] object, but ```db.proc``` doesn't take a `qrm` parameter, always assuming it is `one`|`none`.
+And when you are not expecting any return results, call `db.proc` instead. Both methods return a [Promise] object,
+but `db.proc` doesn't take a `qrm` parameter, always assuming it is `one`|`none`.
 
 ### Type Helpers
 The library provides several helper functions to convert basic javascript types into their proper PostgreSQL presentation that can be passed directly into
@@ -271,8 +273,8 @@ var options = {
 };
 var pgp = pgpLib(options);
 ```
-Two events are supported at the moment - ```connect``` and ```disconnect```, to notify of virtual connections being established or released accordingly.
-Each event takes parameter ```client```, which is the client connection object. These events are mostly for connection monitoring, while debugging your application.
+Two events are supported at the moment - `connect` and `disconnect`, to notify of virtual connections being established or released accordingly.
+Each event takes parameter `client`, which is the client connection object. These events are mostly for connection monitoring, while debugging your application.
 
 ### De-initialization
 When exiting your application, make the following call:
