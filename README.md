@@ -110,6 +110,7 @@ Transactions can be executed within both shared and detached call chains in almo
 5. Releases the connection (detached transaction only);
 6. Resolves with the callback's result, if success; rejects with error reason, if failed.
 
+
 Example of a detached transaction:
 ```javascript
 var promise = require('promise');
@@ -182,9 +183,11 @@ In order to eliminate the chances of unexpected query results and make code more
 queryResult = {
     one: 1,     // single-row result is expected;
     many: 2,    // multi-row result is expected;
-    none: 4     // no rows expected.
+    none: 4,    // no rows expected;
+    any: 6      // (default) = many|none = any result.
 };
 ```
+
 In the following generic-query example we indicate that the call can return anything:
 ```javascript
 db.query("select * from users");
@@ -192,6 +195,8 @@ db.query("select * from users");
 which is equivalent to calling either one of the following:
 ```javascript
 db.query("select * from users", null, queryResult.many | queryResult.none);
+// or
+db.query("select * from users", null, queryResult.any);
 // or:
 db.manyOrNone("select * from users");
 ```
@@ -209,7 +214,8 @@ Each query function resolves its **data** object according to the `qrm` that was
 * `none` - **data** is `null`. If the query returns any kind of data, it is rejected.
 * `one` - **data** is a single object. If the query returns no data or more than one row of data, it is rejected.
 * `many` - **data** is an array of objects. If the query returns no rows, it is rejected.
-* `one` | `none` - **data** is `null`, if no data was returned; or a single object, if there was one row of data returned. If the query returns more than one row of data, the query is rejected.
+* `one` | `none` - **data** is `null`, if no data was returned; or a single object, if there was one row of data returned.
+If the query returns more than one row of data, the query is rejected.
 * `many` | `none` - **data** is an array of objects. When no rows are returned, **data** is an empty array.
 
 If you try to specify `one` | `many` in the same query, such query will be rejected without executing it, telling you that such mask is not valid.
@@ -225,8 +231,7 @@ In PostgreSQL stored procedures are just functions that usually do not return an
 Suppose we want to call function **findAudit** to find audit records by **user id** and maximum timestamp.
 We can make such call as shown below:
 ```javascript
-var qrm = queryResult.many | queryResult.none; // keep query flags out, for simplicity
-db.func('findAudit', [123, new Date()], qrm)
+db.func('findAudit', [123, new Date()])
     .then(function(data){
         console.log(data); // printing the data returned
     }, function(reason){
@@ -235,6 +240,8 @@ db.func('findAudit', [123, new Date()], qrm)
 ```
 We passed it **user id** = 123, plus current Date/Time as the timestamp. We assume that the function signature matches the parameters that we passed.
 All values passed are serialized automatically to comply with PostgreSQL type formats.
+
+Method `func` accepts optional third parameter - `qrm` (Query Request Mask), the same as method `query`.
 
 And when you are not expecting any return results, call `db.proc` instead. Both methods return a [Promise] object,
 but `db.proc` doesn't take a `qrm` parameter, always assuming it is `one`|`none`.

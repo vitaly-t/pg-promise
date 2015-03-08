@@ -13,7 +13,8 @@ var npm = {
 queryResult = {
     one: 1,     // single-row result is expected;
     many: 2,    // multi-row result is expected;
-    none: 4     // no rows expected.
+    none: 4,    // no rows expected;
+    any: 6      // (default) = many|none = any result.
 };
 
 ////////////////////////////////////////////////
@@ -346,7 +347,7 @@ function $parseValues(query, values) {
 function $query(client, query, values, qrm) {
     return $p(function (resolve, reject) {
         if ($isNull(qrm)) {
-            qrm = queryResult.many | queryResult.none; // default query result;
+            qrm = queryResult.any; // default query result;
         }
         var errMsg, req;
         if (!query) {
