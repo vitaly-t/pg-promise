@@ -131,6 +131,7 @@ function dbInit(dbInst, cn, options) {
         };
 
         // Executes transaction;
+        // TODO: Can we not do a transaction within an open connection?
         tx.exec = function (cb) {
             if (local.db) {
                 throw new Error("Previous call to tx.exec() hasn't finished.");
@@ -434,10 +435,19 @@ function $connect(cn) {
 function $Connection(cn, options) {
     var db, self = this;
     self.query = function (query, values, qrm) {
-        return $query(db.client, query, values, qrm);
+        if(db) {
+            return $query(db.client, query, values, qrm);
+        }else{
+            throw new Error("Cannot execute a query on a disconnected client.");
+        }
     };
     self.done = function () {
-        db.done();
+        if(db) {
+            db.done();
+            db = null;
+        }else{
+            throw new Error("Cannot invoke done() on a disconnected client.");
+        }
     };
     $extendProtocol(self);
     return $connect(cn)
