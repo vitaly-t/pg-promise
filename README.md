@@ -53,6 +53,10 @@ There can be multiple database objects instantiated in the application from diff
 You are now ready to make queries against the database.
 
 # Usage
+
+> Much of the documentation below is now obsolete, not applicable to version 0.4.0 onwards.
+
+
 ### The basics
 In order to eliminate the chances of unexpected query results and make code more robust, each request is parametrized with the expected/supported
 <i>Query Result Mask</i>, using type ```queryResult``` as shown below:
