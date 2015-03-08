@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "PG + Promise made easy, with transactions support.",
   "main": "index.js",
   "scripts": {
