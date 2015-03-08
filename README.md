@@ -140,7 +140,7 @@ db.connect()
         return sco.oneOrNone("select * from users where active=$1 and id=$1", [true, 123]);
     })
     .then(function(data){
-        return db.tx(function(ctx){
+        return sco.tx(function(ctx){
 
             // Since it is a transaction within a shared chain, it doesn't matter whether
             // the two calls below use object 'ctx' or 'sco', as they are exactly the same:
