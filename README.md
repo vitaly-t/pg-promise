@@ -106,7 +106,7 @@ Transactions can be executed within both shared and detached call chains in almo
 1. Acquires a new connection (detached transaction only);
 2. Executes ```BEGIN``` command;
 3. Invokes your callback function with the connection object;
-4. Excutes ```COMMIT```, if the callback resolves, or ```ROLLBACK```, if the callback rejects;
+4. Executes ```COMMIT```, if the callback resolves, or ```ROLLBACK```, if the callback rejects;
 5. Releases the connection (detached transaction only);
 6. Resolves with the callback's result, if success; rejects with error reason, if failed.
 
