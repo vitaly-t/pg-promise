@@ -101,6 +101,7 @@ Shared chaining is for those who want absolute control over connection, either b
 ### Transactions
 
 Transactions can be executed within both shared and detached call chains in almost the same way, performing the following actions:
+
 1. Acquires a new connection (detached transaction only)
 2. Executes ```BEGIN``` command
 3. Invokes your callback function with the connection object
