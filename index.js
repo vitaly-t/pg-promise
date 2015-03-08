@@ -35,15 +35,10 @@ queryResult = {
 module.exports = function (options) {
 
     var lib = function (cn) {
-        if (!$isEmptyObject(this)) {
-            // This makes it easy to locate the most common mistake -
-            // skipping keyword 'new' when calling: var db = new pgp(cn);
-            throw new Error("Invalid database object instantiation.");
-        }
         if (!cn) {
             throw new Error("Invalid 'cn' parameter passed.");
         }
-        return dbInit(this, cn, options);
+        return dbInit(cn, options);
     };
 
     // Namespace for type conversion helpers;
@@ -60,13 +55,49 @@ module.exports = function (options) {
     return lib;
 };
 
-function dbInit(dbInst, cn, options) {
+function dbInit(cn, options) {
 
-    // Detached connection instance to allow chaining
-    // queries under the same connection.
+    var dbInst = {};
+
+    // Returns detached connection instance to allow
+    // chaining queries under the same connection.
     dbInst.connect = function () {
-        return new $Connection(cn, options);
+        var db;
+        var self = {
+            query: function (query, values, qrm) {
+                if (db) {
+                    return $query(db.client, query, values, qrm);
+                } else {
+                    throw new Error("Cannot execute a query on a disconnected client.");
+                }
+            },
+            done: function () {
+                if (db) {
+                    db.done();
+                    db = null;
+                } else {
+                    throw new Error("Cannot invoke done() on a disconnected client.");
+                }
+            },
+            tx: function (cb) {
+                return $transact(self, cb);
+            }
+        }
+        $extendProtocol(self);
+        return $connect(cn)
+            .then(function (obj) {
+                db = {
+                    client: obj.client,
+                    done: function () {
+                        $notify(false, obj, options);
+                        obj.done();
+                    }
+                };
+                $notify(true, obj, options);
+                return npm.promise.resolve(self);
+            });
     };
+
 
     //////////////////////////////////////////////////////////////
     // Generic query request;
@@ -92,58 +123,50 @@ function dbInit(dbInst, cn, options) {
         });
     };
 
-    $extendProtocol(dbInst);
+    dbInst.tx = function (cb) {
+        var db;
 
-    //////////////////////////
-    // Transaction class;
-    dbInst.tx = function () {
-        var tx = this;
-        if (!$isEmptyObject(tx)) {
-            // This makes it easy to locate the most common mistake -
-            // skipping keyword 'new' when calling: var tx = new db.tx(cn);
-            throw new Error("Invalid transaction object instantiation.");
+        function attach(obj) {
+            db = obj;
+            $notify(true, db, options);
         }
-        var local = {
-            db: null,
-            start: function (db) {
-                this.db = db;
-                $notify(true, db, options);
-            },
-            finish: function () {
-                $notify(false, this.db, options);
-                this.db.done();
-                this.db = null;
+
+        function detach() {
+            $notify(false, db, options);
+            db.done();
+            db = null;
+        }
+
+        var tx = {
+            query: function (query, values, qrm) {
+                if (!db) {
+                    throw new Error("Unexpected call outside of transaction.");
+                }
+                return $query(db.client, query, values, qrm);
             }
-        };
-        tx.exec = function (cb) {
-            if (local.db) {
-                throw new Error("Previous call to tx.exec() hasn't finished.");
-            }
-            return $p(function (resolve, reject) {
-                $connect(cn)
-                    .then(function (db) {
-                        local.start(db);
-                        return $transact(tx, cb);
-                    }, function (reason) {
-                        reject(reason);
-                    })
-                    .then(function (data) {
-                        local.finish();
-                        resolve(data);
-                    }, function (reason) {
-                        local.finish();
-                        reject(reason);
-                    });
-            });
-        };
-        tx.query = function (query, values, qrm) {
-            if (!local.db) {
-                throw new Error("Unexpected call outside of transaction.");
-            }
-            return $query(local.db.client, query, values, qrm);
         };
         $extendProtocol(tx);
+        return $p(function (resolve, reject) {
+            $connect(cn)
+                .then(function (db) {
+                    attach(db);
+                    return $transact(tx, cb);
+                }, function (reason) {
+                    reject(reason);
+                })
+                .then(function (data) {
+                    detach();
+                    resolve(data);
+                }, function (reason) {
+                    detach();
+                    reject(reason);
+                });
+        });
     };
+
+    $extendProtocol(dbInst);
+
+    return dbInst;
 }
 
 ////////////////////////////////////////////////
@@ -388,42 +411,6 @@ function $connect(cn) {
             }
         });
     });
-};
-
-// Initializes a new connection instance;
-function $Connection(cn, options) {
-    var db, self = this;
-    self.query = function (query, values, qrm) {
-        if (db) {
-            return $query(db.client, query, values, qrm);
-        } else {
-            throw new Error("Cannot execute a query on a disconnected client.");
-        }
-    };
-    self.done = function () {
-        if (db) {
-            db.done();
-            db = null;
-        } else {
-            throw new Error("Cannot invoke done() on a disconnected client.");
-        }
-    };
-    $extendProtocol(self);
-    self.tx = function (cb) {
-        return $transact(self, cb);
-    };
-    return $connect(cn)
-        .then(function (obj) {
-            db = {
-                client: obj.client,
-                done: function () {
-                    $notify(false, obj, options);
-                    obj.done();
-                }
-            };
-            $notify(true, obj, options);
-            return npm.promise.resolve(self);
-        });
 };
 
 // Injects additional methods into an access object.
