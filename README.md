@@ -160,9 +160,19 @@ db.connect()
 ```
 If you need to execute just one transaction, the detached transaction pattern is all you need. But even if you need to combine it with other queries in thus a detached chain, it will work just as fine. As stated earlier, choosing a shared chain over a detached one is mostly a matter of special requirements and/or personal preference.
 
-### The basics
-In order to eliminate the chances of unexpected query results and make code more robust, each request is parametrized with the expected/supported
-<i>Query Result Mask</i>, using type ```queryResult``` as shown below:
+### Queries and Parameters
+
+When a connection is created within shared or detached chain, the same query protocol is injected into each connection context.
+
+The key method is ```query```, that's defined as shown below:
+```javascript
+function query(query, values, qrm);
+```
+* `query` (required) - is the query string that supports formatting variables $1, $2,...etc (see chapter Query Formatting);
+* `values` (optional) - either a simple value or an array of simple values, to replace the variables in the query;
+* `qrm` - (optional) Query Result Mask, as explained below...
+
+In order to eliminate the chances of unexpected query results and make code more robust, each request supports parameter ```qrm``` (Query Request Mask), via type ```queryResult```:
 ```javascript
 ///////////////////////////////////////////////////////
 // Query Result Mask flags;
@@ -176,44 +186,34 @@ queryResult = {
 ```
 In the following generic-query example we indicate that the call can return any number of rows:
 ```javascript
-db.query("select * from users", queryResult.many | queryResult.none);
+db.query("select * from users");
 ```
-which is equivalent to calling:
+which is equivalent to calling either one of the following:
 ```javascript
+db.query("select * from users", null, queryResult.many | queryResult.none);
+// or:
 db.manyOrNone("select * from users");
 ```
 This usage pattern is facilitated through result-specific methods that can be used instead of the generic query:
 ```javascript
 db.many("select * from users"); // one or more records are expected
 db.one("select * from users limit 1"); // one record is expected
-db.none("update users set active=TRUE where id=1"); // no records expected
+db.none("update users set active=$1 where id=$2", [true, 123]); // no records expected
 ```
 The mixed-result methods are:
 * ```oneOrNone``` - expects 1 or 0 rows to be returned;
 * ```manyOrNone``` - any number of rows can be returned, including 0.
 
-To better understand the effect of such different calls, see section <b>Understanding the query result</b> below.
-
-Each of the query calls returns a [Promise] object, as shown below, to be used in the standard way.
-And when the expected and actual results do not match, the call will be rejected.
-```javascript
-db.manyOrNone("select * from users")
-    .then(function(data){
-        console.log(data); // printing the data returned
-    }, function(reason){
-        console.log(reason); // printing the reason why the call was rejected
-    });
-```
-##### Understanding the query result
-
-Each query function resolves <b>data</b> according to the <b>Query Result Mask</b> that was used, and must be handled accordingly, as explained below.
-* `none` - <b>data</b> is `null`. If the query returns any kind of data, it is rejected.
-* `one` - <b>data</b> is a single object. If the query returns no data or more than one row of data, it is rejected.
-* `many` - <b>data</b> is an array of objects. If the query returns no rows, it is rejected.
-* `one` | `none` - <b>data</b> is `null`, if no data was returned; or a single object, if there was one row of data returned. If the query returns more than one row of data, the query is rejected.
-* `many` | `none` - <b>data</b> is an array of objects. When no rows are returned, <b>data</b> is an empty array.
+Each query function resolves its **data** object according to the `qrm` that was used:
+* `none` - **data** is `null`. If the query returns any kind of data, it is rejected.
+* `one` - **data** is a single object. If the query returns no data or more than one row of data, it is rejected.
+* `many` - **data** is an array of objects. If the query returns no rows, it is rejected.
+* `one` | `none` - **data** is `null`, if no data was returned; or a single object, if there was one row of data returned. If the query returns more than one row of data, the query is rejected.
+* `many` | `none` - **data** is an array of objects. When no rows are returned, **data** is an empty array.
 
 If you try to specify `one` | `many` in the same query, such query will be rejected without executing it, telling you that such mask is not valid.
+
+If `qrm` is not specified when calling generic `query` method, it is assumed to be `many` | `none`, i.e. any kind of data expected.
 
 > This is all about writing robust code, when the client declaratively specifies what kind of data it is ready to handle, leaving the burden of all extra checks to the library.
 
