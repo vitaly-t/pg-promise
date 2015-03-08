@@ -97,15 +97,12 @@ function dbInit(dbInst, cn, options) {
     //////////////////////////
     // Transaction class;
     dbInst.tx = function () {
-
         var tx = this;
-
         if (!$isEmptyObject(tx)) {
             // This makes it easy to locate the most common mistake -
             // skipping keyword 'new' when calling: var tx = new db.tx(cn);
             throw new Error("Invalid transaction object instantiation.");
         }
-
         var local = {
             db: null,
             start: function (db) {
@@ -116,73 +113,35 @@ function dbInit(dbInst, cn, options) {
                 $notify(false, this.db, options);
                 this.db.done();
                 this.db = null;
-            },
-            call: function (cb) {
-                if (typeof(cb) !== 'function') {
-                    return npm.promise.reject("Cannot invoke tx.exec() without a callback function.");
-                }
-                var result = cb(this.db.client);
-                if (result && typeof(result.then) === 'function') {
-                    return result;
-                } else {
-                    return npm.promise.reject("Callback function passed into tx.exec() didn't return a valid promise object.");
-                }
             }
         };
-
-        // Executes transaction;
-        // TODO: Can we not do a transaction within an open connection?
         tx.exec = function (cb) {
             if (local.db) {
                 throw new Error("Previous call to tx.exec() hasn't finished.");
             }
-            var t_data, t_reason, success;
             return $p(function (resolve, reject) {
                 $connect(cn)
                     .then(function (db) {
                         local.start(db);
-                        return tx.query('begin');
+                        return $transact(tx, cb);
                     }, function (reason) {
-                        reject(reason); // connection issue;
+                        reject(reason);
                     })
-                    .then(function () {
-                        local.call(cb)
-                            .then(function (data) {
-                                t_data = data;
-                                success = true;
-                                return tx.query('commit');
-                            }, function (reason) {
-                                t_reason = reason;
-                                success = false;
-                                return tx.query('rollback');
-                            })
-                            .then(function () {
-                                local.finish();
-                                // either commit or rollback successfully executed;
-                                if (success) {
-                                    resolve(t_data);
-                                } else {
-                                    reject(t_reason);
-                                }
-                            }, function (reason) {
-                                // either commit or rollback failed;
-                                local.finish();
-                                reject(reason);
-                            });
+                    .then(function (data) {
+                        local.finish();
+                        resolve(data);
                     }, function (reason) {
                         local.finish();
-                        reject(reason); // issue with 'begin' command;
+                        reject(reason);
                     });
             });
         };
-
         tx.query = function (query, values, qrm) {
             if (!local.db) {
                 throw new Error("Unexpected call outside of transaction.");
             }
             return $query(local.db.client, query, values, qrm);
         };
-
         $extendProtocol(tx);
     };
 }
@@ -435,21 +394,24 @@ function $connect(cn) {
 function $Connection(cn, options) {
     var db, self = this;
     self.query = function (query, values, qrm) {
-        if(db) {
+        if (db) {
             return $query(db.client, query, values, qrm);
-        }else{
+        } else {
             throw new Error("Cannot execute a query on a disconnected client.");
         }
     };
     self.done = function () {
-        if(db) {
+        if (db) {
             db.done();
             db = null;
-        }else{
+        } else {
             throw new Error("Cannot invoke done() on a disconnected client.");
         }
     };
     $extendProtocol(self);
+    self.tx = function (cb) {
+        return $transact(self, cb);
+    };
     return $connect(cn)
         .then(function (obj) {
             db = {
@@ -504,6 +466,54 @@ function $extendProtocol(obj) {
         var query = $createFuncQuery(procName, values);
         return obj.query(query, null, queryResult.one | queryResult.none);
     };
+}
+
+function $transact(obj, cb) {
+    function invoke() {
+        if (typeof(cb) !== 'function') {
+            return npm.promise.reject("Cannot invoke tx.exec() without a callback function.");
+        }
+        var result;
+        try {
+            result = cb(obj);
+        } catch (err) {
+            return npm.promise.reject(err);
+        }
+        if (result && typeof(result.then) === 'function') {
+            return result;
+        } else {
+            return npm.promise.reject("Callback function passed into tx.exec() didn't return a valid promise object.");
+        }
+    }
+    var t_data, t_reason, success;
+    return $p(function (resolve, reject) {
+        obj.query('begin')
+            .then(function () {
+                invoke()
+                    .then(function (data) {
+                        t_data = data;
+                        success = true;
+                        return obj.query('commit');
+                    }, function (reason) {
+                        // transaction callback failed;
+                        t_reason = reason;
+                        success = false;
+                        return obj.query('rollback');
+                    })
+                    .then(function () {
+                        if (success) {
+                            resolve(t_data);
+                        } else {
+                            reject(t_reason);
+                        }
+                    }, function (reason) {
+                        reject(reason);
+                    });
+            }, function (reason) {
+                // 'begin' failed;
+                reject(reason);
+            });
+    });
 }
 
 // Handles database connection acquire/release
