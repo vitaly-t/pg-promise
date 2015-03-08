@@ -22,15 +22,15 @@ var pgpLib = require('pg-promise');
 // Initializing the library, with optional global settings:
 var pgp = pgpLib(/*options*/);
 ```
-You can pass additional ```options``` parameter when initilizing the library (see chapter Advanced for details).
+You can pass additional `options` parameter when initializing the library (see chapter Advanced for details).
 
-**NOTE:** Only one instance of such ```pgp``` object should exist throughout the application.
+**NOTE:** Only one instance of such `pgp` object should exist throughout the application.
 ### 3. Configure database connection
 Use one of the two ways to specify connection details:
 * Configuration object:
 ```javascript
 var cn = {
-    host: 'localhost', // server name or ip address
+    host: 'localhost', // server name or IP address
     port: 5432,
     database: 'my_db_name',
     user: 'user_name',
@@ -58,7 +58,7 @@ The library supports chaining queries on shared and detached connections. Choosi
 
 ### Detached Chaining
 
-Queries in a detached chain maintain connection independetly, they each would acquire a connection from the pool, execute the query and then release the connection.
+Queries in a detached chain maintain connection independently, they each would acquire a connection from the pool, execute the query and then release the connection.
 ```javascript
 db.query("select * from users where id=$1", 123) // find the user from id;
     .then(function(data){
@@ -72,7 +72,8 @@ db.query("select * from users where id=$1", 123) // find the user from id;
         console.log(reason); // display reason why the call failed;
     })
 ```
-In a situation where only one request is to be made against the database, a detached chain is the only one that makes sense. But even if you intend to execute multiple queries in a chain, keep in mind that even though each will use its own connection, such will be used from a connection pool, so effectively you end up with the same connection, without a performance penalty.
+In a situation where only one request is to be made against the database, a detached chain is the only one that makes sense.
+And even if you intend to execute multiple queries in a chain, keep in mind that even though each will use its own connection, such will be used from a connection pool, so effectively you end up with the same connection, without a performance penalty.
 
 ### Shared Chaining
 
@@ -82,7 +83,7 @@ var sco; // shared connection object;
 db.connect()
     .then(function(obj){
         cso = obj; // save the connection object;
-        // find active users that were created before today:
+        // find active users created before today:
         return cso.query("select * from users where active=$1 and created < $2::date", [true, new Date()]);
     })
     .then(function(data){
@@ -96,7 +97,7 @@ db.connect()
         }
     });
 ```
-Shared chaining is for those who want absolute control over connection, either because they want to execute lots of queries in one go, or because they like squizing every bit of performance out of their code. Other than, the author hasn't seen any real performance difference from detached chaining.
+Shared chaining is for those who want absolute control over connection, either because they want to execute lots of queries in one go, or because they like squeezing every bit of performance out of their code. Other than, the author hasn't seen any real performance difference from detached chaining.
 
 ### Transactions
 
@@ -141,8 +142,8 @@ db.connect()
     .then(function(data){
         return db.tx(function(ctx){
 
-            // Because it is a transaction within a shared chain, id doesn't matter whether
-            // the two calls below use object 'ctx' or 'sco', as the are exactly the same:
+            // Since it is a transaction within a shared chain, it doesn't matter whether
+            // the two calls below use object 'ctx' or 'sco', as they are exactly the same:
             var q1 = ctx.none("update users set active=$1 where id=$2", [false, data.id]);
             var q2 = sco.one("insert into audit(entity, id) values($1, $2) returning id", ['users', 123]);
 
@@ -162,7 +163,7 @@ If you need to execute just one transaction, the detached transaction pattern is
 
 ### Queries and Parameters
 
-When a connection is created within shared or detached chain, the same query protocol is injected into each connection context.
+When a new connection is created within shared or detached chain, the same query protocol is injected into each connection context.
 
 The key method is ```query```, that's defined as shown below:
 ```javascript
@@ -251,7 +252,7 @@ pgp.as.date(value); // returns proper PostgreSQL date/time presentation,
 pgp.as.csv(array);  // returns a CSV string with values formatted according
                     // to their type, using the above methods.
 ```
-As these helpers are not associated with any database, they can be called from anywhere.
+As these helpers are not associated with any database, they can be used from anywhere.
 
 # Advanced
 
@@ -270,7 +271,7 @@ var options = {
 };
 var pgp = pgpLib(options);
 ```
-Two events supported at the moment - ```connect``` and ```disconnect```, to notify of virtual connections being established or released accordingly.
+Two events are supported at the moment - ```connect``` and ```disconnect```, to notify of virtual connections being established or released accordingly.
 Each event takes parameter ```client```, which is the client connection object. These events are mostly for connection monitoring, while debugging your application.
 
 ### De-initialization
@@ -278,7 +279,7 @@ When exiting your application, make the following call:
 ```javascript
 pgp.end();
 ```
-This will release pg connection pool globally and make sure that the process terminates without delay.
+This will release pg connection pool globally and make sure that the process terminates without any delay.
 If you do not call it, your process may be waiting for 30 seconds (default) or so, waiting for the pg connection pool to expire.
 
 # History
