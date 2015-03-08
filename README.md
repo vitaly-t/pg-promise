@@ -107,7 +107,7 @@ Transactions can be executed within both shared and detached call chains in almo
 3. Invokes your callback function with the connection object;
 4. Excutes ```COMMIT```, if the callback resolves, or ```ROLLBACK```, if the callback rejects;
 5. Releases the connection (detached transaction only);
-6. Resolves with the callback's resolve result, if success; rejects with error reason, if failed.
+6. Resolves with the callback's result, if success; rejects with error reason, if failed.
 
 Example of a detached transaction:
 ```javascript
@@ -168,7 +168,7 @@ The key method is ```query```, that's defined as shown below:
 ```javascript
 function query(query, values, qrm);
 ```
-* `query` (required) - is the query string that supports formatting variables $1, $2,...etc (see chapter Query Formatting);
+* `query` (required) - is the query string that supports standard variables formatting using $1, $2, ...etc;
 * `values` (optional) - either a simple value or an array of simple values, to replace the variables in the query;
 * `qrm` - (optional) Query Result Mask, as explained below...
 
@@ -220,7 +220,7 @@ If `qrm` is not specified when calling generic `query` method, it is assumed to 
 ### Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
 
-Suppose we want to call function ```findAudit``` to find audit records by <i>user id</i> and maximum timestamp.
+Suppose we want to call function **findAudit** to find audit records by **user id** and maximum timestamp.
 We can make such call as shown below:
 ```javascript
 var qrm = queryResult.many | queryResult.none; // keep query flags out, for simplicity
