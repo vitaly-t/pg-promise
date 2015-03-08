@@ -24,11 +24,11 @@ queryResult = {
 // options (optional) -
 // {
 //    connect: function(client){
-//        on-connect event;
+//        client has connected;
 //        client - pg connection object.
 //    },
 //    disconnect: function(client){
-//        on-disconnect event;
+//        client is disconnecting;
 //        client - pg connection object.
 //    }
 // }
