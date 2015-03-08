@@ -103,12 +103,12 @@ Shared chaining is for those who want absolute control over connection, either b
 
 Transactions can be executed within both shared and detached call chains in almost the same way, performing the following actions:
 
-1. Acquires a new connection (detached transaction only);
+1. Acquires a new connection (detached transactions only);
 2. Executes ```BEGIN``` command;
 3. Invokes your callback function with the connection object;
 4. Executes ```COMMIT```, if the callback resolves, or ```ROLLBACK```, if the callback rejects;
-5. Releases the connection (detached transaction only);
-6. Resolves with the callback's result, if success; rejects with error reason, if failed.
+5. Releases the connection (detached transactions only);
+6. Resolves with the callback result, if success; rejects with the reason, if failed.
 
 
 Example of a detached transaction:
