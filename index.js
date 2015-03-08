@@ -62,37 +62,10 @@ module.exports = function (options) {
 
 function dbInit(dbInst, cn, options) {
 
-    // Handles database connection acquire/release
-    // events, notifying the client as needed.
-    function monitor(open, db) {
-        if (open) {
-            if (options) {
-                var func = options.connect;
-                if (func) {
-                    if (typeof(func) !== 'function') {
-                        throw new Error("Function was expected for 'options.connect'");
-                    }
-                    func(db.client); // notify the client;
-                }
-            }
-        } else {
-            if (options) {
-                var func = options.disconnect;
-                if (func) {
-                    if (typeof(func) !== 'function') {
-                        throw new Error("Function was expected for 'options.disconnect'");
-                    }
-                    func(db.client); // notify the client;
-                }
-            }
-            db.done(); // release database connection back to the pool;
-        }
-    }
-
     // Detached connection instance to allow chaining
     // queries under the same connection.
     dbInst.connect = function () {
-        return new $Connection(cn);
+        return new $Connection(cn, options);
     };
 
     //////////////////////////////////////////////////////////////
@@ -102,13 +75,15 @@ function dbInit(dbInst, cn, options) {
         return $p(function (resolve, reject) {
             $connect(cn)
                 .then(function (db) {
-                    monitor(true, db);
+                    $notify(true, db, options);
                     $query(db.client, query, values, qrm)
                         .then(function (data) {
-                            monitor(false, db);
+                            $notify(false, db, options);
+                            db.done();
                             resolve(data);
                         }, function (reason) {
-                            monitor(false, db);
+                            $notify(false, db, options);
+                            db.done();
                             reject(reason);
                         });
                 }, function (reason) {
@@ -135,10 +110,11 @@ function dbInit(dbInst, cn, options) {
             db: null,
             start: function (db) {
                 this.db = db;
-                monitor(true, db);
+                $notify(true, db, options);
             },
             finish: function () {
-                monitor(false, this.db);
+                $notify(false, this.db, options);
+                this.db.done();
                 this.db = null;
             },
             call: function (cb) {
@@ -455,7 +431,7 @@ function $connect(cn) {
 };
 
 // Initializes a new connection instance;
-function $Connection(cn) {
+function $Connection(cn, options) {
     var db, self = this;
     self.query = function (query, values, qrm) {
         return $query(db.client, query, values, qrm);
@@ -466,7 +442,14 @@ function $Connection(cn) {
     $extendProtocol(self);
     return $connect(cn)
         .then(function (obj) {
-            db = obj;
+            db = {
+                client: obj.client,
+                done: function () {
+                    $notify(false, obj, options);
+                    obj.done();
+                }
+            };
+            $notify(true, obj, options);
             return npm.promise.resolve(self);
         });
 };
@@ -511,4 +494,30 @@ function $extendProtocol(obj) {
         var query = $createFuncQuery(procName, values);
         return obj.query(query, null, queryResult.one | queryResult.none);
     };
+}
+
+// Handles database connection acquire/release
+// events, notifying the client as needed.
+function $notify(open, db, opt) {
+    if (open) {
+        if (opt) {
+            var func = opt.connect;
+            if (func) {
+                if (typeof(func) !== 'function') {
+                    throw new Error("Function was expected for 'options.connect'");
+                }
+                func(db.client); // notify the client;
+            }
+        }
+    } else {
+        if (opt) {
+            var func = opt.disconnect;
+            if (func) {
+                if (typeof(func) !== 'function') {
+                    throw new Error("Function was expected for 'options.disconnect'");
+                }
+                func(db.client); // notify the client;
+            }
+        }
+    }
 }
