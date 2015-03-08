@@ -184,7 +184,7 @@ queryResult = {
     none: 4     // no rows expected.
 };
 ```
-In the following generic-query example we indicate that the call can return any number of rows:
+In the following generic-query example we indicate that the call can return anything:
 ```javascript
 db.query("select * from users");
 ```
@@ -224,53 +224,17 @@ Suppose we want to call function ```findAudit``` to find audit records by <i>use
 We can make such call as shown below:
 ```javascript
 var qrm = queryResult.many | queryResult.none; // keep query flags out, for simplicity
-db.func('findAudit', qrm, [123, new Date()])
+db.func('findAudit', [123, new Date()], qrm)
     .then(function(data){
         console.log(data); // printing the data returned
     }, function(reason){
         console.log(reason); // printing the reason why the call was rejected
     });
 ```
-We passed it <i>user id</i> = 123, plus current Date/Time as the timestamp. We assume that the function signature matches the parameters that we passed.
+We passed it **user id** = 123, plus current Date/Time as the timestamp. We assume that the function signature matches the parameters that we passed.
 All values passed are serialized automatically to comply with PostgreSQL type formats.
 
-And when you are not expecting any return results, call ```db.proc``` instead. Both methods return a [Promise] object, but ```db.proc``` doesn't take a <b>qrm</b> parameter, always assuming it is `one`|`none`.
-
-### Transactions
-Every call shown in chapters above would acquire a new connection from the pool and release it when done. In order to execute a transaction on the same
-connection, a transaction class is to be used.
-
-Example:
-```javascript
-var promise = require('promise');
-
-var tx = new db.tx(); // creating a new transaction object
-
-tx.exec(function(/*client*/){
-
-    // creating a sequence of transaction queries:
-    var q1 = tx.none("update users set active=$1 where id=$2", [true, 123]);
-    var q2 = tx.one("insert into audit(entity, id) values($1, $2) returning id", ['users', 123]);
-
-    // returning a promise that determines a successful transaction:
-    return promise.all([q1, q2]); // all of the queries are to be resolved
-
-}).then(function(data){
-    console.log(data); // printing successful transaction output
-}, function(reason){
-    console.log(reason); // printing the reason why the transaction was rejected
-});
-```
-In the example above we create a new transaction object and call its method ```exec```, passing it a call-back function
-that must do all the queries needed and return a [Promise] object. In the example we use ```promise.all``` to indicate that
-we want both queries inside the transaction to resolve before executing a <i>COMMIT</i>. And if one of the queries fails to resolve,
-<i>ROLLBACK</i> will be executed instead, and the transaction call will be rejected.
-
-<b>Notes</b>
-* While inside a transaction, we make calls to the same-named methods as outside of transactions, except we do it on the transaction object instance now,
-as opposed to the database object ```db```, which gives us access to the shared connection object. The same goes for calling functions and procedures within
-transactions, using ```tx.func``` and ```tx.proc``` accordingly.
-* Just for flexibility, the transaction call-back function takes parameter ```client``` - the connection object.
+And when you are not expecting any return results, call ```db.proc``` instead. Both methods return a [Promise] object, but ```db.proc``` doesn't take a `qrm` parameter, always assuming it is `one`|`none`.
 
 ### Type Helpers
 The library provides several helper functions to convert basic javascript types into their proper PostgreSQL presentation that can be passed directly into
@@ -283,8 +247,11 @@ pgp.as.text(value); // returns proper PostgreSQL text presentation,
 
 pgp.as.date(value); // returns proper PostgreSQL date/time presentation,
                     // wrapped in quotes.
+
+pgp.as.csv(array);  // returns a CSV string with values formatted according
+                    // to their type, using the above methods.
 ```
-As these helpers are not associated with a database, they can be called from anywhere.
+As these helpers are not associated with any database, they can be called from anywhere.
 
 # Advanced
 
@@ -314,28 +281,8 @@ pgp.end();
 This will release pg connection pool globally and make sure that the process terminates without delay.
 If you do not call it, your process may be waiting for 30 seconds (default) or so, waiting for the pg connection pool to expire.
 
-### Direct connection usage
-The library exposes method ```connect``` in case of some unique reason that you may want to manage the connection yourself, as opposed to trusting the library
-doing it for you automatically.
-
-Usage example:
-```javascript
-db.connect().then(function(info){
-    // connection was established successfully;
-
-    // do stuff with the connection object (info.client) and/or queries;
-
-    // when done with all the queries, call done():
-    info.done();
-
-}, function(reason){
-    // failed to connect;
-    console.log('Connection problem: ' + reason);
-});
-```
-<b>NOTE:</b> When using the direct connection, events ```connect``` and ```disconnect``` won't be fired.
-
 # History
+* Version 0.4.0 is a complete rewrite of most of the library, made first available on March 8, 2015
 * Version 0.2.0 introduced on March 6th, 2015, supporting multiple databases
 * A refined version 0.1.4 released on March 5th, 2015.
 * First solid Beta, 0.1.2 on March 4th, 2015.
@@ -348,7 +295,7 @@ db.connect().then(function(info){
 
 # License
 
-Copyright (c) 2014-2015 Vitaly Tomilov (vitaly.tomilov@gmail.com)
+Copyright (c) 2015 Vitaly Tomilov (vitaly.tomilov@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
