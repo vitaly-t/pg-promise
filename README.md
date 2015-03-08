@@ -74,7 +74,7 @@ db.query("select * from users where id=$1", 123) // find the user from id;
 ```
 In a situation where only one request is to be made against the database, a detached chain is the only one that makes sense. But even if you intend to execute multiple queries in a chain, keep in mind that even though each will use its own connection, such will be used from a connection pool, so effectively you end up with the same connection, without a performance penalty.
 
-### Shared Chaining 
+### Shared Chaining
 
 A chain with shared connection always starts with the ```connect()``` request, and it must be released when no longer needed.
 ```javascript
@@ -100,7 +100,13 @@ Shared chaining is for those who want absolute control over connection, either b
 
 ### Transactions
 
-Transactions can be executed within both shared and detached call chains in almost the same way.
+Transactions can be executed within both shared and detached call chains in almost the same way, performing the following actions:
+1. Acquires a new connection (detached transaction only)
+2. Executes ```BEGIN``` command
+3. Invokes your callback function with the connection object
+4. Excutes ```COMMIT```, if the callback resolves, or ```ROLLBACK```, if the callback rejects
+5. Releases the connection (detached transaction only)
+6. Resolves with the callback's resolve result, if success; rejects with error reason, if failed.
 
 Example of a detached transaction:
 ```javascript
@@ -110,16 +116,18 @@ db.tx(function(ctx){
     // creating a sequence of transaction queries:
     var q1 = ctx.none("update users set active=$1 where id=$2", [true, 123]);
     var q2 = ctx.one("insert into audit(entity, id) values($1, $2) returning id", ['users', 123]);
-    
+
     // returning a promise that determines a successful transaction:
     return promise.all([q1, q2]); // all of the queries are to be resolved
-    
+
 }).then(function(data){
     console.log(data); // printing successful transaction output
 }, function(reason){
     console.log(reason); // printing the reason why the transaction was rejected
 });
 ```
+A detached transaction acquires a connection and exposes object ```ctx``` to let all containing queries to execute on the same connection.
+
 And when executing a transaction within a shared connection chain, the only thing that changes is that parameter ```ctx``` becomes the same as parameter ```sco``` from opening a shared connection, so either one can be used inside such a transaction interchangeably:
 ```javascript
 var promise = require('promise');
@@ -131,12 +139,12 @@ db.connect()
     })
     .then(function(data){
         return db.tx(function(ctx){
-    
+
             // Because it is a transaction within a shared chain, id doesn't matter whether
             // the two calls below use object 'ctx' or 'sco', as the are exactly the same:
             var q1 = ctx.none("update users set active=$1 where id=$2", [false, data.id]);
             var q2 = sco.one("insert into audit(entity, id) values($1, $2) returning id", ['users', 123]);
-    
+
             // returning a promise that determines a successful transaction:
             return promise.all([q1, q2]); // all of the queries are to be resolved;
         });
@@ -149,7 +157,7 @@ db.connect()
         }
     });
 ```
-
+If you need to execute just one transaction, the detached transaction pattern is all you need. But even if you need to combine it with other queries in thus a detached chain, it will work just as fine. As stated earlier, choosing a shared chain over a detached one is mostly a matter of special requirements and/or personal preference.
 
 ### The basics
 In order to eliminate the chances of unexpected query results and make code more robust, each request is parametrized with the expected/supported
