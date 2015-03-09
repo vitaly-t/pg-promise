@@ -250,7 +250,7 @@ var $wrap = {
         }
         // replacing single-quote symbols with two of them, and then
         // wrapping in quotes, for compatibility with PostgreSQL.
-        return $wrapText(txt.replace("'", "''"));
+        return $wrapText(txt.replace(/'/g, "''"));
     },
     bool: function (val) {
         if ($isNull(val)) {

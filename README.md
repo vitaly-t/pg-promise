@@ -13,10 +13,20 @@ This library joins [Promise] and [PG] to help writing easy-to-read database code
 * Database connections are managed automatically in every usage case;
 * Functions, Procedures and Transactions are all fully supported.
 
-# Install
+# Installing
 ```
 $ npm install pg-promise
 ```
+
+# Testing
+* make sure you have [jasmine] installed:
+    $npm install jasmine-node -g
+* install all the project dependencies:
+    $ npm install
+* run tests:
+    $ make test
+
+On Windows you can also run tests with `test.bat`
 
 # Getting started
 
@@ -311,6 +321,7 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 [PG]:https://github.com/brianc/node-postgres
 [Promise]:https://github.com/then/promise
 [ConnectionParameters]:https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js
+[jasmine]:https://github.com/jasmine/jasmine-npm
 
 # License
 
