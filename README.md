@@ -1,3 +1,5 @@
+![alt text](https://lh6.googleusercontent.com/2PFzMuCQ3UuY3sd_IY4ffTqlZ5Hr6o8ovFh_gKr3bZm_lUQQi06Nuau5MapXCPTFmyktNmhF-PE=w1896-h912 "PostgreSQL + Promise")
+
 # Introduction
 This library joins [Promise] and [PG] to help writing easy-to-read database code that relies on promises:
 * Streamlined database code structure, thanks to full [Promise] integration;
