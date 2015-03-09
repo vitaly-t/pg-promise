@@ -1,8 +1,11 @@
-# Introduction
+pg-promise
+===========
+This library joins [Promise] and [PG] to help writing easy-to-read database code that relies on promises.
+[![Build Status](https://travis-ci.org/Aphel-Cloud-Solutions/pg-promise.png?branch=master)](https://travis-ci.org/Aphel-Cloud-Solutions/pg-promise)
+
+# Features
 
 <img align="right" width="190" height="190" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Pg-promise.jpg">
-
-This library joins [Promise] and [PG] to help writing easy-to-read database code that relies on promises:
 
 * Streamlined database code structure, thanks to full [Promise] integration;
 * Robust, declarative approach to handling results from every single query;
