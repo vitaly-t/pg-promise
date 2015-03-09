@@ -32,5 +32,8 @@
   "dependencies": {
     "promise": ">=6.1.0",
     "pg": ">=4.3.0"
+  },
+  "devDependencies": {
+    "jasmine-node": "1.x"
   }
 }
