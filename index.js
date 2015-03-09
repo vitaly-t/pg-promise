@@ -374,10 +374,10 @@ function $query(client, query, values, qrm) {
                     var l = result.rows.length;
                     if (l) {
                         if (l > 1 && (qrm & queryResult.one)) {
-                            reject("Single row was expected from query: '" + query + "'");
+                            reject("Single row was expected from query: " + req.query);
                         } else {
                             if (!(qrm & (queryResult.one | queryResult.many))) {
-                                reject("No return data was expected from query: '" + query + "'");
+                                reject("No return data was expected from query: " + req.query);
                             } else {
                                 if (!(qrm & queryResult.many)) {
                                     data = result.rows[0];
@@ -388,7 +388,7 @@ function $query(client, query, values, qrm) {
                         if (qrm & queryResult.none) {
                             data = (qrm & queryResult.many) ? [] : null;
                         } else {
-                            reject("No rows returned from query: '" + query + "'");
+                            reject("No rows returned from query: " + req.query);
                         }
                     }
                     resolve(data);
