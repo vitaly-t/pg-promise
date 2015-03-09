@@ -235,7 +235,7 @@ function $formatValues(values) {
             // a simple value is presumed;
             s = $wrapValue(values);
             if (s === null) {
-                throw new Error("Cannot convert the value of type '" + typeof(values) + "'");
+                throw new Error("Cannot convert a value of type '" + typeof(values) + "'");
             }
         }
     }
