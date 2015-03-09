@@ -309,7 +309,8 @@ function $parseValues(query, values) {
                         result.error = "Cannot convert parameter with index " + i;
                         break;
                     } else {
-                        q = q.replace(variable, value);
+                        var reg = new RegExp("\\" + variable, "g");
+                        q = q.replace(reg, value);
                     }
                 }
             }
@@ -324,7 +325,8 @@ function $parseValues(query, values) {
                     result.success = false;
                     result.error = "Cannot convert type '" + typeof(values) + "' into a query variable value.";
                 } else {
-                    q = q.replace(variable, value);
+                    var reg = new RegExp("\\" + variable, "g");
+                    q = q.replace(reg, value);
                 }
             }
         }
