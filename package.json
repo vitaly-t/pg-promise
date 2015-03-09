@@ -1,10 +1,10 @@
 {
   "name": "pg-promise",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "PG + Promise made easy, with transactions support.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "make test"
   },
   "homepage": "https://github.com/vitaly-t/pg-promise",
   "repository": {
