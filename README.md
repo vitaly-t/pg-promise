@@ -19,7 +19,7 @@ $ npm install pg-promise
 ```
 
 # Testing
-* install all the project dependencies:
+* install all of the project's dependencies:
 ```
 $ npm install
 ```

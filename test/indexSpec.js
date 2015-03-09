@@ -23,6 +23,7 @@ describe("Library Instance Check", function () {
         expect(typeof(pgp.as.bool)).toBe('function');
         expect(typeof(pgp.as.date)).toBe('function');
         expect(typeof(pgp.as.csv)).toBe('function');
+        expect(typeof(pgp.as.format)).toBe('function');
     });
     it("must have function 'end'", function () {
         expect(typeof(pgp.end)).toBe('function');
@@ -110,7 +111,74 @@ describe("Type conversion tests, namespace pgp.as", function () {
             pgp.as.date(123)
         }).toThrow("'123' doesn't represent a valid Date object or value.");
         expect(function () {
-            pgp.as.date(function(){})
+            pgp.as.date(function () {
+            })
         }).toThrow();
     });
+
+    it("must correctly convert any Array of values to CSV", function () {
+        expect(function () {
+            pgp.as.csv(1); // test an integer;
+        }).toThrow();
+        expect(function () {
+            pgp.as.csv(""); // test an empty string;
+        }).toThrow();
+        expect(function () {
+            pgp.as.csv("text"); // test a text string;
+        }).toThrow();
+
+        expect(pgp.as.csv()).toBe("null"); // test undefined;
+        expect(pgp.as.csv(null)).toBe("null"); // test null;
+        expect(pgp.as.csv([])).toBe(""); // test empty array;
+        expect(pgp.as.csv([1])).toBe("1"); // test an integer;
+        expect(pgp.as.csv([-123.456])).toBe("-123.456"); // test a float;
+        expect(pgp.as.csv(["Hello World!"])).toBe("'Hello World!'"); // test a text;
+        expect(pgp.as.csv([true])).toBe("TRUE"); // test boolean True;
+        expect(pgp.as.csv([false])).toBe("FALSE"); // test boolean False;
+        expect(pgp.as.csv([new Date(2015, 2, 8, 16, 24, 8)])).toBe("'Sun, 08 Mar 2015 16:24:08 GMT'"); // test date;
+        // test a combination of values;
+        expect(pgp.as.csv([1, true, "don't break", new Date(2015, 2, 8, 16, 24, 8)])).toBe("1,TRUE,'don''t break','Sun, 08 Mar 2015 16:24:08 GMT'");
+    });
+
+    it("must format correctly any query with variables", function () {
+        // no matter what, we always get an object back;
+        expect(typeof(pgp.as.format())).toBe("object");
+        expect(typeof(pgp.as.format(null))).toBe("object");
+        expect(typeof(pgp.as.format(""))).toBe("object");
+
+        expect(pgp.as.format("$1").success).toBe(true);
+        expect(pgp.as.format("$1", []).success).toBe(true);
+
+        var q = pgp.as.format("$1", ["one"]);
+        expect(q.success).toBe(true);
+        expect(q.query).toBe("'one'");
+
+        q = pgp.as.format("$1, $2, $3, $4", [true, -12.34, "text", new Date(2015, 2, 8, 16, 24, 8)]);
+        expect(q.success).toBe(true);
+        expect(q.query).toBe("TRUE, -12.34, 'text', 'Sun, 08 Mar 2015 16:24:08 GMT'");
+
+        q = pgp.as.format("$1 $1, $2 $2", [1, "two"]);
+        expect(q.success).toBe(true);
+        expect(q.query).toBe("1 1, 'two' 'two'");
+
+        q = pgp.as.format("", [1]);
+        expect(q.success).toBe(false);
+        expect(q.error).toBe("More values passed than variables in the query.");
+
+        q = pgp.as.format("", 1);
+        expect(q.success).toBe(false);
+        expect(q.error).toBe("No variable found in query to replace with the value passed.");
+
+        q = pgp.as.format("$1", {});
+        expect(q.success).toBe(false);
+        expect(q.error).toBe("Cannot convert type 'object' into a query variable value.");
+
+        q = pgp.as.format("$1", null);
+        expect(q.success).toBe(true);
+
+        q = pgp.as.format("$1, $2", [true, {}]);
+        expect(q.success).toBe(false);
+        expect(q.error).toBe("Cannot convert parameter with index 1");
+    });
 });
+
