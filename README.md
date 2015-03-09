@@ -115,6 +115,7 @@ Transactions can be executed within both shared and detached call chains in almo
 6. Resolves with the callback result, if success; rejects with the reason, if failed.
 
 
+
 Example of a detached transaction:
 ```javascript
 var promise = require('promise');
