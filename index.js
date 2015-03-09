@@ -183,16 +183,6 @@ function $isNull(val) {
     return typeof(val) === 'undefined' || val === null;
 }
 
-// Checks if the object is empty (has no properties);
-function $isEmptyObject(obj) {
-    return Object.keys(obj).length === 0;
-}
-
-// Fixes single-quote symbols in text fields;
-function $fixQuotes(val) {
-    return val.replace("'", "''");
-}
-
 // Wraps up text in single quotes;
 function $wrapText(text) {
     return "'" + text + "'";
@@ -258,7 +248,9 @@ var $wrap = {
         if ($isNull(txt)) {
             return 'null';
         }
-        return $wrapText($fixQuotes(txt));
+        // replacing single-quote symbols with two of them, and then
+        // wrapping in quotes, for compatibility with PostgreSQL.
+        return $wrapText(txt.replace("'", "''"));
     },
     bool: function (val) {
         if ($isNull(val)) {
