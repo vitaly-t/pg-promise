@@ -1,6 +1,7 @@
 pg-promise
 ===========
 This library joins [Promise] and [PG] to help writing easy-to-read database code that relies on promises.
+
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
 
 # Features
