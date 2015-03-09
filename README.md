@@ -1,6 +1,6 @@
 # Introduction
 
-<img align="right" width="190" height="190" src="https://commons.wikimedia.org/wiki/File:Pg-promise.jpg">
+<img align="right" width="190" height="190" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Pg-promise.jpg">
 
 This library joins [Promise] and [PG] to help writing easy-to-read database code that relies on promises:
 
