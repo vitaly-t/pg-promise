@@ -20,12 +20,17 @@ $ npm install pg-promise
 
 # Testing
 * make sure you have [jasmine] installed:
-    $npm install jasmine-node -g
+```
+$npm install jasmine-node -g
+```
 * install all the project dependencies:
-    $ npm install
+```
+$ npm install
+```
 * run tests:
-    $ make test
-
+```
+$ make test
+```
 On Windows you can also run tests with `test.bat`
 
 # Getting started
