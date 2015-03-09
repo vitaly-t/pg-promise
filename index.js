@@ -213,10 +213,10 @@ function $wrapValue(val) {
     }
 }
 
-// Formats array of javascript-type values into a list of
-// parameters for a function call, compatible with PostgreSQL.
+// Formats array of javascript-type parameters into a csv list
+// to be passed into a function, compatible with PostgreSQL.
 // It can understand both a simple value and an array of simple values.
-function $formatValues(values) {
+function $formatParams(values) {
     var s = '';
     if (values) {
         if (Array.isArray(values)) {
@@ -268,33 +268,41 @@ var $wrap = {
             throw new Error($wrapText(d) + " doesn't represent a valid Date object or value.");
         }
     },
+    // Creates a comma-separated list of values formatted for use with PostgreSQL;
     csv: function (arr) {
         if ($isNull(arr)) {
             return 'null';
         }
         if (Array.isArray(arr)) {
-            return $formatValues(arr);
+            return $formatParams(arr);
         } else {
             throw new Error($wrapText(arr) + " doesn't represent a valid Array object or value.");
         }
+    },
+    // Formats query - parameter using the values passed (simple value or array of simple values);
+    // The main reason for exposing this to the client is to make the parser part of auto-testing.
+    // The query can contain variables $1, $2, etc, and values is either one simple value or
+    // an array of simple values, such as: text, boolean, date, numeric, null.
+    format: function (query, values) {
+        return $formatValues(query, values);
     }
 };
 
 // Formats a proper function call from the parameters.
 function $createFuncQuery(funcName, values) {
-    return 'select * from ' + funcName + '(' + $formatValues(values) + ');';
+    return 'select * from ' + funcName + '(' + $formatParams(values) + ');';
 }
 
 // Parses query for $1, $2,... variables and
 // replaces them with the values passed.
 // values can be an array of simple values, or just one value.
-function $parseValues(query, values) {
+function $formatValues(query, values) {
     var q = query;
     var result = {
         success: true
     };
     if (values) {
-        if (Array.isArray(values) && values.length > 0) {
+        if (Array.isArray(values)) {
             for (var i = 0; i < values.length; i++) {
                 var variable = '$' + (i + 1);
                 if (q.indexOf(variable) === -1) {
@@ -351,7 +359,7 @@ function $query(client, query, values, qrm) {
             if (!qrm || (qrm & badMask) === badMask || qrm < 1 || qrm > 6) {
                 errMsg = "Invalid Query Result Mask specified.";
             } else {
-                req = $parseValues(query, values);
+                req = $formatValues(query, values);
                 if (!req.success) {
                     errMsg = req.error;
                 }
@@ -467,6 +475,7 @@ function $transact(obj, cb) {
             return npm.promise.reject("Callback function passed into tx.exec() didn't return a valid promise object.");
         }
     }
+
     var t_data, t_reason, success;
     return $p(function (resolve, reject) {
         obj.query('begin')

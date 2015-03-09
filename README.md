@@ -19,10 +19,6 @@ $ npm install pg-promise
 ```
 
 # Testing
-* make sure you have [jasmine] installed:
-```
-$npm install jasmine-node -g
-```
 * install all the project dependencies:
 ```
 $ npm install
