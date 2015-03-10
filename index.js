@@ -1,10 +1,7 @@
 // Cannot declare 'use strict' here, because queryResult
 // needs to be exported into the global namespace.
 
-var npm = {
-    promise: require('promise'),
-    pg: require('pg')
-};
+var npm; // dynamic package namespace;
 
 ///////////////////////////////////////////////////////
 // Query Result Mask flags;
@@ -28,16 +25,39 @@ queryResult = {
 //        client has connected;
 //        client - pg connection object.
 //    },
+//
 //    disconnect: function(client){
 //        client is disconnecting;
 //        client - pg connection object.
 //    },
-//    pgFormatting: false
+//
+//    pgFormatting: false,
 //      - Redirects query formatting into PG library;
 //      - Default is false, and all queries are formatted
 //      - within 'pg-promise'.
+//
+//    promiseLib: null
+//      - Overrides the promise library instance to be used
+//        by the library. Tested: 'Promise' and 'Bluebird'.
 // }
 module.exports = function (options) {
+
+    if (npm) {
+        throw new Error('Cannot initialize the library more than once.');
+    } else {
+        npm = {
+            pg: require('pg')
+        };
+        if (options && options.promiseLib) {
+            if (typeof(options.promiseLib) === 'function') {
+                npm.promise = options.promiseLib;
+            } else {
+                throw new Error('Invalid promise library override.');
+            }
+        } else {
+            npm.promise = require('promise');
+        }
+    }
 
     var lib = function (cn) {
         if (!cn) {
