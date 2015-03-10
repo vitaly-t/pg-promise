@@ -156,7 +156,9 @@ db.tx(function(ctx){
 A detached transaction acquires a connection and exposes object ```ctx``` to let all containing queries execute on the same connection.
 
 And when executing a transaction within a shared connection chain, the only thing that changes is that parameter ```ctx``` becomes the
-same as parameter ```sco``` from opening a shared connection, so either one can be used inside such a transaction interchangeably:
+same as parameter ```sco``` from opening a shared connection, so either one can be used inside such a transaction interchangeably.
+
+###### Example of a shared transaction:
 ```javascript
 var promise = require('promise');
 var sco; // shared connection object;
