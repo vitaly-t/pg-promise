@@ -33,7 +33,7 @@ queryResult = {
 //        client - pg connection object.
 //    },
 //    pgFormatting: false
-//      - Redirect all query formatting to PG library;
+//      - Redirects query formatting into PG library;
 //      - Default is false, and all queries are formatted
 //      - within 'pg-promise'.
 // }

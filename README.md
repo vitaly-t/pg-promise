@@ -314,13 +314,32 @@ var options = {
     disconnect: function(client){
         var cp = client.connectionParameters;
         console.log("Disconnected from database '" + cp.database + "'");
-    }
+    },
+    pgFormatting: false
+    //  - Redirects query formatting into PG library;
+    //  - Default is false, and all queries are formatted
+    //  - within 'pg-promise'.
 };
 var pgp = pgpLib(options);
 ```
 Two events are supported at the moment - `connect` and `disconnect`, to notify of virtual connections being established or released accordingly.
 Each event takes parameter `client`, which is the client connection object. These events are mostly for connection monitoring,
 while debugging your application.
+
+Property `pgFormatting` was added in version 0.5.0, to be able to switch off query formatting implemented in the library and redirect
+all formatting into the [PG] library. By default, it is `false`, and this library takes care of all the query formatting.
+
+Please note that `pgFormatting` has no effect on formatting values for methods `func` and `proc` that always generates a CSV string
+of values using the internal implementation.
+
+Although setting `pgFormatting = true` has huge implications on how the whole query formatting works, it is outside the scope of this
+project to detail how it would then work. You should use [PG] documentation for reference on all the details about query formatting.
+
+The only differences worth mentioning:
+* Internal (pg-promise) implementation allows passing just one simple value to format a query that uses only one variable, and an array
+of simple values otherwise, while PG implementation requires that it is always an array, even for one value.
+* PG implements a wider scope of parameter type support, while **pg-promise** supports only the basic data types:
+text, boolean, date, numerical and null.
 
 ### De-initialization
 When exiting your application, make the following call:
