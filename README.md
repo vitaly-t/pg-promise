@@ -158,7 +158,7 @@ A detached transaction acquires a connection and exposes object ```ctx``` to let
 And when executing a transaction within a shared connection chain, the only thing that changes is that parameter ```ctx``` becomes the
 same as parameter ```sco``` from opening a shared connection, so either one can be used inside such a transaction interchangeably.
 
-###### Example of a shared transaction:
+###### Shared-connection transaction:
 ```javascript
 var promise = require('promise');
 var sco; // shared connection object;
