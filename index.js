@@ -31,7 +31,11 @@ queryResult = {
 //    disconnect: function(client){
 //        client is disconnecting;
 //        client - pg connection object.
-//    }
+//    },
+//    pgFormatting: false
+//      - Redirect all query formatting to PG library;
+//      - Default is false, and all queries are formatted
+//      - within 'pg-promise'.
 // }
 module.exports = function (options) {
 
@@ -67,7 +71,7 @@ function dbInit(cn, options) {
         var self = {
             query: function (query, values, qrm) {
                 if (db) {
-                    return $query(db.client, query, values, qrm);
+                    return $query(db.client, query, values, qrm, options);
                 } else {
                     throw new Error("Cannot execute a query on a disconnected client.");
                 }
@@ -108,7 +112,7 @@ function dbInit(cn, options) {
             $connect(cn)
                 .then(function (db) {
                     $notify(true, db, options);
-                    $query(db.client, query, values, qrm)
+                    $query(db.client, query, values, qrm, options)
                         .then(function (data) {
                             $notify(false, db, options);
                             db.done();
@@ -143,7 +147,7 @@ function dbInit(cn, options) {
                 if (!db) {
                     throw new Error("Unexpected call outside of transaction.");
                 }
-                return $query(db.client, query, values, qrm);
+                return $query(db.client, query, values, qrm, options);
             }
         };
         $extendProtocol(tx);
@@ -349,12 +353,12 @@ function $formatValues(query, values) {
 }
 
 // Generic, static query call for the specified connection + query + result.
-function $query(client, query, values, qrm) {
+function $query(client, query, values, qrm, options) {
     return $p(function (resolve, reject) {
         if ($isNull(qrm)) {
             qrm = queryResult.any; // default query result;
         }
-        var errMsg, req;
+        var errMsg, req, pgFormatting = (options && options.pgFormatting);
         if (!query) {
             errMsg = "Invalid query specified.";
         } else {
@@ -362,43 +366,56 @@ function $query(client, query, values, qrm) {
             if (!qrm || (qrm & badMask) === badMask || qrm < 1 || qrm > 6) {
                 errMsg = "Invalid Query Result Mask specified.";
             } else {
-                req = $formatValues(query, values);
-                if (!req.success) {
-                    errMsg = req.error;
+                if (pgFormatting) {
+                    req = {
+                        success: true,
+                        query: query
+                    };
+                } else {
+                    req = $formatValues(query, values);
+                    if (!req.success) {
+                        errMsg = req.error;
+                    }
                 }
             }
         }
         if (errMsg) {
             reject(errMsg);
         } else {
-            client.query(req.query, function (err, result) {
-                if (err) {
-                    reject(err.message);
-                } else {
-                    var data = result.rows;
-                    var l = result.rows.length;
-                    if (l) {
-                        if (l > 1 && (qrm & queryResult.one)) {
-                            reject("Single row was expected from query: " + req.query);
-                        } else {
-                            if (!(qrm & (queryResult.one | queryResult.many))) {
-                                reject("No return data was expected from query: " + req.query);
+            var params = pgFormatting ? values : null;
+            try {
+                client.query(req.query, params, function (err, result) {
+                    if (err) {
+                        reject(err.message);
+                    } else {
+                        var data = result.rows;
+                        var l = result.rows.length;
+                        if (l) {
+                            if (l > 1 && (qrm & queryResult.one)) {
+                                reject("Single row was expected from query: " + req.query);
                             } else {
-                                if (!(qrm & queryResult.many)) {
-                                    data = result.rows[0];
+                                if (!(qrm & (queryResult.one | queryResult.many))) {
+                                    reject("No return data was expected from query: " + req.query);
+                                } else {
+                                    if (!(qrm & queryResult.many)) {
+                                        data = result.rows[0];
+                                    }
                                 }
                             }
-                        }
-                    } else {
-                        if (qrm & queryResult.none) {
-                            data = (qrm & queryResult.many) ? [] : null;
                         } else {
-                            reject("No rows returned from query: " + req.query);
+                            if (qrm & queryResult.none) {
+                                data = (qrm & queryResult.many) ? [] : null;
+                            } else {
+                                reject("No rows returned from query: " + req.query);
+                            }
                         }
+                        resolve(data);
                     }
-                    resolve(data);
-                }
-            });
+                });
+            } catch (err) {
+                // Not likely to ever get here, but just in case;
+                reject(err);
+            }
         }
     });
 }
