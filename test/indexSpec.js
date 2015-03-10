@@ -1,36 +1,34 @@
 var pgpLib = require('../index')
 
-describe("Library Loading", function () {
+describe("Library entry object", function () {
     it("must be a function", function () {
         expect(typeof(pgpLib)).toBe('function');
     });
 });
 
-var pgp = pgpLib();
+var pgp = pgpLib(); // initializing the library;
 
-describe("Library Instance Check", function () {
+describe("Library initialization object", function () {
     it("must be a function", function () {
         expect(typeof(pgp)).toBe('function');
     });
     it("must have property 'pg'", function () {
         expect(typeof(pgp.pg)).toBe('object');
     });
-    it("must have property 'as'", function () {
-        expect(typeof(pgp.as)).toBe('object');
+    it("must have function 'end'", function () {
+        expect(typeof(pgp.end)).toBe('function');
     });
     it("must have valid property 'as'", function () {
+        expect(typeof(pgp.as)).toBe('object');
         expect(typeof(pgp.as.text)).toBe('function');
         expect(typeof(pgp.as.bool)).toBe('function');
         expect(typeof(pgp.as.date)).toBe('function');
         expect(typeof(pgp.as.csv)).toBe('function');
         expect(typeof(pgp.as.format)).toBe('function');
     });
-    it("must have function 'end'", function () {
-        expect(typeof(pgp.end)).toBe('function');
-    });
 });
 
-describe("Query Result must be available", function () {
+describe("Query Result", function () {
     it("must be an object", function () {
         expect(typeof(queryResult)).toBe('object');
     });
@@ -42,10 +40,10 @@ describe("Query Result must be available", function () {
     });
 });
 
-var db;
+var db; // database instance;
 
 describe("Database Instantiation", function () {
-    it("must throw an error when no or empty connection passed", function () {
+    it("must throw an error when empty or no connection passed", function () {
         var err = "Invalid 'cn' parameter passed.";
         expect(pgp).toThrow(err);
         expect(function () {
@@ -55,13 +53,13 @@ describe("Database Instantiation", function () {
             pgp("")
         }).toThrow(err);
     });
-    db = pgp("connection string");
+    db = pgp("any connection detail");
     it("must return a valid object", function () {
         expect(typeof(db)).toBe('object');
     });
 });
 
-describe("Database Instance Check", function () {
+describe("Database object", function () {
     it("must have all the protocol functions", function () {
         expect(typeof(db.connect)).toBe('function');
         expect(typeof(db.query)).toBe('function');
@@ -76,7 +74,7 @@ describe("Database Instance Check", function () {
     });
 });
 
-describe("Type conversion tests, namespace pgp.as", function () {
+describe("Type conversion in pgp.as", function () {
     it("must correctly convert any boolean", function () {
         expect(pgp.as.bool()).toBe("null");
         expect(pgp.as.bool(null)).toBe("null");
@@ -111,20 +109,19 @@ describe("Type conversion tests, namespace pgp.as", function () {
             pgp.as.date(123)
         }).toThrow("'123' doesn't represent a valid Date object or value.");
         expect(function () {
-            pgp.as.date(function () {
-            })
-        }).toThrow();
+            pgp.as.date(function () {})
+        }).toThrow("'function () {}' doesn't represent a valid Date object or value.");
     });
 
-    it("must correctly convert any Array of values to CSV", function () {
+    it("must correctly convert any Array of values into CSV", function () {
         expect(function () {
             pgp.as.csv(1); // test an integer;
+        }).toThrow("'1' doesn't represent a valid Array object or value.");
+        expect(function () {
+            pgp.as.csv("'' doesn't represent a valid Array object or value."); // test an empty string;
         }).toThrow();
         expect(function () {
-            pgp.as.csv(""); // test an empty string;
-        }).toThrow();
-        expect(function () {
-            pgp.as.csv("text"); // test a text string;
+            pgp.as.csv("'text' doesn't represent a valid Array object or value."); // test a text string;
         }).toThrow();
 
         expect(pgp.as.csv()).toBe("null"); // test undefined;
@@ -141,25 +138,57 @@ describe("Type conversion tests, namespace pgp.as", function () {
     });
 
     it("must format correctly any query with variables", function () {
-        // no matter what, we always get an object back;
+
+        // expert always an object back, no matter what;
         expect(typeof(pgp.as.format())).toBe("object");
         expect(typeof(pgp.as.format(null))).toBe("object");
         expect(typeof(pgp.as.format(""))).toBe("object");
 
-        expect(pgp.as.format("$1").success).toBe(true);
-        expect(pgp.as.format("$1", []).success).toBe(true);
+        var q = pgp.as.format();
+        expect(q.success).toBe(false);
+        expect(q.error).toBe("Parameter 'query' must be a text string");
 
-        var q = pgp.as.format("$1", ["one"]);
+        q = pgp.as.format(null);
+        expect(q.success).toBe(false);
+        expect(q.error).toBe("Parameter 'query' must be a text string");
+
+        q = pgp.as.format(null, [1, 2, 3]);
+        expect(q.success).toBe(false);
+        expect(q.error).toBe("Parameter 'query' must be a text string");
+
+        q = pgp.as.format("$1", null);
+        expect(q.success).toBe(true);
+        expect(q.query).toBe("$1");
+
+        expect(pgp.as.format("$1").success).toBe(true);
+        expect(pgp.as.format("$1").query).toBe("$1");
+
+        expect(pgp.as.format("$1", []).success).toBe(true);
+        expect(pgp.as.format("$1", []).query).toBe("$1");
+
+        q = pgp.as.format("$1", ["one"]);
         expect(q.success).toBe(true);
         expect(q.query).toBe("'one'");
+
+        q = pgp.as.format("$1", "one");
+        expect(q.success).toBe(true);
+        expect(q.query).toBe("'one'");
+
+        q = pgp.as.format("$1, $1", "one");
+        expect(q.success).toBe(true);
+        expect(q.query).toBe("'one', 'one'");
 
         q = pgp.as.format("$1, $2, $3, $4", [true, -12.34, "text", new Date(2015, 2, 8, 16, 24, 8)]);
         expect(q.success).toBe(true);
         expect(q.query).toBe("TRUE, -12.34, 'text', 'Sun, 08 Mar 2015 16:24:08 GMT'");
 
-        q = pgp.as.format("$1 $1, $2 $2", [1, "two"]);
+        q = pgp.as.format("$1 $1, $2 $2, $1", [1, "two"]); // test for repeated variables;
         expect(q.success).toBe(true);
-        expect(q.query).toBe("1 1, 'two' 'two'");
+        expect(q.query).toBe("1 1, 'two' 'two', 1");
+
+        q = pgp.as.format("Test: $1", ["don't break quotes!"]);
+        expect(q.success).toBe(true);
+        expect(q.query).toBe("Test: 'don''t break quotes!'");
 
         q = pgp.as.format("", [1]);
         expect(q.success).toBe(false);
@@ -173,12 +202,41 @@ describe("Type conversion tests, namespace pgp.as", function () {
         expect(q.success).toBe(false);
         expect(q.error).toBe("Cannot convert type 'object' into a query variable value.");
 
-        q = pgp.as.format("$1", null);
-        expect(q.success).toBe(true);
+        q = pgp.as.format("$1", function () {
+        });
+        expect(q.success).toBe(false);
+        expect(q.error).toBe("Cannot convert type 'function' into a query variable value.");
 
-        q = pgp.as.format("$1, $2", [true, {}]);
+        q = pgp.as.format("$1", [{}]);
+        expect(q.success).toBe(false);
+        expect(q.error).toBe("Cannot convert parameter with index 0");
+
+        q = pgp.as.format("$1, $2", [true, function () {
+        }]);
         expect(q.success).toBe(false);
         expect(q.error).toBe("Cannot convert parameter with index 1");
+
     });
 });
 
+describe("Connecting to DB with an invalid connection string", function () {
+    it("must fail gracefully on authentication", function () {
+        db.connect().then(function (db) {
+            this.fail("Unexpected successful connection");
+        }, function (reason) {
+            expect(typeof(reason)).toBe('object');
+            expect(reason.routine).toBe('auth_failed');
+        });
+    });
+});
+
+describe("Creating a transaction for DB with an invalid connection string", function () {
+    it("must fail gracefully on authentication", function () {
+        db.tx().then(function (ctx) {
+            this.fail("Unexpected successful transaction");
+        }, function (reason) {
+            expect(typeof(reason)).toBe('object');
+            expect(reason.routine).toBe('auth_failed');
+        });
+    });
+});

@@ -301,40 +301,43 @@ function $formatValues(query, values) {
     var result = {
         success: true
     };
-    if (values) {
-        if (Array.isArray(values)) {
-            for (var i = 0; i < values.length; i++) {
-                var variable = '$' + (i + 1);
-                if (q.indexOf(variable) === -1) {
-                    result.success = false;
-                    result.error = "More values passed than variables in the query.";
-                    break;
-                } else {
-                    var value = $wrapValue(values[i]);
-                    if (value === null) {
-                        // one of the complex types passed;
+    if (typeof(query) !== 'string') {
+        result.success = false;
+        result.error = "Parameter 'query' must be a text string";
+    } else {
+        if (values) {
+            if (Array.isArray(values)) {
+                for (var i = 0; i < values.length; i++) {
+                    var variable = '$' + (i + 1);
+                    if (q.indexOf(variable) === -1) {
                         result.success = false;
-                        result.error = "Cannot convert parameter with index " + i;
+                        result.error = "More values passed than variables in the query.";
                         break;
                     } else {
-                        var reg = new RegExp("\\" + variable, "g");
-                        q = q.replace(reg, value);
+                        var value = $wrapValue(values[i]);
+                        if (value === null) {
+                            // one of the complex types passed;
+                            result.success = false;
+                            result.error = "Cannot convert parameter with index " + i;
+                            break;
+                        } else {
+                            var reg = new RegExp("\\" + variable, "g");
+                            q = q.replace(reg, value);
+                        }
                     }
                 }
-            }
-        } else {
-            var variable = '$1';
-            if (q.indexOf(variable) === -1) {
-                result.success = false;
-                result.error = "No variable found in query to replace with the value passed.";
             } else {
-                var value = $wrapValue(values);
-                if (value === null) {
+                if (q.indexOf('$1') === -1) {
                     result.success = false;
-                    result.error = "Cannot convert type '" + typeof(values) + "' into a query variable value.";
+                    result.error = "No variable found in query to replace with the value passed.";
                 } else {
-                    var reg = new RegExp("\\" + variable, "g");
-                    q = q.replace(reg, value);
+                    var value = $wrapValue(values);
+                    if (value === null) {
+                        result.success = false;
+                        result.error = "Cannot convert type '" + typeof(values) + "' into a query variable value.";
+                    } else {
+                        q = q.replace(/\$1/g, value);
+                    }
                 }
             }
         }

@@ -1,6 +1,6 @@
 pg-promise
 ===========
-This library joins [Promise] and [PG] to help writing easy-to-read database code that relies on promises.
+This library joins [Promise] and [PG] to help writing easy-to-read database code built on promises.
 
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
 
@@ -8,9 +8,9 @@ This library joins [Promise] and [PG] to help writing easy-to-read database code
 
 <img align="right" width="190" height="190" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Pg-promise.jpg">
 
-* Streamlined database code structure, thanks to full [Promise] integration;
-* Robust, declarative approach to handling results from every single query;
-* Database connections are managed automatically in every usage case;
+* Streamlined database code structure, thanks to [Promise];
+* Robust, declarative approach to handling results from queries;
+* Database connections are managed automatically for every query;
 * Functions, Procedures and Transactions are all fully supported.
 
 # Installing
@@ -41,22 +41,22 @@ var pgpLib = require('pg-promise');
 // Initializing the library, with optional global settings:
 var pgp = pgpLib(/*options*/);
 ```
-You can pass additional `options` parameter when initializing the library (see chapter Advanced for details).
+You can pass additional `options` parameter when initializing the library (see chapter **Advanced** for details).
 
 **NOTE:** Only one instance of such `pgp` object should exist throughout the application.
 ### 3. Configure database connection
 Use one of the two ways to specify connection details:
-* Configuration object:
+* Configuration Object:
 ```javascript
 var cn = {
-    host: 'localhost', // server name or IP address
+    host: 'localhost', // server name or IP address;
     port: 5432,
     database: 'my_db_name',
     user: 'user_name',
     password: 'user_password'
 };
 ```
-* Connection string:
+* Connection String:
 ```javascript
 var cn = "postgres://username:password@host:port/database";
 ```
@@ -73,11 +73,13 @@ You are now ready to make queries against the database.
 
 # Usage
 
-The library supports chaining queries on shared and detached connections. Choosing which one you want depends on the situation and personal preferences.
+The library supports chaining queries on shared and detached connections.
+Choosing which one you want depends on the situation and personal preferences.
 
 ### Detached Chaining
 
-Queries in a detached chain maintain connection independently, they each would acquire a connection from the pool, execute the query and then release the connection.
+Queries in a detached chain maintain connection independently, they each would acquire a connection from the pool,
+execute the query and then release the connection.
 ```javascript
 db.query("select * from users where id=$1", 123) // find the user from id;
     .then(function(data){
@@ -92,11 +94,12 @@ db.query("select * from users where id=$1", 123) // find the user from id;
     })
 ```
 In a situation where only one request is to be made against the database, a detached chain is the only one that makes sense.
-And even if you intend to execute multiple queries in a chain, keep in mind that even though each will use its own connection, such will be used from a connection pool, so effectively you end up with the same connection, without a performance penalty.
+And even if you intend to execute multiple queries in a chain, keep in mind that even though each will use its own connection,
+such will be used from a connection pool, so effectively you end up with the same connection, without much of a performance penalty.
 
 ### Shared Chaining
 
-A chain with shared connection always starts with the ```connect()``` request, and it must be released when no longer needed.
+A chain with shared connection always starts with ```connect()```, and the connection must be released when no longer needed.
 ```javascript
 var sco; // shared connection object;
 db.connect()
@@ -116,11 +119,13 @@ db.connect()
         }
     });
 ```
-Shared chaining is for those who want absolute control over connection, either because they want to execute lots of queries in one go, or because they like squeezing every bit of performance out of their code. Other than, the author hasn't seen any real performance difference from detached chaining.
+Shared chaining is for those who want absolute control over connection, either because they want to execute lots of queries in one go,
+or because they like squeezing every bit of performance out of their code. Other than, the author hasn't seen any real performance difference
+from the detached chaining.
 
 ### Transactions
 
-Transactions can be executed within both shared and detached call chains in almost the same way, performing the following actions:
+Transactions can be executed within both shared and detached call chains in the same way, performing the following actions:
 
 1. Acquires a new connection (detached transactions only);
 2. Executes ```BEGIN``` command;
@@ -129,9 +134,8 @@ Transactions can be executed within both shared and detached call chains in almo
 5. Releases the connection (detached transactions only);
 6. Resolves with the callback result, if success; rejects with the reason, if failed.
 
+##### Example of a detached transaction:
 
-
-Example of a detached transaction:
 ```javascript
 var promise = require('promise');
 db.tx(function(ctx){
@@ -151,7 +155,8 @@ db.tx(function(ctx){
 ```
 A detached transaction acquires a connection and exposes object ```ctx``` to let all containing queries execute on the same connection.
 
-And when executing a transaction within a shared connection chain, the only thing that changes is that parameter ```ctx``` becomes the same as parameter ```sco``` from opening a shared connection, so either one can be used inside such a transaction interchangeably:
+And when executing a transaction within a shared connection chain, the only thing that changes is that parameter ```ctx``` becomes the
+same as parameter ```sco``` from opening a shared connection, so either one can be used inside such a transaction interchangeably:
 ```javascript
 var promise = require('promise');
 var sco; // shared connection object;
@@ -164,7 +169,7 @@ db.connect()
         return sco.tx(function(ctx){
 
             // Since it is a transaction within a shared chain, it doesn't matter whether
-            // the two calls below use object 'ctx' or 'sco', as they are exactly the same:
+            // the two calls below use object `ctx` or `sco`, as they are exactly the same:
             var q1 = ctx.none("update users set active=$1 where id=$2", [false, data.id]);
             var q2 = sco.one("insert into audit(entity, id) values($1, $2) returning id", ['users', 123]);
 
@@ -180,7 +185,9 @@ db.connect()
         }
     });
 ```
-If you need to execute just one transaction, the detached transaction pattern is all you need. But even if you need to combine it with other queries in thus a detached chain, it will work just as fine. As stated earlier, choosing a shared chain over a detached one is mostly a matter of special requirements and/or personal preference.
+If you need to execute just one transaction, the detached transaction pattern is all you need.
+But even if you need to combine it with other queries in then a detached chain, it will work just as fine.
+As stated earlier, choosing a shared chain over a detached one is mostly a matter of special requirements and/or personal preference.
 
 ### Queries and Parameters
 
@@ -194,7 +201,8 @@ function query(query, values, qrm);
 * `values` (optional) - either a simple value or an array of simple values, to replace the variables in the query;
 * `qrm` - (optional) Query Result Mask, as explained below...
 
-In order to eliminate the chances of unexpected query results and make code more robust, each request supports parameter `qrm` (Query Request Mask), via type `queryResult`:
+In order to eliminate the chances of unexpected query results and make code more robust, each request supports parameter `qrm`
+(Query Request Mask), via type `queryResult`:
 ```javascript
 ///////////////////////////////////////////////////////
 // Query Result Mask flags;
@@ -267,8 +275,8 @@ And when you are not expecting any return results, call `db.proc` instead. Both 
 but `db.proc` doesn't take a `qrm` parameter, always assuming it is `one`|`none`.
 
 ### Type Helpers
-The library provides several helper functions to convert basic javascript types into their proper PostgreSQL presentation that can be passed directly into
-queries or functions as parameters. All of such helper functions are located within namespace ```pgp.as```:
+The library provides several helper functions to convert basic javascript types into their proper PostgreSQL presentation that can be passed
+directly into queries or functions as parameters. All of such helper functions are located within namespace ```pgp.as```:
 ```javascript
 pgp.as.bool(value); // returns proper PostgreSQL boolean presentation
 
@@ -280,6 +288,14 @@ pgp.as.date(value); // returns proper PostgreSQL date/time presentation,
 
 pgp.as.csv(array);  // returns a CSV string with values formatted according
                     // to their type, using the above methods.
+
+// Replaces variables in a query with their `values` as specified.
+// `values` is either a simple value or an array of simple values.
+////////////////////////////////////////////////////////////////////////
+// This method is used implicitly by every query method in the library,
+// and the only reason it was added here is to make it testable, because
+// it represents a very important aspect of the library's functionality.
+pgp.as.format(query, values);
 ```
 As these helpers are not associated with any database, they can be used from anywhere.
 
@@ -301,7 +317,8 @@ var options = {
 var pgp = pgpLib(options);
 ```
 Two events are supported at the moment - `connect` and `disconnect`, to notify of virtual connections being established or released accordingly.
-Each event takes parameter `client`, which is the client connection object. These events are mostly for connection monitoring, while debugging your application.
+Each event takes parameter `client`, which is the client connection object. These events are mostly for connection monitoring,
+while debugging your application.
 
 ### De-initialization
 When exiting your application, make the following call:
@@ -312,6 +329,7 @@ This will release pg connection pool globally and make sure that the process ter
 If you do not call it, your process may be waiting for 30 seconds (default) or so, waiting for the pg connection pool to expire.
 
 # History
+* Version 0.4.9 represents a solid code base, backed up by comprehensive testing. Released on March 10, 2015.
 * Version 0.4.0 is a complete rewrite of most of the library, made first available on March 8, 2015
 * Version 0.2.0 introduced on March 6th, 2015, supporting multiple databases
 * A refined version 0.1.4 released on March 5th, 2015.
@@ -322,7 +340,6 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 [PG]:https://github.com/brianc/node-postgres
 [Promise]:https://github.com/then/promise
 [ConnectionParameters]:https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js
-[jasmine]:https://github.com/jasmine/jasmine-npm
 
 # License
 
