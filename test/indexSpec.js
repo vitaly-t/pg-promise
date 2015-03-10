@@ -146,15 +146,15 @@ describe("Type conversion in pgp.as", function () {
 
         var q = pgp.as.format();
         expect(q.success).toBe(false);
-        expect(q.error).toBe("Parameter 'query' must be a text string");
+        expect(q.error).toBe("Parameter 'query' must be a text string.");
 
         q = pgp.as.format(null);
         expect(q.success).toBe(false);
-        expect(q.error).toBe("Parameter 'query' must be a text string");
+        expect(q.error).toBe("Parameter 'query' must be a text string.");
 
         q = pgp.as.format(null, [1, 2, 3]);
         expect(q.success).toBe(false);
-        expect(q.error).toBe("Parameter 'query' must be a text string");
+        expect(q.error).toBe("Parameter 'query' must be a text string.");
 
         q = pgp.as.format("$1", null);
         expect(q.success).toBe(true);

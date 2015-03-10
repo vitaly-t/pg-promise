@@ -303,7 +303,7 @@ function $formatValues(query, values) {
     };
     if (typeof(query) !== 'string') {
         result.success = false;
-        result.error = "Parameter 'query' must be a text string";
+        result.error = "Parameter 'query' must be a text string.";
     } else {
         if (values) {
             if (Array.isArray(values)) {
