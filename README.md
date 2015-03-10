@@ -134,7 +134,7 @@ Transactions can be executed within both shared and detached call chains in the 
 5. Releases the connection (detached transactions only);
 6. Resolves with the callback result, if success; rejects with the reason, if failed.
 
-##### Example of a detached transaction:
+###### Example of a detached transaction:
 
 ```javascript
 var promise = require('promise');
