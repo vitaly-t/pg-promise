@@ -481,7 +481,7 @@ function $extendProtocol(obj) {
 function $transact(obj, cb) {
     function invoke() {
         if (typeof(cb) !== 'function') {
-            return npm.promise.reject("Cannot invoke tx.exec() without a callback function.");
+            return npm.promise.reject("Cannot invoke tx() without a callback function.");
         }
         var result;
         try {
@@ -492,7 +492,7 @@ function $transact(obj, cb) {
         if (result && typeof(result.then) === 'function') {
             return result;
         } else {
-            return npm.promise.reject("Callback function passed into tx.exec() didn't return a valid promise object.");
+            return npm.promise.reject("Callback function passed into tx() didn't return a valid promise object.");
         }
     }
 
