@@ -1,7 +1,7 @@
 {
   "name": "pg-promise",
   "version": "0.5.0",
-  "description": "PG + Promise made easy, with transactions support.",
+  "description": "PG + Promises/A+, with transactions support.",
   "main": "index.js",
   "scripts": {
     "test": "make test"
@@ -17,6 +17,7 @@
   "keywords": [
     "pg",
     "promise",
+    "promises-aplus",
     "transaction",
     "postgres"
   ],
