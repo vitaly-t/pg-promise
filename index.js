@@ -405,6 +405,13 @@ function $query(client, query, values, qrm, options) {
             reject(errMsg);
         } else {
             var params = pgFormatting ? values : null;
+            if (options && options.query) {
+                var func = options.query;
+                if (typeof(func) !== 'function') {
+                    throw new Error("Function was expected for 'options.query'");
+                }
+                func(client, req.query, params); // notify the client;
+            }
             try {
                 client.query(req.query, params, function (err, result) {
                     if (err) {
