@@ -1,7 +1,7 @@
 pg-promise
 ===========
 
-Complete access layer to [PG] with any [Promises/A+] library.
+Complete access layer to [PG] via [Promises/A+].
 
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
 
