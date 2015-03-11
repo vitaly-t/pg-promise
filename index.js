@@ -38,7 +38,7 @@ queryResult = {
 //
 //    promiseLib: null
 //      - Overrides the promise library instance to be used
-//        by the library. Tested: 'Promise' and 'Bluebird'.
+//        by the library.
 // }
 module.exports = function (options) {
 
@@ -52,7 +52,7 @@ module.exports = function (options) {
             if (typeof(options.promiseLib) === 'function') {
                 npm.promise = options.promiseLib;
             } else {
-                throw new Error('Invalid promise library override.');
+                throw new Error('Invalid or unsupported promise library override.');
             }
         } else {
             npm.promise = require('promise');

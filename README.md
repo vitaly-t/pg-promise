@@ -1,6 +1,7 @@
 pg-promise
 ===========
-This library joins [Promise] and [PG] to help writing easy-to-read database code built on promises.
+
+Complete access layer to [PG] through any [Promises/A+] library.
 
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
 
@@ -8,10 +9,10 @@ This library joins [Promise] and [PG] to help writing easy-to-read database code
 
 <img align="right" width="190" height="190" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Pg-promise.jpg">
 
-* Streamlined database code structure, thanks to [Promise];
-* Robust, declarative approach to handling results from queries;
-* Database connections are managed automatically for every query;
-* Functions, Procedures and Transactions are all fully supported.
+* Functions + transactions fully supported;
+* Declarative result handling for queries;
+* Automatic database connections;
+* Streamlined database code structure.
 
 # Installing
 ```
@@ -19,7 +20,7 @@ $ npm install pg-promise
 ```
 
 # Testing
-* install all of the project's dependencies:
+* install project's dependencies:
 ```
 $ npm install
 ```
@@ -303,45 +304,94 @@ As these helpers are not associated with any database, they can be used from any
 
 # Advanced
 
-### Initialization options
-Initialization options are supported as shown in the example:
+### Initialization Options
+
+When initializing the library, one can pass object `options` with a set of properties
+for global override of the library's behaviour:
+```javascript
+var options = {
+    // override properties;
+};
+var pgp = pgpLib(options);
+```
+
+Below is the list of all such properties that are currently supported.
+
+##### pgFormatting
+
+By default, **pg-promise** provides its own implementation of the query value formatting,
+using the standard syntax of $1, $2, etc.
+
+Any query request accepts values for the variable within query string as the second parameter.
+It accepts a simple single value for queries that use only one variable, as well as an array of simple values,
+for queries with multiple variables in them.
+
+**pg-promise** implementation of query formatting supports only the basic javascript types: text, boolean, date, numeric and null.
+
+If instead you want to use query formatting that's implemented by the [PG] library, set parameter **pgFormatting**
+to be `true` when initializing the library, and every query formatting will redirect to the [PG]'s implementation.
+
+Although this has huge implication to the library's functionality, it is not within the scope of this project to detail.
+For any further reference you should use documentation of the [PG] library.
+
+**NOTE:** As of the current implementation, formatting parameters for calling functions is not affected by this
+override. If needed, use the generic `query` instead to invoke functions with redirected query formatting.
+
+##### promiseLib
+
+Set this property to any promise library that's compliant with the [Promises/A+] standard.
+
+By default, **pg-promise** uses version of [Promises/A+] provided by [Promise]. If you want to override
+this and force the library to use a different implementation of the standard, just set this parameter
+to the library's instance.
+
+Example of switching over to [Bluebird]:
+```javascript
+var promise = require('bluebird');
+var options = {
+    promiseLib: promise
+};
+var pgp = pgpLib(options);
+```
+
+As of this writing, [Bluebird] is the only alternative [Promises/A+] library that **pg-promise**
+has been tested against. Compatibility with other [Promises/A+] though expected, hasn't been tested, and thus unknown.
+
+##### connect
+
+This property represents a global `connect` event handler: whenever a new connection has been established with the database,
+this event function is called:
 ```javascript
 var options = {
     connect: function(client){
         var cp = client.connectionParameters;
         console.log("Connected to database '" + cp.database + "'");
-    },
+    }
+}
+```
+It can be used for any kind of diagnostics and/or connection monitoring within application.
+
+The function takes only one parameter - `client` object from the [PG] library that represents connection
+with the database.
+
+##### disconnect
+
+This property represents a global `disconnect` event handler: whenever a connection is about to be released,
+this event function is called:
+```javascript
+var options = {
     disconnect: function(client){
         var cp = client.connectionParameters;
-        console.log("Disconnected from database '" + cp.database + "'");
-    },
-    pgFormatting: false
-    //  - Redirects query formatting into PG library;
-    //  - Default is false, and all queries are formatted
-    //  - within 'pg-promise'.
-};
-var pgp = pgpLib(options);
+        console.log("Disconnecting from database '" + cp.database + "'");
+    }
+}
 ```
-Two events are supported at the moment - `connect` and `disconnect`, to notify of virtual connections being established or released accordingly.
-Each event takes parameter `client`, which is the client connection object. These events are mostly for connection monitoring,
-while debugging your application.
+It can be used for any kind of diagnostics and/or connection monitoring within application.
 
-Property `pgFormatting` was added in version 0.5.0, to be able to switch off query formatting implemented in the library and redirect
-all formatting into the [PG] library. By default, it is `false`, and this library takes care of all the query formatting.
+The function takes only one parameter - `client` object from the [PG] library that represents the connection
+that's being released.
 
-Please note that `pgFormatting` has no effect on formatting values for methods `func` and `proc` that always generates a CSV string
-of values using the internal implementation.
-
-Although setting `pgFormatting = true` has huge implications on how the whole query formatting works, it is outside the scope of this
-project to detail how it would then work. You should use [PG] documentation for reference on all the details about query formatting.
-
-The only differences worth mentioning:
-* Internal (pg-promise) implementation allows passing just one simple value to format a query that uses only one variable, and an array
-of simple values otherwise, while PG implementation requires that it is always an array, even for one value.
-* PG implements a wider scope of parameter type support, while **pg-promise** supports only the basic data types:
-text, boolean, date, numerical and null.
-
-### De-initialization
+### Library De-initialization
 When exiting your application, make the following call:
 ```javascript
 pgp.end();
@@ -350,9 +400,10 @@ This will release pg connection pool globally and make sure that the process ter
 If you do not call it, your process may be waiting for 30 seconds (default) or so, waiting for the pg connection pool to expire.
 
 # History
+* Version 0.5.0 introduces many new features and fixes, such as properties **pgFormatting** and **promiseLib**. Released on March 11, 2015.
 * Version 0.4.9 represents a solid code base, backed up by comprehensive testing. Released on March 10, 2015.
-* Version 0.4.0 is a complete rewrite of most of the library, made first available on March 8, 2015
-* Version 0.2.0 introduced on March 6th, 2015, supporting multiple databases
+* Version 0.4.0 is a complete rewrite of most of the library, made first available on March 8, 2015.
+* Version 0.2.0 introduced on March 6th, 2015, supporting multiple databases.
 * A refined version 0.1.4 released on March 5th, 2015.
 * First solid Beta, 0.1.2 on March 4th, 2015.
 * It reached first Beta version 0.1.0 on March 4th, 2015.
@@ -361,6 +412,8 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 [PG]:https://github.com/brianc/node-postgres
 [Promise]:https://github.com/then/promise
 [ConnectionParameters]:https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js
+[Promises/A+]:https://promisesaplus.com/
+[Bluebird]:https://github.com/petkaantonov/bluebird
 
 # License
 
