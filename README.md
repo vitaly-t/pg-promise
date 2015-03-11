@@ -44,7 +44,7 @@ var pgp = pgpLib(/*options*/);
 ```
 You can pass additional `options` parameter when initializing the library (see chapter [Initialization Options](https://github.com/vitaly-t/pg-promise#initialization-options) for details).
 
-**NOTE:** Only one instance of such `pgp` object should exist throughout the application.
+**NOTE:** Only one instance of such `pgp` object can exist throughout the application.
 ### 3. Configure database connection
 Use one of the two ways to specify connection details:
 * Configuration Object:
@@ -306,7 +306,7 @@ As these helpers are not associated with any database, they can be used from any
 
 ### Initialization Options
 
-When initializing the library, one can pass object `options` with a set of properties
+When initializing the library, you can pass object `options` with a set of properties
 for global override of the library's behaviour:
 ```javascript
 var options = {
@@ -323,12 +323,12 @@ By default, **pg-promise** provides its own implementation of the query value fo
 using the standard syntax of $1, $2, etc.
 
 Any query request accepts values for the variable within query string as the second parameter.
-It accepts a simple single value for queries that use only one variable, as well as an array of simple values,
+It accepts a single simple value for queries that use only one variable, as well as an array of simple values,
 for queries with multiple variables in them.
 
 **pg-promise** implementation of query formatting supports only the basic javascript types: text, boolean, date, numeric and null.
 
-If instead you want to use query formatting that's implemented by the [PG] library, set parameter **pgFormatting**
+If, instead, you want to use query formatting that's implemented by the [PG] library, set parameter `pgFormatting`
 to be `true` when initializing the library, and every query formatting will redirect to the [PG]'s implementation.
 
 Although this has huge implication to the library's functionality, it is not within the scope of this project to detail.
