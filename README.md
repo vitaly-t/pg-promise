@@ -42,7 +42,7 @@ var pgpLib = require('pg-promise');
 // Initializing the library, with optional global settings:
 var pgp = pgpLib(/*options*/);
 ```
-You can pass additional `options` parameter when initializing the library (see chapter [Initialization Options](#initialization-options) for details).
+You can pass additional `options` parameter when initializing the library (see chapter [Initialization Options](#advanced) for details).
 
 **NOTE:** Only one instance of such `pgp` object can exist throughout the application.
 ### 3. Configure database connection
