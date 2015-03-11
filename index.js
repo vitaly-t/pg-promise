@@ -45,19 +45,25 @@ module.exports = function (options) {
     if (npm) {
         throw new Error('Cannot initialize the library more than once.');
     } else {
-        var promiseLib;
+        var pmCostructor;
         if (options && options.promiseLib) {
             if (typeof(options.promiseLib) === 'function') {
-                promiseLib = options.promiseLib;
+                // 'Promise' object is supported by libraries 'bluebird', 'when' and 'q',
+                // while our default 'promise' library uses its library function instead:
+                if (typeof(options.promiseLib.Promise) === 'function') {
+                    pmCostructor = options.promiseLib.Promise;
+                } else {
+                    pmCostructor = options.promiseLib;
+                }
             } else {
                 throw new Error('Invalid or unsupported promise library override.');
             }
         } else {
-            promiseLib = require('promise');
+            pmCostructor = require('promise');
         }
         npm = {
             pg: require('pg'),
-            promise: promiseLib
+            promise: pmCostructor
         };
     }
 
