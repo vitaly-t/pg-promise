@@ -318,6 +318,7 @@ var pgp = pgpLib(options);
 Below is the list of all such properties that are currently supported.
 
 `pgFormatting`
+
 ---
 
 By default, **pg-promise** provides its own implementation of the query value formatting,
@@ -339,6 +340,7 @@ For any further reference you should use documentation of the [PG] library.
 override. If needed, use the generic `query` instead to invoke functions with redirected query formatting.
 
 `promiseLib`
+
 ---
 
 Set this property to an alternative promise library compliant with the [Promises/A+] standard.
@@ -367,6 +369,7 @@ Compatibility with other [Promises/A+] libraries though possible, either hasn't 
 or failed our test.
 
 `connect`
+
 ---
 
 This property represents a global `connect` event handler: whenever a new connection has been established with the database,
@@ -385,6 +388,7 @@ The function takes only one parameter - `client` object from the [PG] library th
 with the database.
 
 `disconnect`
+
 ---
 
 This property represents a global `disconnect` event handler: whenever a connection is about to be released,
