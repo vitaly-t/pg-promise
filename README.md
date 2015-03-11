@@ -369,6 +369,7 @@ or failed our test.
 
 ---
 * `connect`
+
 Global notification function of acquiring a new database connection.
 ```javascript
 var options = {
@@ -385,6 +386,7 @@ with the database.
 
 ---
 * `disconnect`
+
 Global notification function of releasing a database connection.
 ```javascript
 var options = {
@@ -401,6 +403,7 @@ that's being released.
 
 ---
 * `query`
+
 Global notification of a query that's being executed.
 ```javascript
 var options = {
