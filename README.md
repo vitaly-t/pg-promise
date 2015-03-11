@@ -310,13 +310,15 @@ When initializing the library, you can pass object `options` with a set of prope
 for global override of the library's behaviour:
 ```javascript
 var options = {
-    // override properties;
+    // supported properties:
+    // pgFormatting, promiseLib, connect, disconnect, query
 };
 var pgp = pgpLib(options);
 ```
 
 Below is the list of all such properties that are currently supported.
 
+---
 * `pgFormatting`
 
 By default, **pg-promise** provides its own implementation of the query value formatting,
@@ -337,6 +339,7 @@ For any further reference you should use documentation of the [PG] library.
 **NOTE:** As of the current implementation, formatting parameters for calling functions (methods `func` and `proc`) is not affected by this
 override. If needed, use the generic `query` instead to invoke functions with redirected query formatting.
 
+---
 * `promiseLib`
 
 Set this property to an alternative promise library compliant with the [Promises/A+] standard.
@@ -364,10 +367,9 @@ var pgp = pgpLib(options);
 Compatibility with other [Promises/A+] libraries though possible, either hasn't been tested,
 or failed our test.
 
+---
 * `connect`
-
-This property represents a global `connect` event handler: whenever a new connection has been established with the database,
-this event function is called:
+Global notification function of acquiring a new database connection.
 ```javascript
 var options = {
     connect: function(client){
@@ -381,10 +383,9 @@ It can be used for diagnostics / connection monitoring within your application.
 The function takes only one parameter - `client` object from the [PG] library that represents connection
 with the database.
 
+---
 * `disconnect`
-
-This property represents a global `disconnect` event handler: whenever a connection is about to be released,
-this event function is called:
+Global notification function of releasing a database connection.
 ```javascript
 var options = {
     disconnect: function(client){
@@ -397,6 +398,26 @@ It can be used for diagnostics / connection monitoring within your application.
 
 The function takes only one parameter - `client` object from the [PG] library that represents the connection
 that's being released.
+
+---
+* `query`
+Global notification of a query that's being executed.
+```javascript
+var options = {
+    query: function(client, query, params){
+        console.log("Executing query: " + query);
+    }
+}
+```
+It can be useful for diagnostics / logging within your application.
+
+The function receives the following parameters:
+* `client` - object from the [PG] library that represents the connection;
+* `query` - query that's being executed;
+* `params` - `null` by default, it may contains query parameters, if `pgFormatting` was set to be `true`.
+
+Please note, that should you set property `pgFormatting` to be `true`, the library no longer formats
+the queries, and the `query` arrives pre-formatted. This is why extra parameter `params` was added.
 
 ### Library de-initialization
 When exiting your application, make the following call:
