@@ -11,7 +11,7 @@ Complete access layer to [PG] via [Promises/A+].
 
 * Full support of functions + transactions;
 * Declarative result handling for queries;
-* Choice of [Promises/A+] supported;
+* Choice of [Promises/A+] libraries;
 * Automatic database connections.
 
 # Installing
@@ -339,7 +339,7 @@ override. If needed, use the generic `query` instead to invoke functions with re
 
 ##### promiseLib
 
-Set this property to any promise library that's compliant with the [Promises/A+] standard.
+Set this property to an alternative promise library compliant with the [Promises/A+] standard.
 
 By default, **pg-promise** uses version of [Promises/A+] provided by [Promise]. If you want to override
 this and force the library to use a different implementation of the standard, just set this parameter
