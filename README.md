@@ -9,7 +9,7 @@ Complete access layer to [PG] through any [Promises/A+] library.
 
 <img align="right" width="190" height="190" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Pg-promise.jpg">
 
-* Functions + transactions fully supported;
+* Full support of functions + transactions;
 * Declarative result handling for queries;
 * Automatic database connections;
 * Streamlined database code structure.
@@ -334,7 +334,7 @@ to be `true` when initializing the library, and every query formatting will redi
 Although this has huge implication to the library's functionality, it is not within the scope of this project to detail.
 For any further reference you should use documentation of the [PG] library.
 
-**NOTE:** As of the current implementation, formatting parameters for calling functions is not affected by this
+**NOTE:** As of the current implementation, formatting parameters for calling functions (methods `func` and `proc`) is not affected by this
 override. If needed, use the generic `query` instead to invoke functions with redirected query formatting.
 
 ##### promiseLib
@@ -369,7 +369,7 @@ var options = {
     }
 }
 ```
-It can be used for any kind of diagnostics and/or connection monitoring within application.
+It can be used for any kind of diagnostics and/or connection monitoring within your application.
 
 The function takes only one parameter - `client` object from the [PG] library that represents connection
 with the database.
@@ -386,7 +386,7 @@ var options = {
     }
 }
 ```
-It can be used for any kind of diagnostics and/or connection monitoring within application.
+It can be used for any kind of diagnostics and/or connection monitoring within your application.
 
 The function takes only one parameter - `client` object from the [PG] library that represents the connection
 that's being released.
