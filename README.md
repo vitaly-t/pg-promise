@@ -310,13 +310,16 @@ When initializing the library, you can pass object `options` with a set of prope
 for global override of the library's behaviour:
 ```javascript
 var options = {
-    // supported properties:
-    // pgFormatting, promiseLib, connect, disconnect, query
+    // pgFormatting - redirects query formatting to PG;
+    // promiseLib - overrides default promise library;
+    // connect - database 'connect' notification;
+    // disconnect - database 'disconnect' notification;
+    // query - query execution notification.
 };
 var pgp = pgpLib(options);
 ```
 
-Below is the list of all such properties that are currently supported.
+Below is the list of all the properties that are currently supported.
 
 ---
 * `pgFormatting`
