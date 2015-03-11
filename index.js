@@ -37,26 +37,28 @@ queryResult = {
 //      - within 'pg-promise'.
 //
 //    promiseLib: null
-//      - Overrides the promise library instance to be used
-//        by the library.
+//      - Overrides the promise library instance used by
+//        the library.
 // }
 module.exports = function (options) {
 
     if (npm) {
         throw new Error('Cannot initialize the library more than once.');
     } else {
-        npm = {
-            pg: require('pg')
-        };
+        var promiseLib;
         if (options && options.promiseLib) {
             if (typeof(options.promiseLib) === 'function') {
-                npm.promise = options.promiseLib;
+                promiseLib = options.promiseLib;
             } else {
                 throw new Error('Invalid or unsupported promise library override.');
             }
         } else {
-            npm.promise = require('promise');
+            promiseLib = require('promise');
         }
+        npm = {
+            pg: require('pg'),
+            promise: promiseLib
+        };
     }
 
     var lib = function (cn) {

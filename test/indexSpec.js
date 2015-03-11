@@ -1,23 +1,34 @@
-var pgpLib = require('../index')
+var pgpLib = require('../index');
+var pgp = pgpLib(); // initializing the library;
 
 describe("Library entry object", function () {
+
     it("must be a function", function () {
         expect(typeof(pgpLib)).toBe('function');
     });
+
 });
 
-var pgp = pgpLib(); // initializing the library;
-
 describe("Library initialization object", function () {
+
+    it("can be created only once", function () {
+        expect(function(){
+            pgpLib();
+        }).toThrow('Cannot initialize the library more than once.');
+    });
+
     it("must be a function", function () {
         expect(typeof(pgp)).toBe('function');
     });
+
     it("must have property 'pg'", function () {
         expect(typeof(pgp.pg)).toBe('object');
     });
+
     it("must have function 'end'", function () {
         expect(typeof(pgp.end)).toBe('function');
     });
+
     it("must have valid property 'as'", function () {
         expect(typeof(pgp.as)).toBe('object');
         expect(typeof(pgp.as.text)).toBe('function');
