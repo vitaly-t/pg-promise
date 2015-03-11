@@ -20,11 +20,11 @@ $ npm install pg-promise
 ```
 
 # Testing
-* install project's dependencies:
+* Install project's dependencies
 ```
 $ npm install
 ```
-* run tests:
+* Run tests
 ```
 $ make test
 ```
@@ -42,7 +42,7 @@ var pgpLib = require('pg-promise');
 // Initializing the library, with optional global settings:
 var pgp = pgpLib(/*options*/);
 ```
-You can pass additional `options` parameter when initializing the library (see chapter **Advanced** for details).
+You can pass additional `options` parameter when initializing the library (see chapter [Initialization Options]https://github.com/vitaly-t/pg-promise#initialization-options).
 
 **NOTE:** Only one instance of such `pgp` object should exist throughout the application.
 ### 3. Configure database connection
