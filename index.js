@@ -8,10 +8,10 @@ var npm; // dynamic package namespace;
 //
 // Any combination is supported, except for one + many.
 queryResult = {
-    one: 1,     // single-row result is expected;
-    many: 2,    // multi-row result is expected;
-    none: 4,    // no rows expected;
-    any: 6      // (default) = many|none = any result.
+    one:    1,  // single-row result is expected;
+    many:   2,  // multi-row result is expected;
+    none:   4,  // no rows expected;
+    any:    6   // (default) = many|none = any result.
 };
 
 ////////////////////////////////////////////////
@@ -23,22 +23,22 @@ queryResult = {
 // {
 //    connect: function(client){
 //        client has connected;
-//        client - pg connection object.
 //    },
 //
 //    disconnect: function(client){
 //        client is disconnecting;
-//        client - pg connection object.
+//    },
+//
+//    query: function(client, query, params){
+//        query is executing;
 //    },
 //
 //    pgFormatting: false,
 //      - Redirects query formatting into PG library;
-//      - Default is false, and all queries are formatted
-//      - within 'pg-promise'.
+//      - Default is false, and all queries are formatted within 'pg-promise'.
 //
 //    promiseLib: null
-//      - Overrides the promise library instance used by
-//        the library.
+//      - Overrides the promise library instance used by the library.
 // }
 module.exports = function (options) {
 
