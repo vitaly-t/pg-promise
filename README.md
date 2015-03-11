@@ -364,8 +364,7 @@ var pgp = pgpLib(options);
 * [When]
 * [Q]
 
-Compatibility with other [Promises/A+] libraries though possible, either hasn't been tested,
-or failed our test.
+Compatibility with other [Promises/A+] libraries though possible, is an unknown.
 
 ---
 * `connect`
@@ -431,6 +430,7 @@ This will release pg connection pool globally and make sure that the process ter
 If you do not call it, your process may be waiting for 30 seconds (default) or so, waiting for the pg connection pool to expire.
 
 # History
+* Version 0.5.1 included wider support for alternative promise libraries. Released: March 12, 2015.
 * Version 0.5.0 introduces many new features and fixes, such as properties **pgFormatting** and **promiseLib**. Released on March 11, 2015.
 * Version 0.4.9 represents a solid code base, backed up by comprehensive testing. Released on March 10, 2015.
 * Version 0.4.0 is a complete rewrite of most of the library, made first available on March 8, 2015.
