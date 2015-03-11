@@ -319,8 +319,6 @@ Below is the list of all such properties that are currently supported.
 
 * `pgFormatting`
 
----
-
 By default, **pg-promise** provides its own implementation of the query value formatting,
 using the standard syntax of $1, $2, etc.
 
@@ -341,8 +339,6 @@ override. If needed, use the generic `query` instead to invoke functions with re
 
 * `promiseLib`
 
----
-
 Set this property to an alternative promise library compliant with the [Promises/A+] standard.
 
 By default, **pg-promise** uses version of [Promises/A+] provided by [Promise]. If you want to override
@@ -360,17 +356,15 @@ var pgp = pgpLib(options);
 
 [Promises/A+] libraries that passed our compatibility test and are currently supported:
 
-* Promise (used by default)
-* Bluebird
-* When
-* Q
+* [Promise] (used by default)
+* [Bluebird]
+* [When]
+* [Q]
 
 Compatibility with other [Promises/A+] libraries though possible, either hasn't been tested,
 or failed our test.
 
 * `connect`
-
----
 
 This property represents a global `connect` event handler: whenever a new connection has been established with the database,
 this event function is called:
@@ -388,8 +382,6 @@ The function takes only one parameter - `client` object from the [PG] library th
 with the database.
 
 * `disconnect`
-
----
 
 This property represents a global `disconnect` event handler: whenever a connection is about to be released,
 this event function is called:
