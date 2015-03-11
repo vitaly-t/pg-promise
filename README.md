@@ -317,7 +317,7 @@ var pgp = pgpLib(options);
 
 Below is the list of all such properties that are currently supported.
 
-`pgFormatting`
+* `pgFormatting`
 
 ---
 
@@ -339,7 +339,7 @@ For any further reference you should use documentation of the [PG] library.
 **NOTE:** As of the current implementation, formatting parameters for calling functions (methods `func` and `proc`) is not affected by this
 override. If needed, use the generic `query` instead to invoke functions with redirected query formatting.
 
-`promiseLib`
+* `promiseLib`
 
 ---
 
@@ -368,7 +368,7 @@ var pgp = pgpLib(options);
 Compatibility with other [Promises/A+] libraries though possible, either hasn't been tested,
 or failed our test.
 
-`connect`
+* `connect`
 
 ---
 
@@ -387,7 +387,7 @@ It can be used for diagnostics / connection monitoring within your application.
 The function takes only one parameter - `client` object from the [PG] library that represents connection
 with the database.
 
-`disconnect`
+* `disconnect`
 
 ---
 
