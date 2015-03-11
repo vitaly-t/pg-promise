@@ -11,7 +11,7 @@ Complete access layer to [PG] via [Promises/A+].
 
 * Full support of functions + transactions;
 * Declarative result handling for queries;
-* Use your favourite [Promises/A+] library;
+* Choice of [Promises/A+] supported;
 * Automatic database connections.
 
 # Installing
