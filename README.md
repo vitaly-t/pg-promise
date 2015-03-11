@@ -11,6 +11,7 @@ Complete access layer to [PG] through any [Promises/A+] library.
 
 * Full support of functions + transactions;
 * Declarative result handling for queries;
+* Use your favourite [Promises/A+] library;
 * Automatic database connections;
 * Streamlined database code structure.
 
@@ -20,7 +21,7 @@ $ npm install pg-promise
 ```
 
 # Testing
-* Install project's dependencies
+* Install project dependencies
 ```
 $ npm install
 ```
