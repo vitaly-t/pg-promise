@@ -317,7 +317,8 @@ var pgp = pgpLib(options);
 
 Below is the list of all such properties that are currently supported.
 
-##### pgFormatting
+`pgFormatting`
+---
 
 By default, **pg-promise** provides its own implementation of the query value formatting,
 using the standard syntax of $1, $2, etc.
@@ -337,7 +338,8 @@ For any further reference you should use documentation of the [PG] library.
 **NOTE:** As of the current implementation, formatting parameters for calling functions (methods `func` and `proc`) is not affected by this
 override. If needed, use the generic `query` instead to invoke functions with redirected query formatting.
 
-##### promiseLib
+`promiseLib`
+---
 
 Set this property to an alternative promise library compliant with the [Promises/A+] standard.
 
@@ -354,10 +356,18 @@ var options = {
 var pgp = pgpLib(options);
 ```
 
-As of this writing, [Bluebird] is the only alternative [Promises/A+] library that **pg-promise**
-has been tested against. Compatibility with other [Promises/A+] though expected, hasn't been tested, and thus unknown.
+[Promises/A+] libraries that passed our compatibility test and are currently supported:
 
-##### connect
+* Promise (used by default)
+* Bluebird
+* When
+* Q
+
+Compatibility with other [Promises/A+] libraries though possible, either hasn't been tested,
+or failed our test.
+
+`connect`
+---
 
 This property represents a global `connect` event handler: whenever a new connection has been established with the database,
 this event function is called:
@@ -374,7 +384,8 @@ It can be used for diagnostics / connection monitoring within your application.
 The function takes only one parameter - `client` object from the [PG] library that represents connection
 with the database.
 
-##### disconnect
+`disconnect`
+---
 
 This property represents a global `disconnect` event handler: whenever a connection is about to be released,
 this event function is called:
@@ -410,10 +421,12 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 * The first draft v0.0.1 was published on March 3rd, 2015, and then rapidly incremented due to many initial changes that had to come in, mostly documentation.
 
 [PG]:https://github.com/brianc/node-postgres
-[Promise]:https://github.com/then/promise
 [ConnectionParameters]:https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js
 [Promises/A+]:https://promisesaplus.com/
+[Promise]:https://github.com/then/promise
 [Bluebird]:https://github.com/petkaantonov/bluebird
+[When]:https://github.com/cujojs/when
+[Q]:https://github.com/kriskowal/q
 
 # License
 
