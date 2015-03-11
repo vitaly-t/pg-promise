@@ -1,7 +1,7 @@
 pg-promise
 ===========
 
-Complete access layer to [PG] through any [Promises/A+] library.
+Complete access layer to [PG] with any [Promises/A+] library.
 
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
 
@@ -12,8 +12,7 @@ Complete access layer to [PG] through any [Promises/A+] library.
 * Full support of functions + transactions;
 * Declarative result handling for queries;
 * Use your favourite [Promises/A+] library;
-* Automatic database connections;
-* Streamlined database code structure.
+* Automatic database connections.
 
 # Installing
 ```
@@ -370,7 +369,7 @@ var options = {
     }
 }
 ```
-It can be used for any kind of diagnostics and/or connection monitoring within your application.
+It can be used for diagnostics / connection monitoring within your application.
 
 The function takes only one parameter - `client` object from the [PG] library that represents connection
 with the database.
@@ -387,12 +386,12 @@ var options = {
     }
 }
 ```
-It can be used for any kind of diagnostics and/or connection monitoring within your application.
+It can be used for diagnostics / connection monitoring within your application.
 
 The function takes only one parameter - `client` object from the [PG] library that represents the connection
 that's being released.
 
-### Library De-initialization
+### Library de-initialization
 When exiting your application, make the following call:
 ```javascript
 pgp.end();
