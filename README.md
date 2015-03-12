@@ -9,10 +9,10 @@ Complete access layer to [PG] via [Promises/A+].
 
 <img align="right" width="190" height="190" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Pg-promise.jpg">
 
-* Full support of functions + transactions;
-* Declarative result handling for queries;
-* Choice of [Promises/A+] libraries;
-* Automatic database connections.
+* Supporting [Promise], [Bluebird], [When] and [Q];
+* Transactions, functions, flexible query formatting;
+* Automatic database connections;
+* Strict query result filters.
 
 # Installing
 ```

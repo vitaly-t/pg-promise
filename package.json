@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "PG + Promises/A+, with transactions support.",
   "main": "index.js",
   "scripts": {
@@ -17,9 +17,9 @@
   "keywords": [
     "pg",
     "promise",
-    "promises-aplus",
     "transaction",
-    "postgres"
+    "postgres",
+    "promises-aplus"
   ],
   "author": {
     "name": "Vitaly Tomilov",
