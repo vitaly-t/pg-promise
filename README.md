@@ -138,7 +138,7 @@ Transactions can be executed within both shared and detached call chains in the 
 ###### Example of a detached transaction:
 
 ```javascript
-var promise = require('promise');
+var promise = require('promise'); // or any other supported promise library;
 db.tx(function(ctx){
 
     // creating a sequence of transaction queries:
@@ -161,7 +161,7 @@ same as parameter ```sco``` from opening a shared connection, so either one can 
 
 ###### Shared-connection transaction:
 ```javascript
-var promise = require('promise');
+var promise = require('promise'); // or any other supported promise library;
 var sco; // shared connection object;
 db.connect()
     .then(function(obj){
