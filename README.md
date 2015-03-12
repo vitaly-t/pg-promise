@@ -205,7 +205,7 @@ function query(query, values, qrm);
 * `qrm` - (optional) Query Result Mask, as explained below...
 
 In order to eliminate the chances of unexpected query results and make code more robust, each request supports parameter `qrm`
-(Query Request Mask), via type `queryResult`:
+(Query Result Mask), via type `queryResult`:
 ```javascript
 ///////////////////////////////////////////////////////
 // Query Result Mask flags;
@@ -272,7 +272,7 @@ db.func('findAudit', [123, new Date()])
 We passed it **user id** = 123, plus current Date/Time as the timestamp. We assume that the function signature matches the parameters that we passed.
 All values passed are serialized automatically to comply with PostgreSQL type formats.
 
-Method `func` accepts optional third parameter - `qrm` (Query Request Mask), the same as method `query`.
+Method `func` accepts optional third parameter - `qrm` (Query Result Mask), the same as method `query`.
 
 And when you are not expecting any return results, call `db.proc` instead. Both methods return a [Promise] object,
 but `db.proc` doesn't take a `qrm` parameter, always assuming it is `one`|`none`.
