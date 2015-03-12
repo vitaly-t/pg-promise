@@ -8,10 +8,10 @@ var npm; // dynamic package namespace;
 //
 // Any combination is supported, except for one + many.
 queryResult = {
-    one:    1,  // single-row result is expected;
-    many:   2,  // multi-row result is expected;
-    none:   4,  // no rows expected;
-    any:    6   // (default) = many|none = any result.
+    one: 1,  // single-row result is expected;
+    many: 2,  // multi-row result is expected;
+    none: 4,  // no rows expected;
+    any: 6   // (default) = many|none = any result.
 };
 
 ////////////////////////////////////////////////
@@ -47,9 +47,10 @@ module.exports = function (options) {
     } else {
         var pmCostructor;
         if (options && options.promiseLib) {
-            if (typeof(options.promiseLib) === 'function') {
-                // 'Promise' object is supported by libraries 'bluebird', 'when' and 'q',
-                // while our default 'promise' library uses its library function instead:
+            var t = typeof(options.promiseLib);
+            if (t === 'function' || t === 'object') {
+                // 'Promise' object is supported by libraries 'bluebird', 'when', 'q', 'lie' and 'rsvp',
+                // except by our default 'promise' library, which uses its library function instead:
                 if (typeof(options.promiseLib.Promise) === 'function') {
                     pmCostructor = options.promiseLib.Promise;
                 } else {
