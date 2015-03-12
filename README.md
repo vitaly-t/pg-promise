@@ -9,7 +9,7 @@ Complete access layer to [PG] via [Promises/A+].
 
 <img align="right" width="190" height="190" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Pg-promise.jpg">
 
-* Supporting [Promise], [Bluebird], [When] and [Q];
+* Supporting [Promise], [Bluebird], [When], [Q], etc.
 * Transactions, functions, flexible query formatting;
 * Automatic database connections;
 * Strict query result filters.
@@ -362,9 +362,10 @@ var pgp = pgpLib(options);
 
 [Promises/A+] libraries that passed our compatibility test and are currently supported:
 
-* [Promise] (used by default)
+* [Promise] - used by default
 * [Bluebird]
 * [When]
+* [RSVP] - uses `finally()` instead of `done()`
 * [Q]
 
 Compatibility with other [Promises/A+] libraries though possible, is an unknown.
@@ -450,6 +451,7 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 [Bluebird]:https://github.com/petkaantonov/bluebird
 [When]:https://github.com/cujojs/when
 [Q]:https://github.com/kriskowal/q
+[RSVP]:https://github.com/tildeio/rsvp.js
 
 # License
 
