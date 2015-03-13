@@ -2,3 +2,7 @@ language: node_js
 node_js:
    - "0.12"
    - "0.10"
+addons:
+  postgresql: "9.3"
+before_script:
+  - psql -c 'create database pg_promise_test;' -U postgres
