@@ -80,7 +80,7 @@ Choosing which one you want depends on the situation and personal preferences.
 Queries in a detached chain maintain connection independently, they each would acquire a connection from the pool,
 execute the query and then release the connection.
 ```javascript
-db.query("select * from users where id=$1", 123) // find the user from id;
+db.one("select * from users where id=$1", 123) // find the user from id;
     .then(function(data){
         // find 'login' records for the user found:
         return db.query("select * from audit where event=$1 and userId=$2", ["login", data.id]);
@@ -224,10 +224,9 @@ db.query("select * from users");
 which is equivalent to calling either one of the following:
 ```javascript
 db.query("select * from users", null, queryResult.many | queryResult.none);
-// or
 db.query("select * from users", null, queryResult.any);
-// or:
 db.manyOrNone("select * from users");
+db.any("select * from users");
 ```
 This usage pattern is facilitated through result-specific methods that can be used instead of the generic query:
 ```javascript
