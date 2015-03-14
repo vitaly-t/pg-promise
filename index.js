@@ -45,11 +45,12 @@ queryResult = {
 module.exports = function (options) {
 
     if (options && options.promiseLib) {
+        // alternative promise library specified;
         var lib = options.promiseLib;
         var t = typeof(lib);
         if (t === 'function' || t === 'object') {
-            // 'Promise' object is supported by libraries 'bluebird', 'when', 'q', 'lie' and 'rsvp',
-            // except by our default 'promise' library, which uses its library function instead:
+            // 'Promise' object is supported by libraries: bluebird, when, q, lie, rsvp.
+            // And our default library 'promise' uses its main function instead:
             if (typeof(lib.Promise) === 'function') {
                 npm.promise = lib.Promise;
             } else {
@@ -60,12 +61,13 @@ module.exports = function (options) {
         }
     } else {
         if (!npm.promise) {
-            npm.promise = require('promise');
+            npm.promise = require('promise'); // 'promise' is the default library;
         }
     }
 
     var inst = function (cn) {
         if (!cn) {
+            // Cannot instantiate a database with an empty connection;
             throw new Error("Invalid 'cn' parameter passed.");
         }
         return dbInit(cn, options);
@@ -85,12 +87,13 @@ module.exports = function (options) {
     return inst;
 };
 
+// Initializes a database object;
 function dbInit(cn, options) {
 
     var dbInst = {};
 
-    // Returns detached connection instance to allow
-    // chaining queries under the same connection.
+    // Returns a detached connection instance to allow
+    // chaining queries under the same connection;
     dbInst.connect = function () {
         var db;
         var self = {
@@ -112,7 +115,7 @@ function dbInit(cn, options) {
             tx: function (cb) {
                 return $transact(self, cb);
             }
-        }
+        };
         $extendProtocol(self);
         return $connect(cn)
             .then(function (obj) {
@@ -129,7 +132,6 @@ function dbInit(cn, options) {
     };
 
 
-    //////////////////////////////////////////////////////////////
     // Generic query request;
     // qrm is Query Result Mask, combination of queryResult flags.
     dbInst.query = function (query, values, qrm) {
@@ -309,9 +311,9 @@ var $wrap = {
         }
     },
     // Formats query - parameter using the values passed (simple value or array of simple values);
-    // The main reason for exposing this to the client is to make the parser part of auto-testing.
-    // The query can contain variables $1, $2, etc, and values is either one simple value or
-    // an array of simple values, such as: text, boolean, date, numeric, null.
+    // The main reason for exposing this to the client is to include the parser into the test.
+    // The query can contain variables $1, $2, etc, and 'values' is either one simple value or
+    // an array of simple values, such as: text, boolean, date, numeric or null.
     format: function (query, values) {
         return $formatValues(query, values);
     }
@@ -322,9 +324,8 @@ function $createFuncQuery(funcName, values) {
     return 'select * from ' + funcName + '(' + $formatParams(values) + ');';
 }
 
-// Parses query for $1, $2,... variables and
-// replaces them with the values passed.
-// values can be an array of simple values, or just one value.
+// Parses query for $1, $2,... variables and replaces them with the values passed.
+// 'values' can be an array of simple values, or just one simple value.
 function $formatValues(query, values) {
     var q = query;
     var result = {
@@ -377,7 +378,7 @@ function $formatValues(query, values) {
     return result;
 }
 
-// Generic, static query call for the specified connection + query + result.
+// Generic, static query call;
 function $query(client, query, values, qrm, options) {
     return $p(function (resolve, reject) {
         if ($isNull(qrm)) {
@@ -388,7 +389,7 @@ function $query(client, query, values, qrm, options) {
             errMsg = "Invalid query specified.";
         } else {
             var badMask = queryResult.one | queryResult.many;
-            if (!qrm || (qrm & badMask) === badMask || qrm < 1 || qrm > 6) {
+            if ((qrm & badMask) === badMask || qrm < 1 || qrm > 6) {
                 errMsg = "Invalid Query Result Mask specified.";
             } else {
                 if (pgFormatting) {
@@ -466,7 +467,7 @@ function $connect(cn) {
             }
         });
     });
-};
+}
 
 // Injects additional methods into an access object.
 function $extendProtocol(obj) {
@@ -491,8 +492,13 @@ function $extendProtocol(obj) {
         return obj.query(query, values, queryResult.one | queryResult.none);
     };
 
-    // Expects any kind of return data;
+    // Expects any kind of return data (same as method 'any');
     obj.manyOrNone = function (query, values) {
+        return obj.query(query, values, queryResult.many | queryResult.none);
+    };
+
+    // Expects any kind of return data (same as method 'manyOrNone');
+    obj.any = function (query, values) {
         return obj.query(query, values, queryResult.many | queryResult.none);
     };
 
@@ -510,6 +516,7 @@ function $extendProtocol(obj) {
     };
 }
 
+// Implements a transaction logic;
 function $transact(obj, cb) {
     function invoke() {
         if (typeof(cb) !== 'function') {
@@ -530,18 +537,18 @@ function $transact(obj, cb) {
 
     var t_data, t_reason, success;
     return $p(function (resolve, reject) {
-        obj.query('begin')
+        obj.query('begin') // BEGIN;
             .then(function () {
-                invoke()
+                invoke() // Callback;
                     .then(function (data) {
                         t_data = data;
                         success = true;
-                        return obj.query('commit');
+                        return obj.query('commit'); // COMMIT;
                     }, function (reason) {
-                        // transaction callback failed;
+                        // callback failed;
                         t_reason = reason;
                         success = false;
-                        return obj.query('rollback');
+                        return obj.query('rollback'); // ROLLBACK;
                     })
                     .then(function () {
                         if (success) {
@@ -553,7 +560,7 @@ function $transact(obj, cb) {
                         reject(reason);
                     });
             }, function (reason) {
-                // 'begin' failed;
+                // BEGIN failed;
                 reject(reason);
             });
     });
