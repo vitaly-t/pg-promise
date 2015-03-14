@@ -5,8 +5,7 @@ Complete access layer to [PG] via [Promises/A+].
 
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
 
-# Features
-
+---
 <img align="right" width="190" height="190" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Pg-promise.jpg">
 
 * Supporting [Promise], [Bluebird], [When], [Q], etc.
