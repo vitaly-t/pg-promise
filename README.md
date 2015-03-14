@@ -363,8 +363,10 @@ var pgp = pgpLib(options);
 * [Promise] - used by default
 * [Bluebird]
 * [When]
-* [RSVP] - uses `finally()` instead of `done()`
 * [Q]
+* [RSVP] - doesn't have `done()`, use `finally/catch` instead
+* [Lie] - doesn't have `done()`
+
 
 Compatibility with other [Promises/A+] libraries though possible, is an unknown.
 
@@ -432,6 +434,7 @@ This will release pg connection pool globally and make sure that the process ter
 If you do not call it, your process may be waiting for 30 seconds (default) or so, waiting for the pg connection pool to expire.
 
 # History
+* Version 0.5.3 - minor changes; March 14, 2015.
 * Version 0.5.1 included wider support for alternative promise libraries. Released: March 12, 2015.
 * Version 0.5.0 introduces many new features and fixes, such as properties **pgFormatting** and **promiseLib**. Released on March 11, 2015.
 * Version 0.4.9 represents a solid code base, backed up by comprehensive testing. Released on March 10, 2015.
@@ -450,6 +453,7 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 [When]:https://github.com/cujojs/when
 [Q]:https://github.com/kriskowal/q
 [RSVP]:https://github.com/tildeio/rsvp.js
+[Lie]:https://github.com/calvinmetcalf/lie
 
 # License
 
