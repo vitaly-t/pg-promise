@@ -44,7 +44,6 @@ var pgp = pgpLib(/*options*/);
 ```
 You can pass additional `options` parameter when initializing the library (see chapter [Initialization Options](#advanced) for details).
 
-**NOTE:** Only one instance of such `pgp` object can exist throughout the application.
 ### 3. Configure database connection
 Use one of the two ways to specify connection details:
 * Configuration Object:

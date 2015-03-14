@@ -1,7 +1,9 @@
 // Cannot declare 'use strict' here, because queryResult
 // needs to be exported into the global namespace.
 
-var npm; // dynamic package namespace;
+var npm = {
+    pg: require('pg')
+};
 
 ///////////////////////////////////////////////////////
 // Query Result Mask flags;
@@ -42,33 +44,27 @@ queryResult = {
 // }
 module.exports = function (options) {
 
-    if (npm) {
-        throw new Error('Cannot initialize the library more than once.');
-    } else {
-        var pmCostructor;
-        if (options && options.promiseLib) {
-            var t = typeof(options.promiseLib);
-            if (t === 'function' || t === 'object') {
-                // 'Promise' object is supported by libraries 'bluebird', 'when', 'q', 'lie' and 'rsvp',
-                // except by our default 'promise' library, which uses its library function instead:
-                if (typeof(options.promiseLib.Promise) === 'function') {
-                    pmCostructor = options.promiseLib.Promise;
-                } else {
-                    pmCostructor = options.promiseLib;
-                }
+    if (options && options.promiseLib) {
+        var lib = options.promiseLib;
+        var t = typeof(lib);
+        if (t === 'function' || t === 'object') {
+            // 'Promise' object is supported by libraries 'bluebird', 'when', 'q', 'lie' and 'rsvp',
+            // except by our default 'promise' library, which uses its library function instead:
+            if (typeof(lib.Promise) === 'function') {
+                npm.promise = lib.Promise;
             } else {
-                throw new Error('Invalid or unsupported promise library override.');
+                npm.promise = lib;
             }
         } else {
-            pmCostructor = require('promise');
+            throw new Error('Invalid or unsupported promise library override.');
         }
-        npm = {
-            pg: require('pg'),
-            promise: pmCostructor
-        };
+    } else {
+        if (!npm.promise) {
+            npm.promise = require('promise');
+        }
     }
 
-    var lib = function (cn) {
+    var inst = function (cn) {
         if (!cn) {
             throw new Error("Invalid 'cn' parameter passed.");
         }
@@ -76,17 +72,17 @@ module.exports = function (options) {
     };
 
     // Namespace for type conversion helpers;
-    lib.as = $wrap;
+    inst.as = $wrap;
 
     // Exposing PG library instance, just for flexibility.
-    lib.pg = npm.pg;
+    inst.pg = npm.pg;
 
     // Terminates pg library; call it when exiting the application.
-    lib.end = function () {
+    inst.end = function () {
         npm.pg.end();
     };
 
-    return lib;
+    return inst;
 };
 
 function dbInit(cn, options) {

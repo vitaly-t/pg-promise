@@ -11,12 +11,6 @@ describe("Library entry object", function () {
 
 describe("Library initialization object", function () {
 
-    it("can be created only once", function () {
-        expect(function(){
-            pgpLib();
-        }).toThrow('Cannot initialize the library more than once.');
-    });
-
     it("must be a function", function () {
         expect(typeof(pgp)).toBe('function');
     });
@@ -229,27 +223,5 @@ describe("Type conversion in pgp.as", function () {
         expect(q.success).toBe(false);
         expect(q.error).toBe("Cannot convert parameter with index 1");
 
-    });
-});
-
-describe("Connecting to DB with an invalid connection string", function () {
-    it("must fail gracefully on authentication", function () {
-        db.connect().then(function (db) {
-            this.fail("Unexpected successful connection");
-        }, function (reason) {
-            expect(typeof(reason)).toBe('object');
-            expect(reason.routine).toBe('auth_failed');
-        });
-    });
-});
-
-describe("Creating a transaction for DB with an invalid connection string", function () {
-    it("must fail gracefully on authentication", function () {
-        db.tx().then(function (ctx) {
-            this.fail("Unexpected successful transaction");
-        }, function (reason) {
-            expect(typeof(reason)).toBe('object');
-            expect(reason.routine).toBe('auth_failed');
-        });
     });
 });
