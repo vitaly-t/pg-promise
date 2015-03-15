@@ -75,9 +75,9 @@ You are now ready to make queries against the database.
 The library supports promise-chaining queries on shared and detached connections.
 Choosing which one you want depends on the situation and personal preferences.
 
-### Detached Chaining
+### Detached Connections
 
-Queries in a detached promise chain maintain connection independently, they each would acquire a connection from the pool,
+Queries in a detached promise chain maintain connection independently, they each acquire a connection from the pool,
 execute the query and then release the connection.
 ```javascript
 db.one("select * from users where id=$1", 123) // find the user from id;
@@ -96,9 +96,9 @@ In a situation where only one request is to be made against the database, a deta
 And even if you intend to execute multiple queries in a chain, keep in mind that even though each will use its own connection,
 such will be used from a connection pool, so effectively you end up with the same connection, without any performance penalty.
 
-### Shared Chaining
+### Shared Connections
 
-A promise chain with shared connection always starts with ```connect()```, which allocates a connection that's shared with all the
+A promise chain with a shared connection always starts with ```connect()```, which allocates a connection that's shared with all the
 query requests down the chain. The connection must be released when no longer needed.
 
 ```javascript
@@ -120,9 +120,9 @@ db.connect()
         }
     });
 ```
-Shared chaining is for those who want absolute control over connection, either because they want to execute lots of queries in one go,
+Shared-connection chaining is for those who want absolute control over connection, either because they want to execute lots of queries in one go,
 or because they like squeezing every bit of performance out of their code. Other than, the author hasn't seen any real performance difference
-from the detached chaining.
+from the detached-connection chaining.
 
 ### Transactions
 
