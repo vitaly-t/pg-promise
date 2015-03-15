@@ -72,12 +72,12 @@ You are now ready to make queries against the database.
 
 # Usage
 
-The library supports chaining queries on shared and detached connections.
+The library supports promise-chaining queries on shared and detached connections.
 Choosing which one you want depends on the situation and personal preferences.
 
 ### Detached Chaining
 
-Queries in a detached chain maintain connection independently, they each would acquire a connection from the pool,
+Queries in a detached promise chain maintain connection independently, they each would acquire a connection from the pool,
 execute the query and then release the connection.
 ```javascript
 db.one("select * from users where id=$1", 123) // find the user from id;
@@ -94,11 +94,13 @@ db.one("select * from users where id=$1", 123) // find the user from id;
 ```
 In a situation where only one request is to be made against the database, a detached chain is the only one that makes sense.
 And even if you intend to execute multiple queries in a chain, keep in mind that even though each will use its own connection,
-such will be used from a connection pool, so effectively you end up with the same connection, without much of a performance penalty.
+such will be used from a connection pool, so effectively you end up with the same connection, without any performance penalty.
 
 ### Shared Chaining
 
-A chain with shared connection always starts with ```connect()```, and the connection must be released when no longer needed.
+A promise chain with shared connection always starts with ```connect()```, which allocates a connection that's shared with all the
+query requests down the chain. The connection must be released when no longer needed.
+
 ```javascript
 var sco; // shared connection object;
 db.connect()
@@ -124,13 +126,13 @@ from the detached chaining.
 
 ### Transactions
 
-Transactions can be executed within both shared and detached call chains in the same way, performing the following actions:
+Transactions can be executed within both shared and detached promise chains in the same way, performing the following actions:
 
-1. Acquires a new connection (detached transactions only);
-2. Executes ```BEGIN``` command;
+1. Acquires a new connection (detached chains only);
+2. Executes `BEGIN` command;
 3. Invokes your callback function with the connection object;
-4. Executes ```COMMIT```, if the callback resolves, or ```ROLLBACK```, if the callback rejects;
-5. Releases the connection (detached transactions only);
+4. Executes `COMMIT`, if the callback resolves, or `ROLLBACK`, if the callback rejects;
+5. Releases the connection (detached chains only);
 6. Resolves with the callback result, if success; rejects with the reason, if failed.
 
 ###### Example of a detached transaction:
@@ -152,10 +154,10 @@ db.tx(function(ctx){
     console.log(reason); // printing the reason why the transaction was rejected
 });
 ```
-A detached transaction acquires a connection and exposes object ```ctx``` to let all containing queries execute on the same connection.
+A detached transaction acquires a connection and exposes object `ctx` to let all containing queries execute on the same connection.
 
-And when executing a transaction within a shared connection chain, the only thing that changes is that parameter ```ctx``` becomes the
-same as parameter ```sco``` from opening a shared connection, so either one can be used inside such a transaction interchangeably.
+And when executing a transaction within a shared connection chain, the only thing that changes is that parameter `ctx` becomes the
+same as parameter `sco` from opening a shared connection, so either one can be used inside such a transaction interchangeably.
 
 ###### Shared-connection transaction:
 ```javascript
@@ -192,14 +194,12 @@ As stated earlier, choosing a shared chain over a detached one is mostly a matte
 
 ### Queries and Parameters
 
-When a new connection is created within a shared or detached chain, the same query protocol is injected into each connection context.
-
-The key method is `query`, that's defined as shown below:
+Every connection context of the library shares the same query protocol, starting with generic method `query`, that's defined as shown below:
 ```javascript
 function query(query, values, qrm);
 ```
-* `query` (required) - is the query string that supports standard variables formatting, using $1, $2, ...etc;
-* `values` (optional) - either a simple value or an array of simple values, to replace the variables in the query;
+* `query` (required) - query string that supports standard variables formatting, using $1, $2, ...etc;
+* `values` (optional) - simple value or an array of simple values to replace the query variables;
 * `qrm` - (optional) Query Result Mask, as explained below...
 
 In order to eliminate the chances of unexpected query results and make code more robust, each request supports parameter `qrm`
@@ -230,13 +230,13 @@ db.any("select * from users");
 ```
 This usage pattern is facilitated through result-specific methods that can be used instead of the generic query:
 ```javascript
-db.many("select * from users"); // one or more records are expected
-db.one("select * from users limit 1"); // one record is expected
-db.none("update users set active=$1 where id=$2", [true, 123]); // no records expected
+db.many(query, values); // expects one or more rows
+db.one(query, values); // expects single row
+db.none(query, values); // expects no rows
+db.any(query, values); // expects anything, same as `manyOrNone`
+db.oneOrNone(query, values); // expects 1 or 0 rows
+db.manyOrNone(query, values); // expects anything, same as `any`
 ```
-The mixed-result methods are:
-* ```oneOrNone``` - expects 1 or 0 rows to be returned;
-* ```manyOrNone``` - any number of rows can be returned, including 0.
 
 Each query function resolves its **data** object according to the `qrm` that was used:
 * `none` - **data** is `null`. If the query returns any kind of data, it is rejected.
@@ -274,6 +274,12 @@ Method `func` accepts optional third parameter - `qrm` (Query Result Mask), the 
 And when you are not expecting any return results, call `db.proc` instead. Both methods return a [Promise] object,
 but `db.proc` doesn't take a `qrm` parameter, always assuming it is `one`|`none`.
 
+Summary for supporting procedures and functions:
+```javascript
+db.func(query, values, qrm); // expects the result according to `qrm`
+db.proc(query, values); // calls db.func(query, values, queryResult.one | queryResult.none)
+```
+
 ### Type Helpers
 The library provides several helper functions to convert basic javascript types into their proper PostgreSQL presentation that can be passed
 directly into queries or functions as parameters. All of such helper functions are located within namespace ```pgp.as```:
@@ -289,13 +295,12 @@ pgp.as.date(value); // returns proper PostgreSQL date/time presentation,
 pgp.as.csv(array);  // returns a CSV string with values formatted according
                     // to their type, using the above methods.
 
-// Replaces variables in a query with their `values` as specified.
-// `values` is either a simple value or an array of simple values.
-////////////////////////////////////////////////////////////////////////
-// This method is used implicitly by every query method in the library,
-// and the only reason it was added here is to make it testable, because
-// it represents a very important aspect of the library's functionality.
 pgp.as.format(query, values);
+            // Replaces variables in a query with their `values` as specified.
+            // `values` is either a simple value or an array of simple values.
+            // This method is used implicitly by every query method in the library,
+            // and the main reason it was added here is to make it testable, because
+            // it represents a very important aspect of the library's functionality.
 ```
 As these helpers are not associated with any database, they can be used from anywhere.
 
