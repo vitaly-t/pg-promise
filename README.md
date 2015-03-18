@@ -105,9 +105,9 @@ query requests down the chain. The connection must be released when no longer ne
 var sco; // shared connection object;
 db.connect()
     .then(function(obj){
-        cso = obj; // save the connection object;
+        sco = obj; // save the connection object;
         // find active users created before today:
-        return cso.query("select * from users where active=$1 and created < $2::date", [true, new Date()]);
+        return sco.query("select * from users where active=$1 and created < $2::date", [true, new Date()]);
     })
     .then(function(data){
         console.log(data); // display all the user details;
