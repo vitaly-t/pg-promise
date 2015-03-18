@@ -65,6 +65,11 @@ module.exports = function (options) {
         }
     }
 
+    // method abbreviations that are used in the library;
+    $p.resolve = npm.promise.resolve;
+    $p.reject = npm.promise.reject;
+    $p.all = npm.promise.all;
+
     var inst = function (cn) {
         if (!cn) {
             // Cannot instantiate a database with an empty connection;
@@ -127,7 +132,7 @@ function dbInit(cn, options) {
                     }
                 };
                 $notify(true, obj, options);
-                return npm.promise.resolve(self);
+                return $p.resolve(self);
             });
     };
 
@@ -205,9 +210,9 @@ function dbInit(cn, options) {
 // Global, reusable functions, all start with $
 
 // Simpler promise instantiation;
-function $p(func) {
+var $p = function(func){
     return new npm.promise(func);
-}
+};
 
 // Null verification;
 function $isNull(val) {
@@ -520,18 +525,18 @@ function $extendProtocol(obj) {
 function $transact(obj, cb) {
     function invoke() {
         if (typeof(cb) !== 'function') {
-            return npm.promise.reject("Cannot invoke tx() without a callback function.");
+            return $p.reject("Cannot invoke tx() without a callback function.");
         }
         var result;
         try {
             result = cb(obj);
         } catch (err) {
-            return npm.promise.reject(err);
+            return $p.reject(err);
         }
         if (result && typeof(result.then) === 'function') {
             return result;
         } else {
-            return npm.promise.reject("Callback function passed into tx() didn't return a valid promise object.");
+            return $p.reject("Callback function passed into tx() didn't return a valid promise object.");
         }
     }
 
