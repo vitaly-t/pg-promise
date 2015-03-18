@@ -65,10 +65,9 @@ module.exports = function (options) {
         }
     }
 
-    // method abbreviations that are used in the library;
+    // method abbreviations used in the library;
     $p.resolve = npm.promise.resolve;
     $p.reject = npm.promise.reject;
-    $p.all = npm.promise.all;
 
     var inst = function (cn) {
         if (!cn) {
