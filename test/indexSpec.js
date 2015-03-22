@@ -203,7 +203,7 @@ describe("Type conversion in pgp.as", function () {
 
         q = pgp.as.format("", 1);
         expect(q.success).toBe(false);
-        expect(q.error).toBe("No variable found in query to replace with the value passed.");
+        expect(q.error).toBe("No variable found in the query to replace with the passed value.");
 
         q = pgp.as.format("$1", {});
         expect(q.success).toBe(false);
