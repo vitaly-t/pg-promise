@@ -116,7 +116,7 @@ db.connect()
     })
     .done(function(){
         if(sco){
-            sco.done(); // release the connection, if it was acquired successfully;
+            sco.done(); // release the connection, if it was successful;
         }
     });
 ```
@@ -184,7 +184,7 @@ db.connect()
     })
     .done(function(){
         if(sco){
-            sco.done(); // release the connection, if it was acquired successfully;
+            sco.done(); // release the connection, if it was successful;
         }
     });
 ```
@@ -233,6 +233,59 @@ for simplicity;
 * A nested transaction cannot be disconnected from its container, i.e. it must get into the container's promise chain,
  or it will result in an attempt to execute against an unknown connection;
 * As expected, a failure on any level in a nested transaction will `ROLLBACK` and `reject` the entire chain.
+
+###### Transactions with SAVEPOINT
+
+`SAVEPOINT` in PostgreSQL caters for advanced transaction scenarios where partial `ROLLBACK` can be executed,
+depending on the logic of the transaction.
+
+Unfortunately, this doesn't go along with the [Promises/A+] architecture that doesn't support partial `reject`.
+
+The only work-around via promises is to strip a transaction into individual commands and execute them as a promise
+chain within a shared connection. The example below shows how this can be done.
+
+```javascript
+var sco; // shared connection object;
+var txErr; // transaction error;
+var txData; // transaction data;
+db.connect()
+    .then(function (obj) {
+        sco = obj; // save the connection object;
+        return promise.all([
+            sco.none('begin'),
+            sco.none('update users set name=$1 where id=$2', ['changed1', 1]),
+            sco.none('savepoint first'),
+            sco.none('update users set name=$1 where id=$2', ['changed2', 2]),
+            sco.none('rollback to first'),
+        ])
+            .then(function (data) {
+                txData = data; // save the transaction output data;
+                return sco.none('commit'); // persist changes;
+            }, function (reason) {
+                txErr = reason; // save the transaction failure reason;
+                return sco.none('rollback'); // revert changes;
+            });
+    })
+    .then(function () {
+        if(txErr){
+            console.log('Rollback Reason: ' + txErr);
+        }else{
+            console.log(txData); // successful transaction output;
+        }
+    }, function (reason) {
+        console.log(reason); // connection issue;
+    })
+    .done(function () {
+        if (sco) {
+            sco.done(); // release the connection, if it was successful;
+        }
+    });
+```
+
+The issue with stripping out a transaction like this and injecting `SAVEPOINT` - it gets much more
+complicated to control the result of individual commands within a transaction, you may need to check every
+result and change the following commands accordingly. This is why it makes sense to do such transactions
+within SQL functions, and not on the client side.
 
 ### Queries and Parameters
 
