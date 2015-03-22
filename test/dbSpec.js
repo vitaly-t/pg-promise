@@ -1,6 +1,6 @@
 /*
 
-Commenting out everything, because this jasmine async functionality is shite.
+Commenting out everything, because this jasmine async functionality is bad.
 It is so flaky, the tests fail way too often because of the test framework,
 and not because of the library:
 

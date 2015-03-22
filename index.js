@@ -481,6 +481,9 @@ function $extendProtocol(obj, cn, db, options) {
         var internal; // internal connection flag;
 
         function attach(obj, int) {
+            if(txDB.client){
+                throw new Error('Invalid transaction attachment'); // this should never happen;
+            }
             txDB.client = obj.client;
             txDB.done = obj.done;
             if (int) {
@@ -490,6 +493,9 @@ function $extendProtocol(obj, cn, db, options) {
         }
 
         function detach() {
+            if(!txDB.client){
+                throw new Error('Invalid transaction detachment'); // this should never happen;
+            }
             if (internal) {
                 $notify(false, txDB, options);
                 txDB.done();
@@ -558,18 +564,18 @@ function $transact(obj, cb) {
 
     var t_data, t_reason, success;
     return $p(function (resolve, reject) {
-        obj.query('begin') // BEGIN;
+        obj.none('begin') // BEGIN;
             .then(function () {
                 invoke() // Callback;
                     .then(function (data) {
                         t_data = data;
                         success = true;
-                        return obj.query('commit'); // COMMIT;
+                        return obj.none('commit'); // COMMIT;
                     }, function (reason) {
                         // callback failed;
                         t_reason = reason;
                         success = false;
-                        return obj.query('rollback'); // ROLLBACK;
+                        return obj.none('rollback'); // ROLLBACK;
                     })
                     .then(function () {
                         if (success) {
@@ -593,10 +599,10 @@ function $notify(open, db, opt) {
     if (opt) {
         var func = open ? opt.connect : opt.disconnect;
         if (func) {
-            if (typeof(func) !== 'function') {
-                throw new Error("Function was expected for 'options." + (open ? "connect'" : "disconnect'"));
-            } else {
+            if (typeof(func) === 'function') {
                 func(db.client);
+            } else {
+                throw new Error("Function was expected for 'options." + (open ? "connect'" : "disconnect'"));
             }
         }
     }
