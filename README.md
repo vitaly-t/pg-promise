@@ -254,9 +254,9 @@ db.connect()
         return promise.all([
             sco.none('begin'),
             sco.none('update users set name=$1 where id=$2', ['changed1', 1]),
-            sco.none('savepoint first'),
+            sco.none('savepoint first'), // creating savepoint;
             sco.none('update users set name=$1 where id=$2', ['changed2', 2]),
-            sco.none('rollback to first'),
+            sco.none('rollback to first') // reverting to the savepoint;
         ])
             .then(function (data) {
                 txData = data; // save the transaction output data;
@@ -267,9 +267,9 @@ db.connect()
             });
     })
     .then(function () {
-        if(txErr){
+        if (txErr) {
             console.log('Rollback Reason: ' + txErr);
-        }else{
+        } else {
             console.log(txData); // successful transaction output;
         }
     }, function (reason) {
