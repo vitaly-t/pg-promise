@@ -117,7 +117,7 @@ function dbInit(cn, options) {
                 }
             }
         };
-        $extendProtocol(self, null, db, options);
+        $extendProtocol(self, null, db, options); // extending for an existing connection;
         return $connect(cn)
             .then(function (obj) {
                 db.client = obj.client;
@@ -152,7 +152,7 @@ function dbInit(cn, options) {
                 });
         });
     };
-    $extendProtocol(dbInst, cn, null, options);
+    $extendProtocol(dbInst, cn, null, options); // extending for a new connection;
     return dbInst;
 }
 
@@ -314,7 +314,7 @@ function $formatValues(query, values) {
             } else {
                 if (q.indexOf('$1') === -1) {
                     result.success = false;
-                    result.error = "No variable found in query to replace with the value passed.";
+                    result.error = "No variable found in the query to replace with the passed value.";
                 } else {
                     var value = $wrapValue(values);
                     if (value === null) {
@@ -475,7 +475,7 @@ function $extendProtocol(obj, cn, db, options) {
         return obj.query(query, null, queryResult.one | queryResult.none);
     };
 
-    // transactions support;
+    // Transactions support;
     obj.tx = function (cb) {
         var txDB = {};
         var internal; // internal connection flag;
@@ -511,9 +511,10 @@ function $extendProtocol(obj, cn, db, options) {
                 return $query(txDB.client, query, values, qrm, options);
             }
         };
-        $extendProtocol(tx, null, txDB, options);
+        $extendProtocol(tx, null, txDB, options); // extending for an existing connection;
         return $p(function (resolve, reject) {
             if (cn) {
+                // connection required;
                 $connect(cn)
                     .then(function (obj) {
                         attach(obj, true);
@@ -529,6 +530,7 @@ function $extendProtocol(obj, cn, db, options) {
                         reject(reason);
                     });
             } else {
+                // reuse existing connection;
                 attach(db);
                 return $transact(tx, cb)
                     .then(function (data) {
