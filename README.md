@@ -192,6 +192,48 @@ If you need to execute just one transaction, the detached transaction pattern is
 But even if you need to combine it with other queries in then a detached chain, it will work just as fine.
 As stated earlier, choosing a shared chain over a detached one is mostly a matter of special requirements and/or personal preference.
 
+###### Nested Transactions
+
+Starting with version 0.5.6, the library supports nested transactions.
+
+Similar to the shared-connection transactions, nested transactions automatically share the connection between all levels.
+This library sets no limitation as to the depth (nesting levels) of transactions supported.
+
+Example:
+
+```javascript
+db.tx(function (ctx) {
+    var queries = [
+        ctx.none("drop table users;"),
+        ctx.none("create table users(id serial not null, name text not null);")
+    ];
+    for (var i = 0; i < 100; i++) {
+        queries.push(ctx.none("insert into users(name) values($1)", "name-" + (i + 1)));
+    }
+    queries.push(
+        ctx.tx(function () {
+            return ctx.tx(function(){
+                return ctx.one("select count(*) from users");
+            });
+        }));
+    return promise.all(queries);
+})
+.then(function (data) {
+    console.log(data); // printing transaction result;
+}, function (reason) {
+    console.log(reason); // printing why the transaction failed;
+})
+```
+
+Things to note from the example above:
+* Sub-transactions do not declare a context parameter in their callback. It is not because
+they don't receive one, they all do, but they don't care in such situation because of the shared connection
+chain that will result in the same `ctx` object as for the main callback, so they just reuse it from the parent,
+for simplicity;
+* A nested transaction cannot be disconnected from its container, i.e. it must get into the container's promise chain,
+ or it will result in an attempt to execute against an unknown connection;
+* As expected, a failure on any level in a nested transaction will `ROLLBACK` and `reject` the entire chain.
+
 ### Queries and Parameters
 
 Every connection context of the library shares the same query protocol, starting with generic method `query`, that's defined as shown below:
@@ -438,6 +480,7 @@ This will release pg connection pool globally and make sure that the process ter
 If you do not call it, your process may be waiting for 30 seconds (default) or so, waiting for the pg connection pool to expire.
 
 # History
+* Version 0.5.6 introduces support for nested transaction. Released: March 22, 2015.
 * Version 0.5.3 - minor changes; March 14, 2015.
 * Version 0.5.1 included wider support for alternative promise libraries. Released: March 12, 2015.
 * Version 0.5.0 introduces many new features and fixes, such as properties **pgFormatting** and **promiseLib**. Released on March 11, 2015.
