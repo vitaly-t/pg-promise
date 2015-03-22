@@ -99,7 +99,7 @@ function dbInit(cn, options) {
     // Returns a detached connection instance to allow
     // chaining queries under the same connection;
     dbInst.connect = function () {
-        var db;
+        var db = {};
         var self = {
             query: function (query, values, qrm) {
                 if (db) {
@@ -115,26 +115,20 @@ function dbInit(cn, options) {
                 } else {
                     throw new Error("Cannot invoke done() on a disconnected client.");
                 }
-            },
-            tx: function (cb) {
-                return $transact(self, cb);
             }
         };
-        $extendProtocol(self);
+        $extendProtocol(self, null, db, options);
         return $connect(cn)
             .then(function (obj) {
-                db = {
-                    client: obj.client,
-                    done: function () {
-                        $notify(false, obj, options);
-                        obj.done();
-                    }
+                db.client = obj.client;
+                db.done = function () {
+                    $notify(false, obj, options);
+                    obj.done();
                 };
                 $notify(true, obj, options);
                 return $p.resolve(self);
             });
     };
-
 
     // Generic query request;
     // qrm is Query Result Mask, combination of queryResult flags.
@@ -158,50 +152,7 @@ function dbInit(cn, options) {
                 });
         });
     };
-
-    dbInst.tx = function (cb) {
-        var db;
-
-        function attach(obj) {
-            db = obj;
-            $notify(true, db, options);
-        }
-
-        function detach() {
-            $notify(false, db, options);
-            db.done();
-            db = null;
-        }
-
-        var tx = {
-            query: function (query, values, qrm) {
-                if (!db) {
-                    throw new Error("Unexpected call outside of transaction.");
-                }
-                return $query(db.client, query, values, qrm, options);
-            }
-        };
-        $extendProtocol(tx);
-        return $p(function (resolve, reject) {
-            $connect(cn)
-                .then(function (db) {
-                    attach(db);
-                    return $transact(tx, cb);
-                }, function (reason) {
-                    reject(reason);
-                })
-                .then(function (data) {
-                    detach();
-                    resolve(data);
-                }, function (reason) {
-                    detach();
-                    reject(reason);
-                });
-        });
-    };
-
-    $extendProtocol(dbInst);
-
+    $extendProtocol(dbInst, cn, null, options);
     return dbInst;
 }
 
@@ -209,7 +160,7 @@ function dbInit(cn, options) {
 // Global, reusable functions, all start with $
 
 // Simpler promise instantiation;
-var $p = function(func){
+var $p = function (func) {
     return new npm.promise(func);
 };
 
@@ -474,7 +425,7 @@ function $connect(cn) {
 }
 
 // Injects additional methods into an access object.
-function $extendProtocol(obj) {
+function $extendProtocol(obj, cn, db, options) {
 
     // Expects no data to be returned;
     obj.none = function (query, values) {
@@ -517,6 +468,67 @@ function $extendProtocol(obj) {
     obj.proc = function (procName, values) {
         var query = $createFuncQuery(procName, values);
         return obj.query(query, null, queryResult.one | queryResult.none);
+    };
+
+    // transactions support;
+    obj.tx = function (cb) {
+        var txDB = {};
+        var internal; // internal connection flag;
+
+        function attach(obj, int) {
+            txDB.client = obj.client;
+            txDB.done = obj.done;
+            if (int) {
+                internal = true;
+                $notify(true, txDB, options);
+            }
+        }
+
+        function detach() {
+            if (internal) {
+                $notify(false, txDB, options);
+                txDB.done();
+            }
+            txDB.client = null;
+        }
+
+        var tx = {
+            query: function (query, values, qrm) {
+                if (!txDB.client) {
+                    throw new Error("Unexpected call outside of transaction.");
+                }
+                return $query(txDB.client, query, values, qrm, options);
+            }
+        };
+        $extendProtocol(tx, null, txDB, options);
+        return $p(function (resolve, reject) {
+            if (cn) {
+                $connect(cn)
+                    .then(function (obj) {
+                        attach(obj, true);
+                        return $transact(tx, cb);
+                    }, function (reason) {
+                        reject(reason);
+                    })
+                    .then(function (data) {
+                        detach();
+                        resolve(data);
+                    }, function (reason) {
+                        detach();
+                        reject(reason);
+                    });
+            } else {
+                attach(db);
+                return $transact(tx, cb)
+                    .then(function (data) {
+                        detach();
+                        resolve(data);
+                    }, function (reason) {
+                        detach();
+                        reject(reason);
+                    });
+            }
+        });
     };
 }
 
