@@ -463,6 +463,10 @@ var options = {
 ```
 It can be useful for diagnostics / logging within your application.
 
+Notification happens just before the query execution. And if the notification handler throws
+an error, the query execution will be intercepted and rejected with the error that's been
+thrown by the handler function.
+
 The function receives the following parameters:
 * `client` - object from the [PG] library that represents the connection;
 * `query` - query that's being executed;

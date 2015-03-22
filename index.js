@@ -369,7 +369,12 @@ function $query(client, query, values, qrm, options) {
                 if (typeof(func) !== 'function') {
                     throw new Error("Function was expected for 'options.query'");
                 }
-                func(client, req.query, params); // notify the client;
+                try {
+                    func(client, req.query, params); // notify the client;
+                } catch (err) {
+                    reject(err);
+                    return;
+                }
             }
             try {
                 client.query(req.query, params, function (err, result) {
@@ -585,24 +590,13 @@ function $transact(obj, cb) {
 // Handles database connection acquire/release
 // events, notifying the client as needed.
 function $notify(open, db, opt) {
-    if (open) {
-        if (opt) {
-            var func = opt.connect;
-            if (func) {
-                if (typeof(func) !== 'function') {
-                    throw new Error("Function was expected for 'options.connect'");
-                }
-                func(db.client); // notify the client;
-            }
-        }
-    } else {
-        if (opt) {
-            var func = opt.disconnect;
-            if (func) {
-                if (typeof(func) !== 'function') {
-                    throw new Error("Function was expected for 'options.disconnect'");
-                }
-                func(db.client); // notify the client;
+    if (opt) {
+        var func = open ? opt.connect : opt.disconnect;
+        if (func) {
+            if (typeof(func) !== 'function') {
+                throw new Error("Function was expected for 'options." + (open ? "connect'" : "disconnect'"));
+            } else {
+                func(db.client);
             }
         }
     }
