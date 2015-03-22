@@ -284,8 +284,8 @@ db.connect()
 
 The issue with stripping out a transaction like this and injecting `SAVEPOINT` - it gets much more
 complicated to control the result of individual commands within a transaction, you may need to check every
-result and change the following commands accordingly. This is why it makes sense to do such transactions
-within SQL functions, and not on the client side.
+result and change the following commands accordingly. This is why it makes much more sense to do such
+transactions inside SQL functions, and not on the client side.
 
 ### Queries and Parameters
 
