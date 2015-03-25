@@ -481,19 +481,19 @@ function $extendProtocol(obj, cn, db, options) {
         var internal; // internal connection flag;
 
         function attach(obj, int) {
-            if(txDB.client){
+            if (txDB.client) {
                 throw new Error('Invalid transaction attachment'); // this should never happen;
             }
             txDB.client = obj.client;
             txDB.done = obj.done;
-            if (int) {
-                internal = true;
+            internal = int ? true : false;
+            if (internal) {
                 $notify(true, txDB, options);
             }
         }
 
         function detach() {
-            if(!txDB.client){
+            if (!txDB.client) {
                 throw new Error('Invalid transaction detachment'); // this should never happen;
             }
             if (internal) {
@@ -501,6 +501,7 @@ function $extendProtocol(obj, cn, db, options) {
                 txDB.done();
             }
             txDB.client = null;
+            txDB.done = null;
         }
 
         var tx = {
