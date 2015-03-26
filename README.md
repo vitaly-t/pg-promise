@@ -432,14 +432,8 @@ for queries with multiple variables in them.
 
 **pg-promise** implementation of query formatting supports only the basic javascript types: text, boolean, date, numeric and null.
 
-If, instead, you want to use query formatting that's implemented by the [PG] library, set parameter `pgFormatting`
-to be `true` when initializing the library, and every query formatting will redirect to the [PG]'s implementation.
-
-Although this has huge implication to the library's functionality, it is not within the scope of this project to detail.
-For any further reference you should use documentation of the [PG] library.
-
-The basic types supported by this library are sufficient to cover more complex scenarios. For example, binary data type
-is exchanged with the database using hex strings. The example below reads an image and inserts it into a binary field.
+Those basic types are however sufficient to cover more complex scenarios. For example, binary data is exchanged with the
+database using hex strings, as shown below.
 
 ```javascript
 var fs = require('fs');
@@ -457,8 +451,15 @@ fs.readFile('image.jpg', 'hex', function (err, imgData) {
 });
 ```
 
-**NOTE:** As of the current implementation, formatting parameters for calling functions (methods `func` and `proc`) is not affected by this
-override. If needed, use the generic `query` instead to invoke functions with redirected query formatting.
+If, instead, you want to use query formatting that's implemented by the [PG] library, set parameter `pgFormatting`
+to be `true` when initializing the library, and every query formatting will redirect to the [PG]'s implementation.
+
+Although this has huge implication to the library's functionality, it is not within the scope of this project to detail.
+For any further reference you should use documentation of the [PG] library.
+
+**NOTE:** As of the current implementation, formatting parameters for calling functions (methods `func` and `proc`)
+is not affected by this override. If needed, use the generic `query` instead to invoke functions with redirected
+query formatting.
 
 ---
 * `promiseLib`
