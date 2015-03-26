@@ -166,7 +166,7 @@ var $p = function (func) {
 
 // Null verification;
 function $isNull(val) {
-    return typeof(val) === 'undefined' || val === null;
+    return val === undefined || val === null;
 }
 
 // Wraps up text in single quotes;
@@ -217,7 +217,7 @@ function $formatParams(values) {
             }
         }
     } else {
-        if (typeof(values) !== 'undefined') {
+        if (values !== undefined) {
             // a simple value is presumed;
             s = $wrapValue(values);
             if (s === null) {
@@ -312,7 +312,7 @@ function $formatValues(query, values) {
                 }
             }
         } else {
-            if (typeof(values) !== 'undefined') {
+            if (values !== undefined) {
                 if (q.indexOf('$1') === -1) {
                     result.success = false;
                     result.error = "No variable found in the query to replace with the passed value.";
