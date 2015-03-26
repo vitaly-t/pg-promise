@@ -545,7 +545,7 @@ thrown by the handler function.
 The function receives the following parameters:
 * `client` - object from the [PG] library that represents the connection;
 * `query` - query that's being executed;
-* `params` - `null` by default, it may contains query parameters, if `pgFormatting` was set to be `true`.
+* `params` - query parameters (only when `pgFormatting` is set to be `true`).
 
 Please note, that should you set property `pgFormatting` to be `true`, the library no longer formats
 the queries, and the `query` arrives pre-formatted. This is why extra parameter `params` was added.

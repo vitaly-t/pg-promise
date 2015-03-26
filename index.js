@@ -204,20 +204,20 @@ function $wrapValue(val) {
 // It can understand both a simple value and an array of simple values.
 function $formatParams(values) {
     var s = '';
-    if (values) {
-        if (Array.isArray(values)) {
-            for (var i = 0; i < values.length; i++) {
-                if (i > 0) {
-                    s += ',';
-                }
-                var v = $wrapValue(values[i]);
-                if (v === null) {
-                    throw new Error("Cannot convert parameter with index " + i);
-                } else {
-                    s += v;
-                }
+    if (Array.isArray(values)) {
+        for (var i = 0; i < values.length; i++) {
+            if (i > 0) {
+                s += ',';
             }
-        } else {
+            var v = $wrapValue(values[i]);
+            if (v === null) {
+                throw new Error("Cannot convert parameter with index " + i);
+            } else {
+                s += v;
+            }
+        }
+    } else {
+        if (typeof(values) !== 'undefined') {
             // a simple value is presumed;
             s = $wrapValue(values);
             if (s === null) {
@@ -225,6 +225,7 @@ function $formatParams(values) {
             }
         }
     }
+
     return s;
 }
 
@@ -363,7 +364,7 @@ function $query(client, query, values, qrm, options) {
         if (errMsg) {
             reject(errMsg);
         } else {
-            var params = pgFormatting ? values : null;
+            var params = pgFormatting ? values : undefined;
             if (options && options.query) {
                 var func = options.query;
                 if (typeof(func) !== 'function') {
@@ -465,14 +466,14 @@ function $extendProtocol(obj, cn, db, options) {
     // Query a function with specified Query Result Mask;
     obj.func = function (funcName, values, qrm) {
         var query = $createFuncQuery(funcName, values);
-        return obj.query(query, null, qrm);
+        return obj.query(query, undefined, qrm);
     };
 
     // A procedure is expected to return either no rows
     // or one row that represents a list of OUT values.
     obj.proc = function (procName, values) {
         var query = $createFuncQuery(procName, values);
-        return obj.query(query, null, queryResult.one | queryResult.none);
+        return obj.query(query, undefined, queryResult.one | queryResult.none);
     };
 
     // Transactions support;
