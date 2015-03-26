@@ -165,7 +165,11 @@ describe("Type conversion in pgp.as", function () {
 
         q = pgp.as.format("$1", null);
         expect(q.success).toBe(true);
-        expect(q.query).toBe("$1");
+        expect(q.query).toBe("null");
+
+        q = pgp.as.format("", null);
+        expect(q.success).toBe(false);
+        expect(q.error).toBe("No variable found in the query to replace with the passed value.");
 
         expect(pgp.as.format("$1").success).toBe(true);
         expect(pgp.as.format("$1").query).toBe("$1");

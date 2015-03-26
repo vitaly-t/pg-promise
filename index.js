@@ -290,28 +290,28 @@ function $formatValues(query, values) {
         result.success = false;
         result.error = "Parameter 'query' must be a text string.";
     } else {
-        if (values) {
-            if (Array.isArray(values)) {
-                for (var i = 0; i < values.length; i++) {
-                    var variable = '$' + (i + 1);
-                    if (q.indexOf(variable) === -1) {
+        if (Array.isArray(values)) {
+            for (var i = 0; i < values.length; i++) {
+                var variable = '$' + (i + 1);
+                if (q.indexOf(variable) === -1) {
+                    result.success = false;
+                    result.error = "More values passed than variables in the query.";
+                    break;
+                } else {
+                    var value = $wrapValue(values[i]);
+                    if (value === null) {
+                        // one of the complex types passed;
                         result.success = false;
-                        result.error = "More values passed than variables in the query.";
+                        result.error = "Cannot convert parameter with index " + i;
                         break;
                     } else {
-                        var value = $wrapValue(values[i]);
-                        if (value === null) {
-                            // one of the complex types passed;
-                            result.success = false;
-                            result.error = "Cannot convert parameter with index " + i;
-                            break;
-                        } else {
-                            var reg = new RegExp("\\" + variable, "g");
-                            q = q.replace(reg, value);
-                        }
+                        var reg = new RegExp("\\" + variable, "g");
+                        q = q.replace(reg, value);
                     }
                 }
-            } else {
+            }
+        } else {
+            if (typeof(values) !== 'undefined') {
                 if (q.indexOf('$1') === -1) {
                     result.success = false;
                     result.error = "No variable found in the query to replace with the passed value.";
