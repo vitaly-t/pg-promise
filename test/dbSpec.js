@@ -84,11 +84,57 @@ describe("A complex transaction", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
+            expect(error).toBe(undefined);
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(13); // drop + create + insert x 10 + select;
             var last = result[result.length - 1]; // result from the select;
             expect(typeof(last)).toBe('object');
             expect(last.count).toBe('10'); // last one must be the counter (as text);
+        });
+    });
+});
+
+describe("A nested transaction (10 levels)", function () {
+    it("must work the same no matter how many levels", function () {
+        var result, error;
+        db.tx(function (ctx) {
+            return ctx.tx(function () {
+                return ctx.tx(function () {
+                    return ctx.tx(function () {
+                        return ctx.tx(function () {
+                            return ctx.tx(function () {
+                                return promise.all([
+                                    ctx.one("select 'Hello' as word"),
+                                    ctx.tx(function () {
+                                        return ctx.tx(function () {
+                                            return ctx.tx(function () {
+                                                return ctx.tx(function () {
+                                                    return ctx.one("select 'World!' as word");
+                                                });
+                                            });
+                                        });
+                                    })
+                                ]);
+                            });
+                        });
+                    });
+                });
+            });
+        }).then(function (data) {
+            result = data;
+        }, function (reason) {
+            result = null;
+            error = reason;
+        });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(error).toBe(undefined);
+            expect(result instanceof Array).toBe(true);
+            expect(result.length).toBe(2);
+            expect(result[0].word).toBe('Hello');
+            expect(result[1].word).toBe('World!');
         });
     });
 });
