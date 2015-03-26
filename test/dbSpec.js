@@ -43,11 +43,12 @@ describe("Database", function () {
 describe("Selecting one static value", function () {
 
     it("must return the value via property", function () {
-        var result;
+        var result, error;
         db.one('select 123 as value')
             .then(function (data) {
                 result = data.value;
-            }, function () {
+            }, function (reason) {
+                error = reason;
                 result = null;
             });
 
@@ -56,6 +57,7 @@ describe("Selecting one static value", function () {
         }, "Query timed out", 5000);
 
         runs(function () {
+            expect(error).toBe(undefined);
             expect(result).toBe(123);
         });
     });
@@ -135,6 +137,26 @@ describe("A nested transaction (10 levels)", function () {
             expect(result.length).toBe(2);
             expect(result[0].word).toBe('Hello');
             expect(result[1].word).toBe('World!');
+        });
+    });
+});
+
+describe("Return data from a query must match the request type", function () {
+    it("method 'none' must throw an error when there was data returned", function () {
+        var result, error;
+        db.none("select 123")
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBe(null);
+            expect(error).toBe("No return data was expected from query: select 123");
         });
     });
 });
