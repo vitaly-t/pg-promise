@@ -318,8 +318,8 @@ db.query("select * from users");
 ```
 which is equivalent to calling either one of the following:
 ```javascript
-db.query("select * from users", null, queryResult.many | queryResult.none);
-db.query("select * from users", null, queryResult.any);
+db.query("select * from users", undefined, queryResult.many | queryResult.none);
+db.query("select * from users", undefined, queryResult.any);
 db.manyOrNone("select * from users");
 db.any("select * from users");
 ```
