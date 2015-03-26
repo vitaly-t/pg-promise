@@ -120,7 +120,7 @@ describe("Type conversion in pgp.as", function () {
         expect(pgp.as.date(new Date(2015, 2, 8, 16, 24, 8))).toBe("'Sun, 08 Mar 2015 16:24:08 GMT'");
     });
 
-    it("must correctly convert any Array of values into CSV", function () {
+    it("must correctly convert parameters into CSV", function () {
 
         expect(pgp.as.csv()).toBe(""); // test undefined;
         expect(pgp.as.csv([])).toBe(""); // test empty array;
@@ -160,6 +160,7 @@ describe("Type conversion in pgp.as", function () {
         expect(typeof(pgp.as.format())).toBe("object");
         expect(typeof(pgp.as.format(null))).toBe("object");
         expect(typeof(pgp.as.format(""))).toBe("object");
+        expect(typeof(pgp.as.format("", []))).toBe("object");
 
         var q = pgp.as.format();
         expect(q.success).toBe(false);
@@ -168,6 +169,10 @@ describe("Type conversion in pgp.as", function () {
         q = pgp.as.format(null);
         expect(q.success).toBe(false);
         expect(q.error).toBe("Parameter 'query' must be a text string.");
+
+        q = pgp.as.format("");
+        expect(q.success).toBe(true);
+        expect(q.query).toBe("");
 
         q = pgp.as.format(null, [1, 2, 3]);
         expect(q.success).toBe(false);
@@ -186,6 +191,10 @@ describe("Type conversion in pgp.as", function () {
 
         expect(pgp.as.format("$1", []).success).toBe(true);
         expect(pgp.as.format("$1", []).query).toBe("$1");
+
+        q = pgp.as.format("$1", [undefined]);
+        expect(q.success).toBe(true);
+        expect(q.query).toBe("null");
 
         q = pgp.as.format("$1", ["one"]);
         expect(q.success).toBe(true);

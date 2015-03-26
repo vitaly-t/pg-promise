@@ -1,17 +1,5 @@
-/*
-
-Commenting out everything, because this jasmine async functionality is bad.
-It is so flaky, the tests fail way too often because of the test framework,
-and not because of the library:
-
-waitsFor() and runs() absolutely do not work as expected, they fail constantly.
-
-Will need to look into this again later.
-
-//////////////////////////////////////////////////////////////////////////////
-
-
 var pgpLib = require('../index');
+var promise = require('promise');
 
 var options = {};
 
@@ -27,54 +15,80 @@ var cn = {
 var db = pgp(cn);
 
 describe("Database", function () {
-
     it("must be able to connect", function () {
         var status = 'connecting';
+        var error = '';
         db.connect()
             .then(function (obj) {
-                console.log('THEN');
                 status = 'success';
                 obj.done();
             }, function (reason) {
-                console.log('REASON');
-                status = 'fail';//reason.error;
+                error = reason.message;
+                status = 'failed';//reason.error;
             })
-            .catch(function(){
+            .catch(function (err) {
+                error = err;
                 status = 'failed';
-            })
-            .done(function(){
-                console.log('DONE');
-                expect(status).toBe('success');
             });
-
         waitsFor(function () {
             return status !== 'connecting';
-        }, "Connection timed out", 50000);
-
+        }, "Connection timed out", 5000);
         runs(function () {
-            console.log('RUN');
             expect(status).toBe('success');
+            expect(error).toBe('');
         });
     });
 });
 
-describe("Query return result", function () {
+describe("Selecting one static value", function () {
 
-    it("must be", function () {
+    it("must return the value via property", function () {
         var result;
-        db.one('select 123 as test')
+        db.one('select 123 as value')
             .then(function (data) {
-                result = data.test;
+                result = data.value;
             }, function () {
                 result = null;
             });
 
         waitsFor(function () {
-            return typeof(result) != 'undefined';
-        }, "Connection timed out", 5000);
+            return result !== undefined;
+        }, "Query timed out", 5000);
 
         runs(function () {
             expect(result).toBe(123);
+        });
+    });
+});
+
+describe("A complex transaction", function () {
+    it("must resolve all objects correctly", function () {
+        var result, error;
+        db.tx(function (ctx) {
+            var queries = [
+                ctx.none('drop table if exists users'),
+                ctx.none('create table users(id serial, name text)')
+            ];
+            for (var i = 0; i < 10; i++) {
+                queries.push(ctx.none('insert into users(name) values($1)', 'name-' + (i + 1)));
+            }
+            queries.push(ctx.one('select count(*) from users'));
+            return promise.all(queries);
+        }).then(function (data) {
+            result = data;
+        }, function (reason) {
+            result = null;
+            error = reason;
+        });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result instanceof Array).toBe(true);
+            expect(result.length).toBe(13); // drop + create + insert x 10 + select;
+            var last = result[result.length - 1]; // result from the select;
+            expect(typeof(last)).toBe('object');
+            expect(last.count).toBe('10'); // last one must be the counter (as text);
         });
     });
 });
@@ -86,5 +100,3 @@ jasmine.Runner.prototype.finishCallback = function () {
 
     pgp.end(); // closing pg database application pool;
 };
-
-*/
