@@ -396,6 +396,8 @@ pgp.as.format(query, values);
             // This method is used implicitly by every query method in the library,
             // and the main reason it was added here is to make it testable, because
             // it represents a very important aspect of the library's functionality.
+            // Returns an object either with property `query` or with property `error`,
+            // depending on the value of property `success`.
 ```
 As these helpers are not associated with any database, they can be used from anywhere.
 
