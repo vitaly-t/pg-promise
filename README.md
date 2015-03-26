@@ -438,6 +438,25 @@ to be `true` when initializing the library, and every query formatting will redi
 Although this has huge implication to the library's functionality, it is not within the scope of this project to detail.
 For any further reference you should use documentation of the [PG] library.
 
+The basic types supported by this library are sufficient to cover more complex scenarios. For example, binary data type
+is exchanged with the database using hex strings. The example below reads an image and inserts it into a binary field.
+
+```javascript
+var fs = require('fs');
+
+// read in image in hex format:
+fs.readFile('image.jpg', 'hex', function (err, imgData) {
+    var data = '\\x' + imgData; // indicate a hex string;
+    // inserting data into column 'img' of type 'bytea':
+    db.query('insert into images (img) values ($1)', data)
+        .then(function () {
+            // success;
+        }, function (reason) {
+            console.log(reason); // print why it failed;
+        });
+});
+```
+
 **NOTE:** As of the current implementation, formatting parameters for calling functions (methods `func` and `proc`) is not affected by this
 override. If needed, use the generic `query` instead to invoke functions with redirected query formatting.
 
