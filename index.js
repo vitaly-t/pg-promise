@@ -202,8 +202,8 @@ function $wrapValue(val) {
 // Formats array of javascript-type parameters into a csv list
 // to be passed into a function, compatible with PostgreSQL.
 // It can understand both a simple value and an array of simple values.
-function $formatParams(values) {
-    var s = '';
+function $formatCSV(values) {
+    var s = "";
     if (Array.isArray(values)) {
         for (var i = 0; i < values.length; i++) {
             if (i > 0) {
@@ -222,10 +222,13 @@ function $formatParams(values) {
             s = $wrapValue(values);
             if (s === null) {
                 throw new Error("Cannot convert a value of type '" + typeof(values) + "'");
+            }else{
+                if(typeof(s) !== 'string'){
+                    s = s.toString();
+                }
             }
         }
     }
-
     return s;
 }
 
@@ -256,33 +259,27 @@ var $wrap = {
         }
     },
     // Creates a comma-separated list of values formatted for use with PostgreSQL;
-    csv: function (arr) {
-        if ($isNull(arr)) {
-            return 'null';
-        }
-        if (Array.isArray(arr)) {
-            return $formatParams(arr);
-        } else {
-            throw new Error($wrapText(arr) + " doesn't represent a valid Array object or value.");
-        }
+    // 'values' can be either an array of simple values, or just one simple value.
+    csv: function (values) {
+        return $formatCSV(values);
     },
     // Formats query - parameter using the values passed (simple value or array of simple values);
     // The main reason for exposing this to the client is to include the parser into the test.
     // The query can contain variables $1, $2, etc, and 'values' is either one simple value or
     // an array of simple values, such as: text, boolean, date, numeric or null.
     format: function (query, values) {
-        return $formatValues(query, values);
+        return $formatQuery(query, values);
     }
 };
 
 // Formats a proper function call from the parameters.
 function $createFuncQuery(funcName, values) {
-    return 'select * from ' + funcName + '(' + $formatParams(values) + ');';
+    return 'select * from ' + funcName + '(' + $formatCSV(values) + ');';
 }
 
 // Parses query for $1, $2,... variables and replaces them with the values passed.
 // 'values' can be an array of simple values, or just one simple value.
-function $formatValues(query, values) {
+function $formatQuery(query, values) {
     var q = query;
     var result = {
         success: true
@@ -354,7 +351,7 @@ function $query(client, query, values, qrm, options) {
                         query: query
                     };
                 } else {
-                    req = $formatValues(query, values);
+                    req = $formatQuery(query, values);
                     if (!req.success) {
                         errMsg = req.error;
                     }

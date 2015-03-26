@@ -121,27 +121,37 @@ describe("Type conversion in pgp.as", function () {
     });
 
     it("must correctly convert any Array of values into CSV", function () {
-        expect(function () {
-            pgp.as.csv(1); // test an integer;
-        }).toThrow("'1' doesn't represent a valid Array object or value.");
-        expect(function () {
-            pgp.as.csv("'' doesn't represent a valid Array object or value."); // test an empty string;
-        }).toThrow();
-        expect(function () {
-            pgp.as.csv("'text' doesn't represent a valid Array object or value."); // test a text string;
-        }).toThrow();
 
-        expect(pgp.as.csv()).toBe("null"); // test undefined;
-        expect(pgp.as.csv(null)).toBe("null"); // test null;
+        expect(pgp.as.csv()).toBe(""); // test undefined;
         expect(pgp.as.csv([])).toBe(""); // test empty array;
-        expect(pgp.as.csv([1])).toBe("1"); // test an integer;
-        expect(pgp.as.csv([-123.456])).toBe("-123.456"); // test a float;
-        expect(pgp.as.csv(["Hello World!"])).toBe("'Hello World!'"); // test a text;
-        expect(pgp.as.csv([true])).toBe("TRUE"); // test boolean True;
-        expect(pgp.as.csv([false])).toBe("FALSE"); // test boolean False;
-        expect(pgp.as.csv([new Date(2015, 2, 8, 16, 24, 8)])).toBe("'Sun, 08 Mar 2015 16:24:08 GMT'"); // test date;
-        // test a combination of values;
-        expect(pgp.as.csv([1, true, "don't break", new Date(2015, 2, 8, 16, 24, 8)])).toBe("1,TRUE,'don''t break','Sun, 08 Mar 2015 16:24:08 GMT'");
+        expect(pgp.as.csv(null)).toBe("null"); // test null;
+        expect(pgp.as.csv([null])).toBe("null"); // test null in array;
+        expect(pgp.as.csv([undefined])).toBe("null"); // test undefined in array;
+        expect(pgp.as.csv([null, undefined])).toBe("null,null"); // test combination of null + undefined in array;
+
+        expect(pgp.as.csv(0)).toBe("0"); // test zero;
+        expect(pgp.as.csv([0])).toBe("0"); // test zero in array;
+        expect(pgp.as.csv(-123.456)).toBe("-123.456"); // test a float;
+        expect(pgp.as.csv([-123.456])).toBe("-123.456"); // test a float in array;
+
+        expect(pgp.as.csv(true)).toBe("TRUE"); // test boolean True;
+        expect(pgp.as.csv([true])).toBe("TRUE"); // test boolean True in array;
+
+        expect(pgp.as.csv(false)).toBe("FALSE"); // test boolean False;
+        expect(pgp.as.csv([false])).toBe("FALSE"); // test boolean False in array;
+
+        expect(pgp.as.csv("")).toBe("''"); // empty text;
+        expect(pgp.as.csv([""])).toBe("''"); // empty text in array;
+        expect(pgp.as.csv("simple text")).toBe("'simple text'"); // simple text;
+        expect(pgp.as.csv("don't break")).toBe("'don''t break'"); // text with one single-quote symbol;
+        expect(pgp.as.csv("test ''")).toBe("'test '''''"); // text with two single-quote symbols;
+
+        expect(pgp.as.csv(new Date(2015, 2, 8, 16, 24, 8))).toBe("'Sun, 08 Mar 2015 16:24:08 GMT'"); // test date;
+        expect(pgp.as.csv([new Date(2015, 2, 8, 16, 24, 8)])).toBe("'Sun, 08 Mar 2015 16:24:08 GMT'"); // test date in array;
+
+        // test a combination of all values types;
+        expect(pgp.as.csv([12.34, true, "don't break", undefined, new Date(2015, 2, 8, 16, 24, 8)]))
+            .toBe("12.34,TRUE,'don''t break',null,'Sun, 08 Mar 2015 16:24:08 GMT'");
     });
 
     it("must format correctly any query with variables", function () {
