@@ -55,18 +55,20 @@ describe("Selecting one static value", function () {
     });
 });
 
-describe("A complex transaction", function () {
-    it("must resolve all objects correctly", function () {
+// NOTE: The same test for 100,000 inserts works just the same.
+// Inserting just 10,000 records to avoid exceeding memory quota on the test server.
+describe("A complex transaction with 10,000 inserts", function () {
+    it("must not fail", function () {
         var result, error;
         db.tx(function (ctx) {
             var queries = [
-                ctx.none('drop table if exists users'),
-                ctx.none('create table users(id serial, name text)')
+                ctx.none('drop table if exists test'),
+                ctx.none('create table test(id serial, name text)')
             ];
-            for (var i = 0; i < 10; i++) {
-                queries.push(ctx.none('insert into users(name) values($1)', 'name-' + (i + 1)));
+            for (var i = 1; i <= 10000; i++) {
+                queries.push(ctx.none('insert into test(name) values($1)', 'name-' + i));
             }
-            queries.push(ctx.one('select count(*) from users'));
+            queries.push(ctx.one('select count(*) from test'));
             return promise.all(queries);
         }).then(function (data) {
             result = data;
@@ -76,14 +78,14 @@ describe("A complex transaction", function () {
         });
         waitsFor(function () {
             return result !== undefined;
-        }, "Query timed out", 5000);
+        }, "Query timed out", 15000);
         runs(function () {
             expect(error).toBe(undefined);
             expect(result instanceof Array).toBe(true);
-            expect(result.length).toBe(13); // drop + create + insert x 10 + select;
+            expect(result.length).toBe(10003); // drop + create + insert x 10000 + select;
             var last = result[result.length - 1]; // result from the select;
             expect(typeof(last)).toBe('object');
-            expect(last.count).toBe('10'); // last one must be the counter (as text);
+            expect(last.count).toBe('10000'); // last one must be the counter (as text);
         });
     });
 });
