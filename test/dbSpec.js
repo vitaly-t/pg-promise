@@ -1,18 +1,10 @@
-var pgpLib = require('../index');
 var promise = require('promise');
+var dbHeader = require('../scripts/dbHeader.js')({
+    // options, if needed;
+});
 
-var options = {};
-
-var pgp = pgpLib(options); // initializing the library;
-
-var cn = {
-    host: 'localhost',
-    port: 5432,
-    database: 'pg_promise_test',
-    user: 'postgres'
-};
-
-var db = pgp(cn);
+var pgp = dbHeader.pgp;
+var db = dbHeader.db;
 
 describe("Database", function () {
     it("must be able to connect", function () {
@@ -21,7 +13,7 @@ describe("Database", function () {
         db.connect()
             .then(function (obj) {
                 status = 'success';
-                obj.done();
+                obj.done(); // release connection;
             }, function (reason) {
                 error = reason.message;
                 status = 'failed';//reason.error;
@@ -144,7 +136,7 @@ describe("A nested transaction (10 levels)", function () {
 describe("Return data from a query must match the request type", function () {
     it("method 'none' must throw an error when there was data returned", function () {
         var result, error;
-        db.none("select 123")
+        db.none("select * from person where name=$1", 'John')
             .then(function (data) {
                 result = data;
             }, function (reason) {
@@ -156,14 +148,51 @@ describe("Return data from a query must match the request type", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBe(null);
-            expect(error).toBe("No return data was expected from query: select 123");
+            expect(error).toBe("No return data was expected from query: select * from person where name='John'");
         });
     });
+
+    it("method 'one' must throw an error when there was no data returned", function () {
+        var result, error;
+        db.one("select * from person where name=$1", 'Unknown')
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBe(null);
+            expect(error).toBe("No rows returned from query: select * from person where name='Unknown'");
+        });
+    });
+
+    it("method 'one' must throw an error when more than one row was returned", function () {
+        var result, error;
+        db.one("select * from person")
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBe(null);
+            expect(error).toBe("Single row was expected from query: select * from person");
+        });
+    });
+
 });
 
 var _finishCallback = jasmine.Runner.prototype.finishCallback;
 jasmine.Runner.prototype.finishCallback = function () {
-    // Run the old finishCallback
+    // Run the old finishCallback:
     _finishCallback.bind(this)();
 
     pgp.end(); // closing pg database application pool;
