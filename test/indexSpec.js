@@ -7,6 +7,13 @@ describe("Library entry object", function () {
         expect(typeof(pgpLib)).toBe('function');
     });
 
+    it("must throw error on invalid promise override", function () {
+        expect(function () {
+            pgpLib({
+                promiseLib: "test"
+            });
+        }).toThrow("Invalid or unsupported promise library override.");
+    });
 });
 
 describe("Library initialization object", function () {
@@ -52,10 +59,10 @@ describe("Database Instantiation", function () {
         var err = "Invalid 'cn' parameter passed.";
         expect(pgp).toThrow(err);
         expect(function () {
-            pgp(null)
+            pgp(null);
         }).toThrow(err);
         expect(function () {
-            pgp("")
+            pgp("");
         }).toThrow(err);
     });
     db = pgp("any connection detail");
@@ -105,16 +112,16 @@ describe("Type conversion in pgp.as", function () {
         expect(pgp.as.date()).toBe("null");
         expect(pgp.as.date(null)).toBe("null");
         expect(function () {
-            pgp.as.date("")
+            pgp.as.date("");
         }).toThrow("'' doesn't represent a valid Date object or value.");
         expect(function () {
-            pgp.as.date("bla-bla")
+            pgp.as.date("bla-bla");
         }).toThrow("'bla-bla' doesn't represent a valid Date object or value.");
         expect(function () {
-            pgp.as.date(123)
+            pgp.as.date(123);
         }).toThrow("'123' doesn't represent a valid Date object or value.");
         expect(function () {
-            pgp.as.date(function () {})
+            pgp.as.date(function () {});
         }).toThrow("'function () {}' doesn't represent a valid Date object or value.");
 
         expect(pgp.as.date(new Date(2015, 2, 8, 16, 24, 8))).toBe("'Sun, 08 Mar 2015 16:24:08 GMT'");
