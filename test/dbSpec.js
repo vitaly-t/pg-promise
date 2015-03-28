@@ -113,8 +113,7 @@ describe("When a nested transaction fails", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBe(null);
-            expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Nested TX failure');
+            expect(error.toString()).toBe('Error: Nested TX failure');
         });
     });
 });
@@ -160,8 +159,8 @@ describe("Calling a transaction with an invalid callback", function () {
     });
     it("must reject when the callback returns nonsense", function () {
         var result, error;
-        db.tx(function (ctx) {
-            return 123;
+        db.tx(function () {
+            return 123; // not quite a promise object;
         })
             .then(function (data) {
                 result = data;
