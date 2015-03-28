@@ -547,18 +547,20 @@ function $extendProtocol(obj, cn, db, options) {
 
 // Implements a transaction logic;
 function $transact(obj, cb) {
+
+    // callback invocation helper;
     function invoke() {
         if (typeof(cb) !== 'function') {
             return $p.reject("Cannot invoke tx() without a callback function.");
         }
         var result;
         try {
-            result = cb(obj);
+            result = cb(obj); // invoking the callback function;
         } catch (err) {
-            return $p.reject(err);
+            return $p.reject(err); // reject with the error object;
         }
         if (result && typeof(result.then) === 'function') {
-            return result;
+            return result; // result is a valid promise object;
         } else {
             return $p.reject("Callback function passed into tx() didn't return a valid promise object.");
         }

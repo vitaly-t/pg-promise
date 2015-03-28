@@ -73,7 +73,7 @@ You are now ready to make queries against the database.
 
 # Usage
 
-The library supports promise-chaining queries on shared and detached connections.
+The library supports promise-chained queries on shared and detached connections.
 Choosing which one you want depends on the situation and personal preferences.
 
 ### Detached Connections
@@ -84,7 +84,8 @@ execute the query and then release the connection.
 db.one("select * from users where id=$1", 123) // find the user from id;
     .then(function(data){
         // find 'login' records for the user found:
-        return db.query("select * from audit where event=$1 and userId=$2", ["login", data.id]);
+        return db.query("select * from audit where event=$1 and userId=$2",
+        ["login", data.id]);
     })
     .then(function(data){
         // display found audit records;
@@ -93,14 +94,14 @@ db.one("select * from users where id=$1", 123) // find the user from id;
         console.log(reason); // display reason why the call failed;
     })
 ```
-In a situation where only one request is to be made against the database, a detached chain is the only one that makes sense.
+In a situation where a single request is to be made against the database, a detached chain is the only one that makes sense.
 And even if you intend to execute multiple queries in a chain, keep in mind that even though each will use its own connection,
 such will be used from a connection pool, so effectively you end up with the same connection, without any performance penalty.
 
 ### Shared Connections
 
 A promise chain with a shared connection always starts with ```connect()```, which allocates a connection that's shared with all the
-query requests down the chain. The connection must be released when no longer needed.
+query requests down the promise chain. The connection must be released when no longer needed.
 
 ```javascript
 var sco; // shared connection object;
@@ -574,7 +575,6 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 * The first draft v0.0.1 was published on March 3rd, 2015, and then rapidly incremented due to many initial changes that had to come in, mostly documentation.
 
 [PG]:https://github.com/brianc/node-postgres
-[ConnectionParameters]:https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js
 [Promises/A+]:https://promisesaplus.com/
 [Promise]:https://github.com/then/promise
 [Bluebird]:https://github.com/petkaantonov/bluebird
