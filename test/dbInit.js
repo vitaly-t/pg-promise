@@ -1,7 +1,7 @@
 // Initialization scripts for the test database;
 
 var promise = require('promise');
-var dbHeader = require('../scripts/dbHeader.js')({
+var dbHeader = require('./dbHeader')({
     query: function (client, query) {
         console.log(query); // print all of the queries;
     }

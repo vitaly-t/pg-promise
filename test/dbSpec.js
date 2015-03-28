@@ -1,5 +1,5 @@
 var promise = require('promise');
-var dbHeader = require('../scripts/dbHeader.js')({
+var dbHeader = require('./dbHeader')({
     // options, if needed;
 });
 
