@@ -96,7 +96,7 @@ describe("When a nested transaction fails", function () {
         var result, error;
         db.tx(function (ctx) {
             return promise.all([
-                ctx.none('update users set name=$1 where id=$2', ['TestName', 1]),
+                ctx.none('update users set login=$1 where id=$2', ['TestName', 1]),
                 ctx.tx(function () {
                     throw new Error('Nested TX failure');
                 })
@@ -113,7 +113,8 @@ describe("When a nested transaction fails", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBe(null);
-            expect(error.toString()).toBe('Error: Nested TX failure');
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe('Nested TX failure');
         });
     });
 });
