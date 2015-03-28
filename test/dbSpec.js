@@ -70,12 +70,13 @@ describe("A complex transaction with 10,000 inserts", function () {
             }
             queries.push(ctx.one('select count(*) from test'));
             return promise.all(queries);
-        }).then(function (data) {
-            result = data;
-        }, function (reason) {
-            result = null;
-            error = reason;
-        });
+        })
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
         waitsFor(function () {
             return result !== undefined;
         }, "Query timed out", 15000);
@@ -88,6 +89,95 @@ describe("A complex transaction with 10,000 inserts", function () {
             expect(last.count).toBe('10000'); // last one must be the counter (as text);
         });
     });
+});
+
+describe("When a nested transaction fails", function () {
+    it("must rollback parent transaction also", function () {
+        var result, error;
+        db.tx(function (ctx) {
+            return promise.all([
+                ctx.none('update users set name=$1 where id=$2', ['TestName', 1]),
+                ctx.tx(function () {
+                    throw new Error('Nested TX failure');
+                })
+            ]);
+        })
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBe(null);
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe('Nested TX failure');
+        });
+    });
+});
+
+describe("Calling a transaction with an invalid callback", function () {
+
+    it("must reject when the callback is undefined", function () {
+        var result, error;
+        db.tx()
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBe(null);
+            expect(error).toBe("Cannot invoke tx() without a callback function.");
+        });
+    });
+
+    it("must reject when the callback returns nothing", function () {
+        var result, error;
+        db.tx(function (ctx) {
+            // return nothing;
+        })
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBe(null);
+            expect(error).toBe("Callback function passed into tx() didn't return a valid promise object.");
+        });
+    });
+    it("must reject when the callback returns nonsense", function () {
+        var result, error;
+        db.tx(function (ctx) {
+            return 123;
+        })
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 15000);
+        runs(function () {
+            expect(result).toBe(null);
+            expect(error).toBe("Callback function passed into tx() didn't return a valid promise object.");
+        });
+    });
+
 });
 
 describe("A nested transaction (10 levels)", function () {
@@ -116,12 +206,13 @@ describe("A nested transaction (10 levels)", function () {
                     });
                 });
             });
-        }).then(function (data) {
-            result = data;
-        }, function (reason) {
-            result = null;
-            error = reason;
-        });
+        })
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
         waitsFor(function () {
             return result !== undefined;
         }, "Query timed out", 5000);
@@ -187,6 +278,80 @@ describe("Return data from a query must match the request type", function () {
         runs(function () {
             expect(result).toBe(null);
             expect(error).toBe("Single row was expected from query: select * from person");
+        });
+    });
+
+    it("method 'any' must return an empty array when no records found", function () {
+        var result, error;
+        db.any("select * from person where name='Unknown'")
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(error).toBe(undefined);
+            expect(result instanceof Array).toBe(true);
+            expect(result.length).toBe(0);
+        });
+    });
+
+});
+
+describe("Queries must not allow invalid QRM (Query Request Mask) combinations", function () {
+    it("method 'query' must throw an error when mask is one+many", function () {
+        var result, error;
+        db.query("select * from person", undefined, queryResult.one | queryResult.many)
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBe(null);
+            expect(error).toBe("Invalid Query Result Mask specified.");
+        });
+    });
+    it("method 'query' must throw an error when QRM is > 6", function () {
+        var result, error;
+        db.query("select * from person", undefined, 7)
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBe(null);
+            expect(error).toBe("Invalid Query Result Mask specified.");
+        });
+    });
+    it("method 'query' must throw an error when QRM is < 1", function () {
+        var result, error;
+        db.query("select * from person", undefined, 0)
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBe(null);
+            expect(error).toBe("Invalid Query Result Mask specified.");
         });
     });
 
