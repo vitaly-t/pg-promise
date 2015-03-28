@@ -60,7 +60,8 @@ var cn = {
 var cn = "postgres://username:password@host:port/database";
 ```
 This library doesn't use any of the connection's details, it simply passes them on to [PG] when opening a new connection.
-For more details see [ConnectionParameters] class in [PG], such as additional connection properties supported.
+For more details see pg connection parameters in [WiKi](https://github.com/brianc/node-postgres/wiki/pg#parameters) and
+[implementation](https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js).
 
 ### 4. Instantiate your database
 ```javascript
@@ -559,6 +560,7 @@ This will release pg connection pool globally and make sure that the process ter
 If you do not call it, your process may be waiting for 30 seconds (default) or so, waiting for the pg connection pool to expire.
 
 # History
+* Version 0.6.2 has good database test coverage. Released: March 28, 2015.
 * Version 0.5.6 introduces support for nested transaction. Released: March 22, 2015.
 * Version 0.5.3 - minor changes; March 14, 2015.
 * Version 0.5.1 included wider support for alternative promise libraries. Released: March 12, 2015.

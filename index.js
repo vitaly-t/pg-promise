@@ -40,7 +40,7 @@ queryResult = {
 //      - Default is false, and all queries are formatted within 'pg-promise'.
 //
 //    promiseLib: null
-//      - Overrides the promise library instance used by the library.
+//      - Overrides the promise library to be used.
 // }
 module.exports = function (options) {
 
@@ -69,6 +69,7 @@ module.exports = function (options) {
     $p.resolve = npm.promise.resolve;
     $p.reject = npm.promise.reject;
 
+    // database instance;
     var inst = function (cn) {
         if (!cn) {
             // Cannot instantiate a database with an empty connection;
@@ -96,8 +97,8 @@ function dbInit(cn, options) {
 
     var dbInst = {};
 
-    // Returns a detached connection instance to allow
-    // chaining queries under the same connection;
+    // Resolves a connection object to allow chaining
+    // queries under the same connection;
     dbInst.connect = function () {
         var db = {};
         var self = {
@@ -222,8 +223,8 @@ function $formatCSV(values) {
             s = $wrapValue(values);
             if (s === null) {
                 throw new Error("Cannot convert a value of type '" + typeof(values) + "'");
-            }else{
-                if(typeof(s) !== 'string'){
+            } else {
+                if (typeof(s) !== 'string') {
                     s = s.toString();
                 }
             }
@@ -594,8 +595,8 @@ function $transact(obj, cb) {
     });
 }
 
-// Handles database connection acquire/release
-// events, notifying the client as needed.
+// Handles database connection acquire/release events,
+// notifying the client as needed.
 function $notify(open, db, opt) {
     if (opt) {
         var func = open ? opt.connect : opt.disconnect;

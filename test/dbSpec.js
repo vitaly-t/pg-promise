@@ -92,7 +92,7 @@ describe("A complex transaction with 10,000 inserts", function () {
 });
 
 describe("When a nested transaction fails", function () {
-    it("must rollback parent transaction also", function () {
+    it("must return error from the nested transaction", function () {
         var result, error;
         db.tx(function (ctx) {
             return promise.all([
