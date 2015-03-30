@@ -192,7 +192,7 @@ function $wrapValue(val) {
             if (val instanceof Date) {
                 return $wrap.date(val);
             } else {
-                return typeof(val) === 'object' ? null : val;
+                return typeof(val) === 'object' ? null : val.toString();
             }
     }
 }
@@ -220,10 +220,6 @@ function $formatCSV(values) {
             s = $wrapValue(values);
             if (s === null) {
                 throw new Error("Cannot convert a value of type '" + typeof(values) + "'");
-            } else {
-                if (typeof(s) !== 'string') {
-                    s = s.toString();
-                }
             }
         }
     }
