@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "PG + Promises/A+, with transactions.",
   "main": "index.js",
   "scripts": {
@@ -35,6 +35,7 @@
     "promise": ">=6.1.0"
   },
   "devDependencies": {
-    "jasmine-node": "1.x"
+    "jasmine-node": "1.x",
+    "bluebird": "2.9.x"
   }
 }

@@ -167,16 +167,15 @@ function $isDBNull(val) {
     return val === undefined || val === null;
 }
 
-// Wraps up text in single quotes;
+// Wraps the text in single quotes;
 function $wrapText(text) {
     return "'" + text + "'";
 }
 
 // Translates a javascript value into its text presentation,
 // according to the type, compatible with PostgreSQL format.
-// Returns null, if the value cannot be translated,
-// such as: function, array or object (non-date).
-// Watch out for a possible 0, not to confuse with null.
+// Returns null, if the value cannot be translated, such as:
+// function, array or object that's not Date.
 function $wrapValue(val) {
     if ($isDBNull(val)) {
         return 'null';
@@ -187,19 +186,20 @@ function $wrapValue(val) {
         case 'boolean':
             return $wrap.bool(val);
         case 'function':
-            return null; // error
+            return null; // error: functions are not supported;
         default:
             if (val instanceof Date) {
                 return $wrap.date(val);
             } else {
+                // it is either unknown object or a number;
                 return typeof(val) === 'object' ? null : val.toString();
             }
     }
 }
 
-// Formats array of javascript-type parameters into a csv list
-// to be passed into a function, compatible with PostgreSQL.
-// It can understand both a simple value and an array of simple values.
+// Formats array of javascript-type parameters into a csv list,
+// so it can be passed into a function. It can understand both
+// a simple value and an array of simple values.
 function $formatCSV(values) {
     var s = "";
     if (Array.isArray(values)) {
@@ -207,8 +207,10 @@ function $formatCSV(values) {
             if (i > 0) {
                 s += ',';
             }
+            // expect a simple value;
             var v = $wrapValue(values[i]);
             if (v === null) {
+                // error: not a simple value;
                 throw new Error("Cannot convert parameter with index " + i);
             } else {
                 s += v;
@@ -216,9 +218,10 @@ function $formatCSV(values) {
         }
     } else {
         if (values !== undefined) {
-            // a simple value is presumed;
+            // expect a simple value;
             s = $wrapValue(values);
             if (s === null) {
+                // error: not a simple value;
                 throw new Error("Cannot convert a value of type '" + typeof(values) + "'");
             }
         }
@@ -232,8 +235,8 @@ var $wrap = {
         if ($isDBNull(txt)) {
             return 'null';
         }
-        // replacing single-quote symbols with two of them, and then
-        // wrapping in quotes, for compatibility with PostgreSQL.
+        // replacing each single-quote symbol with two, and then
+        // wrapping in quotes, for compatibility with PostgreSQL;
         return $wrapText(txt.replace(/'/g, "''"));
     },
     bool: function (val) {
@@ -247,9 +250,10 @@ var $wrap = {
             return 'null';
         }
         if (d instanceof Date) {
+            // UTC date string is what PostgreSQL understands automatically;
             return $wrapText(d.toUTCString());
         } else {
-            throw new Error($wrapText(d) + " doesn't represent a valid Date object or value.");
+            throw new Error($wrapText(d) + " doesn't represent a valid Date object.");
         }
     },
     // Creates a comma-separated list of values formatted for use with PostgreSQL;
@@ -257,7 +261,7 @@ var $wrap = {
     csv: function (values) {
         return $formatCSV(values);
     },
-    // Formats query - parameter using the values passed (simple value or array of simple values);
+    // Formats query - parameter using the values passed;
     // The main reason for exposing this to the client is to include the parser into the test.
     // The query can contain variables $1, $2, etc, and 'values' is either one simple value or
     // an array of simple values, such as: text, boolean, date, number or null.
@@ -266,14 +270,15 @@ var $wrap = {
     }
 };
 
-// Formats a proper function call.
+// Formats a proper function call query;
+// Example: 'select * from funcName(p1,p2,p3)'
 function $createFuncQuery(funcName, values) {
     return 'select * from ' + funcName + '(' + $formatCSV(values) + ')';
 }
 
 // 'pg-promise' own query formatting solution;
 // it parses query for $1, $2,... variables and replaces them with the values passed;
-// 'values' can be an array of simple values, or just one simple value.
+// 'values' can be an array of simple values or just one simple value.
 function $formatQuery(query, values) {
     var q = query;
     var result = {
@@ -288,12 +293,13 @@ function $formatQuery(query, values) {
                 var variable = '$' + (i + 1);
                 if (q.indexOf(variable) === -1) {
                     result.success = false;
-                    result.error = "More values passed than variables in the query.";
+                    result.error = "More values passed in array than variables in the query.";
                     break;
                 } else {
+                    // expect a simple value;
                     var value = $wrapValue(values[i]);
                     if (value === null) {
-                        // one of the complex types passed;
+                        // error: not a simple value;
                         result.success = false;
                         result.error = "Cannot convert parameter with index " + i;
                         break;
@@ -306,11 +312,14 @@ function $formatQuery(query, values) {
         } else {
             if (values !== undefined) {
                 if (q.indexOf('$1') === -1) {
+                    // a single value was passed, but variable $1 doesn't exist;
                     result.success = false;
                     result.error = "No variable found in the query to replace with the passed value.";
                 } else {
+                    // expect a simple value;
                     var value = $wrapValue(values);
                     if (value === null) {
+                        // error: not a simple value;
                         result.success = false;
                         result.error = "Cannot convert type '" + typeof(values) + "' into a query variable value.";
                     } else {
@@ -347,7 +356,7 @@ function $query(client, query, values, qrm, options) {
                         query: query
                     };
                 } else {
-                    // use 'pg-promise' implementation to parameter formatting;
+                    // use 'pg-promise' implementation of parameter formatting;
                     req = $formatQuery(query, values);
                     if (!req.success) {
                         errMsg = req.error;
@@ -408,7 +417,8 @@ function $query(client, query, values, qrm, options) {
     });
 }
 
-// Connects to the database;
+// Connects to the database and resolves
+// with the connection details;
 function $connect(cn) {
     return $p(function (resolve, reject) {
         npm.pg.connect(cn, function (err, client, done) {
@@ -424,7 +434,7 @@ function $connect(cn) {
     });
 }
 
-// Injects additional methods into an access object.
+// Injects additional methods into an access object;
 function $extendProtocol(obj, cn, db, options) {
 
     // Expects no data to be returned;
@@ -561,6 +571,7 @@ function $transact(obj, cb) {
         if (result && typeof(result.then) === 'function') {
             return result; // result is a valid promise object;
         } else {
+            // transaction callback is always expected to return a promise object;
             return $p.reject("Callback function passed into tx() didn't return a valid promise object.");
         }
     }

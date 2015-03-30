@@ -1,4 +1,4 @@
-var promise = require('promise');
+var promise = require('bluebird');
 
 var options = {}; // options, if needed;
 
@@ -44,11 +44,9 @@ describe("Selecting one static value", function () {
                 error = reason;
                 result = null;
             });
-
         waitsFor(function () {
             return result !== undefined;
         }, "Query timed out", 5000);
-
         runs(function () {
             expect(error).toBe(undefined);
             expect(typeof(result)).toBe('object');
@@ -56,6 +54,33 @@ describe("Selecting one static value", function () {
         });
     });
 });
+
+describe("Executing an invalid query", function () {
+
+    it("must reject with an error", function () {
+        var finished, result, error = "Invalid query specified.";
+        promise.any([
+            db.query(),
+            db.query(''),
+            db.query(null)])
+            .then(function () {
+                finished = true;
+            }, function (reason) {
+                result = reason;
+                finished = true;
+            });
+        waitsFor(function () {
+            return finished;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result.length).toBe(3);
+            expect(result[0]).toBe(error);  // reject to an undefined query;
+            expect(result[1]).toBe(error);  // reject to an empty query;
+            expect(result[2]).toBe(error);  // reject to a null query;
+        });
+    });
+});
+
 
 // NOTE: The same test for 100,000 inserts works just the same.
 // Inserting just 10,000 records to avoid exceeding memory quota on the test server.
