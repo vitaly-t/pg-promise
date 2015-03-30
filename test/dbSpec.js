@@ -1,7 +1,8 @@
 var promise = require('promise');
-var dbHeader = require('./dbHeader')({
-    // options, if needed;
-});
+
+var options = {}; // options, if needed;
+
+var dbHeader = require('./dbHeader')(options);
 
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
@@ -38,7 +39,7 @@ describe("Selecting one static value", function () {
         var result, error;
         db.one('select 123 as value')
             .then(function (data) {
-                result = data.value;
+                result = data;
             }, function (reason) {
                 error = reason;
                 result = null;
@@ -50,13 +51,16 @@ describe("Selecting one static value", function () {
 
         runs(function () {
             expect(error).toBe(undefined);
-            expect(result).toBe(123);
+            expect(typeof(result)).toBe('object');
+            expect(result.value).toBe(123);
         });
     });
 });
 
 // NOTE: The same test for 100,000 inserts works just the same.
 // Inserting just 10,000 records to avoid exceeding memory quota on the test server.
+// Also, the client shouldn't execute more than 10,000 queries within single transaction,
+// huge transactions must be throttled into smaller chunks.
 describe("A complex transaction with 10,000 inserts", function () {
     it("must not fail", function () {
         var result, error;
@@ -115,6 +119,49 @@ describe("When a nested transaction fails", function () {
             expect(result).toBe(null);
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe('Nested TX failure');
+        });
+    });
+});
+
+describe("When a nested transaction fails", function () {
+    it("both transactions must rollback", function () {
+        var result, error, nestError;
+        db.tx(function (ctx) {
+            return promise.all([
+                ctx.none('update users set login=$1', 'External'),
+                ctx.tx(function () {
+                    return promise.all([
+                        ctx.none('update users set login=$1', 'Internal'),
+                        ctx.one('select * from unknownTable') // emulating a bad query;
+                    ]);
+                })
+            ]);
+        })
+            .then(function () {
+                result = null; // must not get here;
+            }, function (reason) {
+                nestError = reason;
+                return promise.all([
+                    db.one('select count(*) from users where login=$1', 'External'), // 0 is expected;
+                    db.one('select count(*) from users where login=$1', 'Internal'), // 0 is expected;
+                ]);
+            })
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(error).toBe(undefined);
+            expect(nestError).toBe('relation "unknowntable" does not exist');
+            expect(result instanceof Array).toBe(true);
+            expect(result.length).toBe(2);
+            expect(result[0].count).toBe('0'); // no changes within parent transaction;
+            expect(result[1].count).toBe('0'); // no changes within nested transaction;
         });
     });
 });
@@ -288,7 +335,7 @@ describe("Return data from a query must match the request type", function () {
             .then(function (data) {
                 result = data;
             }, function (reason) {
-                result = null;
+                result = 'whatever';
                 error = reason;
             });
         waitsFor(function () {

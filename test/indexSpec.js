@@ -78,6 +78,7 @@ describe("Database object", function () {
         expect(typeof(db.tx)).toBe('function');
         expect(typeof(db.one)).toBe('function');
         expect(typeof(db.many)).toBe('function');
+        expect(typeof(db.any)).toBe('function');
         expect(typeof(db.none)).toBe('function');
         expect(typeof(db.oneOrNone)).toBe('function');
         expect(typeof(db.manyOrNone)).toBe('function');
