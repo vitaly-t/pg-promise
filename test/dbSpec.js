@@ -227,6 +227,7 @@ describe("A nested transaction (10 levels)", function () {
 });
 
 describe("Return data from a query must match the request type", function () {
+
     it("method 'none' must throw an error when there was data returned", function () {
         var result, error;
         db.none("select * from person where name=$1", 'John')
@@ -278,6 +279,24 @@ describe("Return data from a query must match the request type", function () {
         runs(function () {
             expect(result).toBe(null);
             expect(error).toBe("Single row was expected from query: select * from person");
+        });
+    });
+
+    it("method 'oneOrNone' must resolve into null when no data returned", function () {
+        var result, error;
+        db.oneOrNone("select * from person where name=$1", "Unknown")
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(error).toBe(undefined);
+            expect(result).toBe(null);
         });
     });
 

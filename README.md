@@ -432,7 +432,7 @@ Any query request accepts values for the variable within query string as the sec
 It accepts a single simple value for queries that use only one variable, as well as an array of simple values,
 for queries with multiple variables in them.
 
-**pg-promise** implementation of query formatting supports only the basic javascript types: text, boolean, date, numeric and null.
+**pg-promise** implementation of query formatting supports only the basic javascript types: text, boolean, date, number and null.
 
 Those basic types are however sufficient to cover more complex scenarios. For example, binary data is exchanged with the
 database using hex strings, as shown below.

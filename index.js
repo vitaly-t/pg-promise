@@ -19,9 +19,7 @@ queryResult = {
 ////////////////////////////////////////////////
 // Main entry function;
 //
-// Parameters:
-//
-// options (optional) -
+// 'options' parameter -
 // {
 //    connect: function(client){
 //        client has connected;
@@ -69,7 +67,7 @@ module.exports = function (options) {
     $p.resolve = npm.promise.resolve;
     $p.reject = npm.promise.reject;
 
-    // database instance;
+    // library instance;
     var inst = function (cn) {
         if (!cn) {
             // Cannot instantiate a database with an empty connection;
@@ -95,10 +93,10 @@ module.exports = function (options) {
 // Initializes a database object;
 function dbInit(cn, options) {
 
-    var dbInst = {};
+    var dbInst = {}; // database instance;
 
     // Resolves a connection object to allow chaining
-    // queries under the same connection;
+    // queries under the same (shared) connection;
     dbInst.connect = function () {
         var db = {};
         var self = {
@@ -123,16 +121,15 @@ function dbInit(cn, options) {
             .then(function (obj) {
                 db.client = obj.client;
                 db.done = function () {
-                    $notify(false, obj, options);
-                    obj.done();
+                    $notify(false, obj, options); // notify of disconnection;
+                    obj.done(); // release the connection;
                 };
-                $notify(true, obj, options);
+                $notify(true, obj, options); // notify of a new connection;
                 return $p.resolve(self);
             });
     };
 
-    // Generic query request;
-    // qrm is Query Result Mask, combination of queryResult flags.
+    // generic query method;
     dbInst.query = function (query, values, qrm) {
         return $p(function (resolve, reject) {
             $connect(cn)
@@ -153,7 +150,7 @@ function dbInit(cn, options) {
                 });
         });
     };
-    $extendProtocol(dbInst, cn, null, options); // extending for a new connection;
+    $extendProtocol(dbInst, cn, null, options); // extending database object;
     return dbInst;
 }
 
@@ -165,8 +162,8 @@ var $p = function (func) {
     return new npm.promise(func);
 };
 
-// Null verification;
-function $isNull(val) {
+// Null verification for the database values;
+function $isDBNull(val) {
     return val === undefined || val === null;
 }
 
@@ -181,7 +178,7 @@ function $wrapText(text) {
 // such as: function, array or object (non-date).
 // Watch out for a possible 0, not to confuse with null.
 function $wrapValue(val) {
-    if ($isNull(val)) {
+    if ($isDBNull(val)) {
         return 'null';
     }
     switch (typeof(val)) {
@@ -236,7 +233,7 @@ function $formatCSV(values) {
 // Value wrapper to be exposed through 'pgp.as' namespace;
 var $wrap = {
     text: function (txt) {
-        if ($isNull(txt)) {
+        if ($isDBNull(txt)) {
             return 'null';
         }
         // replacing single-quote symbols with two of them, and then
@@ -244,13 +241,13 @@ var $wrap = {
         return $wrapText(txt.replace(/'/g, "''"));
     },
     bool: function (val) {
-        if ($isNull(val)) {
+        if ($isDBNull(val)) {
             return 'null';
         }
         return val ? 'TRUE' : 'FALSE';
     },
     date: function (d) {
-        if ($isNull(d)) {
+        if ($isDBNull(d)) {
             return 'null';
         }
         if (d instanceof Date) {
@@ -267,18 +264,19 @@ var $wrap = {
     // Formats query - parameter using the values passed (simple value or array of simple values);
     // The main reason for exposing this to the client is to include the parser into the test.
     // The query can contain variables $1, $2, etc, and 'values' is either one simple value or
-    // an array of simple values, such as: text, boolean, date, numeric or null.
+    // an array of simple values, such as: text, boolean, date, number or null.
     format: function (query, values) {
         return $formatQuery(query, values);
     }
 };
 
-// Formats a proper function call from the parameters.
+// Formats a proper function call.
 function $createFuncQuery(funcName, values) {
-    return 'select * from ' + funcName + '(' + $formatCSV(values) + ');';
+    return 'select * from ' + funcName + '(' + $formatCSV(values) + ')';
 }
 
-// Parses query for $1, $2,... variables and replaces them with the values passed.
+// 'pg-promise' own query formatting solution;
+// it parses query for $1, $2,... variables and replaces them with the values passed;
 // 'values' can be an array of simple values, or just one simple value.
 function $formatQuery(query, values) {
     var q = query;
@@ -335,23 +333,25 @@ function $formatQuery(query, values) {
 // Generic, static query call;
 function $query(client, query, values, qrm, options) {
     return $p(function (resolve, reject) {
-        if ($isNull(qrm)) {
+        if ($isDBNull(qrm)) {
             qrm = queryResult.any; // default query result;
         }
         var errMsg, req, pgFormatting = (options && options.pgFormatting);
         if (!query) {
             errMsg = "Invalid query specified.";
         } else {
-            var badMask = queryResult.one | queryResult.many;
+            var badMask = queryResult.one | queryResult.many; // the combination isn't supported;
             if ((qrm & badMask) === badMask || qrm < 1 || qrm > 6) {
                 errMsg = "Invalid Query Result Mask specified.";
             } else {
                 if (pgFormatting) {
+                    // 'node-postgres' will do the parameter formatting for us;
                     req = {
                         success: true,
                         query: query
                     };
                 } else {
+                    // use 'pg-promise' implementation to parameter formatting;
                     req = $formatQuery(query, values);
                     if (!req.success) {
                         errMsg = req.error;
@@ -468,7 +468,7 @@ function $extendProtocol(obj, cn, db, options) {
     };
 
     // A procedure is expected to return either no rows
-    // or one row that represents a list of OUT values.
+    // or one row that represents a list of OUT values;
     obj.proc = function (procName, values) {
         var query = $createFuncQuery(procName, values);
         return obj.query(query, undefined, queryResult.one | queryResult.none);
@@ -476,9 +476,10 @@ function $extendProtocol(obj, cn, db, options) {
 
     // Transactions support;
     obj.tx = function (cb) {
-        var txDB = {};
-        var internal; // internal connection flag;
+        var txDB = {};  // transaction instance;
+        var internal;   // internal connection flag;
 
+        // connection attachment helper;
         function attach(obj, int) {
             if (txDB.client) {
                 throw new Error('Invalid transaction attachment'); // this should never happen;
@@ -487,17 +488,19 @@ function $extendProtocol(obj, cn, db, options) {
             txDB.done = obj.done;
             internal = int ? true : false;
             if (internal) {
-                $notify(true, txDB, options);
+                $notify(true, txDB, options); // notify of a new connection;
             }
         }
 
+        // connection detachment helper;
         function detach() {
             if (!txDB.client) {
                 throw new Error('Invalid transaction detachment'); // this should never happen;
             }
             if (internal) {
-                $notify(false, txDB, options);
-                txDB.done();
+                // connection was allocated;
+                $notify(false, txDB, options); // notify of disconnection;
+                txDB.done(); // disconnect;
             }
             txDB.client = null;
             txDB.done = null;
@@ -570,29 +573,28 @@ function $transact(obj, cb) {
     return $p(function (resolve, reject) {
         obj.none('begin') // BEGIN;
             .then(function () {
-                invoke() // Callback;
+                invoke() // callback;
                     .then(function (data) {
-                        t_data = data;
+                        t_data = data; // save callback data;
                         success = true;
                         return obj.none('commit'); // COMMIT;
                     }, function (reason) {
                         // callback failed;
-                        t_reason = reason;
+                        t_reason = reason; // save callback failure;
                         success = false;
                         return obj.none('rollback'); // ROLLBACK;
                     })
                     .then(function () {
                         if (success) {
-                            resolve(t_data);
+                            resolve(t_data); // resolve with callback data;
                         } else {
-                            reject(t_reason);
+                            reject(t_reason); // reject with callback failure;
                         }
                     }, function (reason) {
-                        reject(reason);
+                        reject(reason); // either COMMIT or ROLLBACK failed;
                     });
             }, function (reason) {
-                // BEGIN failed;
-                reject(reason);
+                reject(reason); // BEGIN failed;
             });
     });
 }
