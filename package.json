@@ -31,11 +31,11 @@
     "npm": ">=1.4.x"
   },
   "dependencies": {
-    "pg": ">=4.3.0",
-    "promise": ">=6.1.0"
+    "pg": "4.x",
+    "promise": "6.x"
   },
   "devDependencies": {
     "jasmine-node": "1.x",
-    "bluebird": "2.9.x"
+    "bluebird": "2.x"
   }
 }
