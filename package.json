@@ -36,8 +36,9 @@
   },
   "devDependencies": {
     "bluebird": "2.x",
-    "jasmine-node": "1.x",
+    "coveralls": "^2.11.2",
     "grunt": "^0.4.5",
-    "grunt-jasmine-node-coverage": "^0.4.1"
+    "grunt-jasmine-node-coverage": "^0.4.1",
+    "jasmine-node": "1.x"
   }
 }
