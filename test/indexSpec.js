@@ -1,6 +1,8 @@
 var pgpLib = require('../index');
 var pgp = pgpLib(); // initializing the library;
 
+var dateSample = new Date(2015, 2, 8, 16, 24, 8);
+
 describe("Library entry object", function () {
 
     it("must be a function", function () {
@@ -65,7 +67,7 @@ describe("Database Instantiation", function () {
             pgp("");
         }).toThrow(err);
     });
-    db = pgp("any connection detail");
+    db = pgp("invalid connection details");
     it("must return a valid object", function () {
         expect(typeof(db)).toBe('object');
     });
@@ -112,7 +114,12 @@ describe("Type conversion in pgp.as", function () {
         expect(pgp.as.text("has '' two quotes")).toBe("'has '''' two quotes'");
         expect(pgp.as.text("'")).toBe("''''");
         expect(pgp.as.text("''")).toBe("''''''");
+        expect(pgp.as.text(-123.456)).toBe("'-123.456'");
+        expect(pgp.as.text(true)).toBe("'true'");
+        expect(pgp.as.text(false)).toBe("'false'");
+        expect(pgp.as.text(dateSample)).toBe("'" + dateSample.toString() + "'");
         expect(pgp.as.text([])).toBe("''");
+        expect(pgp.as.text([1,"hello"])).toBe("'1,hello'"); // converts string as is;
         expect(pgp.as.text({})).toBe("'[object Object]'");
         expect(pgp.as.text(function(){})).toBe("'function (){}'");
     });
@@ -138,7 +145,7 @@ describe("Type conversion in pgp.as", function () {
             pgp.as.date({});
         }).toThrow("'[object Object]' doesn't represent a valid Date object.");
 
-        expect(pgp.as.date(new Date(2015, 2, 8, 16, 24, 8))).toBe("'Sun, 08 Mar 2015 16:24:08 GMT'");
+        expect(pgp.as.date(dateSample)).toBe("'" + dateSample.toUTCString() + "'");
     });
 
     it("must correctly convert parameters into CSV", function () {
@@ -167,12 +174,12 @@ describe("Type conversion in pgp.as", function () {
         expect(pgp.as.csv("don't break")).toBe("'don''t break'"); // text with one single-quote symbol;
         expect(pgp.as.csv("test ''")).toBe("'test '''''"); // text with two single-quote symbols;
 
-        expect(pgp.as.csv(new Date(2015, 2, 8, 16, 24, 8))).toBe("'Sun, 08 Mar 2015 16:24:08 GMT'"); // test date;
-        expect(pgp.as.csv([new Date(2015, 2, 8, 16, 24, 8)])).toBe("'Sun, 08 Mar 2015 16:24:08 GMT'"); // test date in array;
+        expect(pgp.as.csv(dateSample)).toBe("'" + dateSample.toUTCString() + "'"); // test date;
+        expect(pgp.as.csv([dateSample])).toBe("'" + dateSample.toUTCString() + "'"); // test date in array;
 
         // test a combination of all values types;
-        expect(pgp.as.csv([12.34, true, "don't break", undefined, new Date(2015, 2, 8, 16, 24, 8)]))
-            .toBe("12.34,TRUE,'don''t break',null,'Sun, 08 Mar 2015 16:24:08 GMT'");
+        expect(pgp.as.csv([12.34, true, "don't break", undefined, dateSample]))
+            .toBe("12.34,TRUE,'don''t break',null,'" + dateSample.toUTCString() + "'");
     });
 
     it("must format correctly any query with variables", function () {
@@ -229,9 +236,9 @@ describe("Type conversion in pgp.as", function () {
         expect(q.success).toBe(true);
         expect(q.query).toBe("'one', 'one'");
 
-        q = pgp.as.format("$1, $2, $3, $4", [true, -12.34, "text", new Date(2015, 2, 8, 16, 24, 8)]);
+        q = pgp.as.format("$1, $2, $3, $4", [true, -12.34, "text", dateSample]);
         expect(q.success).toBe(true);
-        expect(q.query).toBe("TRUE, -12.34, 'text', 'Sun, 08 Mar 2015 16:24:08 GMT'");
+        expect(q.query).toBe("TRUE, -12.34, 'text', '" + dateSample.toUTCString() + "'");
 
         q = pgp.as.format("$1 $1, $2 $2, $1", [1, "two"]); // test for repeated variables;
         expect(q.success).toBe(true);
