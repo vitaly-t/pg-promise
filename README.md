@@ -378,7 +378,7 @@ db.func(query, values, qrm); // expects the result according to `qrm`
 db.proc(query, values); // calls db.func(query, values, queryResult.one | queryResult.none)
 ```
 
-### Type Helpers
+### Conversion Helpers
 The library provides several helper functions to convert basic javascript types into their proper PostgreSQL presentation that can be passed
 directly into queries or functions as parameters. All of such helper functions are located within namespace ```pgp.as```:
 ```javascript

@@ -235,6 +235,9 @@ var $wrap = {
         if ($isDBNull(txt)) {
             return 'null';
         }
+        if(typeof(txt) !== 'string'){
+            txt = txt.toString();
+        }
         // replacing each single-quote symbol with two, and then
         // wrapping in quotes, for compatibility with PostgreSQL;
         return $wrapText(txt.replace(/'/g, "''"));
