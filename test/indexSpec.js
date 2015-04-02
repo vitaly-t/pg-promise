@@ -89,8 +89,7 @@ describe("Database object", function () {
     });
 });
 
-describe("Type conversion in pgp.as", function () {
-
+describe("Method as.bool", function () {
     it("must correctly convert any boolean", function () {
         expect(pgp.as.bool()).toBe("null");
         expect(pgp.as.bool(null)).toBe("null");
@@ -102,10 +101,13 @@ describe("Type conversion in pgp.as", function () {
         expect(pgp.as.bool(-10)).toBe("TRUE");
         expect(pgp.as.bool([])).toBe("TRUE");
         expect(pgp.as.bool({})).toBe("TRUE");
-        expect(pgp.as.bool(function(){})).toBe("TRUE");
+        expect(pgp.as.bool(function () {
+        })).toBe("TRUE");
         expect(pgp.as.bool("FALSE")).toBe("TRUE");
     });
+});
 
+describe("Method as.text", function () {
     it("must correctly convert any text", function () {
         expect(pgp.as.text()).toBe("null");
         expect(pgp.as.text(null)).toBe("null");
@@ -121,11 +123,13 @@ describe("Type conversion in pgp.as", function () {
         expect(pgp.as.text(false)).toBe("'false'");
         expect(pgp.as.text(dateSample)).toBe("'" + dateSample.toString() + "'");
         expect(pgp.as.text([])).toBe("''");
-        expect(pgp.as.text([1,"hello"])).toBe("'1,hello'"); // converts string as is;
+        expect(pgp.as.text([1, "hello"])).toBe("'1,hello'"); // converts string as is;
         expect(pgp.as.text({})).toBe("'[object Object]'");
-        expect(pgp.as.text(function(){})).toBe("'function (){}'");
+        expect(pgp.as.text(function (){})).toBe("'function (){}'");
     });
+});
 
+describe("Method as.date", function () {
     it("must correctly convert any date", function () {
         expect(pgp.as.date()).toBe("null");
         expect(pgp.as.date(null)).toBe("null");
@@ -152,9 +156,9 @@ describe("Type conversion in pgp.as", function () {
     });
 });
 
-describe("Method pgp.as.csv", function () {
+describe("Method as.csv", function () {
 
-    it("must correctly convert parameters into CSV", function () {
+    it("must correctly convert any parameters into CSV", function () {
 
         expect(pgp.as.csv()).toBe(""); // test undefined;
         expect(pgp.as.csv([])).toBe(""); // test empty array;
@@ -186,38 +190,71 @@ describe("Method pgp.as.csv", function () {
         // test a combination of all values types;
         expect(pgp.as.csv([12.34, true, "don't break", undefined, dateSample]))
             .toBe("12.34,TRUE,'don''t break',null,'" + dateSample.toUTCString() + "'");
+
+        ////////////////////////////////
+        // negative tests;
+
+        expect(function () {
+            pgp.as.csv([[]]);
+        }).toThrow("Cannot convert parameter with index 0");
+
+        expect(function () {
+            pgp.as.csv({});
+        }).toThrow("Cannot convert a value of type 'object'");
+
+        expect(function () {
+            pgp.as.csv([{}, 'hello']);
+        }).toThrow("Cannot convert parameter with index 0");
+
+        expect(function () {
+            pgp.as.csv(function () {});
+        }).toThrow("Cannot convert a value of type 'function'");
+
+        expect(function () {
+            pgp.as.csv(['hello', function () {}]);
+        }).toThrow("Cannot convert parameter with index 1");
+
     });
 });
 
-describe("Method pgp.as.format", function () {
+describe("Method as.format", function () {
 
-    // NOTE: There is absolutely no point in repeating all tests
-    // when parameter `se` is not set, so we do just basic testing here to see
-    // that exception is being thrown when `se` is not set.
-    // And most of tests are done with `se` set in the section that follows after.
+    // There is absolutely no point in repeating all tests when
+    // parameter 'se' is not set, so we do just basic testing here
+    // to see that exception is being thrown when 'se' is not set.
+    // And most of tests are done with 'se' set in the section that
+    // follows after.
     it("must throw an error when it fails, if 'se' is not set", function () {
 
-        expect(function(){
+        expect(function () {
             pgp.as.format();
         }).toThrow("Parameter 'query' must be a text string.");
 
-        expect(function(){
+        expect(function () {
             pgp.as.format(null);
         }).toThrow("Parameter 'query' must be a text string.");
 
-        expect(function(){
+        expect(function () {
             pgp.as.format(123);
         }).toThrow("Parameter 'query' must be a text string.");
 
-        expect(function(){
+        expect(function () {
             pgp.as.format("", [123]);
         }).toThrow("More values passed in array than variables in the query.");
+
+        expect(function () {
+            pgp.as.format("$1", [{}]);
+        }).toThrow("Cannot convert parameter with index 0");
+
+        expect(function () {
+            pgp.as.format("$1, $2", ['one', {}]);
+        }).toThrow("Cannot convert parameter with index 1");
 
     });
 
     // Almost all tests are here, with `se` set, because it doesn't make
-    // sense repeating all the tests, given the implementation logic of the method,
-    // which just switched the output result from object to throwing an error.
+    // sense repeating all the tests, given the implementation logic of the method:
+    // it just switches the output result from an object to throwing an error.
 
     it("must return a correctly formatted object, if 'se' is set", function () {
 
@@ -324,7 +361,7 @@ describe("Method pgp.as.format", function () {
 
         // testing with lots of variables;
         var source = "", dest = "", params = [];
-        for(var i = 1;i <= 1000;i ++){
+        for (var i = 1; i <= 1000; i++) {
             source += '$' + i;
             dest += i;
             params.push(i);
