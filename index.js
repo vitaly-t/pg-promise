@@ -283,7 +283,6 @@ function $createFuncQuery(funcName, values) {
 // it parses query for $1, $2,... variables and replaces them with the values passed;
 // 'values' can be an array of simple values or just one simple value.
 function $formatQuery(query, values) {
-    var q = query;
     var result = {
         success: true
     };
@@ -296,7 +295,7 @@ function $formatQuery(query, values) {
                 var variable = '$' + (i + 1);
                 // variable name must exist and not be followed by a digit;
                 var pattern = '\\' + variable + '(?!\\d)';
-                if (q.search(pattern) == -1) {
+                if (query.search(pattern) === -1) {
                     result.success = false;
                     result.error = "More values passed in array than variables in the query.";
                     break;
@@ -310,14 +309,14 @@ function $formatQuery(query, values) {
                         break;
                     } else {
                         var reg = new RegExp(pattern, 'g');
-                        q = q.replace(reg, value);
+                        query = query.replace(reg, value);
                     }
                 }
             }
         } else {
             if (values !== undefined) {
                 // variable name must exist and not be followed by a digit;
-                if (q.search(/\$1(?!\d)/) == -1) {
+                if (query.search(/\$1(?!\d)/) === -1) {
                     // a single value was passed, but variable $1 doesn't exist;
                     result.success = false;
                     result.error = "No variable found in the query to replace with the passed value.";
@@ -329,14 +328,14 @@ function $formatQuery(query, values) {
                         result.success = false;
                         result.error = "Cannot convert type '" + typeof(values) + "' into a query variable value.";
                     } else {
-                        q = q.replace(/\$1(?!\d)/g, value);
+                        query = query.replace(/\$1(?!\d)/g, value);
                     }
                 }
             }
         }
     }
     if (result.success) {
-        result.query = q;
+        result.query = query;
     }
     return result;
 }
