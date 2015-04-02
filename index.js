@@ -292,9 +292,8 @@ function $formatQuery(query, values) {
     } else {
         if (Array.isArray(values)) {
             for (var i = 0; i < values.length; i++) {
-                var variable = '$' + (i + 1);
                 // variable name must exist and not be followed by a digit;
-                var pattern = '\\' + variable + '(?!\\d)';
+                var pattern = '\\$' + (i + 1) + '(?!\\d)';
                 if (query.search(pattern) === -1) {
                     result.success = false;
                     result.error = "More values passed in array than variables in the query.";
