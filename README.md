@@ -382,16 +382,16 @@ db.proc(query, values); // calls db.func(query, values, queryResult.one | queryR
 The library provides several helper functions to convert basic javascript types into their proper PostgreSQL presentation that can be passed
 directly into queries or functions as parameters. All of such helper functions are located within namespace ```pgp.as```:
 ```javascript
-pgp.as.bool(value); // returns proper PostgreSQL boolean presentation
+pgp.as.bool(value); // returns proper PostgreSQL boolean presentation;
 
 pgp.as.text(value); // returns proper PostgreSQL text presentation,
-                    // fixing single-quote symbols, wrapped in quotes
+                    // fixing single-quote symbols, wrapped in quotes;
 
 pgp.as.date(value); // returns proper PostgreSQL date/time presentation,
-                    // wrapped in quotes.
+                    // wrapped in quotes;
 
 pgp.as.csv(array);  // returns a CSV string with values formatted according
-                    // to their type, using the above methods.
+                    // to their type, using the above methods;
 
 pgp.as.format(query, values, se);
             // Replaces variables in a query with their `values` as specified.
@@ -410,7 +410,7 @@ As these helpers are not associated with any database, they can be used from any
 
 There are some cases where you might want to use a combination of these methods instead
 of the implicit parameter formatting through query methods. For example, if you want to
-generate a filter string to be used where applicable, you might have a code like this:
+generate a filter string to be used where applicable, you might use a code like this:
 
 ```javascript
 // returns set of filter conditions;
@@ -418,16 +418,20 @@ function createFilter(filter){
     var f = ""; // resulting filter string;
     var cnd = []; // conditions;
     if(filter.start){
+        // add start date condition;
         cnd.push(pgp.as.format("start >= $1::date", filter.start));
     }
     if(filter.end){
+        // add end date condition;
         cnd.push(pgp.as.format("end <= $1::date", filter.end));
     }
     if(filter.active !== undefined){
+        // add active flag;
         cnd.push(pgp.as.format("active = $1", filter.active));
     }
     if(filter.name){
-        cnd.push("name like '%" + filter.name + "%'");
+        // add name-starts-with condition;
+        cnd.push("name like " + pgp.as.text(filter.name + '%'));
     }
     return cnd.join(" and "); // returning the complete filter string;
 }
