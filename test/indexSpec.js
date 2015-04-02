@@ -90,6 +90,7 @@ describe("Database object", function () {
 });
 
 describe("Type conversion in pgp.as", function () {
+
     it("must correctly convert any boolean", function () {
         expect(pgp.as.bool()).toBe("null");
         expect(pgp.as.bool(null)).toBe("null");
@@ -104,6 +105,7 @@ describe("Type conversion in pgp.as", function () {
         expect(pgp.as.bool(function(){})).toBe("TRUE");
         expect(pgp.as.bool("FALSE")).toBe("TRUE");
     });
+
     it("must correctly convert any text", function () {
         expect(pgp.as.text()).toBe("null");
         expect(pgp.as.text(null)).toBe("null");
@@ -123,6 +125,7 @@ describe("Type conversion in pgp.as", function () {
         expect(pgp.as.text({})).toBe("'[object Object]'");
         expect(pgp.as.text(function(){})).toBe("'function (){}'");
     });
+
     it("must correctly convert any Date", function () {
         expect(pgp.as.date()).toBe("null");
         expect(pgp.as.date(null)).toBe("null");
@@ -147,7 +150,9 @@ describe("Type conversion in pgp.as", function () {
 
         expect(pgp.as.date(dateSample)).toBe("'" + dateSample.toUTCString() + "'");
     });
+});
 
+describe("CSV values formatting is pgp.as.csv", function () {
     it("must correctly convert parameters into CSV", function () {
 
         expect(pgp.as.csv()).toBe(""); // test undefined;
@@ -181,108 +186,125 @@ describe("Type conversion in pgp.as", function () {
         expect(pgp.as.csv([12.34, true, "don't break", undefined, dateSample]))
             .toBe("12.34,TRUE,'don''t break',null,'" + dateSample.toUTCString() + "'");
     });
+});
 
-    it("must format correctly any query with variables", function () {
+describe("Parameter formatting is pgp.as.format", function () {
+    it("must throw an error when fails, if 'se' is not set", function () {
 
-        // expert always an object back, no matter what;
-        expect(typeof(pgp.as.format())).toBe("object");
-        expect(typeof(pgp.as.format(null))).toBe("object");
-        expect(typeof(pgp.as.format(""))).toBe("object");
-        expect(typeof(pgp.as.format("", []))).toBe("object");
+        expect(function(){
+            pgp.as.format();
+        }).toThrow("Parameter 'query' must be a text string.");
 
-        var q = pgp.as.format();
+        expect(function(){
+            pgp.as.format(null);
+        }).toThrow("Parameter 'query' must be a text string.");
+
+        expect(function(){
+            pgp.as.format(123);
+        }).toThrow("Parameter 'query' must be a text string.");
+
+    });
+
+    it("must return a properly formatted object, if 'se' is set", function () {
+
+        expect(typeof(pgp.as.format(undefined, undefined, true))).toBe("object");
+        expect(typeof(pgp.as.format(null, undefined, true))).toBe("object");
+        expect(typeof(pgp.as.format("", undefined, true))).toBe("object");
+        expect(typeof(pgp.as.format("", [], true))).toBe("object");
+
+        var q = pgp.as.format(undefined, undefined, true);
         expect(q.success).toBe(false);
         expect(q.error).toBe("Parameter 'query' must be a text string.");
 
-        q = pgp.as.format(null);
+        q = pgp.as.format(null, undefined, true);
         expect(q.success).toBe(false);
         expect(q.error).toBe("Parameter 'query' must be a text string.");
 
-        q = pgp.as.format("");
+        q = pgp.as.format("", undefined, true);
         expect(q.success).toBe(true);
         expect(q.query).toBe("");
 
-        q = pgp.as.format(null, [1, 2, 3]);
+        q = pgp.as.format(null, [1, 2, 3], true);
         expect(q.success).toBe(false);
         expect(q.error).toBe("Parameter 'query' must be a text string.");
 
-        q = pgp.as.format("$1", null);
+        q = pgp.as.format("$1", null, true);
         expect(q.success).toBe(true);
         expect(q.query).toBe("null");
 
-        q = pgp.as.format("", null);
+        q = pgp.as.format("", null, true);
         expect(q.success).toBe(false);
         expect(q.error).toBe("No variable found in the query to replace with the passed value.");
 
-        expect(pgp.as.format("$1").success).toBe(true);
-        expect(pgp.as.format("$1").query).toBe("$1");
+        expect(pgp.as.format("$1", undefined, true).success).toBe(true);
+        expect(pgp.as.format("$1", undefined, true).query).toBe("$1");
 
-        expect(pgp.as.format("$1", []).success).toBe(true);
-        expect(pgp.as.format("$1", []).query).toBe("$1");
+        expect(pgp.as.format("$1", [], true).success).toBe(true);
+        expect(pgp.as.format("$1", [], true).query).toBe("$1");
 
-        q = pgp.as.format("$1", [undefined]);
+        q = pgp.as.format("$1", [undefined], true);
         expect(q.success).toBe(true);
         expect(q.query).toBe("null");
 
-        q = pgp.as.format("$1", ["one"]);
+        q = pgp.as.format("$1", ["one"], true);
         expect(q.success).toBe(true);
         expect(q.query).toBe("'one'");
 
-        q = pgp.as.format("$1", "one");
+        q = pgp.as.format("$1", "one", true);
         expect(q.success).toBe(true);
         expect(q.query).toBe("'one'");
 
-        q = pgp.as.format("$1, $1", "one");
+        q = pgp.as.format("$1, $1", "one", true);
         expect(q.success).toBe(true);
         expect(q.query).toBe("'one', 'one'");
 
-        q = pgp.as.format("$1, $2, $3, $4", [true, -12.34, "text", dateSample]);
+        q = pgp.as.format("$1, $2, $3, $4", [true, -12.34, "text", dateSample], true);
         expect(q.success).toBe(true);
         expect(q.query).toBe("TRUE, -12.34, 'text', '" + dateSample.toUTCString() + "'");
 
-        q = pgp.as.format("$1 $1, $2 $2, $1", [1, "two"]); // test for repeated variables;
+        q = pgp.as.format("$1 $1, $2 $2, $1", [1, "two"], true); // test for repeated variables;
         expect(q.success).toBe(true);
         expect(q.query).toBe("1 1, 'two' 'two', 1");
 
-        q = pgp.as.format("Test: $1", ["don't break quotes!"]);
+        q = pgp.as.format("Test: $1", ["don't break quotes!"], true);
         expect(q.success).toBe(true);
         expect(q.query).toBe("Test: 'don''t break quotes!'");
 
-        q = pgp.as.format("", [1]);
+        q = pgp.as.format("", [1], true);
         expect(q.success).toBe(false);
         expect(q.error).toBe("More values passed in array than variables in the query.");
 
-        q = pgp.as.format("", 1);
+        q = pgp.as.format("", 1, true);
         expect(q.success).toBe(false);
         expect(q.error).toBe("No variable found in the query to replace with the passed value.");
 
-        q = pgp.as.format("$1", {});
+        q = pgp.as.format("$1", {}, true);
         expect(q.success).toBe(false);
         expect(q.error).toBe("Cannot convert type 'object' into a query variable value.");
 
         q = pgp.as.format("$1", function () {
-        });
+        }, true);
         expect(q.success).toBe(false);
         expect(q.error).toBe("Cannot convert type 'function' into a query variable value.");
 
-        q = pgp.as.format("$1", [{}]);
+        q = pgp.as.format("$1", [{}], true);
         expect(q.success).toBe(false);
         expect(q.error).toBe("Cannot convert parameter with index 0");
 
         q = pgp.as.format("$1, $2", [true, function () {
-        }]);
+        }], true);
         expect(q.success).toBe(false);
         expect(q.error).toBe("Cannot convert parameter with index 1");
 
         // test that errors in type conversion are
         // detected and reported from left to right;
-        q = pgp.as.format("$1,$2", [{}, {}]);
+        q = pgp.as.format("$1,$2", [{}, {}], true);
         expect(q.success).toBe(false);
         expect(q.error).toBe("Cannot convert parameter with index 0");
 
         // test that once a conversion issue is encountered,
         // the rest of parameters are not verified;
-        q = pgp.as.format("$1,$2", [1, {}, 2, 3, 4, 5]);
+        q = pgp.as.format("$1,$2", [1, {}, 2, 3, 4, 5], true);
         expect(q.success).toBe(false);
         expect(q.error).toBe("Cannot convert parameter with index 1");
 
@@ -293,7 +315,7 @@ describe("Type conversion in pgp.as", function () {
             dest += i;
             params.push(i);
         }
-        q = pgp.as.format(source, params);
+        q = pgp.as.format(source, params, true);
         expect(q.success).toBe(true);
         expect(q.query).toBe(dest);
 
@@ -302,28 +324,28 @@ describe("Type conversion in pgp.as", function () {
         // - variables not defined;
         // - variables are repeated;
         // - long variable names present;
-        q = pgp.as.format("$1$2,$3,$4,$5,$6,$7,$8,$9,$10$11,$12,$13,$14,$15,$1,$3", [1, 2, 'C', 'DDD', 'E', 'F', 'G', 'H', 'I', 88, 99, 'LLL']);
+        q = pgp.as.format("$1$2,$3,$4,$5,$6,$7,$8,$9,$10$11,$12,$13,$14,$15,$1,$3", [1, 2, 'C', 'DDD', 'E', 'F', 'G', 'H', 'I', 88, 99, 'LLL'], true);
         expect(q.success).toBe(true);
         expect(q.query).toBe("12,'C','DDD','E','F','G','H','I',8899,'LLL',$13,$14,$15,1,'C'");
 
         // test that $1 variable isn't confused with $12;
-        q = pgp.as.format("$12", 123);
+        q = pgp.as.format("$12", 123, true);
         expect(q.success).toBe(false);
         expect(q.error).toBe("No variable found in the query to replace with the passed value.");
 
         // test that $1 variable isn't confused with $112
-        q = pgp.as.format("$112", 123);
+        q = pgp.as.format("$112", 123, true);
         expect(q.success).toBe(false);
         expect(q.error).toBe("No variable found in the query to replace with the passed value.");
 
         // test that variable names are not confused for longer ones;
-        q = pgp.as.format("$11, $1, $111, $1", 123);
+        q = pgp.as.format("$11, $1, $111, $1", 123, true);
         expect(q.success).toBe(true);
         expect(q.query).toBe("$11, 123, $111, 123");
 
         // test that variable names are not confused for longer ones,
         // even when they are right next to each other;
-        q = pgp.as.format("$11$1$111$1", 123);
+        q = pgp.as.format("$11$1$111$1", 123, true);
         expect(q.success).toBe(true);
         expect(q.query).toBe("$11123$111123");
 

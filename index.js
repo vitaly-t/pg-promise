@@ -265,11 +265,11 @@ var $wrap = {
         return $formatCSV(values);
     },
     // Formats query - parameter using the values passed;
-    // The main reason for exposing this to the client is to include the parser into the test.
     // The query can contain variables $1, $2, etc, and 'values' is either one simple value or
     // an array of simple values, such as: text, boolean, date, number or null.
-    format: function (query, values) {
-        return $formatQuery(query, values);
+    // Return result depends on parameter 'se' - see $formatQuery documentation.
+    format: function (query, values, se) {
+        return $formatQuery(query, values, se);
     }
 };
 
@@ -280,9 +280,17 @@ function $createFuncQuery(funcName, values) {
 }
 
 // 'pg-promise' own query formatting solution;
-// it parses query for $1, $2,... variables and replaces them with the values passed;
-// 'values' can be an array of simple values or just one simple value.
-function $formatQuery(query, values) {
+// It parses query for $1, $2,... variables and replaces them with the values passed;
+// 'values' can be an array of simple values or just one simple value;
+// When fails, the function throws an error, unless 'se' was set.
+// 'se' - suppress errors (optional). When set, the function will never throw an error;
+// Instead, it will always return an object:
+// {
+//   success: true/false,
+//   query: resulting query text, if success=true, otherwise it is undefined;
+//   error: error description, if success=false, otherwise it is undefined;
+// }
+function $formatQuery(query, values, se) {
     var result = {
         success: true
     };
@@ -336,7 +344,17 @@ function $formatQuery(query, values) {
     if (result.success) {
         result.query = query;
     }
-    return result;
+    if (se) {
+        // suppress errors;
+        return result;
+    } else {
+        // errors are not to be suppressed;
+        if (result.success) {
+            return result.query;
+        } else {
+            throw new Error(result.error);
+        }
+    }
 }
 
 // Generic, static query call;
@@ -361,7 +379,7 @@ function $query(client, query, values, qrm, options) {
                     };
                 } else {
                     // use 'pg-promise' implementation of parameter formatting;
-                    req = $formatQuery(query, values);
+                    req = $formatQuery(query, values, true);
                     if (!req.success) {
                         errMsg = req.error;
                     }
