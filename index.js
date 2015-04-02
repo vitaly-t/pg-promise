@@ -235,7 +235,7 @@ var $wrap = {
         if ($isDBNull(txt)) {
             return 'null';
         }
-        if(typeof(txt) !== 'string'){
+        if (typeof(txt) !== 'string') {
             txt = txt.toString();
         }
         // replacing each single-quote symbol with two, and then
@@ -294,7 +294,9 @@ function $formatQuery(query, values) {
         if (Array.isArray(values)) {
             for (var i = 0; i < values.length; i++) {
                 var variable = '$' + (i + 1);
-                if (q.indexOf(variable) === -1) {
+                // variable name must exist and not be followed by a digit;
+                var pattern = '\\' + variable + '(?!\\d)';
+                if (q.search(pattern) == -1) {
                     result.success = false;
                     result.error = "More values passed in array than variables in the query.";
                     break;
@@ -307,14 +309,15 @@ function $formatQuery(query, values) {
                         result.error = "Cannot convert parameter with index " + i;
                         break;
                     } else {
-                        var reg = new RegExp("\\" + variable, "g");
+                        var reg = new RegExp(pattern, 'g');
                         q = q.replace(reg, value);
                     }
                 }
             }
         } else {
             if (values !== undefined) {
-                if (q.indexOf('$1') === -1) {
+                // variable name must exist and not be followed by a digit;
+                if (q.search(/\$1(?!\d)/) == -1) {
                     // a single value was passed, but variable $1 doesn't exist;
                     result.success = false;
                     result.error = "No variable found in the query to replace with the passed value.";
@@ -326,7 +329,7 @@ function $formatQuery(query, values) {
                         result.success = false;
                         result.error = "Cannot convert type '" + typeof(values) + "' into a query variable value.";
                     } else {
-                        q = q.replace(/\$1/g, value);
+                        q = q.replace(/\$1(?!\d)/g, value);
                     }
                 }
             }
@@ -491,7 +494,7 @@ function $extendProtocol(obj, cn, db, options) {
         // connection attachment helper;
         function attach(obj, int) {
             if (txDB.client) {
-                throw new Error('Invalid transaction attachment'); // this should never happen;
+                throw new Error("Invalid transaction attachment."); // this should never happen;
             }
             txDB.client = obj.client;
             txDB.done = obj.done;
@@ -504,7 +507,7 @@ function $extendProtocol(obj, cn, db, options) {
         // connection detachment helper;
         function detach() {
             if (!txDB.client) {
-                throw new Error('Invalid transaction detachment'); // this should never happen;
+                throw new Error("Invalid transaction detachment."); // this should never happen;
             }
             if (internal) {
                 // connection was allocated;

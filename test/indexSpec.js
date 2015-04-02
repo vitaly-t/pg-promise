@@ -274,5 +274,58 @@ describe("Type conversion in pgp.as", function () {
         expect(q.success).toBe(false);
         expect(q.error).toBe("Cannot convert parameter with index 1");
 
+        // test that errors in type conversion are
+        // detected and reported from left to right;
+        q = pgp.as.format("$1,$2", [{}, {}]);
+        expect(q.success).toBe(false);
+        expect(q.error).toBe("Cannot convert parameter with index 0");
+
+        // test that once a conversion issue is encountered,
+        // the rest of parameters are not verified;
+        q = pgp.as.format("$1,$2", [1, {}, 2, 3, 4, 5]);
+        expect(q.success).toBe(false);
+        expect(q.error).toBe("Cannot convert parameter with index 1");
+
+        // testing with lots of variables;
+        var source = "", dest = "", params = [];
+        for(var i = 1;i <= 1000;i ++){
+            source += '$' + i;
+            dest += i;
+            params.push(i);
+        }
+        q = pgp.as.format(source, params);
+        expect(q.success).toBe(true);
+        expect(q.query).toBe(dest);
+
+        // testing various cases with many variables:
+        // - variables next to each other;
+        // - variables not defined;
+        // - variables are repeated;
+        // - long variable names present;
+        q = pgp.as.format("$1$2,$3,$4,$5,$6,$7,$8,$9,$10$11,$12,$13,$14,$15,$1,$3", [1, 2, 'C', 'DDD', 'E', 'F', 'G', 'H', 'I', 88, 99, 'LLL']);
+        expect(q.success).toBe(true);
+        expect(q.query).toBe("12,'C','DDD','E','F','G','H','I',8899,'LLL',$13,$14,$15,1,'C'");
+
+        // test that $1 variable isn't confused with $12;
+        q = pgp.as.format("$12", 123);
+        expect(q.success).toBe(false);
+        expect(q.error).toBe("No variable found in the query to replace with the passed value.");
+
+        // test that $1 variable isn't confused with $112
+        q = pgp.as.format("$112", 123);
+        expect(q.success).toBe(false);
+        expect(q.error).toBe("No variable found in the query to replace with the passed value.");
+
+        // test that variable names are not confused for longer ones;
+        q = pgp.as.format("$11, $1, $111, $1", 123);
+        expect(q.success).toBe(true);
+        expect(q.query).toBe("$11, 123, $111, 123");
+
+        // test that variable names are not confused for longer ones,
+        // even when they are right next to each other;
+        q = pgp.as.format("$11$1$111$1", 123);
+        expect(q.success).toBe(true);
+        expect(q.query).toBe("$11123$111123");
+
     });
 });
