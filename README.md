@@ -393,16 +393,45 @@ pgp.as.date(value); // returns proper PostgreSQL date/time presentation,
 pgp.as.csv(array);  // returns a CSV string with values formatted according
                     // to their type, using the above methods.
 
-pgp.as.format(query, values);
+pgp.as.format(query, values, se);
             // Replaces variables in a query with their `values` as specified.
             // `values` is either a simple value or an array of simple values.
-            // This method is used implicitly by every query method in the library,
-            // and the main reason it was added here is to make it testable, because
-            // it represents a very important aspect of the library's functionality.
-            // Returns an object either with property `query` or with property `error`,
-            // depending on the value of property `success`.
+            // Returns formatted query string, if successful, or throws an error
+            // when it fails.
+            // `se` - Suppress Errors. It is an optional parameter, which when set,
+            // forces return of an object:
+            // {
+            //   success: true/false,
+            //   query: resulting query text, if success=true, otherwise it is undefined;
+            //   error: error description, if success=false, otherwise it is undefined;
+            // }
 ```
 As these helpers are not associated with any database, they can be used from anywhere.
+
+There are some cases where you might want to use a combination of these methods instead
+of the implicit parameter formatting through query methods. For example, if you want to
+generate a filter string to be used where applicable, you might have a code like this:
+
+```javascript
+// returns set of filter conditions;
+function createFilter(filter){
+    var f = ""; // resulting filter string;
+    var cnd = []; // conditions;
+    if(filter.start){
+        cnd.push(pgp.as.format("start >= $1::date", filter.start));
+    }
+    if(filter.end){
+        cnd.push(pgp.as.format("end <= $1::date", filter.end));
+    }
+    if(filter.active !== undefined){
+        cnd.push(pgp.as.format("active = $1", filter.active));
+    }
+    if(filter.name){
+        cnd.push("name like '%" + filter.name + "%'");
+    }
+    return cnd.join(" and "); // returning the complete filter string;
+}
+```
 
 # Advanced
 
@@ -562,6 +591,7 @@ This will release pg connection pool globally and make sure that the process ter
 If you do not call it, your process may be waiting for 30 seconds (default) or so, waiting for the pg connection pool to expire.
 
 # History
+* Version 0.7.0 fixes the way `as.format` works (breaking change). Released: April 2, 2015.
 * Version 0.6.2 has good database test coverage. Released: March 28, 2015.
 * Version 0.5.6 introduces support for nested transaction. Released: March 22, 2015.
 * Version 0.5.3 - minor changes; March 14, 2015.

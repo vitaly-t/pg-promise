@@ -126,7 +126,7 @@ describe("Type conversion in pgp.as", function () {
         expect(pgp.as.text(function(){})).toBe("'function (){}'");
     });
 
-    it("must correctly convert any Date", function () {
+    it("must correctly convert any date", function () {
         expect(pgp.as.date()).toBe("null");
         expect(pgp.as.date(null)).toBe("null");
         expect(function () {
@@ -152,7 +152,8 @@ describe("Type conversion in pgp.as", function () {
     });
 });
 
-describe("CSV values formatting is pgp.as.csv", function () {
+describe("Method pgp.as.csv", function () {
+
     it("must correctly convert parameters into CSV", function () {
 
         expect(pgp.as.csv()).toBe(""); // test undefined;
@@ -188,8 +189,13 @@ describe("CSV values formatting is pgp.as.csv", function () {
     });
 });
 
-describe("Parameter formatting is pgp.as.format", function () {
-    it("must throw an error when fails, if 'se' is not set", function () {
+describe("Method pgp.as.format", function () {
+
+    // NOTE: There is absolutely no point in repeating all tests
+    // when parameter `se` is not set, so we do just basic testing here to see
+    // that exception is being thrown when `se` is not set.
+    // And most of tests are done with `se` set in the section that follows after.
+    it("must throw an error when it fails, if 'se' is not set", function () {
 
         expect(function(){
             pgp.as.format();
@@ -203,9 +209,17 @@ describe("Parameter formatting is pgp.as.format", function () {
             pgp.as.format(123);
         }).toThrow("Parameter 'query' must be a text string.");
 
+        expect(function(){
+            pgp.as.format("", [123]);
+        }).toThrow("More values passed in array than variables in the query.");
+
     });
 
-    it("must return a properly formatted object, if 'se' is set", function () {
+    // Almost all tests are here, with `se` set, because it doesn't make
+    // sense repeating all the tests, given the implementation logic of the method,
+    // which just switched the output result from object to throwing an error.
+
+    it("must return a correctly formatted object, if 'se' is set", function () {
 
         expect(typeof(pgp.as.format(undefined, undefined, true))).toBe("object");
         expect(typeof(pgp.as.format(null, undefined, true))).toBe("object");
