@@ -379,8 +379,11 @@ db.proc(query, values); // calls db.func(query, values, queryResult.one | queryR
 ```
 
 ### Conversion Helpers
+
 The library provides several helper functions to convert basic javascript types into their proper PostgreSQL presentation that can be passed
-directly into queries or functions as parameters. All of such helper functions are located within namespace ```pgp.as```:
+directly into queries or functions as parameters. All of such helper functions are located within namespace `pgp.as`, and each function
+returns a formatted string when successful or throws an error when it fails.
+
 ```javascript
 pgp.as.bool(value); // returns proper PostgreSQL boolean presentation;
 
@@ -393,18 +396,9 @@ pgp.as.date(value); // returns proper PostgreSQL date/time presentation,
 pgp.as.csv(array);  // returns a CSV string with values formatted according
                     // to their type, using the above methods;
 
-pgp.as.format(query, values, se);
+pgp.as.format(query, values);
             // Replaces variables in a query with their `values` as specified.
             // `values` is either a simple value or an array of simple values.
-            // Returns formatted query string, if successful, or throws an error
-            // when it fails.
-            // `se` - Suppress Errors. It is an optional parameter, which when set,
-            // forces return of an object:
-            // {
-            //   success: true/false,
-            //   query: resulting query text, if success=true, otherwise it is undefined;
-            //   error: error description, if success=false, otherwise it is undefined;
-            // }
 ```
 As these helpers are not associated with any database, they can be used from anywhere.
 

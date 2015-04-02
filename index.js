@@ -282,79 +282,43 @@ function $createFuncQuery(funcName, values) {
 // 'pg-promise' own query formatting solution;
 // It parses query for $1, $2,... variables and replaces them with the values passed;
 // 'values' can be an array of simple values or just one simple value;
-// When fails, the function throws an error, unless 'se' was set.
-// 'se' - suppress errors (optional). When set, the function will never throw an error;
-// Instead, it will always return an object:
-// {
-//   success: true/false,
-//   query: resulting query text, if success=true, otherwise it is undefined;
-//   error: error description, if success=false, otherwise it is undefined;
-// }
-function $formatQuery(query, values, se) {
-    var result = {
-        success: true
-    };
+// When fails, the function throws an error.
+function $formatQuery(query, values) {
     if (typeof(query) !== 'string') {
-        result.success = false;
-        result.error = "Parameter 'query' must be a text string.";
-    } else {
-        if (Array.isArray(values)) {
-            for (var i = 0; i < values.length; i++) {
-                // variable name must exist and not be followed by a digit;
-                var pattern = '\\$' + (i + 1) + '(?!\\d)';
-                if (query.search(pattern) === -1) {
-                    result.success = false;
-                    result.error = "More values passed in array than variables in the query.";
-                    break;
-                } else {
-                    // expect a simple value;
-                    var value = $wrapValue(values[i]);
-                    if (value === null) {
-                        // error: not a simple value;
-                        result.success = false;
-                        result.error = "Cannot convert parameter with index " + i;
-                        break;
-                    } else {
-                        var reg = new RegExp(pattern, 'g');
-                        query = query.replace(reg, value);
-                    }
-                }
+        throw new Error("Parameter 'query' must be a text string.");
+    }
+    if (Array.isArray(values)) {
+        for (var i = 0; i < values.length; i++) {
+            // variable name must exist and not be followed by a digit;
+            var pattern = '\\$' + (i + 1) + '(?!\\d)';
+            if (query.search(pattern) === -1) {
+                throw new Error("More values passed in array than variables in the query.");
             }
-        } else {
-            if (values !== undefined) {
-                // variable name must exist and not be followed by a digit;
-                if (query.search(/\$1(?!\d)/) === -1) {
-                    // a single value was passed, but variable $1 doesn't exist;
-                    result.success = false;
-                    result.error = "No variable found in the query to replace with the passed value.";
-                } else {
-                    // expect a simple value;
-                    var value = $wrapValue(values);
-                    if (value === null) {
-                        // error: not a simple value;
-                        result.success = false;
-                        result.error = "Cannot convert type '" + typeof(values) + "' into a query variable value.";
-                    } else {
-                        query = query.replace(/\$1(?!\d)/g, value);
-                    }
+            // expect a simple value;
+            var value = $wrapValue(values[i]);
+            if (value === null) {
+                // error: not a simple value;
+                throw new Error("Cannot convert parameter with index " + i);
+            }
+            query = query.replace(new RegExp(pattern, 'g'), value);
+        }
+    } else {
+        if (values !== undefined) {
+            // variable name must exist and not be followed by a digit;
+            if (query.search(/\$1(?!\d)/) === -1) {
+                throw new Error("No variable found in the query to replace with the passed value.");
+            } else {
+                // expect a simple value;
+                var value = $wrapValue(values);
+                if (value === null) {
+                    // error: not a simple value;
+                    throw new Error("Cannot convert type '" + typeof(values) + "' into a query variable value.");
                 }
+                query = query.replace(/\$1(?!\d)/g, value);
             }
         }
     }
-    if (result.success) {
-        result.query = query;
-    }
-    if (se) {
-        // suppress errors;
-        return result;
-    } else {
-        // errors are not to be suppressed;
-        if (result.success) {
-            return result.query;
-        } else {
-            throw new Error(result.error);
-        }
-    }
+    return query;
 }
 
 // Generic, static query call;
@@ -363,7 +327,7 @@ function $query(client, query, values, qrm, options) {
         if ($isDBNull(qrm)) {
             qrm = queryResult.any; // default query result;
         }
-        var errMsg, req, pgFormatting = (options && options.pgFormatting);
+        var errMsg, pgFormatting = (options && options.pgFormatting);
         if (!query) {
             errMsg = "Invalid query specified.";
         } else {
@@ -371,17 +335,12 @@ function $query(client, query, values, qrm, options) {
             if ((qrm & badMask) === badMask || qrm < 1 || qrm > 6) {
                 errMsg = "Invalid Query Result Mask specified.";
             } else {
-                if (pgFormatting) {
-                    // 'node-postgres' will do the parameter formatting for us;
-                    req = {
-                        success: true,
-                        query: query
-                    };
-                } else {
+                if (!pgFormatting) {
                     // use 'pg-promise' implementation of parameter formatting;
-                    req = $formatQuery(query, values, true);
-                    if (!req.success) {
-                        errMsg = req.error;
+                    try {
+                        query = $formatQuery(query, values);
+                    } catch (err) {
+                        errMsg = err.message;
                     }
                 }
             }
@@ -396,14 +355,14 @@ function $query(client, query, values, qrm, options) {
                     throw new Error("Function was expected for 'options.query'");
                 }
                 try {
-                    func(client, req.query, params); // notify the client;
+                    func(client, query, params); // notify the client;
                 } catch (err) {
                     reject(err);
                     return;
                 }
             }
             try {
-                client.query(req.query, params, function (err, result) {
+                client.query(query, params, function (err, result) {
                     if (err) {
                         reject(err.message);
                     } else {
@@ -411,10 +370,10 @@ function $query(client, query, values, qrm, options) {
                         var l = result.rows.length;
                         if (l) {
                             if (l > 1 && (qrm & queryResult.one)) {
-                                reject("Single row was expected from query: " + req.query);
+                                reject("Single row was expected from query: " + query);
                             } else {
                                 if (!(qrm & (queryResult.one | queryResult.many))) {
-                                    reject("No return data was expected from query: " + req.query);
+                                    reject("No return data was expected from query: " + query);
                                 } else {
                                     if (!(qrm & queryResult.many)) {
                                         data = result.rows[0];
@@ -425,7 +384,7 @@ function $query(client, query, values, qrm, options) {
                             if (qrm & queryResult.none) {
                                 data = (qrm & queryResult.many) ? [] : null;
                             } else {
-                                reject("No rows returned from query: " + req.query);
+                                reject("No rows returned from query: " + query);
                             }
                         }
                         resolve(data);
