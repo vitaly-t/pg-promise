@@ -413,9 +413,7 @@ of the implicit parameter formatting through query methods. For example, if you 
 generate a filter string to be used where applicable, you might use a code like this:
 
 ```javascript
-// returns set of filter conditions;
 function createFilter(filter){
-    var f = ""; // resulting filter string;
     var cnd = []; // conditions;
     if(filter.start){
         // add start date condition;
