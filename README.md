@@ -353,7 +353,7 @@ leaving the burden of all extra checks to the library.
 
 ### Named Parameters
 
-Starting with version 0.8.0, the library supports named variables when formatting queries,
+Version 0.8.0 of the library added support for named-parameter in query formatting,
 with the ES6-like syntax of `${propName}`:
 
 ```javascript
@@ -363,14 +363,14 @@ db.query("select * from users where name=${name} and active=${active}", {
 });
 ```
 The same goes for all types of query methods as well as method `as.format(query, values, qrm)`, where `values`
-now can also be an object which properties can be referred to by name from within the query.
+can also now be an object which properties can be referred to by name from within the query.
 
-##### Formatting Rules:
+Notable rules when for named-parameter formatting:
 
 * a valid variable starts with a letter or underscore symbol, followed by any combination of letters,
 digits or underscores;
-* a variable can have any number of leading and trailing spaces: `${  propName  }`;
-* both `null` and `undefined` variables are replaced with `null` in the query.
+* leading and trailing white spaces surrounding variables are ignored in queries;
+* `null` and `undefined` properties are both formatted as `null` in the query.
 
 ### Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
