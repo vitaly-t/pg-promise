@@ -334,12 +334,13 @@ describe("Method as.format", function () {
         // - can join variables values next to each other;
         // - converts all simple types correctly;
         // - replaces undefined variables with null;
-        expect(pgp.as.format("${ name_},${d_o_b },${  _active__},${ file_5A  }${__balance}", {
-            name_: "John O'Connor",
+        // - variables are case-sensitive;
+        expect(pgp.as.format("${ NamE_},${d_o_b },${  _active__},${ file_5A  }${__Balance}", {
+            NamE_: "John O'Connor",
             d_o_b: dateSample,
             _active__: true,
-            __balance: -123.45
+            file_5a: 'something', // not to be found, due to case difference;
+            __Balance: -123.45
         })).toBe("'John O''Connor','" + dateSample.toUTCString() + "',TRUE,null-123.45");
-
     });
 });
