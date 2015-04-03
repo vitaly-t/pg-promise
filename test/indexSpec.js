@@ -346,5 +346,20 @@ describe("Method as.format", function () {
             file_5a: 'something', // not to be found, due to case difference;
             __Balance: -123.45
         })).toBe("'John O''Connor','" + dateSample.toUTCString() + "',TRUE,null-123.45");
+
+        expect(function(){
+            pgp.as.format("${prop1},${prop2}", {
+                prop1: 'hello',
+                prop2: []
+            });
+        }).toThrow("Cannot convert type 'object' of property 'prop2'");
+
+        expect(function(){
+            pgp.as.format("${prop1},${prop2}", {
+                prop1: 'hello',
+                prop2: function(){}
+            });
+        }).toThrow("Cannot convert type 'function' of property 'prop2'");
+
     });
 });

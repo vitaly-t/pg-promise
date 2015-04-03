@@ -351,6 +351,28 @@ If `qrm` is not specified when calling generic `query` method, it is assumed to 
 > This is all about writing robust code, when the client specifies what kind of data it is ready to handle on the declarative level,
 leaving the burden of all extra checks to the library.
 
+### Named Parameters
+
+Starting with version 0.8.0, the library supports named variables when formatting queries,
+with the ES6-like syntax of `${propName}`:
+
+```javascript
+db.query("select * from users where name=${name} and active=${active} and created < ${created}", {
+    name: 'John',
+    active: true,
+    created: new Date()
+});
+```
+The same goes for all types of query methods as well as method `as.format(query, values, qrm)`, where `values`
+now can also be an object which properties can be referred to by name from within the query.
+
+##### Formatting Rules:
+
+* a valid variable starts with a letter or underscore symbol, followed by any combination of letters,
+digits or underscores;
+* a variable can have any number of leading and trailing spaces: `${  propName  }`;
+* both `null` and `undefined` variables are replaced with `null` in the query.
+
 ### Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
 
