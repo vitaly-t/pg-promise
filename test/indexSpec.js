@@ -339,13 +339,25 @@ describe("Method as.format", function () {
         // - converts all simple types correctly;
         // - replaces undefined variables with null;
         // - variables are case-sensitive;
-        expect(pgp.as.format("${ NamE_},${d_o_b },${  _active__},${ file_5A  }${__Balance}", {
+        expect(pgp.as.format("${ NamE_},${d_o_b },${  _active__},${__Balance}", {
             NamE_: "John O'Connor",
             d_o_b: dateSample,
             _active__: true,
-            file_5a: 'something', // not to be found, due to case difference;
             __Balance: -123.45
-        })).toBe("'John O''Connor','" + dateSample.toUTCString() + "',TRUE,null-123.45");
+        })).toBe("'John O''Connor','" + dateSample.toUTCString() + "',TRUE,-123.45");
+
+        // Both null and undefined properties are formatted as null;
+        expect(pgp.as.format("${empty1}, ${empty2}", {
+            empty1: null,
+            empty2: undefined
+        })).toBe("null, null");
+
+        // when a property is missing in the object, an error is thrown;
+        expect(function(){
+            pgp.as.format("${prop1},${prop2}", {
+                prop1: 'hello'
+            });
+        }).toThrow("Property 'prop2' doesn't exist.");
 
         expect(function(){
             pgp.as.format("${prop1},${prop2}", {
@@ -360,6 +372,5 @@ describe("Method as.format", function () {
                 prop2: function(){}
             });
         }).toThrow("Cannot convert type 'function' of property 'prop2'");
-
     });
 });
