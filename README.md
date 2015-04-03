@@ -3,7 +3,7 @@ pg-promise
 
 Complete access layer to [PG] via [Promises/A+].
 
-[![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
+[![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=named-params)](https://travis-ci.org/vitaly-t/pg-promise)
 [![Dependency Status](https://david-dm.org/vitaly-t/pg-promise.svg)](https://david-dm.org/vitaly-t/pg-promise)
 
 ---
