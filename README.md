@@ -101,7 +101,7 @@ such will be used from a connection pool, so effectively you end up with the sam
 
 ### Shared Connections
 
-A promise chain with a shared connection always starts with ```connect()```, which allocates a connection that's shared with all the
+A promise chain with a shared connection always starts with `connect()`, which allocates a connection that's shared with all the
 query requests down the promise chain. The connection must be released when no longer needed.
 
 ```javascript
@@ -196,8 +196,6 @@ But even if you need to combine it with other queries in then a detached chain, 
 As stated earlier, choosing a shared chain over a detached one is mostly a matter of special requirements and/or personal preference.
 
 ###### Nested Transactions
-
-Starting with version 0.5.6, the library supports nested transactions.
 
 Similar to the shared-connection transactions, nested transactions automatically share the connection between all levels.
 This library sets no limitation as to the depth (nesting levels) of transactions supported.
@@ -297,11 +295,11 @@ Every connection context of the library shares the same query protocol, starting
 function query(query, values, qrm);
 ```
 * `query` (required) - query string that supports standard variables formatting, using $1, $2, ...etc;
-* `values` (optional) - simple value or an array of simple values to replace the query variables;
+* `values` (optional) - value/array/object to replace the variables in the query;
 * `qrm` - (optional) Query Result Mask, as explained below...
 
-In order to eliminate the chances of unexpected query results and make code more robust, each request supports parameter `qrm`
-(Query Result Mask), via type `queryResult`:
+In order to eliminate the chances of unexpected query results and make code more robust, each request supports
+parameter `qrm` (Query Result Mask), via type `queryResult`:
 ```javascript
 ///////////////////////////////////////////////////////
 // Query Result Mask flags;
@@ -326,6 +324,7 @@ db.query("select * from users", undefined, queryResult.any);
 db.manyOrNone("select * from users");
 db.any("select * from users");
 ```
+
 This usage pattern is facilitated through result-specific methods that can be used instead of the generic query:
 ```javascript
 db.many(query, values); // expects one or more rows
@@ -337,10 +336,12 @@ db.manyOrNone(query, values); // expects anything, same as `any`
 ```
 
 Each query function resolves its **data** object according to the `qrm` that was used:
+
 * `none` - **data** is `null`. If the query returns any kind of data, it is rejected.
 * `one` - **data** is a single object. If the query returns no data or more than one row of data, it is rejected.
 * `many` - **data** is an array of objects. If the query returns no rows, it is rejected.
 * `one` | `none` - **data** is `null`, if no data was returned; or a single object, if there was one row of data returned.
+
 If the query returns more than one row of data, the query is rejected.
 * `many` | `none` - **data** is an array of objects. When no rows are returned, **data** is an empty array.
 
@@ -378,6 +379,7 @@ In PostgreSQL stored procedures are just functions that usually do not return an
 
 Suppose we want to call function **findAudit** to find audit records by **user id** and maximum timestamp.
 We can make such call as shown below:
+
 ```javascript
 db.func('findAudit', [123, new Date()])
     .then(function(data){
@@ -386,6 +388,7 @@ db.func('findAudit', [123, new Date()])
         console.log(reason); // printing the reason why the call was rejected
     });
 ```
+
 We passed it **user id** = 123, plus current Date/Time as the timestamp. We assume that the function signature matches the parameters that we passed.
 All values passed are serialized automatically to comply with PostgreSQL type formats.
 
@@ -395,6 +398,7 @@ And when you are not expecting any return results, call `db.proc` instead. Both 
 but `db.proc` doesn't take a `qrm` parameter, always assuming it is `one`|`none`.
 
 Summary for supporting procedures and functions:
+
 ```javascript
 db.func(query, values, qrm); // expects the result according to `qrm`
 db.proc(query, values); // calls db.func(query, values, queryResult.one | queryResult.none)
@@ -402,7 +406,7 @@ db.proc(query, values); // calls db.func(query, values, queryResult.one | queryR
 
 ### Conversion Helpers
 
-The library provides several helper functions to convert basic javascript types into their proper PostgreSQL presentation that can be passed
+The library provides several helper functions to convert javascript types into their proper PostgreSQL presentation that can be passed
 directly into queries or functions as parameters. All of such helper functions are located within namespace `pgp.as`, and each function
 returns a formatted string when successful or throws an error when it fails.
 
@@ -419,8 +423,8 @@ pgp.as.csv(array);  // returns a CSV string with values formatted according
                     // to their type, using the above methods;
 
 pgp.as.format(query, values);
-            // Replaces variables in a query with their `values` as specified.
-            // `values` is either a simple value or an array of simple values.
+            // Replaces variables in the query with their `values` as specified;
+            // `values` can be a simple value, array or an object.
 ```
 As these helpers are not associated with any database, they can be used from anywhere.
 
@@ -473,17 +477,19 @@ Below is the list of all the properties that are currently supported.
 ---
 * `pgFormatting`
 
-By default, **pg-promise** provides its own implementation of the query value formatting,
-using the standard syntax of $1, $2, etc.
+By default, **pg-promise** provides its own implementation of the query formatting,
+supporting two different formats:
 
-Any query request accepts values for the variable within query string as the second parameter.
-It accepts a single simple value for queries that use only one variable, as well as an array of simple values,
-for queries with multiple variables in them.
+* Format `$1, $2, etc`, when parameter `values` is either a simple value or an array of simple values;
+* Format `${propName}` - ES6-like format, if `values` is an object that's not `null`
+and not a `Date` instance.
 
-**pg-promise** implementation of query formatting supports only the basic javascript types: text, boolean, date, number and null.
+Every query method of the library accepts `values` as its second parameter.
 
-Those basic types are however sufficient to cover more complex scenarios. For example, binary data is exchanged with the
-database using hex strings, as shown below.
+**pg-promise** automatically converts all basic javascript types (text, boolean, date, number and null)
+into their Postgres format.
+
+Below is an example of how to deal with more complex data types, like binary:
 
 ```javascript
 var fs = require('fs');
@@ -501,15 +507,14 @@ fs.readFile('image.jpg', 'hex', function (err, imgData) {
 });
 ```
 
-If, instead, you want to use query formatting that's implemented by the [PG] library, set parameter `pgFormatting`
+If, however, you want to use query formatting that's implemented by the [PG] library, set parameter `pgFormatting`
 to be `true` when initializing the library, and every query formatting will redirect to the [PG]'s implementation.
 
-Although this has huge implication to the library's functionality, it is not within the scope of this project to detail.
+Although this has a huge implication to the library's functionality, it is not within the scope of this project to detail.
 For any further reference you should use documentation of the [PG] library.
 
-**NOTE:** As of the current implementation, formatting parameters for calling functions (methods `func` and `proc`)
-is not affected by this override. If needed, use the generic `query` instead to invoke functions with redirected
-query formatting.
+**NOTE:** Formatting parameters for calling functions (methods `func` and `proc`) is not affected by this override.
+When needed, use the generic `query` instead to invoke functions with redirected query formatting.
 
 ---
 * `promiseLib`
