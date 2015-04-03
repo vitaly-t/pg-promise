@@ -363,7 +363,7 @@ db.query("select * from users where name=${name} and active=${active}", {
 });
 ```
 The same goes for all types of query methods as well as method `as.format(query, values, qrm)`, where `values`
-can also now be an object which properties can be referred to by name from within the query.
+now can also be an object whose properties can be referred to by name from within the query.
 
 Notable rules for named-parameter formatting:
 
