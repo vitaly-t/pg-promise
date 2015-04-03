@@ -365,7 +365,7 @@ db.query("select * from users where name=${name} and active=${active}", {
 The same goes for all types of query methods as well as method `as.format(query, values, qrm)`, where `values`
 can also now be an object which properties can be referred to by name from within the query.
 
-Notable rules when for named-parameter formatting:
+Notable rules for named-parameter formatting:
 
 * a valid variable starts with a letter or underscore symbol, followed by any combination of letters,
 digits or underscores;
