@@ -1,4 +1,4 @@
-var pgpLib = require('../index');
+var pgpLib = require('../lib/index');
 var pgp = pgpLib(); // initializing the library;
 
 var dateSample = new Date(2015, 2, 8, 16, 24, 8);

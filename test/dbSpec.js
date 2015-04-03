@@ -446,6 +446,24 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
         });
     });
 
+    it("method 'query' must throw an error when QRM is of the wrong type", function () {
+        var result, error;
+        db.query("select * from person", undefined, 'wrong qrm')
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                result = null;
+                error = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBe(null);
+            expect(error).toBe("Invalid Query Result Mask specified.");
+        });
+    });
+
 });
 
 var _finishCallback = jasmine.Runner.prototype.finishCallback;
