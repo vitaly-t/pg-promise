@@ -7,3 +7,7 @@ addons:
 before_script:
   - psql -c 'create database pg_promise_test;' -U postgres
   - node test/dbInit.js
+branches:
+  only:
+    - named-params
+    
