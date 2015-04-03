@@ -279,6 +279,25 @@ function $createFuncQuery(funcName, values) {
     return 'select * from ' + funcName + '(' + $formatCSV(values) + ')';
 }
 
+/////////////////////////////////////////////////////////////
+// Returns array of unique variable names in a text string;
+//
+// - variables are defined using syntax "${varName}";
+// - a valid variable starts with a letter or underscore symbol,
+//   followed by any combination of letters, digits or underscores.
+// - a variable can have any number of leading and trailing spaces;
+function enumVars(txt) {
+    var v, names = [];
+    var reg = /\$\{\s*[a-zA-Z_][a-zA-Z0-9_]*\s*}/g;
+    while (v = reg.exec(txt)) {
+        var svn = v[0].replace(/[\$\{\s}]/g, ''); // stripped variable name;
+        if(names.indexOf(svn) === -1) {
+            names.push(svn);
+        }
+    }
+    return names;
+}
+
 // 'pg-promise' own query formatting solution;
 // It parses query for $1, $2,... variables and replaces them with the values passed;
 // 'values' can be an array of simple values or just one simple value;
