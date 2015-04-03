@@ -370,7 +370,8 @@ Notable rules for named-parameter formatting:
 * a valid variable starts with a letter or underscore symbol, followed by any combination of letters,
 digits or underscores;
 * leading and trailing white spaces surrounding variables are ignored in queries;
-* `null` and `undefined` properties are both formatted as `null` in the query.
+* `null` and `undefined` properties are both formatted as `null` in the query;
+* variable names are case-sensitive.
 
 ### Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
