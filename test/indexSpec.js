@@ -254,10 +254,6 @@ describe("Method as.format", function () {
         }).toThrow("Cannot convert parameter with index 0");
 
         expect(function () {
-            pgp.as.format("$1", {});
-        }).toThrow("Cannot convert type 'object' into a query variable value.");
-
-        expect(function () {
             pgp.as.format("$1, $2", ['one', {}]);
         }).toThrow("Cannot convert parameter with index 1");
 
@@ -330,6 +326,20 @@ describe("Method as.format", function () {
         // test that variable names are not confused for longer ones,
         // even when they are right next to each other;
         expect(pgp.as.format("$11$1$111$1", 123)).toBe("$11123$111123");
+    });
+
+    it("must correctly format named parameters or throw an error", function () {
+        // - correctly handles leading and trailing spaces;
+        // - supports underscores and digits in names;
+        // - can join variables values next to each other;
+        // - converts all simple types correctly;
+        // - replaces undefined variables with null;
+        expect(pgp.as.format("${ name_},${d_o_b },${  _active__},${ file_5A  }${__balance}", {
+            name_: "John O'Connor",
+            d_o_b: dateSample,
+            _active__: true,
+            __balance: -123.45
+        })).toBe("'John O''Connor','" + dateSample.toUTCString() + "',TRUE,null-123.45");
 
     });
 });
