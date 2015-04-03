@@ -357,10 +357,9 @@ Starting with version 0.8.0, the library supports named variables when formattin
 with the ES6-like syntax of `${propName}`:
 
 ```javascript
-db.query("select * from users where name=${name} and active=${active} and created < ${created}", {
+db.query("select * from users where name=${name} and active=${active}", {
     name: 'John',
-    active: true,
-    created: new Date()
+    active: true
 });
 ```
 The same goes for all types of query methods as well as method `as.format(query, values, qrm)`, where `values`
