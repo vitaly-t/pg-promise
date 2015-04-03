@@ -351,6 +351,28 @@ If `qrm` is not specified when calling generic `query` method, it is assumed to 
 > This is all about writing robust code, when the client specifies what kind of data it is ready to handle on the declarative level,
 leaving the burden of all extra checks to the library.
 
+### Named Parameters
+
+Version 0.8.0 of the library added support for named-parameter in query formatting,
+with the ES6-like syntax of `${propName}`:
+
+```javascript
+db.query("select * from users where name=${name} and active=${active}", {
+    name: 'John',
+    active: true
+});
+```
+The same goes for all types of query methods as well as method `as.format(query, values, qrm)`, where `values`
+can also now be an object which properties can be referred to by name from within the query.
+
+Notable rules for named-parameter formatting:
+
+* a valid variable starts with a letter or underscore symbol, followed by any combination of letters,
+digits or underscores;
+* leading and trailing white spaces surrounding variables are ignored in queries;
+* `null` and `undefined` properties are both formatted as `null` in the query;
+* variable names are case-sensitive.
+
 ### Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
 
@@ -587,6 +609,8 @@ This will release pg connection pool globally and make sure that the process ter
 If you do not call it, your process may be waiting for 30 seconds (default) or so, waiting for the pg connection pool to expire.
 
 # History
+
+* Version 0.8.0 added support for named-parameter formatting. Released: April 3, 2015.
 * Version 0.7.0 fixes the way `as.format` works (breaking change). Released: April 2, 2015.
 * Version 0.6.2 has good database test coverage. Released: March 28, 2015.
 * Version 0.5.6 introduces support for nested transaction. Released: March 22, 2015.

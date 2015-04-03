@@ -1,6 +1,6 @@
 // Reusable database connection header;
 
-var pgpLib = require('../index');
+var pgpLib = require('../lib/index');
 
 var cn = {
     host: 'localhost',

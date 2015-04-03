@@ -1,4 +1,4 @@
-var pgpLib = require('../index');
+var pgpLib = require('../lib/index');
 var pgp = pgpLib(); // initializing the library;
 
 var dateSample = new Date(2015, 2, 8, 16, 24, 8);
@@ -250,16 +250,16 @@ describe("Method as.format", function () {
         }).toThrow("No variable found in the query to replace with the passed value.");
 
         expect(function () {
-            pgp.as.format("$1", [{}]);
-        }).toThrow("Cannot convert parameter with index 0");
+            pgp.as.format("$1", function() {});
+        }).toThrow("Cannot convert type 'function' of the parameter.");
 
         expect(function () {
-            pgp.as.format("$1", {});
-        }).toThrow("Cannot convert type 'object' into a query variable value.");
+            pgp.as.format("$1", [{}]);
+        }).toThrow("Cannot convert type 'object' of parameter with index 0");
 
         expect(function () {
             pgp.as.format("$1, $2", ['one', {}]);
-        }).toThrow("Cannot convert parameter with index 1");
+        }).toThrow("Cannot convert type 'object' of parameter with index 1");
 
         expect(pgp.as.format("", [])).toBe("");
         expect(pgp.as.format("$1", [])).toBe("$1");
@@ -283,19 +283,19 @@ describe("Method as.format", function () {
 
         expect(function(){
             pgp.as.format("$1,$2", [{}, {}]);
-        }).toThrow("Cannot convert parameter with index 0");
+        }).toThrow("Cannot convert type 'object' of parameter with index 0");
 
         // test that errors in type conversion are
         // detected and reported from left to right;
         expect(function(){
             pgp.as.format("$1, $2", [true, function () {}]);
-        }).toThrow("Cannot convert parameter with index 1");
+        }).toThrow("Cannot convert type 'function' of parameter with index 1");
 
         // test that once a conversion issue is encountered,
         // the rest of parameters are not verified;
         expect(function(){
             pgp.as.format("$1,$2", [1, {}, 2, 3, 4, 5]);
-        }).toThrow("Cannot convert parameter with index 1");
+        }).toThrow("Cannot convert type 'object' of parameter with index 1");
 
         // testing with lots of variables;
         var source = "", dest = "", params = [];
@@ -330,6 +330,36 @@ describe("Method as.format", function () {
         // test that variable names are not confused for longer ones,
         // even when they are right next to each other;
         expect(pgp.as.format("$11$1$111$1", 123)).toBe("$11123$111123");
+    });
+
+    it("must correctly format named parameters or throw an error", function () {
+        // - correctly handles leading and trailing spaces;
+        // - supports underscores and digits in names;
+        // - can join variables values next to each other;
+        // - converts all simple types correctly;
+        // - replaces undefined variables with null;
+        // - variables are case-sensitive;
+        expect(pgp.as.format("${ NamE_},${d_o_b },${  _active__},${ file_5A  }${__Balance}", {
+            NamE_: "John O'Connor",
+            d_o_b: dateSample,
+            _active__: true,
+            file_5a: 'something', // not to be found, due to case difference;
+            __Balance: -123.45
+        })).toBe("'John O''Connor','" + dateSample.toUTCString() + "',TRUE,null-123.45");
+
+        expect(function(){
+            pgp.as.format("${prop1},${prop2}", {
+                prop1: 'hello',
+                prop2: []
+            });
+        }).toThrow("Cannot convert type 'object' of property 'prop2'");
+
+        expect(function(){
+            pgp.as.format("${prop1},${prop2}", {
+                prop1: 'hello',
+                prop2: function(){}
+            });
+        }).toThrow("Cannot convert type 'function' of property 'prop2'");
 
     });
 });
