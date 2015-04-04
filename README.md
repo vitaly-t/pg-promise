@@ -368,7 +368,7 @@ db.query("select * from users where name=${name} and active=${active}", {
 The same goes for all types of query methods as well as method `as.format(query, values, qrm)`, where `values`
 now can also be an object whose properties can be referred to by name from within the query.
 
-Since all variables in the case are names of the properties of the object-parameter, standard javascript
+Since all variables in this case are property names of the object-parameter, standard javascript
 variable naming convention applies here:
 
 * a valid variable starts with a letter or underscore symbol, followed by any combination of letters,
@@ -376,7 +376,7 @@ digits or underscores;
 * leading and trailing white spaces surrounding variables are ignored;
 * variable names are case-sensitive.
 
-It is important to know that while property values `null` and `undefined` are both formatted as `null` in the query,
+It is important to know that while property values `null` and `undefined` are both formatted as `null`,
 an error is thrown when the property doesn't exist at all.
 
 ### Functions and Procedures
