@@ -294,7 +294,9 @@ Every connection context of the library shares the same query protocol, starting
 ```javascript
 function query(query, values, qrm);
 ```
-* `query` (required) - query string that supports standard variables formatting, using $1, $2, ...etc;
+* `query` (required) - query string that supports two types of formatting, depending on the `values` passed:
+   - format `$1, $2`, if `values` is simple (text, boolean, number, date or null) or an array of such simple values;
+   - format `${propName}`, if `values` is an object (not null and not Date);
 * `values` (optional) - value/array/object to replace the variables in the query;
 * `qrm` - (optional) Query Result Mask, as explained below...
 
@@ -354,7 +356,7 @@ leaving the burden of all extra checks to the library.
 
 ### Named Parameters
 
-Version 0.8.0 of the library added support for named-parameter in query formatting,
+Version 0.8.0 of the library added support for named parameters in query formatting,
 with the ES6-like syntax of `${propName}`:
 
 ```javascript
@@ -366,13 +368,16 @@ db.query("select * from users where name=${name} and active=${active}", {
 The same goes for all types of query methods as well as method `as.format(query, values, qrm)`, where `values`
 now can also be an object whose properties can be referred to by name from within the query.
 
-Notable rules for named-parameter formatting:
+Since all variables in the case are names of the properties of the object-parameter, standard javascript
+variable naming convention applies here:
 
 * a valid variable starts with a letter or underscore symbol, followed by any combination of letters,
 digits or underscores;
-* leading and trailing white spaces surrounding variables are ignored in queries;
-* `null` and `undefined` properties are both formatted as `null` in the query;
+* leading and trailing white spaces surrounding variables are ignored;
 * variable names are case-sensitive.
+
+It is important to know that while property values `null` and `undefined` are both formatted as `null` in the query,
+an error is thrown when the property doesn't exist at all.
 
 ### Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
