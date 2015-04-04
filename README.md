@@ -371,8 +371,8 @@ now can also be an object whose properties can be referred to by name from withi
 Since all variables in this case are property names of the object-parameter, standard javascript
 variable naming convention applies here:
 
-* a valid variable starts with a letter or underscore symbol, followed by any combination of letters,
-digits or underscores;
+* a valid variable starts with a letter, underscore or `$` symbol, followed by any combination
+of letters, digits, underscores and `$`;
 * leading and trailing white spaces surrounding variables are ignored;
 * variable names are case-sensitive.
 

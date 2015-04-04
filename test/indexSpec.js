@@ -334,17 +334,24 @@ describe("Method as.format", function () {
 
     it("must correctly format named parameters or throw an error", function () {
         // - correctly handles leading and trailing spaces;
-        // - supports underscores and digits in names;
+        // - supports underscores, digits and '$' in names;
         // - can join variables values next to each other;
         // - converts all simple types correctly;
         // - replaces undefined variables with null;
         // - variables are case-sensitive;
-        expect(pgp.as.format("${ NamE_},${d_o_b },${  _active__},${__Balance}", {
-            NamE_: "John O'Connor",
+        expect(pgp.as.format("${ $Nam$E_},${d_o_b },${  _active__},${_$_Balance}", {
+            $Nam$E_: "John O'Connor",
             d_o_b: dateSample,
             _active__: true,
-            __Balance: -123.45
+            _$_Balance: -123.45
         })).toBe("'John O''Connor','" + dateSample.toUTCString() + "',TRUE,-123.45");
+
+        // test that even one-symbol, special-named properties work correctly;
+        expect(pgp.as.format("${$}${_}${a}",{
+            $: 1,
+            _: 2,
+            a: 3
+        })).toBe("123");
 
         // Both null and undefined properties are formatted as null;
         expect(pgp.as.format("${empty1}, ${empty2}", {
