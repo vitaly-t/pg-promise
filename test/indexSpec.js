@@ -366,10 +366,24 @@ describe("Method as.format", function () {
             });
         }).toThrow("Property 'prop2' doesn't exist.");
 
+        // test that case sensitivity works;
+        expect(function(){
+            pgp.as.format("${PropName}", {
+                propName: 'hello'
+            });
+        }).toThrow("Property 'PropName' doesn't exist.");
+
         expect(function(){
             pgp.as.format("${prop1},${prop2}", {
                 prop1: 'hello',
                 prop2: []
+            });
+        }).toThrow("Cannot convert type 'object' of property 'prop2'");
+
+        expect(function(){
+            pgp.as.format("${prop1},${prop2}", {
+                prop1: 'hello',
+                prop2: {}
             });
         }).toThrow("Cannot convert type 'object' of property 'prop2'");
 
