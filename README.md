@@ -602,17 +602,16 @@ var options = {
 }
 ```
 
-Notification happens just before the query execution. And if the notification handler throws
-an error, the query execution will be intercepted and rejected with the error that's been
-thrown by the handler function.
+Notification happens just before the query execution. And if the handler throws
+an error, the query execution will be rejected with that error.
 
-The function receives the following parameters:
+Parameters received by the function:
 * `client` - object from the [PG] library that represents the connection;
 * `query` - query that's being executed;
 * `params` - query parameters (only when `pgFormatting` is set to be `true`).
 
 Please note, that should you set property `pgFormatting` to be `true`, the library no longer formats
-the queries, and the `query` arrives pre-formatted. This is why extra parameter `params` was added.
+the queries, and `query` arrives pre-formatted. This is why extra parameter `params` was added.
 
 **NOTE:** The library will throw an error instead of making the call, if the property is set to
 a non-empty value other than a function.
@@ -622,7 +621,7 @@ a non-empty value other than a function.
 
 Global notification of an error while executing a query. This is to simplify error logging
 for all rejected queries. Query-formatting issues are outside of this notification, unless
-you opt to use `pgFormatting`.
+you opt for `pgFormatting`.
 
 ```javascript
 var options = {
@@ -632,17 +631,17 @@ var options = {
 }
 ```
 
-Notification happens right after the query execution. And if the notification handler throws
+Notification happens right after the query execution. And if the handler throws
 an error, it will be silenced by the library.
 
-The function receives the following parameters:
+Parameters received by the function:
 * `err` - error message as reported by the [PG] library;
 * `client` - object from the [PG] library that represents the connection;
 * `query` - query that was executed;
 * `params` - query parameters (only when `pgFormatting` is set to be `true`).
 
 Please note, that should you set property `pgFormatting` to be `true`, the library no longer formats
-the queries, and the `query` arrives pre-formatted, with parameters passed in `params`.
+the queries, and `query` arrives pre-formatted, with formatting parameters passed in `params`.
 This also means that formatting-related errors are possible even prior to the query execution when
 relying on [PG] query formatting. If you do not use `pgFormatting`, this notification will never be
 caused by a query-formatting issue, because this library would throw an error prior to executing the query.
