@@ -621,7 +621,7 @@ a non-empty value other than a function.
 * `error`
 
 Global notification of an error while executing a query. This is to simplify error logging
-for all rejected queries. Query-formatting issues are outside this notification, unless
+for all rejected queries. Query-formatting issues are outside of this notification, unless
 you opt to use `pgFormatting`.
 
 ```javascript
