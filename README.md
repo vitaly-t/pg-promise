@@ -365,7 +365,7 @@ db.query("select * from users where name=${name} and active=${active}", {
     active: true
 });
 ```
-The same goes for all types of query methods as well as method `as.format(query, values)`, where `values`
+The same goes for all types of query methods as well as method `as.format(query, values, qrm)`, where `values`
 now can also be an object whose properties can be referred to by name from within the query.
 
 Since all variables in this case are property names of the object-parameter, standard javascript
@@ -472,7 +472,8 @@ var options = {
     // promiseLib - overrides default promise library;
     // connect - database 'connect' notification;
     // disconnect - database 'disconnect' notification;
-    // query - query execution notification.
+    // query - query execution notification;
+    // error - query error notification.
 };
 var pgp = pgpLib(options);
 ```
@@ -563,10 +564,12 @@ var options = {
     }
 }
 ```
-It can be used for diagnostics / connection monitoring within your application.
 
 The function takes only one parameter - `client` object from the [PG] library that represents connection
 with the database.
+
+**NOTE:** The library will throw an error instead of making the call, if the property is set to
+a non-empty value other than a function.
 
 ---
 * `disconnect`
@@ -580,10 +583,12 @@ var options = {
     }
 }
 ```
-It can be used for diagnostics / connection monitoring within your application.
 
 The function takes only one parameter - `client` object from the [PG] library that represents the connection
 that's being released.
+
+**NOTE:** The library will throw an error instead of making the call, if the property is set to
+a non-empty value other than a function.
 
 ---
 * `query`
@@ -596,7 +601,6 @@ var options = {
     }
 }
 ```
-It can be useful for diagnostics / logging within your application.
 
 Notification happens just before the query execution. And if the notification handler throws
 an error, the query execution will be intercepted and rejected with the error that's been
@@ -610,6 +614,36 @@ The function receives the following parameters:
 Please note, that should you set property `pgFormatting` to be `true`, the library no longer formats
 the queries, and the `query` arrives pre-formatted. This is why extra parameter `params` was added.
 
+**NOTE:** The library will throw an error instead of making the call, if the property is set to
+a non-empty value other than a function.
+
+---
+* `error`
+
+Global notification of an error while executing a query.
+```javascript
+var options = {
+    error: function(err, client, query, params){
+        console.log("Error: " + err);
+    }
+}
+```
+
+Notification happens right after the query execution. And if the notification handler throws
+an error, it will be silenced by the library.
+
+The function receives the following parameters:
+* `err` - error message as reported by the [PG] library;
+* `client` - object from the [PG] library that represents the connection;
+* `query` - query that was executed;
+* `params` - query parameters (only when `pgFormatting` is set to be `true`).
+
+Please note, that should you set property `pgFormatting` to be `true`, the library no longer formats
+the queries, and the `query` arrives pre-formatted. This is why extra parameter `params` was added.
+
+**NOTE:** The library will throw an error instead of making the call, if the property is set to
+a non-empty value other than a function.
+
 ### Library de-initialization
 When exiting your application, make the following call:
 ```javascript
@@ -620,6 +654,7 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 
 # History
 
+* Version 0.8.4 added support for error notifications. Released: April 6, 2015.
 * Version 0.8.0 added support for named-parameter formatting. Released: April 3, 2015.
 * Version 0.7.0 fixes the way `as.format` works (breaking change). Released: April 2, 2015.
 * Version 0.6.2 has good database test coverage. Released: March 28, 2015.
