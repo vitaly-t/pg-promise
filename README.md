@@ -620,7 +620,10 @@ a non-empty value other than a function.
 ---
 * `error`
 
-Global notification of an error while executing a query.
+Global notification of an error while executing a query. This is to simplify error logging
+for all rejected queries. Query-formatting issues are outside this notification, unless
+you opt to use `pgFormatting`.
+
 ```javascript
 var options = {
     error: function(err, client, query, params){
@@ -639,7 +642,10 @@ The function receives the following parameters:
 * `params` - query parameters (only when `pgFormatting` is set to be `true`).
 
 Please note, that should you set property `pgFormatting` to be `true`, the library no longer formats
-the queries, and the `query` arrives pre-formatted. This is why extra parameter `params` was added.
+the queries, and the `query` arrives pre-formatted, with parameters passed in `params`.
+This also means that formatting-related errors are possible even prior to the query execution when
+relying on [PG] query formatting. If you do not use `pgFormatting`, this notification will never be
+caused by a query-formatting issue, because this library would throw an error prior to executing the query.
 
 **NOTE:** The library will throw an error instead of making the call, if the property is set to
 a non-empty value other than a function.
