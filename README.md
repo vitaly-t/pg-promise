@@ -365,7 +365,7 @@ db.query("select * from users where name=${name} and active=${active}", {
     active: true
 });
 ```
-The same goes for all types of query methods as well as method `as.format(query, values, qrm)`, where `values`
+The same goes for all types of query methods as well as method `as.format(query, values)`, where `values`
 now can also be an object whose properties can be referred to by name from within the query.
 
 Since all variables in this case are property names of the object-parameter, standard javascript
