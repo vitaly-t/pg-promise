@@ -646,18 +646,18 @@ The context object (`ctx`) has the following properties:
 Example below illustrates the logic of using the context object:
 ```javascript
 var options = {
-    error: function(err, ctx){
+    error: function (err, ctx) {
         console.log(err); // printing error;
         var cp = ctx.client.connectionParameters;
         console.log(cp.database);// printing database name;
-        if(ctx.query){ // if it is a query error;
+        if (ctx.query) { // if it is a query error;
             console.log(ctx.query); // print the query;
-            if(ctx.params){ // if parameters are known;
+            if (ctx.params) { // if parameters are known;
                 console.log(ctx.params); // print query parameters;
             }
-        }else{
+        } else {
             // Otherwise, a transaction callback threw an error;
-            if(ctx.name){ // if it is a named transaction;
+            if (ctx.name) { // if it is a named transaction;
                 console.log(ctx.name); // print transaction name;
             }
         }
@@ -667,10 +667,10 @@ var options = {
 
 In a large application that heavily relies on transactions it may be challenging
 to locate the faulty transaction when the failure is caused by a generic error
-inside the callback function. And so to make it simpler, this library supports
+inside the callback function. In order to make it simpler, this library supports
 named transactions.
 
-What is a named transaction? It is when you take this code:
+What is a named transaction? - It is when you take this code:
 ```javascript
 db.tx(function(ctx){
     // callback implementation;
