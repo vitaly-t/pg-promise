@@ -473,7 +473,7 @@ var options = {
     // connect - database 'connect' notification;
     // disconnect - database 'disconnect' notification;
     // query - query execution notification;
-    // error - query error notification.
+    // error - error notification.
 };
 var pgp = pgpLib(options);
 ```
@@ -562,7 +562,7 @@ var options = {
         var cp = client.connectionParameters;
         console.log("Connected to database '" + cp.database + "'");
     }
-}
+};
 ```
 
 The function takes only one parameter - `client` object from the [PG] library that represents connection
@@ -581,7 +581,7 @@ var options = {
         var cp = client.connectionParameters;
         console.log("Disconnecting from database '" + cp.database + "'");
     }
-}
+};
 ```
 
 The function takes only one parameter - `client` object from the [PG] library that represents the connection
@@ -599,7 +599,7 @@ var options = {
     query: function(client, query, params){
         console.log("Executing query: " + query);
     }
-}
+};
 ```
 
 Notification happens just before the query execution. And if the handler throws
@@ -619,34 +619,74 @@ a non-empty value other than a function.
 ---
 * `error`
 
-Global notification of an error while executing a query. This is to simplify error logging
-for all rejected queries. Query-formatting issues are outside of this notification, unless
-you opt for `pgFormatting`.
-
+Global notification of an error while executing a query or transaction.
 ```javascript
 var options = {
-    error: function(err, client, query, params){
+    error: function(err, ctx){
         console.log("Error: " + err);
     }
-}
+};
 ```
 
-Notification happens right after the query execution. And if the handler throws
-an error, it will be silenced by the library.
+Notification may happen in 3 possible scenarios:
+* Query method rejecting because of a issue with query formatting;
+* Call into [PG] returned with an error;
+* Transaction callback threw an error.
 
 Parameters received by the function:
 * `err` - error message as reported by the [PG] library;
+* `ctx` - context object for the error, as explained below;
+
+The context object (`ctx`) has the following properties:
 * `client` - object from the [PG] library that represents the connection;
-* `query` - query that was executed;
-* `params` - query parameters (only when `pgFormatting` is set to be `true`).
+* `query` - input query string, if it is a query-related error; `undefined` otherwise;
+* `params` - input query parameters, if applicable; `undefined` otherwise;
+* `name` - transaction name, if applicable; `undefined` otherwise;
 
-Please note, that should you set property `pgFormatting` to be `true`, the library no longer formats
-the queries, and `query` arrives pre-formatted, with formatting parameters passed in `params`.
-This also means that formatting-related errors are possible even prior to the query execution when
-relying on [PG] query formatting. If you do not use `pgFormatting`, this notification will never be
-caused by a query-formatting issue, because this library would throw an error prior to executing the query.
+Example below illustrates the logic of using the context object:
+```javascript
+var options = {
+    error: function(err, ctx){
+        console.log(err); // printing error;
+        var cp = ctx.client.connectionParameters;
+        console.log(cp.database);// printing database name;
+        if(ctx.query){ // if it is a query error;
+            console.log(ctx.query); // print the query;
+            if(ctx.params){ // if parameters are known;
+                console.log(ctx.params); // print query parameters;
+            }
+        }else{
+            // Otherwise, a transaction callback threw an error;
+            if(ctx.name){ // if it is a named transaction;
+                console.log(ctx.name); // print transaction name;
+            }
+        }
+    }
+};
+```
 
-**NOTE:** The library will throw an error instead of making the call, if the property is set to
+In a large application that heavily relies on transactions it may be challenging
+to locate the faulty transaction when the failure is caused by a generic error
+inside the callback function. And so to make it simpler, this library supports
+named transactions.
+
+What is a named transaction? It is when you take this code:
+```javascript
+db.tx(function(ctx){
+    // callback implementation;
+});
+```
+and change it into this:
+```javascript
+db.tx("myTransaction", function(ctx){
+    // callback implementation;
+});
+```
+
+That's giving a name to your transaction, so in case the callback throws an unhandled
+error, the error will be reported along with the transaction name.
+
+**NOTE:** The library will throw an error instead of making the call, if `options.error` is set to
 a non-empty value other than a function.
 
 ### Library de-initialization
