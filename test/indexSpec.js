@@ -253,14 +253,6 @@ describe("Method as.format", function () {
             pgp.as.format("$1", function() {});
         }).toThrow("Cannot convert type 'function' of the parameter.");
 
-        expect(function () {
-            pgp.as.format("$1", [{}]);
-        }).toThrow("Cannot convert type 'object' of parameter with index 0");
-
-        expect(function () {
-            pgp.as.format("$1, $2", ['one', {}]);
-        }).toThrow("Cannot convert type 'object' of parameter with index 1");
-
         expect(pgp.as.format("", [])).toBe("");
         expect(pgp.as.format("$1", [])).toBe("$1");
         expect(pgp.as.format("$1")).toBe("$1");
@@ -294,8 +286,8 @@ describe("Method as.format", function () {
         // test that once a conversion issue is encountered,
         // the rest of parameters are not verified;
         expect(function(){
-            pgp.as.format("$1,$2", [1, {}, 2, 3, 4, 5]);
-        }).toThrow("Cannot convert type 'object' of parameter with index 1");
+            pgp.as.format("$1,$2,$3,$4,$5", [1, 2, {}, {}, {}, {}]);
+        }).toThrow("Cannot convert type 'object' of parameter with index 2");
 
         // testing with lots of variables;
         var source = "", dest = "", params = [];
@@ -337,8 +329,6 @@ describe("Method as.format", function () {
         // - supports underscores, digits and '$' in names;
         // - can join variables values next to each other;
         // - converts all simple types correctly;
-        // - replaces undefined variables with null;
-        // - variables are case-sensitive;
         expect(pgp.as.format("${ $Nam$E_},${d_o_b },${  _active__},${_$_Balance}", {
             $Nam$E_: "John O'Connor",
             d_o_b: dateSample,
@@ -366,7 +356,15 @@ describe("Method as.format", function () {
             });
         }).toThrow("Property 'prop2' doesn't exist.");
 
-        // test that case sensitivity works;
+        // testing case sensitivity - Positive;
+        expect(pgp.as.format("${propVal}${PropVal}${propVAL}${PropVAL}", {
+            propVal: 1,
+            PropVal: 2,
+            propVAL: 3,
+            PropVAL: 4
+        })).toBe("1234");
+
+        // testing case sensitivity - Negative;
         expect(function(){
             pgp.as.format("${PropName}", {
                 propName: 'hello'
