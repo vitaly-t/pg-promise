@@ -142,8 +142,7 @@ describe("When a nested transaction fails", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBe(null);
-            expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Nested TX failure');
+            expect(error).toBe('Nested TX failure');
         });
     });
 });
