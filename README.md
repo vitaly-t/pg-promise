@@ -23,7 +23,7 @@ Complete access layer to [PG] via [Promises/A+].
   - [Loading](https://github.com/vitaly-t/pg-promise#1-loading)
   - [Initializing](https://github.com/vitaly-t/pg-promise#2-initializing)
   - [Connecting](https://github.com/vitaly-t/pg-promise#3-connecting)
-  - [Database Instance](https://github.com/vitaly-t/pg-promise#database-instance)
+  - [Database Instance](https://github.com/vitaly-t/pg-promise#4-database-instance)
 * [Usage](https://github.com/vitaly-t/pg-promise#usage)
   - [Detached Connections](https://github.com/vitaly-t/pg-promise#detached-connections)
   - [Shared Connections](https://github.com/vitaly-t/pg-promise#shared-connections)
