@@ -599,9 +599,9 @@ a non-empty value other than a function.
 Global notification of a query that's being executed.
 ```javascript
 var options = {
-    query: function(e){
-        console.log("Executing query: " + e.query);
-        if(e.ctx){
+    query: function (e) {
+        console.log("Query: " + e.query);
+        if (e.ctx) {
             // this query is executing inside a transaction,
             // and ctx contains all the relevant details;
         }
@@ -648,8 +648,17 @@ a non-empty value other than a function.
 Global notification of an error while executing a query or transaction.
 ```javascript
 var options = {
-    error: function(err, e){
+    error: function (err, e) {
         console.log("Error: " + err);
+        if (e.query) {
+            console.log("Query: " + e.query);
+            if (e.params) {
+                console.log("Parameters: " + e.params);
+            }
+        }
+        if (e.ctx) {
+            // use transaction details;
+        }
     }
 };
 ```
@@ -663,8 +672,8 @@ For parameter `e` see documentation of the `query` event earlier.
 
 The library will suppress any error thrown by the handler.
 
-**NOTE:** The library will throw an error instead of making the call, if `options.error` is set to
-a non-empty value other than a function.
+**NOTE:** The library will throw an error instead of making the call,
+if `options.error` is set to a non-empty value other than a function.
 
 ---
 * `transact`
@@ -672,10 +681,15 @@ a non-empty value other than a function.
 Global notification of a transaction start/finish events.
 ```javascript
 var options = {
-    transact: function(e){
+    transact: function (e) {
         console.log("Start Time: " + e.ctx.start);
-        if(e.ctx.finish){
+        if (e.ctx.finish) {
             console.log("Finish Time: " + e.ctx.finish);
+            if (e.ctx.success) {
+                // e.ctx.result contains the data resolved;
+            } else {
+                // e.ctx.result contains rejection reason;
+            }
         }
     }
 };
