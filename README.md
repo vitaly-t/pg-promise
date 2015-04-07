@@ -616,6 +616,25 @@ Parameter `e` is the event's context object that shares its format between event
 * `params` - input query parameters, if applicable; `undefined` otherwise;
 * `ctx` - transaction context object, if applicable; `undefined` otherwise;
 
+A transaction context object (`ctx`) supports the following properties:
+* `start` - start time of the transaction;
+* `finish` - optional; finish time of the transaction, if it has finished;
+* `tag` - optional; tag object/value passed into the transaction, if any;
+* `success` - optional; indicates success for a finished transaction;
+* `result` - optional; result for a finished transaction: data resolved by the transaction,
+ if `success` is `true`, otherwise it is set to the `reason` that was passed
+ when rejecting the transaction.
+
+A transaction can be tagged when it is called using the following syntax:
+```javascript
+db.tx(tag, cb);
+```
+i.e. in front of the callback function you can inject a value or object that
+tags the transaction, so it can be used as a reference when handling events.
+
+All properties of `ctx` marked as optional are not set, unless they are relevant
+to the event.
+
 **NOTE:** The library will throw an error instead of making the call, if `options.query` is set to
 a non-empty value other than a function.
 
