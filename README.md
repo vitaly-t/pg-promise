@@ -14,6 +14,21 @@ Complete access layer to [PG] via [Promises/A+].
 * Automatic database connections;
 * Strict query result filters.
 
+* [Installing](https://github.com/vitaly-t/pg-promise#installing)
+* [Testing](https://github.com/vitaly-t/pg-promise#testing)
+* [Getting started](https://github.com/vitaly-t/pg-promise#getting-started)
+* [Usage](https://github.com/vitaly-t/pg-promise#usage)
+  - [Detached Connections](https://github.com/vitaly-t/pg-promise#detached-connections)
+  - [Shared Connections](https://github.com/vitaly-t/pg-promise#shared-connections)
+  - [Transactions](https://github.com/vitaly-t/pg-promise#transactions)
+  - [Queries and Parameters](https://github.com/vitaly-t/pg-promise#queries-and-parameters)
+  - [Named Parameters](https://github.com/vitaly-t/pg-promise#named-parameters)
+  - [Conversion Helpers](https://github.com/vitaly-t/pg-promise#conversion-helpers)
+* [Advanced](https://github.com/vitaly-t/pg-promise#advanced)
+  - [Initialization Options](https://github.com/vitaly-t/pg-promise#initialization-options)
+  - [Library de-initialization](https://github.com/vitaly-t/pg-promise#library-de-initialization)
+ 
+
 # Installing
 ```
 $ npm install pg-promise
