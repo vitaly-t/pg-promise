@@ -678,7 +678,7 @@ if `options.error` is set to a non-empty value other than a function.
 ---
 * `transact`
 
-Global notification of a transaction start/finish events.
+Global notification of a transaction start / finish events.
 ```javascript
 var options = {
     transact: function (e) {
