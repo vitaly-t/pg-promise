@@ -659,7 +659,7 @@ Notification may happen in 3 possible scenarios:
 * Call into [PG] returned with an error;
 * Transaction callback threw an error.
 
-Parameter `e` is the same as for event `query`.
+For parameter `e` see documentation of the `query` event earlier.
 
 The library will suppress any error thrown by the handler.
 
@@ -681,7 +681,7 @@ var options = {
 };
 ```
 
-Parameter `e` is the same as for event `query`.
+For parameter `e` see documentation of the `query` event earlier.
 
 The library will suppress any error thrown by the handler.
 
