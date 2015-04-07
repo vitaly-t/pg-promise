@@ -42,11 +42,11 @@ $ npm install pg-promise
 ```
 
 # Testing
-1. Install project dependencies
+Install project dependencies:
 ```
 $ npm install
 ```
-2. Run tests
+Run tests:
 ```
 $ make test
 ```
