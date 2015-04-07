@@ -20,6 +20,10 @@ Complete access layer to [PG] via [Promises/A+].
 * [Installing](https://github.com/vitaly-t/pg-promise#installing)
 * [Testing](https://github.com/vitaly-t/pg-promise#testing)
 * [Getting started](https://github.com/vitaly-t/pg-promise#getting-started)
+  - [Loading](https://github.com/vitaly-t/pg-promise#loading)
+  - [Initializing](https://github.com/vitaly-t/pg-promise#initializing)
+  - [Connecting](https://github.com/vitaly-t/pg-promise#1-load-the-library)
+  - [Database Instance](https://github.com/vitaly-t/pg-promise#database-instance)
 * [Usage](https://github.com/vitaly-t/pg-promise#usage)
   - [Detached Connections](https://github.com/vitaly-t/pg-promise#detached-connections)
   - [Shared Connections](https://github.com/vitaly-t/pg-promise#shared-connections)
@@ -50,20 +54,20 @@ On Windows you can also run tests with `test.bat`
 
 # Getting started
 
-### 1. Load the library
+### 1. Loading
 ```javascript
 // Loading the library:
 var pgpLib = require('pg-promise');
 ```
-### 2. Initialize the library
+### 2. Initializing
 ```javascript
 // Initializing the library, with optional global settings:
 var pgp = pgpLib(/*options*/);
 ```
 You can pass additional `options` parameter when initializing the library (see chapter [Initialization Options](#advanced) for details).
 
-### 3. Configure database connection
-Use one of the two ways to specify connection details:
+### 3. Connecting
+Use one of the two ways to specify database connection details:
 * Configuration Object:
 ```javascript
 var cn = {
