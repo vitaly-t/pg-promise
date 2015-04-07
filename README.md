@@ -686,9 +686,9 @@ var options = {
         if (e.ctx.finish) {
             console.log("Finish Time: " + e.ctx.finish);
             if (e.ctx.success) {
-                // e.ctx.result contains the data resolved;
+                // e.ctx.result = the data resolved;
             } else {
-                // e.ctx.result contains rejection reason;
+                // e.ctx.result = the rejection reason;
             }
         }
     }
