@@ -142,11 +142,11 @@ Transactions can be executed within both shared and detached promise chains in t
 
 ```javascript
 var promise = require('promise'); // or any other supported promise library;
-db.tx(function(ctx){
+db.tx(function(t){
 
     // creating a sequence of transaction queries:
-    var q1 = ctx.none("update users set active=$1 where id=$2", [true, 123]);
-    var q2 = ctx.one("insert into audit(entity, id) values($1, $2) returning id", ['users', 123]);
+    var q1 = t.none("update users set active=$1 where id=$2", [true, 123]);
+    var q2 = t.one("insert into audit(entity, id) values($1, $2) returning id", ['users', 123]);
 
     // returning a promise that determines a successful transaction:
     return promise.all([q1, q2]); // all of the queries are to be resolved
@@ -157,9 +157,9 @@ db.tx(function(ctx){
     console.log(reason); // printing the reason why the transaction was rejected
 });
 ```
-A detached transaction acquires a connection and exposes object `ctx` to let all containing queries execute on the same connection.
+A detached transaction acquires a connection and exposes object `t` to let all containing queries execute on the same connection.
 
-And when executing a transaction within a shared connection chain, the only thing that changes is that parameter `ctx` becomes the
+And when executing a transaction within a shared connection chain, the only thing that changes is that parameter `t` becomes the
 same as parameter `sco` from opening a shared connection, so either one can be used inside such a transaction interchangeably.
 
 ###### Shared-connection transaction:
@@ -172,12 +172,13 @@ db.connect()
         return sco.oneOrNone("select * from users where active=$1 and id=$1", [true, 123]);
     })
     .then(function(data){
-        return sco.tx(function(ctx){
+        return sco.tx(function(t){
 
             // Since it is a transaction within a shared chain, it doesn't matter whether
-            // the two calls below use object `ctx` or `sco`, as they are exactly the same:
-            var q1 = ctx.none("update users set active=$1 where id=$2", [false, data.id]);
-            var q2 = sco.one("insert into audit(entity, id) values($1, $2) returning id", ['users', 123]);
+            // the two calls below use object `t` or `sco`, as they are exactly the same:
+            var q1 = t.none("update users set active=$1 where id=$2", [false, data.id]);
+            var q2 = sco.one("insert into audit(entity, id) values($1, $2) returning id",
+            ['users', 123]);
 
             // returning a promise that determines a successful transaction:
             return promise.all([q1, q2]); // all of the queries are to be resolved;
@@ -203,18 +204,18 @@ This library sets no limitation as to the depth (nesting levels) of transactions
 Example:
 
 ```javascript
-db.tx(function (ctx) {
+db.tx(function (t) {
     var queries = [
-        ctx.none("drop table users;"),
-        ctx.none("create table users(id serial not null, name text not null);")
+        t.none("drop table users;"),
+        t.none("create table users(id serial not null, name text not null);")
     ];
-    for (var i = 0; i < 100; i++) {
-        queries.push(ctx.none("insert into users(name) values($1)", "name-" + (i + 1)));
+    for (var i = 1; i <= 100; i++) {
+        queries.push(ctx.none("insert into users(name) values($1)", "name-" + i));
     }
     queries.push(
-        ctx.tx(function () {
-            return ctx.tx(function(){
-                return ctx.one("select count(*) from users");
+        t.tx(function () {
+            return t.tx(function(){
+                return t.one("select count(*) from users");
             });
         }));
     return promise.all(queries);
@@ -229,7 +230,7 @@ db.tx(function (ctx) {
 Things to note from the example above:
 * Sub-transactions do not declare a context parameter in their callback. It is not because
 they don't receive one, they all do, but they don't care in such situation because of the shared connection
-chain that will result in the same `ctx` object as for the main callback, so they just reuse it from the parent,
+chain that will result in the same `t` object as for the main callback, so they just reuse it from the parent,
 for simplicity;
 * A nested transaction cannot be disconnected from its container, i.e. it must get into the container's promise chain,
  or it will result in an attempt to execute against an unknown connection;
@@ -290,7 +291,8 @@ transactions inside SQL functions, and not on the client side.
 
 ### Queries and Parameters
 
-Every connection context of the library shares the same query protocol, starting with generic method `query`, that's defined as shown below:
+Every connection context of the library shares the same query protocol, starting with generic method `query`,
+that's defined as shown below:
 ```javascript
 function query(query, values, qrm);
 ```
@@ -473,6 +475,7 @@ var options = {
     // connect - database 'connect' notification;
     // disconnect - database 'disconnect' notification;
     // query - query execution notification;
+    // transact - transaction notification;
     // error - error notification.
 };
 var pgp = pgpLib(options);
@@ -568,7 +571,7 @@ var options = {
 The function takes only one parameter - `client` object from the [PG] library that represents connection
 with the database.
 
-**NOTE:** The library will throw an error instead of making the call, if the property is set to
+**NOTE:** The library will throw an error instead of making the call, if `options.connect` is set to
 a non-empty value other than a function.
 
 ---
@@ -587,7 +590,7 @@ var options = {
 The function takes only one parameter - `client` object from the [PG] library that represents the connection
 that's being released.
 
-**NOTE:** The library will throw an error instead of making the call, if the property is set to
+**NOTE:** The library will throw an error instead of making the call, if `options.disconnect` is set to
 a non-empty value other than a function.
 
 ---
@@ -596,8 +599,8 @@ a non-empty value other than a function.
 Global notification of a query that's being executed.
 ```javascript
 var options = {
-    query: function(client, query, params){
-        console.log("Executing query: " + query);
+    query: function(e){
+        console.log("Executing query: " + e.query);
     }
 };
 ```
@@ -605,15 +608,15 @@ var options = {
 Notification happens just before the query execution. And if the handler throws
 an error, the query execution will be rejected with that error.
 
-Parameters received by the function:
+Parameter `e` is the event's context object that shares its format between events
+`query`, `error` and `transact`. It supports the following properties:
+
 * `client` - object from the [PG] library that represents the connection;
-* `query` - query that's being executed;
-* `params` - query parameters (only when `pgFormatting` is set to be `true`).
+* `query` - input query string, if applicable; `undefined` otherwise;
+* `params` - input query parameters, if applicable; `undefined` otherwise;
+* `ctx` - transaction context object, if applicable; `undefined` otherwise;
 
-Please note, that should you set property `pgFormatting` to be `true`, the library no longer formats
-the queries, and `query` arrives pre-formatted. This is why extra parameter `params` was added.
-
-**NOTE:** The library will throw an error instead of making the call, if the property is set to
+**NOTE:** The library will throw an error instead of making the call, if `options.query` is set to
 a non-empty value other than a function.
 
 ---
@@ -622,71 +625,40 @@ a non-empty value other than a function.
 Global notification of an error while executing a query or transaction.
 ```javascript
 var options = {
-    error: function(err, ctx){
+    error: function(err, e){
         console.log("Error: " + err);
     }
 };
 ```
 
 Notification may happen in 3 possible scenarios:
-* Query method rejecting because of a issue with query formatting;
+* Query method rejecting because of an issue with query formatting;
 * Call into [PG] returned with an error;
 * Transaction callback threw an error.
 
-Parameters received by the function:
-* `err` - error message as reported by the [PG] library;
-* `ctx` - context object for the error, as explained below;
+Parameter `e` is the same as for event `query`.
 
-The context object (`ctx`) has the following properties:
-* `client` - object from the [PG] library that represents the connection;
-* `query` - input query string, if it is a query-related error; `undefined` otherwise;
-* `params` - input query parameters, if applicable; `undefined` otherwise;
-* `name` - transaction name, if applicable; `undefined` otherwise;
+**NOTE:** The library will throw an error instead of making the call, if `options.error` is set to
+a non-empty value other than a function.
 
-Example below illustrates the logic of using the context object:
+---
+* `transact`
+
+Global notification of a transaction start/finish events.
 ```javascript
 var options = {
-    error: function (err, ctx) {
-        console.log(err); // printing error;
-        var cp = ctx.client.connectionParameters;
-        console.log(cp.database);// printing database name;
-        if (ctx.query) { // if it is a query error;
-            console.log(ctx.query); // print the query;
-            if (ctx.params) { // if parameters are known;
-                console.log(ctx.params); // print query parameters;
-            }
-        } else {
-            // Otherwise, a transaction callback threw an error;
-            if (ctx.name) { // if it is a named transaction;
-                console.log(ctx.name); // print transaction name;
-            }
+    transact: function(e){
+        console.log("Start Time: " + e.ctx.start);
+        if(e.ctx.finish){
+            console.log("Finish Time: " + e.ctx.finish);
         }
     }
 };
 ```
 
-In a large application that heavily relies on transactions it may be challenging
-to locate the faulty transaction when the failure is caused by a generic error
-inside the callback function. In order to make it simpler, this library supports
-named transactions.
+Parameter `e` is the same as for event `query`.
 
-What is a named transaction? - It is when you take this code:
-```javascript
-db.tx(function(ctx){
-    // callback implementation;
-});
-```
-and change it into this:
-```javascript
-db.tx("myTransaction", function(ctx){
-    // callback implementation;
-});
-```
-
-That's giving a name to your transaction, so in case the callback throws an unhandled
-error, the error will be reported along with the transaction name.
-
-**NOTE:** The library will throw an error instead of making the call, if `options.error` is set to
+**NOTE:** The library will throw an error instead of making the call, if `options.transact` is set to
 a non-empty value other than a function.
 
 ### Library de-initialization
@@ -699,6 +671,7 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 
 # History
 
+* Version 0.9.0 changed the notification protocol. Released: April 7, 2015.
 * Version 0.8.4 added support for error notifications. Released: April 6, 2015.
 * Version 0.8.0 added support for named-parameter formatting. Released: April 3, 2015.
 * Version 0.7.0 fixes the way `as.format` works (breaking change). Released: April 2, 2015.
