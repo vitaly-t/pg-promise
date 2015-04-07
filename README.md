@@ -20,9 +20,9 @@ Complete access layer to [PG] via [Promises/A+].
 * [Installing](https://github.com/vitaly-t/pg-promise#installing)
 * [Testing](https://github.com/vitaly-t/pg-promise#testing)
 * [Getting started](https://github.com/vitaly-t/pg-promise#getting-started)
-  - [Loading](https://github.com/vitaly-t/pg-promise#loading)
-  - [Initializing](https://github.com/vitaly-t/pg-promise#initializing)
-  - [Connecting](https://github.com/vitaly-t/pg-promise#1-load-the-library)
+  - [Loading](https://github.com/vitaly-t/pg-promise#1-loading)
+  - [Initializing](https://github.com/vitaly-t/pg-promise#2-initializing)
+  - [Connecting](https://github.com/vitaly-t/pg-promise#3-connecting)
   - [Database Instance](https://github.com/vitaly-t/pg-promise#database-instance)
 * [Usage](https://github.com/vitaly-t/pg-promise#usage)
   - [Detached Connections](https://github.com/vitaly-t/pg-promise#detached-connections)
@@ -86,7 +86,7 @@ This library doesn't use any of the connection's details, it simply passes them 
 For more details see pg connection parameters in [WiKi](https://github.com/brianc/node-postgres/wiki/pg#parameters) and
 [implementation](https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js).
 
-### 4. Instantiate your database
+### 4. Database Instance
 ```javascript
 var db = pgp(cn); // create a new database instance from the connection details
 ```
