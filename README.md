@@ -14,6 +14,9 @@ Complete access layer to [PG] via [Promises/A+].
 * Automatic database connections;
 * Strict query result filters.
 
+
+---
+
 * [Installing](https://github.com/vitaly-t/pg-promise#installing)
 * [Testing](https://github.com/vitaly-t/pg-promise#testing)
 * [Getting started](https://github.com/vitaly-t/pg-promise#getting-started)
