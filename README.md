@@ -601,6 +601,10 @@ Global notification of a query that's being executed.
 var options = {
     query: function(e){
         console.log("Executing query: " + e.query);
+        if(e.ctx){
+            // this query is executing inside a transaction,
+            // and ctx contains all the relevant details;
+        }
     }
 };
 ```
@@ -621,7 +625,7 @@ A transaction context object (`ctx`) supports the following properties:
 * `finish` - optional; finish time of the transaction, if it has finished;
 * `tag` - optional; tag object/value passed into the transaction, if any;
 * `success` - optional; indicates success for a finished transaction;
-* `result` - optional; result for a finished transaction: data resolved by the transaction,
+* `result` - optional; transaction result, if finished: data resolved by the transaction,
  if `success` is `true`, otherwise it is set to the `reason` that was passed
  when rejecting the transaction.
 
