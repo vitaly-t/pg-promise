@@ -210,7 +210,7 @@ db.tx(function (t) {
         t.none("create table users(id serial not null, name text not null);")
     ];
     for (var i = 1; i <= 100; i++) {
-        queries.push(ctx.none("insert into users(name) values($1)", "name-" + i));
+        queries.push(t.none("insert into users(name) values($1)", "name-" + i));
     }
     queries.push(
         t.tx(function () {
