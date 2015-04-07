@@ -638,6 +638,8 @@ Notification may happen in 3 possible scenarios:
 
 Parameter `e` is the same as for event `query`.
 
+The library will suppress any error thrown by the handler.
+
 **NOTE:** The library will throw an error instead of making the call, if `options.error` is set to
 a non-empty value other than a function.
 
@@ -657,6 +659,8 @@ var options = {
 ```
 
 Parameter `e` is the same as for event `query`.
+
+The library will suppress any error thrown by the handler.
 
 **NOTE:** The library will throw an error instead of making the call, if `options.transact` is set to
 a non-empty value other than a function.
