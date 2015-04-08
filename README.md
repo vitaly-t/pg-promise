@@ -33,13 +33,14 @@ Complete access layer to [PG] via [Promises/A+].
 * [Advanced](https://github.com/vitaly-t/pg-promise#advanced)
   - [Initialization Options](https://github.com/vitaly-t/pg-promise#initialization-options)
     - [pgFormatting](https://github.com/vitaly-t/pg-promise#pgformatting)
-    - [promiseLib](https://github.com/vitaly-t/pg-promise#promiseLib)
+    - [promiseLib](https://github.com/vitaly-t/pg-promise#promiselib)
     - [connect](https://github.com/vitaly-t/pg-promise#connect)
     - [query](https://github.com/vitaly-t/pg-promise#query)
     - [error](https://github.com/vitaly-t/pg-promise#error)
     - [transact](https://github.com/vitaly-t/pg-promise#transact)
   - [Library de-initialization](https://github.com/vitaly-t/pg-promise#library-de-initialization)
- 
+* [History](https://github.com/vitaly-t/pg-promise#history)
+* [License](https://github.com/vitaly-t/pg-promise#license)
 
 # Installing
 ```
