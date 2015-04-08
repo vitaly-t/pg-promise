@@ -464,14 +464,14 @@ pgp.as.text(value); // converts value into PostgreSQL text presentation,
 pgp.as.date(value); // converts value into PostgreSQL date/time presentation,
                     // wrapped in quotes;
 
-pgp.as.array(value); // converts array into PostgreSQL Array Type string,
+pgp.as.array(array); // converts array into [PostgreSQL Array Type](http://www.postgresql.org/docs/9.4/static/arrays.html) string,
                      // wrapped in quotes;
 
 pgp.as.csv(array);  // returns a CSV string with values formatted according
                     // to their type, using the above methods;
 
 pgp.as.format(query, values);
-            // Replaces variables in the query with their `values` as specified;
+            // replaces variables in the query with their `values` as specified;
             // `values` can be a simple value, array or an object.
 ```
 As these helpers are not associated with any database, they can be used from anywhere.
