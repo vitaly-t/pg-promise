@@ -137,7 +137,8 @@ db.connect()
     .then(function(obj){
         sco = obj; // save the connection object;
         // find active users created before today:
-        return sco.query("select * from users where active=$1 and created < $2::date", [true, new Date()]);
+        return sco.query("select * from users where active=$1 and created < $2::date",
+        [true, new Date()]);
     })
     .then(function(data){
         console.log(data); // display all the user details;
@@ -173,7 +174,8 @@ db.tx(function(t){
 
     // creating a sequence of transaction queries:
     var q1 = t.none("update users set active=$1 where id=$2", [true, 123]);
-    var q2 = t.one("insert into audit(entity, id) values($1, $2) returning id", ['users', 123]);
+    var q2 = t.one("insert into audit(entity, id) values($1, $2) returning id",
+    ['users', 123]);
 
     // returning a promise that determines a successful transaction:
     return promise.all([q1, q2]); // all of the queries are to be resolved
