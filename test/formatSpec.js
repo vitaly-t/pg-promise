@@ -157,9 +157,9 @@ describe("Method as.array", function () {
 
         }).toThrow();
 
-        console.log(pgp.as.array([1, 2, 3, [4, 5, [6,7,8,{}]]]));
+        console.log(pgp.as.array([1, 2, 3, [{}, 5, [6,7,8,{}]]]));
         //console.log(pgp.as.array([{}]));
-        */
+*/
     });
 
 });
