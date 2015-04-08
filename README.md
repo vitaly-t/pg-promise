@@ -338,7 +338,7 @@ function query(query, values, qrm);
 
 Starting with version 0.9.2, the library supports [Postgres Array Types](http://www.postgresql.org/docs/9.4/static/arrays.html).
 When an array or object value is of type array, it is treated as a Postgres array type, converted into the format
-of `{{1,2,3},{4,5,6}}`. And type conversion namespace were extended with method `as.array()`.
+of `{{1,2,3},{4,5,6}}`. Namespace for type conversion has been extended with method `as.array()`.
 
 In order to eliminate the chances of unexpected query results and make code more robust, each request supports
 parameter `qrm` (Query Result Mask), via type `queryResult`:
@@ -464,7 +464,7 @@ pgp.as.text(value); // converts value into PostgreSQL text presentation,
 pgp.as.date(value); // converts value into PostgreSQL date/time presentation,
                     // wrapped in quotes;
 
-pgp.as.array(array); // converts array into [PostgreSQL Array Type](http://www.postgresql.org/docs/9.4/static/arrays.html) string,
+pgp.as.array(array); // converts array into PostgreSQL Array Type string,
                      // wrapped in quotes;
 
 pgp.as.csv(array);  // returns a CSV string with values formatted according
