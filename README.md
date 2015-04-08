@@ -485,7 +485,7 @@ function createFilter(filter){
 
 # Advanced
 
-### Initialization Options
+## Initialization Options
 
 When initializing the library, you can pass object `options` with a set of properties
 for global override of the library's behaviour:
@@ -504,8 +504,7 @@ var pgp = pgpLib(options);
 
 Below is the list of all the properties that are currently supported.
 
----
-* `pgFormatting`
+#### pgFormatting
 
 By default, **pg-promise** provides its own implementation of the query formatting,
 supporting two different formats:
@@ -546,8 +545,7 @@ For any further reference you should use documentation of the [PG] library.
 **NOTE:** Formatting parameters for calling functions (methods `func` and `proc`) is not affected by this override.
 When needed, use the generic `query` instead to invoke functions with redirected query formatting.
 
----
-* `promiseLib`
+#### promiseLib
 
 Set this property to an alternative promise library compliant with the [Promises/A+] standard.
 
@@ -576,8 +574,7 @@ var pgp = pgpLib(options);
 
 Compatibility with other [Promises/A+] libraries though possible, is an unknown.
 
----
-* `connect`
+#### connect
 
 Global notification function of acquiring a new database connection.
 ```javascript
@@ -595,8 +592,7 @@ with the database.
 **NOTE:** The library will throw an error instead of making the call, if `options.connect` is set to
 a non-empty value other than a function.
 
----
-* `disconnect`
+#### disconnect
 
 Global notification function of releasing a database connection.
 ```javascript
@@ -614,8 +610,7 @@ that's being released.
 **NOTE:** The library will throw an error instead of making the call, if `options.disconnect` is set to
 a non-empty value other than a function.
 
----
-* `query`
+#### query
 
 Global notification of a query that's being executed.
 ```javascript
@@ -663,8 +658,7 @@ to the event.
 **NOTE:** The library will throw an error instead of making the call, if `options.query` is set to
 a non-empty value other than a function.
 
----
-* `error`
+#### error
 
 Global notification of an error while executing a query or transaction.
 ```javascript
@@ -696,8 +690,7 @@ The library will suppress any error thrown by the handler.
 **NOTE:** The library will throw an error instead of making the call,
 if `options.error` is set to a non-empty value other than a function.
 
----
-* `transact`
+#### transact
 
 Global notification of a transaction start / finish events.
 ```javascript
@@ -723,7 +716,7 @@ The library will suppress any error thrown by the handler.
 **NOTE:** The library will throw an error instead of making the call, if `options.transact` is set to
 a non-empty value other than a function.
 
-### Library de-initialization
+## Library de-initialization
 When exiting your application, make the following call:
 ```javascript
 pgp.end();
