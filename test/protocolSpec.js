@@ -65,21 +65,3 @@ describe("Database object", function () {
         expect(typeof(db.proc)).toBe('function');
     });
 });
-
-describe("Method as.bool", function () {
-    it("must correctly convert any boolean", function () {
-        expect(pgp.as.bool()).toBe("null");
-        expect(pgp.as.bool(null)).toBe("null");
-        expect(pgp.as.bool(0)).toBe("FALSE");
-        expect(pgp.as.bool(false)).toBe("FALSE");
-        expect(pgp.as.bool(1)).toBe("TRUE");
-        expect(pgp.as.bool(true)).toBe("TRUE");
-        expect(pgp.as.bool(10)).toBe("TRUE");
-        expect(pgp.as.bool(-10)).toBe("TRUE");
-        expect(pgp.as.bool([])).toBe("TRUE");
-        expect(pgp.as.bool({})).toBe("TRUE");
-        expect(pgp.as.bool(function () {
-        })).toBe("TRUE");
-        expect(pgp.as.bool("FALSE")).toBe("TRUE");
-    });
-});

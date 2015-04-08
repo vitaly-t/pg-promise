@@ -1,6 +1,24 @@
 var pgp = require('../lib/index')();
 
-var dateSample = new Date(2015, 2, 8, 16, 24, 8);
+var dateSample = new Date();
+
+describe("Method as.bool", function () {
+    it("must correctly convert any boolean", function () {
+        expect(pgp.as.bool()).toBe("null");
+        expect(pgp.as.bool(null)).toBe("null");
+        expect(pgp.as.bool(0)).toBe("FALSE");
+        expect(pgp.as.bool(false)).toBe("FALSE");
+        expect(pgp.as.bool(1)).toBe("TRUE");
+        expect(pgp.as.bool(true)).toBe("TRUE");
+        expect(pgp.as.bool(10)).toBe("TRUE");
+        expect(pgp.as.bool(-10)).toBe("TRUE");
+        expect(pgp.as.bool([])).toBe("TRUE");
+        expect(pgp.as.bool({})).toBe("TRUE");
+        expect(pgp.as.bool(function () {
+        })).toBe("TRUE");
+        expect(pgp.as.bool("FALSE")).toBe("TRUE");
+    });
+});
 
 describe("Method as.text", function () {
     it("must correctly convert any text", function () {
@@ -26,23 +44,31 @@ describe("Method as.text", function () {
 
 describe("Method as.date", function () {
     it("must correctly convert any date", function () {
+
         expect(pgp.as.date()).toBe("null");
+
         expect(pgp.as.date(null)).toBe("null");
+
         expect(function () {
             pgp.as.date("");
         }).toThrow("'' doesn't represent a valid Date object.");
+
         expect(function () {
             pgp.as.date("bla-bla");
         }).toThrow("'bla-bla' doesn't represent a valid Date object.");
+
         expect(function () {
             pgp.as.date(123);
         }).toThrow("'123' doesn't represent a valid Date object.");
+
         expect(function () {
             pgp.as.date(function () {});
         }).toThrow("'function () {}' doesn't represent a valid Date object.");
+
         expect(function () {
             pgp.as.date([]);
         }).toThrow("'' doesn't represent a valid Date object.");
+
         expect(function () {
             pgp.as.date({});
         }).toThrow("'[object Object]' doesn't represent a valid Date object.");
@@ -54,6 +80,9 @@ describe("Method as.date", function () {
 describe("Method as.csv", function () {
 
     it("must correctly convert any parameters into CSV", function () {
+
+        ////////////////////////////////
+        // positive tests;
 
         expect(pgp.as.csv()).toBe(""); // test undefined;
         expect(pgp.as.csv([])).toBe(""); // test empty array;
