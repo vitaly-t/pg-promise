@@ -60,19 +60,19 @@ On Windows you can also run tests with `test.bat`
 
 # Getting started
 
-### 1. Loading
+## 1. Loading
 ```javascript
 // Loading the library:
 var pgpLib = require('pg-promise');
 ```
-### 2. Initializing
+## 2. Initializing
 ```javascript
 // Initializing the library, with optional global settings:
 var pgp = pgpLib(/*options*/);
 ```
 You can pass additional `options` parameter when initializing the library (see chapter [Initialization Options](#advanced) for details).
 
-### 3. Connecting
+## 3. Connecting
 Use one of the two ways to specify database connection details:
 * Configuration Object:
 ```javascript
@@ -92,7 +92,7 @@ This library doesn't use any of the connection's details, it simply passes them 
 For more details see pg connection parameters in [WiKi](https://github.com/brianc/node-postgres/wiki/pg#parameters) and
 [implementation](https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js).
 
-### 4. Database Instance
+## 4. Database Instance
 ```javascript
 var db = pgp(cn); // create a new database instance from the connection details
 ```
@@ -105,7 +105,7 @@ You are now ready to make queries against the database.
 The library supports promise-chained queries on shared and detached connections.
 Choosing which one you want depends on the situation and personal preferences.
 
-### Detached Connections
+## Detached Connections
 
 Queries in a detached promise chain maintain connection independently, they each acquire a connection from the pool,
 execute the query and then release the connection.
@@ -127,7 +127,7 @@ In a situation where a single request is to be made against the database, a deta
 And even if you intend to execute multiple queries in a chain, keep in mind that even though each will use its own connection,
 such will be used from a connection pool, so effectively you end up with the same connection, without any performance penalty.
 
-### Shared Connections
+## Shared Connections
 
 A promise chain with a shared connection always starts with `connect()`, which allocates a connection that's shared with all the
 query requests down the promise chain. The connection must be released when no longer needed.
@@ -156,7 +156,7 @@ Shared-connection chaining is for those who want absolute control over connectio
 or because they like squeezing every bit of performance out of their code. Other than, the author hasn't seen any real performance difference
 from the detached-connection chaining.
 
-### Transactions
+## Transactions
 
 Transactions can be executed within both shared and detached promise chains in the same way, performing the following actions:
 
@@ -167,7 +167,7 @@ Transactions can be executed within both shared and detached promise chains in t
 5. Releases the connection (detached chains only);
 6. Resolves with the callback result, if success; rejects with the reason, if failed.
 
-###### Example of a detached transaction:
+#### Detached Transactions
 
 ```javascript
 var promise = require('promise'); // or any other supported promise library;
@@ -189,10 +189,10 @@ db.tx(function(t){
 ```
 A detached transaction acquires a connection and exposes object `t` to let all containing queries execute on the same connection.
 
-And when executing a transaction within a shared connection chain, the only thing that changes is that parameter `t` becomes the
-same as parameter `sco` from opening a shared connection, so either one can be used inside such a transaction interchangeably.
+#### Shared-connection Transactions
 
-###### Shared-connection transaction:
+When executing a transaction within a shared connection chain, parameter `t` represents the same connection as `sco` from opening a shared connection, so either one can be used inside such a transaction interchangeably.
+
 ```javascript
 var promise = require('promise'); // or any other supported promise library;
 var sco; // shared connection object;
@@ -226,7 +226,7 @@ If you need to execute just one transaction, the detached transaction pattern is
 But even if you need to combine it with other queries in then a detached chain, it will work just as fine.
 As stated earlier, choosing a shared chain over a detached one is mostly a matter of special requirements and/or personal preference.
 
-###### Nested Transactions
+#### Nested Transactions
 
 Similar to the shared-connection transactions, nested transactions automatically share the connection between all levels.
 This library sets no limitation as to the depth (nesting levels) of transactions supported.
@@ -266,7 +266,7 @@ for simplicity;
  or it will result in an attempt to execute against an unknown connection;
 * As expected, a failure on any level in a nested transaction will `ROLLBACK` and `reject` the entire chain.
 
-###### Transactions with SAVEPOINT
+#### Transactions with SAVEPOINT
 
 `SAVEPOINT` in PostgreSQL caters for advanced transaction scenarios where partial `ROLLBACK` can be executed,
 depending on the logic of the transaction.
@@ -319,7 +319,7 @@ complicated to control the result of individual commands within a transaction, y
 result and change the following commands accordingly. This is why it makes much more sense to do such
 transactions inside SQL functions, and not on the client side.
 
-### Queries and Parameters
+## Queries and Parameters
 
 Every connection context of the library shares the same query protocol, starting with generic method `query`,
 that's defined as shown below:
@@ -386,7 +386,7 @@ If `qrm` is not specified when calling generic `query` method, it is assumed to 
 > This is all about writing robust code, when the client specifies what kind of data it is ready to handle on the declarative level,
 leaving the burden of all extra checks to the library.
 
-### Named Parameters
+## Named Parameters
 
 Version 0.8.0 of the library added support for named parameters in query formatting,
 with the ES6-like syntax of `${propName}`:
@@ -411,7 +411,7 @@ of letters, digits, underscores and `$`;
 It is important to know that while property values `null` and `undefined` are both formatted as `null`,
 an error is thrown when the property doesn't exist at all.
 
-### Functions and Procedures
+## Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
 
 Suppose we want to call function **findAudit** to find audit records by **user id** and maximum timestamp.
@@ -441,7 +441,7 @@ db.func(query, values, qrm); // expects the result according to `qrm`
 db.proc(query, values); // calls db.func(query, values, queryResult.one | queryResult.none)
 ```
 
-### Conversion Helpers
+## Conversion Helpers
 
 The library provides several helper functions to convert javascript types into their proper PostgreSQL presentation that can be passed
 directly into queries or functions as parameters. All of such helper functions are located within namespace `pgp.as`, and each function
