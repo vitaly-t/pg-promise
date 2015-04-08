@@ -33,6 +33,7 @@ describe("Library initialization object", function () {
         expect(typeof(pgp.as.text)).toBe('function');
         expect(typeof(pgp.as.bool)).toBe('function');
         expect(typeof(pgp.as.date)).toBe('function');
+        expect(typeof(pgp.as.array)).toBe('function');
         expect(typeof(pgp.as.csv)).toBe('function');
         expect(typeof(pgp.as.format)).toBe('function');
     });

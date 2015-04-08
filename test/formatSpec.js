@@ -119,10 +119,6 @@ describe("Method as.csv", function () {
         // negative tests;
 
         expect(function () {
-            pgp.as.csv([[]]);
-        }).toThrow("Cannot convert parameter with index 0");
-
-        expect(function () {
             pgp.as.csv({});
         }).toThrow("Cannot convert a value of type 'object'");
 
@@ -138,6 +134,19 @@ describe("Method as.csv", function () {
             pgp.as.csv(['hello', function () {}]);
         }).toThrow("Cannot convert parameter with index 1");
 
+    });
+});
+
+describe("Method as.array", function () {
+
+    it("must correctly convert an empty array or value", function () {
+        expect(pgp.as.array()).toBe('null');
+        expect(pgp.as.array(null)).toBe('null');
+        expect(pgp.as.array([])).toBe("'{}'");
+    });
+    it("must correctly convert multi-dimension arrays", function () {
+        expect(pgp.as.array([[1,2],['three','four', [5, 'six', true]]]))
+            .toBe("'{{1,2},{'three','four',{5,'six',TRUE}}}'");
     });
 });
 
@@ -246,6 +255,10 @@ describe("Method as.format", function () {
         // test that variable names are not confused for longer ones,
         // even when they are right next to each other;
         expect(pgp.as.format("$11$1$111$1", 123)).toBe("$11123$111123");
+
+        expect(pgp.as.format("$1, $2", [
+            'one', [2,3]
+        ])).toBe("'one', '{2,3}'");
     });
 
     it("must correctly format named parameters or throw an error", function () {
@@ -288,19 +301,18 @@ describe("Method as.format", function () {
             PropVAL: 4
         })).toBe("1234");
 
+        // testing array-as-property formatting;
+        expect(pgp.as.format("${prop1}, ${prop2}", {
+            prop1: 'one',
+            prop2: [2,['three']]
+        })).toBe("'one', '{2,{'three'}}'");
+
         // testing case sensitivity - Negative;
         expect(function(){
             pgp.as.format("${PropName}", {
                 propName: 'hello'
             });
         }).toThrow("Property 'PropName' doesn't exist.");
-
-        expect(function(){
-            pgp.as.format("${prop1},${prop2}", {
-                prop1: 'hello',
-                prop2: []
-            });
-        }).toThrow("Cannot convert type 'object' of property 'prop2'");
 
         expect(function(){
             pgp.as.format("${prop1},${prop2}", {
