@@ -113,7 +113,7 @@ db.one("select * from users where id=$1", 123) // find the user from id;
     .then(function(data){
         // find 'login' records for the user found:
         return db.query("select * from audit where event=$1 and userId=$2",
-        ["login", data.id]);
+            ["login", data.id]);
     })
     .then(function(data){
         // display found audit records;
@@ -138,7 +138,7 @@ db.connect()
         sco = obj; // save the connection object;
         // find active users created before today:
         return sco.query("select * from users where active=$1 and created < $2::date",
-        [true, new Date()]);
+            [true, new Date()]);
     })
     .then(function(data){
         console.log(data); // display all the user details;
@@ -175,7 +175,7 @@ db.tx(function(t){
     // creating a sequence of transaction queries:
     var q1 = t.none("update users set active=$1 where id=$2", [true, 123]);
     var q2 = t.one("insert into audit(entity, id) values($1, $2) returning id",
-    ['users', 123]);
+        ['users', 123]);
 
     // returning a promise that determines a successful transaction:
     return promise.all([q1, q2]); // all of the queries are to be resolved
@@ -207,7 +207,7 @@ db.connect()
             // the two calls below use object `t` or `sco`, as they are exactly the same:
             var q1 = t.none("update users set active=$1 where id=$2", [false, data.id]);
             var q2 = sco.one("insert into audit(entity, id) values($1, $2) returning id",
-            ['users', 123]);
+                ['users', 123]);
 
             // returning a promise that determines a successful transaction:
             return promise.all([q1, q2]); // all of the queries are to be resolved;
@@ -236,7 +236,7 @@ Example:
 db.tx(function (t) {
     var queries = [
         t.none("drop table users;"),
-        t.none("create table users(id serial not null, name text not null);")
+        t.none("create table users(id serial not null, name text not null)")
     ];
     for (var i = 1; i <= 100; i++) {
         queries.push(t.none("insert into users(name) values($1)", "name-" + i));
@@ -732,6 +732,7 @@ The library will suppress any error thrown by the handler.
 a non-empty value other than a function.
 
 ## Library de-initialization
+
 When exiting your application, make the following call:
 ```javascript
 pgp.end();
