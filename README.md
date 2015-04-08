@@ -336,6 +336,10 @@ function query(query, values, qrm);
 * `values` (optional) - value/array/object to replace the variables in the query;
 * `qrm` - (optional) Query Result Mask, as explained below...
 
+Starting with version 0.9.2, the library supports [Postgres Array Types](http://www.postgresql.org/docs/9.4/static/arrays.html).
+When an array or object value is of type array, it is treated as a Postgres array type, converted into the format
+of `{{1,2,3},{4,5,6}}`. And type conversion namespace were extended with method `as.array()`.
+
 In order to eliminate the chances of unexpected query results and make code more robust, each request supports
 parameter `qrm` (Query Result Mask), via type `queryResult`:
 ```javascript
@@ -452,13 +456,16 @@ directly into queries or functions as parameters. All of such helper functions a
 returns a formatted string when successful or throws an error when it fails.
 
 ```javascript
-pgp.as.bool(value); // returns proper PostgreSQL boolean presentation;
+pgp.as.bool(value); // converts value into PostgreSQL boolean presentation;
 
-pgp.as.text(value); // returns proper PostgreSQL text presentation,
+pgp.as.text(value); // converts value into PostgreSQL text presentation,
                     // fixing single-quote symbols, wrapped in quotes;
 
-pgp.as.date(value); // returns proper PostgreSQL date/time presentation,
+pgp.as.date(value); // converts value into PostgreSQL date/time presentation,
                     // wrapped in quotes;
+
+pgp.as.array(value); // converts array into PostgreSQL Array Type string,
+                     // wrapped in quotes;
 
 pgp.as.csv(array);  // returns a CSV string with values formatted according
                     // to their type, using the above methods;
@@ -750,6 +757,7 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 
 # History
 
+* Version 0.9.2 received support for PostgreSQL Array Types. Released: April 8, 2015.
 * Version 0.9.0 changed the notification protocol. Released: April 7, 2015.
 * Version 0.8.4 added support for error notifications. Released: April 6, 2015.
 * Version 0.8.0 added support for named-parameter formatting. Released: April 3, 2015.

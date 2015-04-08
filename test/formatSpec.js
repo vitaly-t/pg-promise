@@ -144,24 +144,30 @@ describe("Method as.array", function () {
         expect(pgp.as.array(null)).toBe('null');
         expect(pgp.as.array([])).toBe("'{}'");
     });
+
     it("must correctly convert multi-dimension arrays", function () {
         expect(pgp.as.array([[1,2],['three','four', [5, 'six', true]]]))
             .toBe("'{{1,2},{'three','four',{5,'six',TRUE}}}'");
     });
 
-    it("must correctly reject invalid elements", function () {
-/*
-        expect(function(){
-
-            pgp.as.array([{}]);
-
-        }).toThrow();
-
-        console.log(pgp.as.array([1, 2, 3, [{}, 5, [6,7,8,{}]]]));
-        //console.log(pgp.as.array([{}]));
-*/
+    // 20-dimension test;
+    it("must correctly convert arrays of any depth", function () {
+        expect(pgp.as.array([[[[[[[[[[[[[[[[[[[[20]]]]]]]]]]]]]]]]]]]]))
+            .toBe("'{{{{{{{{{{{{{{{{{{{{20}}}}}}}}}}}}}}}}}}}}'");
     });
 
+    it("must correctly reject invalid elements", function () {
+
+        // one-dimension error test;
+        expect(function(){
+            pgp.as.array([1,2,{}]);
+        }).toThrow("Cannot convert type 'object' of array element with index 2");
+
+        // multi-dimension error test;
+        expect(function(){
+            pgp.as.array([1, 2, 3, [4, [5, 6, {}, 8], 9]]);
+        }).toThrow("Cannot convert type 'object' of array element with index 3,1,2");
+    });
 });
 
 describe("Method as.format", function () {
