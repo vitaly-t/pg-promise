@@ -4,7 +4,6 @@ pg-promise
 Complete access layer to [PG] via [Promises/A+].
 
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
-[![Dependency Status](https://david-dm.org/vitaly-t/pg-promise.svg)](https://david-dm.org/vitaly-t/pg-promise)
 
 ---
 <a href="https://promisesaplus.com/"><img align="right" width="190" height="190" src="http://s8.postimg.org/k7dtue8lx/pg_promise.jpg"></a>
@@ -13,7 +12,6 @@ Complete access layer to [PG] via [Promises/A+].
 * Transactions, functions, flexible query formatting;
 * Automatic database connections;
 * Strict query result filters.
-
 
 ---
 
