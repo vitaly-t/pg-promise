@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "PG + Promises/A+, with transactions.",
   "main": "lib/index.js",
   "scripts": {
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "pg": "4.x",
-    "promise": "6.x"
+    "promise": "7.x"
   },
   "devDependencies": {
     "bluebird": "2.x",
