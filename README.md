@@ -691,7 +691,7 @@ var options = {
             }
         }
         if (e.ctx) {
-            // use transaction details;
+            // print transaction details;
         }
     }
 };
@@ -718,12 +718,15 @@ var options = {
     transact: function (e) {
         console.log("Start Time: " + e.ctx.start);
         if (e.ctx.finish) {
+            // this is a transaction `finish` event;
             console.log("Finish Time: " + e.ctx.finish);
             if (e.ctx.success) {
                 // e.ctx.result = the data resolved;
             } else {
                 // e.ctx.result = the rejection reason;
             }
+        } else {
+            // this is a transaction `start` event;
         }
     }
 };
