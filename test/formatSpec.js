@@ -148,6 +148,20 @@ describe("Method as.array", function () {
         expect(pgp.as.array([[1,2],['three','four', [5, 'six', true]]]))
             .toBe("'{{1,2},{'three','four',{5,'six',TRUE}}}'");
     });
+
+    it("must correctly reject invalid elements", function () {
+/*
+        expect(function(){
+
+            pgp.as.array([{}]);
+
+        }).toThrow();
+
+        console.log(pgp.as.array([1, 2, 3, [4, 5, [6,7,8,{}]]]));
+        //console.log(pgp.as.array([{}]));
+        */
+    });
+
 });
 
 describe("Method as.format", function () {
