@@ -2,7 +2,7 @@ var promise = require('bluebird');
 
 var options = {}; // options, if needed;
 
-var dbHeader = require('./dbHeader')(options);
+var dbHeader = require('./db/header')(options);
 
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;

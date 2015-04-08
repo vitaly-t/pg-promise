@@ -1,7 +1,7 @@
 // Initialization scripts for the test database;
 
 var promise = require('bluebird');
-var dbHeader = require('./dbHeader')({
+var dbHeader = require('./header')({
     query: function (client, query) {
         console.log(query); // print all of the queries;
     }

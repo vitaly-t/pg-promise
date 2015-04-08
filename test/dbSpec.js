@@ -2,10 +2,27 @@ var promise = require('bluebird');
 
 var options = {}; // options, if needed;
 
-var dbHeader = require('./dbHeader')(options);
+var dbHeader = require('./db/header')(options);
 
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
+
+describe("Database Instantiation", function () {
+    it("must throw an error when empty or no connection passed", function () {
+        var err = "Invalid 'cn' parameter passed.";
+        expect(pgp).toThrow(err);
+        expect(function () {
+            pgp(null);
+        }).toThrow(err);
+        expect(function () {
+            pgp("");
+        }).toThrow(err);
+    });
+    var testDB = pgp("invalid connection details");
+    it("must return a valid object", function () {
+        expect(typeof(testDB)).toBe('object');
+    });
+});
 
 describe("Database", function () {
     it("must be able to connect", function () {

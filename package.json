@@ -27,15 +27,15 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=0.10.x",
-    "npm": ">=1.4.x"
+    "node": ">=0.10",
+    "npm": ">=1.4"
   },
   "dependencies": {
-    "pg": "4.x",
-    "promise": "7.x"
+    "pg": ">=4.x",
+    "promise": ">=7.x"
   },
   "devDependencies": {
-    "bluebird": "2.x",
+    "bluebird": ">=2.9",
     "jasmine-node": "1.x"
   }
 }

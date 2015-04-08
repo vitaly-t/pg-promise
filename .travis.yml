@@ -6,7 +6,7 @@ addons:
   postgresql: "9.3"
 before_script:
   - psql -c 'create database pg_promise_test;' -U postgres
-  - node test/dbInit.js
+  - node test/db/init.js
 branches:
   only:
     - master
