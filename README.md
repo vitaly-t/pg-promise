@@ -32,6 +32,12 @@ Complete access layer to [PG] via [Promises/A+].
   - [Conversion Helpers](https://github.com/vitaly-t/pg-promise#conversion-helpers)
 * [Advanced](https://github.com/vitaly-t/pg-promise#advanced)
   - [Initialization Options](https://github.com/vitaly-t/pg-promise#initialization-options)
+    - [pgFormatting](https://github.com/vitaly-t/pg-promise#pgformatting)
+    - [promiseLib](https://github.com/vitaly-t/pg-promise#promiseLib)
+    - [connect](https://github.com/vitaly-t/pg-promise#connect)
+    - [query](https://github.com/vitaly-t/pg-promise#query)
+    - [error](https://github.com/vitaly-t/pg-promise#error)
+    - [transact](https://github.com/vitaly-t/pg-promise#transact)
   - [Library de-initialization](https://github.com/vitaly-t/pg-promise#library-de-initialization)
  
 
@@ -504,6 +510,7 @@ var pgp = pgpLib(options);
 
 Below is the list of all the properties that are currently supported.
 
+---
 #### pgFormatting
 
 By default, **pg-promise** provides its own implementation of the query formatting,
@@ -545,6 +552,7 @@ For any further reference you should use documentation of the [PG] library.
 **NOTE:** Formatting parameters for calling functions (methods `func` and `proc`) is not affected by this override.
 When needed, use the generic `query` instead to invoke functions with redirected query formatting.
 
+---
 #### promiseLib
 
 Set this property to an alternative promise library compliant with the [Promises/A+] standard.
@@ -574,6 +582,7 @@ var pgp = pgpLib(options);
 
 Compatibility with other [Promises/A+] libraries though possible, is an unknown.
 
+---
 #### connect
 
 Global notification function of acquiring a new database connection.
@@ -592,6 +601,7 @@ with the database.
 **NOTE:** The library will throw an error instead of making the call, if `options.connect` is set to
 a non-empty value other than a function.
 
+---
 #### disconnect
 
 Global notification function of releasing a database connection.
@@ -610,6 +620,7 @@ that's being released.
 **NOTE:** The library will throw an error instead of making the call, if `options.disconnect` is set to
 a non-empty value other than a function.
 
+---
 #### query
 
 Global notification of a query that's being executed.
@@ -658,6 +669,7 @@ to the event.
 **NOTE:** The library will throw an error instead of making the call, if `options.query` is set to
 a non-empty value other than a function.
 
+---
 #### error
 
 Global notification of an error while executing a query or transaction.
@@ -690,6 +702,7 @@ The library will suppress any error thrown by the handler.
 **NOTE:** The library will throw an error instead of making the call,
 if `options.error` is set to a non-empty value other than a function.
 
+---
 #### transact
 
 Global notification of a transaction start / finish events.
