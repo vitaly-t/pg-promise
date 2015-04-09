@@ -2,6 +2,16 @@ var pgp = require('../lib/index')();
 
 var dateSample = new Date();
 
+// common error messages;
+var errors = {
+    array: function (value, index) {
+        return "Cannot convert type '" + typeof(value) + "' of array element with index " + index;
+    },
+    param: function (value) {
+        return "Cannot convert type '" + typeof(value) + "' of the parameter.";
+    }
+};
+
 describe("Method as.bool", function () {
     it("must correctly convert any boolean", function () {
         expect(pgp.as.bool()).toBe("null");
@@ -120,19 +130,19 @@ describe("Method as.csv", function () {
 
         expect(function () {
             pgp.as.csv({});
-        }).toThrow("Cannot convert type 'object' of the parameter.");
+        }).toThrow(errors.param({}));
 
         expect(function () {
             pgp.as.csv([{}, 'hello']);
-        }).toThrow("Cannot convert type 'object' of array element with index 0");
+        }).toThrow(errors.array([], 0));
 
         expect(function () {
             pgp.as.csv(function () {});
-        }).toThrow("Cannot convert type 'function' of the parameter.");
+        }).toThrow(errors.param(function(){}));
 
         expect(function () {
             pgp.as.csv(['hello', function () {}]);
-        }).toThrow("Cannot convert type 'function' of array element with index 1");
+        }).toThrow(errors.array(function(){}, 1));
 
     });
 });
@@ -161,12 +171,12 @@ describe("Method as.array", function () {
         // one-dimension error test;
         expect(function(){
             pgp.as.array([1,2,{}]);
-        }).toThrow("Cannot convert type 'object' of array element with index 2");
+        }).toThrow(errors.array({}, 2));
 
         // multi-dimension error test;
         expect(function(){
             pgp.as.array([1, 2, 3, [4, [5, 6, {}, 8], 9]]);
-        }).toThrow("Cannot convert type 'object' of array element with index 3,1,2");
+        }).toThrow(errors.array({}, "3,1,2"));
     });
 });
 
@@ -204,7 +214,7 @@ describe("Method as.format", function () {
 
         expect(function () {
             pgp.as.format("$1", function() {});
-        }).toThrow("Cannot convert type 'function' of the parameter.");
+        }).toThrow(errors.param(function(){}));
 
         expect(pgp.as.format("", [])).toBe("");
         expect(pgp.as.format("$1", [])).toBe("$1");
@@ -228,19 +238,19 @@ describe("Method as.format", function () {
 
         expect(function(){
             pgp.as.format("$1,$2", [{}, {}]);
-        }).toThrow("Cannot convert type 'object' of array element with index 0");
+        }).toThrow(errors.array({}, 0));
 
         // test that errors in type conversion are
         // detected and reported from left to right;
         expect(function(){
             pgp.as.format("$1, $2", [true, function () {}]);
-        }).toThrow("Cannot convert type 'function' of array element with index 1");
+        }).toThrow(errors.array(function(){}, 1));
 
         // test that once a conversion issue is encountered,
         // the rest of parameters are not verified;
         expect(function(){
             pgp.as.format("$1,$2,$3,$4,$5", [1, 2, {}, {}, {}, {}]);
-        }).toThrow("Cannot convert type 'object' of array element with index 2");
+        }).toThrow(errors.array({}, 2));
 
         // testing with lots of variables;
         var source = "", dest = "", params = [];
