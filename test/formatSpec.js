@@ -111,28 +111,28 @@ describe("Method as.csv", function () {
         expect(pgp.as.csv(dateSample)).toBe("'" + dateSample.toUTCString() + "'"); // test date;
         expect(pgp.as.csv([dateSample])).toBe("'" + dateSample.toUTCString() + "'"); // test date in array;
 
-        // test a combination of all values types;
-        expect(pgp.as.csv([12.34, true, "don't break", undefined, dateSample]))
-            .toBe("12.34,TRUE,'don''t break',null,'" + dateSample.toUTCString() + "'");
+        // test a combination of all possible types;
+        expect(pgp.as.csv([12.34, true, "don't break", null, undefined, dateSample, [1,2]]))
+            .toBe("12.34,TRUE,'don''t break',null,null,'" + dateSample.toUTCString() + "','{1,2}'");
 
         ////////////////////////////////
         // negative tests;
 
         expect(function () {
             pgp.as.csv({});
-        }).toThrow("Cannot convert a value of type 'object'");
+        }).toThrow("Cannot convert type 'object' of the parameter.");
 
         expect(function () {
             pgp.as.csv([{}, 'hello']);
-        }).toThrow("Cannot convert parameter with index 0");
+        }).toThrow("Cannot convert type 'object' of array element with index 0");
 
         expect(function () {
             pgp.as.csv(function () {});
-        }).toThrow("Cannot convert a value of type 'function'");
+        }).toThrow("Cannot convert type 'function' of the parameter.");
 
         expect(function () {
             pgp.as.csv(['hello', function () {}]);
-        }).toThrow("Cannot convert parameter with index 1");
+        }).toThrow("Cannot convert type 'function' of array element with index 1");
 
     });
 });

@@ -537,7 +537,7 @@ and not a `Date` instance.
 Every query method of the library accepts `values` as its second parameter.
 
 **pg-promise** automatically converts all basic javascript types (text, boolean, date, number and null)
-into their Postgres format.
+into their Postgres presentation, as well as [Postgres Array Types](http://www.postgresql.org/docs/9.4/static/arrays.html).
 
 Below is an example of how to deal with more complex data types, like binary:
 
