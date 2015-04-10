@@ -336,9 +336,23 @@ function query(query, values, qrm);
 * `values` (optional) - value/array/object to replace the variables in the query;
 * `qrm` - (optional) Query Result Mask, as explained below...
 
-Starting with version 0.9.2, the library supports [Postgres Array Types](http://www.postgresql.org/docs/9.4/static/arrays.html).
-When an array or object value is of type array, it is treated as a Postgres array type, converted into the format
-of `{{1,2,3},{4,5,6}}`. Namespace for type conversion has been extended with method `as.array()`.
+Starting with version 0.9.3, the library supports [Postgres Array Types](http://www.postgresql.org/docs/9.4/static/arrays.html).
+When an array or object value is of type array, it is treated as a PostgreSQL array type, converted into
+the open format of `array[]`. Namespace for type conversion has also been extended with method `as.array()`.
+
+Examples:
+```javascript
+console.log(pgp.as.array([[1, 2, 3], [4, 5, null]]));
+// will print: array[[1,2,3],[4,5,null]]
+
+console.log(pgp.as.array([['one', 'two'], [undefined, 'four']]));
+// will print: array[['one','two'],[null,'four']]
+
+console.log(pgp.as.array([[1, 2], ['three', 'four']]));
+// will print: array[[1,2],['three','four']],
+// but executing it within a query will throw an error
+// due to heterogeneous data type in the array.
+```
 
 In order to eliminate the chances of unexpected query results and make code more robust, each request supports
 parameter `qrm` (Query Result Mask), via type `queryResult`:
@@ -539,6 +553,12 @@ Every query method of the library accepts `values` as its second parameter.
 **pg-promise** automatically converts all basic javascript types (text, boolean, date, number and null)
 into their Postgres presentation, as well as [Postgres Array Types](http://www.postgresql.org/docs/9.4/static/arrays.html).
 
+If, however, you want to use query formatting that's implemented by the [PG] library, set parameter `pgFormatting`
+to be `true` when initializing the library, and every query formatting will redirect to the [PG]'s implementation.
+
+Although this has a huge implication to the library's functionality, it is not within the scope of this project to detail.
+For any further reference you should use documentation of the [PG] library.
+
 Below is an example of how to deal with more complex data types, like binary:
 
 ```javascript
@@ -556,12 +576,6 @@ fs.readFile('image.jpg', 'hex', function (err, imgData) {
         });
 });
 ```
-
-If, however, you want to use query formatting that's implemented by the [PG] library, set parameter `pgFormatting`
-to be `true` when initializing the library, and every query formatting will redirect to the [PG]'s implementation.
-
-Although this has a huge implication to the library's functionality, it is not within the scope of this project to detail.
-For any further reference you should use documentation of the [PG] library.
 
 **NOTE:** Formatting parameters for calling functions (methods `func` and `proc`) is not affected by this override.
 When needed, use the generic `query` instead to invoke functions with redirected query formatting.
