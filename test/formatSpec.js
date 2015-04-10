@@ -16,17 +16,17 @@ describe("Method as.bool", function () {
     it("must correctly convert any boolean", function () {
         expect(pgp.as.bool()).toBe("null");
         expect(pgp.as.bool(null)).toBe("null");
-        expect(pgp.as.bool(0)).toBe("FALSE");
-        expect(pgp.as.bool(false)).toBe("FALSE");
-        expect(pgp.as.bool(1)).toBe("TRUE");
-        expect(pgp.as.bool(true)).toBe("TRUE");
-        expect(pgp.as.bool(10)).toBe("TRUE");
-        expect(pgp.as.bool(-10)).toBe("TRUE");
-        expect(pgp.as.bool([])).toBe("TRUE");
-        expect(pgp.as.bool({})).toBe("TRUE");
+        expect(pgp.as.bool(0)).toBe("false");
+        expect(pgp.as.bool(false)).toBe("false");
+        expect(pgp.as.bool(1)).toBe("true");
+        expect(pgp.as.bool(true)).toBe("true");
+        expect(pgp.as.bool(10)).toBe("true");
+        expect(pgp.as.bool(-10)).toBe("true");
+        expect(pgp.as.bool([])).toBe("true");
+        expect(pgp.as.bool({})).toBe("true");
         expect(pgp.as.bool(function () {
-        })).toBe("TRUE");
-        expect(pgp.as.bool("FALSE")).toBe("TRUE");
+        })).toBe("true");
+        expect(pgp.as.bool("false")).toBe("true");
     });
 });
 
@@ -106,11 +106,11 @@ describe("Method as.csv", function () {
         expect(pgp.as.csv(-123.456)).toBe("-123.456"); // test a float;
         expect(pgp.as.csv([-123.456])).toBe("-123.456"); // test a float in array;
 
-        expect(pgp.as.csv(true)).toBe("TRUE"); // test boolean True;
-        expect(pgp.as.csv([true])).toBe("TRUE"); // test boolean True in array;
+        expect(pgp.as.csv(true)).toBe("true"); // test boolean True;
+        expect(pgp.as.csv([true])).toBe("true"); // test boolean True in array;
 
-        expect(pgp.as.csv(false)).toBe("FALSE"); // test boolean False;
-        expect(pgp.as.csv([false])).toBe("FALSE"); // test boolean False in array;
+        expect(pgp.as.csv(false)).toBe("false"); // test boolean False;
+        expect(pgp.as.csv([false])).toBe("false"); // test boolean False in array;
 
         expect(pgp.as.csv("")).toBe("''"); // empty text;
         expect(pgp.as.csv([""])).toBe("''"); // empty text in array;
@@ -123,7 +123,7 @@ describe("Method as.csv", function () {
 
         // test a combination of all possible types;
         expect(pgp.as.csv([12.34, true, "don't break", null, undefined, dateSample, [1,2]]))
-            .toBe("12.34,TRUE,'don''t break',null,null,'" + dateSample.toUTCString() + "','{1,2}'");
+            .toBe("12.34,true,'don''t break',null,null,'" + dateSample.toUTCString() + "',array[1,2]");
 
         ////////////////////////////////
         // negative tests;
@@ -152,18 +152,18 @@ describe("Method as.array", function () {
     it("must correctly convert an empty array or value", function () {
         expect(pgp.as.array()).toBe('null');
         expect(pgp.as.array(null)).toBe('null');
-        expect(pgp.as.array([])).toBe("'{}'");
+        expect(pgp.as.array([])).toBe("array[]");
     });
 
     it("must correctly convert multi-dimension arrays", function () {
         expect(pgp.as.array([[1,2],['three','four', [5, 'six', true]]]))
-            .toBe("'{{1,2},{'three','four',{5,'six',TRUE}}}'");
+            .toBe("array[[1,2],['three','four',[5,'six',true]]]");
     });
 
     // 20-dimension test;
     it("must correctly convert arrays of any depth", function () {
         expect(pgp.as.array([[[[[[[[[[[[[[[[[[[[20]]]]]]]]]]]]]]]]]]]]))
-            .toBe("'{{{{{{{{{{{{{{{{{{{{20}}}}}}}}}}}}}}}}}}}}'");
+            .toBe("array[[[[[[[[[[[[[[[[[[[[20]]]]]]]]]]]]]]]]]]]]");
     });
 
     it("must correctly reject invalid elements", function () {
@@ -230,7 +230,7 @@ describe("Method as.format", function () {
 
         expect(pgp.as.format("$1$1", "one")).toBe("'one''one'");
 
-        expect(pgp.as.format("$1, $2, $3, $4", [true, -12.34, "text", dateSample])).toBe("TRUE, -12.34, 'text', '" + dateSample.toUTCString() + "'");
+        expect(pgp.as.format("$1, $2, $3, $4", [true, -12.34, "text", dateSample])).toBe("true, -12.34, 'text', '" + dateSample.toUTCString() + "'");
 
         expect(pgp.as.format("$1 $1, $2 $2, $1", [1, "two"])).toBe("1 1, 'two' 'two', 1"); // test for repeated variables;
 
@@ -288,7 +288,7 @@ describe("Method as.format", function () {
 
         expect(pgp.as.format("$1, $2", [
             'one', [2,3]
-        ])).toBe("'one', '{2,3}'");
+        ])).toBe("'one', array[2,3]");
     });
 
     it("must correctly format named parameters or throw an error", function () {
@@ -301,7 +301,7 @@ describe("Method as.format", function () {
             d_o_b: dateSample,
             _active__: true,
             _$_Balance: -123.45
-        })).toBe("'John O''Connor','" + dateSample.toUTCString() + "',TRUE,-123.45");
+        })).toBe("'John O''Connor','" + dateSample.toUTCString() + "',true,-123.45");
 
         // test that even one-symbol, special-named properties work correctly;
         expect(pgp.as.format("${$}${_}${a}",{
@@ -335,7 +335,7 @@ describe("Method as.format", function () {
         expect(pgp.as.format("${prop1}, ${prop2}", {
             prop1: 'one',
             prop2: [2,['three']]
-        })).toBe("'one', '{2,{'three'}}'");
+        })).toBe("'one', array[2,['three']]");
 
         // testing case sensitivity - Negative;
         expect(function(){
