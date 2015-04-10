@@ -5,7 +5,7 @@ var dateSample = new Date();
 // common error messages;
 var errors = {
     array: function (value, index) {
-        return "Cannot convert type '" + typeof(value) + "' of array element with index " + index;
+        return "Cannot convert type '" + typeof(value) + "' of the array element with index " + index;
     },
     param: function (value) {
         return "Cannot convert type '" + typeof(value) + "' of the parameter.";
@@ -201,16 +201,16 @@ describe("Method as.format", function () {
         }).toThrow("Parameter 'query' must be a text string.");
 
         expect(function () {
-            pgp.as.format("", [123]);
-        }).toThrow("More values passed in array than variables in the query.");
+            pgp.as.format("$1,$2", [1,2,3]);
+        }).toThrow("No variable $3 found for the value with index 2");
 
         expect(function () {
             pgp.as.format("", 123);
-        }).toThrow("No variable found in the query to replace with the passed value.");
+        }).toThrow("No variable $1 found to replace with the value passed.");
 
         expect(function () {
             pgp.as.format("", null);
-        }).toThrow("No variable found in the query to replace with the passed value.");
+        }).toThrow("No variable $1 found to replace with the value passed.");
 
         expect(function () {
             pgp.as.format("$1", function() {});
@@ -272,12 +272,12 @@ describe("Method as.format", function () {
         // test that $1 variable isn't confused with $12;
         expect(function(){
             pgp.as.format("$12", 123);
-        }).toThrow("No variable found in the query to replace with the passed value.");
+        }).toThrow("No variable $1 found to replace with the value passed.");
 
         // test that $1 variable isn't confused with $112
         expect(function(){
             pgp.as.format("$112", 123);
-        }).toThrow("No variable found in the query to replace with the passed value.");
+        }).toThrow("No variable $1 found to replace with the value passed.");
 
         // test that variable names are not confused for longer ones;
         expect(pgp.as.format("$11, $1, $111, $1", 123)).toBe("$11, 123, $111, 123");
