@@ -75,10 +75,10 @@ describe("Selecting one static value", function () {
 describe("Executing an invalid query", function () {
 
     it("must reject with an error", function () {
-        var finished, result, error = "Invalid query specified.";
+        var finished, result, error = "Parameter 'query' must be a text string.";
         promise.any([
             db.query(),
-            db.query(''),
+            db.query(1),
             db.query(null)])
             .then(function () {
                 finished = true;
