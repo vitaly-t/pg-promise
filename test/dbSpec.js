@@ -106,15 +106,15 @@ describe("Executing an invalid query", function () {
 describe("A complex transaction with 10,000 inserts", function () {
     it("must not fail", function () {
         var result, error;
-        db.tx(function (ctx) {
+        db.tx(function (t) {
             var queries = [
-                ctx.none('drop table if exists test'),
-                ctx.none('create table test(id serial, name text)')
+                t.none('drop table if exists test'),
+                t.none('create table test(id serial, name text)')
             ];
             for (var i = 1; i <= 10000; i++) {
-                queries.push(ctx.none('insert into test(name) values($1)', 'name-' + i));
+                queries.push(t.none('insert into test(name) values($1)', 'name-' + i));
             }
-            queries.push(ctx.one('select count(*) from test'));
+            queries.push(t.one('select count(*) from test'));
             return promise.all(queries);
         })
             .then(function (data) {
@@ -140,10 +140,10 @@ describe("A complex transaction with 10,000 inserts", function () {
 describe("When a nested transaction fails", function () {
     it("must return error from the nested transaction", function () {
         var result, error;
-        db.tx(function (ctx) {
+        db.tx(function (t) {
             return promise.all([
-                ctx.none('update users set login=$1 where id=$2', ['TestName', 1]),
-                ctx.tx(function () {
+                t.none('update users set login=$1 where id=$2', ['TestName', 1]),
+                t.tx(function () {
                     throw new Error('Nested TX failure');
                 })
             ]);
@@ -167,13 +167,13 @@ describe("When a nested transaction fails", function () {
 describe("When a nested transaction fails", function () {
     it("both transactions must rollback", function () {
         var result, error, nestError;
-        db.tx(function (ctx) {
+        db.tx(function (t) {
             return promise.all([
-                ctx.none('update users set login=$1', 'External'),
-                ctx.tx(function () {
+                t.none('update users set login=$1', 'External'),
+                t.tx(function () {
                     return promise.all([
-                        ctx.none('update users set login=$1', 'Internal'),
-                        ctx.one('select * from unknownTable') // emulating a bad query;
+                        t.none('update users set login=$1', 'Internal'),
+                        t.one('select * from unknownTable') // emulating a bad query;
                     ]);
                 })
             ]);
@@ -229,7 +229,7 @@ describe("Calling a transaction with an invalid callback", function () {
 
     it("must reject when the callback returns nothing", function () {
         var result, error;
-        db.tx(function (ctx) {
+        db.tx(function (t) {
             // return nothing;
         })
             .then(function (data) {
@@ -271,19 +271,19 @@ describe("Calling a transaction with an invalid callback", function () {
 describe("A nested transaction (10 levels)", function () {
     it("must work the same no matter how many levels", function () {
         var result, error;
-        db.tx(function (ctx) {
-            return ctx.tx(function () {
-                return ctx.tx(function () {
-                    return ctx.tx(function () {
-                        return ctx.tx(function () {
-                            return ctx.tx(function () {
+        db.tx(function (t) {
+            return t.tx(function () {
+                return t.tx(function () {
+                    return t.tx(function () {
+                        return t.tx(function () {
+                            return t.tx(function () {
                                 return promise.all([
-                                    ctx.one("select 'Hello' as word"),
-                                    ctx.tx(function () {
-                                        return ctx.tx(function () {
-                                            return ctx.tx(function () {
-                                                return ctx.tx(function () {
-                                                    return ctx.one("select 'World!' as word");
+                                    t.one("select 'Hello' as word"),
+                                    t.tx(function () {
+                                        return t.tx(function () {
+                                            return t.tx(function () {
+                                                return t.tx(function () {
+                                                    return t.one("select 'World!' as word");
                                                 });
                                             });
                                         });
