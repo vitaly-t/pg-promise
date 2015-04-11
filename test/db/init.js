@@ -2,8 +2,8 @@
 
 var promise = require('bluebird');
 var dbHeader = require('./header')({
-    query: function (client, query) {
-        console.log(query); // print all of the queries;
+    query: function (e) {
+        console.log(e.query); // print all of the queries;
     }
 });
 
