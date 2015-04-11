@@ -485,8 +485,8 @@ pgp.as.text(value); // converts value into PostgreSQL text presentation,
 pgp.as.date(value); // converts value into PostgreSQL date/time presentation,
                     // wrapped in quotes;
 
-pgp.as.array(array); // converts array into PostgreSQL Array Type string,
-                     // wrapped in quotes;
+pgp.as.array(array); // converts array into PostgreSQL Array Type constructor
+                     // string: array[]
 
 pgp.as.csv(array);  // returns a CSV string with values formatted according
                     // to their type, using the above methods;
