@@ -52,18 +52,18 @@ $ npm install pg-promise
 ```
 
 # Testing
-Install project dependencies:
+* Install project dependencies:
 ```
 $ npm install
 ```
-Make sure the tests can connect to your local test database, according to connection details in [test/db/header.js](https://github.com/vitaly-t/pg-promise/blob/master/test/db/header.js).
+* Make sure the tests can connect to your local test database, according to connection details in [test/db/header.js](https://github.com/vitaly-t/pg-promise/blob/master/test/db/header.js).
 Either match your database configuration or change the connection details in that file.
 
-Initialize the database with some test data:
+* Initialize the database with some test data:
 ```
 $ node test/db/init.js
 ```
-Run tests:
+* Run tests:
 ```
 $ make test
 ```
