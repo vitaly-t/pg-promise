@@ -109,8 +109,8 @@ var db = pgp(cn); // create a new database instance from the connection details
 ```
 There can be multiple database objects instantiated in the application from different connection details.
 
-You are now ready to make queries against the database.
-
+You are now ready, jump to our [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki) tutorial for quick start. 
+ 
 # Usage
 
 The library supports promise-chained queries on shared and detached connections.
