@@ -109,7 +109,7 @@ var db = pgp(cn); // create a new database instance from the connection details
 ```
 There can be multiple database objects instantiated in the application from different connection details.
 
-You are now ready to use our [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki) tutorial as a quick reference and a good starting point. 
+You are now ready to use our [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example) tutorial as a quick reference and a good starting point. 
 
 # Usage
 
