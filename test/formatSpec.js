@@ -37,7 +37,16 @@ describe("Method as.text", function () {
     it("must correctly convert any text", function () {
 
         expect(pgp.as.text()).toBe("null");
+
+        expect(function(){
+            pgp.as.text(undefined, true);
+        }).toThrow(errors.raw());
+
         expect(pgp.as.text(null)).toBe("null");
+
+        expect(function(){
+            pgp.as.text(null, true);
+        }).toThrow(errors.raw());
 
         expect(pgp.as.text("")).toBe("''");
         expect(pgp.as.text("", true)).toBe(""); // raw-text test;
