@@ -32,22 +32,42 @@ describe("Method as.bool", function () {
 
 describe("Method as.text", function () {
     it("must correctly convert any text", function () {
+
         expect(pgp.as.text()).toBe("null");
         expect(pgp.as.text(null)).toBe("null");
+
         expect(pgp.as.text("")).toBe("''");
         expect(pgp.as.text("", true)).toBe(""); // strip test;
+
         expect(pgp.as.text("some text")).toBe("'some text'");
+        expect(pgp.as.text("some text", true)).toBe("some text"); // strip test;
+
         expect(pgp.as.text("'starts with quote")).toBe("'''starts with quote'");
+        expect(pgp.as.text("'starts with quote", true)).toBe("''starts with quote"); // strip test;
+
         expect(pgp.as.text("ends with quote'")).toBe("'ends with quote'''");
+        expect(pgp.as.text("ends with quote'", true)).toBe("ends with quote''"); // strip test;
+
         expect(pgp.as.text("has '' two quotes")).toBe("'has '''' two quotes'");
+        expect(pgp.as.text("has '' two quotes", true)).toBe("has '''' two quotes");
+
         expect(pgp.as.text("'")).toBe("''''");
+        expect(pgp.as.text("'", true)).toBe("''");
+
         expect(pgp.as.text("''")).toBe("''''''");
+        expect(pgp.as.text("''", true)).toBe("''''");
+
         expect(pgp.as.text(-123.456)).toBe("'-123.456'");
         expect(pgp.as.text(true)).toBe("'true'");
         expect(pgp.as.text(false)).toBe("'false'");
         expect(pgp.as.text(dateSample)).toBe("'" + dateSample.toString() + "'");
+
         expect(pgp.as.text([])).toBe("''");
+        expect(pgp.as.text([], true)).toBe("");
+
         expect(pgp.as.text([1, "hello"])).toBe("'1,hello'"); // converts string as is;
+        expect(pgp.as.text([1, "hello"], true)).toBe("1,hello"); // converts string as is;
+
         expect(pgp.as.text({})).toBe("'[object Object]'");
         expect(pgp.as.text(function (){})).toBe("'function (){}'");
     });
@@ -220,18 +240,25 @@ describe("Method as.format", function () {
         }).toThrow(errors.param(function(){}));
 
         expect(pgp.as.format("", [])).toBe("");
+
         expect(pgp.as.format("$1", [])).toBe("$1");
+        expect(pgp.as.format("$1^", [])).toBe("$1^");
+
         expect(pgp.as.format("$1")).toBe("$1");
         expect(pgp.as.format("$1", null)).toBe("null");
 
         expect(pgp.as.format("$1", [undefined])).toBe("null");
 
         expect(pgp.as.format("$1", "one")).toBe("'one'");
+        expect(pgp.as.format("$1^", "one")).toBe("one");
+
         expect(pgp.as.format("$1", ["one"])).toBe("'one'");
+        expect(pgp.as.format("$1^", ["one"])).toBe("one");
 
         expect(pgp.as.format("$1, $1", "one")).toBe("'one', 'one'");
 
         expect(pgp.as.format("$1$1", "one")).toBe("'one''one'");
+        expect(pgp.as.format("$1^$1^", "one")).toBe("oneone");
 
         expect(pgp.as.format("$1, $2, $3, $4", [true, -12.34, "text", dateSample])).toBe("true, -12.34, 'text', '" + dateSample.toUTCString() + "'");
 
