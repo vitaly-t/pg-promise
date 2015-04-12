@@ -370,7 +370,7 @@ to the variable name tells the parser to inject any text-like (text or Date) wit
 query("...WHERE name LIKE '%$1^%'", "John");
 
 // injecting value of property 'name' without quotes:
-query("...WHERE name LIKE '%${name^}%'", {name: "John"};
+query("...WHERE name LIKE '%${name^}%'", {name: "John"});
 
 // injecting a CSV-formatted text without quotes:
 query("...WHERE id IN($1^)", pgp.as.csv([1,2,3,4])); 
