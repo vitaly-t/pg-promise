@@ -37,25 +37,25 @@ describe("Method as.text", function () {
         expect(pgp.as.text(null)).toBe("null");
 
         expect(pgp.as.text("")).toBe("''");
-        expect(pgp.as.text("", true)).toBe(""); // strip test;
+        expect(pgp.as.text("", true)).toBe(""); // raw-text test;
 
         expect(pgp.as.text("some text")).toBe("'some text'");
-        expect(pgp.as.text("some text", true)).toBe("some text"); // strip test;
+        expect(pgp.as.text("some text", true)).toBe("some text"); // raw-text test;
 
         expect(pgp.as.text("'starts with quote")).toBe("'''starts with quote'");
-        expect(pgp.as.text("'starts with quote", true)).toBe("''starts with quote"); // strip test;
+        expect(pgp.as.text("'starts with quote", true)).toBe("'starts with quote"); // raw-text test;
 
         expect(pgp.as.text("ends with quote'")).toBe("'ends with quote'''");
-        expect(pgp.as.text("ends with quote'", true)).toBe("ends with quote''"); // strip test;
+        expect(pgp.as.text("ends with quote'", true)).toBe("ends with quote'"); // raw-text test;
 
         expect(pgp.as.text("has '' two quotes")).toBe("'has '''' two quotes'");
-        expect(pgp.as.text("has '' two quotes", true)).toBe("has '''' two quotes");
+        expect(pgp.as.text("has '' two quotes", true)).toBe("has '' two quotes"); // raw-text test;
 
         expect(pgp.as.text("'")).toBe("''''");
-        expect(pgp.as.text("'", true)).toBe("''");
+        expect(pgp.as.text("'", true)).toBe("'"); // raw-text test;
 
         expect(pgp.as.text("''")).toBe("''''''");
-        expect(pgp.as.text("''", true)).toBe("''''");
+        expect(pgp.as.text("''", true)).toBe("''"); // raw-text test;
 
         expect(pgp.as.text(-123.456)).toBe("'-123.456'");
         expect(pgp.as.text(true)).toBe("'true'");
@@ -63,7 +63,7 @@ describe("Method as.text", function () {
         expect(pgp.as.text(dateSample)).toBe("'" + dateSample.toString() + "'");
 
         expect(pgp.as.text([])).toBe("''");
-        expect(pgp.as.text([], true)).toBe("");
+        expect(pgp.as.text([], true)).toBe(""); // raw-text test;
 
         expect(pgp.as.text([1, "hello"])).toBe("'1,hello'"); // converts string as is;
         expect(pgp.as.text([1, "hello"], true)).toBe("1,hello"); // converts string as is;
@@ -389,7 +389,7 @@ describe("Method as.format", function () {
         }).toThrow("Cannot convert type 'function' of property 'prop2'");
     });
 
-    it("must correctly strip text variables", function () {
+    it("must correctly inject raw-text variables", function () {
 
         expect(pgp.as.format("${name},${name^},${name},${name^}", {
             name: 'me'
@@ -399,6 +399,9 @@ describe("Method as.format", function () {
 
         expect(pgp.as.format("$1,$2,$1^,$2^", ['one', 'two']))
             .toBe("'one','two',one,two");
+
+        expect(pgp.as.format("$1^ $2^ $1", ["Don't break", 'this']))
+            .toBe("Don't break this 'Don''t break'");
 
         expect(pgp.as.format("$1^,$1", dateSample))
             .toBe(dateSample.toUTCString() + ",'" + dateSample.toUTCString() + "'");

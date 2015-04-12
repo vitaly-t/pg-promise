@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "PG + Promises/A+, with transactions.",
   "main": "lib/index.js",
   "scripts": {
