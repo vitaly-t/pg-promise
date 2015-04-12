@@ -358,4 +358,17 @@ describe("Method as.format", function () {
             });
         }).toThrow("Cannot convert type 'function' of property 'prop2'");
     });
+
+    it("must correctly strip text variables", function () {
+
+        expect(pgp.as.format("${propName},${propName^},${propName},${propName^}", {
+            propName: 'hello'
+        })).toBe("'hello',hello,'hello',hello");
+
+        expect(pgp.as.format("$1,$1^,$1,$1^", 'hello')).toBe("'hello',hello,'hello',hello");
+
+        expect(pgp.as.format("$1,$2,$1^,$2^", ['one', 'two']))
+            .toBe("'one','two',one,two");
+
+    });
 });
