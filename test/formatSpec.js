@@ -9,6 +9,9 @@ var errors = {
     },
     param: function (value) {
         return "Cannot convert type '" + typeof(value) + "' of the parameter.";
+    },
+    raw: function () {
+        return "Values null/undefined cannot be used as raw text.";
     }
 };
 
@@ -78,7 +81,15 @@ describe("Method as.date", function () {
 
         expect(pgp.as.date()).toBe("null");
 
+        expect(function(){
+            pgp.as.date(undefined, true);
+        }).toThrow(errors.raw());
+
         expect(pgp.as.date(null)).toBe("null");
+
+        expect(function(){
+            pgp.as.date(null, true);
+        }).toThrow(errors.raw());
 
         expect(function () {
             pgp.as.date("");
@@ -405,5 +416,18 @@ describe("Method as.format", function () {
 
         expect(pgp.as.format("$1^,$1", dateSample))
             .toBe(dateSample.toUTCString() + ",'" + dateSample.toUTCString() + "'");
+
+        expect(function(){
+            pgp.as.format("$1^", null);
+        }).toThrow(errors.raw());
+
+        expect(function(){
+            pgp.as.format("$1^", [null]);
+        }).toThrow(errors.raw());
+
+        expect(function(){
+            pgp.as.format("$1^", [undefined]);
+        }).toThrow(errors.raw());
+
     });
 });
