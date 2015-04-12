@@ -35,6 +35,7 @@ describe("Method as.text", function () {
         expect(pgp.as.text()).toBe("null");
         expect(pgp.as.text(null)).toBe("null");
         expect(pgp.as.text("")).toBe("''");
+        expect(pgp.as.text("", true)).toBe(""); // strip test;
         expect(pgp.as.text("some text")).toBe("'some text'");
         expect(pgp.as.text("'starts with quote")).toBe("'''starts with quote'");
         expect(pgp.as.text("ends with quote'")).toBe("'ends with quote'''");
@@ -84,6 +85,8 @@ describe("Method as.date", function () {
         }).toThrow("'[object Object]' doesn't represent a valid Date object.");
 
         expect(pgp.as.date(dateSample)).toBe("'" + dateSample.toUTCString() + "'");
+
+        expect(pgp.as.date(dateSample, true)).toBe(dateSample.toUTCString());
     });
 });
 
@@ -361,14 +364,16 @@ describe("Method as.format", function () {
 
     it("must correctly strip text variables", function () {
 
-        expect(pgp.as.format("${propName},${propName^},${propName},${propName^}", {
-            propName: 'hello'
-        })).toBe("'hello',hello,'hello',hello");
+        expect(pgp.as.format("${name},${name^},${name},${name^}", {
+            name: 'me'
+        })).toBe("'me',me,'me',me");
 
         expect(pgp.as.format("$1,$1^,$1,$1^", 'hello')).toBe("'hello',hello,'hello',hello");
 
         expect(pgp.as.format("$1,$2,$1^,$2^", ['one', 'two']))
             .toBe("'one','two',one,two");
 
+        expect(pgp.as.format("$1^,$1", dateSample))
+            .toBe(dateSample.toUTCString() + ",'" + dateSample.toUTCString() + "'");
     });
 });
