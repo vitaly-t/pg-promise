@@ -366,7 +366,7 @@ to the variable name tells the parser to inject any text-like (text or Date) wit
 `$1^, $2^, etc...` or `${varName^}`. This is to allow for special-case variable formatting, like in the following examples:
 
 ```javascript
-// injecting "Mike" name without quotes:
+// injecting "John" name without quotes:
 query("...WHERE name LIKE '%$1^%'", "John");
 
 // injecting value of property 'name' without quotes:
