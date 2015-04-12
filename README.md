@@ -361,6 +361,21 @@ console.log(pgp.as.array([[1, 2], ['three', 'four']]));
 // due to heterogeneous data type in the array.
 ```
 
+Starting with version 0.9.4, the library supports stripped variable syntax when appending symbol `^`
+to the variable name tells the parser to inject any text-like (text or Date) without wrapping it into single quotes:
+`$1^, $2^, etc...` or `${varName^}`. This is to allow for special-case variable formatting, like in the following examples:
+
+```javascript
+// injecting "Mike" name without quotes:
+query("...WHERE name LIKE '%$1^%'", "John");
+
+// injecting value of property 'name' without quotes:
+query("...WHERE name LIKE '%${name^}%'", {name: "John"};
+
+// injecting a CSV-formatted text without quotes:
+query("...WHERE id IN($1^)", pgp.as.csv([1,2,3,4])); 
+```
+
 In order to eliminate the chances of unexpected query results and make code more robust, each request supports
 parameter `qrm` (Query Result Mask), via type `queryResult`:
 ```javascript
@@ -479,11 +494,14 @@ returns a formatted string when successful or throws an error when it fails.
 ```javascript
 pgp.as.bool(value); // converts value into PostgreSQL boolean presentation;
 
-pgp.as.text(value); // converts value into PostgreSQL text presentation,
-                    // fixing single-quote symbols, wrapped in quotes;
+pgp.as.text(value, strip);
+                    // converts value into PostgreSQL text presentation,
+                    // fixing single-quote symbols and wrapping the result
+                    // in quotes (unless strip flag is set);
 
-pgp.as.date(value); // converts value into PostgreSQL date/time presentation,
-                    // wrapped in quotes;
+pgp.as.date(value, strip);
+                    // converts value into PostgreSQL date/time presentation,
+                    // wrapped in quotes (unless strip flag is set);
 
 pgp.as.array(array); // converts array into PostgreSQL Array Type constructor
                      // string: array[]
@@ -495,6 +513,13 @@ pgp.as.format(query, values);
             // replaces variables in the query with their `values` as specified;
             // `values` can be a simple value, array or an object.
 ```
+
+Methods `as.text` and `as.date` take optional flag `strip` to indicate that the
+return value must not be wrapped in quotes. This adheres to the query formatting,
+as well as method `as.format` when variable names are appended with `^` like so:
+`$1^, $2^, etc...` or `${varName^}` so the returned text is not be wrapped in
+single quotes.
+
 As these helpers are not associated with any database, they can be used from anywhere.
 
 There are some cases where you might want to use a combination of these methods instead
@@ -517,8 +542,9 @@ function createFilter(filter){
         cnd.push(pgp.as.format("active = $1", filter.active));
     }
     if(filter.name){
-        // add name-starts-with condition;
-        cnd.push("name like " + pgp.as.text(filter.name + '%'));
+        // add name-like condition with a stripped variable
+        // by appending '^' to its name;
+        cnd.push(pgp.format("name like '%$1^%'", filter.name));
     }
     return cnd.join(" and "); // returning the complete filter string;
 }
@@ -778,6 +804,7 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 
 # History
 
+* Version 0.9.4 received support for stripped variables. Released: April 12, 2015.
 * Version 0.9.2 received support for PostgreSQL Array Types. Released: April 8, 2015.
 * Version 0.9.0 changed the notification protocol. Released: April 7, 2015.
 * Version 0.8.4 added support for error notifications. Released: April 6, 2015.
