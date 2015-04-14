@@ -23,6 +23,7 @@ Complete access layer to [PG] via [Promises/A+].
   - [Initializing](#2-initializing)
   - [Connecting](#3-connecting)
   - [Database Instance](#4-database-instance)
+  - [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example)  
 * [Usage](#usage)
   - [Detached Connections](#detached-connections)
   - [Shared Connections](#shared-connections)
