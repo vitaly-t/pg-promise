@@ -109,7 +109,7 @@ var db = pgp(cn); // create a new database instance from the connection details
 ```
 There can be multiple database objects instantiated in the application from different connection details.
 
-You are now ready to use our [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example) tutorial as a quick reference and a good starting point. 
+To get started quickly, see our [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example) tutorial. 
 
 # Usage
 
@@ -594,26 +594,8 @@ into their Postgres presentation, as well as [Postgres Array Types](http://www.p
 If, however, you want to use query formatting that's implemented by the [PG] library, set parameter `pgFormatting`
 to be `true` when initializing the library, and every query formatting will redirect to the [PG]'s implementation.
 
-Although this has a huge implication to the library's functionality, it is not within the scope of this project to detail.
+Although this has a huge implication for the library's functionality, it is not within the scope of this project to detail.
 For any further reference you should use documentation of the [PG] library.
-
-Below is an example of how to deal with more complex data types, like binary:
-
-```javascript
-var fs = require('fs');
-
-// read in image in hex format:
-fs.readFile('image.jpg', 'hex', function (err, imgData) {
-    var data = '\\x' + imgData; // indicate a hex string;
-    // inserting data into column 'img' of type 'bytea':
-    db.query('insert into images (img) values ($1)', data)
-        .then(function () {
-            // success;
-        }, function (reason) {
-            console.log(reason); // print why it failed;
-        });
-});
-```
 
 **NOTE:** Formatting parameters for calling functions (methods `func` and `proc`) is not affected by this override.
 When needed, use the generic `query` instead to invoke functions with redirected query formatting.

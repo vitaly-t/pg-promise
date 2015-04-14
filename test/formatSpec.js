@@ -2,15 +2,15 @@ var pgp = require('../lib/index')();
 
 var dateSample = new Date();
 
-// common error messages;
+// common error messages during formatting;
 var errors = {
-    array: function (value, index) {
+    arrayType: function (value, index) {
         return "Cannot convert type '" + typeof(value) + "' of the array element with index " + index;
     },
-    param: function (value) {
+    paramType: function (value) {
         return "Cannot convert type '" + typeof(value) + "' of the parameter.";
     },
-    raw: function () {
+    rawNull: function () {
         return "Values null/undefined cannot be used as raw text.";
     }
 };
@@ -40,13 +40,13 @@ describe("Method as.text", function () {
 
         expect(function(){
             pgp.as.text(undefined, true);
-        }).toThrow(errors.raw());
+        }).toThrow(errors.rawNull());
 
         expect(pgp.as.text(null)).toBe("null");
 
         expect(function(){
             pgp.as.text(null, true);
-        }).toThrow(errors.raw());
+        }).toThrow(errors.rawNull());
 
         expect(pgp.as.text("")).toBe("''");
         expect(pgp.as.text("", true)).toBe(""); // raw-text test;
@@ -92,13 +92,13 @@ describe("Method as.date", function () {
 
         expect(function(){
             pgp.as.date(undefined, true);
-        }).toThrow(errors.raw());
+        }).toThrow(errors.rawNull());
 
         expect(pgp.as.date(null)).toBe("null");
 
         expect(function(){
             pgp.as.date(null, true);
-        }).toThrow(errors.raw());
+        }).toThrow(errors.rawNull());
 
         expect(function () {
             pgp.as.date("");
@@ -168,24 +168,27 @@ describe("Method as.csv", function () {
         expect(pgp.as.csv([12.34, true, "don't break", null, undefined, dateSample, [1,2]]))
             .toBe("12.34,true,'don''t break',null,null,'" + dateSample.toUTCString() + "',array[1,2]");
 
+        // test array-type as a parameter;
+        expect(pgp.as.csv([1, [2, 3], 4])).toBe("1,array[2,3],4");
+
         ////////////////////////////////
         // negative tests;
 
         expect(function () {
             pgp.as.csv({});
-        }).toThrow(errors.param({}));
+        }).toThrow(errors.paramType({}));
 
         expect(function () {
             pgp.as.csv([{}, 'hello']);
-        }).toThrow(errors.array([], 0));
+        }).toThrow(errors.arrayType([], 0));
 
         expect(function () {
             pgp.as.csv(function () {});
-        }).toThrow(errors.param(function(){}));
+        }).toThrow(errors.paramType(function(){}));
 
         expect(function () {
             pgp.as.csv(['hello', function () {}]);
-        }).toThrow(errors.array(function(){}, 1));
+        }).toThrow(errors.arrayType(function(){}, 1));
 
     });
 });
@@ -214,12 +217,12 @@ describe("Method as.array", function () {
         // one-dimension error test;
         expect(function(){
             pgp.as.array([1,2,{}]);
-        }).toThrow(errors.array({}, 2));
+        }).toThrow(errors.arrayType({}, 2));
 
         // multi-dimension error test;
         expect(function(){
             pgp.as.array([1, 2, 3, [4, [5, 6, {}, 8], 9]]);
-        }).toThrow(errors.array({}, "3,1,2"));
+        }).toThrow(errors.arrayType({}, "3,1,2"));
     });
 });
 
@@ -257,7 +260,7 @@ describe("Method as.format", function () {
 
         expect(function () {
             pgp.as.format("$1", function() {});
-        }).toThrow(errors.param(function(){}));
+        }).toThrow(errors.paramType(function(){}));
 
         expect(pgp.as.format("", [])).toBe("");
 
@@ -288,19 +291,19 @@ describe("Method as.format", function () {
 
         expect(function(){
             pgp.as.format("$1,$2", [{}, {}]);
-        }).toThrow(errors.array({}, 0));
+        }).toThrow(errors.arrayType({}, 0));
 
         // test that errors in type conversion are
         // detected and reported from left to right;
         expect(function(){
             pgp.as.format("$1, $2", [true, function () {}]);
-        }).toThrow(errors.array(function(){}, 1));
+        }).toThrow(errors.arrayType(function(){}, 1));
 
         // test that once a conversion issue is encountered,
         // the rest of parameters are not verified;
         expect(function(){
             pgp.as.format("$1,$2,$3,$4,$5", [1, 2, {}, {}, {}, {}]);
-        }).toThrow(errors.array({}, 2));
+        }).toThrow(errors.arrayType({}, 2));
 
         // testing with lots of variables;
         var source = "", dest = "", params = [];
@@ -428,15 +431,15 @@ describe("Method as.format", function () {
 
         expect(function(){
             pgp.as.format("$1^", null);
-        }).toThrow(errors.raw());
+        }).toThrow(errors.rawNull());
 
         expect(function(){
             pgp.as.format("$1^", [null]);
-        }).toThrow(errors.raw());
+        }).toThrow(errors.rawNull());
 
         expect(function(){
             pgp.as.format("$1^", [undefined]);
-        }).toThrow(errors.raw());
+        }).toThrow(errors.rawNull());
 
     });
 });
