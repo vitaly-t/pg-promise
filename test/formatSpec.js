@@ -170,6 +170,7 @@ describe("Method as.csv", function () {
 
         // test array-type as a parameter;
         expect(pgp.as.csv([1, [2, 3], 4])).toBe("1,array[2,3],4");
+        expect(pgp.as.csv([1, [['two'], ['three']], 4])).toBe("1,array[['two'],['three']],4");
 
         ////////////////////////////////
         // negative tests;
