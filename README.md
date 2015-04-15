@@ -522,9 +522,10 @@ pgp.as.format(query, values);
 Methods `as.text` and `as.date` take optional flag `raw` to indicate that the
 return text is to be without any pre-processing:
 * No replacing each single-quote symbol `'` with two;
-* No wrapping text into single quotes.
+* No wrapping text into single quotes;
+* Throwing an error the variable value is `null` or `undefined`.
 This adheres to the query formatting, as well as method `as.format` when variable
-names are can be appended with `^`: `$1^, $2^, etc...` or `${varName^}`.
+names are appended with symbol `^`: `$1^, $2^, etc...` or `${varName^}`.
 
 As none of these helpers are associated with any database, they can be used from anywhere.
 
