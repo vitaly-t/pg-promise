@@ -523,7 +523,7 @@ Methods `as.text` and `as.date` take optional flag `raw` to indicate that the
 return text is to be without any pre-processing:
 * No replacing each single-quote symbol `'` with two;
 * No wrapping text into single quotes;
-* Throwing an error the variable value is `null` or `undefined`.
+* Throwing an error when the variable value is `null` or `undefined`.
 This adheres to the query formatting, as well as method `as.format` when variable
 names are appended with symbol `^`: `$1^, $2^, etc...` or `${varName^}`.
 
