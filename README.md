@@ -44,6 +44,7 @@ Complete access layer to [PG] via [Promises/A+].
     - [query](#query)
     - [error](#error)
     - [transact](#transact)
+    - [extend](#extend)
   - [Library de-initialization](#library-de-initialization)
 * [History](#history)
 * [License](#license)
@@ -418,6 +419,7 @@ db.any(query, values); // expects anything, same as `manyOrNone`
 db.oneOrNone(query, values); // expects 1 or 0 rows
 db.manyOrNone(query, values); // expects anything, same as `any`
 ```
+You can add your own methods to this protocol via the [extend](#extend) event.  
 
 Each query function resolves its **data** object according to the `qrm` that was used:
 
@@ -572,7 +574,8 @@ var options = {
     // disconnect - database 'disconnect' notification;
     // query - query execution notification;
     // transact - transaction notification;
-    // error - error notification.
+    // error - error notification;
+    // extend - protocol extension event;
 };
 var pgp = pgpLib(options);
 ```
@@ -781,6 +784,39 @@ For parameter `e` see documentation of the `query` event earlier.
 The library will suppress any error thrown by the handler.
 
 **NOTE:** The library will throw an error instead of making the call, if `options.transact` is set to
+a non-empty value other than a function.
+
+---
+#### extend
+
+Added in 0.9.7, this protocol extension event allows the client to extend
+the existing access layer with your own functions and properties best suited
+for your application.
+
+The extension thus becomes available across all layers:
+
+* Within the root/default database protocol;
+* Inside transactions, including nested ones. 
+
+In the example below we extend the protocol with `addImage` that will insert
+one image in the binary format and resolve with the new record id:
+```javascript
+var options = {
+    extend: function (obj) {
+        obj.addImage = function (data) {
+            return obj.one("insert into images(data) values($1) returning id",
+                '\\x' + data);
+        }
+    }
+};
+```
+
+IMPORTANT: Do not override any of the predefined functions or properties in the protocol
+object, as it will break your access object.
+
+The library provides no error handling, should your `extend` function throw an error.
+
+**NOTE:** The library will throw an error instead of making the call, if `options.extend` is set to
 a non-empty value other than a function.
 
 ## Library de-initialization
