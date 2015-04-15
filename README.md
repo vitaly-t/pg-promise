@@ -793,13 +793,13 @@ Added in 0.9.7, this protocol extension event allows the client to extend
 the existing access layer with your own functions and properties best suited
 for your application.
 
-The extension thus becomes available across all layers:
+The extension thus becomes available across all access layers:
 
 * Within the root/default database protocol;
 * Inside transactions, including nested ones. 
 
-In the example below we extend the protocol with `addImage` that will insert
-one image in the binary format and resolve with the new record id:
+In the example below we extend the protocol with function `addImage` that will insert
+one binary image and resolve with the new record id:
 ```javascript
 var options = {
     extend: function (obj) {
@@ -811,8 +811,8 @@ var options = {
 };
 ```
 
-IMPORTANT: Do not override any of the predefined functions or properties in the protocol
-object, as it will break your access object.
+IMPORTANT: Do not override any of the predefined functions or properties in the protocol,
+as it will break your access object.
 
 The library provides no error handling, should your `extend` function throw an error.
 
