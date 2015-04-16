@@ -341,14 +341,13 @@ that's defined as shown below:
 function query(query, values, qrm);
 ```
 * `query` (required) - query string that supports two types of formatting, depending on the `values` passed:
-   - format `$1, $2`, if `values` is simple (text, boolean, number, date or null) or an array of such simple values;
+   - format `$1, $2`, if `values` is simple (text, boolean, number, date or null) or an array of values;
    - format `${propName}`, if `values` is an object (not null and not Date);
 * `values` (optional) - value/array/object to replace the variables in the query;
 * `qrm` - (optional) Query Result Mask, as explained below...
 
-Starting with version 0.9.3, the library supports [Postgres Array Types](http://www.postgresql.org/docs/9.4/static/arrays.html).
-When an array or object value is of type array, it is treated as a PostgreSQL array type, converted into
-the open format of `array[]`. Namespace for type conversion has also been extended with method `as.array()`.
+When a value/property inside array/object is of type array, it is treated as a [PostgreSQL Array Type](http://www.postgresql.org/docs/9.4/static/arrays.html),
+converted into the array constructor format of `array[]`, the same as calling method `as.array()`.
 
 Examples:
 ```javascript
@@ -364,8 +363,11 @@ console.log(pgp.as.array([[1, 2], ['three', 'four']]));
 // due to heterogeneous data type in the array.
 ```
 
-Starting with version 0.9.5, the library supports injecting a raw text value by appending
-the variable name with symbol `^`: `$1^, $2^, etc...` or `${varName^}`.
+When a value/property inside array/object is of type `object` (except for `null` and `Date`), it is automatically
+serialized into JSON, the same as calling method `as.json()`, except the latter would convert anything to JSON.
+
+Raw text values can be injected by using variable name appended with symbol `^`:
+`$1^, $2^, etc...` or `${varName^}`.
 Raw text is injected without any pre-processing, which means:
 * No replacing each single-quote symbol `'` with two;
 * No wrapping text into single quotes.
@@ -440,8 +442,7 @@ leaving the burden of all extra checks to the library.
 
 ## Named Parameters
 
-Version 0.8.0 of the library added support for named parameters in query formatting,
-with the ES6-like syntax of `${propName}`:
+The library supports named parameters in query formatting, with the ES6-like syntax of `${propName}`:
 
 ```javascript
 db.query("select * from users where name=${name} and active=${active}", {
@@ -502,6 +503,10 @@ returns a formatted string when successful or throws an error when it fails.
 ```javascript
 pgp.as.bool(value); // converts value into PostgreSQL boolean presentation;
 
+pgp.as.number(value);
+                    // converts value into PostgreSQL number presentation,
+                    // with support for NaN, +Infinity and -Infinity;
+
 pgp.as.text(value, raw);
                     // converts value into PostgreSQL text presentation,
                     // fixing single-quote symbols and wrapping the result
@@ -511,6 +516,11 @@ pgp.as.date(value, raw);
                     // converts value into PostgreSQL date/time presentation,
                     // wrapped in quotes (unless 'raw' flag is set);
 
+pgp.as.json(value, raw);
+                    // converts any value into JSON (using JSON.stringify),
+                    // then fixes single-quote symbols and wraps it up in
+                    // single quotes (unless 'raw' flag is set);
+
 pgp.as.array(array); // converts array into PostgreSQL Array Type constructor
                      // string: array[]
 
@@ -519,10 +529,10 @@ pgp.as.csv(array);  // returns a CSV string with values formatted according
 
 pgp.as.format(query, values);
             // replaces variables in the query with their `values` as specified;
-            // `values` can be a simple value, array or an object.
+            // `values` can be a simple value, an array or an object.
 ```
 
-Methods `as.text` and `as.date` take optional flag `raw` to indicate that the
+For methods which take optional flag `raw` it is to indicate that the
 return text is to be without any pre-processing:
 * No replacing each single-quote symbol `'` with two;
 * No wrapping text into single quotes;
@@ -588,14 +598,18 @@ Below is the list of all the properties that are currently supported.
 By default, **pg-promise** provides its own implementation of the query formatting,
 supporting two different formats:
 
-* Format `$1, $2, etc`, when parameter `values` is either a simple value or an array of simple values;
+* Format `$1, $2, etc`, when parameter `values` is either a single value or an array of values;
 * Format `${propName}` - ES6-like format, if `values` is an object that's not `null`
 and not a `Date` instance.
 
 Every query method of the library accepts `values` as its second parameter.
 
 **pg-promise** automatically converts all basic javascript types (text, boolean, date, number and null)
-into their Postgres presentation, as well as [Postgres Array Types](http://www.postgresql.org/docs/9.4/static/arrays.html).
+into their Postgres presentation.
+
+In addition, the library can convert:
+* array into [Postgres Array Types](http://www.postgresql.org/docs/9.4/static/arrays.html) constructor;
+* an object inside array or an object property - into JSON string.
 
 If, however, you want to use query formatting that's implemented by the [PG] library, set parameter `pgFormatting`
 to be `true` when initializing the library, and every query formatting will redirect to the [PG]'s implementation.
@@ -830,6 +844,8 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 
 # History
 
+* Version 0.9.8 added native json support, extended numeric support for `NaN`, `+Infinity` and `-Infinity`. Released: April 16, 2015.
+* Version 0.9.7 received support for protocol extensibility. Released: April 15, 2015.
 * Version 0.9.5 received support for raw-text variables. Released: April 12, 2015.
 * Version 0.9.2 received support for PostgreSQL Array Types. Released: April 8, 2015.
 * Version 0.9.0 changed the notification protocol. Released: April 7, 2015.

@@ -41,6 +41,20 @@ describe("Method as.bool", function () {
     });
 });
 
+describe("Method as.number", function () {
+    it("must correctly convert any number", function () {
+        expect(pgp.as.number()).toBe("null");
+        expect(pgp.as.number(null)).toBe("null");
+        expect(pgp.as.number(0)).toBe("0");
+        expect(pgp.as.number(1)).toBe("1");
+        expect(pgp.as.number(1234567890)).toBe("1234567890");
+        expect(pgp.as.number(-123.456)).toBe("-123.456");
+        expect(pgp.as.number(NaN)).toBe("'NaN'");
+        expect(pgp.as.number(1/0)).toBe("'+Infinity'");
+        expect(pgp.as.number(-1/0)).toBe("'-Infinity'");
+    });
+});
+
 describe("Method as.text", function () {
     it("must correctly convert any text", function () {
 
@@ -194,6 +208,22 @@ describe("Method as.csv", function () {
             pgp.as.csv(['hello', function () {}]);
         }).toThrow(errors.arrayType(function(){}, 1));
 
+    });
+});
+
+describe("Method as.json", function () {
+
+    it("must correctly convert any object into JSON", function () {
+        expect(pgp.as.json()).toBe("null");
+        expect(pgp.as.json(null)).toBe("null");
+        expect(pgp.as.json({})).toBe("'" + JSON.stringify({}) + "'");
+        expect(pgp.as.json(userObj)).toBe(pgp.as.text(JSON.stringify(userObj)));
+        expect(function(){
+            pgp.as.json(null, true);
+        }).toThrow(errors.rawNull());
+        expect(function(){
+            pgp.as.json(undefined, true);
+        }).toThrow(errors.rawNull());
     });
 });
 
