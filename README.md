@@ -857,6 +857,7 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 
 # History
 
+* Version 1.0.0 official release milestone. Released: April 17, 2015.
 * Version 0.9.8 added native json support, extended numeric support for `NaN`, `+Infinity` and `-Infinity`. Released: April 16, 2015.
 * Version 0.9.7 received support for protocol extensibility. Released: April 15, 2015.
 * Version 0.9.5 received support for raw-text variables. Released: April 12, 2015.
