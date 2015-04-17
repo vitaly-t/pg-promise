@@ -17,6 +17,7 @@ Complete access layer to [PG] via [Promises/A+].
 
 ---
 
+* [About](#about)
 * [Installing](#installing)
 * [Testing](#testing)
 * [Getting started](#getting-started)
@@ -48,6 +49,18 @@ Complete access layer to [PG] via [Promises/A+].
   - [Library de-initialization](#library-de-initialization)
 * [History](#history)
 * [License](#license)
+
+# About
+
+Built on top of [node-postgres] and its connection pool, this library translates their callback interface into one based on [Promises/A+],
+while extending the protocol to a higher level, with automated connections and transactions management.
+
+In addition, the library provides:
+
+* its own, more flexible query formatting;
+* complete event reporting for connectivity, errors, queries and transactions;
+* declarative approach to controlling query results;
+* support for all popular promise libraries.
 
 # Installing
 ```
@@ -866,6 +879,7 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 * The first draft v0.0.1 was published on March 3rd, 2015, and then rapidly incremented due to many initial changes that had to come in, mostly documentation.
 
 [PG]:https://github.com/brianc/node-postgres
+[node-postgres]:https://github.com/brianc/node-postgres
 [Promises/A+]:https://promisesaplus.com/
 [Promise]:https://github.com/then/promise
 [Bluebird]:https://github.com/petkaantonov/bluebird
