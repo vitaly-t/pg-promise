@@ -492,8 +492,8 @@ db.func('findAudit', [123, new Date()])
     });
 ```
 
-We passed it **user id** = 123, plus current Date/Time as the timestamp. We assume that the function signature matches the parameters that we passed.
-All values passed are serialized automatically to comply with PostgreSQL type formats.
+We passed it **user id** = 123, plus current Date/Time as the timestamp. We assume that the function signature matches
+the parameters that we passed. All values passed are serialized automatically to comply with PostgreSQL type formats.
 
 Method `func` accepts optional third parameter - `qrm` (Query Result Mask), the same as method `query`.
 
@@ -523,16 +523,16 @@ pgp.as.number(value);
 pgp.as.text(value, raw);
                     // converts value into PostgreSQL text presentation,
                     // fixing single-quote symbols and wrapping the result
-                    // in quotes (unless 'raw' flag is set);
+                    // in quotes (unless flag 'raw' is set);
 
 pgp.as.date(value, raw);
                     // converts value into PostgreSQL date/time presentation,
-                    // wrapped in quotes (unless 'raw' flag is set);
+                    // wrapped in quotes (unless flag 'raw' is set);
 
 pgp.as.json(value, raw);
                     // converts any value into JSON (using JSON.stringify),
                     // then fixes single-quote symbols and wraps it up in
-                    // single quotes (unless 'raw' flag is set);
+                    // single quotes (unless flag 'raw' is set);
 
 pgp.as.array(array); // converts array into PostgreSQL Array Type constructor
                      // string: array[]
@@ -587,8 +587,7 @@ function createFilter(filter){
 
 ## Initialization Options
 
-When initializing the library, you can pass object `options` with a set of properties
-for global override of the library's behaviour:
+When initializing the library, you can pass object `options` with a set of global properties:
 ```javascript
 var options = {
     // pgFormatting - redirects query formatting to PG;
@@ -602,8 +601,6 @@ var options = {
 };
 var pgp = pgpLib(options);
 ```
-
-Below is the list of all the properties that are currently supported.
 
 ---
 #### pgFormatting
@@ -770,12 +767,6 @@ var options = {
     }
 };
 ```
-
-Notification may happen in 3 possible scenarios:
-* Query method rejecting because of an issue with query formatting;
-* Call into [PG] returned with an error;
-* Transaction callback threw an error.
-
 For parameter `e` see documentation of the `query` event earlier.
 
 The library will suppress any error thrown by the handler.
@@ -816,9 +807,8 @@ a non-empty value other than a function.
 ---
 #### extend
 
-Added in 0.9.7, this protocol extension event allows the client to extend
-the existing access layer with your own functions and properties best suited
-for your application.
+Override this event to extend the existing access layer with your own functions
+and properties best suited for your application.
 
 The extension thus becomes available across all access layers:
 
@@ -857,6 +847,7 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 
 # History
 
+* Version 1.0.1 improved error reporting for queries. Released: April 18, 2015.
 * Version 1.0.0 official release milestone. Released: April 17, 2015.
 * Version 0.9.8 added native json support, extended numeric support for `NaN`, `+Infinity` and `-Infinity`. Released: April 16, 2015.
 * Version 0.9.7 received support for protocol extensibility. Released: April 15, 2015.
