@@ -330,7 +330,7 @@ describe("Return data from a query must match the request type", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBe(null);
-            expect(error).toBe("No return data was expected from query: select * from person where name='John'");
+            expect(error).toBe("No return data was expected from the query.");
         });
     });
 
@@ -348,7 +348,7 @@ describe("Return data from a query must match the request type", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBe(null);
-            expect(error).toBe("No rows returned from query: select * from person where name='Unknown'");
+            expect(error).toBe("No rows returned from the query.");
         });
     });
 
@@ -366,7 +366,7 @@ describe("Return data from a query must match the request type", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBe(null);
-            expect(error).toBe("Single row was expected from query: select * from person");
+            expect(error).toBe("Single row was expected from the query.");
         });
     });
 

@@ -138,6 +138,122 @@ describe("Error event", function () {
             expect(context.tag).toBe("Error Transaction");
         });
     });
+
+    it("must handle null-query", function () {
+        var result, errTxt, context, counter = 0;
+        options.error = function (err, e) {
+            counter++;
+            errTxt = err;
+            context = e;
+        };
+        db.query(null)
+            .then(function () {
+                result = null;
+            }, function (reason) {
+                result = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(errTxt).toBe("Parameter 'query' must be a text string.");
+            expect(counter).toBe(1);
+        });
+    });
+
+    it("must handle incorrect QRM", function () {
+        var result, errTxt, context, counter = 0;
+        options.error = function (err, e) {
+            counter++;
+            errTxt = err;
+            context = e;
+        };
+        db.query("Bla-Bla", undefined, 42)
+            .then(function () {
+                result = null;
+            }, function (reason) {
+                result = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(errTxt).toBe("Invalid Query Result Mask specified.");
+            expect(context.query).toBe("Bla-Bla");
+            expect(counter).toBe(1);
+        });
+    });
+
+    it("must handle single-row requests", function () {
+        var result, errTxt, context, counter = 0;
+        options.error = function (err, e) {
+            counter++;
+            errTxt = err;
+            context = e;
+        };
+        db.one("select * from users")
+            .then(function () {
+                result = null;
+            }, function (reason) {
+                result = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(errTxt).toBe("Single row was expected from the query.");
+            expect(context.query).toBe("select * from users");
+            expect(counter).toBe(1);
+        });
+    });
+
+    it("must handle no-row requests", function () {
+        var result, errTxt, context, counter = 0;
+        options.error = function (err, e) {
+            counter++;
+            errTxt = err;
+            context = e;
+        };
+        db.none("select * from users")
+            .then(function () {
+                result = null;
+            }, function (reason) {
+                result = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(errTxt).toBe("No return data was expected from the query.");
+            expect(context.query).toBe("select * from users");
+            expect(counter).toBe(1);
+        });
+    });
+
+    it("must handle empty requests", function () {
+        var result, errTxt, context, counter = 0;
+        options.error = function (err, e) {
+            counter++;
+            errTxt = err;
+            context = e;
+        };
+        db.many("select * from users where id > $1", 1000)
+            .then(function () {
+                result = null;
+            }, function (reason) {
+                result = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(errTxt).toBe("No rows returned from the query.");
+            expect(context.query).toBe("select * from users where id > 1000");
+            expect(context.params).toBe(undefined);
+            expect(counter).toBe(1);
+        });
+    });
+
 });
 
 var _finishCallback = jasmine.Runner.prototype.finishCallback;
