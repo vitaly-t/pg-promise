@@ -25,8 +25,9 @@ describe("Database Instantiation", function () {
     });
 });
 
-describe("Database", function () {
-    it("must be able to connect", function () {
+describe("Connection", function () {
+
+    it("must be successful", function () {
         var status = 'connecting';
         var error = '';
         db.connect()
@@ -49,6 +50,66 @@ describe("Database", function () {
             expect(error).toBe('');
         });
     });
+
+    it("must be provide functioning context for queries", function () {
+        var result, sco;
+        db.connect()
+            .then(function (obj) {
+                sco = obj;
+                return sco.one("select count(*) from users");
+            }, function (reason) {
+                result = null;
+                return promise.reject(reason);
+            })
+            .then(function (data) {
+                result = data;
+            }, function () {
+                result = null;
+            })
+            .done(function () {
+                if (sco) {
+                    sco.done();
+                }
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Connection timed out", 5000);
+        runs(function () {
+            expect(result.count > 0).toBe(true);
+        });
+    });
+
+    it("must be provide functioning context for raw queries", function () {
+        var result, sco;
+        db.connect()
+            .then(function (obj) {
+                sco = obj;
+                return sco.queryRaw("select * from users");
+            }, function (reason) {
+                result = null;
+                return promise.reject(reason);
+            })
+            .then(function (data) {
+                result = data;
+            }, function () {
+                result = null;
+            })
+            .done(function () {
+                if (sco) {
+                    sco.done();
+                }
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Connection timed out", 5000);
+        runs(function () {
+            expect(result instanceof pgResult);
+            expect(result.rows.length > 0).toBe(true);
+            expect(typeof(result.rowCount)).toBe('number');
+            expect(result.rows.length === result.rowCount).toBe(true);
+        });
+    });
+
 });
 
 describe("Selecting one static value", function () {
