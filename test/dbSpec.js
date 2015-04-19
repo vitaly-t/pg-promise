@@ -1,4 +1,5 @@
 var promise = require('bluebird');
+var pgResult = require('pg/lib/result');
 
 var options = {}; // options, if needed;
 
@@ -480,6 +481,25 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
         });
     });
 
+});
+
+describe("queryRaw", function () {
+
+    it("must resolve with PG result instance", function () {
+        var result;
+        db.queryRaw("select * from users")
+            .then(function (data) {
+                result = data;
+            }, function () {
+                result = null;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result instanceof pgResult).toBe(true);
+        });
+    });
 });
 
 var _finishCallback = jasmine.Runner.prototype.finishCallback;
