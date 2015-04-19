@@ -34,6 +34,7 @@ describe("Library initialization object", function () {
         expect(typeof(pgp.as.bool)).toBe('function');
         expect(typeof(pgp.as.date)).toBe('function');
         expect(typeof(pgp.as.array)).toBe('function');
+        expect(typeof(pgp.as.json)).toBe('function');
         expect(typeof(pgp.as.csv)).toBe('function');
         expect(typeof(pgp.as.format)).toBe('function');
     });
@@ -55,6 +56,7 @@ describe("Database object", function () {
     it("must have all the protocol functions", function () {
         expect(typeof(db.connect)).toBe('function');
         expect(typeof(db.query)).toBe('function');
+        expect(typeof(db.queryRaw)).toBe('function');
         expect(typeof(db.tx)).toBe('function');
         expect(typeof(db.one)).toBe('function');
         expect(typeof(db.many)).toBe('function');
