@@ -427,9 +427,9 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
             expect(error).toBe("Invalid Query Result Mask specified.");
         });
     });
-    it("method 'query' must throw an error when QRM is > 6", function () {
+    it("method 'query' must throw an error when QRM is > 8", function () {
         var result, error;
-        db.query("select * from person", undefined, 7)
+        db.query("select * from person", undefined, 9)
             .then(function (data) {
                 result = data;
             }, function (reason) {
