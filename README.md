@@ -349,7 +349,7 @@ transactions inside SQL functions, and not on the client side.
 ## Queries and Parameters
 
 **NOTE:** Version 1.0.3 added `queryRaw(query, values)` to bypass any result verification and resolve
-with the `result` object as provided by the [PG] library.
+with the [Result](https://github.com/brianc/node-postgres/blob/master/lib/result.js) object as provided by the [PG] library.
 
 ---
 
