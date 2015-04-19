@@ -409,7 +409,8 @@ queryResult = {
     one: 1,     // single-row result is expected;
     many: 2,    // multi-row result is expected;
     none: 4,    // no rows expected;
-    any: 6      // (default) = many|none = any result.
+    any: 6,      // (default) = many|none = any result.
+    passthru: 8  // return original pg result
 };
 ```
 
@@ -433,6 +434,7 @@ db.none(query, values); // expects no rows
 db.any(query, values); // expects anything, same as `manyOrNone`
 db.oneOrNone(query, values); // expects 1 or 0 rows
 db.manyOrNone(query, values); // expects anything, same as `any`
+db.passthru(query, values); // returns original pg result
 ```
 You can add your own methods to this protocol via the [extend](#extend) event.  
 
@@ -442,6 +444,7 @@ Each query function resolves its **data** object according to the `qrm` that was
 * `one` - **data** is a single object. If the query returns no data or more than one row of data, it is rejected.
 * `many` - **data** is an array of objects. If the query returns no rows, it is rejected.
 * `one` | `none` - **data** is `null`, if no data was returned; or a single object, if there was one row of data returned.
+* `passthru` - ***data** is always `result` object returned by the pg library. No checks or modifications are done.
 
 If the query returns more than one row of data, the query is rejected.
 * `many` | `none` - **data** is an array of objects. When no rows are returned, **data** is an empty array.
