@@ -348,6 +348,11 @@ transactions inside SQL functions, and not on the client side.
 
 ## Queries and Parameters
 
+**NOTE:** Version 1.0.3 added `queryRaw(query, values)` to bypass any result verification and resolve
+with the `result` object as provided by the [PG] library.
+
+---
+
 Every connection context of the library shares the same query protocol, starting with generic method `query`,
 that's defined as shown below:
 ```javascript
@@ -847,6 +852,7 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 
 # History
 
+* Version 1.0.3 added method `queryRaw(query, values)`. Released: April 19, 2015.
 * Version 1.0.1 improved error reporting for queries. Released: April 18, 2015.
 * Version 1.0.0 official release milestone. Released: April 17, 2015.
 * Version 0.9.8 added native json support, extended numeric support for `NaN`, `+Infinity` and `-Infinity`. Released: April 16, 2015.
