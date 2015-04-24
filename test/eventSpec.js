@@ -7,6 +7,9 @@ var dbHeader = require('./db/header')(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
+var func = function () {
+};
+
 describe("Connect/Disconnect notification events", function () {
 
     it("must each execute once during a query", function () {
@@ -156,7 +159,7 @@ describe("Error event", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(errTxt).toBe("Parameter 'query' must be a text string.");
+            expect(errTxt).toBe("Parameter 'query' must be a non-empty text string.");
             expect(context.params).toBe(undefined);
             expect(counter).toBe(1);
         });
@@ -282,6 +285,32 @@ describe("Error event", function () {
             expect(counter).toBe(1);
         });
     });
+
+    it("must report function failures", function () {
+        var result, errTxt, context, counter = 0;
+        var params = ['one', func];
+        options.error = function (err, e) {
+            counter++;
+            errTxt = err;
+            context = e;
+        };
+        db.func("myFunc", params)
+            .then(function () {
+                result = null;
+            }, function (reason) {
+                result = reason;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(errTxt).toBe("Cannot convert type 'function' of the array element with index 1");
+            expect(context.query).toBe("select * from myFunc(...)");
+            expect(context.params).toBe(params);
+            expect(counter).toBe(1);
+        });
+    });
+
 });
 
 var _finishCallback = jasmine.Runner.prototype.finishCallback;

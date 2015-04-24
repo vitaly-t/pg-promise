@@ -137,11 +137,37 @@ describe("Selecting one static value", function () {
 describe("Executing an invalid query", function () {
 
     it("must reject with an error", function () {
-        var finished, result, error = "Parameter 'query' must be a text string.";
+        var finished, result, error = "Parameter 'query' must be a non-empty text string.";
         promise.any([
             db.query(),
             db.query(1),
             db.query(null)])
+            .then(function () {
+                finished = true;
+            }, function (reason) {
+                result = reason;
+                finished = true;
+            });
+        waitsFor(function () {
+            return finished;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result.length).toBe(3);
+            expect(result[0]).toBe(error);  // reject to an undefined query;
+            expect(result[1]).toBe(error);  // reject to an empty query;
+            expect(result[2]).toBe(error);  // reject to a null query;
+        });
+    });
+});
+
+describe("Executing an invalid function", function () {
+
+    it("must reject with an error", function () {
+        var finished, result, error = "Function name must be a non-empty text string.";
+        promise.any([
+            db.func(),
+            db.func(1),
+            db.func(null)])
             .then(function () {
                 finished = true;
             }, function (reason) {
