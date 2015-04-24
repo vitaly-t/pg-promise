@@ -140,6 +140,8 @@ describe("Executing an invalid query", function () {
         var finished, result, error = "Parameter 'query' must be a non-empty text string.";
         promise.any([
             db.query(),
+            db.query(''),
+            db.query('   '),
             db.query(1),
             db.query(null)])
             .then(function () {
@@ -152,10 +154,12 @@ describe("Executing an invalid query", function () {
             return finished;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result.length).toBe(3);
+            expect(result.length).toBe(5);
             expect(result[0]).toBe(error);  // reject to an undefined query;
-            expect(result[1]).toBe(error);  // reject to an empty query;
-            expect(result[2]).toBe(error);  // reject to a null query;
+            expect(result[1]).toBe(error);  // reject to an empty-string query;
+            expect(result[2]).toBe(error);  // reject to a white-space query string;
+            expect(result[3]).toBe(error);  // reject to an invalid-type query;
+            expect(result[4]).toBe(error);  // reject to a null query;
         });
     });
 });
@@ -166,6 +170,8 @@ describe("Executing an invalid function", function () {
         var finished, result, error = "Function name must be a non-empty text string.";
         promise.any([
             db.func(),
+            db.func(''),
+            db.func('   '),
             db.func(1),
             db.func(null)])
             .then(function () {
@@ -178,10 +184,12 @@ describe("Executing an invalid function", function () {
             return finished;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result.length).toBe(3);
-            expect(result[0]).toBe(error);  // reject to an undefined query;
-            expect(result[1]).toBe(error);  // reject to an empty query;
-            expect(result[2]).toBe(error);  // reject to a null query;
+            expect(result.length).toBe(5);
+            expect(result[0]).toBe(error);  // reject to an undefined function name;
+            expect(result[1]).toBe(error);  // reject to an empty-string function name;
+            expect(result[2]).toBe(error);  // reject to a white-space string for function name;
+            expect(result[3]).toBe(error);  // reject to an invalid-type function name;
+            expect(result[4]).toBe(error);  // reject to a null function name;
         });
     });
 });
