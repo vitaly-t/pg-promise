@@ -638,12 +638,12 @@ describe("Transaction sequencing", function () {
     it("must resolve promises in correct sequence", function () {
         var result;
         db.tx(function (t) {
-            return t.sequence(function (tx, idx) {
+            return t.sequence(function (idx) {
                 switch (idx) {
                     case 0:
-                        return tx.query("select 'one' as value");
+                        return t.query("select 'one' as value");
                     case 1:
-                        return tx.query("select 'two' as value");
+                        return t.query("select 'two' as value");
                 }
             });
         }).then(function (data) {

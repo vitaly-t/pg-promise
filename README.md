@@ -361,7 +361,7 @@ to be executed inside a transaction, one by one, and if one fails - the rest won
 architecture this can only be achieved by using a promise factory, which is exactly what it is.
 
 ```javascript
-function txFactory(t, idx) {
+function txFactory(idx, t) {
 // must create and return a promise object dynamically,
 // based on the index of the sequence (parameter idx);
     switch (idx) {
@@ -378,6 +378,29 @@ function txFactory(t, idx) {
 
 db.tx(function (t) {
     return t.sequence(txFactory);
+})
+    .then(function (data) {
+        console.log(data); // print result;
+    }, function (reason) {
+        console.log(reason); // print error;
+    });
+```
+
+An inline version gets simpler, because the factory doesn't need to declare parameter `t`,
+as it is available from the container:
+
+```javascript
+db.tx(function (t) {
+    return t.sequence(function (idx) {
+        switch (idx) {
+            case 0:
+                return t.query("select 0");
+            case 1:
+                return t.query("select 1");
+            case 2:
+                return t.query("select 2");
+        }
+    });
 })
     .then(function (data) {
         console.log(data); // print result;
