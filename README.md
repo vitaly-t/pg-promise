@@ -352,7 +352,7 @@ transactions inside SQL functions, and not on the client side.
 A transaction usually relies on generic method `promise.all([...])` to resolve all queries asynchronously.
 The only downside of this approach is when one query fails and results in `ROLLBACK`, the rest of queries
 will continue execution regardless. As a result, there may be a number of errors generated, each stating that
-a query outside of transaction will be ignored, which by no means breaks any transaction logic,
+a query outside of transaction will be ignored, which by no means breaks the transaction logic,
 just fills your error log with query failures that are not important.
  
 Version 1.0.5 added a new feature for transactions - method `sequence` to enforce a strict/synchronous sequence
