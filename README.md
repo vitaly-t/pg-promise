@@ -386,8 +386,8 @@ db.tx(function (t) {
     });
 ```
 
-An inline version gets simpler, because the factory doesn't need to declare parameter `t`,
-as it is available from the container:
+An inline version gets simpler, because the factory function doesn't need to declare
+parameter `t`, as it is available from the container:
 
 ```javascript
 db.tx(function (t) {
