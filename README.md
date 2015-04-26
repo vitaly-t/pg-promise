@@ -362,7 +362,8 @@ architecture this can only be achieved by using a promise factory, which is exac
 
 ```javascript
 function txFactory(t, idx) {
-    // must return a promise based on the index;
+    // must create and return a promise object dynamically,
+    // based on the index of the sequence (parameter idx);
     switch (idx) {
         case 0:
             return t.query("select 0");
