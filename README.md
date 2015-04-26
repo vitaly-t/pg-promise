@@ -356,14 +356,14 @@ As a result, there may be a number of errors generated, each stating that a quer
 which by no means breaks any transaction logic, just fills your error log with query failures that are not
 important.
  
-Version 1.0.5 added a new feature for transactions - method `sequence` that forces a strict sequence of queries
+Version 1.0.5 added a new feature for transactions - method `sequence` to enforce a strict sequence of queries
 to be executed inside a transaction, one by one, and if one fails - the rest won't execute. In the promise
 architecture this can only be achieved by using a promise factory, which is exactly what it is.
 
 ```javascript
 function txFactory(t, idx) {
-    // must create and return a promise object dynamically,
-    // based on the index of the sequence (parameter idx);
+// must create and return a promise object dynamically,
+// based on the index of the sequence (parameter idx);
     switch (idx) {
         case 0:
             return t.query("select 0");
@@ -372,8 +372,8 @@ function txFactory(t, idx) {
         case 2:
             return t.query("select 2");
     }
-    // returning nothing or null indicates end of sequence;
-    // throwing an error will result in a reject;
+// returning nothing or null indicates the end of the sequence;
+// throwing an error will result in a reject;
 }
 
 db.tx(function (t) {
