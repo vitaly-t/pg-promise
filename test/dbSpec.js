@@ -597,9 +597,9 @@ describe("queryRaw", function () {
     });
 });
 
-describe("Transaction sequencing", function () {
+describe("Synchronous Transactions", function () {
 
-    it("must throw an error for invalid factory", function () {
+    it("must throw an error for an invalid factory", function () {
         var result;
         db.tx(function (t) {
             return t.sequence();

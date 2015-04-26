@@ -34,7 +34,7 @@ Complete access layer to [PG] via [Promises/A+].
     - [Shared-connection Transactions](#shared-connection-transactions)
     - [Nested Transactions](#nested-transactions)
     - [Transactions with SAVEPOINT](#transactions-with-savepoint)
-    - [Strict Transactions](#strict-transactions)    
+    - [Synchronous Transactions](#synchronous-transactions)    
   - [Queries and Parameters](#queries-and-parameters)
   - [Named Parameters](#named-parameters)
   - [Conversion Helpers](#conversion-helpers)
@@ -347,18 +347,17 @@ complicated to control the result of individual commands within a transaction, y
 result and change the following commands accordingly. This is why it makes much more sense to do such
 transactions inside SQL functions, and not on the client side.
 
-### Strict Transactions
+### Synchronous Transactions
 
-A transaction usually relies on generic method `promise.all([...])` to resolve all queries independently.
+A transaction usually relies on generic method `promise.all([...])` to resolve all queries asynchronously.
 The only downside of this approach is when one query fails and results in `ROLLBACK`, the rest of queries
-will continue execution regardless, due to the asynchronous nature of method `promise.all`.
-As a result, there may be a number of errors generated, each stating that a query outside of transaction will be ignored,
-which by no means breaks any transaction logic, just fills your error log with query failures that are not
-important.
+will continue execution regardless. As a result, there may be a number of errors generated, each stating that
+a query outside of transaction will be ignored, which by no means breaks any transaction logic,
+just fills your error log with query failures that are not important.
  
-Version 1.0.5 added a new feature for transactions - method `sequence` to enforce a strict sequence of queries
-to be executed inside a transaction, one by one, and if one fails - the rest won't execute. In the promise
-architecture this can only be achieved by using a promise factory, which is exactly what it is.
+Version 1.0.5 added a new feature for transactions - method `sequence` to enforce a strict/synchronous sequence
+of queries to be executed inside a transaction, one by one, and if one fails - the rest won't execute.
+In the promise architecture this can only be achieved by using a promise factory, which is exactly what it is.
 
 ```javascript
 function txFactory(idx, t) {
