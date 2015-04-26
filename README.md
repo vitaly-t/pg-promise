@@ -371,7 +371,7 @@ function txFactory(t, idx) {
         case 2:
             return t.query("select 2");
     }
-    // returning nothing indicates end of sequence;
+    // returning nothing or null indicates end of sequence;
 }
 
 db.tx(function (t) {
