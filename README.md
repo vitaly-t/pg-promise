@@ -34,6 +34,7 @@ Complete access layer to [PG] via [Promises/A+].
     - [Shared-connection Transactions](#shared-connection-transactions)
     - [Nested Transactions](#nested-transactions)
     - [Transactions with SAVEPOINT](#transactions-with-savepoint)
+    - [Strict Transactions](#strict-transactions)    
   - [Queries and Parameters](#queries-and-parameters)
   - [Named Parameters](#named-parameters)
   - [Conversion Helpers](#conversion-helpers)
@@ -345,6 +346,49 @@ The issue with stripping out a transaction like this and injecting `SAVEPOINT` -
 complicated to control the result of individual commands within a transaction, you may need to check every
 result and change the following commands accordingly. This is why it makes much more sense to do such
 transactions inside SQL functions, and not on the client side.
+
+### Strict Transactions
+
+A transaction usually relies on generic method `promise.all([...])` to resolve all queries independently.
+The only downside of this approach is when one query fails and results in `ROLLBACK`, the rest of queries
+will continue execution regardless, due to the asynchronous nature of method `promise.all`.
+As a result, there may be a number of errors generated, each stating that a query outside of transaction will be ignored,
+which by no means breaks any transaction logic, just fills your error log with query failures that are not
+important.
+ 
+Version 1.0.5 added a new feature for transactions - method `sequence` that forces a strict sequence of queries
+to be executed inside a transaction, one by one, and if one fails - the rest won't execute. In the promise
+architecture this can only be achieved by using a promise factory, which is exactly what it is.
+
+```javascript
+function txFactory(t, idx) {
+    // must return a promise based on the index;
+    switch (idx) {
+        case 0:
+            return t.query("select 0");
+        case 1:
+            return t.query("select 1");
+        case 2:
+            return t.query("select 2");
+    }
+    // returning nothing indicates end of sequence;
+}
+
+db.tx(function (t) {
+    return t.sequence(txFactory);
+})
+    .then(function (data) {
+        console.log(data); // print result;
+    }, function (reason) {
+        console.log(reason); // print error;
+    });
+```
+
+Such approach guarantees strict sequence of queries execution by turning an otherwise asynchronous
+queue of queries into a synchronous one, which is a price to consider.
+  
+This approach should normally be considered for transactions with many independent queries of the
+same nature, like bulk inserts.
 
 ## Queries and Parameters
 
@@ -662,7 +706,6 @@ var pgp = pgpLib(options);
 * [RSVP] - doesn't have `done()`, use `finally/catch` instead
 * [Lie] - doesn't have `done()`
 
-
 Compatibility with other [Promises/A+] libraries though possible, is an unknown.
 
 ---
@@ -852,6 +895,7 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 
 # History
 
+* Version 1.0.5 added strict query sequencing for transactions. Released: April 26, 2015.
 * Version 1.0.3 added method `queryRaw(query, values)`. Released: April 19, 2015.
 * Version 1.0.1 improved error reporting for queries. Released: April 18, 2015.
 * Version 1.0.0 official release milestone. Released: April 17, 2015.
