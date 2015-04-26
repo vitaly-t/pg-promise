@@ -597,6 +597,73 @@ describe("queryRaw", function () {
     });
 });
 
+describe("Transaction sequencing", function () {
+
+    it("must throw an error for invalid factory", function () {
+        var result;
+        db.tx(function (t) {
+            return t.sequence();
+        }).then(function () {
+            result = null;
+        }, function (reason) {
+            result = reason;
+        });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBe("Invalid factory function passed.");
+        });
+    });
+
+    it("must throw an error for an invalid factory result", function () {
+        var result;
+        db.tx(function (t) {
+            return t.sequence(function () {
+                return 123;
+            });
+        }).then(function () {
+            result = null;
+        }, function (reason) {
+            result = reason;
+        });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBe("Promise factory returned invalid result for index 0");
+        });
+    });
+
+    it("must resolve promises in correct sequence", function () {
+        var result;
+        db.tx(function (t) {
+            return t.sequence(function (tx, idx) {
+                switch (idx) {
+                    case 0:
+                        return tx.query("select 'one' as value");
+                    case 1:
+                        return tx.query("select 'two' as value");
+                }
+            });
+        }).then(function (data) {
+            result = data;
+        }, function (reason) {
+            result = reason;
+        });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result instanceof Array).toBe(true);
+            expect(result.length).toBe(2);
+            expect(result[0][0].value).toBe('one');
+            expect(result[1][0].value).toBe('two');
+        });
+    });
+
+});
+
 var _finishCallback = jasmine.Runner.prototype.finishCallback;
 jasmine.Runner.prototype.finishCallback = function () {
     // Run the old finishCallback:
