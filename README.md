@@ -372,6 +372,7 @@ function txFactory(t, idx) {
             return t.query("select 2");
     }
     // returning nothing or null indicates end of sequence;
+    // throwing an error will result in a reject;
 }
 
 db.tx(function (t) {
