@@ -351,13 +351,13 @@ transactions inside SQL functions, and not on the client side.
 
 A transaction usually relies on generic method `promise.all([...])` to resolve all queries asynchronously.
 The only downside of this approach is when one query fails and results in `ROLLBACK`, the rest of queries
-will continue execution regardless. As a result, there may be a number of errors generated, each stating that
+will continue execution regardless. As a result, there may be some errors generated, each stating that
 a query outside of transaction will be ignored, which by no means breaks the transaction logic,
-just fills your error log with query failures that are not important.
+just fills your error log with query failures that are of no consequence.
  
-Version 1.0.5 added a new feature for transactions - method `sequence` to enforce a strict/synchronous sequence
-of queries to be executed inside a transaction, one by one, and if one fails - the rest won't execute.
-In the promise architecture this can only be achieved by using a promise factory, which is exactly what it is.
+Version 1.0.5 added a new feature for transactions - method `sequence` to enforce a strict sequence
+of queries to be executed inside your transaction, one by one, and if one fails - the rest won't execute.
+In the promise architecture this is achieved by using a promise factory.
 
 ```javascript
 function txFactory(idx, t) {
@@ -385,8 +385,7 @@ db.tx(function (t) {
     });
 ```
 
-An inline version gets simpler, because the factory function doesn't need to declare
-parameter `t`, as it is available from the container:
+An inline version gets simpler, because it can reuse parameter `t` from the container:
 
 ```javascript
 db.tx(function (t) {
