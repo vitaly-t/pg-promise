@@ -409,7 +409,7 @@ db.tx(function (t) {
 ```
 
 Such approach guarantees strict sequence of queries execution by turning an otherwise asynchronous
-queue of queries into a synchronous one, which is a price to consider.
+queue of queries into a synchronous one, which has a price to consider.
   
 This approach should normally be considered for transactions with many independent queries of the
 same nature, like bulk inserts, to reduce memory usage at the expense of synchronous execution.
