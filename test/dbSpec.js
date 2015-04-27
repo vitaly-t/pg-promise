@@ -612,7 +612,7 @@ describe("Synchronous Transactions", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result).toBe("Invalid factory function passed.");
+            expect(result).toBe("Invalid factory function specified.");
         });
     });
 
