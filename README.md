@@ -51,6 +51,8 @@ Complete access layer to [PG] via [Promises/A+].
 * [History](#history)
 * [License](#license)
 
+---
+
 # About
 
 Built on top of [node-postgres] and its connection pool, this library translates their callback interface into one based on [Promises/A+],
@@ -127,6 +129,8 @@ var db = pgp(cn); // create a new database instance from the connection details
 There can be multiple database objects instantiated in the application from different connection details.
 
 To get started quickly, see our [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example) tutorial. 
+
+And once you get it all up and running, have a look at [pg-monitor], which can work a treat for monitoring queries in your application.
 
 # Usage
 
@@ -675,6 +679,8 @@ var options = {
 var pgp = pgpLib(options);
 ```
 
+If you want to get the most out the query-related events, you should use [pg-monitor].
+
 ---
 #### pgFormatting
 
@@ -944,16 +950,6 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 * It reached first Beta version 0.1.0 on March 4th, 2015.
 * The first draft v0.0.1 was published on March 3rd, 2015, and then rapidly incremented due to many initial changes that had to come in, mostly documentation.
 
-[PG]:https://github.com/brianc/node-postgres
-[node-postgres]:https://github.com/brianc/node-postgres
-[Promises/A+]:https://promisesaplus.com/
-[Promise]:https://github.com/then/promise
-[Bluebird]:https://github.com/petkaantonov/bluebird
-[When]:https://github.com/cujojs/when
-[Q]:https://github.com/kriskowal/q
-[RSVP]:https://github.com/tildeio/rsvp.js
-[Lie]:https://github.com/calvinmetcalf/lie
-
 # License
 
 Copyright (c) 2015 Vitaly Tomilov (vitaly.tomilov@gmail.com)
@@ -968,3 +964,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
+
+[pg-monitor]:https://github.com/vitaly-t/pg-monitor
+[PG]:https://github.com/brianc/node-postgres
+[node-postgres]:https://github.com/brianc/node-postgres
+[Promises/A+]:https://promisesaplus.com/
+[Promise]:https://github.com/then/promise
+[Bluebird]:https://github.com/petkaantonov/bluebird
+[When]:https://github.com/cujojs/when
+[Q]:https://github.com/kriskowal/q
+[RSVP]:https://github.com/tildeio/rsvp.js
+[Lie]:https://github.com/calvinmetcalf/lie
