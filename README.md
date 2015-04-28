@@ -355,7 +355,7 @@ will continue execution regardless. As a result, there may be some errors genera
 a query outside of transaction will be ignored, which by no means breaks the transaction logic,
 just fills your error log with query failures that are of no consequence.
  
-Version 1.0.5 added a new feature for transactions - method `sequence` to enforce a strict sequence
+A transaction object has method `sequence`, with alias `queue`, to enforce a strict sequence
 of queries to be executed inside your transaction, one by one, and if one fails - the rest won't execute.
 In the promise architecture this is achieved by using a promise factory.
 
@@ -376,6 +376,7 @@ function txFactory(idx, t) {
 }
 
 db.tx(function (t) {
+    // same as calling t.queue(txFactory);
     return t.sequence(txFactory);
 })
     .then(function (data) {
@@ -385,7 +386,7 @@ db.tx(function (t) {
     });
 ```
 
-An inline version gets simpler, because it can reuse parameter `t` from the container:
+An inline version looks simpler, because it can reuse parameter `t` from the container:
 
 ```javascript
 db.tx(function (t) {
