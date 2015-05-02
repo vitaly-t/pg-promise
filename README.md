@@ -1005,6 +1005,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OU
 DEALINGS IN THE SOFTWARE.
 
 [pg-monitor]:https://github.com/vitaly-t/pg-monitor
+[pg-promise]:https://github.com/vitaly-t/pg-promise
 [PG]:https://github.com/brianc/node-postgres
 [node-postgres]:https://github.com/brianc/node-postgres
 [Promises/A+]:https://promisesaplus.com/
