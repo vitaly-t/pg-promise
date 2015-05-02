@@ -919,7 +919,7 @@ in the following example.
 function repUsers(obj) {
     return {
         add: function (name, active) {
-            return obj.any("insert into users values($1, $2)", [name, active]);
+            return obj.none("insert into users values($1, $2)", [name, active]);
         },
         delete: function (id) {
             return obj.none("delete from users where id=$1", id);
