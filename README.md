@@ -709,10 +709,10 @@ Although this has a huge implication for the library's functionality, it is not 
 For any further reference you should use documentation of the [PG] library.
 
 Note the following formatting features implemented by [pg-promise] that are not in [node-postgres]:
-* Single-value formatting: [pg-promise] doesn't require to use an array when passing a single value;
-* Raw-Text support: injecting raw/pre-formatted text values into the query;
+* Single-value formatting: [pg-promise] doesn't require use of an array when passing a single value;
+* [Raw-Text](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#raw-text) support: injecting raw/pre-formatted text values into the query;
 * [PostgreSQL Array Constructors](http://www.postgresql.org/docs/9.1/static/arrays.html#ARRAYS-INPUT) are used when formatting arrays,
-not the old syntax string syntax;
+not the old string syntax;
 * Automatic conversion of numeric NaN, +Infinity and -Infinity into their string presentation;
 
 **NOTE:** Formatting parameters for calling functions (methods `func` and `proc`) is not affected by this override.
