@@ -475,6 +475,8 @@ query("...WHERE name LIKE '%${name^}%'", {name: "John"});
 query("...WHERE id IN($1^)", pgp.as.csv([1,2,3,4])); 
 ```
 
+---
+
 In order to eliminate the chances of unexpected query results and make code more robust, each request supports
 parameter `qrm` (Query Result Mask), via type `queryResult`:
 ```javascript
@@ -909,7 +911,37 @@ var options = {
 IMPORTANT: Do not override any of the predefined functions or properties in the protocol,
 as it will break your access object.
 
-The library provides no error handling, should your `extend` function throw an error.
+It is best to extend the protocol by adding whole entity repositories to it as shown
+in the following example.
+
+```javascript
+// Users repository;
+function repUsers(obj) {
+    return {
+        add: function (name, active) {
+            return obj.any("insert into users values($1, $2)", [name, active]);
+        },
+        delete: function (id) {
+            return obj.none("delete from users where id=$1", id);
+        }
+    }
+}
+
+// Overriding 'extend' event;
+var options = {
+    extend: function (obj) {
+        obj.users = repUsers(obj);
+    }
+};
+
+// Usage example:
+db.users.add("John", true)
+    .then(function () {
+        // user added successfully;
+    }, function (reason) {
+        // error occurred;
+    });
+```
 
 **NOTE:** The library will throw an error instead of making the call, if `options.extend` is set to
 a non-empty value other than a function.
