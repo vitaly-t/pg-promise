@@ -1,7 +1,10 @@
+var promise = require('bluebird');
 var pgpLib = require('../lib/index');
-var pgp = pgpLib(); // initializing the library;
 
-var db = pgp('invalid connection string');
+var dbHeader = require('./db/header')();
+
+var pgp = dbHeader.pgp;
+var db = dbHeader.db;
 
 describe("Library entry object", function () {
 
@@ -36,6 +39,7 @@ describe("Library initialization object", function () {
         expect(typeof(pgp.as.array)).toBe('function');
         expect(typeof(pgp.as.json)).toBe('function');
         expect(typeof(pgp.as.csv)).toBe('function');
+        expect(typeof(pgp.as.number)).toBe('function');
         expect(typeof(pgp.as.format)).toBe('function');
     });
 });
@@ -52,8 +56,8 @@ describe("Query Result", function () {
     });
 });
 
-describe("Database object", function () {
-    it("must have all the protocol functions", function () {
+describe("Database Protocol", function () {
+    it("must have all the root-level methods", function () {
         expect(typeof(db.connect)).toBe('function');
         expect(typeof(db.query)).toBe('function');
         expect(typeof(db.queryRaw)).toBe('function');
@@ -66,5 +70,97 @@ describe("Database object", function () {
         expect(typeof(db.manyOrNone)).toBe('function');
         expect(typeof(db.func)).toBe('function');
         expect(typeof(db.proc)).toBe('function');
+
+        // must not have transaction-level methods:
+        expect(db.sequence).toBe(undefined);
+        expect(db.queue).toBe(undefined);
     });
+
+    it("must have all the transaction-level methods", function () {
+        var protocol;
+        db.tx(function (t) {
+            return promise.resolve(t);
+        }).then(function (data) {
+            protocol = data;
+        }, function () {
+            protocol = null;
+        });
+
+        waitsFor(function () {
+            return protocol !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(protocol && typeof(protocol) === 'object').toBe(true);
+            expect(protocol.connect).toBe(undefined);
+            expect(typeof(protocol.query)).toBe('function');
+            expect(typeof(protocol.queryRaw)).toBe('function');
+            expect(typeof(protocol.tx)).toBe('function');
+            expect(typeof(protocol.one)).toBe('function');
+            expect(typeof(protocol.many)).toBe('function');
+            expect(typeof(protocol.any)).toBe('function');
+            expect(typeof(protocol.none)).toBe('function');
+            expect(typeof(protocol.oneOrNone)).toBe('function');
+            expect(typeof(protocol.manyOrNone)).toBe('function');
+            expect(typeof(protocol.func)).toBe('function');
+            expect(typeof(protocol.proc)).toBe('function');
+            expect(typeof(protocol.sequence)).toBe('function');
+            expect(typeof(protocol.queue)).toBe('function');
+        });
+    });
+});
+
+describe("Protocol Extension", function () {
+    it("must allow custom properties on database level", function () {
+        var result, counter = 0;
+        var pgpTest = require('./db/header')({
+            extend: function (obj) {
+                counter++;
+                obj.getOne = function (query, values) {
+                    return obj.one(query, values);
+                };
+            }
+        });
+        pgpTest.db.getOne("select 'hello' as msg")
+            .then(function (data) {
+                result = data;
+            }, function () {
+                result = null;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(counter === 1);
+            expect(result.msg).toBe('hello');
+        });
+    });
+
+    it("must allow custom properties on transaction level", function () {
+        var result, counter = 0;
+        var pgpTest = require('./db/header')({
+            extend: function (obj) {
+                counter++;
+                obj.getOne = function (query, values) {
+                    return obj.one(query, values);
+                };
+            }
+        });
+        pgpTest.db.tx(function (t) {
+            return t.getOne("select 'hello' as msg");
+        })
+            .then(function (data) {
+                result = data;
+            }, function () {
+                result = null;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(counter === 1);
+            expect(result && typeof(result) === 'object').toBe(true);
+            expect(result.msg).toBe('hello');
+        });
+    });
+
 });
