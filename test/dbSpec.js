@@ -444,7 +444,7 @@ describe("Return data from a query must match the request type", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBe(null);
-            expect(error).toBe("The query returned no data.");
+            expect(error).toBe("No data returned from the query.");
         });
     });
 

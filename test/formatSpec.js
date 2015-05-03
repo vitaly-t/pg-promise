@@ -2,14 +2,8 @@ var pgp = require('../lib/index')();
 
 var dateSample = new Date();
 
-// common error messages during formatting;
+// common error messages;
 var errors = {
-    arrayType: function (value, index) {
-        return "Cannot convert type '" + typeof(value) + "' of the array element with index " + index;
-    },
-    paramType: function (value) {
-        return "Cannot convert type '" + typeof(value) + "' of the parameter.";
-    },
     rawNull: function () {
         return "Values null/undefined cannot be used as raw text.";
     }
@@ -198,20 +192,13 @@ describe("Method as.csv", function () {
         expect(pgp.as.csv([1, [2, 3], 4])).toBe("1,array[2,3],4");
         expect(pgp.as.csv([1, [['two'], ['three']], 4])).toBe("1,array[['two'],['three']],4");
 
-        ////////////////////////////////
-        // negative tests;
+        expect(pgp.as.csv(function () {
+            return 'one';
+        })).toBe("'one'");
 
-        expect(function () {
-            pgp.as.csv(function () {
-            });
-        }).toThrow(errors.paramType(function () {
-        }));
-
-        expect(function () {
-            pgp.as.csv(['hello', function () {
-            }]);
-        }).toThrow(errors.arrayType(function () {
-        }, 1));
+        expect(pgp.as.csv(function () {
+            return ['one', 'two'];
+        })).toBe("array['one','two']");
 
     });
 });
@@ -250,18 +237,67 @@ describe("Method as.array", function () {
         expect(pgp.as.array([[[[[[[[[[[[[[[[[[[[20]]]]]]]]]]]]]]]]]]]]))
             .toBe("array[[[[[[[[[[[[[[[[[[[[20]]]]]]]]]]]]]]]]]]]]");
     });
+});
 
-    it("must correctly reject invalid elements", function () {
+describe("Method as.func", function () {
 
-        // one-dimension error test;
+    it("must correctly convert any function return", function () {
+        expect(pgp.as.func()).toBe('null');
+        expect(pgp.as.func(null)).toBe('null');
+
+        expect(pgp.as.func(function () {
+            return 1;
+        })).toBe("1");
+
+        expect(pgp.as.func(function () {
+            return [1, 2, 3];
+        })).toBe("array[1,2,3]");
+
+        expect(pgp.as.func(function () {
+        })).toBe("null");
+
+        expect(pgp.as.func(function () {
+            return null;
+        })).toBe("null");
+
+        expect(pgp.as.func(function () {
+            return func()
+            {
+                return func()
+                {
+                }
+            }
+        })).toBe("null");
+
+        expect(pgp.as.func(function () {
+            return function () {
+                return function () {
+                    return true;
+                }
+            }
+        })).toBe("true");
+
+        /////////////////////////////
+        // negative tests;
+
         expect(function () {
-            pgp.as.array([1, 2, func]);
-        }).toThrow(errors.arrayType(func, 2));
+            pgp.as.func(1);
+        }).toThrow("'1' doesn't represent a valid function.");
 
-        // multi-dimension error test;
         expect(function () {
-            pgp.as.array([1, 2, 3, [4, [5, 6, func, 8], 9]]);
-        }).toThrow(errors.arrayType(func, "3,1,2"));
+            pgp.as.func(undefined, true);
+        }).toThrow("Values null/undefined cannot be used as raw text.");
+
+        expect(function () {
+            pgp.as.func(null, true);
+        }).toThrow("Values null/undefined cannot be used as raw text.");
+
+        expect(function () {
+            pgp.as.func(function () {
+                throw "internal error";
+            });
+        }).toThrow("internal error");
+
     });
 });
 
@@ -297,10 +333,6 @@ describe("Method as.format", function () {
             pgp.as.format("", null);
         }).toThrow("No variable $1 found to replace with the value passed.");
 
-        expect(function () {
-            pgp.as.format("$1", func);
-        }).toThrow(errors.paramType(func));
-
         expect(pgp.as.format("", [])).toBe("");
 
         expect(pgp.as.format("$1", [])).toBe("$1");
@@ -330,22 +362,6 @@ describe("Method as.format", function () {
         expect(pgp.as.format("$1 $1, $2 $2, $1", [1, "two"])).toBe("1 1, 'two' 'two', 1"); // test for repeated variables;
 
         expect(pgp.as.format("Test: $1", ["don't break quotes!"])).toBe("Test: 'don''t break quotes!'");
-
-        expect(function () {
-            pgp.as.format("$1,$2", [func, func]);
-        }).toThrow(errors.arrayType(func, 0));
-
-        // test that errors in type conversion are
-        // detected and reported from left to right;
-        expect(function () {
-            pgp.as.format("$1, $2", [true, func]);
-        }).toThrow(errors.arrayType(func, 1));
-
-        // test that once a conversion issue is encountered,
-        // the rest of parameters are not verified;
-        expect(function () {
-            pgp.as.format("$1,$2,$3,$4,$5", [1, 2, func, func, func, func]);
-        }).toThrow(errors.arrayType(func, 2));
 
         // testing with lots of variables;
         var source = "", dest = "", params = [];
@@ -439,20 +455,6 @@ describe("Method as.format", function () {
             });
         }).toThrow("Property 'PropName' doesn't exist.");
 
-        expect(function () {
-            pgp.as.format("${prop1},${prop2}", {
-                prop1: 'hello',
-                prop2: func
-            });
-        }).toThrow("Cannot convert type 'function' of property 'prop2'");
-
-        expect(function () {
-            pgp.as.format("${prop1},${prop2}", {
-                prop1: 'hello',
-                prop2: function () {
-                }
-            });
-        }).toThrow("Cannot convert type 'function' of property 'prop2'");
     });
 
     it("must correctly inject raw-text variables", function () {

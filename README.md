@@ -430,11 +430,12 @@ that's defined as shown below:
 ```javascript
 function query(query, values, qrm);
 ```
-* `query` (required) - query string that supports two types of formatting, depending on the `values` passed:
-   - format `$1, $2`, if `values` is simple (text, boolean, number, date or null) or an array of values;
+* `query` (required) - a string with support for three types of formatting, depending on the `values` passed:
+   - format `$1` (single variable), if `values` is of type `string`, `boolean`, `number`, `Date`, `function` or `null`;
+   - format `$1, $2, etc..`, if `values` is an array of values;
    - format `${propName}`, if `values` is an object (not null and not Date);
 * `values` (optional) - value/array/object to replace the variables in the query;
-* `qrm` - (optional) Query Result Mask, as explained below...
+* `qrm` - (optional) *Query Result Mask*, as explained below...
 
 When a value/property inside array/object is of type array, it is treated as a [PostgreSQL Array Type](http://www.postgresql.org/docs/9.4/static/arrays.html),
 converted into the array constructor format of `array[]`, the same as calling method `as.array()`.
@@ -613,6 +614,10 @@ pgp.as.json(value, raw);
                     // then fixes single-quote symbols and wraps it up in
                     // single quotes (unless flag 'raw' is set);
 
+pgp.as.func(func, raw);
+                    // calls the function to get the actual value, and then
+                    // formats it according to the returned type.
+
 pgp.as.array(array); // converts array into PostgreSQL Array Type constructor
                      // string: array[]
 
@@ -621,7 +626,7 @@ pgp.as.csv(array);  // returns a CSV string with values formatted according
 
 pgp.as.format(query, values);
             // replaces variables in the query with their `values` as specified;
-            // `values` can be a simple value, an array or an object.
+            // `values` can be a single value, an array or an object.
 ```
 
 For methods which take optional flag `raw` it is to indicate that the
@@ -711,9 +716,10 @@ For any further reference you should use documentation of the [PG] library.
 Note the following formatting features implemented by [pg-promise] that are not in [node-postgres]:
 * Single-value formatting: [pg-promise] doesn't require use of an array when passing a single value;
 * [Raw-Text](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#raw-text) support: injecting raw/pre-formatted text values into the query;
+* Functions as formatting parameters, with the actual values returned from the callbacks;
 * [PostgreSQL Array Constructors](http://www.postgresql.org/docs/9.1/static/arrays.html#ARRAYS-INPUT) are used when formatting arrays,
 not the old string syntax;
-* Automatic conversion of numeric NaN, +Infinity and -Infinity into their string presentation;
+* Automatic conversion of numeric `NaN`, `+Infinity` and `-Infinity` into their string presentation;
 
 **NOTE:** Formatting parameters for calling functions (methods `func` and `proc`) is not affected by this override.
 When needed, use the generic `query` instead to invoke functions with redirected query formatting.
@@ -964,6 +970,7 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 
 # History
 
+* Version 1.1.0 added support for functions as parameters. Released: April 3, 2015.
 * Version 1.0.5 added strict query sequencing for transactions. Released: April 26, 2015.
 * Version 1.0.3 added method `queryRaw(query, values)`. Released: April 19, 2015.
 * Version 1.0.1 improved error reporting for queries. Released: April 18, 2015.

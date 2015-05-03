@@ -254,7 +254,7 @@ describe("Error event", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(errTxt).toBe("The query returned no data.");
+            expect(errTxt).toBe("No data returned from the query.");
             expect(context.query).toBe("select * from users where id > 1000");
             expect(context.params).toBe(undefined);
             expect(counter).toBe(1);
@@ -281,31 +281,6 @@ describe("Error event", function () {
         runs(function () {
             expect(errTxt).toBe("No variable $2 found for the value with index 1");
             expect(context.query).toBe("$1");
-            expect(context.params).toBe(params);
-            expect(counter).toBe(1);
-        });
-    });
-
-    it("must report function failures", function () {
-        var result, errTxt, context, counter = 0;
-        var params = ['one', func];
-        options.error = function (err, e) {
-            counter++;
-            errTxt = err;
-            context = e;
-        };
-        db.func("myFunc", params)
-            .then(function () {
-                result = null;
-            }, function (reason) {
-                result = reason;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
-            expect(errTxt).toBe("Cannot convert type 'function' of the array element with index 1");
-            expect(context.query).toBe("select * from myFunc(...)");
             expect(context.params).toBe(params);
             expect(counter).toBe(1);
         });
