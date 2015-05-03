@@ -254,7 +254,7 @@ describe("Error event", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(errTxt).toBe("No rows returned from the query.");
+            expect(errTxt).toBe("The query returned no data.");
             expect(context.query).toBe("select * from users where id > 1000");
             expect(context.params).toBe(undefined);
             expect(counter).toBe(1);
