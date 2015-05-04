@@ -277,6 +277,12 @@ describe("Method as.func", function () {
             }
         })).toBe("true");
 
+        expect(pgp.as.format("$1,$1^", function () {
+            return function () {
+                return 'one';
+            };
+        })).toBe("'one',one");
+
         /////////////////////////////
         // negative tests;
 
