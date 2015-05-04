@@ -48,6 +48,24 @@ describe("Method as.number", function () {
         expect(pgp.as.number(1 / 0)).toBe("'+Infinity'");
         expect(pgp.as.number(-1 / 0)).toBe("'-Infinity'");
     });
+
+    it("must correctly reject invalid numbers", function () {
+
+        var err = " is not a number.";
+        expect(function(){
+            pgp.as.number('');
+        }).toThrow("''" + err);
+
+        expect(function(){
+            pgp.as.number([1,2]);
+        }).toThrow("'1,2'" + err);
+
+        expect(function(){
+            pgp.as.number(func);
+        }).toThrow("'" + func + "'" + err);
+
+    });
+
 });
 
 describe("Method as.text", function () {
@@ -119,27 +137,27 @@ describe("Method as.date", function () {
 
         expect(function () {
             pgp.as.date("");
-        }).toThrow("'' doesn't represent a valid Date object.");
+        }).toThrow("'' is not a Date object.");
 
         expect(function () {
             pgp.as.date("bla-bla");
-        }).toThrow("'bla-bla' doesn't represent a valid Date object.");
+        }).toThrow("'bla-bla' is not a Date object.");
 
         expect(function () {
             pgp.as.date(123);
-        }).toThrow("'123' doesn't represent a valid Date object.");
+        }).toThrow("'123' is not a Date object.");
 
         expect(function () {
             pgp.as.date(func);
-        }).toThrow("'" + func.toString() + "' doesn't represent a valid Date object.");
+        }).toThrow("'" + func.toString() + "' is not a Date object.");
 
         expect(function () {
             pgp.as.date([]);
-        }).toThrow("'' doesn't represent a valid Date object.");
+        }).toThrow("'' is not a Date object.");
 
         expect(function () {
             pgp.as.date({});
-        }).toThrow("'[object Object]' doesn't represent a valid Date object.");
+        }).toThrow("'[object Object]' is not a Date object.");
 
         expect(pgp.as.date(dateSample)).toBe("'" + dateSample.toUTCString() + "'");
 
@@ -237,6 +255,20 @@ describe("Method as.array", function () {
         expect(pgp.as.array([[[[[[[[[[[[[[[[[[[[20]]]]]]]]]]]]]]]]]]]]))
             .toBe("array[[[[[[[[[[[[[[[[[[[[20]]]]]]]]]]]]]]]]]]]]");
     });
+
+    it("must correctly reject invalid parameters", function () {
+
+        var err = " is not an Array object.";
+        expect(function(){
+            pgp.as.array(123);
+        }).toThrow("'123'" + err);
+
+        expect(function(){
+            pgp.as.array('');
+        }).toThrow("''" + err);
+
+    });
+
 });
 
 describe("Method as.func", function () {
@@ -297,7 +329,7 @@ describe("Method as.func", function () {
 
         expect(function () {
             pgp.as.func(1);
-        }).toThrow("'1' doesn't represent a valid function.");
+        }).toThrow("'1' is not a function.");
 
         expect(function () {
             pgp.as.func(undefined, true);
@@ -312,6 +344,14 @@ describe("Method as.func", function () {
                 throw "internal error";
             });
         }).toThrow("internal error");
+
+        expect(function () {
+            pgp.as.func(func, false, '');
+        }).toThrow("'' is not an object.");
+
+        expect(function () {
+            pgp.as.func(func, false, 0);
+        }).toThrow("'0' is not an object.");
 
     });
 });
