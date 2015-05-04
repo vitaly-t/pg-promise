@@ -8,9 +8,26 @@ var dbHeader = require('./db/header')(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
+describe("Library Initialization", function () {
+    it("must throw an error when invalid 'options' is passed", function () {
+
+        var err = "Invalid parameter 'options' passed.";
+        var lib = require('./db/header');
+        expect(function () {
+            lib('');
+        }).toThrow(err);
+
+        expect(function () {
+            lib(0);
+        }).toThrow(err);
+
+    });
+});
+
+
 describe("Database Instantiation", function () {
     it("must throw an error when empty or no connection passed", function () {
-        var err = "Invalid 'cn' parameter passed.";
+        var err = "Invalid parameter 'cn' passed.";
         expect(pgp).toThrow(err);
         expect(function () {
             pgp(null);
@@ -171,8 +188,8 @@ describe("Executing method query", function () {
             db.query('something', undefined, 0),
             db.query('something', undefined, 100),
             db.query('something', undefined, NaN),
-            db.query('something', undefined, 1/0),
-            db.query('something', undefined, -1/0)])
+            db.query('something', undefined, 1 / 0),
+            db.query('something', undefined, -1 / 0)])
             .then(function () {
                 finished = true;
             }, function (reason) {
