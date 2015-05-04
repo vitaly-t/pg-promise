@@ -283,6 +283,15 @@ describe("Method as.func", function () {
             };
         })).toBe("'one',one");
 
+        // testing function-object context;
+        expect(pgp.as.format("${summ}", {
+            val1: 1,
+            val2: 2,
+            summ: function () {
+                return this.val1 + this.val2; // `this` must work here;
+            }
+        })).toBe("3");
+
         /////////////////////////////
         // negative tests;
 
