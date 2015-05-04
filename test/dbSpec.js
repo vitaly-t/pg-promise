@@ -134,9 +134,9 @@ describe("Selecting one static value", function () {
     });
 });
 
-describe("Executing an invalid query", function () {
+describe("Executing method query", function () {
 
-    it("must reject with an error", function () {
+    it("with invalid query as parameter must throw an error", function () {
         var finished, result, error = "Parameter 'query' must be a non-empty text string.";
         promise.any([
             db.query(),
@@ -162,6 +162,38 @@ describe("Executing an invalid query", function () {
             expect(result[4]).toBe(error);  // reject to a null query;
         });
     });
+
+    it("with invalid qrm as parameter must throw an error", function () {
+        var finished, result, error = "Invalid Query Result Mask specified.";
+        promise.any([
+            db.query('something', undefined, ''),
+            db.query('something', undefined, -1),
+            db.query('something', undefined, 0),
+            db.query('something', undefined, 100),
+            db.query('something', undefined, NaN),
+            db.query('something', undefined, 1/0),
+            db.query('something', undefined, -1/0)])
+            .then(function () {
+                finished = true;
+            }, function (reason) {
+                result = reason;
+                finished = true;
+            });
+        waitsFor(function () {
+            return finished;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result.length).toBe(7);
+            expect(result[0]).toBe(error);  // reject for the wrong data type;
+            expect(result[1]).toBe(error);  // reject for -1;
+            expect(result[2]).toBe(error);  // reject for 0;
+            expect(result[3]).toBe(error);  // reject a large positive number;
+            expect(result[4]).toBe(error);  // reject for a NaN;
+            expect(result[5]).toBe(error);  // reject for Infinity;
+            expect(result[6]).toBe(error);  // reject for -Infinity;
+        });
+    });
+
 });
 
 describe("Executing an invalid function", function () {
@@ -339,7 +371,7 @@ describe("Calling a transaction with an invalid callback", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBe(null);
-            expect(error).toBe("Callback function passed into tx() didn't return a valid promise object.");
+            expect(error).toBe("Callback function passed into tx() didn't return a promise object.");
         });
     });
     it("must reject when the callback returns nonsense", function () {
@@ -358,7 +390,7 @@ describe("Calling a transaction with an invalid callback", function () {
         }, "Query timed out", 15000);
         runs(function () {
             expect(result).toBe(null);
-            expect(error).toBe("Callback function passed into tx() didn't return a valid promise object.");
+            expect(error).toBe("Callback function passed into tx() didn't return a promise object.");
         });
     });
 
