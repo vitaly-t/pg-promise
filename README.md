@@ -614,9 +614,10 @@ pgp.as.json(value, raw);
                     // then fixes single-quote symbols and wraps it up in
                     // single quotes (unless flag 'raw' is set);
 
-pgp.as.func(func, raw);
+pgp.as.func(func, raw, obj);
                     // calls the function to get the actual value, and then
-                    // formats it according to the returned type.
+                    // formats it according to the returned type + `raw` flag;
+                    // obj - optional, `this` context for the function. 
 
 pgp.as.array(array); // converts array into PostgreSQL Array Type constructor
                      // string: array[]
