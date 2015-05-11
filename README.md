@@ -1,7 +1,7 @@
 pg-promise
 ===========
 
-Complete access layer to [PG] via [Promises/A+].
+Complete access layer to [node-postgres] via [Promises/A+].
 
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
 [![Dependency Status](https://david-dm.org/vitaly-t/pg-promise.svg)](https://david-dm.org/vitaly-t/pg-promise)
@@ -616,8 +616,8 @@ pgp.as.json(value, raw);
 
 pgp.as.func(func, raw, obj);
                     // calls the function to get the actual value, and then
-                    // formats it according to the returned type + `raw` flag;
-                    // obj - optional, `this` context for the function. 
+                    // formats it according to the returned type + 'raw' flag;
+                    // obj - optional, 'this' context for the function. 
 
 pgp.as.array(array); // converts array into PostgreSQL Array Type constructor
                      // string: array[]
@@ -626,8 +626,8 @@ pgp.as.csv(array);  // returns a CSV string with values formatted according
                     // to their type, using the above methods;
 
 pgp.as.format(query, values);
-            // replaces variables in the query with their `values` as specified;
-            // `values` can be a single value, an array or an object.
+            // replaces variables in the query with their 'values' as specified;
+            // 'values' can be a single value, an array or an object.
 ```
 
 For methods which take optional flag `raw` it is to indicate that the
