@@ -170,7 +170,7 @@ db.connect()
     .then(function(obj){
         sco = obj; // save the connection object;
         // find active users created before today:
-        return sco.query("select * from users where active=$1 and created < $2::date",
+        return sco.query("select * from users where active=$1 and created < $2",
             [true, new Date()]);
     })
     .then(function(data){
@@ -223,7 +223,8 @@ A detached transaction acquires a connection and exposes object `t` to let all c
 
 #### Shared-connection Transactions
 
-When executing a transaction within a shared connection chain, parameter `t` represents the same connection as `sco` from opening a shared connection, so either one can be used inside such a transaction interchangeably.
+When executing a transaction within a shared connection chain, parameter `t` represents the same connection as `sco` from opening a shared connection,
+so either one can be used inside such a transaction interchangeably.
 
 ```javascript
 var promise = require('promise'); // or any other supported promise library;
@@ -433,7 +434,7 @@ function query(query, values, qrm);
 * `query` (required) - a string with support for three types of formatting, depending on the `values` passed:
    - format `$1` (single variable), if `values` is of type `string`, `boolean`, `number`, `Date`, `function` or `null`;
    - format `$1, $2, etc..`, if `values` is an array of values;
-   - format `${propName}`, if `values` is an object (not null and not Date);
+   - format `${propName}` or `$(propName)`, if `values` is an object (not null and not Date);
 * `values` (optional) - value/array/object to replace the variables in the query;
 * `qrm` - (optional) *Query Result Mask*, as explained below...
 
@@ -458,7 +459,7 @@ When a value/property inside array/object is of type `object` (except for `null`
 serialized into JSON, the same as calling method `as.json()`, except the latter would convert anything to JSON.
 
 Raw text values can be injected by using variable name appended with symbol `^`:
-`$1^, $2^, etc...` or `${varName^}`.
+`$1^, $2^, etc...`, `${varName^}` or `$(varName)`.
 Raw text is injected without any pre-processing, which means:
 * No replacing each single-quote symbol `'` with two;
 * No wrapping text into single quotes.
@@ -557,6 +558,9 @@ of letters, digits, underscores and `$`;
 It is important to know that while property values `null` and `undefined` are both formatted as `null`,
 an error is thrown when the property doesn't exist at all.
 
+Version 1.2.0 of the library extended the syntax to also support `$(propName)`, for better
+compliance with ES6.
+
 ## Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
 
@@ -635,8 +639,9 @@ return text is to be without any pre-processing:
 * No replacing each single-quote symbol `'` with two;
 * No wrapping text into single quotes;
 * Throwing an error when the variable value is `null` or `undefined`.
+
 This adheres to the query formatting, as well as method `as.format` when variable
-names are appended with symbol `^`: `$1^, $2^, etc...` or `${varName^}`.
+names are appended with symbol `^`: `$1^, $2^, etc...`, `${varName^}` or `$(varName^)`.
 
 As none of these helpers are associated with any database, they can be used from anywhere.
 
@@ -693,11 +698,12 @@ If you want to get the most out the query-related events, you should use [pg-mon
 #### pgFormatting
 
 By default, **pg-promise** provides its own implementation of the query formatting,
-supporting two different formats:
+supporting the following formats:
 
 * Format `$1, $2, etc`, when parameter `values` is either a single value or an array of values;
-* Format `${propName}` - ES6-like format, if `values` is an object that's not `null`
-and not a `Date` instance.
+* Format `${propName}` - ES6-like format, if `values` is an object that's not `null` and not a `Date` instance.
+
+The latter received syntax extension in version 1.2.0 to also support `$(propName)`, for better ES6 compliance.
 
 Every query method of the library accepts `values` as its second parameter.
 
@@ -971,6 +977,7 @@ If you do not call it, your process may be waiting for 30 seconds (default) or s
 
 # History
 
+* Version 1.2.0 extended [Named Parameters](#named-parameters) syntax with `$(varName)`. Released: May 16, 2015.
 * Version 1.1.0 added support for functions as parameters. Released: April 3, 2015.
 * Version 1.0.5 added strict query sequencing for transactions. Released: April 26, 2015.
 * Version 1.0.3 added method `queryRaw(query, values)`. Released: April 19, 2015.

@@ -52,15 +52,15 @@ describe("Method as.number", function () {
     it("must correctly reject invalid numbers", function () {
 
         var err = " is not a number.";
-        expect(function(){
+        expect(function () {
             pgp.as.number('');
         }).toThrow("''" + err);
 
-        expect(function(){
-            pgp.as.number([1,2]);
+        expect(function () {
+            pgp.as.number([1, 2]);
         }).toThrow("'1,2'" + err);
 
-        expect(function(){
+        expect(function () {
             pgp.as.number(func);
         }).toThrow("'" + func + "'" + err);
 
@@ -174,7 +174,7 @@ describe("Method as.csv", function () {
 
         expect(pgp.as.csv()).toBe(""); // test undefined;
         expect(pgp.as.csv([])).toBe(""); // test empty array;
-
+        expect(pgp.as.csv([[]])).toBe("array[]"); // test empty array;
         expect(pgp.as.csv(null)).toBe("null"); // test null;
         expect(pgp.as.csv([null])).toBe("null"); // test null in array;
         expect(pgp.as.csv([undefined])).toBe("null"); // test undefined in array;
@@ -259,11 +259,11 @@ describe("Method as.array", function () {
     it("must correctly reject invalid parameters", function () {
 
         var err = " is not an Array object.";
-        expect(function(){
+        expect(function () {
             pgp.as.array(123);
         }).toThrow("'123'" + err);
 
-        expect(function(){
+        expect(function () {
             pgp.as.array('');
         }).toThrow("''" + err);
 
@@ -469,6 +469,14 @@ describe("Method as.format", function () {
             _$_Balance: -123.45
         })).toBe("'John O''Connor','" + dateSample.toUTCString() + "',true,-123.45");
 
+        // + the same for alternative syntax;
+        expect(pgp.as.format("$( $Nam$E_),$(d_o_b ),$(  _active__),$(_$_Balance)", {
+            $Nam$E_: "John O'Connor",
+            d_o_b: dateSample,
+            _active__: true,
+            _$_Balance: -123.45
+        })).toBe("'John O''Connor','" + dateSample.toUTCString() + "',true,-123.45");
+
         // test that even one-symbol, special-named properties work correctly;
         expect(pgp.as.format("${$}${_}${a}", {
             $: 1,
@@ -476,8 +484,15 @@ describe("Method as.format", function () {
             a: 3
         })).toBe("123");
 
+        // + the same for alternative syntax;
+        expect(pgp.as.format("$($)$(_)$(a)", {
+            $: 1,
+            _: 2,
+            a: 3
+        })).toBe("123");
+
         // Both null and undefined properties are formatted as null;
-        expect(pgp.as.format("${empty1}, ${empty2}", {
+        expect(pgp.as.format("${empty1}, $(empty2)", {
             empty1: null,
             empty2: undefined
         })).toBe("null, null");
@@ -490,7 +505,7 @@ describe("Method as.format", function () {
         }).toThrow("Property 'prop2' doesn't exist.");
 
         // testing case sensitivity - Positive;
-        expect(pgp.as.format("${propVal}${PropVal}${propVAL}${PropVAL}", {
+        expect(pgp.as.format("${propVal}$(PropVal)${propVAL}${PropVAL}", {
             propVal: 1,
             PropVal: 2,
             propVAL: 3,
@@ -503,6 +518,14 @@ describe("Method as.format", function () {
             prop2: [2, ['three']]
         })).toBe("'one', array[2,['three']]");
 
+        // mixed syntax test;
+        expect(pgp.as.format("${prop1}, $(prop2), ${prop3^}, $(prop4^)", {
+            prop1: 'one',
+            prop2: 'two',
+            prop3: 'three',
+            prop4: 'four'
+        })).toBe("'one', 'two', three, four");
+
         // testing case sensitivity - Negative;
         expect(function () {
             pgp.as.format("${PropName}", {
@@ -510,6 +533,18 @@ describe("Method as.format", function () {
             });
         }).toThrow("Property 'PropName' doesn't exist.");
 
+        // wrong-formatted variables tests:
+        expect(pgp.as.format("$()", {})).toBe("$()");
+        expect(pgp.as.format("${test)", {})).toBe("${test)");
+        expect(pgp.as.format("$(test}", {})).toBe("$(test}");
+        expect(pgp.as.format("$((test))", {})).toBe("$((test))");
+        expect(pgp.as.format("${{test}}", {})).toBe("${{test}}");
+        expect(pgp.as.format("$({test})", {})).toBe("$({test})");
+
+        expect(pgp.as.format("$(^test)", {})).toBe("$(^test)");
+        expect(pgp.as.format("${^test}", {})).toBe("${^test}");
+        expect(pgp.as.format("$(test^^)", {})).toBe("$(test^^)");
+        expect(pgp.as.format("${test^^}", {})).toBe("${test^^}");
     });
 
     it("must correctly inject raw-text variables", function () {
