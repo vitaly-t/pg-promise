@@ -459,7 +459,7 @@ When a value/property inside array/object is of type `object` (except for `null`
 serialized into JSON, the same as calling method `as.json()`, except the latter would convert anything to JSON.
 
 Raw text values can be injected by using variable name appended with symbol `^`:
-`$1^, $2^, etc...`, `${varName^}` or `$(varName)`.
+`$1^, $2^, etc...`, `${varName^}` or `$(varName^)`.
 Raw text is injected without any pre-processing, which means:
 * No replacing each single-quote symbol `'` with two;
 * No wrapping text into single quotes.
@@ -558,8 +558,7 @@ of letters, digits, underscores and `$`;
 It is important to know that while property values `null` and `undefined` are both formatted as `null`,
 an error is thrown when the property doesn't exist at all.
 
-Version 1.2.0 of the library extended the syntax to also support `$(propName)`, for better
-compliance with ES6.
+Version 1.2.0 of the library added support for `$(propName)` syntax, for better compliance with ES6.
 
 ## Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
