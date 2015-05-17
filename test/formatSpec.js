@@ -533,6 +533,10 @@ describe("Method as.format", function () {
             });
         }).toThrow("Property 'PropName' doesn't exist.");
 
+        expect(pgp.as.format("$(test)^", {
+            test: 'hello'
+        })).toBe("'hello'^");
+
         // wrong-formatted variables tests:
         expect(pgp.as.format("$()", {})).toBe("$()");
         expect(pgp.as.format("${test)", {})).toBe("${test)");
