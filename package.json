@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "node-postgres via Promises/A+",
   "main": "lib/index.js",
   "scripts": {
@@ -16,9 +16,11 @@
   },
   "keywords": [
     "pg",
+    "pg-promise",
     "promise",
-    "transaction",
     "postgres",
+    "PostgreSQL",
+    "transaction",
     "promises-aplus"
   ],
   "author": {

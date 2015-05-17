@@ -462,7 +462,7 @@ describe("Method as.format", function () {
         // - supports underscores, digits and '$' in names;
         // - can join variables values next to each other;
         // - converts all simple types correctly;
-        expect(pgp.as.format("${ $Nam$E_},${d_o_b },${  _active__},${_$_Balance}", {
+        expect(pgp.as.format("${ $Nam$E_ },${d_o_b },${  _active__},${_$_Balance}", {
             $Nam$E_: "John O'Connor",
             d_o_b: dateSample,
             _active__: true,
