@@ -2,7 +2,7 @@
 // This is to show a complete example of using the library;
 ///////////////////////////////////////////////////////////
 
-// Loading and initializing the library without any options:
+// Loading and initializing the library without options:
 var pgp = require('pg-promise')();
 
 // Database connection details:
