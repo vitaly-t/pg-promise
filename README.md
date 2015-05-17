@@ -967,12 +967,14 @@ a non-empty value other than a function.
 
 ## Library de-initialization
 
-When exiting your application, make the following call:
+When exiting your application, you can make the following call:
 ```javascript
 pgp.end();
 ```
 This will release pg connection pool globally and make sure that the process terminates without any delay.
 If you do not call it, your process may be waiting for 30 seconds (default) or so, waiting for the pg connection pool to expire.
+
+If, however you normally exit your application by killing NodeJS process, then you don't need to use it.
 
 # History
 

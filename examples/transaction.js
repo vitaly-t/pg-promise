@@ -35,5 +35,7 @@ db.tx(function (t) {
         // it may take 30 seconds or so before the process terminates, waiting
         // for the connection pool to expire.
 
-        pgp.end(); // closing the connection pool;
+        // But if you normally just kill the process, then it doesn't matter.
+
+        pgp.end(); // closing the connection pool, to exit immediately.
     });
