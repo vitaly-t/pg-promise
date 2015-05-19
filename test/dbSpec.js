@@ -11,7 +11,7 @@ var db = dbHeader.db;
 describe("Library Initialization", function () {
     it("must throw an error when invalid 'options' is passed", function () {
 
-        var err = "Invalid parameter 'options' passed.";
+        var err = "Invalid parameter 'options' specified.";
         var lib = require('./db/header');
         expect(function () {
             lib('');
@@ -27,7 +27,7 @@ describe("Library Initialization", function () {
 
 describe("Database Instantiation", function () {
     it("must throw an error when empty or no connection passed", function () {
-        var err = "Invalid parameter 'cn' passed.";
+        var err = "Invalid parameter 'cn' specified.";
         expect(pgp).toThrow(err);
         expect(function () {
             pgp(null);
