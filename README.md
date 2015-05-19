@@ -775,6 +775,8 @@ var options = {
 The function takes only one parameter - `client` object from the [PG] library that represents connection
 with the database.
 
+The library will suppress any error thrown by the handler and write it into the console.
+
 **NOTE:** The library will throw an error instead of making the call, if `options.connect` is set to
 a non-empty value other than a function.
 
@@ -793,6 +795,8 @@ var options = {
 
 The function takes only one parameter - `client` object from the [PG] library that represents the connection
 that's being released.
+
+The library will suppress any error thrown by the handler and write it into the console.
 
 **NOTE:** The library will throw an error instead of making the call, if `options.disconnect` is set to
 a non-empty value other than a function.
@@ -868,7 +872,7 @@ var options = {
 ```
 For parameter `e` see documentation of the `query` event earlier.
 
-The library will suppress any error thrown by the handler.
+The library will suppress any error thrown by the handler and write it into the console.
 
 **NOTE:** The library will throw an error instead of making the call,
 if `options.error` is set to a non-empty value other than a function.
@@ -898,7 +902,7 @@ var options = {
 
 For parameter `e` see documentation of the `query` event earlier.
 
-The library will suppress any error thrown by the handler.
+The library will suppress any error thrown by the handler and write it into the console.
 
 **NOTE:** The library will throw an error instead of making the call, if `options.transact` is set to
 a non-empty value other than a function.
@@ -961,6 +965,8 @@ db.users.add("John", true)
         // error occurred;
     });
 ```
+
+The library will suppress any error thrown by the handler and write it into the console.
 
 **NOTE:** The library will throw an error instead of making the call, if `options.extend` is set to
 a non-empty value other than a function.
