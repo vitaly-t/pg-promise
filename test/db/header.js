@@ -16,7 +16,8 @@ var cn = {
 
 module.exports = function (options) {
     var result = {
-        pgp: pgpLib(options)
+        pgp: pgpLib(options),
+        cn: cn
     };
     result.db = result.pgp(cn);
     return result;

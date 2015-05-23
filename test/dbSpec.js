@@ -101,7 +101,7 @@ describe("Connection", function () {
         db.connect()
             .then(function (obj) {
                 sco = obj;
-                return sco.queryRaw("select * from users");
+                return sco.raw("select * from users");
             }, function (reason) {
                 result = null;
                 return promise.reject(reason);
@@ -126,6 +126,112 @@ describe("Connection", function () {
             expect(result.rows.length === result.rowCount).toBe(true);
         });
     });
+
+    it("must report the right error on invalid server name", function () {
+        var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+        errCN.host = 'unknown';
+        var dbErr = pgp(errCN), result;
+        dbErr.connect()
+            .then(function () {
+                result = null;
+            }, function (error) {
+                result = error;
+
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Connection timed out", 60000);
+        runs(function () {
+            expect(result instanceof Error);
+            expect(result.message).toBe('getaddrinfo ENOTFOUND unknown');
+        });
+    });
+
+    it("must report the right error on invalid port", function () {
+        var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+        errCN.port = '12345';
+        var dbErr = pgp(errCN), result;
+        dbErr.connect()
+            .then(function () {
+                result = null;
+            }, function (error) {
+                result = error;
+
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Connection timed out", 60000);
+        runs(function () {
+            expect(result instanceof Error);
+            expect(result.message).toBe('connect ECONNREFUSED');
+        });
+    });
+
+    /*
+     The following three tests cannot pass because of a bug in node-postgres:
+     https://github.com/brianc/node-postgres/issues/746
+     Once the issue has been resolved, these tests should be able to pass.
+     In the meantime, the cause an unhandled error that kills the test framework.
+     */
+
+/*
+    it("must report the right error on invalid connection", function () {
+        var dbErr = pgp('bla-bla'), result;
+        dbErr.connect()
+            .then(function () {
+                result = null;
+            }, function (error) {
+                result = error;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Connection timed out", 60000);
+        runs(function () {
+            expect(result instanceof Error);
+            expect(result.message).toBe('password authentication failed for user "' + pgp.pg.defaults.user + '"');
+        });
+    });
+
+    it("must report the right error on invalid user name", function () {
+        var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+        errCN.user = 'somebody';
+        var dbErr = pgp(errCN), result;
+        dbErr.connect()
+            .then(function () {
+                result = null;
+            }, function (error) {
+                result = error;
+
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Connection timed out", 60000);
+        runs(function () {
+            expect(result instanceof Error);
+            expect(result.message).toBe('password authentication failed for user "somebody"');
+        });
+    });
+
+    it("must report the right error on invalid password", function () {
+        var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+        errCN.password = 'invalid';
+        var dbErr = pgp(errCN), result;
+        dbErr.connect()
+            .then(function () {
+                result = null;
+            }, function (error) {
+                result = error;
+
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Connection timed out", 60000);
+        runs(function () {
+            expect(result instanceof Error);
+            expect(result.message).toBe('password authentication failed for user "postgres"');
+        });
+    });
+*/
 
 });
 
