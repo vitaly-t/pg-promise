@@ -977,10 +977,11 @@ When exiting your application, you can make the following call:
 ```javascript
 pgp.end();
 ```
-This will release pg connection pool globally and make sure that the process terminates without any delay.
-If you do not call it, your process may be waiting for 30 seconds (default) or so, waiting for the pg connection pool to expire.
+This will release [pg] connection pool globally and make sure that the process terminates without any delay.
+If you do not call it, your process may be waiting for 30 seconds (default), waiting for the connection to expire
+in the pool. See parameter [poolIdleTimeout](https://github.com/brianc/node-postgres/blob/master/lib/defaults.js).
 
-If, however you normally exit your application by killing NodeJS process, then you don't need to use it.
+If, however you normally exit your application by killing the NodeJS process, then you don't need to use it.
 
 # History
 
@@ -1029,6 +1030,7 @@ DEALINGS IN THE SOFTWARE.
 [pg-monitor]:https://github.com/vitaly-t/pg-monitor
 [pg-promise]:https://github.com/vitaly-t/pg-promise
 [PG]:https://github.com/brianc/node-postgres
+[pg]:https://github.com/brianc/node-postgres
 [node-postgres]:https://github.com/brianc/node-postgres
 [Promises/A+]:https://promisesaplus.com/
 [Promise]:https://github.com/then/promise

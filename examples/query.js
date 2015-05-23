@@ -1,6 +1,6 @@
-/////////////////////////////////////////////////////////////////
-// This is to show a complete application when using the library;
-/////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////
+// This is to show a complete test application;
+///////////////////////////////////////////////
 
 // Loading and initializing the library without options;
 // See also: https://github.com/vitaly-t/pg-promise#initialization-options
@@ -14,7 +14,7 @@ var cn = {
     user: 'myUser',
     password: 'myPassword'
 };
-// You can check for default values in:
+// You can check for all default values in:
 // https://github.com/brianc/node-postgres/blob/master/lib/defaults.js
 
 var db = pgp(cn); // database instance;
