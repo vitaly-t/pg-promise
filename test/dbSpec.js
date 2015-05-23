@@ -304,7 +304,8 @@ describe("When a nested transaction fails", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBe(null);
-            expect(error).toBe('Nested TX failure');
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe('Nested TX failure');
         });
     });
 });
@@ -343,7 +344,8 @@ describe("When a nested transaction fails", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(error).toBe(undefined);
-            expect(nestError).toBe('relation "unknowntable" does not exist');
+            expect(nestError instanceof Error).toBe(true);
+            expect(nestError.message).toBe('relation "unknowntable" does not exist');
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(2);
             expect(result[0].count).toBe('0'); // no changes within parent transaction;
@@ -661,7 +663,8 @@ describe("Synchronous Transactions", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result).toBe("Invalid factory function specified.");
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe("Invalid factory function specified.");
         });
     });
 
