@@ -143,7 +143,7 @@ describe("Connection", function () {
         }, "Connection timed out", 60000);
         runs(function () {
             expect(result instanceof Error);
-            expect(result.message).toBe('getaddrinfo ENOTFOUND unknown');
+            expect(result.message).toContain('getaddrinfo ENOTFOUND');
         });
     });
 
@@ -163,7 +163,7 @@ describe("Connection", function () {
         }, "Connection timed out", 60000);
         runs(function () {
             expect(result instanceof Error);
-            expect(result.message).toBe('connect ECONNREFUSED');
+            expect(result.message).toContain('connect ECONNREFUSED');
         });
     });
 
