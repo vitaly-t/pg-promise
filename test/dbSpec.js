@@ -24,7 +24,6 @@ describe("Library Initialization", function () {
     });
 });
 
-
 describe("Database Instantiation", function () {
     it("must throw an error when empty or no connection passed", function () {
         var err = "Invalid parameter 'cn' specified.";
@@ -37,22 +36,21 @@ describe("Database Instantiation", function () {
         }).toThrow(err);
     });
     var testDB = pgp("invalid connection details");
-    it("must return a valid object", function () {
+    it("must return a valid, though non-connectible object", function () {
         expect(typeof(testDB)).toBe('object');
     });
 });
 
 describe("Connection", function () {
-
-    it("must be successful", function () {
+    it("must be successful for default parameters", function () {
         var status = 'connecting';
-        var error = '';
+        var error;
         db.connect()
             .then(function (obj) {
                 status = 'success';
                 obj.done(); // release connection;
             }, function (reason) {
-                error = reason.message;
+                error = reason;
                 status = 'failed';//reason.error;
             })
             .catch(function (err) {
@@ -64,7 +62,7 @@ describe("Connection", function () {
         }, "Connection timed out", 5000);
         runs(function () {
             expect(status).toBe('success');
-            expect(error).toBe('');
+            expect(error).toBeUndefined();
         });
     });
 
@@ -92,6 +90,7 @@ describe("Connection", function () {
             return result !== undefined;
         }, "Connection timed out", 5000);
         runs(function () {
+            expect(result).toBeDefined();
             expect(result.count > 0).toBe(true);
         });
     });
