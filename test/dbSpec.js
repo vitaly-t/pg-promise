@@ -171,7 +171,7 @@ describe("Connection", function () {
      The following three tests cannot pass because of a bug in node-postgres:
      https://github.com/brianc/node-postgres/issues/746
      Once the issue has been resolved, these tests should be able to pass.
-     In the meantime, the cause an unhandled error that kills the test framework.
+     In the meantime, they cause an unhandled error that kills the test framework.
      */
 
 /*
