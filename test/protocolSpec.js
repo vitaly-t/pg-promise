@@ -41,6 +41,7 @@ describe("Library initialization object", function () {
         expect(typeof(pgp.as.csv)).toBe('function');
         expect(typeof(pgp.as.number)).toBe('function');
         expect(typeof(pgp.as.format)).toBe('function');
+        expect(typeof(pgp.as.func)).toBe('function');
     });
 });
 
@@ -60,8 +61,10 @@ describe("Database Protocol", function () {
     it("must have all the root-level methods", function () {
         expect(typeof(db.connect)).toBe('function');
         expect(typeof(db.query)).toBe('function');
+        expect(typeof(db.raw)).toBe('function');
         expect(typeof(db.queryRaw)).toBe('function');
         expect(typeof(db.tx)).toBe('function');
+        expect(typeof(db.transact)).toBe('function');
         expect(typeof(db.one)).toBe('function');
         expect(typeof(db.many)).toBe('function');
         expect(typeof(db.any)).toBe('function');
@@ -94,7 +97,9 @@ describe("Database Protocol", function () {
             expect(protocol.connect).toBe(undefined);
             expect(typeof(protocol.query)).toBe('function');
             expect(typeof(protocol.queryRaw)).toBe('function');
+            expect(typeof(protocol.raw)).toBe('function');
             expect(typeof(protocol.tx)).toBe('function');
+            expect(typeof(protocol.transact)).toBe('function');
             expect(typeof(protocol.one)).toBe('function');
             expect(typeof(protocol.many)).toBe('function');
             expect(typeof(protocol.any)).toBe('function');
@@ -164,3 +169,25 @@ describe("Protocol Extension", function () {
     });
 
 });
+
+describe("$sequence", function () {
+    it("must throw an error correctly", function () {
+        var error;
+        db.tx(function (t) {
+            return t.sequence(function(){
+                return 'something'; // not null/undefined and not a promise;
+            });
+        }).then(function () {
+            error = null;
+        }, function (reason) {
+            error = reason;
+        });
+        waitsFor(function () {
+            return error !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(error).toBe("Promise factory returned invalid result for index 0");
+        });
+    });
+});
+
