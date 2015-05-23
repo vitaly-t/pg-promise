@@ -821,12 +821,14 @@ Notification happens just before the query execution. And if the handler throws
 an error, the query execution will be rejected with that error.
 
 Parameter `e` is the event's context object that shares its format between events
-`query`, `error` and `transact`. It supports the following properties:
+`query`, `error` and `transact`. It supports the following properties, all of which
+are optional:
 
+* `cn` - connection details, passed only with a connection-related `error` event.
 * `client` - object from the [PG] library that represents the connection;
-* `query` - input query string, if applicable; `undefined` otherwise;
-* `params` - input query parameters, if applicable; `undefined` otherwise;
-* `ctx` - transaction context object, if applicable; `undefined` otherwise;
+* `query` - input query string;
+* `params` - input query parameters;
+* `ctx` - transaction context object;
 
 A transaction context object (`ctx`) supports the following properties:
 * `start` - start time of the transaction;
@@ -853,15 +855,19 @@ a non-empty value other than a function.
 ---
 #### error
 
-Global notification of an error while executing a query or transaction.
+Global notification of an error during connection, query or transaction.
 ```javascript
 var options = {
     error: function (err, e) {
         console.log("Error: " + err);
+        if (e.cn) {
+            // this is a connection-related error;
+            // cn = connection details that were used.
+        }
         if (e.query) {
-            console.log("Query: " + e.query);
+            console.log("Query:", e.query);
             if (e.params) {
-                console.log("Parameters: " + e.params);
+                console.log("Parameters:", e.params);
             }
         }
         if (e.ctx) {
@@ -985,6 +991,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 1.3.0 much improved error handling and reporting. Released: May 23, 2015.
 * Version 1.2.0 extended [Named Parameters](#named-parameters) syntax with `$(varName)`. Released: May 16, 2015.
 * Version 1.1.0 added support for functions as parameters. Released: April 3, 2015.
 * Version 1.0.5 added strict query sequencing for transactions. Released: April 26, 2015.
