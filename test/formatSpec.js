@@ -457,86 +457,6 @@ describe("Method as.format", function () {
         ])).toBe("'one', array[2,3]");
     });
 
-    it("must correctly format named parameters or throw an error", function () {
-        // - correctly handles leading and trailing spaces;
-        // - supports underscores, digits and '$' in names;
-        // - can join variables values next to each other;
-        // - converts all simple types correctly;
-        expect(pgp.as.format("${ $Nam$E_ },$/d_o_b /,$[  _active__],$(_$_Balance)", {
-            $Nam$E_: "John O'Connor",
-            d_o_b: dateSample,
-            _active__: true,
-            _$_Balance: -123.45
-        })).toBe("'John O''Connor','" + dateSample.toUTCString() + "',true,-123.45");
-
-        // test that even one-symbol, special-named properties work correctly;
-        expect(pgp.as.format("${$}$(_)$/a/", {
-            $: 1,
-            _: 2,
-            a: 3
-        })).toBe("123");
-
-        // Both null and undefined properties are formatted as null;
-        expect(pgp.as.format("${empty1}, $(empty2)", {
-            empty1: null,
-            empty2: undefined
-        })).toBe("null, null");
-
-        // when a property is missing in the object, an error is thrown;
-        expect(function () {
-            pgp.as.format("${prop1},${prop2}", {
-                prop1: 'hello'
-            });
-        }).toThrow("Property 'prop2' doesn't exist.");
-
-        // testing case sensitivity - Positive;
-        expect(pgp.as.format("${propVal}$(PropVal)$<propVAL>$/PropVAL/", {
-            propVal: 1,
-            PropVal: 2,
-            propVAL: 3,
-            PropVAL: 4
-        })).toBe("1234");
-
-        // testing array-as-property formatting;
-        expect(pgp.as.format("${prop1}, ${prop2}", {
-            prop1: 'one',
-            prop2: [2, ['three']]
-        })).toBe("'one', array[2,['three']]");
-
-        // mixed syntax test;
-        expect(pgp.as.format("${prop1}, $(prop2), $<prop3^>, $[prop4^], $/ prop5^ /", {
-            prop1: 'one',
-            prop2: 'two',
-            prop3: 'three',
-            prop4: 'four',
-            prop5: 'five'
-        })).toBe("'one', 'two', three, four, five");
-
-        // testing case sensitivity - Negative;
-        expect(function () {
-            pgp.as.format("$/PropName/", {
-                propName: 'hello'
-            });
-        }).toThrow("Property 'PropName' doesn't exist.");
-
-        expect(pgp.as.format("$(test)^", {
-            test: 'hello'
-        })).toBe("'hello'^");
-
-        // wrong-formatted variables tests:
-        expect(pgp.as.format("$()", {})).toBe("$()");
-        expect(pgp.as.format("${test)", {})).toBe("${test)");
-        expect(pgp.as.format("$(test}", {})).toBe("$(test}");
-        expect(pgp.as.format("$((test))", {})).toBe("$((test))");
-        expect(pgp.as.format("${{test}}", {})).toBe("${{test}}");
-        expect(pgp.as.format("$({test})", {})).toBe("$({test})");
-
-        expect(pgp.as.format("$(^test)", {})).toBe("$(^test)");
-        expect(pgp.as.format("${^test}", {})).toBe("${^test}");
-        expect(pgp.as.format("$(test^^)", {})).toBe("$(test^^)");
-        expect(pgp.as.format("${test^^}", {})).toBe("${test^^}");
-    });
-
     it("must correctly inject raw-text variables", function () {
 
         expect(pgp.as.format("${name},${name^},${name},${name^}", {
@@ -567,4 +487,113 @@ describe("Method as.format", function () {
         }).toThrow(errors.rawNull());
 
     });
+});
+
+describe("Named Parameters", function () {
+
+    it("must recognize all supported symbols", function () {
+        expect(pgp.as.format("${one},$(two),$[three],$<four>,$/five/", {
+            one: 1,
+            two: 2,
+            three: 3,
+            four: 4,
+            five: 5
+        })).toBe("1,2,3,4,5");
+    });
+
+    it("must ignore mixed open-close symbols", function () {
+        var openers = '{([</', closers = '})]>/';
+        for (var i = 0; i < openers.length; i++) {
+            for (var k = 0; k < closers.length; k++) {
+                var txt = '$' + openers[i] + 'value' + closers[k];
+                var s = pgp.as.format(txt, {
+                    value: 'hello'
+                });
+                if (i === k) {
+                    expect(s).toBe("'hello'");
+                } else {
+                    expect(s).toBe(txt);
+                }
+            }
+        }
+
+    });
+
+    it("must ignore internal spaces", function () {
+        expect(pgp.as.format("${  one  },$(  two  ),$[  three  ],$<  four  >,$/  five  /", {
+            one: 1,
+            two: 2,
+            three: 3,
+            four: 4,
+            five: 5
+        })).toBe("1,2,3,4,5");
+    });
+
+    it("must support short variables", function () {
+        expect(pgp.as.format("${$}$(_)$[a]$< _$>$/$$ /", {
+            $: 1,
+            _: 2,
+            a: 3,
+            _$: 4,
+            $$: 5
+        })).toBe("12345");
+    });
+
+    it("must recognize case difference", function () {
+        expect(pgp.as.format("${value},$(Value),$[VALUE],$<valuE>,$/vaLue/", {
+            value: 1,
+            Value: 2,
+            VALUE: 3,
+            valuE: 4,
+            vaLue: 5
+        })).toBe("1,2,3,4,5");
+
+        // Negative;
+        expect(function () {
+            pgp.as.format("$/propName/$(PropName)", {
+                propName: undefined
+            });
+        }).toThrow("Property 'PropName' doesn't exist.");
+
+    });
+
+    it("must ignore invalid-formatted variables", function () {
+        expect(pgp.as.format("$()", {})).toBe("$()");
+        expect(pgp.as.format("$((test))", {})).toBe("$((test))");
+        expect(pgp.as.format("${{test}}", {})).toBe("${{test}}");
+        expect(pgp.as.format("$({test})", {})).toBe("$({test})");
+        expect(pgp.as.format("$(^test)", {})).toBe("$(^test)");
+        expect(pgp.as.format("${^test}", {})).toBe("${^test}");
+        expect(pgp.as.format("$(test^^)", {})).toBe("$(test^^)");
+        expect(pgp.as.format("${test^^}", {})).toBe("${test^^}");
+    });
+
+    it("must convert all types correctly", function () {
+        expect(pgp.as.format("${one},$(two),$[three],$<four>,$/five/", {
+            one: undefined,
+            two: true,
+            three: -123.45,
+            four: dateSample,
+            five: function () {
+                return "text";
+            }
+        })).toBe("null,true,-123.45,'" + dateSample.toUTCString() + "','text'");
+    });
+
+    it("must treat null and undefined values equally", function () {
+        // Both null and undefined properties are formatted as null;
+        expect(pgp.as.format("${empty1}, $(empty2)", {
+            empty1: null,
+            empty2: undefined
+        })).toBe("null, null");
+    });
+
+    it("must throw error when property doesn't exist", function () {
+        expect(function () {
+            pgp.as.format("${prop1},${prop2}", {
+                prop1: 'hello'
+            });
+        }).toThrow("Property 'prop2' doesn't exist.");
+    });
+
 });
