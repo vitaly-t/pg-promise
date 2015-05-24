@@ -162,7 +162,7 @@ describe("Error event", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(errTxt).toBe("Parameter 'query' must be a non-empty text string.");
-            expect(context.params).toBe(undefined);
+            expect(context.params).toBeUndefined();
             expect(counter).toBe(1);
         });
     });
@@ -186,7 +186,7 @@ describe("Error event", function () {
         runs(function () {
             expect(errTxt).toBe("Invalid Query Result Mask specified.");
             expect(context.query).toBe("Bla-Bla");
-            expect(context.params).toBe(undefined);
+            expect(context.params).toBeUndefined();
             expect(counter).toBe(1);
         });
     });
@@ -210,7 +210,7 @@ describe("Error event", function () {
         runs(function () {
             expect(errTxt).toBe("Single row was expected from the query.");
             expect(context.query).toBe("select * from users");
-            expect(context.params).toBe(undefined);
+            expect(context.params).toBeUndefined();
             expect(counter).toBe(1);
         });
     });
@@ -234,7 +234,7 @@ describe("Error event", function () {
         runs(function () {
             expect(errTxt).toBe("No return data was expected from the query.");
             expect(context.query).toBe("select * from users");
-            expect(context.params).toBe(undefined);
+            expect(context.params).toBeUndefined();
             expect(counter).toBe(1);
         });
     });
@@ -258,7 +258,7 @@ describe("Error event", function () {
         runs(function () {
             expect(errTxt).toBe("No data returned from the query.");
             expect(context.query).toBe("select * from users where id > 1000");
-            expect(context.params).toBe(undefined);
+            expect(context.params).toBeUndefined();
             expect(counter).toBe(1);
         });
     });

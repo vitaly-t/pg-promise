@@ -75,8 +75,8 @@ describe("Database Protocol", function () {
         expect(typeof(db.proc)).toBe('function');
 
         // must not have transaction-level methods:
-        expect(db.sequence).toBe(undefined);
-        expect(db.queue).toBe(undefined);
+        expect(db.sequence).toBeUndefined();
+        expect(db.queue).toBeUndefined();
     });
 
     it("must have all the transaction-level methods", function () {
@@ -94,7 +94,7 @@ describe("Database Protocol", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(protocol && typeof(protocol) === 'object').toBe(true);
-            expect(protocol.connect).toBe(undefined);
+            expect(protocol.connect).toBeUndefined();
             expect(typeof(protocol.query)).toBe('function');
             expect(typeof(protocol.queryRaw)).toBe('function');
             expect(typeof(protocol.raw)).toBe('function');

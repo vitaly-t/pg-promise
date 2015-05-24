@@ -141,7 +141,7 @@ describe("Connection", function () {
             return result !== undefined;
         }, "Connection timed out", 60000);
         runs(function () {
-            expect(result instanceof Error);
+            expect(result instanceof Error).toBe(true);
             expect(result.message).toContain('getaddrinfo ENOTFOUND');
         });
     });
@@ -161,7 +161,7 @@ describe("Connection", function () {
             return result !== undefined;
         }, "Connection timed out", 60000);
         runs(function () {
-            expect(result instanceof Error);
+            expect(result instanceof Error).toBe(true);
             expect(result.message).toContain('connect ECONNREFUSED');
         });
     });
@@ -186,7 +186,7 @@ describe("Connection", function () {
             return result !== undefined;
         }, "Connection timed out", 60000);
         runs(function () {
-            expect(result instanceof Error);
+            expect(result instanceof Error).toBe(true);
             expect(result.message).toBe('password authentication failed for user "' + pgp.pg.defaults.user + '"');
         });
     });
@@ -206,7 +206,7 @@ describe("Connection", function () {
             return result !== undefined;
         }, "Connection timed out", 60000);
         runs(function () {
-            expect(result instanceof Error);
+            expect(result instanceof Error).toBe(true);
             expect(result.message).toBe('password authentication failed for user "somebody"');
         });
     });
@@ -226,7 +226,7 @@ describe("Connection", function () {
             return result !== undefined;
         }, "Connection timed out", 60000);
         runs(function () {
-            expect(result instanceof Error);
+            expect(result instanceof Error).toBe(true);
             expect(result.message).toBe('password authentication failed for user "postgres"');
         });
     });
@@ -249,7 +249,7 @@ describe("Selecting one static value", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(error).toBe(undefined);
+            expect(error).toBeUndefined();
             expect(typeof(result)).toBe('object');
             expect(result.value).toBe(123);
         });
@@ -377,7 +377,7 @@ describe("A complex transaction with 10,000 inserts", function () {
             return result !== undefined;
         }, "Query timed out", 15000);
         runs(function () {
-            expect(error).toBe(undefined);
+            expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(10003); // drop + create + insert x 10000 + select;
             var last = result[result.length - 1]; // result from the select;
@@ -408,7 +408,7 @@ describe("When a nested transaction fails", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result).toBe(null);
+            expect(result).toBeNull();
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe('Nested TX failure');
         });
@@ -448,7 +448,7 @@ describe("When a nested transaction fails", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(error).toBe(undefined);
+            expect(error).toBeUndefined();
             expect(nestError instanceof Error).toBe(true);
             expect(nestError.message).toBe('relation "unknowntable" does not exist');
             expect(result instanceof Array).toBe(true);
@@ -474,7 +474,7 @@ describe("Calling a transaction with an invalid callback", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result).toBe(null);
+            expect(result).toBeNull();
             expect(error).toBe("Cannot invoke tx() without a callback function.");
         });
     });
@@ -494,7 +494,7 @@ describe("Calling a transaction with an invalid callback", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result).toBe(null);
+            expect(result).toBeNull();
             expect(error).toBe("Callback function passed into tx() didn't return a promise object.");
         });
     });
@@ -513,7 +513,7 @@ describe("Calling a transaction with an invalid callback", function () {
             return result !== undefined;
         }, "Query timed out", 15000);
         runs(function () {
-            expect(result).toBe(null);
+            expect(result).toBeNull();
             expect(error).toBe("Callback function passed into tx() didn't return a promise object.");
         });
     });
@@ -523,19 +523,19 @@ describe("Calling a transaction with an invalid callback", function () {
 describe("A nested transaction (10 levels)", function () {
     it("must work the same no matter how many levels", function () {
         var result, error;
-        db.tx(function (t) {
-            return t.tx(function () {
-                return t.tx(function () {
-                    return t.tx(function () {
-                        return t.tx(function () {
-                            return t.tx(function () {
+        db.tx(function (t1) {
+            return t1.tx(function (t2) {
+                return t2.tx(function (t3) {
+                    return t3.tx(function (t4) {
+                        return t4.tx(function (t5) {
+                            return t5.tx(function (t6) {
                                 return promise.all([
-                                    t.one("select 'Hello' as word"),
-                                    t.tx(function () {
-                                        return t.tx(function () {
-                                            return t.tx(function () {
-                                                return t.tx(function () {
-                                                    return t.one("select 'World!' as word");
+                                    t6.one("select 'Hello' as word"),
+                                    t6.tx(function (t7) {
+                                        return t7.tx(function (t8) {
+                                            return t8.tx(function (t9) {
+                                                return t9.tx(function (t10) {
+                                                    return t10.one("select 'World!' as word");
                                                 });
                                             });
                                         });
@@ -557,7 +557,7 @@ describe("A nested transaction (10 levels)", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(error).toBe(undefined);
+            expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(2);
             expect(result[0].word).toBe('Hello');
@@ -581,7 +581,7 @@ describe("Return data from a query must match the request type", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result).toBe(null);
+            expect(result).toBeNull();
             expect(error).toBe("No return data was expected from the query.");
         });
     });
@@ -599,7 +599,7 @@ describe("Return data from a query must match the request type", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result).toBe(null);
+            expect(result).toBeNull();
             expect(error).toBe("No data returned from the query.");
         });
     });
@@ -617,7 +617,7 @@ describe("Return data from a query must match the request type", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result).toBe(null);
+            expect(result).toBeNull();
             expect(error).toBe("Single row was expected from the query.");
         });
     });
@@ -635,8 +635,8 @@ describe("Return data from a query must match the request type", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(error).toBe(undefined);
-            expect(result).toBe(null);
+            expect(error).toBeUndefined();
+            expect(result).toBeNull();
         });
     });
 
@@ -653,7 +653,7 @@ describe("Return data from a query must match the request type", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(error).toBe(undefined);
+            expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(0);
         });
@@ -675,7 +675,7 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result).toBe(null);
+            expect(result).toBeNull();
             expect(error).toBe("Invalid Query Result Mask specified.");
         });
     });
@@ -692,7 +692,7 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result).toBe(null);
+            expect(result).toBeNull();
             expect(error).toBe("Invalid Query Result Mask specified.");
         });
     });
@@ -709,7 +709,7 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result).toBe(null);
+            expect(result).toBeNull();
             expect(error).toBe("Invalid Query Result Mask specified.");
         });
     });
@@ -727,7 +727,7 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result).toBe(null);
+            expect(result).toBeNull();
             expect(error).toBe("Invalid Query Result Mask specified.");
         });
     });
