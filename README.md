@@ -434,7 +434,7 @@ function query(query, values, qrm);
 * `query` (required) - a string with support for three types of formatting, depending on the `values` passed:
    - format `$1` (single variable), if `values` is of type `string`, `boolean`, `number`, `Date`, `function` or `null`;
    - format `$1, $2, etc..`, if `values` is an array of values;
-   - format `${propName}` or `$(propName)`, if `values` is an object (not null and not Date);
+   - format `$*propName*`, if `values` is an object (not null and not Date), where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`;
 * `values` (optional) - value/array/object to replace the variables in the query;
 * `qrm` - (optional) *Query Result Mask*, as explained below...
 
@@ -459,7 +459,7 @@ When a value/property inside array/object is of type `object` (except for `null`
 serialized into JSON, the same as calling method `as.json()`, except the latter would convert anything to JSON.
 
 Raw text values can be injected by using variable name appended with symbol `^`:
-`$1^, $2^, etc...`, `${varName^}` or `$(varName^)`.
+`$1^, $2^, etc...`, `$*varName^*`, where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
 Raw text is injected without any pre-processing, which means:
 * No replacing each single-quote symbol `'` with two;
 * No wrapping text into single quotes.
@@ -536,10 +536,11 @@ leaving the burden of all extra checks to the library.
 
 ## Named Parameters
 
-The library supports named parameters in query formatting, with the ES6-like syntax of `${propName}`:
+The library supports named parameters in query formatting, with the syntax of `$*propName*`,
+where `*` is any of the following open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
 
 ```javascript
-db.query("select * from users where name=${name} and active=${active}", {
+db.query("select * from users where name=${name} and active=$/active/", {
     name: 'John',
     active: true
 });
@@ -557,8 +558,6 @@ of letters, digits, underscores and `$`;
 
 It is important to know that while property values `null` and `undefined` are both formatted as `null`,
 an error is thrown when the property doesn't exist at all.
-
-Version 1.2.0 of the library added support for `$(propName)` syntax, for better compliance with ES6.
 
 ## Functions and Procedures
 In PostgreSQL stored procedures are just functions that usually do not return anything.
@@ -640,7 +639,8 @@ return text is to be without any pre-processing:
 * Throwing an error when the variable value is `null` or `undefined`.
 
 This adheres to the query formatting, as well as method `as.format` when variable
-names are appended with symbol `^`: `$1^, $2^, etc...`, `${varName^}` or `$(varName^)`.
+names are appended with symbol `^`: `$1^, $2^, etc...` or `$*varName^*`, where `*`
+is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
 
 As none of these helpers are associated with any database, they can be used from anywhere.
 
@@ -700,9 +700,8 @@ By default, **pg-promise** provides its own implementation of the query formatti
 supporting the following formats:
 
 * Format `$1, $2, etc`, when parameter `values` is either a single value or an array of values;
-* Format `${propName}` - ES6-like format, if `values` is an object that's not `null` and not a `Date` instance.
-
-The latter received syntax extension in version 1.2.0 to also support `$(propName)`, for better ES6 compliance.
+* Format `$*propName*`, if `values` is an object that's not `null` and not a `Date` instance, and where
+`*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
 
 Every query method of the library accepts `values` as its second parameter.
 
@@ -991,6 +990,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 1.3.1 extended [Named Parameters](#named-parameters) syntax to support `{}`,`()`,`[]`,`<>` and `//`. Released: May 24, 2015.
 * Version 1.3.0 much improved error handling and reporting. Released: May 23, 2015.
 * Version 1.2.0 extended [Named Parameters](#named-parameters) syntax with `$(varName)`. Released: May 16, 2015.
 * Version 1.1.0 added support for functions as parameters. Released: April 3, 2015.

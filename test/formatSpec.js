@@ -462,15 +462,7 @@ describe("Method as.format", function () {
         // - supports underscores, digits and '$' in names;
         // - can join variables values next to each other;
         // - converts all simple types correctly;
-        expect(pgp.as.format("${ $Nam$E_ },${d_o_b },${  _active__},${_$_Balance}", {
-            $Nam$E_: "John O'Connor",
-            d_o_b: dateSample,
-            _active__: true,
-            _$_Balance: -123.45
-        })).toBe("'John O''Connor','" + dateSample.toUTCString() + "',true,-123.45");
-
-        // + the same for alternative syntax;
-        expect(pgp.as.format("$( $Nam$E_),$(d_o_b ),$(  _active__),$(_$_Balance)", {
+        expect(pgp.as.format("${ $Nam$E_ },$/d_o_b /,$[  _active__],$(_$_Balance)", {
             $Nam$E_: "John O'Connor",
             d_o_b: dateSample,
             _active__: true,
@@ -478,14 +470,7 @@ describe("Method as.format", function () {
         })).toBe("'John O''Connor','" + dateSample.toUTCString() + "',true,-123.45");
 
         // test that even one-symbol, special-named properties work correctly;
-        expect(pgp.as.format("${$}${_}${a}", {
-            $: 1,
-            _: 2,
-            a: 3
-        })).toBe("123");
-
-        // + the same for alternative syntax;
-        expect(pgp.as.format("$($)$(_)$(a)", {
+        expect(pgp.as.format("${$}$(_)$/a/", {
             $: 1,
             _: 2,
             a: 3
@@ -505,7 +490,7 @@ describe("Method as.format", function () {
         }).toThrow("Property 'prop2' doesn't exist.");
 
         // testing case sensitivity - Positive;
-        expect(pgp.as.format("${propVal}$(PropVal)${propVAL}${PropVAL}", {
+        expect(pgp.as.format("${propVal}$(PropVal)$<propVAL>$/PropVAL/", {
             propVal: 1,
             PropVal: 2,
             propVAL: 3,
@@ -519,16 +504,17 @@ describe("Method as.format", function () {
         })).toBe("'one', array[2,['three']]");
 
         // mixed syntax test;
-        expect(pgp.as.format("${prop1}, $(prop2), ${prop3^}, $(prop4^)", {
+        expect(pgp.as.format("${prop1}, $(prop2), $<prop3^>, $[prop4^], $/ prop5^ /", {
             prop1: 'one',
             prop2: 'two',
             prop3: 'three',
-            prop4: 'four'
-        })).toBe("'one', 'two', three, four");
+            prop4: 'four',
+            prop5: 'five'
+        })).toBe("'one', 'two', three, four, five");
 
         // testing case sensitivity - Negative;
         expect(function () {
-            pgp.as.format("${PropName}", {
+            pgp.as.format("$/PropName/", {
                 propName: 'hello'
             });
         }).toThrow("Property 'PropName' doesn't exist.");
