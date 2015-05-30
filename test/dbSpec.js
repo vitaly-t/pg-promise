@@ -8,22 +8,6 @@ var dbHeader = require('./db/header')(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
-describe("Library Initialization", function () {
-    it("must throw an error when invalid 'options' is passed", function () {
-
-        var err = "Invalid parameter 'options' specified.";
-        var lib = require('./db/header');
-        expect(function () {
-            lib('');
-        }).toThrow(err);
-
-        expect(function () {
-            lib(0);
-        }).toThrow(err);
-
-    });
-});
-
 describe("Database Instantiation", function () {
     it("must throw an error when empty or no connection passed", function () {
         var err = "Invalid parameter 'cn' specified.";
@@ -66,7 +50,7 @@ describe("Connection", function () {
         });
     });
 
-    it("must be provide functioning context for queries", function () {
+    it("must provide functioning context for queries", function () {
         var result, sco;
         db.connect()
             .then(function (obj) {
@@ -92,10 +76,11 @@ describe("Connection", function () {
         runs(function () {
             expect(result).toBeDefined();
             expect(result.count > 0).toBe(true);
+            expect(typeof(sco.tx)).toBe('function'); // just a protocol check;
         });
     });
 
-    it("must be provide functioning context for raw queries", function () {
+    it("must provide functioning context for raw queries", function () {
         var result, sco;
         db.connect()
             .then(function (obj) {

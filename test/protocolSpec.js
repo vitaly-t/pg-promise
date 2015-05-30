@@ -1,3 +1,4 @@
+var PG = require('pg');
 var promise = require('bluebird');
 var pgpLib = require('../lib/index');
 
@@ -6,29 +7,44 @@ var dbHeader = require('./db/header')();
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
-describe("Library entry object", function () {
+describe("Library entry function", function () {
 
-    it("must throw error on invalid promise override", function () {
+    it("must throw an error on invalid promise override", function () {
         expect(function () {
             pgpLib({
                 promiseLib: "test"
             });
         }).toThrow("Invalid or unsupported promise library override.");
     });
+
+    it("must throw an error on invalid 'options' parameter", function () {
+        expect(function () {
+            pgpLib(123);
+        }).toThrow("Invalid parameter 'options' specified.");
+    });
+
 });
 
-describe("Library initialization object", function () {
+describe("Library instance", function () {
 
     it("must be a function", function () {
         expect(typeof(pgp)).toBe('function');
     });
 
-    it("must have property 'pg'", function () {
+    it("must have valid property 'pg'", function () {
         expect(typeof(pgp.pg)).toBe('object');
+        expect(pgp.pg).toBe(PG); // the same library instance;
     });
 
     it("must have function 'end'", function () {
         expect(typeof(pgp.end)).toBe('function');
+    });
+
+    it("must have property 'version'", function () {
+        expect(typeof(pgp.version)).toBe('object');
+        expect(typeof(pgp.version.major)).toBe('number');
+        expect(typeof(pgp.version.minor)).toBe('number');
+        expect(typeof(pgp.version.patch)).toBe('number');
     });
 
     it("must have valid property 'as'", function () {
@@ -174,7 +190,7 @@ describe("$sequence", function () {
     it("must throw an error correctly", function () {
         var error;
         db.tx(function (t) {
-            return t.sequence(function(){
+            return t.sequence(function () {
                 return 'something'; // not null/undefined and not a promise;
             });
         }).then(function () {
