@@ -340,16 +340,18 @@ describe("Executing an invalid function", function () {
 // huge transactions must be throttled into smaller chunks.
 describe("A complex transaction with 10,000 inserts", function () {
     it("must not fail", function () {
-        var result, error;
+        var result, error, context, THIS;
         db.tx(function (t) {
+            THIS = this;
+            context = t;
             var queries = [
-                t.none('drop table if exists test'),
-                t.none('create table test(id serial, name text)')
+                this.none('drop table if exists test'),
+                this.none('create table test(id serial, name text)')
             ];
             for (var i = 1; i <= 10000; i++) {
-                queries.push(t.none('insert into test(name) values($1)', 'name-' + i));
+                queries.push(this.none('insert into test(name) values($1)', 'name-' + i));
             }
-            queries.push(t.one('select count(*) from test'));
+            queries.push(this.one('select count(*) from test'));
             return promise.all(queries);
         })
             .then(function (data) {
@@ -362,6 +364,7 @@ describe("A complex transaction with 10,000 inserts", function () {
             return result !== undefined;
         }, "Query timed out", 15000);
         runs(function () {
+            expect(THIS === context).toBe(true);
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(10003); // drop + create + insert x 10000 + select;
@@ -374,11 +377,13 @@ describe("A complex transaction with 10,000 inserts", function () {
 
 describe("When a nested transaction fails", function () {
     it("must return error from the nested transaction", function () {
-        var result, error;
+        var result, error, THIS, context;
         db.tx(function (t) {
+            THIS = this;
+            context = t;
             return promise.all([
-                t.none('update users set login=$1 where id=$2', ['TestName', 1]),
-                t.tx(function () {
+                this.none('update users set login=$1 where id=$2', ['TestName', 1]),
+                this.tx(function () {
                     throw new Error('Nested TX failure');
                 })
             ]);
@@ -393,6 +398,7 @@ describe("When a nested transaction fails", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
+            expect(THIS === context).toBe(true);
             expect(result).toBeNull();
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe('Nested TX failure');
@@ -402,14 +408,18 @@ describe("When a nested transaction fails", function () {
 
 describe("When a nested transaction fails", function () {
     it("both transactions must rollback", function () {
-        var result, error, nestError;
-        db.tx(function (t) {
+        var result, error, nestError, THIS1, THIS2, context1, context2;
+        db.tx(function (t1) {
+            THIS1 = this;
+            context1 = t1;
             return promise.all([
-                t.none('update users set login=$1', 'External'),
-                t.tx(function () {
+                this.none('update users set login=$1', 'External'),
+                this.tx(function (t2) {
+                    THIS2 = this;
+                    context2 = t2;
                     return promise.all([
-                        t.none('update users set login=$1', 'Internal'),
-                        t.one('select * from unknownTable') // emulating a bad query;
+                        this.none('update users set login=$1', 'Internal'),
+                        this.one('select * from unknownTable') // emulating a bad query;
                     ]);
                 })
             ]);
@@ -420,7 +430,7 @@ describe("When a nested transaction fails", function () {
                 nestError = reason;
                 return promise.all([
                     db.one('select count(*) from users where login=$1', 'External'), // 0 is expected;
-                    db.one('select count(*) from users where login=$1', 'Internal'), // 0 is expected;
+                    db.one('select count(*) from users where login=$1', 'Internal') // 0 is expected;
                 ]);
             })
             .then(function (data) {
@@ -433,6 +443,10 @@ describe("When a nested transaction fails", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
+            expect(THIS1 && THIS2 && context1 && context2).toBeTruthy();
+            expect(THIS1 === context1).toBe(true);
+            expect(THIS2 === context2).toBe(true);
+            expect(THIS1 !== THIS2).toBe(true);
             expect(error).toBeUndefined();
             expect(nestError instanceof Error).toBe(true);
             expect(nestError.message).toBe('relation "unknowntable" does not exist');
@@ -466,7 +480,7 @@ describe("Calling a transaction with an invalid callback", function () {
 
     it("must reject when the callback returns nothing", function () {
         var result, error;
-        db.tx(function (t) {
+        db.tx(function () {
             // return nothing;
         })
             .then(function (data) {
@@ -507,20 +521,22 @@ describe("Calling a transaction with an invalid callback", function () {
 
 describe("A nested transaction (10 levels)", function () {
     it("must work the same no matter how many levels", function () {
-        var result, error;
-        db.tx(function (t1) {
-            return t1.tx(function (t2) {
-                return t2.tx(function (t3) {
-                    return t3.tx(function (t4) {
-                        return t4.tx(function (t5) {
-                            return t5.tx(function (t6) {
+        var result, error, THIS, context;
+        db.tx(function () {
+            return this.tx(function () {
+                return this.tx(function () {
+                    return this.tx(function () {
+                        return this.tx(function () {
+                            return this.tx(function () {
                                 return promise.all([
-                                    t6.one("select 'Hello' as word"),
-                                    t6.tx(function (t7) {
-                                        return t7.tx(function (t8) {
-                                            return t8.tx(function (t9) {
-                                                return t9.tx(function (t10) {
-                                                    return t10.one("select 'World!' as word");
+                                    this.one("select 'Hello' as word"),
+                                    this.tx(function () {
+                                        return this.tx(function () {
+                                            return this.tx(function () {
+                                                return this.tx(function (t) {
+                                                    THIS = this;
+                                                    context = t;
+                                                    return this.one("select 'World!' as word");
                                                 });
                                             });
                                         });
@@ -542,6 +558,7 @@ describe("A nested transaction (10 levels)", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
+            expect(THIS && context && THIS === context).toBeTruthy();
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(2);
@@ -799,7 +816,7 @@ describe("Synchronous Transactions", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(THIS).toBeTruthy();
+            expect(THIS && ctx).toBeTruthy();
             expect(ctx === THIS).toBe(true);
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(2);
