@@ -132,12 +132,14 @@ describe("Database Protocol", function () {
 
 describe("Protocol Extension", function () {
     it("must allow custom properties on database level", function () {
-        var result, counter = 0;
+        var result, counter = 0, THIS, param;
         var pgpTest = require('./db/header')({
             extend: function (obj) {
+                param = obj;
+                THIS = this;
                 counter++;
-                obj.getOne = function (query, values) {
-                    return obj.one(query, values);
+                this.getOne = function (query, values) {
+                    return this.one(query, values);
                 };
             }
         });
@@ -151,6 +153,7 @@ describe("Protocol Extension", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
+            expect(THIS === param).toBe(true);
             expect(counter === 1);
             expect(result.msg).toBe('hello');
         });

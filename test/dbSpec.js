@@ -158,64 +158,64 @@ describe("Connection", function () {
      In the meantime, they cause an unhandled error that kills the test framework.
      */
 
-/*
-    it("must report the right error on invalid connection", function () {
-        var dbErr = pgp('bla-bla'), result;
-        dbErr.connect()
-            .then(function () {
-                result = null;
-            }, function (error) {
-                result = error;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Connection timed out", 60000);
-        runs(function () {
-            expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe('password authentication failed for user "' + pgp.pg.defaults.user + '"');
-        });
-    });
+    /*
+     it("must report the right error on invalid connection", function () {
+     var dbErr = pgp('bla-bla'), result;
+     dbErr.connect()
+     .then(function () {
+     result = null;
+     }, function (error) {
+     result = error;
+     });
+     waitsFor(function () {
+     return result !== undefined;
+     }, "Connection timed out", 60000);
+     runs(function () {
+     expect(result instanceof Error).toBe(true);
+     expect(result.message).toBe('password authentication failed for user "' + pgp.pg.defaults.user + '"');
+     });
+     });
 
-    it("must report the right error on invalid user name", function () {
-        var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-        errCN.user = 'somebody';
-        var dbErr = pgp(errCN), result;
-        dbErr.connect()
-            .then(function () {
-                result = null;
-            }, function (error) {
-                result = error;
+     it("must report the right error on invalid user name", function () {
+     var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+     errCN.user = 'somebody';
+     var dbErr = pgp(errCN), result;
+     dbErr.connect()
+     .then(function () {
+     result = null;
+     }, function (error) {
+     result = error;
 
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Connection timed out", 60000);
-        runs(function () {
-            expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe('password authentication failed for user "somebody"');
-        });
-    });
+     });
+     waitsFor(function () {
+     return result !== undefined;
+     }, "Connection timed out", 60000);
+     runs(function () {
+     expect(result instanceof Error).toBe(true);
+     expect(result.message).toBe('password authentication failed for user "somebody"');
+     });
+     });
 
-    it("must report the right error on invalid password", function () {
-        var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-        errCN.password = 'invalid';
-        var dbErr = pgp(errCN), result;
-        dbErr.connect()
-            .then(function () {
-                result = null;
-            }, function (error) {
-                result = error;
+     it("must report the right error on invalid password", function () {
+     var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+     errCN.password = 'invalid';
+     var dbErr = pgp(errCN), result;
+     dbErr.connect()
+     .then(function () {
+     result = null;
+     }, function (error) {
+     result = error;
 
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Connection timed out", 60000);
-        runs(function () {
-            expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe('password authentication failed for user "postgres"');
-        });
-    });
-*/
+     });
+     waitsFor(function () {
+     return result !== undefined;
+     }, "Connection timed out", 60000);
+     runs(function () {
+     expect(result instanceof Error).toBe(true);
+     expect(result.message).toBe('password authentication failed for user "postgres"');
+     });
+     });
+     */
 
 });
 
@@ -778,14 +778,16 @@ describe("Synchronous Transactions", function () {
     });
 
     it("must resolve promises in correct sequence", function () {
-        var result;
+        var result, ctx, THIS;
         db.tx(function (t) {
-            return t.sequence(function (idx) {
+            return t.sequence(function (idx, context) {
+                THIS = this;
+                ctx = context;
                 switch (idx) {
                     case 0:
-                        return t.query("select 'one' as value");
+                        return this.query("select 'one' as value");
                     case 1:
-                        return t.query("select 'two' as value");
+                        return this.query("select 'two' as value");
                 }
             });
         }).then(function (data) {
@@ -797,6 +799,8 @@ describe("Synchronous Transactions", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
+            expect(THIS).toBeTruthy();
+            expect(ctx === THIS).toBe(true);
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(2);
             expect(result[0][0].value).toBe('one');
