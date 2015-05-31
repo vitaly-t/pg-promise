@@ -203,11 +203,11 @@ Transactions can be executed within both shared and detached promise chains in t
 
 ```javascript
 var promise = require('promise'); // or any other supported promise library;
-db.tx(function(t){
+db.tx(function(){
 
     // creating a sequence of transaction queries:
-    var q1 = t.none("update users set active=$1 where id=$2", [true, 123]);
-    var q2 = t.one("insert into audit(entity, id) values($1, $2) returning id",
+    var q1 = this.none("update users set active=$1 where id=$2", [true, 123]);
+    var q2 = this.one("insert into audit(entity, id) values($1, $2) returning id",
         ['users', 123]);
 
     // returning a promise that determines a successful transaction:
@@ -267,18 +267,18 @@ This library sets no limitation as to the depth (nesting levels) of transactions
 Example:
 
 ```javascript
-db.tx(function (t) {
+db.tx(function () {
     var queries = [
-        t.none("drop table users;"),
-        t.none("create table users(id serial not null, name text not null)")
+        this.none("drop table users;"),
+        this.none("create table users(id serial not null, name text not null)")
     ];
     for (var i = 1; i <= 100; i++) {
-        queries.push(t.none("insert into users(name) values($1)", "name-" + i));
+        queries.push(this.none("insert into users(name) values($1)", "name-" + i));
     }
     queries.push(
-        t.tx(function () {
-            return t.tx(function(){
-                return t.one("select count(*) from users");
+        this.tx(function () {
+            return this.tx(function(){
+                return this.one("select count(*) from users");
             });
         }));
     return promise.all(queries);
@@ -391,18 +391,18 @@ db.tx(function (t) {
     });
 ```
 
-An inline version looks simpler, because it can reuse parameter `t` from the container:
+A simpler example, using `this` context (version 1.4.0 or later):
 
 ```javascript
-db.tx(function (t) {
-    return t.sequence(function (idx) {
+db.tx(function () {
+    return this.sequence(function (idx) {
         switch (idx) {
             case 0:
-                return t.query("select 0");
+                return this.query("select 0");
             case 1:
-                return t.query("select 1");
+                return this.query("select 1");
             case 2:
-                return t.query("select 2");
+                return this.query("select 2");
         }
     });
 })
@@ -990,6 +990,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 1.4.0 added `this` context to all callbacks where applicable. Released: May 31, 2015.
 * Version 1.3.1 extended [Named Parameters](#named-parameters) syntax to support `{}`,`()`,`[]`,`<>` and `//`. Released: May 24, 2015.
 * Version 1.3.0 much improved error handling and reporting. Released: May 23, 2015.
 * Version 1.2.0 extended [Named Parameters](#named-parameters) syntax with `$(varName)`. Released: May 16, 2015.
