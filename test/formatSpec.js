@@ -456,35 +456,7 @@ describe("Method as.func", function () {
 
 describe("Method as.format", function () {
 
-    it("must return a correctly formatted string or throw an error", function () {
-
-        expect(function () {
-            pgp.as.format();
-        }).toThrow("Parameter 'query' must be a text string.");
-
-        expect(function () {
-            pgp.as.format(null);
-        }).toThrow("Parameter 'query' must be a text string.");
-
-        expect(function () {
-            pgp.as.format(null, [1, 2, 3]);
-        }).toThrow("Parameter 'query' must be a text string.");
-
-        expect(function () {
-            pgp.as.format(123);
-        }).toThrow("Parameter 'query' must be a text string.");
-
-        expect(function () {
-            pgp.as.format("$1,$2", [1, 2, 3]);
-        }).toThrow("No variable $3 found for the value with index 2");
-
-        expect(function () {
-            pgp.as.format("", 123);
-        }).toThrow("No variable $1 found to replace with the value passed.");
-
-        expect(function () {
-            pgp.as.format("", null);
-        }).toThrow("No variable $1 found to replace with the value passed.");
+    it("must return a correctly formatted string", function () {
 
         expect(pgp.as.format("", [])).toBe("");
 
@@ -533,16 +505,6 @@ describe("Method as.format", function () {
         expect(pgp.as.format("$1$2,$3,$4,$5,$6,$7,$8,$9,$10$11,$12,$13,$14,$15,$1,$3", [1, 2, 'C', 'DDD', 'E', 'F', 'G', 'H', 'I', 88, 99, 'LLL']))
             .toBe("12,'C','DDD','E','F','G','H','I',8899,'LLL',$13,$14,$15,1,'C'");
 
-        // test that $1 variable isn't confused with $12;
-        expect(function () {
-            pgp.as.format("$12", 123);
-        }).toThrow("No variable $1 found to replace with the value passed.");
-
-        // test that $1 variable isn't confused with $112
-        expect(function () {
-            pgp.as.format("$112", 123);
-        }).toThrow("No variable $1 found to replace with the value passed.");
-
         // test that variable names are not confused for longer ones;
         expect(pgp.as.format("$11, $1, $111, $1", 123)).toBe("$11, 123, $111, 123");
 
@@ -572,6 +534,56 @@ describe("Method as.format", function () {
         expect(pgp.as.format("$1^,$1", dateSample))
             .toBe(dateSample.toUTCString() + ",'" + dateSample.toUTCString() + "'");
 
+    });
+
+    it("must correctly reject invalid requests", function () {
+
+        var errEmptyString = "Parameter 'query' must be a text string.";
+
+        expect(function () {
+            pgp.as.format();
+        }).toThrow(errEmptyString);
+
+        expect(function () {
+            pgp.as.format(null);
+        }).toThrow(errEmptyString);
+
+        expect(function () {
+            pgp.as.format(null, [1, 2, 3]);
+        }).toThrow(errEmptyString);
+
+        expect(function () {
+            pgp.as.format(123);
+        }).toThrow(errEmptyString);
+
+        expect(function () {
+            pgp.as.format(function () {
+                return '';
+            }, func)
+        }).toThrow(errEmptyString);
+
+        expect(function () {
+            pgp.as.format("$1,$2", [1, 2, 3]);
+        }).toThrow("No variable $3 found for the value with index 2");
+
+        expect(function () {
+            pgp.as.format("", 123);
+        }).toThrow("No variable $1 found to replace with the value passed.");
+
+        expect(function () {
+            pgp.as.format("", null);
+        }).toThrow("No variable $1 found to replace with the value passed.");
+
+        // test that $1 variable isn't confused with $12;
+        expect(function () {
+            pgp.as.format("$12", 123);
+        }).toThrow("No variable $1 found to replace with the value passed.");
+
+        // test that $1 variable isn't confused with $112
+        expect(function () {
+            pgp.as.format("$112", 123);
+        }).toThrow("No variable $1 found to replace with the value passed.");
+
         expect(function () {
             pgp.as.format("$1^", null);
         }).toThrow(errors.rawNull());
@@ -583,20 +595,6 @@ describe("Method as.format", function () {
         expect(function () {
             pgp.as.format("$1^", [undefined]);
         }).toThrow(errors.rawNull());
-
-    });
-
-    it("must correctly resolve functions", function () {
-
-        expect(pgp.as.format(function () {
-            return '';
-        }, func)).toBe("");
-
-        expect(pgp.as.format(function () {
-            return "$1^,$2^";
-        }, function () {
-            return ['one', 'two']
-        })).toBe("one,two");
 
     });
 
