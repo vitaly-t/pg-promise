@@ -616,21 +616,25 @@ pgp.as.json(value, raw);
                     // then fixes single-quote symbols and wraps it up in
                     // single quotes (unless flag 'raw' is set);
 
+pgp.as.array(value); // converts value-array into PostgreSQL Array Type constructor
+                     // string: array[]
+
+pgp.as.csv(value);  // returns a CSV string with values formatted according
+                    // to their type, using the above methods;
+
 pgp.as.func(func, raw, obj);
                     // calls the function to get the actual value, and then
                     // formats it according to the returned type + 'raw' flag;
                     // obj - optional, 'this' context for the function. 
 
-pgp.as.array(array); // converts array into PostgreSQL Array Type constructor
-                     // string: array[]
-
-pgp.as.csv(array);  // returns a CSV string with values formatted according
-                    // to their type, using the above methods;
-
 pgp.as.format(query, values);
             // replaces variables in the query with their 'values' as specified;
             // 'values' can be a single value, an array or an object.
 ```
+
+Version 1.4.1 extended methods `bool`, `number`, `text`, `date`, `json`, `array`
+and `csv` to accept the value-parameter as a function to be called for resolving
+the actual value.
 
 For methods which take optional flag `raw` it is to indicate that the
 return text is to be without any pre-processing:
