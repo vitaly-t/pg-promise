@@ -794,6 +794,26 @@ describe("Synchronous Transactions", function () {
         });
     });
 
+    it("must reject with an error when the error is thrown by the factory", function () {
+        var result;
+        db.tx(function (t) {
+            return t.sequence(function () {
+                throw new Error("error test");
+            });
+        }).then(function () {
+            result = null;
+        }, function (reason) {
+            result = reason;
+        });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe("error test");
+        });
+    });
+
     it("must resolve promises in correct sequence", function () {
         var result, ctx, THIS;
         db.tx(function (t) {
