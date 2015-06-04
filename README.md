@@ -522,9 +522,8 @@ Each query function resolves its **data** object according to the `qrm` that was
 * `none` - **data** is `undefined`. If the query returns any kind of data, it is rejected.
 * `one` - **data** is a single object. If the query returns no data or more than one row of data, it is rejected.
 * `many` - **data** is an array of objects. If the query returns no rows, it is rejected.
-* `one`|`none` - **data** is `null`, if no data was returned; or a single object, if there was one row of data returned.
-
-If the query returns more than one row of data, the query is rejected.
+* `one`|`none` - **data** is `null`, if no data was returned; or a single object, if there was one row of data returned. If the query returns more than one row of data,
+the query is rejected.
 * `many`|`none` - **data** is an array of objects. When no rows are returned, **data** is an empty array.
 
 If you try to specify `one`|`many` in the same query, such query will be rejected without executing it, telling you that such mask is invalid.
