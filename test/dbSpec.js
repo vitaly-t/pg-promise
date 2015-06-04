@@ -497,6 +497,7 @@ describe("Calling a transaction with an invalid callback", function () {
             expect(error).toBe("Transaction callback function didn't return a promise object.");
         });
     });
+
     it("must reject when the callback returns nonsense", function () {
         var result, error;
         db.tx(function () {
@@ -510,7 +511,7 @@ describe("Calling a transaction with an invalid callback", function () {
             });
         waitsFor(function () {
             return result !== undefined;
-        }, "Query timed out", 15000);
+        }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeNull();
             expect(error).toBe("Transaction callback function didn't return a promise object.");
@@ -836,8 +837,7 @@ describe("Synchronous Transactions", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(THIS && ctx).toBeTruthy();
-            expect(ctx === THIS).toBe(true);
+            expect(THIS && ctx && ctx === THIS).toBeTruthy();
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(2);
             expect(result[0][0].value).toBe('one');
