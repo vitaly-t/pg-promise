@@ -758,10 +758,10 @@ describe("queryRaw", function () {
 
 describe("Synchronous Transactions", function () {
 
-    it("must throw an error for an invalid factory", function () {
+    it("must reject for an invalid factory", function () {
         var result;
-        db.tx(function (t) {
-            return t.sequence();
+        db.tx(function () {
+            return this.queue();
         }).then(function () {
             result = null;
         }, function (reason) {
@@ -771,15 +771,15 @@ describe("Synchronous Transactions", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe("Invalid factory function specified.");
+            expect(typeof(result)).toBe('string');
+            expect(result).toBe("Invalid factory function specified.");
         });
     });
 
-    it("must throw an error for an invalid factory result", function () {
+    it("must reject for an invalid factory result", function () {
         var result;
-        db.tx(function (t) {
-            return t.sequence(function () {
+        db.tx(function () {
+            return this.queue(function () {
                 return 123;
             });
         }).then(function () {
@@ -797,8 +797,8 @@ describe("Synchronous Transactions", function () {
 
     it("must reject with an error when the error is thrown by the factory", function () {
         var result;
-        db.tx(function (t) {
-            return t.sequence(function () {
+        db.tx(function () {
+            return this.queue(function () {
                 throw new Error("error test");
             });
         }).then(function () {
@@ -817,8 +817,8 @@ describe("Synchronous Transactions", function () {
 
     it("must resolve promises in correct sequence", function () {
         var result, ctx, THIS;
-        db.tx(function (t) {
-            return t.sequence(function (idx, context) {
+        db.tx(function () {
+            return this.queue(function (idx, context) {
                 THIS = this;
                 ctx = context;
                 switch (idx) {
