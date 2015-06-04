@@ -474,7 +474,7 @@ describe("Calling a transaction with an invalid callback", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeNull();
-            expect(error).toBe("Cannot invoke tx() without a callback function.");
+            expect(error).toBe("Callback function must be specified for the transaction.");
         });
     });
 
@@ -494,7 +494,7 @@ describe("Calling a transaction with an invalid callback", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeNull();
-            expect(error).toBe("Callback function passed into tx() didn't return a promise object.");
+            expect(error).toBe("Transaction callback function didn't return a promise object.");
         });
     });
     it("must reject when the callback returns nonsense", function () {
@@ -513,7 +513,7 @@ describe("Calling a transaction with an invalid callback", function () {
         }, "Query timed out", 15000);
         runs(function () {
             expect(result).toBeNull();
-            expect(error).toBe("Callback function passed into tx() didn't return a promise object.");
+            expect(error).toBe("Transaction callback function didn't return a promise object.");
         });
     });
 
