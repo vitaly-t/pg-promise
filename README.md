@@ -509,7 +509,7 @@ db.any("select * from users");
 This usage pattern is facilitated through result-specific methods that can be used instead of the generic query:
 ```javascript
 db.many(query, values); // expects one or more rows
-db.one(query, values); // expects single row
+db.one(query, values); // expects a single row
 db.none(query, values); // expects no rows
 db.any(query, values); // expects anything, same as `manyOrNone`
 db.oneOrNone(query, values); // expects 1 or 0 rows
@@ -519,17 +519,17 @@ You can add your own methods to this protocol via the [extend](#extend) event.
 
 Each query function resolves its **data** object according to the `qrm` that was used:
 
-* `none` - **data** is `null`. If the query returns any kind of data, it is rejected.
+* `none` - **data** is `undefined`. If the query returns any kind of data, it is rejected.
 * `one` - **data** is a single object. If the query returns no data or more than one row of data, it is rejected.
 * `many` - **data** is an array of objects. If the query returns no rows, it is rejected.
-* `one` | `none` - **data** is `null`, if no data was returned; or a single object, if there was one row of data returned.
+* `one`|`none` - **data** is `null`, if no data was returned; or a single object, if there was one row of data returned.
 
 If the query returns more than one row of data, the query is rejected.
-* `many` | `none` - **data** is an array of objects. When no rows are returned, **data** is an empty array.
+* `many`|`none` - **data** is an array of objects. When no rows are returned, **data** is an empty array.
 
-If you try to specify `one` | `many` in the same query, such query will be rejected without executing it, telling you that such mask is not valid.
+If you try to specify `one`|`many` in the same query, such query will be rejected without executing it, telling you that such mask is invalid.
 
-If `qrm` is not specified when calling generic `query` method, it is assumed to be `many` | `none`, i.e. any kind of data expected.
+If `qrm` is not specified when calling generic `query` method, it is assumed to be `many`|`none`, i.e. any kind of data expected.
 
 > This is all about writing robust code, when the client specifies what kind of data it is ready to handle on the declarative level,
 leaving the burden of all extra checks to the library.

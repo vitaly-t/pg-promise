@@ -219,9 +219,51 @@ describe("Connection", function () {
 
 });
 
-describe("Selecting one static value", function () {
+describe("Method 'none'", function () {
 
-    it("must return the value via property", function () {
+    it("must resolve with 'undefined'", function () {
+        var result, error, finished;
+        db.none('select * from users where id=$1', 12345678)
+            .then(function (data) {
+                result = data;
+                finished = true;
+            }, function (reason) {
+                error = reason;
+                finished = true;
+            });
+        waitsFor(function () {
+            return finished === true;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(error).toBeUndefined();
+            expect(result).toBeUndefined();
+        });
+    });
+
+    it("must reject on any data returned", function () {
+        var result, error, finished;
+        db.none('select * from users')
+            .then(function (data) {
+                result = data;
+                finished = true;
+            }, function (reason) {
+                error = reason;
+                finished = true;
+            });
+        waitsFor(function () {
+            return finished === true;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBeUndefined();
+            expect(error).toBe("No return data was expected from the query.");
+        });
+    });
+
+});
+
+describe("Method 'one'", function () {
+
+    it("must resolve with one object", function () {
         var result, error;
         db.one('select 123 as value')
             .then(function (data) {
@@ -239,6 +281,191 @@ describe("Selecting one static value", function () {
             expect(result.value).toBe(123);
         });
     });
+
+    it("must reject when no data found", function () {
+        var result, error, finished;
+        db.one('select * from users where id=$1', 12345678)
+            .then(function (data) {
+                result = data;
+                finished = true;
+            }, function (reason) {
+                error = reason;
+                finished = true;
+            });
+        waitsFor(function () {
+            return finished === true;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBeUndefined();
+            expect(error).toBe("No data returned from the query.");
+        });
+    });
+
+    it("must reject when multiple rows are found", function () {
+        var result, error, finished;
+        db.one('select * from users')
+            .then(function (data) {
+                result = data;
+                finished = true;
+            }, function (reason) {
+                error = reason;
+                finished = true;
+            });
+        waitsFor(function () {
+            return finished === true;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBeUndefined();
+            expect(error).toBe("Single row was expected from the query.");
+        });
+    });
+
+});
+
+describe("Method 'oneOrNone'", function () {
+
+    it("must resolve with one object when found", function () {
+        var result, error;
+        db.oneOrNone('select * from users where id=$1', 1)
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                error = reason;
+                result = null;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(error).toBeUndefined();
+            expect(typeof(result)).toBe('object');
+            expect(result.id).toBe(1);
+        });
+    });
+
+    it("must resolve with null when no data found", function () {
+        var result, error, finished;
+        db.oneOrNone('select * from users where id=$1', 12345678)
+            .then(function (data) {
+                result = data;
+                finished = true;
+            }, function (reason) {
+                error = reason;
+                finished = true;
+            });
+        waitsFor(function () {
+            return finished === true;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(error).toBeUndefined();
+            expect(result).toBeNull();
+        });
+    });
+
+    it("must reject when multiple rows are found", function () {
+        var result, error, finished;
+        db.oneOrNone('select * from users')
+            .then(function (data) {
+                result = data;
+                finished = true;
+            }, function (reason) {
+                error = reason;
+                finished = true;
+            });
+        waitsFor(function () {
+            return finished === true;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBeUndefined();
+            expect(error).toBe("Single row was expected from the query.");
+        });
+    });
+
+});
+
+describe("Method 'many'", function () {
+
+    it("must resolve with array of objects", function () {
+        var result, error;
+        db.many('select * from users')
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                error = reason;
+                result = null;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(error).toBeUndefined();
+            expect(result instanceof Array).toBe(true);
+            expect(result.length > 0).toBe(true);
+        });
+    });
+
+    it("must reject when no data found", function () {
+        var result, error, finished;
+        db.many('select * from users where id=$1', 12345678)
+            .then(function (data) {
+                result = data;
+                finished = true;
+            }, function (reason) {
+                error = reason;
+                finished = true;
+            });
+        waitsFor(function () {
+            return finished === true;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toBeUndefined();
+            expect(error).toBe("No data returned from the query.");
+        });
+    });
+
+});
+
+describe("Method 'manyOrNone'", function () {
+
+    it("must resolve with array of objects", function () {
+        var result, error;
+        db.manyOrNone('select * from users')
+            .then(function (data) {
+                result = data;
+            }, function (reason) {
+                error = reason;
+                result = null;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(error).toBeUndefined();
+            expect(result instanceof Array).toBe(true);
+            expect(result.length > 0).toBe(true);
+        });
+    });
+
+    it("must resolve with an empty array when no data found", function () {
+        var result, error, finished;
+        db.manyOrNone('select * from users where id=$1', 12345678)
+            .then(function (data) {
+                result = data;
+                finished = true;
+            }, function (reason) {
+                error = reason;
+                finished = true;
+            });
+        waitsFor(function () {
+            return finished === true;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(error).toBeUndefined();
+            expect(result instanceof Array).toBe(true);
+            expect(result.length).toBe(0);
+        });
+    });
+
 });
 
 describe("Executing method query", function () {
