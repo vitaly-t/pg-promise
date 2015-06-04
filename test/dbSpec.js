@@ -10,7 +10,7 @@ var db = dbHeader.db;
 
 describe("Database Instantiation", function () {
     it("must throw an error when empty or no connection passed", function () {
-        var err = "Invalid parameter 'cn' specified.";
+        var err = "Connection details must be specified.";
         expect(pgp).toThrow(err);
         expect(function () {
             pgp(null);
@@ -402,6 +402,36 @@ describe("When a nested transaction fails", function () {
             expect(result).toBeNull();
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe('Nested TX failure');
+        });
+    });
+});
+
+describe("Detached Transaction", function () {
+    it("must throw an error on any query request", function () {
+        var stop, error, tx;
+        db.tx(function () {
+            tx = this;
+            return promise.resolve();
+        })
+            .then(function () {
+                try {
+                    // cannot use transaction context
+                    // outside of transaction callback;
+                    tx.query("select 'test'");
+                } catch (err) {
+                    error = err;
+                }
+                stop = true;
+            }, function (reason) {
+                error = reason;
+                stop = true;
+            });
+        waitsFor(function () {
+            return stop === true;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe("Unexpected call outside of transaction.");
         });
     });
 });
