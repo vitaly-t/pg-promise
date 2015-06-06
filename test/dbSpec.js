@@ -535,11 +535,22 @@ describe("Executing an invalid function", function () {
     it("must reject with an error", function () {
         var finished, result, error = "Function name must be a non-empty text string.";
         promise.any([
-            db.func(),
-            db.func(''),
-            db.func('   '),
-            db.func(1),
-            db.func(null)])
+            db.func(),      // undefined function name;
+            db.func(''),    // empty-string function name;
+            db.func('   '), // white-space string for function name;
+            db.func(1),     // invalid-type function name;
+            db.func(null),  // null function name;
+            // query function overrides:
+            db.query({
+                funcName: null
+            }),
+            db.query({
+                funcName: ''
+            }),
+            db.query({
+                funcName: '   '
+            })
+        ])
             .then(function () {
                 finished = true;
             }, function (reason) {
@@ -550,21 +561,19 @@ describe("Executing an invalid function", function () {
             return finished;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result.length).toBe(5);
-            expect(result[0]).toBe(error);  // reject to an undefined function name;
-            expect(result[1]).toBe(error);  // reject to an empty-string function name;
-            expect(result[2]).toBe(error);  // reject to a white-space string for function name;
-            expect(result[3]).toBe(error);  // reject to an invalid-type function name;
-            expect(result[4]).toBe(error);  // reject to a null function name;
+            expect(result.length).toBe(8);
+            for (var i = 0; i < result.length; i++) {
+                expect(result[i]).toBe(error);
+            }
         });
     });
 });
 
 
-// NOTE: The same test for 100,000 inserts works just the same.
+// NOTE: The same test for 100,000 inserts works also the same.
 // Inserting just 10,000 records to avoid exceeding memory quota on the test server.
-// Also, the client shouldn't execute more than 10,000 queries within single transaction,
-// huge transactions must be throttled into smaller chunks.
+// Also, the client shouldn't execute more than 10,000 queries within a single transaction,
+// huge transactions should  be throttled into smaller chunks.
 describe("A complex transaction with 10,000 inserts", function () {
     it("must not fail", function () {
         var result, error, context, THIS;
@@ -1073,16 +1082,13 @@ describe("Synchronous Transactions", function () {
     });
 
     it("must resolve promises in correct sequence", function () {
-        var result, ctx, THIS;
+        var result, ctx, THIS, length = 10;
         db.tx(function () {
             return this.queue(function (idx, context) {
                 THIS = this;
                 ctx = context;
-                switch (idx) {
-                    case 0:
-                        return this.query("select 'one' as value");
-                    case 1:
-                        return this.query("select 'two' as value");
+                if (idx < length) {
+                    return this.query("select $1 as value", idx);
                 }
             });
         }).then(function (data) {
@@ -1096,9 +1102,10 @@ describe("Synchronous Transactions", function () {
         runs(function () {
             expect(THIS && ctx && ctx === THIS).toBeTruthy();
             expect(result instanceof Array).toBe(true);
-            expect(result.length).toBe(2);
-            expect(result[0][0].value).toBe('one');
-            expect(result[1][0].value).toBe('two');
+            expect(result.length).toBe(length);
+            for (var i = 0; i < result.length; i++) {
+                expect(result[i][0].value).toBe(i);
+            }
         });
     });
 

@@ -41,10 +41,12 @@ describe("Library instance", function () {
     });
 
     it("must have property 'version'", function () {
-        expect(typeof(pgp.version)).toBe('object');
-        expect(typeof(pgp.version.major)).toBe('number');
-        expect(typeof(pgp.version.minor)).toBe('number');
-        expect(typeof(pgp.version.patch)).toBe('number');
+        var v = pgp.version;
+        expect(typeof(v)).toBe('object');
+        expect(typeof(v.major)).toBe('number');
+        expect(typeof(v.minor)).toBe('number');
+        expect(typeof(v.patch)).toBe('number');
+        expect(v.toString()).toBe(v.major + '.' + v.minor + '.' + v.patch);
     });
 
     it("must have valid property 'as'", function () {
@@ -188,25 +190,3 @@ describe("Protocol Extension", function () {
     });
 
 });
-
-describe("$sequence", function () {
-    it("must throw an error correctly", function () {
-        var error;
-        db.tx(function (t) {
-            return t.sequence(function () {
-                return 'something'; // not null/undefined and not a promise;
-            });
-        }).then(function () {
-            error = null;
-        }, function (reason) {
-            error = reason;
-        });
-        waitsFor(function () {
-            return error !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
-            expect(error).toBe("Promise factory returned invalid result for index 0");
-        });
-    });
-});
-
