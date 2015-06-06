@@ -217,6 +217,54 @@ describe("Connection", function () {
      });
      */
 
+    it("must report the right error on repeated disconnection", function () {
+        var finished, error;
+        db.connect()
+            .then(function (obj) {
+                obj.done(); // disconnecting;
+                try {
+                    obj.done(); // invalid disconnect;
+                } catch (err) {
+                    error = err;
+                }
+                finished = true;
+            }, function (err) {
+                error = err;
+                finished = true;
+            });
+        waitsFor(function () {
+            return finished !== undefined;
+        }, "Connection timed out", 5000);
+        runs(function () {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe("Cannot invoke done() on a disconnected client.");
+        });
+    });
+
+    it("must report the right error when executing a disconnected query", function () {
+        var finished, error;
+        db.connect()
+            .then(function (obj) {
+                obj.done(); // disconnecting;
+                try {
+                    obj.query(); // invalid disconnected query;
+                } catch (err) {
+                    error = err;
+                }
+                finished = true;
+            }, function (err) {
+                error = err;
+                finished = true;
+            });
+        waitsFor(function () {
+            return finished !== undefined;
+        }, "Connection timed out", 5000);
+        runs(function () {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe("Cannot execute a query on a disconnected client.");
+        });
+    });
+
 });
 
 describe("Method 'none'", function () {
