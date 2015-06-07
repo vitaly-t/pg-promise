@@ -2,6 +2,7 @@ var promise = require('bluebird');
 
 var options = {}; // options, if needed;
 
+var pgClient = require('pg/lib/client');
 var dbHeader = require('./db/header')(options);
 
 var pgp = dbHeader.pgp;
@@ -10,16 +11,26 @@ var db = dbHeader.db;
 var func = function () {
 };
 
-describe("Connect/Disconnect notification events", function () {
+describe("Connect/Disconnect events", function () {
 
-    it("must each execute once during a query", function () {
-        var stop, connected = 0, disconnected = 0;
-        options.connect = function () {
-            connected++;
+    it("must be sent correctly during a query", function () {
+        var stop, c1 = 0, c2 = 0, d1 = 0, d2 = 0, params = [];
+        options.connect = function (client) {
+            params.push(client);
+            c1++;
         };
-        options.disconnect = function () {
-            disconnected++;
+        options.disconnect = function (client) {
+            params.push(client);
+            d1++;
         };
+        db.on("connect", function (client) {
+            params.push(client);
+            c2++;
+        });
+        db.on("disconnect", function (client) {
+            params.push(client);
+            d2++;
+        });
         db.query("select 'test'")
             .then(function () {
                 stop = true;
@@ -28,19 +39,34 @@ describe("Connect/Disconnect notification events", function () {
             return stop;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(connected).toBe(1);
-            expect(disconnected).toBe(1);
+            expect(c1).toBe(1);
+            expect(c2).toBe(1);
+            expect(d1).toBe(1);
+            expect(d2).toBe(1);
+            for (var i = 0; i < 4; i++) {
+                expect(params[i] instanceof pgClient).toBe(true);
+            }
         });
     });
 
-    it("must each execute once during a transaction", function () {
-        var stop, connected = 0, disconnected = 0;
-        options.connect = function () {
-            connected++;
+    it("must be sent correctly during a transaction", function () {
+        var stop, c1 = 0, c2 = 0, d1 = 0, d2 = 0, params = [];
+        options.connect = function (client) {
+            params.push(client);
+            c1++;
         };
-        options.disconnect = function () {
-            disconnected++;
+        options.disconnect = function (client) {
+            params.push(client);
+            d1++;
         };
+        db.on("connect", function (client) {
+            params.push(client);
+            c2++;
+        });
+        db.on("disconnect", function (client) {
+            params.push(client);
+            d2++;
+        });
         db.tx(function (t) {
             return promise.all([
                 t.query("select 'one'"),
@@ -55,8 +81,13 @@ describe("Connect/Disconnect notification events", function () {
             return stop;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(connected).toBe(1);
-            expect(disconnected).toBe(1);
+            expect(c1).toBe(1);
+            expect(c2).toBe(1);
+            expect(d1).toBe(1);
+            expect(d2).toBe(1);
+            for (var i = 0; i < 4; i++) {
+                expect(params[i] instanceof pgClient).toBe(true);
+            }
         });
     });
 
@@ -65,11 +96,15 @@ describe("Connect/Disconnect notification events", function () {
 describe("Query event", function () {
 
     it("must pass query and parameters correctly", function () {
-        var stop, p, counter = 0;
+        var stop, p1, p2, c1 = 0, c2 = 0;
         options.query = function (e) {
-            counter++;
-            p = e;
+            c1++;
+            p1 = e;
         };
+        db.on('query', function (e) {
+            c2++;
+            p2 = e;
+        });
         db.query("select $1", [123])
             .then(function () {
                 stop = true;
@@ -78,25 +113,37 @@ describe("Query event", function () {
             return stop;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(counter).toBe(1);
-            expect(p.query).toBe('select 123');
+            expect(c1).toBe(1);
+            expect(c2).toBe(1);
+            expect(p1.query).toBe('select 123');
+            expect(p2.query).toBe('select 123');
         });
     });
 });
 
 describe("Start/Finish transaction events", function () {
 
-    it("must execute each once for every transaction, with the right properties", function () {
-        var result, tag, start = 0, finish = 0, finishContext;
+    it("must execute correctly", function () {
+        var result, tag1, tag2, ctx1, ctx2,
+            start1 = 0, start2 = 0, finish1 = 0, finish2 = 0;
         options.transact = function (e) {
             if (e.ctx.finish) {
-                finish++;
-                finishContext = e.ctx;
+                finish1++;
+                ctx1 = e.ctx;
             } else {
-                start++;
-                tag = e.ctx.tag;
+                start1++;
+                tag1 = e.ctx.tag;
             }
         };
+        db.on('transact', function (e) {
+            if (e.ctx.finish) {
+                finish2++;
+                ctx2 = e.ctx;
+            } else {
+                start2++;
+                tag2 = e.ctx.tag;
+            }
+        });
         db.tx("myTransaction", function () {
             return promise.resolve('SUCCESS');
         }).then(function (data) {
@@ -107,10 +154,14 @@ describe("Start/Finish transaction events", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBe('SUCCESS');
-            expect(start).toBe(1);
-            expect(finish).toBe(1);
-            expect(tag).toBe("myTransaction");
-            expect(finishContext.success).toBe(true);
+            expect(start1).toBe(1);
+            expect(start2).toBe(1);
+            expect(finish1).toBe(1);
+            expect(finish2).toBe(1);
+            expect(tag1).toBe("myTransaction");
+            expect(tag2).toBe("myTransaction");
+            expect(ctx1.success).toBe(true);
+            expect(ctx2.success).toBe(true);
         });
     });
 });
@@ -118,12 +169,17 @@ describe("Start/Finish transaction events", function () {
 describe("Error event", function () {
 
     it("must report errors from transaction callbacks", function () {
-        var result, error, context, r, counter = 0;
+        var result, r, error1, error2, ctx1, ctx2, c1 = 0, c2 = 0;
         options.error = function (err, e) {
-            counter++;
-            error = err;
-            context = e.ctx;
+            c1++;
+            error1 = err;
+            ctx1 = e.ctx;
         };
+        db.on('error', function (err, e) {
+            c2++;
+            error2 = err;
+            ctx2 = e.ctx;
+        });
         db.tx("Error Transaction", function () {
             throw new Error("Test Error");
         }).then(function () {
@@ -137,20 +193,29 @@ describe("Error event", function () {
         runs(function () {
             expect(r instanceof Error).toBe(true);
             expect(r.message).toBe('Test Error');
-            expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Test Error');
-            expect(counter).toBe(1);
-            expect(context.tag).toBe("Error Transaction");
+            expect(error1 instanceof Error).toBe(true);
+            expect(error2 instanceof Error).toBe(true);
+            expect(error1.message).toBe('Test Error');
+            expect(error2.message).toBe('Test Error');
+            expect(c1).toBe(1);
+            expect(c2).toBe(1);
+            expect(ctx1.tag).toBe("Error Transaction");
+            expect(ctx2.tag).toBe("Error Transaction");
         });
     });
 
     it("must handle null-query", function () {
-        var result, errTxt, context, counter = 0;
+        var result, txt1, txt2, ctx1, ctx2, c1 = 0, c2 = 0;
         options.error = function (err, e) {
-            counter++;
-            errTxt = err;
-            context = e;
+            c1++;
+            txt1 = err;
+            ctx1 = e;
         };
+        db.on('error', function (err, e) {
+            c2++;
+            txt2 = err;
+            ctx2 = e;
+        });
         db.query(null)
             .then(function () {
                 result = null;
@@ -161,19 +226,28 @@ describe("Error event", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(errTxt).toBe("Parameter 'query' must be a non-empty text string.");
-            expect(context.params).toBeUndefined();
-            expect(counter).toBe(1);
+            var msg = "Parameter 'query' must be a non-empty text string.";
+            expect(txt1).toBe(msg);
+            expect(txt2).toBe(msg);
+            expect(ctx1.params).toBeUndefined();
+            expect(ctx2.params).toBeUndefined();
+            expect(c1).toBe(1);
+            expect(c2).toBe(1);
         });
     });
 
     it("must handle incorrect QRM", function () {
-        var result, errTxt, context, counter = 0;
+        var result, txt1, txt2, ctx1, ctx2, c1 = 0, c2 = 0;
         options.error = function (err, e) {
-            counter++;
-            errTxt = err;
-            context = e;
+            c1++;
+            txt1 = err;
+            ctx1 = e;
         };
+        db.on('error', function (err, e) {
+            c2++;
+            txt2 = err;
+            ctx2 = e;
+        });
         db.query("Bla-Bla", undefined, 42)
             .then(function () {
                 result = null;
@@ -184,10 +258,15 @@ describe("Error event", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(errTxt).toBe("Invalid Query Result Mask specified.");
-            expect(context.query).toBe("Bla-Bla");
-            expect(context.params).toBeUndefined();
-            expect(counter).toBe(1);
+            var msg = "Invalid Query Result Mask specified.";
+            expect(txt1).toBe(msg);
+            expect(txt2).toBe(msg);
+            expect(ctx1.query).toBe("Bla-Bla");
+            expect(ctx2.query).toBe("Bla-Bla");
+            expect(ctx1.params).toBeUndefined();
+            expect(ctx2.params).toBeUndefined();
+            expect(c1).toBe(1);
+            expect(c2).toBe(1);
         });
     });
 

@@ -8,8 +8,8 @@ var dbHeader = require('./db/header')(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
-function ignoreErrors(dbInst){
-    dbInst.on('error', function(){
+function ignoreErrors(dbInst) {
+    dbInst.on('error', function () {
         // ignore;
     });
 }
@@ -177,7 +177,7 @@ describe("Connection", function () {
      });
      waitsFor(function () {
      return result !== undefined;
-     }, "Connection timed out", 60000);
+     }, "Connection timed out", 5000);
      runs(function () {
      expect(result instanceof Error).toBe(true);
      expect(result.message).toBe('password authentication failed for user "' + pgp.pg.defaults.user + '"');

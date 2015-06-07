@@ -14,14 +14,16 @@ var cn = {
     // password: - add password, if needed;
 };
 
-module.exports = function (options) {
+module.exports = function (options, onExtend) {
     var result = {
         pgp: pgpLib(options),
         cn: cn
     };
+    if (typeof(onExtend) === 'function') {
+        result.pgp.lib.on('extend', function (obj) {
+            onExtend.call(this, obj);
+        });
+    }
     result.db = result.pgp(cn);
-    result.db.on('error', function(){
-        // ignore;
-    });
     return result;
 };
