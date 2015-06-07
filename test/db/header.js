@@ -20,5 +20,8 @@ module.exports = function (options) {
         cn: cn
     };
     result.db = result.pgp(cn);
+    result.db.on('error', function(){
+        // ignore;
+    });
     return result;
 };
