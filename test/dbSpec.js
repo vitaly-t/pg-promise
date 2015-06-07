@@ -8,10 +8,6 @@ var dbHeader = require('./db/header')(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
-db.on('error', function () {
-    // ignore;
-});
-
 describe("Database Instantiation", function () {
     it("must throw an error when empty or no connection passed", function () {
         var err = "Connection details must be specified.";
@@ -30,6 +26,7 @@ describe("Database Instantiation", function () {
 });
 
 describe("Connection", function () {
+
     it("must be successful for default parameters", function () {
         var status = 'connecting';
         var error;
@@ -115,6 +112,7 @@ describe("Connection", function () {
         });
     });
 
+
     it("must report the right error on invalid server name", function () {
         var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
         errCN.host = 'unknown';
@@ -161,64 +159,64 @@ describe("Connection", function () {
      In the meantime, they cause an unhandled error that kills the test framework.
      */
 
-    /*
-     it("must report the right error on invalid connection", function () {
-     var dbErr = pgp('bla-bla'), result;
-     dbErr.connect()
-     .then(function () {
-     result = null;
-     }, function (error) {
-     result = error;
-     });
-     waitsFor(function () {
-     return result !== undefined;
-     }, "Connection timed out", 5000);
-     runs(function () {
-     expect(result instanceof Error).toBe(true);
-     expect(result.message).toBe('password authentication failed for user "' + pgp.pg.defaults.user + '"');
-     });
-     });
+/*
+    it("must report the right error on invalid connection", function () {
+        var dbErr = pgp('bla-bla'), result;
+        dbErr.connect()
+            .then(function () {
+                result = null;
+            }, function (error) {
+                result = error;
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Connection timed out", 5000);
+        runs(function () {
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe('password authentication failed for user "' + pgp.pg.defaults.user + '"');
+        });
+    });
 
-     it("must report the right error on invalid user name", function () {
-     var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-     errCN.user = 'somebody';
-     var dbErr = pgp(errCN), result;
-     dbErr.connect()
-     .then(function () {
-     result = null;
-     }, function (error) {
-     result = error;
+    it("must report the right error on invalid user name", function () {
+        var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+        errCN.user = 'somebody';
+        var dbErr = pgp(errCN), result;
+        dbErr.connect()
+            .then(function () {
+                result = null;
+            }, function (error) {
+                result = error;
 
-     });
-     waitsFor(function () {
-     return result !== undefined;
-     }, "Connection timed out", 60000);
-     runs(function () {
-     expect(result instanceof Error).toBe(true);
-     expect(result.message).toBe('password authentication failed for user "somebody"');
-     });
-     });
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Connection timed out", 60000);
+        runs(function () {
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe('password authentication failed for user "somebody"');
+        });
+    });
 
-     it("must report the right error on invalid password", function () {
-     var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-     errCN.password = 'invalid';
-     var dbErr = pgp(errCN), result;
-     dbErr.connect()
-     .then(function () {
-     result = null;
-     }, function (error) {
-     result = error;
+    it("must report the right error on invalid password", function () {
+        var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+        errCN.password = 'invalid';
+        var dbErr = pgp(errCN), result;
+        dbErr.connect()
+            .then(function () {
+                result = null;
+            }, function (error) {
+                result = error;
 
-     });
-     waitsFor(function () {
-     return result !== undefined;
-     }, "Connection timed out", 60000);
-     runs(function () {
-     expect(result instanceof Error).toBe(true);
-     expect(result.message).toBe('password authentication failed for user "postgres"');
-     });
-     });
-     */
+            });
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Connection timed out", 60000);
+        runs(function () {
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe('password authentication failed for user "postgres"');
+        });
+    });
+*/
 
     it("must report the right error on repeated disconnection", function () {
         var finished, error;
@@ -370,7 +368,6 @@ describe("Method 'one'", function () {
             expect(error).toBe("Single row was expected from the query.");
         });
     });
-
 });
 
 describe("Method 'oneOrNone'", function () {
