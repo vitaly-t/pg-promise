@@ -19,6 +19,7 @@ module.exports = function (options, onExtend) {
         pgp: pgpLib(options),
         cn: cn
     };
+    // helper for testing a library-level event;
     if (typeof(onExtend) === 'function') {
         result.pgp.lib.on('extend', function (obj) {
             onExtend.call(this, obj);

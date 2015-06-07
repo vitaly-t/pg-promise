@@ -8,8 +8,6 @@ var dbHeader = require('./db/header')(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
-// var isWindows = /^win/.test(process.platform);
-
 describe("Database Instantiation", function () {
     it("must throw an error when empty or no connection passed", function () {
         var err = "Connection details must be specified.";
