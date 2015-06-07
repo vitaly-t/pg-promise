@@ -8,11 +8,9 @@ var dbHeader = require('./db/header')(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
-function ignoreErrors(dbInst) {
-    dbInst.on('error', function () {
-        // ignore;
-    });
-}
+db.on('error', function () {
+    // ignore;
+});
 
 describe("Database Instantiation", function () {
     it("must throw an error when empty or no connection passed", function () {
@@ -121,13 +119,11 @@ describe("Connection", function () {
         var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
         errCN.host = 'unknown';
         var dbErr = pgp(errCN), result;
-        ignoreErrors(dbErr);
         dbErr.connect()
             .then(function () {
                 result = null;
             }, function (error) {
                 result = error;
-
             });
         waitsFor(function () {
             return result !== undefined;
@@ -142,7 +138,6 @@ describe("Connection", function () {
         var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
         errCN.port = '12345';
         var dbErr = pgp(errCN), result;
-        ignoreErrors(dbErr);
         dbErr.connect()
             .then(function () {
                 result = null;
