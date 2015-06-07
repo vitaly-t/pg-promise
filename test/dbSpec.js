@@ -176,7 +176,8 @@ describe("Connection", function () {
             }, "Connection timed out", 5000);
             runs(function () {
                 expect(result instanceof Error).toBe(true);
-                expect(result.message).toBe('password authentication failed for user "' + pgp.pg.defaults.user + '"');
+                expect(result).toBe('something1');
+                //expect(result.message).toContain('password authentication failed for user "' + pgp.pg.defaults.user + '"');
             });
         });
 
@@ -195,6 +196,7 @@ describe("Connection", function () {
                 return result !== undefined;
             }, "Connection timed out", 60000);
             runs(function () {
+                expect(result).toBe('something2');
                 expect(result instanceof Error).toBe(true);
                 expect(result.message).toBe('password authentication failed for user "somebody"');
             });
@@ -215,6 +217,7 @@ describe("Connection", function () {
                 return result !== undefined;
             }, "Connection timed out", 60000);
             runs(function () {
+                expect(result).toBe('something3');
                 expect(result instanceof Error).toBe(true);
                 expect(result.message).toBe('password authentication failed for user "postgres"');
             });
