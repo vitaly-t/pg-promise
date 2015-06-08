@@ -49,11 +49,6 @@ describe("Library instance", function () {
         expect(v.toString()).toBe(v.major + '.' + v.minor + '.' + v.patch);
     });
 
-    it("must have valid property 'lib'", function () {
-        expect(typeof(pgp.lib)).toBe('object');
-        expect(pgp.lib._events).toBeTruthy();
-    });
-
     it("must have valid property 'as'", function () {
         expect(typeof(pgp.as)).toBe('object');
         expect(typeof(pgp.as.text)).toBe('function');
@@ -139,20 +134,16 @@ describe("Database Protocol", function () {
 
 describe("Protocol Extension", function () {
     it("must allow custom properties on database level", function () {
-        var result, c1 = 0, c2 = 0, THIS1, THIS2, ctx1, ctx2;
+        var result, THIS, ctx, counter = 0;
         var pgpTest = require('./db/header')({
             extend: function (obj) {
-                ctx1 = obj;
-                THIS1 = this;
-                c1++;
+                ctx = obj;
+                THIS = this;
+                counter++;
                 this.getOne = function (query, values) {
                     return this.one(query, values);
                 };
             }
-        }, function (obj) {
-            ctx2 = obj;
-            THIS2 = this;
-            c2++;
         });
         pgpTest.db.getOne("select 'hello' as msg")
             .then(function (data) {
@@ -164,35 +155,27 @@ describe("Protocol Extension", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(THIS1 && ctx1 && THIS1 === ctx1).toBeTruthy();
-            expect(THIS2 && ctx2 && THIS2 === ctx2).toBeTruthy();
-            expect(THIS1 === THIS2 && ctx1 === ctx2).toBeTruthy();
-            expect(c1).toBe(1);
-            expect(c2).toBe(1);
+            expect(THIS && ctx && THIS === ctx).toBeTruthy();
+            expect(counter).toBe(1);
             expect(result.msg).toBe('hello');
         });
     });
 
     it("must allow custom properties on transaction level", function () {
-        var result, c1 = 0, c2 = 0, THIS1, THIS2, ctx1, ctx2;
+        var result, THIS2, ctx, counter = 0;
         var pgpTest = require('./db/header')({
             extend: function (obj) {
-                c1++;
-                if(c1 === 2) {
+                counter++;
+                if(counter === 2) {
                     // we skip one for the database object,
                     // and into the `extend` for the transaction;
-                    THIS1 = this;
-                    ctx1 = obj;
+                    THIS = this;
+                    ctx = obj;
                     obj.getOne = function (query, values) {
                         return obj.one(query, values);
                     };
                 }
             }
-        });
-        pgpTest.db.on('extend', function (obj) {
-            THIS2 = this;
-            ctx2 = obj;
-            c2++;
         });
         pgpTest.db.tx(function (t) {
             return t.getOne("select 'hello' as msg");
@@ -206,11 +189,8 @@ describe("Protocol Extension", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(THIS1 && ctx1 && THIS1 === ctx1).toBeTruthy();
-            expect(THIS2 && ctx2 && THIS2 === ctx2).toBeTruthy();
-            expect(THIS1 === THIS2 && ctx1 === ctx2).toBeTruthy();
-            expect(c1).toBe(2);
-            expect(c2).toBe(1);
+            expect(THIS && ctx && THIS === ctx).toBeTruthy();
+            expect(counter).toBe(2);
             expect(result && typeof(result) === 'object').toBe(true);
             expect(result.msg).toBe('hello');
         });

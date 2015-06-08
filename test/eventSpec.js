@@ -14,23 +14,15 @@ var func = function () {
 describe("Connect/Disconnect events", function () {
 
     it("must be sent correctly during a query", function () {
-        var stop, c1 = 0, c2 = 0, d1 = 0, d2 = 0, params = [];
+        var stop, p1, p2, connect = 0, disconnect = 0;
         options.connect = function (client) {
-            params.push(client);
-            c1++;
+            p1 = client;
+            connect++;
         };
         options.disconnect = function (client) {
-            params.push(client);
-            d1++;
+            p2 = client;
+            disconnect++;
         };
-        db.on("connect", function (client) {
-            params.push(client);
-            c2++;
-        });
-        db.on("disconnect", function (client) {
-            params.push(client);
-            d2++;
-        });
         db.query("select 'test'")
             .then(function () {
                 stop = true;
@@ -39,34 +31,23 @@ describe("Connect/Disconnect events", function () {
             return stop;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(c1).toBe(1);
-            expect(c2).toBe(1);
-            expect(d1).toBe(1);
-            expect(d2).toBe(1);
-            for (var i = 0; i < 4; i++) {
-                expect(params[i] instanceof pgClient).toBe(true);
-            }
+            expect(connect).toBe(1);
+            expect(disconnect).toBe(1);
+            expect(p1 instanceof pgClient).toBe(true);
+            expect(p2 instanceof pgClient).toBe(true);
         });
     });
 
     it("must be sent correctly during a transaction", function () {
-        var stop, c1 = 0, c2 = 0, d1 = 0, d2 = 0, params = [];
+        var stop, p1, p2, connect = 0, disconnect = 0;
         options.connect = function (client) {
-            params.push(client);
-            c1++;
+            p1 = client;
+            connect++;
         };
         options.disconnect = function (client) {
-            params.push(client);
-            d1++;
+            p2 = client;
+            disconnect++;
         };
-        db.on("connect", function (client) {
-            params.push(client);
-            c2++;
-        });
-        db.on("disconnect", function (client) {
-            params.push(client);
-            d2++;
-        });
         db.tx(function (t) {
             return promise.all([
                 t.query("select 'one'"),
@@ -81,13 +62,10 @@ describe("Connect/Disconnect events", function () {
             return stop;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(c1).toBe(1);
-            expect(c2).toBe(1);
-            expect(d1).toBe(1);
-            expect(d2).toBe(1);
-            for (var i = 0; i < 4; i++) {
-                expect(params[i] instanceof pgClient).toBe(true);
-            }
+            expect(connect).toBe(1);
+            expect(disconnect).toBe(1);
+            expect(p1 instanceof pgClient).toBe(true);
+            expect(p2 instanceof pgClient).toBe(true);
         });
     });
 
@@ -96,15 +74,11 @@ describe("Connect/Disconnect events", function () {
 describe("Query event", function () {
 
     it("must pass query and parameters correctly", function () {
-        var stop, p1, p2, c1 = 0, c2 = 0;
+        var stop, param, counter = 0;
         options.query = function (e) {
-            c1++;
-            p1 = e;
+            counter++;
+            param = e;
         };
-        db.on('query', function (e) {
-            c2++;
-            p2 = e;
-        });
         db.query("select $1", [123])
             .then(function () {
                 stop = true;
@@ -113,10 +87,8 @@ describe("Query event", function () {
             return stop;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(c1).toBe(1);
-            expect(c2).toBe(1);
-            expect(p1.query).toBe('select 123');
-            expect(p2.query).toBe('select 123');
+            expect(counter).toBe(1);
+            expect(param.query).toBe('select 123');
         });
     });
 });
@@ -124,26 +96,16 @@ describe("Query event", function () {
 describe("Start/Finish transaction events", function () {
 
     it("must execute correctly", function () {
-        var result, tag1, tag2, ctx1, ctx2,
-            start1 = 0, start2 = 0, finish1 = 0, finish2 = 0;
+        var result, tag, ctx, start = 0, finish = 0;
         options.transact = function (e) {
             if (e.ctx.finish) {
-                finish1++;
-                ctx1 = e.ctx;
+                finish++;
+                ctx = e.ctx;
             } else {
-                start1++;
-                tag1 = e.ctx.tag;
+                start++;
+                tag = e.ctx.tag;
             }
         };
-        db.on('transact', function (e) {
-            if (e.ctx.finish) {
-                finish2++;
-                ctx2 = e.ctx;
-            } else {
-                start2++;
-                tag2 = e.ctx.tag;
-            }
-        });
         db.tx("myTransaction", function () {
             return promise.resolve('SUCCESS');
         }).then(function (data) {
@@ -154,14 +116,10 @@ describe("Start/Finish transaction events", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBe('SUCCESS');
-            expect(start1).toBe(1);
-            expect(start2).toBe(1);
-            expect(finish1).toBe(1);
-            expect(finish2).toBe(1);
-            expect(tag1).toBe("myTransaction");
-            expect(tag2).toBe("myTransaction");
-            expect(ctx1.success).toBe(true);
-            expect(ctx2.success).toBe(true);
+            expect(start).toBe(1);
+            expect(finish).toBe(1);
+            expect(tag).toBe("myTransaction");
+            expect(ctx.success).toBe(true);
         });
     });
 });
@@ -169,17 +127,12 @@ describe("Start/Finish transaction events", function () {
 describe("Error event", function () {
 
     it("must report errors from transaction callbacks", function () {
-        var result, r, error1, error2, ctx1, ctx2, c1 = 0, c2 = 0;
+        var result, r, error, ctx, counter = 0;
         options.error = function (err, e) {
-            c1++;
-            error1 = err;
-            ctx1 = e.ctx;
+            counter++;
+            error = err;
+            ctx = e.ctx;
         };
-        db.on('error', function (err, e) {
-            c2++;
-            error2 = err;
-            ctx2 = e.ctx;
-        });
         db.tx("Error Transaction", function () {
             throw new Error("Test Error");
         }).then(function () {
@@ -193,29 +146,20 @@ describe("Error event", function () {
         runs(function () {
             expect(r instanceof Error).toBe(true);
             expect(r.message).toBe('Test Error');
-            expect(error1 instanceof Error).toBe(true);
-            expect(error2 instanceof Error).toBe(true);
-            expect(error1.message).toBe('Test Error');
-            expect(error2.message).toBe('Test Error');
-            expect(c1).toBe(1);
-            expect(c2).toBe(1);
-            expect(ctx1.tag).toBe("Error Transaction");
-            expect(ctx2.tag).toBe("Error Transaction");
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe('Test Error');
+            expect(counter).toBe(1);
+            expect(ctx.tag).toBe("Error Transaction");
         });
     });
 
     it("must handle null-query", function () {
-        var result, txt1, txt2, ctx1, ctx2, c1 = 0, c2 = 0;
+        var result, txt, ctx, counter = 0;
         options.error = function (err, e) {
-            c1++;
-            txt1 = err;
-            ctx1 = e;
+            counter++;
+            txt = err;
+            ctx = e;
         };
-        db.on('error', function (err, e) {
-            c2++;
-            txt2 = err;
-            ctx2 = e;
-        });
         db.query(null)
             .then(function () {
                 result = null;
@@ -227,27 +171,19 @@ describe("Error event", function () {
         }, "Query timed out", 5000);
         runs(function () {
             var msg = "Parameter 'query' must be a non-empty text string.";
-            expect(txt1).toBe(msg);
-            expect(txt2).toBe(msg);
-            expect(ctx1.params).toBeUndefined();
-            expect(ctx2.params).toBeUndefined();
-            expect(c1).toBe(1);
-            expect(c2).toBe(1);
+            expect(txt).toBe(msg);
+            expect(ctx.params).toBeUndefined();
+            expect(counter).toBe(1);
         });
     });
 
     it("must handle incorrect QRM", function () {
-        var result, txt1, txt2, ctx1, ctx2, c1 = 0, c2 = 0;
+        var result, txt, ctx, counter = 0;
         options.error = function (err, e) {
-            c1++;
-            txt1 = err;
-            ctx1 = e;
+            counter++;
+            txt = err;
+            ctx = e;
         };
-        db.on('error', function (err, e) {
-            c2++;
-            txt2 = err;
-            ctx2 = e;
-        });
         db.query("Bla-Bla", undefined, 42)
             .then(function () {
                 result = null;
@@ -259,14 +195,10 @@ describe("Error event", function () {
         }, "Query timed out", 5000);
         runs(function () {
             var msg = "Invalid Query Result Mask specified.";
-            expect(txt1).toBe(msg);
-            expect(txt2).toBe(msg);
-            expect(ctx1.query).toBe("Bla-Bla");
-            expect(ctx2.query).toBe("Bla-Bla");
-            expect(ctx1.params).toBeUndefined();
-            expect(ctx2.params).toBeUndefined();
-            expect(c1).toBe(1);
-            expect(c2).toBe(1);
+            expect(txt).toBe(msg);
+            expect(ctx.query).toBe("Bla-Bla");
+            expect(ctx.params).toBeUndefined();
+            expect(counter).toBe(1);
         });
     });
 
