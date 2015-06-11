@@ -36,6 +36,7 @@
     "promise": "7.x"
   },
   "devDependencies": {
+    "jsdoc": "3.x",
     "bluebird": "2.9",
     "jasmine-node": "1.x"
   }
