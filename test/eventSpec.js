@@ -276,13 +276,13 @@ describe("Error event", function () {
 
     it("must report passed parameters when needed", function () {
         var result, error, context, counter = 0;
-        var params = ['one', 'two'];
+        var params = 'one';
         options.error = function (err, e) {
             counter++;
             error = err;
             context = e;
         };
-        db.query("$1", params)
+        db.query("empty", params)
             .then(function () {
                 result = null;
             }, function (reason) {
@@ -293,8 +293,8 @@ describe("Error event", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe("No variable $2 found for the value with index 1");
-            expect(context.query).toBe("$1");
+            expect(error.message).toBe("No variable $1 found to replace with the value passed.");
+            expect(context.query).toBe("empty");
             expect(context.params).toBe(params);
             expect(counter).toBe(1);
         });

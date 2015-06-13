@@ -563,10 +563,6 @@ describe("Method as.format", function () {
         }).toThrow(errEmptyString);
 
         expect(function () {
-            pgp.as.format("$1,$2", [1, 2, 3]);
-        }).toThrow("No variable $3 found for the value with index 2");
-
-        expect(function () {
             pgp.as.format("", 123);
         }).toThrow("No variable $1 found to replace with the value passed.");
 

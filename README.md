@@ -960,8 +960,8 @@ function repUsers(obj) {
 
 // Overriding 'extend' event;
 var options = {
-    extend: function (obj) {
-        obj.users = repUsers(obj);
+    extend: function () {
+        this.users = repUsers(this);
     }
 };
 
