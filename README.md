@@ -993,6 +993,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 1.5.0 major changes in architecture and query formatting. Released: June 14, 2015.
 * Version 1.4.0 added `this` context to all callbacks where applicable. Released: May 31, 2015.
 * Version 1.3.1 extended [Named Parameters](#named-parameters) syntax to support `{}`,`()`,`[]`,`<>` and `//`. Released: May 24, 2015.
 * Version 1.3.0 much improved error handling and reporting. Released: May 23, 2015.
