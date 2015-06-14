@@ -515,6 +515,9 @@ describe("Method as.format", function () {
         expect(pgp.as.format("$1, $2", [
             'one', [2, 3]
         ])).toBe("'one', array[2,3]");
+
+        // check that gaps are handled correctly;
+        expect(pgp.as.format("$2, $4, $6", [1, 2, 3, 4, 5])).toBe("2, 4, $6");
     });
 
     it("must correctly inject raw-text variables", function () {
@@ -561,24 +564,6 @@ describe("Method as.format", function () {
                 return '';
             }, func)
         }).toThrow(errEmptyString);
-
-        expect(function () {
-            pgp.as.format("", 123);
-        }).toThrow("No variable $1 found to replace with the value passed.");
-
-        expect(function () {
-            pgp.as.format("", null);
-        }).toThrow("No variable $1 found to replace with the value passed.");
-
-        // test that $1 variable isn't confused with $12;
-        expect(function () {
-            pgp.as.format("$12", 123);
-        }).toThrow("No variable $1 found to replace with the value passed.");
-
-        // test that $1 variable isn't confused with $112
-        expect(function () {
-            pgp.as.format("$112", 123);
-        }).toThrow("No variable $1 found to replace with the value passed.");
 
         expect(function () {
             pgp.as.format("$1^", null);
