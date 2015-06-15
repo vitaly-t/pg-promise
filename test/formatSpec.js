@@ -422,6 +422,18 @@ describe("Method as.func", function () {
             }
         })).toBe("3");
 
+        // the same object context must be
+        // passed into every sub-function;
+        expect(pgp.as.func(function () {
+            return function () {
+                return function () {
+                    return this.test;
+                }
+            }
+        }, false, {
+            test: "Hello!"
+        })).toBe("'Hello!'");
+
         /////////////////////////////
         // negative tests;
 
