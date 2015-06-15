@@ -624,8 +624,9 @@ describe("Executing an invalid function", function () {
 // huge transactions should  be throttled into smaller chunks.
 describe("A complex transaction with 10,000 inserts", function () {
     it("must not fail", function () {
-        var result, error, context, THIS;
-        db.tx(function (t) {
+        var result, error, context, THIS, tag;
+        db.tx("complex", function (t) {
+            tag = t.ctx.tag;
             THIS = this;
             context = t;
             var queries = [
@@ -655,6 +656,7 @@ describe("A complex transaction with 10,000 inserts", function () {
             var last = result[result.length - 1]; // result from the select;
             expect(typeof(last)).toBe('object');
             expect(last.count).toBe('10000'); // last one must be the counter (as text);
+            expect(tag).toBe("complex");
         });
     });
 });
@@ -836,19 +838,29 @@ describe("Calling a transaction with an invalid callback", function () {
 
 describe("A nested transaction (10 levels)", function () {
     it("must work the same no matter how many levels", function () {
-        var result, error, THIS, context;
-        db.tx(function () {
-            return this.tx(function () {
-                return this.tx(function () {
-                    return this.tx(function () {
-                        return this.tx(function () {
-                            return this.tx(function () {
+        var result, error, THIS, context, ctx = [];
+        db.tx(0, function () {
+            ctx.push(this.ctx);
+            return this.tx(1, function () {
+                ctx.push(this.ctx);
+                return this.tx(2, function () {
+                    ctx.push(this.ctx);
+                    return this.tx(3, function () {
+                        ctx.push(this.ctx);
+                        return this.tx(4, function () {
+                            ctx.push(this.ctx);
+                            return this.tx(5, function () {
+                                ctx.push(this.ctx);
                                 return promise.all([
                                     this.one("select 'Hello' as word"),
-                                    this.tx(function () {
-                                        return this.tx(function () {
-                                            return this.tx(function () {
-                                                return this.tx(function (t) {
+                                    this.tx(6, function () {
+                                        ctx.push(this.ctx);
+                                        return this.tx(7, function () {
+                                            ctx.push(this.ctx);
+                                            return this.tx(8, function () {
+                                                ctx.push(this.ctx);
+                                                return this.tx(9, function (t) {
+                                                    ctx.push(this.ctx);
                                                     THIS = this;
                                                     context = t;
                                                     return this.one("select 'World!' as word");
@@ -879,6 +891,9 @@ describe("A nested transaction (10 levels)", function () {
             expect(result.length).toBe(2);
             expect(result[0].word).toBe('Hello');
             expect(result[1].word).toBe('World!');
+            for (var i = 0; i < 10; i++) {
+                expect(ctx[i].tag).toBe(i);
+            }
         });
     });
 });
