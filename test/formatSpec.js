@@ -519,8 +519,21 @@ describe("Method as.format", function () {
         // check that gaps are handled correctly;
         expect(pgp.as.format("$2, $4, $6", [1, 2, 3, 4, 5])).toBe("2, 4, $6");
 
-        // test that inserting strings with variable names in them doesn't effect formatting;
-        expect(pgp.as.format("$1, $2, $3^, $4", ["$2", "$4", "$4"])).toBe("'$2', '$4', $4, $4");
+        ///////////////////////////////////////////////////
+        // test that inserting strings with variable names
+        // in them doesn't effect formatting;
+
+        // a) for regular variables;
+        expect(pgp.as.format("$1, $2, $3^, $4", ["$2", "$3", "$2,$3"])).toBe("'$2', '$3', $2,$3, $4");
+
+        // b) for the Named Parameters;
+        expect(pgp.as.format("${one}, ${two}, ${three^}, $four", {
+                one: "${two}",
+                two: "${three}",
+                three: "${two},${three}"
+            }
+        )).toBe("'${two}', '${three}', ${two},${three}, $four");
+
     });
 
     it("must correctly inject raw-text variables", function () {
