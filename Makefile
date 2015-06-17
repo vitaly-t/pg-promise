@@ -1,4 +1,4 @@
 test:
-	@./node_modules/jasminee/bin/jasmine
-
+	@./node_modules/jasmine/bin/jasmine
+	
 .PHONY: test
