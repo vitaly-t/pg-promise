@@ -94,11 +94,11 @@ describe("Method as.number", function () {
         var err = " is not a number.";
         expect(function () {
             pgp.as.number('');
-        }).toThrow("''" + err);
+        }).toThrow(new Error("''" + err));
 
         expect(function () {
             pgp.as.number([1, 2]);
-        }).toThrow("'1,2'" + err);
+        }).toThrow(new Error("'1,2'" + err));
 
     });
 
@@ -162,11 +162,11 @@ describe("Method as.text", function () {
     it("must correctly respond to invalid raw-text requests", function () {
         expect(function () {
             pgp.as.text(undefined, true);
-        }).toThrow(errors.rawNull());
+        }).toThrow(new Error(errors.rawNull()));
 
         expect(function () {
             pgp.as.text(null, true);
-        }).toThrow(errors.rawNull());
+        }).toThrow(new Error(errors.rawNull()));
 
     });
 
@@ -194,31 +194,31 @@ describe("Method as.date", function () {
 
         expect(function () {
             pgp.as.date(undefined, true);
-        }).toThrow(errors.rawNull());
+        }).toThrow(new Error(errors.rawNull()));
 
         expect(function () {
             pgp.as.date(null, true);
-        }).toThrow(errors.rawNull());
+        }).toThrow(new Error(errors.rawNull()));
 
         expect(function () {
             pgp.as.date("");
-        }).toThrow("'' is not a Date object.");
+        }).toThrow(new Error("'' is not a Date object."));
 
         expect(function () {
             pgp.as.date("bla-bla");
-        }).toThrow("'bla-bla' is not a Date object.");
+        }).toThrow(new Error("'bla-bla' is not a Date object."));
 
         expect(function () {
             pgp.as.date(123);
-        }).toThrow("'123' is not a Date object.");
+        }).toThrow(new Error("'123' is not a Date object."));
 
         expect(function () {
             pgp.as.date([]);
-        }).toThrow("'' is not a Date object.");
+        }).toThrow(new Error("'' is not a Date object."));
 
         expect(function () {
             pgp.as.date({});
-        }).toThrow("'[object Object]' is not a Date object.");
+        }).toThrow(new Error("'[object Object]' is not a Date object."));
 
     });
 
@@ -314,10 +314,10 @@ describe("Method as.json", function () {
     it("must correctly reject invalid requests", function () {
         expect(function () {
             pgp.as.json(null, true);
-        }).toThrow(errors.rawNull());
+        }).toThrow(new Error(errors.rawNull()));
         expect(function () {
             pgp.as.json(undefined, true);
-        }).toThrow(errors.rawNull());
+        }).toThrow(new Error(errors.rawNull()));
     });
 });
 
@@ -359,11 +359,11 @@ describe("Method as.array", function () {
         var err = " is not an Array object.";
         expect(function () {
             pgp.as.array(123);
-        }).toThrow("'123'" + err);
+        }).toThrow(new Error("'123'" + err));
 
         expect(function () {
             pgp.as.array('');
-        }).toThrow("''" + err);
+        }).toThrow(new Error("''" + err));
 
     });
 
@@ -439,15 +439,15 @@ describe("Method as.func", function () {
 
         expect(function () {
             pgp.as.func(1);
-        }).toThrow("'1' is not a function.");
+        }).toThrow(new Error("'1' is not a function."));
 
         expect(function () {
             pgp.as.func(undefined, true);
-        }).toThrow("Values null/undefined cannot be used as raw text.");
+        }).toThrow(new Error("Values null/undefined cannot be used as raw text."));
 
         expect(function () {
             pgp.as.func(null, true);
-        }).toThrow("Values null/undefined cannot be used as raw text.");
+        }).toThrow(new Error("Values null/undefined cannot be used as raw text."));
 
         expect(function () {
             pgp.as.func(function () {
@@ -457,11 +457,11 @@ describe("Method as.func", function () {
 
         expect(function () {
             pgp.as.func(func, false, '');
-        }).toThrow("'' is not an object.");
+        }).toThrow(new Error("'' is not an object."));
 
         expect(function () {
             pgp.as.func(func, false, 0);
-        }).toThrow("'0' is not an object.");
+        }).toThrow(new Error("'0' is not an object."));
 
     });
 });
@@ -573,37 +573,37 @@ describe("Method as.format", function () {
 
         expect(function () {
             pgp.as.format();
-        }).toThrow(errEmptyString);
+        }).toThrow(new Error(errEmptyString));
 
         expect(function () {
             pgp.as.format(null);
-        }).toThrow(errEmptyString);
+        }).toThrow(new Error(errEmptyString));
 
         expect(function () {
             pgp.as.format(null, [1, 2, 3]);
-        }).toThrow(errEmptyString);
+        }).toThrow(new Error(errEmptyString));
 
         expect(function () {
             pgp.as.format(123);
-        }).toThrow(errEmptyString);
+        }).toThrow(new Error(errEmptyString));
 
         expect(function () {
             pgp.as.format(function () {
                 return '';
             }, func)
-        }).toThrow(errEmptyString);
+        }).toThrow(new Error(errEmptyString));
 
         expect(function () {
             pgp.as.format("$1^", null);
-        }).toThrow(errors.rawNull());
+        }).toThrow(new Error(errors.rawNull()));
 
         expect(function () {
             pgp.as.format("$1^", [null]);
-        }).toThrow(errors.rawNull());
+        }).toThrow(new Error(errors.rawNull()));
 
         expect(function () {
             pgp.as.format("$1^", [undefined]);
-        }).toThrow(errors.rawNull());
+        }).toThrow(new Error(errors.rawNull()));
 
     });
 
@@ -673,7 +673,7 @@ describe("Named Parameters", function () {
             pgp.as.format("$/propName/$(PropName)", {
                 propName: undefined
             });
-        }).toThrow("Property 'PropName' doesn't exist.");
+        }).toThrow(new Error("Property 'PropName' doesn't exist."));
 
     });
 
@@ -713,7 +713,7 @@ describe("Named Parameters", function () {
             pgp.as.format("${prop1},${prop2}", {
                 prop1: 'hello'
             });
-        }).toThrow("Property 'prop2' doesn't exist.");
+        }).toThrow(new Error("Property 'prop2' doesn't exist."));
     });
 
 });

@@ -15,12 +15,10 @@
     "url": "https://github.com/vitaly-t/pg-promise/issues"
   },
   "keywords": [
-    "pg",
     "pg-promise",
-    "promise",
+    "pg",
     "postgres",
-    "transaction",
-    "promises-aplus"
+    "transaction"
   ],
   "author": {
     "name": "Vitaly Tomilov",
@@ -37,6 +35,6 @@
   },
   "devDependencies": {
     "bluebird": "2.9",
-    "jasmine-node": "1.x"
+    "jasmine": "2.x"
   }
 }

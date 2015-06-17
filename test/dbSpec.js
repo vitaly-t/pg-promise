@@ -11,13 +11,13 @@ var db = dbHeader.db;
 describe("Database Instantiation", function () {
     it("must throw an error when empty or no connection passed", function () {
         var err = "Connection details must be specified.";
-        expect(pgp).toThrow(err);
+        expect(pgp).toThrow(new Error(err));
         expect(function () {
             pgp(null);
-        }).toThrow(err);
+        }).toThrow(new Error(err));
         expect(function () {
             pgp("");
-        }).toThrow(err);
+        }).toThrow(new Error(err));
     });
     var testDB = pgp("invalid connection details");
     it("must return a valid, though non-connectible object", function () {
@@ -27,25 +27,26 @@ describe("Database Instantiation", function () {
 
 describe("Connection", function () {
 
-    it("must be successful for default parameters", function () {
-        var status = 'connecting';
-        var error;
-        db.connect()
-            .then(function (obj) {
-                status = 'success';
-                obj.done(); // release connection;
-            }, function (reason) {
-                error = reason;
-                status = 'failed';//reason.error;
-            })
-            .catch(function (err) {
-                error = err;
-                status = 'failed';
-            });
-        waitsFor(function () {
-            return status !== 'connecting';
-        }, "Connection timed out", 5000);
-        runs(function () {
+    describe("with default parameters", function () {
+        var status = 'connecting', error;
+        beforeEach(function (done) {
+            db.connect()
+                .then(function (obj) {
+                    status = 'success';
+                    obj.done(); // release connection;
+                }, function (reason) {
+                    error = reason;
+                    status = 'failed';//reason.error;
+                })
+                .catch(function (err) {
+                    error = err;
+                    status = 'failed';
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must be successful", function () {
             expect(status).toBe('success');
             expect(error).toBeUndefined();
         });
@@ -1174,10 +1175,12 @@ describe("Synchronous Transactions", function () {
 
 });
 
-var _finishCallback = jasmine.Runner.prototype.finishCallback;
-jasmine.Runner.prototype.finishCallback = function () {
-    // Run the old finishCallback:
-    _finishCallback.bind(this)();
+/*
+ var _finishCallback = jasmine.Runner.prototype.finishCallback;
+ jasmine.Runner.prototype.finishCallback = function () {
+ // Run the old finishCallback:
+ _finishCallback.bind(this)();
 
-    pgp.end(); // closing pg database application pool;
-};
+ pgp.end(); // closing pg database application pool;
+ };
+ */
