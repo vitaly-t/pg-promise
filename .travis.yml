@@ -10,4 +10,4 @@ before_script:
   - node test/db/init.js
 branches:
   only:
-    - test_upgrade
+    - master
