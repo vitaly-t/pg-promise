@@ -40,7 +40,7 @@ describe("Connection", function () {
                 })
                 .catch(function (err) {
                     error = err;
-                    status = 'failed';
+                    status = 'exception';
                 })
                 .finally(function () {
                     done();
@@ -52,60 +52,60 @@ describe("Connection", function () {
         });
     });
 
-    it("must provide functioning context for queries", function () {
+    describe("for regular queries", function () {
         var result, sco;
-        db.connect()
-            .then(function (obj) {
-                sco = obj;
-                return sco.one("select count(*) from users");
-            }, function (reason) {
-                result = null;
-                return promise.reject(reason);
-            })
-            .then(function (data) {
-                result = data;
-            }, function () {
-                result = null;
-            })
-            .done(function () {
-                if (sco) {
-                    sco.done();
-                }
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Connection timed out", 5000);
-        runs(function () {
+        beforeEach(function (done) {
+            db.connect()
+                .then(function (obj) {
+                    sco = obj;
+                    return sco.one("select count(*) from users");
+                }, function (reason) {
+                    result = null;
+                    return promise.reject(reason);
+                })
+                .then(function (data) {
+                    result = data;
+                }, function () {
+                    result = null;
+                })
+                .finally(function () {
+                    if (sco) {
+                        sco.done();
+                    }
+                    done();
+                });
+        });
+        it("must provide functioning context", function () {
             expect(result).toBeDefined();
             expect(result.count > 0).toBe(true);
             expect(typeof(sco.tx)).toBe('function'); // just a protocol check;
         });
     });
 
-    it("must provide functioning context for raw queries", function () {
+    describe("for raw queries", function () {
         var result, sco;
-        db.connect()
-            .then(function (obj) {
-                sco = obj;
-                return sco.raw("select * from users");
-            }, function (reason) {
-                result = null;
-                return promise.reject(reason);
-            })
-            .then(function (data) {
-                result = data;
-            }, function () {
-                result = null;
-            })
-            .done(function () {
-                if (sco) {
-                    sco.done();
-                }
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Connection timed out", 5000);
-        runs(function () {
+        beforeEach(function (done) {
+            db.connect()
+                .then(function (obj) {
+                    sco = obj;
+                    return sco.raw("select * from users");
+                }, function (reason) {
+                    result = null;
+                    return promise.reject(reason);
+                })
+                .then(function (data) {
+                    result = data;
+                }, function () {
+                    result = null;
+                })
+                .finally(function () {
+                    if (sco) {
+                        sco.done();
+                    }
+                    done();
+                });
+        });
+        it("must provide functioning context", function () {
             expect(result instanceof pgResult);
             expect(result.rows.length > 0).toBe(true);
             expect(typeof(result.rowCount)).toBe('number');
@@ -113,41 +113,43 @@ describe("Connection", function () {
         });
     });
 
-
-    it("must report the right error on invalid server name", function () {
+    describe("for invalid server name", function () {
         var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
         errCN.host = 'unknown';
         var dbErr = pgp(errCN), result;
-        dbErr.connect()
-            .then(function () {
-                result = null;
-            }, function (error) {
-                result = error;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Connection timed out", 60000);
-        runs(function () {
+        beforeEach(function (done) {
+            dbErr.connect()
+                .then(function () {
+                    result = null;
+                }, function (error) {
+                    result = error;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must report the right error", function () {
             expect(result instanceof Error).toBe(true);
             expect(result.message).toContain('getaddrinfo ENOTFOUND');
         });
     });
 
-    it("must report the right error on invalid port", function () {
+    describe("for invalid port", function () {
         var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
         errCN.port = '12345';
         var dbErr = pgp(errCN), result;
-        dbErr.connect()
-            .then(function () {
-                result = null;
-            }, function (error) {
-                result = error;
-
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Connection timed out", 60000);
-        runs(function () {
+        beforeEach(function (done) {
+            dbErr.connect()
+                .then(function () {
+                    result = null;
+                }, function (error) {
+                    result = error;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must report the right error", function () {
             expect(result instanceof Error).toBe(true);
             expect(result.message).toContain('connect ECONNREFUSED');
         });

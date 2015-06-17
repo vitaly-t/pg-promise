@@ -108,7 +108,7 @@ describe("Database Protocol", function () {
                 .then(function (data) {
                     protocol = data;
                 })
-                .done(function () {
+                .finally(function () {
                     done();
                 });
         });
@@ -193,8 +193,6 @@ describe("Protocol Extension", function () {
             })
                 .then(function (data) {
                     result = data;
-                }, function () {
-                    result = null;
                 })
                 .finally(function () {
                     done();
