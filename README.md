@@ -92,7 +92,7 @@ $ npm run coverage
 ```
 $ npm run test-only
 ```
-NOTE: The default `npm test` is used for updating coveralls.ie with the coverage results.
+NOTE: The default `npm test` is used for updating [coveralls.ie](http://coveralls.io/r/vitaly-t/pg-promise) with the coverage results.
 
 # Getting started
 
