@@ -1,1 +1,0 @@
-.PHONY: test-coverage
