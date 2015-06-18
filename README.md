@@ -76,18 +76,23 @@ $ npm install pg-promise
 ```
 $ npm install
 ```
-* Make sure the tests can connect to your local test database, according to connection details in [test/db/header.js](https://github.com/vitaly-t/pg-promise/blob/master/test/db/header.js).
+* Make sure the tests can connect to your local test database, according to connection details in
+[test/db/header.js](https://github.com/vitaly-t/pg-promise/blob/master/test/db/header.js).
 Either match your database configuration or change the connection details in that file.
 
 * Initialize the database with some test data:
 ```
 $ node test/db/init.js
 ```
-* Run tests:
+* To run all tests with coverage:
 ```
-$ make test
+$ npm run coverage
 ```
-On Windows you can also run tests with `test.bat`
+* To run all tests without coverage:
+```
+$ npm run test-only
+```
+NOTE: The default `npm test` is set up to also deploy coverage to coveralls.ie.
 
 # Getting started
 
@@ -994,6 +999,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 1.6.0 major update for the test platform + adding coverage. Released: June 19, 2015.
 * Version 1.5.0 major changes in architecture and query formatting. Released: June 14, 2015.
 * Version 1.4.0 added `this` context to all callbacks where applicable. Released: May 31, 2015.
 * Version 1.3.1 extended [Named Parameters](#named-parameters) syntax to support `{}`,`()`,`[]`,`<>` and `//`. Released: May 24, 2015.
