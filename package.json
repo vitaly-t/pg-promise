@@ -4,7 +4,9 @@
   "description": "node-postgres with promises",
   "main": "lib/index.js",
   "scripts": {
-    "test": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test --captureExceptions spec/ && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "test": "jasmine-node test",
+    "coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test",
+    "test-coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test --captureExceptions spec/ && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "homepage": "https://github.com/vitaly-t/pg-promise",
   "repository": {
