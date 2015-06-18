@@ -92,7 +92,7 @@ $ npm run coverage
 ```
 $ npm run test-only
 ```
-NOTE: The default `npm test` is set up to also deploy coverage to coveralls.ie.
+NOTE: The default `npm test` is used for updating coveralls.ie with the coverage results.
 
 # Getting started
 
