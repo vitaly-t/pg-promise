@@ -4,7 +4,9 @@
   "description": "node-postgres with promises",
   "main": "lib/index.js",
   "scripts": {
-    "test": "make test"
+    "test": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test --captureExceptions spec/ && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "test-only": "jasmine-node test",
+    "coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test"
   },
   "homepage": "https://github.com/vitaly-t/pg-promise",
   "repository": {
@@ -15,12 +17,10 @@
     "url": "https://github.com/vitaly-t/pg-promise/issues"
   },
   "keywords": [
-    "pg",
     "pg-promise",
-    "promise",
+    "pg",
     "postgres",
-    "transaction",
-    "promises-aplus"
+    "transaction"
   ],
   "author": {
     "name": "Vitaly Tomilov",
@@ -37,6 +37,8 @@
   },
   "devDependencies": {
     "bluebird": "2.9",
-    "jasmine-node": "1.x"
+    "jasmine-node": "1.14",
+    "istanbul": "0.3",
+    "coveralls": "2.11"
   }
 }

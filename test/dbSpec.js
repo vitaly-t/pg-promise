@@ -11,13 +11,13 @@ var db = dbHeader.db;
 describe("Database Instantiation", function () {
     it("must throw an error when empty or no connection passed", function () {
         var err = "Connection details must be specified.";
-        expect(pgp).toThrow(err);
+        expect(pgp).toThrow(new Error(err));
         expect(function () {
             pgp(null);
-        }).toThrow(err);
+        }).toThrow(new Error(err));
         expect(function () {
             pgp("");
-        }).toThrow(err);
+        }).toThrow(new Error(err));
     });
     var testDB = pgp("invalid connection details");
     it("must return a valid, though non-connectible object", function () {
@@ -27,84 +27,85 @@ describe("Database Instantiation", function () {
 
 describe("Connection", function () {
 
-    it("must be successful for default parameters", function () {
-        var status = 'connecting';
-        var error;
-        db.connect()
-            .then(function (obj) {
-                status = 'success';
-                obj.done(); // release connection;
-            }, function (reason) {
-                error = reason;
-                status = 'failed';//reason.error;
-            })
-            .catch(function (err) {
-                error = err;
-                status = 'failed';
-            });
-        waitsFor(function () {
-            return status !== 'connecting';
-        }, "Connection timed out", 5000);
-        runs(function () {
+    describe("with default parameters", function () {
+        var status = 'connecting', error;
+        beforeEach(function (done) {
+            db.connect()
+                .then(function (obj) {
+                    status = 'success';
+                    obj.done(); // release connection;
+                }, function (reason) {
+                    error = reason;
+                    status = 'failed';//reason.error;
+                })
+                .catch(function (err) {
+                    error = err;
+                    status = 'exception';
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must be successful", function () {
             expect(status).toBe('success');
             expect(error).toBeUndefined();
         });
     });
 
-    it("must provide functioning context for queries", function () {
+    describe("for regular queries", function () {
         var result, sco;
-        db.connect()
-            .then(function (obj) {
-                sco = obj;
-                return sco.one("select count(*) from users");
-            }, function (reason) {
-                result = null;
-                return promise.reject(reason);
-            })
-            .then(function (data) {
-                result = data;
-            }, function () {
-                result = null;
-            })
-            .done(function () {
-                if (sco) {
-                    sco.done();
-                }
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Connection timed out", 5000);
-        runs(function () {
+        beforeEach(function (done) {
+            db.connect()
+                .then(function (obj) {
+                    sco = obj;
+                    return sco.one("select count(*) from users");
+                }, function (reason) {
+                    result = null;
+                    return promise.reject(reason);
+                })
+                .then(function (data) {
+                    result = data;
+                }, function () {
+                    result = null;
+                })
+                .finally(function () {
+                    if (sco) {
+                        sco.done();
+                    }
+                    done();
+                });
+        });
+        it("must provide functioning context", function () {
             expect(result).toBeDefined();
             expect(result.count > 0).toBe(true);
             expect(typeof(sco.tx)).toBe('function'); // just a protocol check;
         });
     });
 
-    it("must provide functioning context for raw queries", function () {
+    describe("for raw queries", function () {
         var result, sco;
-        db.connect()
-            .then(function (obj) {
-                sco = obj;
-                return sco.raw("select * from users");
-            }, function (reason) {
-                result = null;
-                return promise.reject(reason);
-            })
-            .then(function (data) {
-                result = data;
-            }, function () {
-                result = null;
-            })
-            .done(function () {
-                if (sco) {
-                    sco.done();
-                }
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Connection timed out", 5000);
-        runs(function () {
+        beforeEach(function (done) {
+            db.connect()
+                .then(function (obj) {
+                    sco = obj;
+                    return sco.raw("select * from users");
+                }, function (reason) {
+                    result = null;
+                    return promise.reject(reason);
+                })
+                .then(function (data) {
+                    result = data;
+                }, function () {
+                    result = null;
+                })
+                .finally(function () {
+                    if (sco) {
+                        sco.done();
+                    }
+                    done();
+                });
+        });
+        it("must provide functioning context", function () {
             expect(result instanceof pgResult);
             expect(result.rows.length > 0).toBe(true);
             expect(typeof(result.rowCount)).toBe('number');
@@ -112,41 +113,43 @@ describe("Connection", function () {
         });
     });
 
-
-    it("must report the right error on invalid server name", function () {
+    describe("for invalid server name", function () {
         var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
         errCN.host = 'unknown';
         var dbErr = pgp(errCN), result;
-        dbErr.connect()
-            .then(function () {
-                result = null;
-            }, function (error) {
-                result = error;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Connection timed out", 60000);
-        runs(function () {
+        beforeEach(function (done) {
+            dbErr.connect()
+                .then(function () {
+                    result = null;
+                }, function (error) {
+                    result = error;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must report the right error", function () {
             expect(result instanceof Error).toBe(true);
             expect(result.message).toContain('getaddrinfo ENOTFOUND');
         });
     });
 
-    it("must report the right error on invalid port", function () {
+    describe("for invalid port", function () {
         var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
         errCN.port = '12345';
         var dbErr = pgp(errCN), result;
-        dbErr.connect()
-            .then(function () {
-                result = null;
-            }, function (error) {
-                result = error;
-
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Connection timed out", 60000);
-        runs(function () {
+        beforeEach(function (done) {
+            dbErr.connect()
+                .then(function () {
+                    result = null;
+                }, function (error) {
+                    result = error;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must report the right error", function () {
             expect(result instanceof Error).toBe(true);
             expect(result.message).toContain('connect ECONNREFUSED');
         });
@@ -218,54 +221,53 @@ describe("Connection", function () {
      });
      */
 
-    it("must report the right error on repeated disconnection", function () {
-        var finished, error;
-        db.connect()
-            .then(function (obj) {
-                obj.done(); // disconnecting;
-                try {
-                    obj.done(); // invalid disconnect;
-                } catch (err) {
+    describe("on repeated disconnection", function () {
+        var error;
+        beforeEach(function (done) {
+            db.connect()
+                .then(function (obj) {
+                    obj.done(); // disconnecting;
+                    try {
+                        obj.done(); // invalid disconnect;
+                    } catch (err) {
+                        error = err;
+                    }
+                }, function (err) {
                     error = err;
-                }
-                finished = true;
-            }, function (err) {
-                error = err;
-                finished = true;
-            });
-        waitsFor(function () {
-            return finished !== undefined;
-        }, "Connection timed out", 5000);
-        runs(function () {
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must throw the right error", function () {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe("Cannot invoke done() on a disconnected client.");
         });
     });
 
-    it("must report the right error when executing a disconnected query", function () {
-        var finished, error;
-        db.connect()
-            .then(function (obj) {
-                obj.done(); // disconnecting;
-                try {
-                    obj.query(); // invalid disconnected query;
-                } catch (err) {
+    describe("when executing a disconnected query", function () {
+        var error;
+        beforeEach(function (done) {
+            db.connect()
+                .then(function (obj) {
+                    obj.done(); // disconnecting;
+                    try {
+                        obj.query(); // invalid disconnected query;
+                    } catch (err) {
+                        error = err;
+                    }
+                }, function (err) {
                     error = err;
-                }
-                finished = true;
-            }, function (err) {
-                error = err;
-                finished = true;
-            });
-        waitsFor(function () {
-            return finished !== undefined;
-        }, "Connection timed out", 5000);
-        runs(function () {
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must throw the right error", function () {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe("Cannot execute a query on a disconnected client.");
         });
     });
-
 });
 
 describe("Method 'none'", function () {
@@ -1174,10 +1176,12 @@ describe("Synchronous Transactions", function () {
 
 });
 
-var _finishCallback = jasmine.Runner.prototype.finishCallback;
-jasmine.Runner.prototype.finishCallback = function () {
-    // Run the old finishCallback:
-    _finishCallback.bind(this)();
+if (jasmine.Runner) {
+    var _finishCallback = jasmine.Runner.prototype.finishCallback;
+    jasmine.Runner.prototype.finishCallback = function () {
+        // Run the old finishCallback:
+        _finishCallback.bind(this)();
 
-    pgp.end(); // closing pg database application pool;
-};
+        pgp.end(); // closing pg database application pool;
+    };
+}

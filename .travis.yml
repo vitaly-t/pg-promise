@@ -4,11 +4,10 @@ node_js:
    - "0.10"
    - "iojs"
 addons:
-  postgresql: "9.3"
+  postgresql: "9.4"
 before_script:
   - psql -c 'create database pg_promise_test;' -U postgres
   - node test/db/init.js
 branches:
   only:
     - master
-  

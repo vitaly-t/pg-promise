@@ -14,13 +14,13 @@ describe("Library entry function", function () {
             pgpLib({
                 promiseLib: "test"
             });
-        }).toThrow("Invalid or unsupported promise library override.");
+        }).toThrow(new Error("Invalid or unsupported promise library override."));
     });
 
     it("must throw an error on invalid 'options' parameter", function () {
         expect(function () {
             pgpLib(123);
-        }).toThrow("Invalid parameter 'options' specified.");
+        }).toThrow(new Error("Invalid parameter 'options' specified."));
     });
 
 });
@@ -76,6 +76,7 @@ describe("Query Result", function () {
 });
 
 describe("Database Protocol", function () {
+
     it("must have all the root-level methods", function () {
         expect(typeof(db.connect)).toBe('function');
         expect(typeof(db.query)).toBe('function');
@@ -97,20 +98,22 @@ describe("Database Protocol", function () {
         expect(db.queue).toBeUndefined();
     });
 
-    it("must have all the transaction-level methods", function () {
+    describe("on transaction level", function () {
+
         var protocol;
-        db.tx(function (t) {
-            return promise.resolve(t);
-        }).then(function (data) {
-            protocol = data;
-        }, function () {
-            protocol = null;
+        beforeEach(function (done) {
+            db.tx(function (t) {
+                return promise.resolve(t);
+            })
+                .then(function (data) {
+                    protocol = data;
+                })
+                .finally(function () {
+                    done();
+                });
         });
 
-        waitsFor(function () {
-            return protocol !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
+        it("must have all the required methods", function () {
             expect(protocol && typeof(protocol) === 'object').toBe(true);
             expect(protocol.connect).toBeUndefined();
             expect(typeof(protocol.query)).toBe('function');
@@ -130,10 +133,13 @@ describe("Database Protocol", function () {
             expect(typeof(protocol.queue)).toBe('function');
         });
     });
+
 });
 
 describe("Protocol Extension", function () {
-    it("must allow custom properties on database level", function () {
+
+    describe("on database level", function () {
+
         var result, THIS, ctx, counter = 0;
         var pgpTest = require('./db/header')({
             extend: function (obj) {
@@ -145,28 +151,31 @@ describe("Protocol Extension", function () {
                 };
             }
         });
-        pgpTest.db.getOne("select 'hello' as msg")
-            .then(function (data) {
-                result = data;
-            }, function () {
-                result = null;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
+
+        beforeEach(function (done) {
+            pgpTest.db.getOne("select 'hello' as msg")
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+
+        it("must allow custom properties", function () {
             expect(THIS && ctx && THIS === ctx).toBeTruthy();
             expect(counter).toBe(1);
             expect(result.msg).toBe('hello');
         });
     });
 
-    it("must allow custom properties on transaction level", function () {
-        var result, THIS2, ctx, counter = 0;
+    describe("on transaction level", function () {
+
+        var result, THIS, ctx, counter = 0;
         var pgpTest = require('./db/header')({
             extend: function (obj) {
                 counter++;
-                if(counter === 2) {
+                if (counter === 2) {
                     // we skip one for the database object,
                     // and into the `extend` for the transaction;
                     THIS = this;
@@ -177,23 +186,25 @@ describe("Protocol Extension", function () {
                 }
             }
         });
-        pgpTest.db.tx(function (t) {
-            return t.getOne("select 'hello' as msg");
-        })
-            .then(function (data) {
-                result = data;
-            }, function () {
-                result = null;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
+
+        beforeEach(function (done) {
+            pgpTest.db.tx(function (t) {
+                return t.getOne("select 'hello' as msg");
+            })
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+
+        it("must allow custom properties", function () {
             expect(THIS && ctx && THIS === ctx).toBeTruthy();
             expect(counter).toBe(2);
             expect(result && typeof(result) === 'object').toBe(true);
             expect(result.msg).toBe('hello');
         });
-    });
 
+    });
 });
