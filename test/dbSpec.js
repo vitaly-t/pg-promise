@@ -1176,12 +1176,12 @@ describe("Synchronous Transactions", function () {
 
 });
 
-/*
- var _finishCallback = jasmine.Runner.prototype.finishCallback;
- jasmine.Runner.prototype.finishCallback = function () {
- // Run the old finishCallback:
- _finishCallback.bind(this)();
+if (jasmine.Runner) {
+    var _finishCallback = jasmine.Runner.prototype.finishCallback;
+    jasmine.Runner.prototype.finishCallback = function () {
+        // Run the old finishCallback:
+        _finishCallback.bind(this)();
 
- pgp.end(); // closing pg database application pool;
- };
- */
+        pgp.end(); // closing pg database application pool;
+    };
+}

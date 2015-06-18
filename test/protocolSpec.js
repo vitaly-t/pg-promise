@@ -207,5 +207,4 @@ describe("Protocol Extension", function () {
         });
 
     });
-
 });
