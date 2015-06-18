@@ -35,6 +35,6 @@
   },
   "devDependencies": {
     "bluebird": "2.9",
-    "jasmine": "2.x"
+    "jasmine": "2.3"
   }
 }
