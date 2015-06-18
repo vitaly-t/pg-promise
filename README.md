@@ -3,7 +3,8 @@ pg-promise
 
 Complete access layer to [node-postgres] via [Promises/A+].
 
-[![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
+[![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=test_upgrade)](https://travis-ci.org/vitaly-t/pg-promise)
+[![Coverage Status](https://coveralls.io/repos/vitaly-t/pg-promise/badge.svg?branch=test_upgrade)](https://coveralls.io/r/vitaly-t/pg-promise?branch=test_upgrade)
 [![Dependency Status](https://david-dm.org/vitaly-t/pg-promise.svg)](https://david-dm.org/vitaly-t/pg-promise)
 [![io.js supported](https://img.shields.io/badge/io.js-supported-green.svg)](https://travis-ci.org/vitaly-t/pg-promise)
 
