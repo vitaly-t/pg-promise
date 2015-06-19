@@ -149,6 +149,7 @@ describe("Protocol Extension", function () {
                 this.getOne = function (query, values) {
                     return this.one(query, values);
                 };
+                throw new Error("in extend");
             }
         });
 

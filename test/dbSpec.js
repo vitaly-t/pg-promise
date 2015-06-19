@@ -1172,6 +1172,26 @@ describe("Querying a function", function () {
         })
     });
 
+    describe("with function-parameter that throws an error", function () {
+        var result;
+        beforeEach(function (done) {
+            db.proc("findUser", [function () {
+                throw new Error("format failed");
+            }])
+                .then(function () {
+                }, function (reason) {
+                    result = reason;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must return correctly", function () {
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe("format failed");
+        })
+    });
+
     describe("with invalid parameters", function () {
         var result, error = "Function name must be a non-empty text string.";
         beforeEach(function (done) {

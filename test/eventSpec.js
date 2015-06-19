@@ -19,10 +19,12 @@ describe("Connect/Disconnect events", function () {
             options.connect = function (client) {
                 p1 = client;
                 connect++;
+                throw new Error("in connect");
             };
             options.disconnect = function (client) {
                 p2 = client;
                 disconnect++;
+                throw new Error("in disconnect");
             };
             db.query("select 'test'")
                 .finally(function () {
@@ -97,6 +99,7 @@ describe("Start/Finish transaction events", function () {
                 start++;
                 tag = e.ctx.tag;
             }
+            throw new Error("in transact");
         };
         db.tx("myTransaction", function () {
             return promise.resolve('SUCCESS');
@@ -126,6 +129,7 @@ describe("Error event", function () {
                 counter++;
                 error = err;
                 ctx = e.ctx;
+                throw new Error("in error");
             };
             db.tx("Error Transaction", function () {
                 throw new Error("Test Error");
