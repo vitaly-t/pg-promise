@@ -580,46 +580,6 @@ describe("Executing method query", function () {
 
 });
 
-describe("Executing an invalid function", function () {
-
-    it("must reject with an error", function () {
-        var finished, result, error = "Function name must be a non-empty text string.";
-        promise.any([
-            db.func(),      // undefined function name;
-            db.func(''),    // empty-string function name;
-            db.func('   '), // white-space string for function name;
-            db.func(1),     // invalid-type function name;
-            db.func(null),  // null function name;
-            // query function overrides:
-            db.query({
-                funcName: null
-            }),
-            db.query({
-                funcName: ''
-            }),
-            db.query({
-                funcName: '   '
-            })
-        ])
-            .then(function () {
-                finished = true;
-            }, function (reason) {
-                result = reason;
-                finished = true;
-            });
-        waitsFor(function () {
-            return finished;
-        }, "Query timed out", 5000);
-        runs(function () {
-            expect(result.length).toBe(8);
-            for (var i = 0; i < result.length; i++) {
-                expect(result[i]).toBe(error);
-            }
-        });
-    });
-});
-
-
 // NOTE: The same test for 100,000 inserts works also the same.
 // Inserting just 10,000 records to avoid exceeding memory quota on the test server.
 // Also, the client shouldn't execute more than 10,000 queries within a single transaction,
@@ -1174,6 +1134,79 @@ describe("Synchronous Transactions", function () {
         });
     });
 
+});
+
+describe("Querying a function", function () {
+
+    describe("that expects multiple rows", function () {
+        var result;
+        beforeEach(function (done) {
+            db.func("getUsers")
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must return correctly", function () {
+            expect(result instanceof Array).toBe(true);
+            expect(result.length >= 4).toBe(true);
+        })
+    });
+
+    describe("that expects a single row", function () {
+        var result;
+        beforeEach(function (done) {
+            db.proc("findUser", 1)
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must return correctly", function () {
+            expect(typeof(result)).toBe('object');
+            expect('id' in result && 'login' in result && 'active' in result).toBe(true);
+        })
+    });
+
+    describe("with invalid parameters", function () {
+        var result, error = "Function name must be a non-empty text string.";
+        beforeEach(function (done) {
+            promise.any([
+                db.func(),      // undefined function name;
+                db.func(''),    // empty-string function name;
+                db.func('   '), // white-space string for function name;
+                db.func(1),     // invalid-type function name;
+                db.func(null),  // null function name;
+                // query function overrides:
+                db.query({
+                    funcName: null
+                }),
+                db.query({
+                    funcName: ''
+                }),
+                db.query({
+                    funcName: '   '
+                })
+            ])
+                .then(function () {
+                }, function (reason) {
+                    result = reason;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must reject with the right error", function () {
+            expect(result.length).toBe(8);
+            for (var i = 0; i < result.length; i++) {
+                expect(result[i]).toBe(error);
+            }
+        });
+    });
 });
 
 if (jasmine.Runner) {

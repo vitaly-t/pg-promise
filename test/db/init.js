@@ -18,6 +18,10 @@ var db = dbHeader.db;
     db.tx(function (t) {
         return promise.all([
 
+            // drop all functions;
+            t.none("drop function if exists findUser(int)"),
+            t.none("drop function if exists getUsers()"),
+
             // drop all tables;
             t.none("drop table if exists audit"),
             t.none("drop table if exists person"),
@@ -40,7 +44,11 @@ var db = dbHeader.db;
             t.none("insert into person(name, dob) values($1,$2::date)", ['David', new Date(1995, 08, 7)]),
             t.none("insert into person(name, dob) values($1,$2::date)", ['John', new Date(1980, 03, 20)]),
             t.none("insert into person(name, dob) values($1,$2::date)", ['Mark', new Date(1973, 05, 12)]),
-            t.none("insert into person(name, dob) values($1,$2::date)", ['Peter', new Date(1992, 11, 3)])
+            t.none("insert into person(name, dob) values($1,$2::date)", ['Peter', new Date(1992, 11, 3)]),
+
+            // adding functions;
+            t.none("create or replace function findUser(userId int) returns setof users as $$ select * from users where id = userId $$ language 'sql';"),
+            t.none("create or replace function getUsers() returns setof users as $$ select * from users $$ language 'sql';")
         ]);
     })
         .then(function () {
