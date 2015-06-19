@@ -20,12 +20,12 @@ describe("Connect/Disconnect events", function () {
             options.connect = function (client) {
                 p1 = client;
                 connect++;
-                throw new Error("in connect");
+                throw new Error("### Testing error output in 'connect'. Please ignore. ###");
             };
             options.disconnect = function (client) {
                 p2 = client;
                 disconnect++;
-                throw new Error("in disconnect");
+                throw new Error("### Testing error output in 'disconnect'. Please ignore. ###");
             };
             db.query("select 'test'")
                 .then(nope, nope)
@@ -81,7 +81,7 @@ describe("Query event", function () {
             options.query = function (e) {
                 counter++;
                 param = e;
-                throw new Error("in query");
+                throw new Error("### Testing error output in 'query'. Please ignore. ###");
             };
             db.query("select $1", [123])
                 .then(nope, nope)
@@ -133,7 +133,7 @@ describe("Start/Finish transaction events", function () {
                 start++;
                 tag = e.ctx.tag;
             }
-            throw "in transact";
+            throw "### Testing error output in 'transact'. Please ignore. ###";
         };
         db.tx("myTransaction", function () {
             return promise.resolve('SUCCESS');
@@ -163,7 +163,7 @@ describe("Error event", function () {
                 counter++;
                 error = err;
                 ctx = e.ctx;
-                throw new Error("in error");
+                throw new Error("### Testing error output in 'error'. Please ignore. ###");
             };
             db.tx("Error Transaction", function () {
                 throw new Error("Test Error");
