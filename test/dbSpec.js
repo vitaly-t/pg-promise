@@ -1,7 +1,9 @@
 var promise = require('bluebird');
 var pgResult = require('pg/lib/result');
 
-var options = {}; // options, if needed;
+var options = {
+    promiseLib: promise // use Bluebird for testing;
+};
 
 var dbHeader = require('./db/header')(options);
 
