@@ -71,21 +71,51 @@ describe("Connect/Disconnect events", function () {
 });
 
 describe("Query event", function () {
-    var param, counter = 0;
-    beforeEach(function (done) {
-        options.query = function (e) {
-            counter++;
-            param = e;
-        };
-        db.query("select $1", [123])
-            .finally(function () {
-                done();
-            });
+
+    describe("with valid handler", function () {
+        var param, counter = 0;
+        beforeEach(function (done) {
+            options.query = function (e) {
+                counter++;
+                param = e;
+                throw new Error("in query");
+            };
+            db.query("select $1", [123])
+                .finally(function () {
+                    done();
+                });
+        });
+        afterEach(function () {
+            options.query = null;
+        });
+        it("must pass query and parameters correctly", function () {
+            expect(counter).toBe(1);
+            expect(param.query).toBe('select 123');
+        });
     });
-    it("must pass query and parameters correctly", function () {
-        expect(counter).toBe(1);
-        expect(param.query).toBe('select 123');
+
+    describe("with invalid handler", function () {
+        var error;
+        beforeEach(function (done) {
+            options.query = 123;
+            db.query("select $1", [123])
+                .then(function () {
+
+                }, function (reason) {
+                    error = reason;
+                }).finally(function () {
+                    done();
+                });
+        });
+        afterEach(function () {
+            options.query = null;
+        });
+        it("must reject with correct error", function () {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe("Type 'function' was expected for property 'options.query'");
+        });
     });
+
 });
 
 describe("Start/Finish transaction events", function () {
@@ -99,7 +129,7 @@ describe("Start/Finish transaction events", function () {
                 start++;
                 tag = e.ctx.tag;
             }
-            throw new Error("in transact");
+            throw "in transact";
         };
         db.tx("myTransaction", function () {
             return promise.resolve('SUCCESS');
