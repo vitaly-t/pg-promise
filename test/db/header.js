@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////
 
 var pgpLib = require('../../lib/index');
+var defPromise = require('bluebird'); // default promise library;
 
 // Either match your local database configuration according to the details below,
 // or the other way round - change the details to match your local configuration.
@@ -14,11 +15,14 @@ var cn = {
     // password: - add password, if needed;
 };
 
-module.exports = function (options) {
+function main(options) {
     var result = {
         pgp: pgpLib(options),
         cn: cn
     };
     result.db = result.pgp(cn);
     return result;
-};
+}
+main.promise = defPromise;
+
+module.exports = main;

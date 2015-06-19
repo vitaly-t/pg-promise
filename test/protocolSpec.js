@@ -1,29 +1,13 @@
 var PG = require('pg');
-var promise = require('bluebird');
 var pgpLib = require('../lib/index');
-
-var dbHeader = require('./db/header')();
-
+var header = require('./db/header');
+var promise = header.promise;
+var options = {
+    promiseLib: promise
+};
+var dbHeader = header(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
-
-describe("Library entry function", function () {
-
-    it("must throw an error on invalid promise override", function () {
-        expect(function () {
-            pgpLib({
-                promiseLib: "test"
-            });
-        }).toThrow(new Error("Invalid or unsupported promise library override."));
-    });
-
-    it("must throw an error on invalid 'options' parameter", function () {
-        expect(function () {
-            pgpLib(123);
-        }).toThrow(new Error("Invalid parameter 'options' specified."));
-    });
-
-});
 
 describe("Library instance", function () {
 
@@ -209,3 +193,13 @@ describe("Protocol Extension", function () {
 
     });
 });
+
+if (jasmine.Runner) {
+    var _finishCallback = jasmine.Runner.prototype.finishCallback;
+    jasmine.Runner.prototype.finishCallback = function () {
+        // Run the old finishCallback:
+        _finishCallback.bind(this)();
+
+        pgp.end(); // closing pg database application pool;
+    };
+}

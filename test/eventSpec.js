@@ -1,14 +1,15 @@
-var promise = require('bluebird');
-
-var options = {}; // options, if needed;
-
 var pgClient = require('pg/lib/client');
-var dbHeader = require('./db/header')(options);
-
+var header = require('./db/header');
+var promise = header.promise;
+var options = {
+    promiseLib: promise // use Bluebird for testing;
+};
+var dbHeader = header(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
-var func = function () {
+// empty function;
+var nope = function () {
 };
 
 describe("Connect/Disconnect events", function () {
@@ -27,6 +28,7 @@ describe("Connect/Disconnect events", function () {
                 throw new Error("in disconnect");
             };
             db.query("select 'test'")
+                .then(nope, nope)
                 .finally(function () {
                     done();
                 });
@@ -57,6 +59,7 @@ describe("Connect/Disconnect events", function () {
                     t.query("select 'three'")
                 ]);
             })
+                .then(nope, nope)
                 .finally(function () {
                     done();
                 });
@@ -81,6 +84,7 @@ describe("Query event", function () {
                 throw new Error("in query");
             };
             db.query("select $1", [123])
+                .then(nope, nope)
                 .finally(function () {
                     done();
                 });
@@ -164,8 +168,7 @@ describe("Error event", function () {
             db.tx("Error Transaction", function () {
                 throw new Error("Test Error");
             })
-                .then(function () {
-                }, function (reason) {
+                .then(nope, function (reason) {
                     r = reason;
                 })
                 .finally(function () {
@@ -191,6 +194,7 @@ describe("Error event", function () {
                 ctx = e;
             };
             db.query(null)
+                .then(nope, nope)
                 .finally(function () {
                     done();
                 });
@@ -212,6 +216,7 @@ describe("Error event", function () {
                 ctx = e;
             };
             db.query("Bla-Bla", undefined, 42)
+                .then(nope, nope)
                 .finally(function () {
                     done();
                 });
@@ -234,6 +239,7 @@ describe("Error event", function () {
                 context = e;
             };
             db.one("select * from users")
+                .then(nope, nope)
                 .finally(function () {
                     done();
                 });
@@ -255,6 +261,7 @@ describe("Error event", function () {
                 context = e;
             };
             db.none("select * from users")
+                .then(nope, nope)
                 .finally(function () {
                     done();
                 });
@@ -276,6 +283,7 @@ describe("Error event", function () {
                 context = e;
             };
             db.many("select * from users where id > $1", 1000)
+                .then(nope, nope)
                 .finally(function () {
                     done();
                 });
@@ -297,6 +305,7 @@ describe("Error event", function () {
                 context = e;
             };
             db.query("${test}", params)
+                .then(nope, nope)
                 .finally(function () {
                     done();
                 });

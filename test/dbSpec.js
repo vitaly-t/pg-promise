@@ -1,12 +1,10 @@
-var promise = require('bluebird');
 var pgResult = require('pg/lib/result');
-
+var header = require('./db/header');
+var promise = header.promise;
 var options = {
-    promiseLib: promise // use Bluebird for testing;
+    promiseLib: promise
 };
-
-var dbHeader = require('./db/header')(options);
-
+var dbHeader = header(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
