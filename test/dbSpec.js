@@ -1049,40 +1049,61 @@ describe("queryRaw", function () {
 
 describe("Synchronous Transactions", function () {
 
-    it("must reject for an invalid factory", function () {
+    describe("for an invalid factory", function () {
         var result;
-        db.tx(function () {
-            return this.queue();
-        }).then(function () {
-            result = null;
-        }, function (reason) {
-            result = reason;
+        beforeEach(function (done) {
+            db.tx(function () {
+                return this.queue();
+            })
+                .then(function () {
+                }, function (reason) {
+                    result = reason;
+                }).finally(function () {
+                    done();
+                });
         });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
-            expect(typeof(result)).toBe('string');
+        it("must reject with correct error", function () {
             expect(result).toBe("Invalid factory function specified.");
         });
     });
 
-    it("must reject for an invalid factory result", function () {
+    describe("for an invalid factory result", function () {
         var result;
-        db.tx(function () {
-            return this.queue(function () {
-                return 123;
-            });
-        }).then(function () {
-            result = null;
-        }, function (reason) {
-            result = reason;
+        beforeEach(function (done) {
+            db.tx(function () {
+                return this.queue(function () {
+                    return 123;
+                });
+            })
+                .then(function () {
+                }, function (reason) {
+                    result = reason;
+                }).finally(function () {
+                    done();
+                });
         });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
+        it("must reject with correct error", function () {
             expect(result).toBe("Promise factory returned invalid result for index 0");
+        });
+    });
+
+    describe("for a rejected request", function () {
+        var result;
+        beforeEach(function (done) {
+            db.tx(function () {
+                return this.queue(function () {
+                    return promise.reject("testing reject");
+                });
+            })
+                .then(function () {
+                }, function (reason) {
+                    result = reason;
+                }).finally(function () {
+                    done();
+                });
+        });
+        it("must reject with the same reason", function () {
+            expect(result).toBe("testing reject");
         });
     });
 
