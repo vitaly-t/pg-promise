@@ -1,5 +1,4 @@
 var PG = require('pg');
-var pgpLib = require('../lib/index');
 var header = require('./db/header');
 var promise = header.promise;
 var options = {

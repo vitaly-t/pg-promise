@@ -14,6 +14,23 @@ describe("Library entry function", function () {
         })
     });
 
+    describe("without any options", function () {
+        var result;
+        beforeEach(function (done) {
+            var db = require('./db/header')().db;
+            db.query("select * from users")
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must be able to execute queries", function () {
+            expect(result instanceof Array).toBe(true);
+        })
+    });
+
     describe("with a valid promise library-object override", function () {
         it("must return a valid library object", function () {
             var lib = pgpLib(

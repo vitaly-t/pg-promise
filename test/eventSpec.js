@@ -1,5 +1,6 @@
 var pgClient = require('pg/lib/client');
 var header = require('./db/header');
+
 var promise = header.promise;
 var options = {
     promiseLib: promise // use Bluebird for testing;
@@ -33,6 +34,10 @@ describe("Connect/Disconnect events", function () {
                     done();
                 });
         });
+        afterEach(function () {
+            options.connect = null;
+            options.disconnect = null;
+        });
         it("must be sent correctly", function () {
             expect(connect).toBe(1);
             expect(disconnect).toBe(1);
@@ -63,6 +68,10 @@ describe("Connect/Disconnect events", function () {
                 .finally(function () {
                     done();
                 });
+        });
+        afterEach(function () {
+            options.connect = null;
+            options.disconnect = null;
         });
         it("must be sent correctly", function () {
             expect(connect).toBe(1);
@@ -145,6 +154,10 @@ describe("Start/Finish transaction events", function () {
                 done();
             });
     });
+    afterEach(function () {
+        options.transact = null;
+    });
+
     it("must execute correctly", function () {
         expect(result).toBe('SUCCESS');
         expect(start).toBe(1);
@@ -175,6 +188,9 @@ describe("Error event", function () {
                     done();
                 });
         });
+        afterEach(function () {
+            options.error = null;
+        });
         it("must report errors", function () {
             expect(r instanceof Error).toBe(true);
             expect(r.message).toBe('Test Error');
@@ -199,6 +215,9 @@ describe("Error event", function () {
                     done();
                 });
         });
+        afterEach(function () {
+            options.error = null;
+        });
         it("must fail correctly", function () {
             var msg = "Parameter 'query' must be a non-empty text string.";
             expect(txt).toBe(msg);
@@ -220,6 +239,9 @@ describe("Error event", function () {
                 .finally(function () {
                     done();
                 });
+        });
+        afterEach(function () {
+            options.error = null;
         });
         it("must reject with correct error", function () {
             var msg = "Invalid Query Result Mask specified.";
@@ -244,6 +266,9 @@ describe("Error event", function () {
                     done();
                 });
         });
+        afterEach(function () {
+            options.error = null;
+        });
         it("must reject with correct error", function () {
             expect(errTxt).toBe("Single row was expected from the query.");
             expect(context.query).toBe("select * from users");
@@ -265,6 +290,9 @@ describe("Error event", function () {
                 .finally(function () {
                     done();
                 });
+        });
+        afterEach(function () {
+            options.error = null;
         });
         it("must reject with correct error", function () {
             expect(errTxt).toBe("No return data was expected from the query.");
@@ -288,6 +316,9 @@ describe("Error event", function () {
                     done();
                 });
         });
+        afterEach(function () {
+            options.error = null;
+        });
         it("must reject with correct error", function () {
             expect(errTxt).toBe("No data returned from the query.");
             expect(context.query).toBe("select * from users where id > 1000");
@@ -310,6 +341,9 @@ describe("Error event", function () {
                     done();
                 });
         });
+        afterEach(function () {
+            options.error = null;
+        });
         it("must report the parameters correctly", function () {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe("Property 'test' doesn't exist.");
@@ -319,6 +353,33 @@ describe("Error event", function () {
         });
     });
 
+});
+
+describe("Option pgFormatting when set", function () {
+    var result, context;
+    beforeEach(function (done) {
+        options.pgFormatting = true;
+        options.query = function (e) {
+            context = e;
+        };
+        db.func("findUser", 1)
+            .then(function (data) {
+                result = data;
+            })
+            .finally(function () {
+                done();
+            });
+    });
+    afterEach(function () {
+        options.pgFormatting = false;
+        options.query = false;
+    });
+    it("must affect formatting accordingly", function () {
+        expect(typeof(result)).toBe('object');
+        // params will be passed back only because the formatting
+        // is done by PG, and not by pg-promise:
+        expect(context && context.params === 1).toBeTruthy();
+    });
 });
 
 if (jasmine.Runner) {

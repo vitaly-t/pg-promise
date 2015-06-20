@@ -15,6 +15,8 @@ var cn = {
     // password: - add password, if needed;
 };
 
+pgpLib.suppressErrors = true; // suppress console output for error messages;
+
 function main(options) {
     var result = {
         pgp: pgpLib(options),
