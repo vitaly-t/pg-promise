@@ -122,7 +122,6 @@ describe("Database Protocol", function () {
 describe("Protocol Extension", function () {
 
     describe("on database level", function () {
-
         var result, THIS, ctx, counter = 0;
         var pgpTest = require('./db/header')({
             extend: function (obj) {
@@ -135,7 +134,6 @@ describe("Protocol Extension", function () {
                 throw new Error("### Testing error output in 'extend'. Please ignore. ###");
             }
         });
-
         beforeEach(function (done) {
             pgpTest.db.getOne("select 'hello' as msg")
                 .then(function (data) {
@@ -145,7 +143,6 @@ describe("Protocol Extension", function () {
                     done();
                 });
         });
-
         it("must allow custom properties", function () {
             expect(THIS && ctx && THIS === ctx).toBeTruthy();
             expect(counter).toBe(1);
@@ -154,7 +151,6 @@ describe("Protocol Extension", function () {
     });
 
     describe("on transaction level", function () {
-
         var result, THIS, ctx, counter = 0;
         var pgpTest = require('./db/header')({
             extend: function (obj) {

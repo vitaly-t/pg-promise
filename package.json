@@ -17,8 +17,8 @@
     "url": "https://github.com/vitaly-t/pg-promise/issues"
   },
   "keywords": [
-    "pg-promise",
     "pg",
+    "pg-promise",
     "postgres",
     "transaction"
   ],
