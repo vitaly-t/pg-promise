@@ -649,7 +649,7 @@ describe("Named Parameters", function () {
         })).toBe("1,2,3,4,5");
     });
 
-    it("must support short variables", function () {
+    it("must support short property names", function () {
         expect(pgp.as.format("${$}$(_)$[a]$< _$>$/$$ /", {
             $: 1,
             _: 2,
@@ -657,6 +657,14 @@ describe("Named Parameters", function () {
             _$: 4,
             $$: 5
         })).toBe("12345");
+    });
+
+    it("must support digit-only property names", function () {
+        expect(pgp.as.format("${1}, $(2), $[5^]", {
+            1: 'one',
+            2: 'two',
+            5: 'five'
+        })).toBe("'one', 'two', five");
     });
 
     it("must recognize case difference", function () {
