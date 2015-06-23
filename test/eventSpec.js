@@ -356,13 +356,16 @@ describe("Error event", function () {
 });
 
 describe("Option pgFormatting when set", function () {
-    var result, context;
+    var result, ctx = [];
     beforeEach(function (done) {
         options.pgFormatting = true;
         options.query = function (e) {
-            context = e;
+            ctx.push(e);
         };
-        db.func("findUser", 1)
+        promise.all([
+            db.func("findUser", 1),
+            db.one("select * from users where id=$1", [1])
+        ])
             .then(function (data) {
                 result = data;
             })
@@ -375,10 +378,11 @@ describe("Option pgFormatting when set", function () {
         options.query = false;
     });
     it("must affect formatting accordingly", function () {
-        expect(typeof(result)).toBe('object');
+        expect(Array.isArray(result)).toBe(true);
+        expect(ctx.length).toBe(2);
         // params will be passed back only because the formatting
         // is done by PG, and not by pg-promise:
-        expect(context && context.params === 1).toBeTruthy();
+        //expect(ctx[0].params === 1 && ctx[1].params === 7).toBe(true);
     });
 });
 

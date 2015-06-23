@@ -8,6 +8,10 @@ var dbHeader = header(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
+function nope(){
+    // dummy/empty function;
+}
+
 describe("Database Instantiation", function () {
     it("must throw an error when empty or no connection passed", function () {
         var err = "Connection details must be specified.";
@@ -113,25 +117,44 @@ describe("Connection", function () {
         });
     });
 
-    describe("for invalid server name", function () {
-        var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-        errCN.host = 'unknown';
-        var dbErr = pgp(errCN), result;
-        beforeEach(function (done) {
-            dbErr.connect()
-                .then(function () {
-                    result = null;
-                }, function (error) {
-                    result = error;
-                })
-                .finally(function () {
-                    done();
-                });
+    describe("for invalid port", function () {
+        var errCN, dbErr, result;
+        beforeEach(function(){
+            errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+            errCN.port = 9999;
+            dbErr = pgp(errCN);
         });
-        it("must report the right error", function () {
-            expect(result instanceof Error).toBe(true);
-            expect(result.message).toContain('getaddrinfo ENOTFOUND');
+        describe("with direction connection", function(){
+            beforeEach(function (done) {
+                dbErr.connect()
+                    .then(nope, function (error) {
+                        result = error;
+                    })
+                    .finally(function () {
+                        done();
+                    });
+            });
+            it("must report the right error", function () {
+                expect(result instanceof Error).toBe(true);
+                expect(result.message).toContain('connect ECONNREFUSED');
+            });
         });
+        describe("with transaction connection", function(){
+            beforeEach(function (done) {
+                dbErr.tx(nope)
+                    .then(nope, function (error) {
+                        result = error;
+                    })
+                    .finally(function () {
+                        done();
+                    });
+            });
+            it("must report the right error", function () {
+                expect(result instanceof Error).toBe(true);
+                expect(result.message).toContain('connect ECONNREFUSED');
+            });
+        });
+
     });
 
     describe("for invalid port", function () {
