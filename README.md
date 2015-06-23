@@ -770,7 +770,7 @@ accordance with the [Promises/A+] standard.
 * [Q] - most widely used;
 * [RSVP] - doesn't have `done()`, use `finally/catch` instead
 * [Lie] - doesn't have `done()`. Not recommended due to poor support. 
-* [ES6 Promise] - doesn't have `done()` or `finally()`. Not recommended, due to being buggy,
+* **ES6 Promise** - doesn't have `done()` or `finally()`. Not recommended, due to being buggy,
 slow and functionally limited (as of this writing). 
 
 Compatibility with other [Promises/A+] libraries though possible, is an unknown.
