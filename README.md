@@ -750,7 +750,7 @@ var options = {
 var pgp = pgpLib(options);
 ```
 
-And if you want to use the ES6/native `Promise`, set the parameter to the object itself:
+And if you want to use the ES6/native `Promise`, set the parameter to the main function:
 
 ```javascript
 var options = {
@@ -760,7 +760,7 @@ var pgp = pgpLib(options);
 ```
 Please note that the library makes no assumption about the level of support for the native `Promise`
 by your Node JS environment, expecting only that the basic `resolve` and `reject` are working in
-accordance with the [Promise/A+] standard.
+accordance with the [Promises/A+] standard.
 
 [Promises/A+] libraries that passed our compatibility test and are currently supported:
 
