@@ -5,8 +5,6 @@ Complete access layer to [node-postgres] via [Promises/A+].
 
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
 [![Coverage Status](https://coveralls.io/repos/vitaly-t/pg-promise/badge.svg?branch=master)](https://coveralls.io/r/vitaly-t/pg-promise?branch=master)
-[![Dependency Status](https://david-dm.org/vitaly-t/pg-promise.svg)](https://david-dm.org/vitaly-t/pg-promise)
-[![io.js supported](https://img.shields.io/badge/io.js-supported-green.svg)](https://travis-ci.org/vitaly-t/pg-promise)
 
 ---
 <a href="https://promisesaplus.com/"><img align="right" width="190" height="190" src="http://s8.postimg.org/k7dtue8lx/pg_promise.jpg"></a>
