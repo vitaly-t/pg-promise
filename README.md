@@ -750,14 +750,28 @@ var options = {
 var pgp = pgpLib(options);
 ```
 
+And if you want to use the ES6/native `Promise`, set the parameter to the object itself:
+
+```javascript
+var options = {
+    promiseLib: Promise
+};
+var pgp = pgpLib(options);
+```
+Please note that the library makes no assumption about the level of support for the native `Promise`
+by your Node JS environment, expecting only that the basic `resolve` and `reject` are working in
+accordance with the [Promise/A+] standard.
+
 [Promises/A+] libraries that passed our compatibility test and are currently supported:
 
-* [Promise] - used by default
-* [Bluebird]
-* [When]
-* [Q]
+* [Promise] - very solid, used by default;
+* [Bluebird] - best alternative all around;
+* [When] - quite old, not the best support;
+* [Q] - most widely used;
 * [RSVP] - doesn't have `done()`, use `finally/catch` instead
-* [Lie] - doesn't have `done()`
+* [Lie] - doesn't have `done()`. Not recommended due to poor support. 
+* [ES6 Promise] - doesn't have `done()` or `finally()`. Not recommended, due to being buggy,
+slow and functionally limited (as of this writing). 
 
 Compatibility with other [Promises/A+] libraries though possible, is an unknown.
 
