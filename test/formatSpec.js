@@ -1,4 +1,6 @@
-var pgp = require('../lib/index')();
+var options = {};
+
+var pgp = require('../lib/index')(options);
 
 var dateSample = new Date();
 
@@ -725,4 +727,3 @@ describe("Named Parameters", function () {
     });
 
 });
-

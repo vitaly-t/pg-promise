@@ -355,34 +355,61 @@ describe("Error event", function () {
 
 });
 
-describe("Option pgFormatting when set", function () {
-    var result, ctx = [];
-    beforeEach(function (done) {
+describe("pgFormatting", function () {
+    var result;
+    beforeEach(function () {
+        result = undefined;
         options.pgFormatting = true;
-        options.query = function (e) {
-            ctx.push(e);
-        };
-        promise.all([
-            db.func("findUser", 1),
-            db.one("select * from users where id=$1", [1])
-        ])
-            .then(function (data) {
-                result = data;
-            })
-            .finally(function () {
-                done();
-            });
     });
     afterEach(function () {
         options.pgFormatting = false;
-        options.query = false;
     });
-    it("must affect formatting accordingly", function () {
-        expect(Array.isArray(result)).toBe(true);
-        expect(ctx.length).toBe(2);
-        // params will be passed back only because the formatting
-        // is done by PG, and not by pg-promise:
-        //expect(ctx[0].params === 1 && ctx[1].params === 7).toBe(true);
+    describe("query event", function () {
+        var ctx = [];
+        beforeEach(function (done) {
+            options.query = function (e) {
+                ctx.push(e);
+            };
+            promise.all([
+                db.func("findUser", 1),
+                db.one("select * from users where id=$1", [1])
+            ])
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        afterEach(function () {
+            options.query = false;
+        });
+        it("must affect formatting accordingly", function () {
+            expect(Array.isArray(result)).toBe(true);
+            expect(ctx.length).toBe(2);
+            // params will be passed back only because the formatting
+            // is done by PG, and not by pg-promise:
+            // BUG in PG: It changes the parameters passed!
+            expect(ctx[0].params === 1 && ctx[1].params[0] === '1').toBe(true);
+        });
+    });
+    describe("query as object", function () {
+        var err;
+        beforeEach(function (done) {
+            db.query()// here, try e,pty, null, etc...
+                .then(function (data) {
+                    result = data;
+                }, function (reason) {
+                    err = reason;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must provide the original pg response", function () {
+            //console.log("DATA:", result);
+            //console.log("REASON:", err);
+        })
     });
 });
 
