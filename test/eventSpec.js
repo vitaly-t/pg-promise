@@ -389,16 +389,21 @@ describe("pgFormatting", function () {
             expect(ctx.length).toBe(2);
             // params will be passed back only because the formatting
             // is done by PG, and not by pg-promise:
-            // BUG in PG: It changes the parameters passed!
-            expect(ctx[0].params === 1 && ctx[1].params[0] === '1').toBe(true);
+            //
+            // Cannot verify the second parameter because of the bug in pg:
+            // https://github.com/brianc/node-postgres/issues/750
+            // expect(ctx[0].params === 1 && ctx[1].params[0] === 1).toBe(true);
+            expect(ctx[0].params === 1).toBe(true);
         });
     });
-    describe("query as object", function () {
+    describe("null query", function () {
         var err;
         beforeEach(function (done) {
-            db.query()// here, try e,pty, null, etc...
+            promise.any([
+                db.query(),
+                db.query(null)
+            ])
                 .then(function (data) {
-                    result = data;
                 }, function (reason) {
                     err = reason;
                 })
@@ -407,8 +412,33 @@ describe("pgFormatting", function () {
                 });
         });
         it("must provide the original pg response", function () {
-            //console.log("DATA:", result);
-            //console.log("REASON:", err);
+            expect(err.length).toBe(2);
+            expect(err[0] instanceof Error && err[1] instanceof Error).toBe(true);
+            expect(err[0].message).toBe("Cannot read property 'submit' of undefined");
+            expect(err[1].message).toBe("Cannot read property 'submit' of null");
+        })
+    });
+    describe("empty query", function () {
+        beforeEach(function (done) {
+            promise.all([
+                db.query({}),
+                db.query(""),
+                db.query("   ")
+            ])
+                .then(function (data) {
+                    result = data;
+                }, function (reason) {
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must provide the original pg response", function () {
+            expect(result instanceof Array).toBe(true);
+            expect(result.length).toBe(3);
+            expect(result[0].length).toBe(0);
+            expect(result[1].length).toBe(0);
+            expect(result[2].length).toBe(0);
         })
     });
 });
