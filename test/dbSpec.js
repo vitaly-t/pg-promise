@@ -8,7 +8,7 @@ var dbHeader = header(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
-function nope(){
+function nope() {
     // dummy/empty function;
 }
 
@@ -119,12 +119,12 @@ describe("Connection", function () {
 
     describe("for invalid port", function () {
         var errCN, dbErr, result;
-        beforeEach(function(){
+        beforeEach(function () {
             errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
             errCN.port = 9999;
             dbErr = pgp(errCN);
         });
-        describe("with direction connection", function(){
+        describe("with direction connection", function () {
             beforeEach(function (done) {
                 dbErr.connect()
                     .then(nope, function (error) {
@@ -139,7 +139,7 @@ describe("Connection", function () {
                 expect(result.message).toContain('connect ECONNREFUSED');
             });
         });
-        describe("with transaction connection", function(){
+        describe("with transaction connection", function () {
             beforeEach(function (done) {
                 dbErr.tx(nope)
                     .then(nope, function (error) {
@@ -574,12 +574,14 @@ describe("Executing method query", function () {
         var finished, result, error = "Invalid Query Result Mask specified.";
         promise.any([
             db.query('something', undefined, ''),
+            db.query('something', undefined, '2'),
             db.query('something', undefined, -1),
             db.query('something', undefined, 0),
             db.query('something', undefined, 100),
             db.query('something', undefined, NaN),
             db.query('something', undefined, 1 / 0),
-            db.query('something', undefined, -1 / 0)])
+            db.query('something', undefined, -1 / 0),
+            db.query('something', undefined, 2.45)])
             .then(function () {
                 finished = true;
             }, function (reason) {
@@ -590,14 +592,16 @@ describe("Executing method query", function () {
             return finished;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result.length).toBe(7);
-            expect(result[0]).toBe(error);  // reject for the wrong data type;
-            expect(result[1]).toBe(error);  // reject for -1;
-            expect(result[2]).toBe(error);  // reject for 0;
-            expect(result[3]).toBe(error);  // reject a large positive number;
-            expect(result[4]).toBe(error);  // reject for a NaN;
-            expect(result[5]).toBe(error);  // reject for Infinity;
-            expect(result[6]).toBe(error);  // reject for -Infinity;
+            expect(result.length).toBe(9);
+            expect(result[0]).toBe(error);  // reject for an empty string;
+            expect(result[1]).toBe(error);  // reject for number as a string;
+            expect(result[2]).toBe(error);  // reject for a negative integer;
+            expect(result[3]).toBe(error);  // reject for a 0;
+            expect(result[4]).toBe(error);  // reject for a large number;
+            expect(result[5]).toBe(error);  // reject for a NaN;
+            expect(result[7]).toBe(error);  // reject for Infinity;
+            expect(result[7]).toBe(error);  // reject for -Infinity;
+            expect(result[8]).toBe(error);  // reject for a float;
         });
     });
 
