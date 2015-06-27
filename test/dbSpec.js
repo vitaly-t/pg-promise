@@ -1182,6 +1182,27 @@ describe("Synchronous Transactions", function () {
         });
     });
 
+    describe("for a sequence with parameter empty", function () {
+        var result;
+        beforeEach(function (done) {
+            db.tx(function () {
+                return this.queue(function (idx) {
+                    if (idx < 10) {
+                        return this.query("select $1", idx);
+                    }
+                }, true);
+            })
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must resolve with the total number of resolved queries", function () {
+            expect(result).toBe(10);
+        });
+    });
 });
 
 describe("Querying a function", function () {
