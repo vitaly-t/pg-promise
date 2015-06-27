@@ -426,8 +426,8 @@ db.tx(function () {
 ```
 
 By default, method `sequence` resolves with an array of resolved results from each
-query created by the factory. However, if you are inserting way over 1m records,
-such array may grow out of proportion.
+query created by the factory. However, if you have too many requests in your sequence,
+such array may quickly grow out of proportion.
 
 To prevent this from happening, method `sequence` has been extended in version 1.7.2
 to the following syntax:
@@ -438,9 +438,10 @@ Optional flag `empty` (default is `false`) can now be passed to indicate that th
 resolve sequence is not to be tracked, i.e. to remain empty, and the method is to
 resolve with just an integer - total number of queries that have been resolved.
 
-Parameter `empty` has a significant impact on memory consumption when executing 1m
-or more queries at a time (within a single transaction). 
-
+Parameter `empty` can have a significant impact on memory consumption, depending
+on how many requests are in the sequence and the size of data they resolve with,
+and it should be used whenever the individual results from the sequence are not needed.
+ 
 ## Queries and Parameters
 
 **NOTE:** Version 1.0.3 added `queryRaw(query, values)` to bypass any result verification and resolve
