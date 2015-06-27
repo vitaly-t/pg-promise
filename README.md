@@ -426,21 +426,20 @@ db.tx(function () {
 ```
 
 By default, method `sequence` resolves with an array of resolve results from each
-query created by the factory. However, if you are inserting way over 10m records,
-such array of resolve results will grow out of proportion.
+query created by the factory. However, if you are inserting way over 1m records,
+such array of resolve results may grow out of proportion.
 
 To prevent this from happening, method `sequence` has been extended in version 1.7.2
 to the following syntax:
 ```javascript
 sequence(factory, empty);
 ```
-Optional parameter `empty` can be passed to tell the method that we do not want to
-accumulate results from all queries executed within the sequence, and that instead of
-array of results from each query it is expected to resolve with just an integer -
-total number of queries that have been resolved.
+Optional flag `empty` (default is `false`) can now be passed to indicate that the
+resolve sequence is not to be tracked, i.e. to remain empty, and that the method
+is to resolve with an integer - total number of queries that have been resolved.
 
-This parameter has a significant impact on memory consumption when executing 1m or more
-queries at a time (within a single transaction). 
+Parameter `empty` has a significant impact on memory consumption when executing 1m or more
+queries at a time (within a single transaction), and not to be ignored. 
 
 ## Queries and Parameters
 
