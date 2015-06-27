@@ -426,8 +426,8 @@ db.tx(function () {
 ```
 
 By default, method `sequence` resolves with an array of resolve results from each
-query created by the factory. However, if you are inserting 10m - 100m or even more records,
-such array of resolve results may grow out of proportion.
+query created by the factory. However, if you are inserting way over 10m records,
+such array of resolve results will grow out of proportion.
 
 To prevent this from happening, method `sequence` has been extended in version 1.7.2
 to the following syntax:
