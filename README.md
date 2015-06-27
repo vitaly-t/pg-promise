@@ -403,7 +403,7 @@ db.tx(function (t) {
     });
 ```
 
-A simpler example, using `this` context (version 1.4.0 or later):
+A simpler example, using `this` context:
 
 ```javascript
 db.tx(function () {
@@ -425,9 +425,9 @@ db.tx(function () {
     });
 ```
 
-By default, method `sequence` resolves with an array of resolve results from each
+By default, method `sequence` resolves with an array of resolved results from each
 query created by the factory. However, if you are inserting way over 1m records,
-such array of resolve results may grow out of proportion.
+such array may grow out of proportion.
 
 To prevent this from happening, method `sequence` has been extended in version 1.7.2
 to the following syntax:
@@ -435,11 +435,11 @@ to the following syntax:
 sequence(factory, empty);
 ```
 Optional flag `empty` (default is `false`) can now be passed to indicate that the
-resolve sequence is not to be tracked, i.e. to remain empty, and that the method
-is to resolve with an integer - total number of queries that have been resolved.
+resolve sequence is not to be tracked, i.e. to remain empty, and the method is to
+resolve with just an integer - total number of queries that have been resolved.
 
-Parameter `empty` has a significant impact on memory consumption when executing 1m or more
-queries at a time (within a single transaction), and not to be ignored. 
+Parameter `empty` has a significant impact on memory consumption when executing 1m
+or more queries at a time (within a single transaction). 
 
 ## Queries and Parameters
 
