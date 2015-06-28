@@ -13,4 +13,3 @@ branches:
     - master
 env:
   - NODE_ENV=production
-  
