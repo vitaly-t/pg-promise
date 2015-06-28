@@ -11,3 +11,6 @@ before_script:
 branches:
   only:
     - master
+env:
+  - NODE_ENV=production
+  
