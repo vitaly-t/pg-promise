@@ -1095,12 +1095,21 @@ describe("Synchronous Transactions", function () {
     });
 
     describe("for an invalid factory result", function () {
+
         var result;
         beforeEach(function (done) {
             db.tx(function () {
-                return this.queue(function () {
-                    return 123;
-                });
+                return promise.any([
+                    this.queue(function () {
+                        return 0;
+                    }),
+                    this.queue(function () {
+                        return 123;
+                    }),
+                    this.queue(function () {
+                        return '';
+                    })
+                ]);
             })
                 .then(function () {
                 }, function (reason) {
@@ -1110,7 +1119,12 @@ describe("Synchronous Transactions", function () {
                 });
         });
         it("must reject with correct error", function () {
-            expect(result).toBe("Promise factory returned invalid result for index 0");
+            var errMsg = "Promise factory returned invalid result for index 0";
+            expect(result).toBeTruthy();
+            expect(result.length).toBe(3);
+            expect(result[0]).toBe(errMsg);
+            expect(result[1]).toBe(errMsg);
+            expect(result[2]).toBe(errMsg);
         });
     });
 
