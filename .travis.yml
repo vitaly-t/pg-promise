@@ -12,4 +12,4 @@ branches:
   only:
     - master
 env:
-  - NODE_ENV=production
+  - BLUEBIRD_DEBUG=0
