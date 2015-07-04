@@ -473,7 +473,7 @@ without parameter `empty` set, the test could barely pass 1m inserts, consuming 
 **Conclusion**
 
 * The library is almost infinitely scalable when executing transactions with use of `sequence`
-* You should not execute a sequence larger than 100,000 queries without passing `empty` as `true` 
+* You should not execute a sequence larger than 100,000 queries without passing `empty = true` 
 
 ## Queries and Parameters
 
