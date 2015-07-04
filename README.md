@@ -449,7 +449,7 @@ and it should be used:
 * whenever the individual results from the sequence are not needed;
 * when executing super-massive transactions (north of 100,000 queries).
 
-##### Sequence Benchmark
+#### Sequence Benchmark
 
 Below is a benchmark conducted on a home PC, so that you know what to expect
 in terms of the performance.
@@ -470,10 +470,10 @@ This translates in nicely throttled inserts at 11,000 records a second.
 The test executed `sequence` with parameter `empty` = `true`. And when executing the same test
 without parameter `empty` set, the test could barely pass 1m inserts, consuming way too much memory.
 
-**Conclusions**
+**Conclusion**
 
-* The library is almost infinitely scalable when executing transactions with use of `sequence`;
-* You should not execute a sequence larger than 100,000 queries without passing `empty` as `true`. 
+* The library is almost infinitely scalable when executing transactions with use of `sequence`
+* You should not execute a sequence larger than 100,000 queries without passing `empty` as `true` 
 
 ## Queries and Parameters
 
@@ -511,6 +511,7 @@ serialized into JSON, the same as calling method `as.json()`, except the latter 
 
 Raw-text values can be injected by using variable name appended with symbol `^`:
 `$1^, $2^, etc...`, `$*varName^*`, where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
+
 Raw text is injected without any pre-processing, which means:
 * No replacing each single-quote symbol `'` with two;
 * No wrapping text into single quotes.
