@@ -36,6 +36,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
     - [Synchronous Transactions](#synchronous-transactions)    
       - [Sequence Benchmark](#sequence-benchmark)
   - [Queries and Parameters](#queries-and-parameters)
+      - [Query Result Mask](#query-result-mask)
   - [Named Parameters](#named-parameters)
   - [Conversion Helpers](#conversion-helpers)
 * [Advanced](#advanced)
@@ -76,7 +77,7 @@ $ npm install pg-promise
 $ npm install
 ```
 * Make sure all tests can connect to your local test database, using the connection details in
-[test/db/header.js](https://github.com/vitaly-t/pg-promise/blob/master/test/db/header.js).
+[test/db/header.js](https://github.com/vitaly-t/pg-promise/blob/master/test/db/header.js#L10).
 Either set up your test database accordingly or change the connection details in that file.
 
 * Initialize the database with some test data:
@@ -469,17 +470,12 @@ This translates in nicely throttled inserts at 11,000 records a second.
 The test executed `sequence` with parameter `empty` = `true`. And when executing the same test
 without parameter `empty` set, the test could barely pass 1m inserts, consuming way too much memory.
 
-Conclusions:
+**Conclusions**
 
 * The library is almost infinitely scalable when executing transactions with use of `sequence`;
 * You should not execute a sequence larger than 100,000 queries without passing `empty` as `true`. 
 
 ## Queries and Parameters
-
-**NOTE:** Version 1.0.3 added `queryRaw(query, values)` to bypass any result verification and resolve
-with the [Result](https://github.com/brianc/node-postgres/blob/master/lib/result.js) object as provided by the [PG] library.
-
----
 
 Every connection context of the library shares the same query protocol, starting with generic method `query`,
 that's defined as shown below:
@@ -491,7 +487,7 @@ function query(query, values, qrm);
    - format `$1, $2, etc..`, if `values` is an array of values;
    - format `$*propName*`, if `values` is an object (not null and not Date), where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`;
 * `values` (optional) - value/array/object to replace the variables in the query;
-* `qrm` - (optional) *Query Result Mask*, as explained below...
+* `qrm` - (optional) *Query Result Mask*, as explained below. When not passed, it defaults to `queryResult.any`.
 
 When a value/property inside array/object is of type array, it is treated as a [PostgreSQL Array Type](http://www.postgresql.org/docs/9.4/static/arrays.html),
 converted into the array constructor format of `array[]`, the same as calling method `as.array()`.
@@ -513,7 +509,7 @@ console.log(pgp.as.array([[1, 2], ['three', 'four']]));
 When a value/property inside array/object is of type `object` (except for `null` and `Date`), it is automatically
 serialized into JSON, the same as calling method `as.json()`, except the latter would convert anything to JSON.
 
-Raw text values can be injected by using variable name appended with symbol `^`:
+Raw-text values can be injected by using variable name appended with symbol `^`:
 `$1^, $2^, etc...`, `$*varName^*`, where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
 Raw text is injected without any pre-processing, which means:
 * No replacing each single-quote symbol `'` with two;
@@ -532,7 +528,7 @@ query("...WHERE name LIKE '%${name^}%'", {name: "John"});
 query("...WHERE id IN($1^)", pgp.as.csv([1,2,3,4])); 
 ```
 
----
+### Query Result Mask
 
 In order to eliminate the chances of unexpected query results and make code more robust, each request supports
 parameter `qrm` (Query Result Mask), via type `queryResult`:
@@ -553,7 +549,7 @@ In the following generic-query example we indicate that the call can return anyt
 ```javascript
 db.query("select * from users");
 ```
-which is equivalent to calling either one of the following:
+which is equivalent to making one of the following calls:
 ```javascript
 db.query("select * from users", undefined, queryResult.many | queryResult.none);
 db.query("select * from users", undefined, queryResult.any);
@@ -570,7 +566,12 @@ db.any(query, values); // expects anything, same as `manyOrNone`
 db.oneOrNone(query, values); // expects 1 or 0 rows
 db.manyOrNone(query, values); // expects anything, same as `any`
 ```
-You can add your own methods to this protocol via the [extend](#extend) event.  
+
+There is however one specific method `queryRaw(query, values)`, with aliases `raw` and `result` to instruct the library
+that any result verification is to be bypassed, and instead it must resolve with the original
+[Result](https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6) object passed from the [PG] library.
+
+You can also add your own methods and properties to this protocol via the [extend](#extend) event.  
 
 Each query function resolves its **data** object according to the `qrm` that was used:
 
@@ -583,7 +584,7 @@ the query is rejected.
 
 If you try to specify `one`|`many` in the same query, such query will be rejected without executing it, telling you that such mask is invalid.
 
-If `qrm` is not specified when calling generic `query` method, it is assumed to be `many`|`none`, i.e. any kind of data expected.
+If `qrm` is not specified when calling generic `query` method, it is assumed to be `many`|`none` = `any`, i.e. any kind of data expected.
 
 > This is all about writing robust code, when the client specifies what kind of data it is ready to handle on the declarative level,
 leaving the burden of all extra checks to the library.
@@ -599,6 +600,7 @@ db.query("select * from users where name=${name} and active=$/active/", {
     active: true
 });
 ```
+
 The same goes for all types of query methods as well as method `as.format(query, values)`, where `values`
 now can also be an object whose properties can be referred to by name from within the query.
 
@@ -609,6 +611,7 @@ It is important to know that while property values `null` and `undefined` are bo
 an error is thrown when the property doesn't exist at all.
 
 ## Functions and Procedures
+
 In PostgreSQL stored procedures are just functions that usually do not return anything.
 
 Suppose we want to call function **findAudit** to find audit records by **user id** and maximum timestamp.
@@ -750,20 +753,7 @@ If you want to get the most out the query-related events, you should use [pg-mon
 #### pgFormatting
 
 By default, **pg-promise** provides its own implementation of the query formatting,
-supporting the following formats:
-
-* Format `$1, $2, etc`, when parameter `values` is either a single value or an array of values;
-* Format `$*propName*`, if `values` is an object that's not `null` and not a `Date` instance, and where
-`*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
-
-Every query method of the library accepts `values` as its second parameter.
-
-**pg-promise** automatically converts all basic javascript types (text, boolean, date, number and null)
-into their Postgres presentation.
-
-In addition, the library can convert:
-* array into [Postgres Array Types](http://www.postgresql.org/docs/9.4/static/arrays.html) constructor;
-* an object inside array or an object property - into JSON string.
+as explained in [Queries and Parameters](#queries-and-parameters).
 
 If, however, you want to use query formatting that's implemented by the [PG] library, set parameter `pgFormatting`
 to be `true` when initializing the library, and every query formatting will redirect to the [PG]'s implementation.
@@ -820,8 +810,7 @@ accordance with the [Promises/A+] standard.
 * [Q] - most widely used;
 * [RSVP] - doesn't have `done()`, use `finally/catch` instead
 * [Lie] - doesn't have `done()`. Not recommended due to poor support. 
-* **ES6 Promise** - doesn't have `done()` or `finally()`. Not recommended, due to being buggy,
-slow and functionally limited (as of this writing). 
+* **ES6 Promise** - doesn't have `done()` or `finally()`. Not recommended, due to being slow and functionally limited (as of this writing). 
 
 Compatibility with other [Promises/A+] libraries though possible, is an unknown.
 
