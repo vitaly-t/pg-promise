@@ -64,6 +64,7 @@ describe("Database Protocol", function () {
         expect(typeof(db.connect)).toBe('function');
         expect(typeof(db.query)).toBe('function');
         expect(typeof(db.raw)).toBe('function');
+        expect(typeof(db.result)).toBe('function');
         expect(typeof(db.queryRaw)).toBe('function');
         expect(typeof(db.tx)).toBe('function');
         expect(typeof(db.transact)).toBe('function');
@@ -101,6 +102,7 @@ describe("Database Protocol", function () {
             expect(protocol.connect).toBeUndefined();
             expect(typeof(protocol.query)).toBe('function');
             expect(typeof(protocol.queryRaw)).toBe('function');
+            expect(typeof(protocol.result)).toBe('function');
             expect(typeof(protocol.raw)).toBe('function');
             expect(typeof(protocol.tx)).toBe('function');
             expect(typeof(protocol.transact)).toBe('function');

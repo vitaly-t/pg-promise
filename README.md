@@ -34,6 +34,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
     - [Nested Transactions](#nested-transactions)
     - [Transactions with SAVEPOINT](#transactions-with-savepoint)
     - [Synchronous Transactions](#synchronous-transactions)    
+      - [Sequence Benchmark](#sequence-benchmark)
   - [Queries and Parameters](#queries-and-parameters)
   - [Named Parameters](#named-parameters)
   - [Conversion Helpers](#conversion-helpers)
@@ -70,13 +71,13 @@ $ npm install pg-promise
 ```
 
 # Testing
-* Install project dependencies:
+* Install the library's dependencies:
 ```
 $ npm install
 ```
-* Make sure the tests can connect to your local test database, according to connection details in
+* Make sure all tests can connect to your local test database, using the connection details in
 [test/db/header.js](https://github.com/vitaly-t/pg-promise/blob/master/test/db/header.js).
-Either match your database configuration or change the connection details in that file.
+Either set up your test database accordingly or change the connection details in that file.
 
 * Initialize the database with some test data:
 ```
@@ -135,17 +136,17 @@ There can be multiple database objects instantiated in the application from diff
 
 To get started quickly, see our [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example) tutorial. 
 
-And once you get it all up and running, have a look at [pg-monitor], which can work a treat for monitoring queries in your application.
+And once you get it all up and running, have a look at [pg-monitor], which is good for automatic query monitoring in your application.
 
 # Usage
 
 The library supports promise-chained queries on shared and detached connections.
-Choosing which one you want depends on the situation and personal preferences.
+Choosing which one to use depends on the situation and personal preferences.
 
 ## Detached Connections
 
 Queries in a detached promise chain maintain connection independently, they each acquire a connection from the pool,
-execute the query and then release the connection.
+execute the query and then release the connection back to the pool.
 ```javascript
 db.one("select * from users where id=$1", 123) // find the user from id;
     .then(function(data){
@@ -166,32 +167,33 @@ such will be used from a connection pool, so effectively you end up with the sam
 
 ## Shared Connections
 
-A promise chain with a shared connection always starts with `connect()`, which allocates a connection that's shared with all the
-query requests down the promise chain. The connection must be released when no longer needed.
+A promise chain with a shared connection always starts with `connect()`, which acquires a connection from the pool to be shared
+with all the queries down the promise chain. The connection must be released back to the pool when no longer needed.
 
 ```javascript
 var sco; // shared connection object;
 db.connect()
-    .then(function(obj){
+    .then(function(obj) {
         sco = obj; // save the connection object;
         // find active users created before today:
         return sco.query("select * from users where active=$1 and created < $2",
             [true, new Date()]);
     })
-    .then(function(data){
+    .then(function(data) {
         console.log(data); // display all the user details;
-    }, function(reason){
+    }, function(reason) {
         console.log(reason); // display reason why the call failed;
     })
-    .done(function(){
-        if(sco){
+    .done(function() {
+        if(sco) {
             sco.done(); // release the connection, if it was successful;
         }
     });
 ```
-Shared-connection chaining is for those who want absolute control over connection, either because they want to execute lots of queries in one go,
-or because they like squeezing every bit of performance out of their code. Other than, the author hasn't seen any real performance difference
-from the detached-connection chaining.
+Shared-connection chaining is when you want absolute control over the connection, either because you want to execute lots of queries in one go,
+or because you like squeezing every bit of performance out of your code. Other than that, the author hasn't seen any performance difference
+from the detached-connection chaining. And besides, any long sequence of queries normally resides inside a transaction, which always
+uses shared-connection chaining automatically.
 
 ## Transactions
 
@@ -224,6 +226,7 @@ db.tx(function(){
     console.log(reason); // printing the reason why the transaction was rejected
 });
 ```
+
 A detached transaction acquires a connection and exposes object `t` to let all containing queries execute on the same connection.
 
 #### Shared-connection Transactions
@@ -261,8 +264,9 @@ db.connect()
     });
 ```
 If you need to execute just one transaction, the detached transaction pattern is all you need.
-But even if you need to combine it with other queries in then a detached chain, it will work just as fine.
-As stated earlier, choosing a shared chain over a detached one is mostly a matter of special requirements and/or personal preference.
+But even if you need to combine it with other queries in a detached chain, it will work the same.
+As stated earlier, choosing a shared chain over a detached one is mostly a matter of special requirements
+and/or personal preference.
 
 #### Nested Transactions
 
@@ -355,7 +359,7 @@ db.connect()
 The issue with stripping out a transaction like this and injecting `SAVEPOINT` - it gets much more
 complicated to control the result of individual commands within a transaction, you may need to check every
 result and change the following commands accordingly. This is why it makes much more sense to do such
-transactions inside SQL functions, and not on the client side.
+transactions inside SQL functions, and not in JavaScript.
 
 ### Synchronous Transactions
 
@@ -367,7 +371,7 @@ such approach is no longer practical. For one thing, it implies that all request
 created as promise objects, which isn't possible when dealing with a huge number if queries,
 due to memory limitations imposed by NodeJS. And for another, when one query fails, the rest
 will continue trying to execute, due to their promise nature, as being asynchronous. The latter
-will also result in many errors generated by failed queries, which by no means breaks the transaction
+will result in many errors generated by failed queries, which by no means breaks the transaction
 logic, just fills your error log with lots of query failures that are in fact of no consequence.
 
 This is why within each transaction we have method `sequence`, with alias `queue`, to be able to
@@ -403,7 +407,7 @@ db.tx(function (t) {
     });
 ```
 
-A simpler example, using `this` context:
+A simpler example, using in-line implementation and `this` context:
 
 ```javascript
 db.tx(function () {
@@ -440,8 +444,36 @@ resolve with just an integer - total number of queries that have been resolved.
 
 Parameter `empty` can have a significant impact on memory consumption, depending
 on how many requests are in the sequence and the size of data they resolve with,
-and it should be used whenever the individual results from the sequence are not needed.
- 
+and it should be used:
+* whenever the individual results from the sequence are not needed;
+* when executing super-massive transactions (north of 100,000 queries).
+
+##### Sequence Benchmark
+
+Below is a benchmark conducted on a home PC, so that you know what to expect
+in terms of the performance.
+
+A home PC was used for the test, with the following configuration:
+
+* CPU - i7-4770K @ 4GHz, Memory - 32GB;
+* Windows 8.1, with PostgreSQL 9.4 on a 256GB Samsung 840 Pro.
+
+The test was executing a single transaction with a sequence that contained 10 million inserts.
+[Bluebird] was used as the promise library of choice, with long-stack traces switched off.
+
+It took 15 minutes to execute such transaction, with CPU staying at 15% load, while
+the Node JS (0.12.5, 64-bit) process maintained stable at 70-75MB of overall memory usage. 
+
+This translates in nicely throttled inserts at 11,000 records a second. 
+
+The test executed `sequence` with parameter `empty` = `true`. And when executing the same test
+without parameter `empty` set, the test could barely pass 1m inserts, consuming way too much memory.
+
+Conclusions:
+
+* The library is almost infinitely scalable when executing transactions with use of `sequence`;
+* You should not execute a sequence larger than 100,000 queries without passing `empty` as `true`. 
+
 ## Queries and Parameters
 
 **NOTE:** Version 1.0.3 added `queryRaw(query, values)` to bypass any result verification and resolve
@@ -972,7 +1004,7 @@ var options = {
 ```
 
 IMPORTANT: Do not override any of the predefined functions or properties in the protocol,
-as it will break your access object.
+as it may break your access object.
 
 It is best to extend the protocol by adding whole entity repositories to it as shown
 in the following example.
