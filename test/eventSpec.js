@@ -270,7 +270,7 @@ describe("Error event", function () {
             options.error = null;
         });
         it("must reject with correct error", function () {
-            expect(errTxt).toBe("Single row was expected from the query.");
+            expect(errTxt).toBe("Single row was expected from the query, but multiple returned.");
             expect(context.query).toBe("select * from users");
             expect(context.params).toBeUndefined();
             expect(counter).toBe(1);

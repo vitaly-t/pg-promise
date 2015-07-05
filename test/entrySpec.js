@@ -64,7 +64,7 @@ describe("Library entry function", function () {
                 pgpLib({
                     promiseLib: "test"
                 });
-            }).toThrow(new Error("Invalid or unsupported promise library override."));
+            }).toThrow(new Error("Invalid promise library override."));
         });
     });
 

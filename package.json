@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "1.7.4",
+  "version": "1.7.5",
   "description": "PostgreSQL via promises",
   "main": "lib/index.js",
   "scripts": {

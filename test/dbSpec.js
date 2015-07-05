@@ -390,7 +390,7 @@ describe("Method 'one'", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeUndefined();
-            expect(error).toBe("Single row was expected from the query.");
+            expect(error).toBe("Single row was expected from the query, but multiple returned.");
         });
     });
 });
@@ -450,7 +450,7 @@ describe("Method 'oneOrNone'", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeUndefined();
-            expect(error).toBe("Single row was expected from the query.");
+            expect(error).toBe("Single row was expected from the query, but multiple returned.");
         });
     });
 
@@ -939,7 +939,7 @@ describe("Return data from a query must match the request type", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeNull();
-            expect(error).toBe("Single row was expected from the query.");
+            expect(error).toBe("Single row was expected from the query, but multiple returned.");
         });
     });
 
