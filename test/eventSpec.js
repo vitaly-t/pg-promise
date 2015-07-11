@@ -382,7 +382,7 @@ describe("pgFormatting", function () {
                 });
         });
         afterEach(function () {
-            options.query = false;
+            options.query = null;
         });
         it("must affect formatting accordingly", function () {
             expect(Array.isArray(result)).toBe(true);
