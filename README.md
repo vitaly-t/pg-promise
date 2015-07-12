@@ -20,10 +20,8 @@ Complete access layer to [node-postgres] via [Promises/A+].
 * [Installing](#installing)
 * [Testing](#testing)
 * [Getting started](#getting-started)
-  - [Loading](#1-loading)
-  - [Initializing](#2-initializing)
-  - [Connecting](#3-connecting)
-  - [Database Instance](#4-database-instance)
+  - [Initializing](#1-initializing)
+  - [Connecting](#2-connecting)
   - [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example)  
 * [Usage](#usage)
   - [Detached Connections](#detached-connections)
@@ -62,7 +60,7 @@ while extending the protocol to a higher level, with automated connections and t
 In addition, the library provides:
 
 * its own, more flexible query formatting;
-* complete event reporting for connectivity, errors, queries and transactions;
+* event reporting for connectivity, errors, queries and transactions;
 * declarative approach to controlling query results;
 * support for all popular promise libraries.
 
@@ -97,19 +95,16 @@ and it is not for local usage.
 
 # Getting started
 
-## 1. Loading
-```javascript
-// Loading the library:
-var pgpLib = require('pg-promise');
-```
-## 2. Initializing
-```javascript
-// Initializing the library, with optional global settings:
-var pgp = pgpLib(/*options*/);
-```
-You can pass additional `options` parameter when initializing the library (see chapter [Initialization Options](#advanced) for details).
+## 1. Initializing
 
-## 3. Connecting
+```javascript
+// Loading and initializing the library:
+var pgp = require('pg-promise')(/*options*/);
+```
+You can pass `options` parameter when initializing the library (see chapter [Initialization Options](#advanced) for details).
+
+## 2. Connecting
+
 Use one of the two ways to specify database connection details:
 * Configuration Object:
 ```javascript
@@ -125,19 +120,18 @@ var cn = {
 ```javascript
 var cn = "postgres://username:password@host:port/database";
 ```
+
 This library doesn't use any of the connection's details, it simply passes them on to [PG] when opening a new connection.
 For more details see pg connection parameters in [WiKi](https://github.com/brianc/node-postgres/wiki/pg#parameters) and
 [implementation](https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js).
 
-## 4. Database Instance
+Create a new database instance from the connection details:
 ```javascript
-var db = pgp(cn); // create a new database instance from the connection details
+var db = pgp(cn);
 ```
 There can be multiple database objects instantiated in the application from different connection details.
 
-To get started quickly, see our [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example) tutorial. 
-
-And once you get it all up and running, have a look at [pg-monitor], which is good for automatic query monitoring in your application.
+For a quick start see [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example) tutorial. 
 
 # Usage
 
