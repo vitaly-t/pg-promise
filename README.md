@@ -101,7 +101,7 @@ and it is not for local usage.
 // Loading and initializing the library:
 var pgp = require('pg-promise')(/*options*/);
 ```
-You can pass `options` parameter when initializing the library (see chapter [Initialization Options](#advanced) for details).
+You can pass `options` parameter when initializing the library (see chapter [Initialization Options](#advanced)).
 
 ## 2. Connecting
 
@@ -121,7 +121,7 @@ var cn = {
 var cn = "postgres://username:password@host:port/database";
 ```
 
-This library doesn't use any of the connection's details, it simply passes them on to [PG] when opening a new connection.
+This library doesn't use any of the connection's details, it simply passes them on to [PG] when opening a connection.
 For more details see pg connection parameters in [WiKi](https://github.com/brianc/node-postgres/wiki/pg#parameters) and
 [implementation](https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js).
 
@@ -129,9 +129,9 @@ Create a new database instance from the connection details:
 ```javascript
 var db = pgp(cn);
 ```
-There can be multiple database objects instantiated in the application from different connection details.
+There can be multiple database objects in the application for different connections.
 
-For a quick start see [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example) tutorial. 
+To get started quickly, see our [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example) tutorial. 
 
 # Usage
 
