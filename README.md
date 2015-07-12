@@ -20,8 +20,8 @@ Complete access layer to [node-postgres] via [Promises/A+].
 * [Installing](#installing)
 * [Testing](#testing)
 * [Getting started](#getting-started)
-  - [Initializing](#1-initializing)
-  - [Connecting](#2-connecting)
+  - [Initializing](#initializing)
+  - [Connecting](#connecting)
   - [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example)  
 * [Usage](#usage)
   - [Detached Connections](#detached-connections)
@@ -95,7 +95,7 @@ and it is not for local usage.
 
 # Getting started
 
-## 1. Initializing
+## Initializing
 
 ```javascript
 // Loading and initializing the library:
@@ -103,7 +103,7 @@ var pgp = require('pg-promise')(/*options*/);
 ```
 You can pass `options` parameter when initializing the library (see chapter [Initialization Options](#advanced)).
 
-## 2. Connecting
+## Connecting
 
 Use one of the two ways to specify database connection details:
 * Configuration Object:
