@@ -983,6 +983,7 @@ one binary image and resolve with the new record id:
 ```javascript
 var options = {
     extend: function (obj) {
+        // obj = this
         obj.addImage = function (data) {
             return obj.one("insert into images(data) values($1) returning id",
                 '\\x' + data);
@@ -1012,7 +1013,8 @@ function repUsers(obj) {
 
 // Overriding 'extend' event;
 var options = {
-    extend: function () {
+    extend: function (obj) {
+        // obj = this
         this.users = repUsers(this);
     }
 };
