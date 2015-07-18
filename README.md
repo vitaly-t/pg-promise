@@ -24,19 +24,20 @@ Complete access layer to [node-postgres] via [Promises/A+].
   - [Connecting](#connecting)
   - [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example)  
 * [Usage](#usage)
-  - [Detached Connections](#detached-connections)
-  - [Shared Connections](#shared-connections)
+  - [Queries and Parameters](#queries-and-parameters)
+    - [Query Result Mask](#query-result-mask)
+  - [Named Parameters](#named-parameters)
+  - [Conversion Helpers](#conversion-helpers)
+  - [Connections](#connections)  
+    - [Detached Connections](#detached-connections)
+    - [Shared Connections](#shared-connections)
   - [Transactions](#transactions)
     - [Detached Transactions](#detached-transactions)
     - [Shared-connection Transactions](#shared-connection-transactions)
     - [Nested Transactions](#nested-transactions)
     - [Transactions with SAVEPOINT](#transactions-with-savepoint)
     - [Synchronous Transactions](#synchronous-transactions)    
-      - [Sequence Benchmark](#sequence-benchmark)
-  - [Queries and Parameters](#queries-and-parameters)
-      - [Query Result Mask](#query-result-mask)
-  - [Named Parameters](#named-parameters)
-  - [Conversion Helpers](#conversion-helpers)
+    - [Sequence Benchmark](#sequence-benchmark) 
 * [Advanced](#advanced)
   - [Initialization Options](#initialization-options)
     - [pgFormatting](#pgformatting)
@@ -135,344 +136,11 @@ To get started quickly, see our [Learn by Example](https://github.com/vitaly-t/p
 
 # Usage
 
-The library supports promise-chained queries on shared and detached connections.
-Choosing which one to use depends on the situation and personal preferences.
-
-## Detached Connections
-
-Queries in a detached promise chain maintain connection independently, they each acquire a connection from the pool,
-execute the query and then release the connection back to the pool.
-```javascript
-db.one("select * from users where id=$1", 123) // find the user from id;
-    .then(function(data){
-        // find 'login' records for the user found:
-        return db.query("select * from audit where event=$1 and userId=$2",
-            ["login", data.id]);
-    })
-    .then(function(data){
-        // display found audit records;
-        console.log(data);
-    }, function(reason){
-        console.log(reason); // display reason why the call failed;
-    })
-```
-In a situation where a single request is to be made against the database, a detached chain is the only one that makes sense.
-And even if you intend to execute multiple queries in a chain, keep in mind that even though each will use its own connection,
-such will be used from a connection pool, so effectively you end up with the same connection, without any performance penalty.
-
-## Shared Connections
-
-A promise chain with a shared connection always starts with `connect()`, which acquires a connection from the pool to be shared
-with all the queries down the promise chain. The connection must be released back to the pool when no longer needed.
-
-```javascript
-var sco; // shared connection object;
-db.connect()
-    .then(function(obj) {
-        sco = obj; // save the connection object;
-        // find active users created before today:
-        return sco.query("select * from users where active=$1 and created < $2",
-            [true, new Date()]);
-    })
-    .then(function(data) {
-        console.log(data); // display all the user details;
-    }, function(reason) {
-        console.log(reason); // display reason why the call failed;
-    })
-    .done(function() {
-        if(sco) {
-            sco.done(); // release the connection, if it was successful;
-        }
-    });
-```
-Shared-connection chaining is when you want absolute control over the connection, either because you want to execute lots of queries in one go,
-or because you like squeezing every bit of performance out of your code. Other than that, the author hasn't seen any performance difference
-from the detached-connection chaining. And besides, any long sequence of queries normally resides inside a transaction, which always
-uses shared-connection chaining automatically.
-
-## Transactions
-
-Transactions can be executed within both shared and detached promise chains in the same way, performing the following actions:
-
-1. Acquires a new connection (detached chains only);
-2. Executes `BEGIN` command;
-3. Invokes your callback function with the connection object;
-4. Executes `COMMIT`, if the callback resolves, or `ROLLBACK`, if the callback rejects;
-5. Releases the connection (detached chains only);
-6. Resolves with the callback result, if success; rejects with the reason, if failed.
-
-#### Detached Transactions
-
-```javascript
-var promise = require('promise'); // or any other supported promise library;
-db.tx(function(){
-
-    // creating a sequence of transaction queries:
-    var q1 = this.none("update users set active=$1 where id=$2", [true, 123]);
-    var q2 = this.one("insert into audit(entity, id) values($1, $2) returning id",
-        ['users', 123]);
-
-    // returning a promise that determines a successful transaction:
-    return promise.all([q1, q2]); // all of the queries are to be resolved
-
-}).then(function(data){
-    console.log(data); // printing successful transaction output
-}, function(reason){
-    console.log(reason); // printing the reason why the transaction was rejected
-});
-```
-
-A detached transaction acquires a connection and exposes object `t` to let all containing queries execute on the same connection.
-
-#### Shared-connection Transactions
-
-When executing a transaction within a shared connection chain, parameter `t` represents the same connection as `sco` from opening a shared connection,
-so either one can be used inside such a transaction interchangeably.
-
-```javascript
-var promise = require('promise'); // or any other supported promise library;
-var sco; // shared connection object;
-db.connect()
-    .then(function(obj){
-        sco = obj;
-        return sco.oneOrNone("select * from users where active=$1 and id=$1", [true, 123]);
-    })
-    .then(function(data){
-        return sco.tx(function(t){
-
-            // Since it is a transaction within a shared chain, it doesn't matter whether
-            // the two calls below use object `t` or `sco`, as they are exactly the same:
-            var q1 = t.none("update users set active=$1 where id=$2", [false, data.id]);
-            var q2 = sco.one("insert into audit(entity, id) values($1, $2) returning id",
-                ['users', 123]);
-
-            // returning a promise that determines a successful transaction:
-            return promise.all([q1, q2]); // all of the queries are to be resolved;
-        });
-    }, function(reason){
-        console.log(reason); // printing the reason why the transaction was rejected;
-    })
-    .done(function(){
-        if(sco){
-            sco.done(); // release the connection, if it was successful;
-        }
-    });
-```
-If you need to execute just one transaction, the detached transaction pattern is all you need.
-But even if you need to combine it with other queries in a detached chain, it will work the same.
-As stated earlier, choosing a shared chain over a detached one is mostly a matter of special requirements
-and/or personal preference.
-
-#### Nested Transactions
-
-Similar to the shared-connection transactions, nested transactions automatically share the connection between all levels.
-This library sets no limitation as to the depth (nesting levels) of transactions supported.
-
-Example:
-
-```javascript
-db.tx(function () {
-    var queries = [
-        this.none("drop table users;"),
-        this.none("create table users(id serial not null, name text not null)")
-    ];
-    for (var i = 1; i <= 100; i++) {
-        queries.push(this.none("insert into users(name) values($1)", "name-" + i));
-    }
-    queries.push(
-        this.tx(function () {
-            return this.tx(function(){
-                return this.one("select count(*) from users");
-            });
-        }));
-    return promise.all(queries);
-})
-.then(function (data) {
-    console.log(data); // printing transaction result;
-}, function (reason) {
-    console.log(reason); // printing why the transaction failed;
-})
-```
-
-Things to note from the example above:
-* Sub-transactions do not declare a context parameter in their callback. It is not because
-they don't receive one, they all do, but they don't care in such situation because of the shared connection
-chain that will result in the same `t` object as for the main callback, so they just reuse it from the parent,
-for simplicity;
-* A nested transaction cannot be disconnected from its container, i.e. it must get into the container's promise chain,
- or it will result in an attempt to execute against an unknown connection;
-* As expected, a failure on any level in a nested transaction will `ROLLBACK` and `reject` the entire chain.
-
-#### Transactions with SAVEPOINT
-
-`SAVEPOINT` in PostgreSQL caters for advanced transaction scenarios where partial `ROLLBACK` can be executed,
-depending on the logic of the transaction.
-
-Unfortunately, this doesn't go along with the [Promises/A+] architecture that doesn't support partial `reject`.
-
-The only work-around via promises is to strip a transaction into individual commands and execute them as a promise
-chain within a shared connection. The example below shows how this can be done.
-
-```javascript
-var sco; // shared connection object;
-var txErr; // transaction error;
-var txData; // transaction data;
-db.connect()
-    .then(function (obj) {
-        sco = obj; // save the connection object;
-        return promise.all([
-            sco.none('begin'),
-            sco.none('update users set name=$1 where id=$2', ['changed1', 1]),
-            sco.none('savepoint first'), // creating savepoint;
-            sco.none('update users set name=$1 where id=$2', ['changed2', 2]),
-            sco.none('rollback to first') // reverting to the savepoint;
-        ])
-            .then(function (data) {
-                txData = data; // save the transaction output data;
-                return sco.none('commit'); // persist changes;
-            }, function (reason) {
-                txErr = reason; // save the transaction failure reason;
-                return sco.none('rollback'); // revert changes;
-            });
-    })
-    .then(function () {
-        if (txErr) {
-            console.log('Rollback Reason: ' + txErr);
-        } else {
-            console.log(txData); // successful transaction output;
-        }
-    }, function (reason) {
-        console.log(reason); // connection issue;
-    })
-    .done(function () {
-        if (sco) {
-            sco.done(); // release the connection, if it was successful;
-        }
-    });
-```
-
-The issue with stripping out a transaction like this and injecting `SAVEPOINT` - it gets much more
-complicated to control the result of individual commands within a transaction, you may need to check every
-result and change the following commands accordingly. This is why it makes much more sense to do such
-transactions inside SQL functions, and not in JavaScript.
-
-### Synchronous Transactions
-
-A regular transaction with a set of independent queries relies on generic method
-`promise.all([...])` to resolve all queries asynchronously.
-
-However, when it comes to executing a significant number of such queries during a bulk insert,
-such approach is no longer practical. For one thing, it implies that all requests have been
-created as promise objects, which isn't possible when dealing with a huge number if queries,
-due to memory limitations imposed by NodeJS. And for another, when one query fails, the rest
-will continue trying to execute, due to their promise nature, as being asynchronous. The latter
-will result in many errors generated by failed queries, which by no means breaks the transaction
-logic, just fills your error log with lots of query failures that are in fact of no consequence.
-
-This is why within each transaction we have method `sequence`, with alias `queue`, to be able to
-execute a strict sequence of queries inside your transaction, one by one, and if one fails -
-the rest won't try to execute.
-
-In the promise architecture this is achieved by using a promise factory.
-
-```javascript
-function factory(idx, t) {
-// must create and return a promise object dynamically,
-// based on the index of the sequence (parameter idx);
-    switch (idx) {
-        case 0:
-            return t.query("select 0");
-        case 1:
-            return t.query("select 1");
-        case 2:
-            return t.query("select 2");
-    }
-// returning nothing or null indicates the end of the sequence;
-// throwing an error will result in a reject;
-}
-
-db.tx(function (t) {
-    // same as calling t.queue(factory);
-    return t.sequence(factory);
-})
-    .then(function (data) {
-        console.log(data); // print result;
-    }, function (reason) {
-        console.log(reason); // print error;
-    });
-```
-
-A simpler example, using in-line implementation and `this` context:
-
-```javascript
-db.tx(function () {
-    return this.sequence(function (idx) {
-        switch (idx) {
-            case 0:
-                return this.query("select 0");
-            case 1:
-                return this.query("select 1");
-            case 2:
-                return this.query("select 2");
-        }
-    });
-})
-    .then(function (data) {
-        console.log(data); // print result;
-    }, function (reason) {
-        console.log(reason); // print error;
-    });
-```
-
-By default, method `sequence` resolves with an array of resolved results from each
-query created by the factory. However, if you have too many requests in your sequence,
-such array may quickly grow out of proportion.
-
-To prevent this from happening, method `sequence` has been extended in version 1.7.2
-to the following syntax:
-```javascript
-sequence(factory, empty);
-```
-Optional flag `empty` (default is `false`) can now be passed to indicate that the
-resolve sequence is not to be tracked, i.e. to remain empty, and the method is to
-resolve with just an integer - total number of queries that have been resolved.
-
-Parameter `empty` can have a significant impact on memory consumption, depending
-on how many requests are in the sequence and the size of data they resolve with,
-and it should be used:
-* whenever the individual results from the sequence are not needed;
-* when executing super-massive transactions (north of 100,000 queries).
-
-#### Sequence Benchmark
-
-Below is a benchmark conducted on a home PC, so that you know what to expect
-in terms of the performance.
-
-A home PC was used for the test, with the following configuration:
-
-* CPU - i7-4770K @ 4GHz, Memory - 32GB;
-* Windows 8.1, with PostgreSQL 9.4 on a 256GB Samsung 840 Pro.
-
-The test was executing a single transaction with a sequence that contained 10 million inserts.
-[Bluebird] was used as the promise library of choice, with long-stack traces switched off.
-
-It took 15 minutes to execute such transaction, with CPU staying at 15% load, while
-the Node JS (0.12.5, 64-bit) process maintained stable at 70-75MB of overall memory usage. 
-
-This translates in nicely throttled inserts at 11,000 records a second. 
-
-The test executed `sequence` with parameter `empty` = `true`. And when executing the same test
-without parameter `empty` set, the test could barely pass 1m inserts, consuming way too much memory.
-
-**Conclusion**
-
-* The library is almost infinitely scalable when executing transactions with use of `sequence`
-* You should not execute a sequence larger than 100,000 queries without passing `empty = true` 
-
 ## Queries and Parameters
 
 Every connection context of the library shares the same query protocol, starting with generic method `query`,
 that's defined as shown below:
+
 ```javascript
 function query(query, values, qrm);
 ```
@@ -503,7 +171,7 @@ console.log(pgp.as.array([[1, 2], ['three', 'four']]));
 When a value/property inside array/object is of type `object` (except for `null` and `Date`), it is automatically
 serialized into JSON, the same as calling method `as.json()`, except the latter would convert anything to JSON.
 
-Raw-text values can be injected by using variable name appended with symbol `^`:
+Raw-text values can be injected by appending the variable name with symbol `^`:
 `$1^, $2^, etc...`, `$*varName^*`, where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
 
 Raw text is injected without any pre-processing, which means:
@@ -525,8 +193,8 @@ query("...WHERE id IN($1^)", pgp.as.csv([1,2,3,4]));
 
 ### Query Result Mask
 
-In order to eliminate the chances of unexpected query results and make code more robust, each request supports
-parameter `qrm` (Query Result Mask), via type `queryResult`:
+In order to eliminate the chances of unexpected query results and thus make the code more robust,
+method `query` uses parameter `qrm` (Query Result Mask):
 ```javascript
 ///////////////////////////////////////////////////////
 // Query Result Mask flags;
@@ -723,6 +391,342 @@ function createFilter(filter){
 }
 ```
 
+## Connections
+
+The library supports promise-chained queries on shared and detached connections.
+Choosing which one to use depends on the situation and personal preferences.
+
+### Detached Connections
+
+Queries in a detached promise chain maintain connection independently, they each acquire a connection from the pool,
+execute the query and then release the connection back to the pool.
+```javascript
+db.one("select * from users where id=$1", 123) // find the user from id;
+    .then(function(data){
+        // find 'login' records for the user found:
+        return db.query("select * from audit where event=$1 and userId=$2",
+            ["login", data.id]);
+    })
+    .then(function(data){
+        // display found audit records;
+        console.log(data);
+    }, function(reason){
+        console.log(reason); // display reason why the call failed;
+    })
+```
+In a situation where a single request is to be made against the database, a detached chain is the only one that makes sense.
+And even if you intend to execute multiple queries in a chain, keep in mind that even though each will use its own connection,
+such will be used from a connection pool, so effectively you end up with the same connection, without any performance penalty.
+
+### Shared Connections
+
+A promise chain with a shared connection always starts with `connect()`, which acquires a connection from the pool to be shared
+with all the queries down the promise chain. The connection must be released back to the pool when no longer needed.
+
+```javascript
+var sco; // shared connection object;
+db.connect()
+    .then(function(obj) {
+        sco = obj; // save the connection object;
+        // find active users created before today:
+        return sco.query("select * from users where active=$1 and created < $2",
+            [true, new Date()]);
+    })
+    .then(function(data) {
+        console.log(data); // display all the user details;
+    }, function(reason) {
+        console.log(reason); // display reason why the call failed;
+    })
+    .done(function() {
+        if(sco) {
+            sco.done(); // release the connection, if it was successful;
+        }
+    });
+```
+Shared-connection chaining is when you want absolute control over the connection, either because you want to execute lots of queries in one go,
+or because you like squeezing every bit of performance out of your code. Other than that, the author hasn't seen any performance difference
+from the detached-connection chaining. And besides, any long sequence of queries normally resides inside a transaction, which always
+uses shared-connection chaining automatically.
+
+## Transactions
+
+Transactions can be executed within both shared and detached promise chains in the same way, performing the following actions:
+
+1. Acquires a new connection (detached chains only);
+2. Executes `BEGIN` command;
+3. Invokes your callback function with the connection object;
+4. Executes `COMMIT`, if the callback resolves, or `ROLLBACK`, if the callback rejects;
+5. Releases the connection (detached chains only);
+6. Resolves with the callback result, if success; rejects with the reason, if failed.
+
+### Detached Transactions
+
+```javascript
+var promise = require('promise'); // or any other supported promise library;
+db.tx(function(){
+
+    // creating a sequence of transaction queries:
+    var q1 = this.none("update users set active=$1 where id=$2", [true, 123]);
+    var q2 = this.one("insert into audit(entity, id) values($1, $2) returning id",
+        ['users', 123]);
+
+    // returning a promise that determines a successful transaction:
+    return promise.all([q1, q2]); // all of the queries are to be resolved
+
+}).then(function(data){
+    console.log(data); // printing successful transaction output
+}, function(reason){
+    console.log(reason); // printing the reason why the transaction was rejected
+});
+```
+
+A detached transaction acquires a connection and exposes object `t` to let all containing queries execute on the same connection.
+
+### Shared-connection Transactions
+
+When executing a transaction within a shared connection chain, parameter `t` represents the same connection as `sco` from opening a shared connection,
+so either one can be used inside such a transaction interchangeably.
+
+```javascript
+var promise = require('promise'); // or any other supported promise library;
+var sco; // shared connection object;
+db.connect()
+    .then(function(obj){
+        sco = obj;
+        return sco.oneOrNone("select * from users where active=$1 and id=$1", [true, 123]);
+    })
+    .then(function(data){
+        return sco.tx(function(t){
+
+            // Since it is a transaction within a shared chain, it doesn't matter whether
+            // the two calls below use object `t` or `sco`, as they are exactly the same:
+            var q1 = t.none("update users set active=$1 where id=$2", [false, data.id]);
+            var q2 = sco.one("insert into audit(entity, id) values($1, $2) returning id",
+                ['users', 123]);
+
+            // returning a promise that determines a successful transaction:
+            return promise.all([q1, q2]); // all of the queries are to be resolved;
+        });
+    }, function(reason){
+        console.log(reason); // printing the reason why the transaction was rejected;
+    })
+    .done(function(){
+        if(sco){
+            sco.done(); // release the connection, if it was successful;
+        }
+    });
+```
+If you need to execute just one transaction, the detached transaction pattern is all you need.
+But even if you need to combine it with other queries in a detached chain, it will work the same.
+As stated earlier, choosing a shared chain over a detached one is mostly a matter of special requirements
+and/or personal preference.
+
+### Nested Transactions
+
+Similar to the shared-connection transactions, nested transactions automatically share the connection between all levels.
+This library sets no limitation as to the depth (nesting levels) of transactions supported.
+
+Example:
+
+```javascript
+db.tx(function () {
+    var queries = [
+        this.none("drop table users;"),
+        this.none("create table users(id serial not null, name text not null)")
+    ];
+    for (var i = 1; i <= 100; i++) {
+        queries.push(this.none("insert into users(name) values($1)", "name-" + i));
+    }
+    queries.push(
+        this.tx(function () {
+            return this.tx(function(){
+                return this.one("select count(*) from users");
+            });
+        }));
+    return promise.all(queries);
+})
+.then(function (data) {
+    console.log(data); // printing transaction result;
+}, function (reason) {
+    console.log(reason); // printing why the transaction failed;
+})
+```
+
+Things to note from the example above:
+* Sub-transactions do not declare a context parameter in their callback. It is not because
+they don't receive one, they all do, but they don't care in such situation because of the shared connection
+chain that will result in the same `t` object as for the main callback, so they just reuse it from the parent,
+for simplicity;
+* A nested transaction cannot be disconnected from its container, i.e. it must get into the container's promise chain,
+ or it will result in an attempt to execute against an unknown connection;
+* As expected, a failure on any level in a nested transaction will `ROLLBACK` and `reject` the entire chain.
+
+### Transactions with SAVEPOINT
+
+`SAVEPOINT` in PostgreSQL caters for advanced transaction scenarios where partial `ROLLBACK` can be executed,
+depending on the logic of the transaction.
+
+Unfortunately, this doesn't go along with the [Promises/A+] architecture that doesn't support partial `reject`.
+
+The only work-around via promises is to strip a transaction into individual commands and execute them as a promise
+chain within a shared connection. The example below shows how this can be done.
+
+```javascript
+var sco; // shared connection object;
+var txErr; // transaction error;
+var txData; // transaction data;
+db.connect()
+    .then(function (obj) {
+        sco = obj; // save the connection object;
+        return promise.all([
+            sco.none('begin'),
+            sco.none('update users set name=$1 where id=$2', ['changed1', 1]),
+            sco.none('savepoint first'), // creating savepoint;
+            sco.none('update users set name=$1 where id=$2', ['changed2', 2]),
+            sco.none('rollback to first') // reverting to the savepoint;
+        ])
+            .then(function (data) {
+                txData = data; // save the transaction output data;
+                return sco.none('commit'); // persist changes;
+            }, function (reason) {
+                txErr = reason; // save the transaction failure reason;
+                return sco.none('rollback'); // revert changes;
+            });
+    })
+    .then(function () {
+        if (txErr) {
+            console.log('Rollback Reason: ' + txErr);
+        } else {
+            console.log(txData); // successful transaction output;
+        }
+    }, function (reason) {
+        console.log(reason); // connection issue;
+    })
+    .done(function () {
+        if (sco) {
+            sco.done(); // release the connection, if it was successful;
+        }
+    });
+```
+
+The issue with stripping out a transaction like this and injecting `SAVEPOINT` - it gets much more
+complicated to control the result of individual commands within a transaction, you may need to check every
+result and change the following commands accordingly. This is why it makes much more sense to do such
+transactions inside SQL functions, and not in JavaScript.
+
+### Synchronous Transactions
+
+A regular transaction with a set of independent queries relies on generic method
+`promise.all([...])` to resolve all queries asynchronously.
+
+However, when it comes to executing a significant number of such queries during a bulk insert,
+such approach is no longer practical. For one thing, it implies that all requests have been
+created as promise objects, which isn't possible when dealing with a huge number if queries,
+due to memory limitations imposed by NodeJS. And for another, when one query fails, the rest
+will continue trying to execute, due to their promise nature, as being asynchronous. The latter
+will result in many errors generated by failed queries, which by no means breaks the transaction
+logic, just fills your error log with lots of query failures that are in fact of no consequence.
+
+This is why within each transaction we have method `sequence`, with alias `queue`, to be able to
+execute a strict sequence of queries inside your transaction, one by one, and if one fails -
+the rest won't try to execute.
+
+In the promise architecture this is achieved by using a promise factory.
+
+```javascript
+function factory(idx, t) {
+// must create and return a promise object dynamically,
+// based on the index of the sequence (parameter idx);
+    switch (idx) {
+        case 0:
+            return t.query("select 0");
+        case 1:
+            return t.query("select 1");
+        case 2:
+            return t.query("select 2");
+    }
+// returning nothing or null indicates the end of the sequence;
+// throwing an error will result in a reject;
+}
+
+db.tx(function (t) {
+    // same as calling t.queue(factory);
+    return t.sequence(factory);
+})
+    .then(function (data) {
+        console.log(data); // print result;
+    }, function (reason) {
+        console.log(reason); // print error;
+    });
+```
+
+A simpler example, using in-line implementation and `this` context:
+
+```javascript
+db.tx(function () {
+    return this.sequence(function (idx) {
+        switch (idx) {
+            case 0:
+                return this.query("select 0");
+            case 1:
+                return this.query("select 1");
+            case 2:
+                return this.query("select 2");
+        }
+    });
+})
+    .then(function (data) {
+        console.log(data); // print result;
+    }, function (reason) {
+        console.log(reason); // print error;
+    });
+```
+
+By default, method `sequence` resolves with an array of resolved results from each
+query created by the factory. However, if you have too many requests in your sequence,
+such array may quickly grow out of proportion.
+
+To prevent this from happening, method `sequence` has been extended in version 1.7.2
+to the following syntax:
+```javascript
+sequence(factory, empty);
+```
+Optional flag `empty` (default is `false`) can now be passed to indicate that the
+resolve sequence is not to be tracked, i.e. to remain empty, and the method is to
+resolve with just an integer - total number of queries that have been resolved.
+
+Parameter `empty` can have a significant impact on memory consumption, depending
+on how many requests are in the sequence and the size of data they resolve with,
+and it should be used:
+* whenever the individual results from the sequence are not needed;
+* when executing super-massive transactions (north of 100,000 queries).
+
+#### Sequence Benchmark
+
+Below is a benchmark conducted on a home PC, so that you know what to expect
+in terms of the performance.
+
+A home PC was used for the test, with the following configuration:
+
+* CPU - i7-4770K @ 4GHz, Memory - 32GB;
+* Windows 8.1, with PostgreSQL 9.4 on a 256GB Samsung 840 Pro.
+
+The test was executing a single transaction with a sequence that contained 10 million inserts.
+[Bluebird] was used as the promise library of choice, with long-stack traces switched off.
+
+It took 15 minutes to execute such transaction, with CPU staying at 15% load, while
+the Node JS (0.12.5, 64-bit) process maintained stable at 70-75MB of overall memory usage. 
+
+This translates in nicely throttled inserts at 11,000 records a second. 
+
+The test executed `sequence` with parameter `empty` = `true`. And when executing the same test
+without parameter `empty` set, the test could barely pass 1m inserts, consuming way too much memory.
+
+**Conclusion**
+
+* The library is almost infinitely scalable when executing transactions with use of `sequence`
+* You should not execute a sequence larger than 100,000 queries without passing `empty = true` 
+
 # Advanced
 
 ## Initialization Options
@@ -739,7 +743,7 @@ var options = {
     // error - error notification;
     // extend - protocol extension event;
 };
-var pgp = pgpLib(options);
+var pgp = require('pg-promise')(options);
 ```
 
 If you want to get the most out the query-related events, you should use [pg-monitor].
@@ -782,7 +786,7 @@ var promise = require('bluebird');
 var options = {
     promiseLib: promise
 };
-var pgp = pgpLib(options);
+var pgp = require('pg-promise')(options);
 ```
 
 And if you want to use the ES6/native `Promise`, set the parameter to the main function:
@@ -791,7 +795,7 @@ And if you want to use the ES6/native `Promise`, set the parameter to the main f
 var options = {
     promiseLib: Promise
 };
-var pgp = pgpLib(options);
+var pgp = require('pg-promise')(options);
 ```
 Please note that the library makes no assumption about the level of support for the native `Promise`
 by your Node JS environment, expecting only that the basic `resolve` and `reject` are working in
