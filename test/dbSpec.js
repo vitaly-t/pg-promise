@@ -1119,7 +1119,7 @@ describe("Synchronous Transactions", function () {
                 });
         });
         it("must reject with correct error", function () {
-            var errMsg = "Promise factory returned invalid result for index 0";
+            var errMsg = "Invalid promise returned by factory for index 0";
             expect(result).toBeTruthy();
             expect(result.length).toBe(3);
             expect(result[0]).toBe(errMsg);
