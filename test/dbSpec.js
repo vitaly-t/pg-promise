@@ -12,6 +12,17 @@ function nope() {
     // dummy/empty function;
 }
 
+///////////////////////////////////////////////////////
+// Query Result Mask flags;
+//
+// Any combination is supported, except for one|many.
+var queryResult = {
+    one: 1,  // single row;
+    many: 2,  // one or more rows;
+    none: 4,  // no rows;
+    any: 6   // many|none (default).
+};
+
 describe("Database Instantiation", function () {
     it("must throw an error when empty or no connection passed", function () {
         var err = "Connection details must be specified.";
@@ -92,7 +103,7 @@ describe("Connection", function () {
             db.connect()
                 .then(function (obj) {
                     sco = obj;
-                    return sco.raw("select * from users");
+                    return sco.result("select * from users");
                 }, function (reason) {
                     result = null;
                     return promise.reject(reason);
@@ -1059,7 +1070,7 @@ describe("queryRaw", function () {
 
     it("must resolve with PG result instance", function () {
         var result;
-        db.queryRaw("select * from users")
+        db.result("select * from users")
             .then(function (data) {
                 result = data;
             }, function () {
@@ -1085,7 +1096,8 @@ describe("Synchronous Transactions", function () {
                 .then(function () {
                 }, function (reason) {
                     result = reason;
-                }).finally(function () {
+                })
+                .finally(function () {
                     done();
                 });
         });

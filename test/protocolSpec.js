@@ -46,26 +46,12 @@ describe("Library instance", function () {
     });
 });
 
-describe("Query Result", function () {
-    it("must be an object", function () {
-        expect(typeof(queryResult)).toBe('object');
-    });
-    it("must have all properties set correctly", function () {
-        expect(queryResult.one).toBe(1);
-        expect(queryResult.many).toBe(2);
-        expect(queryResult.none).toBe(4);
-        expect(queryResult.any).toBe(6);
-    });
-});
-
 describe("Database Protocol", function () {
 
     it("must have all the root-level methods", function () {
         expect(typeof(db.connect)).toBe('function');
         expect(typeof(db.query)).toBe('function');
-        expect(typeof(db.raw)).toBe('function');
         expect(typeof(db.result)).toBe('function');
-        expect(typeof(db.queryRaw)).toBe('function');
         expect(typeof(db.tx)).toBe('function');
         expect(typeof(db.transact)).toBe('function');
         expect(typeof(db.one)).toBe('function');
@@ -78,7 +64,6 @@ describe("Database Protocol", function () {
         expect(typeof(db.proc)).toBe('function');
 
         // must not have transaction-level methods:
-        expect(db.sequence).toBeUndefined();
         expect(db.queue).toBeUndefined();
     });
 
@@ -101,9 +86,7 @@ describe("Database Protocol", function () {
             expect(protocol && typeof(protocol) === 'object').toBe(true);
             expect(protocol.connect).toBeUndefined();
             expect(typeof(protocol.query)).toBe('function');
-            expect(typeof(protocol.queryRaw)).toBe('function');
             expect(typeof(protocol.result)).toBe('function');
-            expect(typeof(protocol.raw)).toBe('function');
             expect(typeof(protocol.tx)).toBe('function');
             expect(typeof(protocol.transact)).toBe('function');
             expect(typeof(protocol.one)).toBe('function');
@@ -114,7 +97,6 @@ describe("Database Protocol", function () {
             expect(typeof(protocol.manyOrNone)).toBe('function');
             expect(typeof(protocol.func)).toBe('function');
             expect(typeof(protocol.proc)).toBe('function');
-            expect(typeof(protocol.sequence)).toBe('function');
             expect(typeof(protocol.queue)).toBe('function');
         });
     });
