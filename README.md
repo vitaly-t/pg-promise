@@ -1047,6 +1047,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 1.8.0 added support for Query Streaming via [node-pg-query-stream](https://github.com/brianc/node-pg-query-stream). Released: July 23, 2015.
 * Version 1.7.2 significant code refactoring and optimizations; added support for super-massive transactions. Released: June 27, 2015.
 * Version 1.6.0 major update for the test platform + adding coverage. Released: June 19, 2015.
 * Version 1.5.0 major changes in architecture and query formatting. Released: June 14, 2015.
