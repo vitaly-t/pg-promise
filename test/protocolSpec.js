@@ -74,6 +74,7 @@ describe("Database Protocol", function () {
         expect(typeof(db.none)).toBe('function');
         expect(typeof(db.oneOrNone)).toBe('function');
         expect(typeof(db.manyOrNone)).toBe('function');
+        expect(typeof(db.stream)).toBe('function');
         expect(typeof(db.func)).toBe('function');
         expect(typeof(db.proc)).toBe('function');
 
@@ -112,6 +113,7 @@ describe("Database Protocol", function () {
             expect(typeof(protocol.none)).toBe('function');
             expect(typeof(protocol.oneOrNone)).toBe('function');
             expect(typeof(protocol.manyOrNone)).toBe('function');
+            expect(typeof(protocol.stream)).toBe('function');
             expect(typeof(protocol.func)).toBe('function');
             expect(typeof(protocol.proc)).toBe('function');
             expect(typeof(protocol.sequence)).toBe('function');

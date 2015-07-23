@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "1.7.8",
+  "version": "1.8.0",
   "description": "PostgreSQL via promises",
   "main": "lib/index.js",
   "scripts": {
@@ -40,6 +40,8 @@
     "bluebird": "2.9",
     "jasmine-node": "1.14",
     "istanbul": "0.3",
-    "coveralls": "2.11"
+    "coveralls": "2.11",
+    "pg-query-stream": "0.7",
+    "JSONStream": "1.x"
   }
 }
