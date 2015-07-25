@@ -31,7 +31,7 @@ describe("Method stream", function () {
         it("must throw an error", function () {
             expect(result.length).toBe(4);
             for (var i = 0; i < result.length; i++) {
-                expect(result[i]).toBe("Invalid stream object passed.");
+                expect(result[i]).toBe("Invalid or missing stream object.");
             }
         });
     });
@@ -56,7 +56,7 @@ describe("Method stream", function () {
         it("must throw an error", function () {
             expect(result.length).toBe(2);
             for (var i = 0; i < result.length; i++) {
-                expect(result[i]).toBe("Invalid stream state.");
+                expect(result[i]).toBe("Invalid initial stream state.");
             }
         });
         describe("with invalid initialization callback", function () {
@@ -80,7 +80,7 @@ describe("Method stream", function () {
             it("must throw an error", function () {
                 expect(result.length).toBe(4);
                 for (var i = 0; i < result.length; i++) {
-                    expect(result[i]).toBe("Initialization function required.");
+                    expect(result[i]).toBe("Invalid or missing initialization callback for the stream.");
                 }
             });
         });
