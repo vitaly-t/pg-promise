@@ -2,6 +2,8 @@
 // Initialization scripts for the test database;
 ////////////////////////////////////////////////
 
+'use strict';
+
 var dbHeader = require('./header');
 var promise = dbHeader.promise;
 var header = dbHeader({
@@ -42,9 +44,9 @@ var db = header.db;
             this.none("insert into users(login, active) values($1,$2)", ['user-4', false]),
 
             // insert records into 'person';
-            this.none("insert into person(name, dob) values($1,$2::date)", ['David', new Date(1995, 08, 7)]),
-            this.none("insert into person(name, dob) values($1,$2::date)", ['John', new Date(1980, 03, 20)]),
-            this.none("insert into person(name, dob) values($1,$2::date)", ['Mark', new Date(1973, 05, 12)]),
+            this.none("insert into person(name, dob) values($1,$2::date)", ['David', new Date(1995, 8, 7)]),
+            this.none("insert into person(name, dob) values($1,$2::date)", ['John', new Date(1980, 3, 20)]),
+            this.none("insert into person(name, dob) values($1,$2::date)", ['Mark', new Date(1973, 5, 12)]),
             this.none("insert into person(name, dob) values($1,$2::date)", ['Peter', new Date(1992, 11, 3)]),
 
             // adding functions;
