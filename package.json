@@ -37,10 +37,10 @@
     "promise": "7.x"
   },
   "devDependencies": {
-    "bluebird": "2.9",
-    "jasmine-node": "1.14",
+    "bluebird": "2.x",
+    "jasmine-node": "1.x",
     "istanbul": "0.3",
-    "coveralls": "2.11",
+    "coveralls": "2.x",
     "pg-query-stream": "0.7",
     "JSONStream": "1.x"
   }
