@@ -55,9 +55,9 @@ var db = header.db;
         ]);
     })
         .then(function () {
-            console.log("\r\n*** SUCCESS ***");
+            console.log("*** SUCCESS ***");
         }, function (reason) {
-            console.log("\r\n*** FAILED: " + reason);
+            console.log("FAILED:", reason);
         })
         .done(function () {
             pgp.end();
