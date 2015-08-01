@@ -1312,6 +1312,70 @@ describe("Querying a function", function () {
     });
 });
 
+describe("Prepared Statement", function () {
+
+    describe("valid, without parameters", function () {
+        var result;
+        beforeEach(function (done) {
+            db.many({
+                name: "get all users",
+                text: "select * from users"
+            })
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must return all users", function () {
+            expect(result instanceof Array).toBe(true);
+            expect(result.length > 0).toBe(true);
+        });
+    });
+
+    describe("valid, with parameters", function () {
+        var result;
+        beforeEach(function (done) {
+            db.one({
+                name: "find one user",
+                text: "select * from users where id=$1",
+                values: [1]
+            })
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must return all users", function () {
+            expect(result && typeof(result) === 'object').toBeTruthy();
+        });
+    });
+
+    describe("with invalid query", function () {
+        var result;
+        beforeEach(function (done) {
+            db.many({
+                name: "break it",
+                text: "select * from somewhere"
+            })
+                .then(nope, function (reason) {
+                    result = reason;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must return all users", function () {
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe('relation "somewhere" does not exist');
+        });
+    });
+
+});
+
 if (jasmine.Runner) {
     var _finishCallback = jasmine.Runner.prototype.finishCallback;
     jasmine.Runner.prototype.finishCallback = function () {
