@@ -1368,9 +1368,47 @@ describe("Prepared Statement", function () {
                     done();
                 });
         });
-        it("must return all users", function () {
+        it("must return an error", function () {
             expect(result instanceof Error).toBe(true);
             expect(result.message).toBe('relation "somewhere" does not exist');
+        });
+    });
+
+    describe("with an empty 'name'", function () {
+        var result;
+        beforeEach(function (done) {
+            db.query({
+                name: "",
+                text: "non-empty"
+            })
+                .then(nope, function (reason) {
+                    result = reason;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must return an error", function () {
+            expect(result).toBe("Property 'name' in prepared statement must be a non-empty text string.");
+        });
+    });
+
+    describe("with an empty 'text'", function () {
+        var result;
+        beforeEach(function (done) {
+            db.query({
+                name: "non-empty",
+                text: null
+            })
+                .then(nope, function (reason) {
+                    result = reason;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must return an error", function () {
+            expect(result).toBe("Property 'text' in prepared statement must be a non-empty text string.");
         });
     });
 
