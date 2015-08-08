@@ -76,7 +76,7 @@ $ npm install pg-promise
 $ npm install
 ```
 * Make sure all tests can connect to your local test database, using the connection details in
-[test/db/header.js](https://github.com/vitaly-t/pg-promise/blob/master/test/db/header.js#L10).
+[test/db/header.js](https://github.com/vitaly-t/pg-promise/blob/master/test/db/header.js).
 Either set up your test database accordingly or change the connection details in that file.
 
 * Initialize the database with some test data:
@@ -139,19 +139,19 @@ To get started quickly, see our [Learn by Example](https://github.com/vitaly-t/p
 ## Queries and Parameters
 
 Every connection context of the library shares the same query protocol, starting with generic method `query`,
-that's defined as shown below:
+defined as shown below:
 
 ```javascript
 function query(query, values, qrm);
 ```
 * `query` (required) - a string with support for three types of formatting, depending on the `values` passed:
    - format `$1` (single variable), if `values` is of type `string`, `boolean`, `number`, `Date`, `function` or `null`;
-   - format `$1, $2, etc..`, if `values` is an array of values;
-   - format `$*propName*`, if `values` is an object (not null and not Date), where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`;
+   - format `$1, $2, etc..`, if `values` is an array;
+   - format `$*propName*`, if `values` is an object (not `null` and not `Date`), where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`;
 * `values` (optional) - value/array/object to replace the variables in the query;
 * `qrm` - (optional) *Query Result Mask*, as explained below. When not passed, it defaults to `queryResult.any`.
 
-When a value/property inside array/object is of type array, it is treated as a [PostgreSQL Array Type](http://www.postgresql.org/docs/9.4/static/arrays.html),
+When a value/property inside array/object is an array, it is treated as a [PostgreSQL Array Type](http://www.postgresql.org/docs/9.4/static/arrays.html),
 converted into the array constructor format of `array[]`, the same as calling method `as.array()`.
 
 Examples:
