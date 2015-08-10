@@ -21,6 +21,7 @@ pgpLib.suppressErrors = true; // suppress console output for error messages;
 
 function main(options) {
     var result = {
+        pgpLib: pgpLib,
         pgp: pgpLib(options),
         cn: cn
     };

@@ -5,6 +5,7 @@ var options = {
     promiseLib: promise
 };
 var dbHeader = header(options);
+var pgpLib = dbHeader.pgpLib;
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
@@ -17,10 +18,12 @@ describe("Library instance", function () {
     it("must have valid property 'pg'", function () {
         expect(typeof(pgp.pg)).toBe('object');
         expect(pgp.pg).toBe(PG); // the same library instance;
+        expect(pgpLib.pg === pgp.pg).toBe(true);
     });
 
     it("must have function 'end'", function () {
         expect(typeof(pgp.end)).toBe('function');
+        expect(pgpLib.end === pgp.end).toBe(true);
     });
 
     it("must have property 'version'", function () {
@@ -30,6 +33,7 @@ describe("Library instance", function () {
         expect(typeof(v.minor)).toBe('number');
         expect(typeof(v.patch)).toBe('number');
         expect(v.toString()).toBe(v.major + '.' + v.minor + '.' + v.patch);
+        expect(pgpLib.version === v).toBe(true);
     });
 
     it("must have valid property 'as'", function () {
@@ -43,6 +47,7 @@ describe("Library instance", function () {
         expect(typeof(pgp.as.number)).toBe('function');
         expect(typeof(pgp.as.format)).toBe('function');
         expect(typeof(pgp.as.func)).toBe('function');
+        expect(pgpLib.as === pgp.as).toBe(true);
     });
 });
 
