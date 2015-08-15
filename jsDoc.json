@@ -1,0 +1,10 @@
+{
+  "source": {
+    "include": [
+      "lib/index.js"
+    ]
+  },
+  "plugins": [
+    "plugins/markdown"
+  ]
+}
