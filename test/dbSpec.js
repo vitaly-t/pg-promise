@@ -1312,7 +1312,7 @@ describe("Querying a function", function () {
     });
 });
 
-describe("Prepared Statement", function () {
+describe("Prepared Statements", function () {
 
     describe("valid, without parameters", function () {
         var result;
@@ -1413,6 +1413,103 @@ describe("Prepared Statement", function () {
     });
 
 });
+
+describe("Task", function () {
+
+    describe("with invalid callback", function () {
+        var result;
+        beforeEach(function (done) {
+            db.task()
+                .then(nope, function (reason) {
+                    result = reason;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must reject with an error", function () {
+            expect(result).toBe("Callback function must be specified for the task.");
+        });
+    });
+
+    describe("with a callback that returns nothing", function () {
+        var result;
+        beforeEach(function (done) {
+            db.task(nope)
+                .then(nope, function (reason) {
+                    result = reason;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must reject with an error", function () {
+            expect(result).toBe("Task callback function didn't return a promise object.");
+        });
+    });
+
+    describe("with a callback that returns a value", function () {
+        var result;
+        beforeEach(function (done) {
+            db.task(function () {
+                return 123;
+            })
+                .then(nope, function (reason) {
+                    result = reason;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must reject with an error", function () {
+            expect(result).toBe("Task callback function didn't return a promise object.");
+        });
+    });
+
+    describe("with the callback throwing an error", function () {
+        var result;
+        beforeEach(function (done) {
+            db.task(function () {
+                throw new Error("test");
+            })
+                .then(nope, function (reason) {
+                    result = reason;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must reject with the error thrown", function () {
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe("test");
+        });
+    });
+
+    describe("with a simple promise result", function () {
+        var result, context, THIS;
+        beforeEach(function (done) {
+            db.task(function (t) {
+                THIS = this;
+                context = t;
+                return promise.resolve("Ok");
+            })
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must resolve with that result", function () {
+            expect(result).toBe("Ok");
+        });
+        it("must provide correct connection context", function () {
+            expect(context && typeof context === 'object').toBeTruthy();
+            expect(context === THIS).toBe(true);
+        });
+    });
+});
+
 
 if (jasmine.Runner) {
     var _finishCallback = jasmine.Runner.prototype.finishCallback;
