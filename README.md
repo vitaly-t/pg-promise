@@ -31,6 +31,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
   - [Connections](#connections)  
     - [Detached Connections](#detached-connections)
     - [Shared Connections](#shared-connections)
+    - [Tasks](#tasks)    
   - [Transactions](#transactions)
     - [Detached Transactions](#detached-transactions)
     - [Shared-connection Transactions](#shared-connection-transactions)
@@ -45,6 +46,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
     - [connect](#connect)
     - [query](#query)
     - [error](#error)
+    - [task](#task)    
     - [transact](#transact)
     - [extend](#extend)
   - [Library de-initialization](#library-de-initialization)
@@ -420,7 +422,7 @@ such will be used from a connection pool, so effectively you end up with the sam
 
 ### Shared Connections
 
-A promise chain with a shared connection always starts with `connect()`, which acquires a connection from the pool to be shared
+A promise chain with a shared connection starts with `connect()`, which acquires a connection from the pool to be shared
 with all the queries down the promise chain. The connection must be released back to the pool when no longer needed.
 
 ```javascript
@@ -448,6 +450,37 @@ or because you like squeezing every bit of performance out of your code. Other t
 from the detached-connection chaining. And besides, any long sequence of queries normally resides inside a transaction, which always
 uses shared-connection chaining automatically.
 
+**UPDATE:** With [Tasks](#tasks) added below, shared connections become even easier to use.
+
+### Tasks
+
+Version 1.9.0 introduced support for tasks, also replacing the engine for transactions, i.e.
+a transaction is now just a special case of a task.
+
+```javascript
+db.task(function (t) {
+    // this = t;
+    // execute a chain of queries and return a promise;
+})
+    .then(function (data) {
+        // success;
+    }, function (reason) {
+        // failed;
+    });
+```
+
+Tasks and transactions work in the same way, except a task doesn't execute any of the transaction commands - `BEGIN`/`COMMIT`/`ROLLBACK`.
+
+The purpose of tasks is simply to provide a shared connection context within the callback function to execute and return
+a promise chain, and then automatically release the connection.
+
+In other words, it is to simplify the use of shared connections, so instead of calling `connect` in the beginning
+and `done` in the end (if it was connected successfully), one can call `db.task` instead, execute all queries within
+the callback and return the result.
+
+As tasks and transactions share the same engine, they are considered equally important. Therefore, tasks have received
+their own [task event](#task) to be notified when a task is being executed. 
+ 
 ## Transactions
 
 Transactions can be executed within both shared and detached promise chains in the same way, performing the following actions:
@@ -739,6 +772,7 @@ var options = {
     // connect - database 'connect' notification;
     // disconnect - database 'disconnect' notification;
     // query - query execution notification;
+    // task - task notification;
     // transact - transaction notification;
     // error - error notification;
     // extend - protocol extension event;
@@ -938,6 +972,33 @@ The library will suppress any error thrown by the handler and write it into the 
 if `options.error` is set to a non-empty value other than a function.
 
 ---
+#### task
+
+Global notification of a task start / finish events.
+```javascript
+var options = {
+    task: function (e) {
+        console.log("Start Time: " + e.ctx.start);
+        if (e.ctx.finish) {
+            // this is a task `finish` event;
+            console.log("Finish Time: " + e.ctx.finish);
+            if (e.ctx.success) {
+                // e.ctx.result = the data resolved;
+            } else {
+                // e.ctx.result = the rejection reason;
+            }
+        } else {
+            // this is a task `start` event;
+        }
+    }
+};
+```
+
+For parameter `e` see documentation of the `query` event earlier.
+
+The library will suppress any error thrown by the handler and write it into the console.
+
+---
 #### transact
 
 Global notification of a transaction start / finish events.
@@ -976,7 +1037,8 @@ and properties best suited for your application.
 The extension thus becomes available across all access layers:
 
 * Within the root/default database protocol;
-* Inside transactions, including nested ones. 
+* Inside transactions, including nested ones;
+* Inside tasks, including nested ones.
 
 In the example below we extend the protocol with function `addImage` that will insert
 one binary image and resolve with the new record id:
@@ -1047,6 +1109,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 1.9.0 added support for [Tasks](#tasks) + initial [jsDoc](https://github.com/jsdoc3/jsdoc) support. Released: August 21, 2015.
 * Version 1.8.2 added support for [Prepared Statements](https://github.com/brianc/node-postgres/wiki/Prepared-Statements). Released: August 01, 2015.
 * Version 1.8.0 added support for Query Streaming via [node-pg-query-stream](https://github.com/brianc/node-pg-query-stream). Released: July 23, 2015.
 * Version 1.7.2 significant code refactoring and optimizations; added support for super-massive transactions. Released: June 27, 2015.
