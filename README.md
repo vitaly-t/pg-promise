@@ -474,7 +474,7 @@ Tasks and transactions work in the same way, except a task doesn't execute any o
 The purpose of tasks is simply to provide a shared connection context within the callback function to execute and return
 a promise chain, and then automatically release the connection.
 
-In other words, it is to simplify the use of shared connections, so instead of calling `connect` in the beginning
+In other words, it is to simplify the use of [shared connections](#shared-connections), so instead of calling `connect` in the beginning
 and `done` in the end (if it was connected successfully), one can call `db.task` instead, execute all queries within
 the callback and return the result.
 
@@ -896,10 +896,15 @@ Global notification of a query that's being executed.
 ```javascript
 var options = {
     query: function (e) {
-        console.log("Query: " + e.query);
+        console.log("Query:", e.query);
         if (e.ctx) {
-            // this query is executing inside a transaction,
-            // and ctx contains all the relevant details;
+            // this query is executing inside a task or transaction,
+            if (e.ctx.isTX) {
+                // this query is inside a transaction;
+            } else {
+                // this query is inside a task;
+            }
+
         }
     }
 };
@@ -909,30 +914,37 @@ Notification happens just before the query execution. And if the handler throws
 an error, the query execution will be rejected with that error.
 
 Parameter `e` is the event's context object that shares its format between events
-`query`, `error` and `transact`. It supports the following properties, all of which
+`query`, `error`, `task` and `transact`. It supports the following properties, all of which
 are optional:
 
 * `cn` - connection details, passed only with a connection-related `error` event.
 * `client` - object from the [PG] library that represents the connection;
 * `query` - input query string;
 * `params` - input query parameters;
-* `ctx` - transaction context object;
+* `ctx` - task/transaction context object;
 
-A transaction context object (`ctx`) supports the following properties:
-* `start` - start time of the transaction;
-* `finish` - optional; finish time of the transaction, if it has finished;
-* `tag` - optional; tag object/value passed into the transaction, if any;
-* `success` - optional; indicates success for a finished transaction;
-* `result` - optional; transaction result, if finished: data resolved by the transaction,
+A task/transaction context object (`ctx`) supports the following properties:
+* `isTX` - set when `ctx` is a transaction context, as opposed to just a task;
+* `start` - start time of the task/transaction;
+* `finish` - optional; finish time of the task/transaction, if it has finished;
+* `tag` - optional; tag object/value passed into the task/transaction, if any;
+* `success` - optional; indicates success for a finished task/transaction;
+* `result` - optional; task/transaction result, if finished: data resolved by the task/transaction,
  if `success` is `true`, otherwise it is set to the `reason` that was passed
- when rejecting the transaction.
+ when rejecting the task/transaction.
 
-A transaction can be tagged when it is called using the following syntax:
+A task/transaction can be tagged when it is called using the following syntax:
 ```javascript
+// for tasks:
+db.task(tag, cb);
+
+// for transactions:
 db.tx(tag, cb);
+// or
+db.transact(tag, cb);
 ```
 i.e. in front of the callback function you can inject a value or object that
-tags the transaction, so it can be used as a reference when handling events.
+tags the task/transaction, so it can be used as a reference when handling events.
 
 All properties of `ctx` marked as optional are not set, unless they are relevant
 to the event.
@@ -974,7 +986,7 @@ if `options.error` is set to a non-empty value other than a function.
 ---
 #### task
 
-Global notification of a task start / finish events.
+Global notification of a task start / finish events (introduced in v1.9.0).
 ```javascript
 var options = {
     task: function (e) {

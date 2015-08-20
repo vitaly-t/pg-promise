@@ -164,6 +164,7 @@ describe("Start/Finish transaction events", function () {
         expect(finish).toBe(1);
         expect(tag).toBe("myTransaction");
         expect(ctx.success).toBe(true);
+        expect(ctx.isTX).toBe(true);
     });
 });
 
