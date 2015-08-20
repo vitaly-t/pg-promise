@@ -107,6 +107,7 @@ describe("Database Protocol", function () {
         it("must have all the required methods", function () {
             expect(protocol && typeof(protocol) === 'object').toBe(true);
             expect(protocol.connect).toBeUndefined();
+            expect(typeof(db.task)).toBe('function');
             expect(typeof(protocol.query)).toBe('function');
             expect(typeof(protocol.queryRaw)).toBe('function');
             expect(typeof(protocol.result)).toBe('function');

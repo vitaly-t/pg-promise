@@ -1416,6 +1416,30 @@ describe("Prepared Statements", function () {
 
 describe("Task", function () {
 
+    describe("with detached connection", function () {
+        var error, tsk;
+        beforeEach(function (done) {
+            db.task(function () {
+                tsk = this;
+                return promise.resolve();
+            })
+                .then(function () {
+                    // try use the task connection context outside of the task callback;
+                    return tsk.query("select 'test'");
+                })
+                .catch(function (err) {
+                    error = err;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must throw an error on any query request", function () {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe("Unexpected call outside of task.");
+        });
+    });
+
     describe("with invalid callback", function () {
         var result;
         beforeEach(function (done) {
@@ -1508,6 +1532,38 @@ describe("Task", function () {
             expect(context === THIS).toBe(true);
         });
     });
+
+    describe("with a query result", function () {
+        var result, event, counter = 0;
+        beforeEach(function (done) {
+            options.task = function (e) {
+                if (counter) {
+                    throw "ops!";
+                }
+                counter++;
+                event = e;
+            };
+            db.task(function () {
+                return this.one("select count(*) as counter from users");
+            })
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        afterEach(function () {
+            delete options.task;
+        });
+        it("must resolve with that result", function () {
+            expect(result && typeof result === 'object').toBeTruthy();
+            expect(result.counter > 0).toBe(true);
+            expect(counter).toBe(1); // successful notification 'Start', failed for 'Finish';
+            expect(event && event.ctx && typeof event.ctx === 'object').toBeTruthy();
+        });
+    });
+
 });
 
 
