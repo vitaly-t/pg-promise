@@ -1566,7 +1566,6 @@ describe("Task", function () {
 
 });
 
-
 if (jasmine.Runner) {
     var _finishCallback = jasmine.Runner.prototype.finishCallback;
     jasmine.Runner.prototype.finishCallback = function () {
