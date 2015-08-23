@@ -1543,9 +1543,12 @@ describe("Task", function () {
                 counter++;
                 event = e;
             };
-            db.task(function () {
+            function myTask() {
                 return this.one("select count(*) as counter from users");
-            })
+            }
+
+            myTask.tag = "testTag";
+            db.task(myTask)
                 .then(function (data) {
                     result = data;
                 })
@@ -1561,6 +1564,7 @@ describe("Task", function () {
             expect(result.counter > 0).toBe(true);
             expect(counter).toBe(1); // successful notification 'Start', failed for 'Finish';
             expect(event && event.ctx && typeof event.ctx === 'object').toBeTruthy();
+            expect(event.ctx.tag).toBe("testTag");
         });
     });
 

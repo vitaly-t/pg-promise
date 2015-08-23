@@ -152,6 +152,7 @@ describe("Database Protocol", function () {
             expect(typeof(protocol.raw)).toBe('function');
             expect(typeof(protocol.tx)).toBe('function');
             expect(typeof(protocol.transact)).toBe('function');
+            expect(typeof(protocol.task)).toBe('function');
             expect(typeof(protocol.one)).toBe('function');
             expect(typeof(protocol.many)).toBe('function');
             expect(typeof(protocol.any)).toBe('function');
@@ -165,7 +166,6 @@ describe("Database Protocol", function () {
             expect(typeof(protocol.queue)).toBe('function');
         });
     });
-
 
 });
 

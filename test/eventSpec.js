@@ -131,6 +131,43 @@ describe("Query event", function () {
 
 });
 
+describe("Start/Finish task events", function () {
+    var result, tag, ctx, start = 0, finish = 0;
+    beforeEach(function (done) {
+        options.task = function (e) {
+            if (e.ctx.finish) {
+                finish++;
+                ctx = e.ctx;
+            } else {
+                start++;
+                tag = e.ctx.tag;
+            }
+            throw "### Testing error output in 'task'. Please ignore. ###";
+        };
+        db.task("myTask", function () {
+            return promise.resolve('SUCCESS');
+        })
+            .then(function (data) {
+                result = data;
+            })
+            .finally(function () {
+                done();
+            });
+    });
+    afterEach(function () {
+        options.task = null;
+    });
+
+    it("must execute correctly", function () {
+        expect(result).toBe('SUCCESS');
+        expect(start).toBe(1);
+        expect(finish).toBe(1);
+        expect(tag).toBe("myTask");
+        expect(ctx.success).toBe(true);
+        expect(ctx.isTX).toBeUndefined();
+    });
+});
+
 describe("Start/Finish transaction events", function () {
     var result, tag, ctx, start = 0, finish = 0;
     beforeEach(function (done) {
