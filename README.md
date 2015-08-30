@@ -270,9 +270,10 @@ Examples:
 
 **your own type formatting**
 ```javascript
-function MyType() {
+function Money(m) {
+    this.amount = m;
     this.formatDBType = function () {
-        return "My custom-formatted value";
+        return this.amount.toFixed(2);
     }
 }
 ```
