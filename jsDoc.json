@@ -4,6 +4,11 @@
       "lib/index.js"
     ]
   },
+  "templates": {
+    "default": {
+      "layoutFile": "static/layout.html"
+    }
+  },
   "plugins": [
     "plugins/markdown"
   ]
