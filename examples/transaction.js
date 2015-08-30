@@ -22,6 +22,7 @@ var cn = {
 var db = pgp(cn); // database instance;
 
 db.tx(function (t) {
+    // t = this
     return promise.all([
         t.one("insert into users(name) values($1) returning id", "John"),
         t.one("insert into events(code) values($1) returning id", 123)
@@ -40,7 +41,7 @@ db.tx(function (t) {
 
         // But if you normally just kill the process, then it doesn't matter.
 
-        pgp.end(); // destroying the connection pool, to exit immediately.
+        pgp.end(); // closing the connection pool, to exit immediately.
 
         // See also:
         // https://github.com/vitaly-t/pg-promise#library-de-initialization
