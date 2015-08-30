@@ -290,8 +290,10 @@ Function `formatDBType` is allowed to return absolutely anything, including:
 
 Please note that the return result from `formatDBType` may affect even the meaning of
 formatting, i.e. the expected formatting syntax.
-If you pass `values` as a single parameter, which has function `formatDBType`, then if that function eventually
-returns an array, your `query` is expected to use the `$1, $2` type of formatting.
+
+If you pass `values` as a single parameter, which has function `formatDBType`,
+then if that function eventually returns an array, your `query` is expected to use the `$1, $2` type of formatting.
+
 And if `formatDBType` in that case returns a custom-type object that doesn't support custom formatting,
 then `query` will be expected to use the `$*propName*` type of formatting.
 
