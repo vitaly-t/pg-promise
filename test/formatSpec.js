@@ -727,3 +727,73 @@ describe("Named Parameters", function () {
     });
 
 });
+
+describe("Custom Format", function () {
+    function MyType(v) {
+        this.value = v;
+        this.formatDBType = function () {
+            return this.value.toFixed(4);
+        }
+    }
+
+    var test = new MyType(12.3);
+    describe("as array value", function () {
+        it("must covert correctly", function () {
+            expect(pgp.as.format("$1^", [test])).toBe("12.3000");
+        });
+    });
+    describe("as one value", function () {
+        it("must covert correctly", function () {
+            expect(pgp.as.format("$1^", test)).toBe("12.3000");
+        });
+    });
+    describe("for Date override", function () {
+        beforeEach(function () {
+            Date.prototype.formatDBType = function () {
+                function subLevel() {
+                    return this.getFullYear();
+                }
+
+                return subLevel;
+            }
+        });
+        var today = new Date();
+        it("must covert correctly", function () {
+            expect(pgp.as.format("$1", today)).toBe(today.getFullYear().toString());
+        });
+        afterEach(function () {
+            delete Date.prototype.formatDBType;
+        });
+    });
+    describe("for Array override", function () {
+        beforeEach(function () {
+            Array.prototype.formatDBType = function () {
+                return new MyType(88); // testing recursive conversion;
+            }
+        });
+        it("must covert correctly", function () {
+            expect(pgp.as.format("$1^", [1, 2, 3])).toBe("88.0000");
+        });
+        afterEach(function () {
+            delete Array.prototype.formatDBType;
+        });
+    });
+
+    describe("with custom object - formatter", function () {
+        var values = {
+            test: 123
+        };
+
+        function CustomFormatter() {
+            this.formatDBType = function () {
+                return values;
+            }
+        }
+
+        it("must redirect to named formatting", function () {
+            expect(pgp.as.format("${test}", new CustomFormatter)).toBe("123");
+        });
+    });
+
+});
+
