@@ -25,10 +25,10 @@ Complete access layer to [node-postgres] via [Promises/A+].
   - [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example)  
 * [Usage](#usage)
   - [Queries and Parameters](#queries-and-parameters)
-    - [Query Result Mask](#query-result-mask)
-    - [Custom Type Formatting](#custom-type-formatting)
+    - [Query Result Mask](#query-result-mask)    
   - [Named Parameters](#named-parameters)
   - [Conversion Helpers](#conversion-helpers)
+  - [Custom Type Formatting](#custom-type-formatting)  
   - [Connections](#connections)  
     - [Detached Connections](#detached-connections)
     - [Shared Connections](#shared-connections)
@@ -255,50 +255,6 @@ If `qrm` is not specified when calling generic `query` method, it is assumed to 
 > This is all about writing robust code, when the client specifies what kind of data it is ready to handle on the declarative level,
 leaving the burden of all extra checks to the library.
 
-### Custom Type Formatting
-
-Version 1.9.3 adds support for custom type formatting.
-
-When we pass `values` as a single parameter or inside an array, it is verified to be an object
-that supports function `formatDBType`, as either its own or inherited. And if the function exists,
-its return result overrides both the actual value and the formatting syntax for parameter `query`.
-
-This allows use of your own custom types as formatting parameters for the queries, as well as
-overriding formatting for standard object types, such as `Date` and `Array`.
-
-**Example: your own type formatting**
-```javascript
-function Money(m) {
-    this.amount = m;
-    this.formatDBType = function () {
-        return this.amount.toFixed(2); // use 2 decimal points;
-    }
-}
-```
-
-**Example: overriding standard types**
-```javascript
-Date.prototype.formatDBType = function () {
-    return this.getTime(); // format Date as a local timestamp;
-};
-```
-
-Function `formatDBType` is allowed to return absolutely anything, including:
-* instance of another object that supports its own custom formatting;
-* instance of another object that doesn't have its own custom formatting;
-* another function, with recursion of any depth;
-
-Please note that the return result from `formatDBType` may even affect the
-formatting syntax expected within parameter `query`, as explained below.
-
-If you pass in `values` as an object that has function `formatDBType`,
-and that function returns an array, then your `query` is expected to use 
-`$1, $2` as the formatting syntax.
-
-And if `formatDBType` in that case returns a custom-type object that doesn't support
-custom formatting, then `query` will be expected to use `$*propName*` as the formatting syntax.
-
-
 ## Named Parameters
 
 The library supports named parameters in query formatting, with the syntax of `$*propName*`,
@@ -437,6 +393,51 @@ function createFilter(filter){
     return cnd.join(" and "); // returning the complete filter string;
 }
 ```
+
+## Custom Type Formatting
+
+Version 1.9.3 added support for custom type formatting.
+
+When we pass `values` as a single parameter or inside an array, it is verified to be an object
+that supports function `formatDBType`, as either its own or inherited. And if the function exists,
+its return result overrides both the actual value and the formatting syntax for parameter `query`.
+
+This allows use of your own custom types as formatting parameters for the queries, as well as
+overriding formatting for standard object types, such as `Date` and `Array`.
+
+**Example: your own type formatting**
+```javascript
+function Money(m) {
+    this.amount = m;
+    this.formatDBType = function () {
+        // return a string with 2 decimal points;
+        return this.amount.toFixed(2);
+    }
+}
+```
+
+**Example: overriding standard types**
+```javascript
+Date.prototype.formatDBType = function () {
+    // format Date as a local timestamp;
+    return this.getTime();
+};
+```
+
+Function `formatDBType` is allowed to return absolutely anything, including:
+* instance of another object that supports its own custom formatting;
+* instance of another object that doesn't have its own custom formatting;
+* another function, with recursion of any depth;
+
+Please note that the return result from `formatDBType` may even affect the
+formatting syntax expected within parameter `query`, as explained below.
+
+If you pass in `values` as an object that has function `formatDBType`,
+and that function returns an array, then your `query` is expected to use 
+`$1, $2` as the formatting syntax.
+
+And if `formatDBType` in that case returns a custom-type object that doesn't support
+custom formatting, then `query` will be expected to use `$*propName*` as the formatting syntax.
 
 ## Connections
 
