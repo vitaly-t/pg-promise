@@ -731,6 +731,7 @@ describe("Named Parameters", function () {
 describe("Custom Format", function () {
     function MyType(v) {
         this.value = v;
+        this._rawDBType = true;
         this.formatDBType = function () {
             return this.value.toFixed(4);
         }
@@ -739,12 +740,12 @@ describe("Custom Format", function () {
     var test = new MyType(12.3);
     describe("as array value", function () {
         it("must covert correctly", function () {
-            expect(pgp.as.format("$1^", [test])).toBe("12.3000");
+            expect(pgp.as.format("$1", [test])).toBe("12.3000");
         });
     });
     describe("as one value", function () {
         it("must covert correctly", function () {
-            expect(pgp.as.format("$1^", test)).toBe("12.3000");
+            expect(pgp.as.format("$1", test)).toBe("12.3000");
         });
     });
     describe("for Date override", function () {

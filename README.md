@@ -29,6 +29,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
   - [Named Parameters](#named-parameters)
   - [Conversion Helpers](#conversion-helpers)
   - [Custom Type Formatting](#custom-type-formatting)  
+    - [Raw Custom Types](#raw-custom-types)
   - [Connections](#connections)  
     - [Detached Connections](#detached-connections)
     - [Shared Connections](#shared-connections)
@@ -439,6 +440,37 @@ and that function returns an array, then your `query` is expected to use
 And if `formatDBType` in that case returns a custom-type object that doesn't support
 custom formatting, then `query` will be expected to use `$*propName*` as the formatting syntax.
 
+### Raw Custom Types
+
+Added in 1.9.5, this features allows overriding `raw` flag for the values returned
+from custom types.
+
+Any custom type or standard type that implements function `formatDBType` can now also set
+property `_rawDBType = true` to force raw variable formatting on the returned value.
+
+This makes the custom type formatting ultimately flexible, as now there is no limitation
+as to how a custom type can format its value.
+
+For example, some special types, like UUID, do not have natural presentation in JavaScript,
+so they have to be converted into text strings when passed into the query formatting.
+For an array of UUID-s, for instance, you would have to explicitly cast the formatted value
+with `::uuid[]` appended at the end of the variable.
+  
+Now you can implement your own presentation for UUID that does not require extra casting:
+
+```javascript  
+function UUID(value) {
+    this.uuid = value;
+    this._rawDBType = true; // force raw format on output;
+    this.formatDBType = function () {
+        // alternatively, you can set flag
+        // _rawDBType during this call:
+        // this._rawDBType = true;
+        return this.uuid;
+    };
+}
+```
+  
 ## Connections
 
 The library supports promise-chained queries on shared and detached connections.
@@ -1167,6 +1199,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 1.9.5 added support for [Raw Custom Types](#raw-custom-types). Released: August 30, 2015.
 * Version 1.9.3 added support for [Custom Type Formatting](#custom-type-formatting). Released: August 30, 2015.
 * Version 1.9.0 added support for [Tasks](#tasks) + initial [jsDoc](https://github.com/jsdoc3/jsdoc) support. Released: August 21, 2015.
 * Version 1.8.2 added support for [Prepared Statements](https://github.com/brianc/node-postgres/wiki/Prepared-Statements). Released: August 01, 2015.
