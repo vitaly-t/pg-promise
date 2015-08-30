@@ -259,19 +259,19 @@ leaving the burden of all extra checks to the library.
 
 Version 1.9.3 adds support for custom type formatting.
 
-When we pass `values` as a single parameter or inside an array, it is verified to support
-function `formatDBType` as either its own or inherited. And if the function exists, it overrides
-both the actual value and the formatting meaning of `values`.
+When we pass `values` as a single parameter or inside an array, it is verified to be an object
+that supports function `formatDBType`, as either its own or inherited. And if the function exists,
+its return result overrides both the actual value and the formatting meaning of `values`.
 
 This allows use of your own custom types as formatting parameters for the queries, as well as
-overriding any of the standard types.
+overriding formatting for standard object types, such as `Date` and `Array`.
 
 **Example: your own type formatting**
 ```javascript
 function Money(m) {
     this.amount = m;
     this.formatDBType = function () {
-        return this.amount.toFixed(2);
+        return this.amount.toFixed(2); // use 2 decimal points;
     }
 }
 ```
@@ -288,14 +288,15 @@ Function `formatDBType` is allowed to return absolutely anything, including:
 * instance of another object that doesn't have its own custom formatting;
 * another function, with recursion of any depth;
 
-Please note that the return result from `formatDBType` may affect even the meaning of
-formatting, i.e. the expected formatting syntax.
+Please note that the return result from `formatDBType` may even affect the
+formatting syntax expected within parameter `query`, as explained below.
 
-If you pass `values` as a single parameter, which has function `formatDBType`,
-then if that function eventually returns an array, your `query` is expected to use the `$1, $2` type of formatting.
+If you pass in `values` as an object that has function `formatDBType`,
+and that function returns an array, then your `query` is expected to use 
+`$1, $2` as the formatting syntax.
 
-And if `formatDBType` in that case returns a custom-type object that doesn't support custom formatting,
-then `query` will be expected to use the `$*propName*` type of formatting.
+And if `formatDBType` in that case returns a custom-type object that doesn't support
+custom formatting, then `query` will be expected to use `$*propName*` as the formatting syntax.
 
 
 ## Named Parameters
