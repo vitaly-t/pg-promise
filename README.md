@@ -266,9 +266,7 @@ both the actual value and the formatting meaning of `values`.
 This allows use of your own custom types as formatting parameters for the queries, as well as
 overriding any of the standard types.
 
-Examples:
-
-**your own type formatting**
+**Example: your own type formatting**
 ```javascript
 function Money(m) {
     this.amount = m;
@@ -278,7 +276,7 @@ function Money(m) {
 }
 ```
 
-**overriding standard types**
+**Example: overriding standard types**
 ```javascript
 Date.prototype.formatDBType = function () {
     return this.getTime(); // format Date as a local timestamp;
