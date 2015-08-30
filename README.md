@@ -26,7 +26,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
 * [Usage](#usage)
   - [Queries and Parameters](#queries-and-parameters)
     - [Query Result Mask](#query-result-mask)
-    - [Custom Type Conversion](#custom-type-conversion)
+    - [Custom Type Formatting](#custom-type-formatting)
   - [Named Parameters](#named-parameters)
   - [Conversion Helpers](#conversion-helpers)
   - [Connections](#connections)  
@@ -255,9 +255,9 @@ If `qrm` is not specified when calling generic `query` method, it is assumed to 
 > This is all about writing robust code, when the client specifies what kind of data it is ready to handle on the declarative level,
 leaving the burden of all extra checks to the library.
 
-### Custom Type Conversion
+### Custom Type Formatting
 
-Version 1.9.3 adds support for custom type conversion.
+Version 1.9.3 adds support for custom type formatting.
 
 When we pass `values` as a single parameter or inside an array, it is verified to support
 function `formatDBType` as either its own or inherited. And if the function exists, it overrides
@@ -1165,7 +1165,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
-* Version 1.9.3 added support for [Custom Type Conversion](#custom-type-conversion). Released: August 30, 2015.
+* Version 1.9.3 added support for [Custom Type Formatting](#custom-type-formatting). Released: August 30, 2015.
 * Version 1.9.0 added support for [Tasks](#tasks) + initial [jsDoc](https://github.com/jsdoc3/jsdoc) support. Released: August 21, 2015.
 * Version 1.8.2 added support for [Prepared Statements](https://github.com/brianc/node-postgres/wiki/Prepared-Statements). Released: August 01, 2015.
 * Version 1.8.0 added support for Query Streaming via [node-pg-query-stream](https://github.com/brianc/node-pg-query-stream). Released: July 23, 2015.
