@@ -26,6 +26,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
 * [Usage](#usage)
   - [Queries and Parameters](#queries-and-parameters)
     - [Query Result Mask](#query-result-mask)
+    - [Custom Type Conversion](#custom-type-conversion)
   - [Named Parameters](#named-parameters)
   - [Conversion Helpers](#conversion-helpers)
   - [Connections](#connections)  
@@ -253,6 +254,48 @@ If `qrm` is not specified when calling generic `query` method, it is assumed to 
 
 > This is all about writing robust code, when the client specifies what kind of data it is ready to handle on the declarative level,
 leaving the burden of all extra checks to the library.
+
+### Custom Type Conversion
+
+Version 1.9.3 adds support for custom type conversion.
+
+When we pass `values` as a single parameter or inside an array, it is verified to support
+function `formatDBType` as either its own or inherited. And if the function exists, it overrides
+both the actual value and the formatting meaning of `values`.
+
+This allows use of your own custom types as formatting parameters for the queries, as well as
+overriding any of the standard types.
+
+Examples:
+
+**your own type formatting**
+```javascript
+function MyType() {
+    this.formatDBType = function () {
+        return "My custom-formatted value";
+    }
+}
+```
+
+**overriding standard types**
+```javascript
+Date.prototype.formatDBType = function () {
+    return this.getTime(); // format Date as a local timestamp;
+};
+```
+
+Function `formatDBType` is allowed to return absolutely anything, including:
+* instance of another object that supports its own custom formatting;
+* instance of another object that doesn't have its own custom formatting;
+* another function, with recursion of any depth;
+
+Please note that the return result from `formatDBType` may affect even the meaning of
+formatting, i.e. the expected formatting syntax.
+If you pass `values` as a single parameter, which has function `formatDBType`, then if that function eventually
+returns an array, your `query` is expected to use the `$1, $2` type of formatting.
+And if `formatDBType` in that case returns a custom-type object that doesn't support custom formatting,
+then `query` will be expected to use the `$*propName*` type of formatting.
+
 
 ## Named Parameters
 
@@ -1121,6 +1164,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 1.9.3 added support for [Custom Type Conversion](#custom-type-conversion). Released: August 30, 2015.
 * Version 1.9.0 added support for [Tasks](#tasks) + initial [jsDoc](https://github.com/jsdoc3/jsdoc) support. Released: August 21, 2015.
 * Version 1.8.2 added support for [Prepared Statements](https://github.com/brianc/node-postgres/wiki/Prepared-Statements). Released: August 01, 2015.
 * Version 1.8.0 added support for Query Streaming via [node-pg-query-stream](https://github.com/brianc/node-pg-query-stream). Released: July 23, 2015.
