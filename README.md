@@ -469,7 +469,10 @@ function UUID(value) {
         return this.uuid;
     };
 }
-```
+``` 
+  
+When you chain one custom-formatting type to return another one, please note that
+setting `_rawDBType = true` on any level sets the flag for the entire chain.
   
 ## Connections
 
