@@ -261,7 +261,7 @@ Version 1.9.3 adds support for custom type formatting.
 
 When we pass `values` as a single parameter or inside an array, it is verified to be an object
 that supports function `formatDBType`, as either its own or inherited. And if the function exists,
-its return result overrides both the actual value and the formatting meaning of `values`.
+its return result overrides both the actual value and the formatting syntax for parameter `query`.
 
 This allows use of your own custom types as formatting parameters for the queries, as well as
 overriding formatting for standard object types, such as `Date` and `Array`.
