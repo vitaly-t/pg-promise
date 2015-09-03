@@ -803,7 +803,7 @@ To prevent this from happening, method `sequence` has been extended to the follo
 sequence(factory, noTracking, cb);
 ```
 Optional flag `noTracking` (default is `false`) can be passed to indicate that the
-resolve sequence is not to be tracked, and the method is to resolve with just an integer -
+resolved results of the sequence are not to be tracked, and the method is to resolve with just an integer -
 total number of queries that have been resolved.
 
 Optional `cb` can be passed to receive callbacks with `(idx, data)` for every query
