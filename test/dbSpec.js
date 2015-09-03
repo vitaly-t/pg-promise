@@ -1148,6 +1148,33 @@ describe("Synchronous Transactions", function () {
         });
     });
 
+    describe("for a sequence callback that throws an error", function () {
+        var index, idxData, error;
+        beforeEach(function (done) {
+            db.task(function () {
+                return this.sequence(function () {
+                    return promise.resolve("finished");
+                }, true, function (idx, data) {
+                    index = idx;
+                    idxData = data;
+                    throw new Error("exit");
+                });
+            })
+                .then(nope, function (reason) {
+                    error = reason;
+                })
+                .done(function () {
+                    done();
+                });
+        });
+        it("must reject with the error thrown", function () {
+            expect(index).toBe(0);
+            expect(idxData).toBe("finished");
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe("exit");
+        });
+    });
+
     it("must reject with an error when the error is thrown by the factory", function () {
         var result;
         db.tx(function () {
