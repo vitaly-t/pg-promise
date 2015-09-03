@@ -733,7 +733,7 @@ transactions inside SQL functions, and not in JavaScript.
 A regular transaction with a set of independent queries relies on generic method
 `promise.all([...])` to resolve all queries asynchronously.
 
-However, when it comes to executing a significant number of such queries during a bulk insert,
+However, when it comes to executing a significant number of such queries during a bulk `INSERT` or `UPDATE`,
 such approach is no longer practical. For one thing, it implies that all requests have been
 created as promise objects, which isn't possible when dealing with a huge number if queries,
 due to memory limitations imposed by NodeJS. And for another, when one query fails, the rest
