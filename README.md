@@ -540,7 +540,7 @@ a transaction is now just a special case of a task.
 
 ```javascript
 db.task(function (t) {
-    // this = t;
+    // t = this;
     // execute a chain of queries and return a promise;
 })
     .then(function (data) {
@@ -577,8 +577,8 @@ Transactions can be executed within both shared and detached promise chains in t
 
 ```javascript
 var promise = require('promise'); // or any other supported promise library;
-db.tx(function(){
-
+db.tx(function (t) {
+    // t = this;
     // creating a sequence of transaction queries:
     var q1 = this.none("update users set active=$1 where id=$2", [true, 123]);
     var q2 = this.one("insert into audit(entity, id) values($1, $2) returning id",
@@ -587,9 +587,9 @@ db.tx(function(){
     // returning a promise that determines a successful transaction:
     return promise.all([q1, q2]); // all of the queries are to be resolved
 
-}).then(function(data){
+}).then(function (data) {
     console.log(data); // printing successful transaction output
-}, function(reason){
+}, function (reason) {
     console.log(reason); // printing the reason why the transaction was rejected
 });
 ```
@@ -605,13 +605,13 @@ so either one can be used inside such a transaction interchangeably.
 var promise = require('promise'); // or any other supported promise library;
 var sco; // shared connection object;
 db.connect()
-    .then(function(obj){
+    .then(function (obj) {
         sco = obj;
         return sco.oneOrNone("select * from users where active=$1 and id=$1", [true, 123]);
     })
-    .then(function(data){
-        return sco.tx(function(t){
-
+    .then(function (data) {
+        return sco.tx(function (t) {
+            // t = this;
             // Since it is a transaction within a shared chain, it doesn't matter whether
             // the two calls below use object `t` or `sco`, as they are exactly the same:
             var q1 = t.none("update users set active=$1 where id=$2", [false, data.id]);
@@ -621,11 +621,11 @@ db.connect()
             // returning a promise that determines a successful transaction:
             return promise.all([q1, q2]); // all of the queries are to be resolved;
         });
-    }, function(reason){
+    }, function (reason) {
         console.log(reason); // printing the reason why the transaction was rejected;
     })
-    .done(function(){
-        if(sco){
+    .done(function () {
+        if (sco) {
             sco.done(); // release the connection, if it was successful;
         }
     });
@@ -643,7 +643,8 @@ This library sets no limitation as to the depth (nesting levels) of transactions
 Example:
 
 ```javascript
-db.tx(function () {
+db.tx(function (t) {
+    // t = this;
     var queries = [
         this.none("drop table users;"),
         this.none("create table users(id serial not null, name text not null)")
@@ -653,17 +654,17 @@ db.tx(function () {
     }
     queries.push(
         this.tx(function () {
-            return this.tx(function(){
+            return this.tx(function () {
                 return this.one("select count(*) from users");
             });
         }));
     return promise.all(queries);
 })
-.then(function (data) {
-    console.log(data); // printing transaction result;
-}, function (reason) {
-    console.log(reason); // printing why the transaction failed;
-})
+    .then(function (data) {
+        console.log(data); // printing transaction result;
+    }, function (reason) {
+        console.log(reason); // printing why the transaction failed;
+    })
 ```
 
 Things to note from the example above:
@@ -748,8 +749,9 @@ In the promise architecture this is achieved by using a promise factory.
 
 ```javascript
 function factory(idx, t) {
-// must create and return a promise object dynamically,
-// based on the index of the sequence (parameter idx);
+    // t = this;
+    // must create and return a promise object dynamically,
+    // based on the index of the sequence (parameter idx);
     switch (idx) {
         case 0:
             return t.query("select 0");
@@ -758,11 +760,12 @@ function factory(idx, t) {
         case 2:
             return t.query("select 2");
     }
-// returning nothing or null indicates the end of the sequence;
-// throwing an error will result in a reject;
+    // returning nothing or null indicates the end of the sequence;
+    // throwing an error will result in a reject;
 }
 
 db.tx(function (t) {
+    // t = this;
     return t.sequence(factory);
 })
     .then(function (data) {
@@ -775,7 +778,8 @@ db.tx(function (t) {
 A simpler example, using in-line implementation and `this` context:
 
 ```javascript
-db.tx(function () {
+db.tx(function (t) {
+    // t = this;
     return this.sequence(function (idx) {
         switch (idx) {
             case 0:
