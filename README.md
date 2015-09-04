@@ -74,9 +74,10 @@ In addition, the library provides:
 ```
 $ npm install pg-promise
 ```
+
 ### Documentation
-In addition to the online documentation, the embedded code documentation is continuously improving.
-In order to generate it, you need to do the following:
+In addition to the online documentation, the embedded code documentation, based on [jsDoc](https://github.com/jsdoc3/jsdoc),
+is continuously improving. In order to generate it, you need to do the following:
  * `$ cd node_modules/pg-promise`
  * `$ npm install` - to install DEV dependencies of the library;
  * `$ npm run doc` - will generate the documentation;
