@@ -18,6 +18,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
 
 * [About](#about)
 * [Installing](#installing)
+  - [Documentation](#documentation)
 * [Testing](#testing)
 * [Getting started](#getting-started)
   - [Initializing](#initializing)
@@ -73,6 +74,13 @@ In addition, the library provides:
 ```
 $ npm install pg-promise
 ```
+### Documentation
+In addition to the online documentation, the embedded code documentation is continuously improving.
+In order to generate it, you need to do the following:
+ * `$ cd node_modules/pg-promise`
+ * `$ npm install` - to install DEV dependencies of the library;
+ * `$ npm run doc` - will generate the documentation;
+ * open `out/index.html` in a web browser.
 
 # Testing
 * Install the library's dependencies:
