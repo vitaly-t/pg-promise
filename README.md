@@ -20,7 +20,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
 * [Installing](#installing)
   - [Documentation](#documentation)
 * [Testing](#testing)
-* [Getting started](#getting-started)
+* [Getting Started](#getting-started)
   - [Initializing](#initializing)
   - [Connecting](#connecting)
   - [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example)  
@@ -106,7 +106,7 @@ $ npm run test-only
 NOTE: The default `npm test` is used for updating [coveralls.ie](http://coveralls.io/r/vitaly-t/pg-promise) with the coverage results,
 and it is not for local usage.
 
-# Getting started
+# Getting Started
 
 ## Initializing
 
