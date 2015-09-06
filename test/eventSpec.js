@@ -208,12 +208,12 @@ describe("Start/Finish transaction events", function () {
 describe("Error event", function () {
 
     describe("from transaction callbacks", function () {
-        var r, error, ctx, counter = 0;
+        var r, error, context, counter = 0;
         beforeEach(function (done) {
             options.error = function (err, e) {
                 counter++;
                 error = err;
-                ctx = e.ctx;
+                context = e;
                 throw new Error("### Testing error output in 'error'. Please ignore. ###");
             };
             db.tx("Error Transaction", function () {
@@ -235,17 +235,18 @@ describe("Error event", function () {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe('Test Error');
             expect(counter).toBe(1);
-            expect(ctx.tag).toBe("Error Transaction");
+            expect(context.ctx.tag).toBe("Error Transaction");
+            expect(context.client instanceof pgClient).toBe(true);
         });
     });
 
     describe("for null-queries", function () {
-        var txt, ctx, counter = 0;
+        var txt, context, counter = 0;
         beforeEach(function (done) {
             options.error = function (err, e) {
                 counter++;
                 txt = err;
-                ctx = e;
+                context = e;
             };
             db.query(null)
                 .then(nope, nope)
@@ -259,18 +260,19 @@ describe("Error event", function () {
         it("must fail correctly", function () {
             var msg = "Parameter 'query' must be a non-empty text string.";
             expect(txt).toBe(msg);
-            expect(ctx.params).toBeUndefined();
+            expect(context.params).toBeUndefined();
+            expect(context.client instanceof pgClient).toBe(true);
             expect(counter).toBe(1);
         });
     });
 
     describe("for incorrect QRM", function () {
-        var txt, ctx, counter = 0;
+        var txt, context, counter = 0;
         beforeEach(function (done) {
             options.error = function (err, e) {
                 counter++;
                 txt = err;
-                ctx = e;
+                context = e;
             };
             db.query("Bla-Bla", undefined, 42)
                 .then(nope, nope)
@@ -284,8 +286,9 @@ describe("Error event", function () {
         it("must reject with correct error", function () {
             var msg = "Invalid Query Result Mask specified.";
             expect(txt).toBe(msg);
-            expect(ctx.query).toBe("Bla-Bla");
-            expect(ctx.params).toBeUndefined();
+            expect(context.query).toBe("Bla-Bla");
+            expect(context.params).toBeUndefined();
+            expect(context.client instanceof pgClient).toBe(true);
             expect(counter).toBe(1);
         });
     });
@@ -311,6 +314,7 @@ describe("Error event", function () {
             expect(errTxt).toBe("Single row was expected from the query, but multiple returned.");
             expect(context.query).toBe("select * from users");
             expect(context.params).toBeUndefined();
+            expect(context.client instanceof pgClient).toBe(true);
             expect(counter).toBe(1);
         });
     });
@@ -336,6 +340,7 @@ describe("Error event", function () {
             expect(errTxt).toBe("No return data was expected from the query.");
             expect(context.query).toBe("select * from users");
             expect(context.params).toBeUndefined();
+            expect(context.client instanceof pgClient).toBe(true);
             expect(counter).toBe(1);
         });
     });
@@ -361,6 +366,7 @@ describe("Error event", function () {
             expect(errTxt).toBe("No data returned from the query.");
             expect(context.query).toBe("select * from users where id > 1000");
             expect(context.params).toBeUndefined();
+            expect(context.client instanceof pgClient).toBe(true);
             expect(counter).toBe(1);
         });
     });
@@ -387,6 +393,7 @@ describe("Error event", function () {
             expect(error.message).toBe("Property 'test' doesn't exist.");
             expect(context.query).toBe("${test}");
             expect(context.params).toBe(params);
+            expect(context.client instanceof pgClient).toBe(true);
             expect(counter).toBe(1);
         });
     });
