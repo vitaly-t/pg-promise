@@ -372,7 +372,7 @@ describe("Error event", function () {
     });
 
     describe("for loose requests", function () {
-        var errTxt, r, context, counter = 0, msg = "Loose request outside a connection that has expired.";
+        var errTxt, r, context, counter = 0, msg = "Loose request outside an expired connection.";
         beforeEach(function (done) {
             options.error = function (err, e) {
                 counter++;
