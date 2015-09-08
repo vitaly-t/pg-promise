@@ -371,6 +371,44 @@ describe("Error event", function () {
         });
     });
 
+    describe("for loose requests", function () {
+        var errTxt, r, context, counter = 0, msg = "Loose request outside a connection that has expired.";
+        beforeEach(function (done) {
+            options.error = function (err, e) {
+                counter++;
+                errTxt = err;
+                context = e;
+            };
+            var query, sco;
+            db.connect()
+                .then(function (obj) {
+                    sco = obj;
+                    query = sco.query("select * from users where($1)", false);
+                })
+                .finally(function () {
+                    sco.done();
+                    query
+                        .then(nope, function (reason) {
+                            r = reason;
+                        })
+                        .finally(function () {
+                            done();
+                        });
+                });
+        });
+        afterEach(function () {
+            options.error = null;
+        });
+        it("must notify with correct error", function () {
+            expect(errTxt).toBe(msg);
+            expect(r).toBe(msg);
+            expect(context.query).toBe("select * from users where(false)");
+            expect(context.client).toBeUndefined();
+            expect(context.params).toBeUndefined();
+            expect(counter).toBe(1);
+        });
+    });
+
     describe("for invalid parameters", function () {
         var error, context, counter = 0, params = {};
         beforeEach(function (done) {
