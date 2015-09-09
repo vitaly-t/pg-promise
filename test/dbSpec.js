@@ -1074,7 +1074,139 @@ describe("queryRaw", function () {
     });
 });
 
-describe("Synchronous Transactions", function () {
+describe("Batch", function () {
+    describe("with invalid values", function () {
+        var error;
+        beforeEach(function (done) {
+            db.task(function () {
+                return this.batch();
+            })
+                .then(nope, function (reason) {
+                    error = reason;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must throw an error", function () {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe("Array of values is required for batch execution.");
+        });
+    });
+    describe("with an empty array", function () {
+        var result;
+        beforeEach(function (done) {
+            db.task(function () {
+                return this.batch([]);
+            })
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must resolve with an empty array", function () {
+            expect(result).toEqual([]);
+        });
+    });
+
+    describe("with nested functions", function () {
+        var result, ctx, THIS, taskCtx;
+
+        function testA() {
+            return promise.resolve('A');
+        }
+
+        function testB() {
+            return testA;
+        }
+
+        function testC(t) {
+            THIS = this;
+            ctx = t;
+            return testA()
+                .then(function () {
+                    return promise.resolve('C');
+                });
+        }
+
+        beforeEach(function (done) {
+            db.task(function () {
+                taskCtx = this;
+                return this.batch([testA, testB, testC]);
+            })
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must resolve with an empty array", function () {
+            expect(result).toEqual([
+                {
+                    success: true,
+                    result: 'A'
+                },
+                {
+                    success: true,
+                    result: 'A'
+                },
+                {
+                    success: true,
+                    result: 'C'
+                }
+            ]);
+        });
+    });
+
+    describe("with mixed values", function () {
+        var result;
+        beforeEach(function (done) {
+            db.task(function () {
+                return this.batch([0, null, undefined, 'hello', promise.reject('ops'), {test: true}]);
+            })
+                .then(nope, function (reason) {
+                    result = reason;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must provide correct summary array on reject", function () {
+            expect(result).toEqual([
+                {
+                    success: true,
+                    result: 0
+                },
+                {
+                    success: true,
+                    result: null
+                },
+                {
+                    success: true,
+                    result: undefined
+                },
+                {
+                    success: true,
+                    result: 'hello'
+                },
+                {
+                    success: false,
+                    result: 'ops'
+                },
+                {
+                    success: true,
+                    result: {test: true}
+                }
+            ]);
+        });
+    });
+
+});
+
+describe("Sequence", function () {
 
     describe("for an invalid factory", function () {
         var result;
@@ -1148,7 +1280,7 @@ describe("Synchronous Transactions", function () {
         });
     });
 
-    describe("for a sequence callback that throws an error", function () {
+    describe("with a callback that throws an error", function () {
         var index, idxData, error;
         beforeEach(function (done) {
             db.task(function () {
@@ -1223,7 +1355,7 @@ describe("Synchronous Transactions", function () {
         });
     });
 
-    describe("for a sequence with parameter empty", function () {
+    describe("with noTracking=true", function () {
         var result;
         beforeEach(function (done) {
             db.tx(function () {

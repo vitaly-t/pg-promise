@@ -84,7 +84,8 @@ describe("Database Protocol", function () {
         expect(typeof(db.func)).toBe('function');
         expect(typeof(db.proc)).toBe('function');
 
-        // must not have transaction-level methods:
+        // must not have task-level methods:
+        expect(db.batch).toBeUndefined();
         expect(db.sequence).toBeUndefined();
         expect(db.queue).toBeUndefined();
     });
@@ -125,6 +126,7 @@ describe("Database Protocol", function () {
             expect(typeof(protocol.proc)).toBe('function');
             expect(typeof(protocol.sequence)).toBe('function');
             expect(typeof(protocol.queue)).toBe('function');
+            expect(typeof(protocol.batch)).toBe('function');
         });
     });
 
