@@ -1144,20 +1144,7 @@ describe("Batch", function () {
                 });
         });
         it("must resolve with an empty array", function () {
-            expect(result).toEqual([
-                {
-                    success: true,
-                    result: 'A'
-                },
-                {
-                    success: true,
-                    result: 'A'
-                },
-                {
-                    success: true,
-                    result: 'C'
-                }
-            ]);
+            expect(result).toEqual(['A', 'A', 'C']);
         });
     });
 
