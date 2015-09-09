@@ -1090,7 +1090,7 @@ describe("Batch", function () {
         });
         it("must throw an error", function () {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe("Array of values is required for batch execution.");
+            expect(error.message).toBe("Array of values is required to execute a batch.");
         });
     });
     describe("with an empty array", function () {
