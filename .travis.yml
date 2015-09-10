@@ -1,8 +1,8 @@
 language: node_js
 node_js:
-   - "0.12"
    - "0.10"
-   - "iojs"
+   - "0.12"
+   - "4"
 addons:
   postgresql: "9.4"
 before_script:
