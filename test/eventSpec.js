@@ -58,7 +58,7 @@ describe("Connect/Disconnect events", function () {
                 disconnect++;
             };
             db.tx(function (t) {
-                return promise.all([
+                return this.batch([
                     t.query("select 'one'"),
                     t.query("select 'two'"),
                     t.query("select 'three'")

@@ -64,7 +64,8 @@ describe("Library entry function", function () {
                 pgpLib({
                     promiseLib: "test"
                 });
-            }).toThrow(new Error("Invalid promise library override."));
+            })
+                .toThrow(new Error("Invalid promise library override."));
         });
     });
 
@@ -72,7 +73,8 @@ describe("Library entry function", function () {
         it("must throw the correct error", function () {
             expect(function () {
                 pgpLib(123);
-            }).toThrow(new Error("Invalid parameter 'options' specified."));
+            })
+                .toThrow(new Error("Invalid parameter 'options' specified."));
         });
     });
 

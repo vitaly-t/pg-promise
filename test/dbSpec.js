@@ -626,7 +626,7 @@ describe("A complex transaction with 10,000 inserts", function () {
                 queries.push(this.none('insert into test(name) values($1)', 'name-' + i));
             }
             queries.push(this.one('select count(*) from test'));
-            return promise.all(queries);
+            return this.batch(queries);
         })
             .then(function (data) {
                 result = data;
@@ -656,7 +656,7 @@ describe("When a nested transaction fails", function () {
         db.tx(function (t) {
             THIS = this;
             context = t;
-            return promise.all([
+            return this.batch([
                 this.none('update users set login=$1 where id=$2', ['TestName', 1]),
                 this.tx(function () {
                     throw new Error('Nested TX failure');
@@ -667,7 +667,7 @@ describe("When a nested transaction fails", function () {
                 result = data;
             }, function (reason) {
                 result = null;
-                error = reason;
+                error = reason[1].result;
             });
         waitsFor(function () {
             return result !== undefined;
@@ -717,12 +717,12 @@ describe("When a nested transaction fails", function () {
         db.tx(function (t1) {
             THIS1 = this;
             context1 = t1;
-            return promise.all([
+            return this.batch([
                 this.none('update users set login=$1', 'External'),
                 this.tx(function (t2) {
                     THIS2 = this;
                     context2 = t2;
-                    return promise.all([
+                    return this.batch([
                         this.none('update users set login=$1', 'Internal'),
                         this.one('select * from unknownTable') // emulating a bad query;
                     ]);
@@ -732,7 +732,7 @@ describe("When a nested transaction fails", function () {
             .then(function () {
                 result = null; // must not get here;
             }, function (reason) {
-                nestError = reason;
+                nestError = reason[1].result[1].result;
                 return promise.all([
                     db.one('select count(*) from users where login=$1', 'External'), // 0 is expected;
                     db.one('select count(*) from users where login=$1', 'Internal') // 0 is expected;
@@ -840,7 +840,7 @@ describe("A nested transaction (10 levels)", function () {
                             ctx.push(this.ctx);
                             return this.tx(5, function () {
                                 ctx.push(this.ctx);
-                                return promise.all([
+                                return this.batch([
                                     this.one("select 'Hello' as word"),
                                     this.tx(6, function () {
                                         ctx.push(this.ctx);
@@ -877,9 +877,7 @@ describe("A nested transaction (10 levels)", function () {
             expect(THIS && context && THIS === context).toBeTruthy();
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
-            expect(result.length).toBe(2);
-            expect(result[0].word).toBe('Hello');
-            expect(result[1].word).toBe('World!');
+            expect(result).toEqual([{word: 'Hello'}, {word: 'World!'}]);
             for (var i = 0; i < 10; i++) {
                 expect(ctx[i].tag).toBe(i);
             }
@@ -1152,7 +1150,7 @@ describe("Batch", function () {
         var result;
         beforeEach(function (done) {
             db.task(function () {
-                return this.batch([0, null, undefined, 'hello', promise.reject('ops'), {test: true}]);
+                return this.batch([0, null, promise.reject("one"), undefined, "hello", promise.reject("two"), {test: true}]);
             })
                 .then(nope, function (reason) {
                     result = reason;
@@ -1161,7 +1159,7 @@ describe("Batch", function () {
                     done();
                 });
         });
-        it("must provide correct summary array on reject", function () {
+        it("must provide correct output", function () {
             expect(result).toEqual([
                 {
                     success: true,
@@ -1172,20 +1170,51 @@ describe("Batch", function () {
                     result: null
                 },
                 {
+                    success: false,
+                    result: "one"
+                },
+                {
                     success: true,
                     result: undefined
                 },
                 {
                     success: true,
-                    result: 'hello'
+                    result: "hello"
                 },
                 {
                     success: false,
-                    result: 'ops'
+                    result: "two"
                 },
                 {
                     success: true,
                     result: {test: true}
+                }
+            ]);
+        });
+    });
+
+    describe("with all rejects", function () {
+        var result;
+        beforeEach(function (done) {
+            db.task(function () {
+                return this.batch([promise.reject("one"), promise.reject("two")]);
+            })
+                .then(nope, function (reason) {
+                    result = reason;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must provide correct output", function () {
+            expect(result).toEqual([
+                {
+                    success: false,
+                    result: "one"
+                },
+                {
+                    success: false,
+                    result: "two"
                 }
             ]);
         });
@@ -1199,7 +1228,7 @@ describe("Sequence", function () {
         var result;
         beforeEach(function (done) {
             db.tx(function () {
-                return this.queue();
+                return this.sequence();
             })
                 .then(function () {
                 }, function (reason) {
@@ -1209,7 +1238,8 @@ describe("Sequence", function () {
                 });
         });
         it("must reject with correct error", function () {
-            expect(result).toBe("Invalid factory function specified.");
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe("Invalid factory function specified.");
         });
     });
 
