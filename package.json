@@ -38,12 +38,14 @@
     "promise": "7.x"
   },
   "devDependencies": {
-    "jsdoc": "3.x",
+    "JSONStream": "1.x",
     "bluebird": "2.x",
-    "jasmine-node": "1.x",
-    "istanbul": "0.3",
     "coveralls": "2.x",
-    "pg-query-stream": "0.7",
-    "JSONStream": "1.x"
+    "grunt": "0.4.x",
+    "grunt-jsdoc-to-markdown": "1.x",
+    "istanbul": "0.3",
+    "jasmine-node": "1.x",
+    "jsdoc": "3.x",
+    "pg-query-stream": "0.7"
   }
 }
