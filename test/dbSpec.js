@@ -1146,6 +1146,27 @@ describe("Batch", function () {
         });
     });
 
+    describe("with a function throwing an error", function () {
+        var error;
+        beforeEach(function (done) {
+            db.task(function () {
+                return this.batch([function () {
+                    throw new Error("Ops!");
+                }]);
+            })
+                .then(nope, function (reason) {
+                    error = reason[0].result;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must reject with the error details", function () {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe("Ops!");
+        });
+    });
+
     describe("with mixed values", function () {
         var result;
         beforeEach(function (done) {
