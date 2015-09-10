@@ -594,7 +594,7 @@ db.tx(function (t) {
         ['users', 123]);
 
     // returning a promise that determines a successful transaction:
-    return promise.all([q1, q2]); // all of the queries are to be resolved
+    return this.batch([q1, q2]); // all of the queries are to be resolved;
 
 }).then(function (data) {
     console.log(data); // printing successful transaction output
@@ -628,7 +628,7 @@ db.connect()
                 ['users', 123]);
 
             // returning a promise that determines a successful transaction:
-            return promise.all([q1, q2]); // all of the queries are to be resolved;
+            return t.batch([q1, q2]); // all of the queries are to be resolved;
         });
     }, function (reason) {
         console.log(reason); // printing the reason why the transaction was rejected;
@@ -667,7 +667,7 @@ db.tx(function (t) {
                 return this.one("select count(*) from users");
             });
         }));
-    return promise.all(queries);
+    return this.batch(queries);
 })
     .then(function (data) {
         console.log(data); // printing transaction result;
@@ -740,8 +740,8 @@ transactions inside SQL functions, and not in JavaScript.
 
 ### Synchronous Transactions
 
-A regular transaction with a set of independent queries relies on generic method
-`promise.all([...])` to resolve all queries asynchronously.
+A regular transaction with a set of independent queries relies on method `batch([...])` to resolve
+all queries asynchronously.
 
 However, when it comes to executing a significant number of such queries during a bulk `INSERT` or `UPDATE`,
 such approach is no longer practical. For one thing, it implies that all requests have been
@@ -1215,6 +1215,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 1.10.0 added support for `batch` execution within tasks and transactions. Released: September 10, 2015.
 * Version 1.9.5 added support for [Raw Custom Types](#raw-custom-types). Released: August 30, 2015.
 * Version 1.9.3 added support for [Custom Type Formatting](#custom-type-formatting). Released: August 30, 2015.
 * Version 1.9.0 added support for [Tasks](#tasks) + initial [jsDoc](https://github.com/jsdoc3/jsdoc) support. Released: August 21, 2015.
