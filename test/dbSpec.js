@@ -1181,7 +1181,7 @@ describe("Batch", function () {
                 });
         });
         it("must provide correct output", function () {
-            expect(result).toEqual([
+            var data = [
                 {
                     success: true,
                     result: 0
@@ -1210,7 +1210,10 @@ describe("Batch", function () {
                     success: true,
                     result: {test: true}
                 }
-            ]);
+            ];
+            expect(JSON.stringify(result)).toEqual(JSON.stringify(data));
+            expect(result.getErrors instanceof Function).toBe(true);
+            expect(result.getErrors()).toEqual(["one", "two"]);
         });
     });
 
@@ -1228,7 +1231,7 @@ describe("Batch", function () {
                 });
         });
         it("must provide correct output", function () {
-            expect(result).toEqual([
+            var data = [
                 {
                     success: false,
                     result: "one"
@@ -1237,7 +1240,10 @@ describe("Batch", function () {
                     success: false,
                     result: "two"
                 }
-            ]);
+            ];
+            expect(JSON.stringify(result)).toEqual(JSON.stringify(data));
+            expect(result.getErrors instanceof Function).toBe(true);
+            expect(result.getErrors()).toEqual(["one", "two"]);
         });
     });
 

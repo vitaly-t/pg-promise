@@ -100,7 +100,7 @@ This method is a fusion of such logic as `promise.all` and `promise.settle`,hig
 
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
 **Summary**: Attempts to resolve every value in the input array.  
-**Returns**: <code>promise</code> - Result for the entire batch, which resolves whenevery promise in the input array has been resolved, and rejects when oneor more promise objects in the array rejected:- resolves with an array of individual resolved results;- rejects with an array of objects `{success, result}`:  - `success`: `true/false`, indicates whether the corresponding value    in the input array was resolved.  - `result`: resolved data, if `success=true`, or else the rejection reason.In both cases the output array is always the same size as the input one,this way providing index mapping between input and output values.  
+**Returns**: <code>promise</code> - Result for the entire batch, which resolves whenevery promise in the input array has been resolved, and rejects when oneor more promise objects in the array rejected:- resolves with an array of individual resolved results;- rejects with an array of objects `{success, result}`:  - `success`: `true/false`, indicates whether the corresponding value    in the input array was resolved.  - `result`: resolved data, if `success=true`, or else the rejection reason.  The array comes extended with function `getErrors` to return the list  of just error results (rejection reasons).In both cases the output array is always the same size as the input one,this way providing index mapping between input and output values.  
 <table>
   <thead>
     <tr>
@@ -109,7 +109,7 @@ This method is a fusion of such logic as `promise.all` and `promise.settle`,hig
   </thead>
   <tbody>
 <tr>
-    <td>values</td><td><code>array</code></td><td><p>array of values of the following types:</p>
+    <td>values</td><td><code>Array</code></td><td><p>array of values of the following types:</p>
 <ul>
 <li>a simple value or object, to resolve with by default;</li>
 <li>a promise object to be either resolved or rejected;</li>
