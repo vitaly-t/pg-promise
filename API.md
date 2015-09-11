@@ -296,11 +296,13 @@ The method implements the following steps:- acquires a connection from the pool
 Library version.
 
 **Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
+**Read only**: true  
 <a name="module_pg-promise.as"></a>
 ### pg-promise.as
 Namespace for the type conversion helpers.
 
 **Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
+**Read only**: true  
 <a name="module_pg-promise.pg"></a>
 ### pg-promise.pg
 Instance of the PG library used.
