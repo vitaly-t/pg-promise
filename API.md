@@ -47,8 +47,8 @@ Complete access layer to node-postgres via Promises/A+
 <ul>
 <li><code>pgFormatting</code> - redirects query formatting to PG;</li>
 <li><code>promiseLib</code> - overrides default promise library;</li>
-<li><code>connect</code> - database &#39;connect&#39; notification;</li>
-<li><code>disconnect</code> - database &#39;disconnect&#39; notification;</li>
+<li><code>connect</code> - database <code>connect</code> notification;</li>
+<li><code>disconnect</code> - database <code>disconnect</code> notification;</li>
 <li><code>query</code> - query execution notification;</li>
 <li><code>task</code> - task event notification;</li>
 <li><code>transact</code> - transaction event notification;</li>
