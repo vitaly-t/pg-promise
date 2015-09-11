@@ -3,13 +3,11 @@ module.exports = function (grunt) {
     grunt.initConfig({
         jsdoc2md: {
             oneOutputFile: {
-                src: "lib/index.js",
-                dest: "API.md"
-            },
-            withOptions: {
                 options: {
                     "no-gfm": true
-                }
+                },
+                src: "lib/index.js",
+                dest: "API.md"
             }
         }
     });
