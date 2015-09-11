@@ -85,7 +85,8 @@ In order to generate it, you need to do the following:
  * `$ npm run doc` - will generate the documentation;
  * open `out/index.html` in a web browser.
 
-Alternatively, you can use its converted version of the online [API].  
+Alternatively, you can use its converted version of the [API], which doesn't look as good though,
+and is a work in progress.
 
 # Testing
 * Install the library's dependencies:
