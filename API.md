@@ -393,7 +393,7 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 <a name="module_pg-promise.Database+func"></a>
 #### database.func(funcName, [values], [qrm]) ⇒ <code>promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Executes a query against a database function by its name:&#x60;select * from funcName(values)&#x60;  
+**Summary**: Executes a query against a database function by its name:&lt;code&gt;select * from funcName(values)&lt;/code&gt;  
 **Returns**: <code>promise</code> - Result of the query call, according to `qrm`.  
 **See**: [query](#module_pg-promise.Database+query)  
 <table>
@@ -418,7 +418,7 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 <a name="module_pg-promise.Database+proc"></a>
 #### database.proc(procName, [values]) ⇒ <code>promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Executes a query against a stored procedure via its name:&#x60;select * from procName(values)&#x60;  
+**Summary**: Executes a query against a stored procedure via its name:&lt;code&gt;select * from procName(values)&lt;/code&gt;  
 **Returns**: <code>promise</code> - The same result as method [oneOrNone](#module_pg-promise.Database+oneOrNone).  
 **See**
 
