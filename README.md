@@ -1165,8 +1165,8 @@ var options = {
 };
 ```
 
-IMPORTANT: Do not override any of the predefined functions or properties in the protocol,
-as it may break your access object.
+NOTE: All pre-defined methods and properties are read-only, so you will get an error,
+if you try overriding them.
 
 It is best to extend the protocol by adding whole entity repositories to it as shown
 in the following example.
