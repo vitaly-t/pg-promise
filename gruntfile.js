@@ -4,7 +4,12 @@ module.exports = function (grunt) {
         jsdoc2md: {
             oneOutputFile: {
                 src: "lib/index.js",
-                dest: "api.md"
+                dest: "API.md"
+            },
+            withOptions: {
+                options: {
+                    "no-gfm": true
+                }
             }
         }
     });
