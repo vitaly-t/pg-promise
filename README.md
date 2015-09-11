@@ -76,12 +76,16 @@ $ npm install pg-promise
 ```
 
 ### Documentation
-In addition to the online documentation, the embedded code documentation, based on [jsDoc](https://github.com/jsdoc3/jsdoc),
-is continuously improving. In order to generate it, you need to do the following:
+In addition to the online documentation, there is in-line API documentation,
+based on [jsDoc](https://github.com/jsdoc3/jsdoc).
+
+In order to generate it, you need to do the following:
  * `$ cd node_modules/pg-promise`
  * `$ npm install` - to install DEV dependencies of the library;
  * `$ npm run doc` - will generate the documentation;
  * open `out/index.html` in a web browser.
+
+Alternatively, you can use its converted version of the online [API].  
 
 # Testing
 * Install the library's dependencies:
@@ -1268,6 +1272,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[API]:https://github.com/vitaly-t/pg-promise/blob/master/API.md
 [pg-monitor]:https://github.com/vitaly-t/pg-monitor
 [pg-promise]:https://github.com/vitaly-t/pg-promise
 [PG]:https://github.com/brianc/node-postgres
