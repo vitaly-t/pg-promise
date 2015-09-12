@@ -1,7 +1,8 @@
 {
   "source": {
     "include": [
-      "lib/index.js"
+      "lib/index.js",
+      "lib/formatting.js"
     ]
   },
   "templates": {

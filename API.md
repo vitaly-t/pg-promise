@@ -45,45 +45,47 @@ Complete access layer to node-postgres via Promises/A+
 
 
 * [pg-promise](#module_pg-promise)
-  * [.Task](#module_pg-promise.Task)
-    * [.batch(values)](#module_pg-promise.Task+batch) ⇒ <code>promise</code>
-    * [.sequence(factory, [noTracking], [cb])](#module_pg-promise.Task+sequence) ⇒ <code>promise</code>
-  * [.Database](#module_pg-promise.Database)
-    * [new Database(cn)](#new_module_pg-promise.Database_new)
-    * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>promise</code>
-    * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>promise</code>
-    * [.none(query, [values])](#module_pg-promise.Database+none) ⇒ <code>promise</code>
-    * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>promise</code>
-    * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>promise</code>
-    * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>promise</code>
-    * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>promise</code>
-    * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>promise</code>
-    * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>promise</code>
-    * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>promise</code>
-    * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>promise</code>
-    * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>promise</code>
-    * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>promise</code>
-    * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>promise</code>
-  * [.version](#module_pg-promise.version)
-  * [.as](#module_pg-promise.as)
-  * [.pg](#module_pg-promise.pg)
-  * [.end()](#module_pg-promise.end)
-  * ["connect"](#module_pg-promise.event_connect)
-  * ["disconnect"](#module_pg-promise.event_disconnect)
-  * ["query"](#module_pg-promise.event_query)
-  * ["task"](#module_pg-promise.event_task)
-  * ["transact"](#module_pg-promise.event_transact)
-  * ["error"](#module_pg-promise.event_error)
-  * ["extend"](#module_pg-promise.event_extend)
+  * _static_
+    * [.Task](#module_pg-promise.Task)
+      * [.batch(values)](#module_pg-promise.Task+batch) ⇒ <code>promise</code>
+      * [.sequence(factory, [noTracking], [cb])](#module_pg-promise.Task+sequence) ⇒ <code>promise</code>
+    * [.Database](#module_pg-promise.Database)
+      * [new Database(cn)](#new_module_pg-promise.Database_new)
+      * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>promise</code>
+      * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>promise</code>
+      * [.none(query, [values])](#module_pg-promise.Database+none) ⇒ <code>promise</code>
+      * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>promise</code>
+      * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>promise</code>
+      * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>promise</code>
+      * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>promise</code>
+      * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>promise</code>
+      * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>promise</code>
+      * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>promise</code>
+      * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>promise</code>
+      * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>promise</code>
+      * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>promise</code>
+      * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>promise</code>
+    * [.version](#module_pg-promise.version)
+    * [.pg](#module_pg-promise.pg)
+    * [.end()](#module_pg-promise.end)
+    * ["connect"](#module_pg-promise.event_connect)
+    * ["disconnect"](#module_pg-promise.event_disconnect)
+    * ["query"](#module_pg-promise.event_query)
+    * ["task"](#module_pg-promise.event_task)
+    * ["transact"](#module_pg-promise.event_transact)
+    * ["error"](#module_pg-promise.event_error)
+    * ["extend"](#module_pg-promise.event_extend)
+  * _inner_
+    * [~as](#module_pg-promise..as) : <code>module:formatting.formatAs</code>
 
 <a name="module_pg-promise.Task"></a>
 ### pg-promise.Task
 **Kind**: static class of <code>[pg-promise](#module_pg-promise)</code>  
 **Summary**: Internal Task implementation.  
 
-* [.Task](#module_pg-promise.Task)
-  * [.batch(values)](#module_pg-promise.Task+batch) ⇒ <code>promise</code>
-  * [.sequence(factory, [noTracking], [cb])](#module_pg-promise.Task+sequence) ⇒ <code>promise</code>
+  * [.Task](#module_pg-promise.Task)
+    * [.batch(values)](#module_pg-promise.Task+batch) ⇒ <code>promise</code>
+    * [.sequence(factory, [noTracking], [cb])](#module_pg-promise.Task+sequence) ⇒ <code>promise</code>
 
 <a name="module_pg-promise.Task+batch"></a>
 #### task.batch(values) ⇒ <code>promise</code>
@@ -146,22 +148,22 @@ individual query requests, to avoid memory overuse during super-massive transact
 ### pg-promise.Database
 **Kind**: static class of <code>[pg-promise](#module_pg-promise)</code>  
 
-* [.Database](#module_pg-promise.Database)
-  * [new Database(cn)](#new_module_pg-promise.Database_new)
-  * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>promise</code>
-  * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>promise</code>
-  * [.none(query, [values])](#module_pg-promise.Database+none) ⇒ <code>promise</code>
-  * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>promise</code>
-  * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>promise</code>
-  * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>promise</code>
-  * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>promise</code>
-  * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>promise</code>
-  * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>promise</code>
-  * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>promise</code>
-  * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>promise</code>
-  * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>promise</code>
-  * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>promise</code>
-  * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>promise</code>
+  * [.Database](#module_pg-promise.Database)
+    * [new Database(cn)](#new_module_pg-promise.Database_new)
+    * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>promise</code>
+    * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>promise</code>
+    * [.none(query, [values])](#module_pg-promise.Database+none) ⇒ <code>promise</code>
+    * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>promise</code>
+    * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>promise</code>
+    * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>promise</code>
+    * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>promise</code>
+    * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>promise</code>
+    * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>promise</code>
+    * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>promise</code>
+    * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>promise</code>
+    * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>promise</code>
+    * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>promise</code>
+    * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>promise</code>
 
 <a name="new_module_pg-promise.Database_new"></a>
 #### new Database(cn)
@@ -486,12 +488,6 @@ Library version.
 
 **Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
 **Read only**: true  
-<a name="module_pg-promise.as"></a>
-### pg-promise.as
-Namespace for the type conversion helpers.
-
-**Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
-**Read only**: true  
 <a name="module_pg-promise.pg"></a>
 ### pg-promise.pg
 Instance of the PG library used.
@@ -523,6 +519,12 @@ Terminates pg library (call it when exiting the application).
 <a name="module_pg-promise.event_extend"></a>
 ### "extend"
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+<a name="module_pg-promise..as"></a>
+### pg-promise~as : <code>module:formatting.formatAs</code>
+Namespace for the type conversion helpers.
+
+**Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
+**Read only**: true  
 <a name="queryResult"></a>
 ## queryResult : <code>enum</code>
 Binary mask that represents the result expected from queries.It is used in the generic [query](#module_pg-promise.Database+query) method,as well as method [func](#module_pg-promise.Database+func).The mask is always the last optional parameter, which default so `queryResult.any`.Any combination of flags is supported, except for `one + many`.
@@ -531,23 +533,3 @@ Binary mask that represents the result expected from queries.It is used in the 
 **Summary**: Query Result Mask.  
 **Read only**: true  
 **See**: [query](#module_pg-promise.Database+query), [func](#module_pg-promise.Database+func)  
-**Properties**
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th><th>Type</th><th>Default</th><th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-<tr>
-    <td>one</td><td><code>number</code></td><td><code>1</code></td><td>Single row is expected.</td>
-    </tr><tr>
-    <td>many</td><td><code>number</code></td><td><code>2</code></td><td>One or more rows expected.</td>
-    </tr><tr>
-    <td>none</td><td><code>number</code></td><td><code>4</code></td><td>Expecting no rows.</td>
-    </tr><tr>
-    <td>any</td><td><code>number</code></td><td><code>6</code></td><td>many|none - any result is expected.</td>
-    </tr>  </tbody>
-</table>
-
