@@ -8,27 +8,11 @@
 <dl>
 <dt><a href="#queryResult">queryResult</a> : <code>enum</code></dt>
 <dd><p>Binary mask that represents the result expected from queries.
-The mask is to be passed into the generic query method as the last parameter.
-When no value is passed into method query, <code>queryResult.any</code> is used.</p>
-<p>Any combination of flags is supported, except for <code>one|many</code>.</p>
+It is used in the generic <a href="#module_pg-promise.Database+query">query</a> method,
+as well as method <a href="#module_pg-promise.Database+func">func</a>.</p>
+<p>The mask is always the last optional parameter, which default so <code>queryResult.any</code>.</p>
+<p>Any combination of flags is supported, except for <code>one + many</code>.</p>
 </dd>
-</dl>
-## Events
-<dl>
-<dt><a href="#event_connect">"connect"</a></dt>
-<dd></dd>
-<dt><a href="#event_disconnect">"disconnect"</a></dt>
-<dd></dd>
-<dt><a href="#event_query">"query"</a></dt>
-<dd></dd>
-<dt><a href="#event_task">"task"</a></dt>
-<dd></dd>
-<dt><a href="#event_transact">"transact"</a></dt>
-<dd></dd>
-<dt><a href="#event_error">"error"</a></dt>
-<dd></dd>
-<dt><a href="#event_extend">"extend"</a></dt>
-<dd></dd>
 </dl>
 <a name="module_pg-promise"></a>
 ## pg-promise
@@ -84,6 +68,13 @@ Complete access layer to node-postgres via Promises/A+
   * [.as](#module_pg-promise.as)
   * [.pg](#module_pg-promise.pg)
   * [.end()](#module_pg-promise.end)
+  * ["connect"](#module_pg-promise.event_connect)
+  * ["disconnect"](#module_pg-promise.event_disconnect)
+  * ["query"](#module_pg-promise.event_query)
+  * ["task"](#module_pg-promise.event_task)
+  * ["transact"](#module_pg-promise.event_transact)
+  * ["error"](#module_pg-promise.event_error)
+  * ["extend"](#module_pg-promise.event_extend)
 
 <a name="module_pg-promise.Task"></a>
 ### pg-promise.Task
@@ -100,7 +91,7 @@ This method is a fusion of `promise.all` + `promise.settle` logic,highly optimi
 
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
 **Summary**: Attempts to resolve every value in the input array.  
-**Returns**: <code>promise</code> - Result for the entire batch, which resolves whenevery promise in the input array has been resolved, and rejects when oneor more promise objects in the array rejected:- resolves with an array of individual resolved results, the same as `promise.all`;- rejects with an array of objects `{success, result}`:  - `success`: `true/false`, indicates whether the corresponding value    in the input array was resolved.  - `result`: resolved data, if `success=true`, or else the rejection reason.  The array comes extended with function `getErrors`, which returns the list  of just errors, with support for nested batch results.  Calling `reason.getErrors()[0]`, for example, will get the same result as  the rejection reason that `promise.all` would provide.In both cases the output array is always the same size as the input one,this way providing index mapping between input and output values.  
+**Returns**: <code>promise</code> - Result for the entire batch, which resolves whenevery promise in the input array has been resolved, and rejects when oneor more promise objects in the array rejected:- resolves with an array of individual resolved results, the same as `promise.all`;- rejects with an array of objects `{success, result}`:  - `success`: `true/false`, indicates whether the corresponding value    in the input array was resolved.  - `result`: resolved data, if `success=true`, or else the rejection reason.  The array comes extended with function `getErrors`, which returns the list  of just errors, with support for nested batch results.  Calling `getErrors()[0]`, for example, will get the same result as the  rejection reason that `promise.all` would provide.In both cases the output array is always the same size as the input one,this way providing index mapping between input and output values.  
 <table>
   <thead>
     <tr>
@@ -214,7 +205,7 @@ This method initiates a shared connection for executing a chain of querieson th
     <td>[values]</td><td><code>array</code> | <code>value</code></td><td></td><td><p>formatting parameters for the query string</p>
 </td>
     </tr><tr>
-    <td>[qrm]</td><td><code><a href="#queryResult">queryResult</a></code></td><td><code>queryResult.any</code></td><td><p>Query Result Mask</p>
+    <td>[qrm]</td><td><code><a href="#queryResult">queryResult</a></code></td><td><code>queryResult.any</code></td><td><p><a href="#queryResult">Query Result Mask</a></p>
 </td>
     </tr>  </tbody>
 </table>
@@ -330,7 +321,7 @@ This method initiates a shared connection for executing a chain of querieson th
 Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Returns**: <code>promise</code> - The same as method [manyOrNone](Database#manyOrNone)  
+**Returns**: <code>promise</code> - The same as method [manyOrNone](#module_pg-promise.Database+manyOrNone)  
 **See**: [manyOrNone](#module_pg-promise.Database+manyOrNone)  
 <table>
   <thead>
@@ -410,7 +401,7 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
     <td>[values]</td><td><code>array</code> | <code>value</code></td><td></td><td><p>parameters for the function.</p>
 </td>
     </tr><tr>
-    <td>[qrm]</td><td><code><a href="#queryResult">queryResult</a></code></td><td><code>queryResult.any</code></td><td><p>Query Result Mask.</p>
+    <td>[qrm]</td><td><code><a href="#queryResult">queryResult</a></code></td><td><code>queryResult.any</code></td><td><p><a href="#queryResult">Query Result Mask</a>.</p>
 </td>
     </tr>  </tbody>
 </table>
@@ -511,13 +502,35 @@ Instance of the PG library used.
 Terminates pg library (call it when exiting the application).
 
 **Kind**: static method of <code>[pg-promise](#module_pg-promise)</code>  
+<a name="module_pg-promise.event_connect"></a>
+### "connect"
+**Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+<a name="module_pg-promise.event_disconnect"></a>
+### "disconnect"
+**Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+<a name="module_pg-promise.event_query"></a>
+### "query"
+**Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+<a name="module_pg-promise.event_task"></a>
+### "task"
+**Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+<a name="module_pg-promise.event_transact"></a>
+### "transact"
+**Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+<a name="module_pg-promise.event_error"></a>
+### "error"
+**Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+<a name="module_pg-promise.event_extend"></a>
+### "extend"
+**Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
 <a name="queryResult"></a>
 ## queryResult : <code>enum</code>
-Binary mask that represents the result expected from queries.The mask is to be passed into the generic query method as the last parameter.When no value is passed into method query, `queryResult.any` is used.Any combination of flags is supported, except for `one|many`.
+Binary mask that represents the result expected from queries.It is used in the generic [query](#module_pg-promise.Database+query) method,as well as method [func](#module_pg-promise.Database+func).The mask is always the last optional parameter, which default so `queryResult.any`.Any combination of flags is supported, except for `one + many`.
 
 **Kind**: global enum  
-**Summary**: Query Result Mask flags.  
+**Summary**: Query Result Mask.  
 **Read only**: true  
+**See**: [query](#module_pg-promise.Database+query), [func](#module_pg-promise.Database+func)  
 **Properties**
 
 <table>
@@ -538,24 +551,3 @@ Binary mask that represents the result expected from queries.The mask is to be 
     </tr>  </tbody>
 </table>
 
-<a name="event_connect"></a>
-## "connect"
-**Kind**: event emitted  
-<a name="event_disconnect"></a>
-## "disconnect"
-**Kind**: event emitted  
-<a name="event_query"></a>
-## "query"
-**Kind**: event emitted  
-<a name="event_task"></a>
-## "task"
-**Kind**: event emitted  
-<a name="event_transact"></a>
-## "transact"
-**Kind**: event emitted  
-<a name="event_error"></a>
-## "error"
-**Kind**: event emitted  
-<a name="event_extend"></a>
-## "extend"
-**Kind**: event emitted  
