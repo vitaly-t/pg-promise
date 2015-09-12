@@ -1220,8 +1220,12 @@ describe("Batch", function () {
     describe("with all rejects", function () {
         var result;
         beforeEach(function (done) {
+            function nested() {
+                return this.batch([2, promise.reject("three")]);
+            }
+
             db.task(function () {
-                return this.batch([promise.reject("one"), promise.reject("two")]);
+                return this.batch([promise.reject("one"), nested, promise.reject("four")]);
             })
                 .then(nope, function (reason) {
                     result = reason;
@@ -1238,12 +1242,25 @@ describe("Batch", function () {
                 },
                 {
                     success: false,
-                    result: "two"
+                    result: [
+                        {
+                            success: true,
+                            result: 2
+                        },
+                        {
+                            success: false,
+                            result: "three"
+                        }
+                    ]
+                },
+                {
+                    success: false,
+                    result: "four"
                 }
             ];
             expect(JSON.stringify(result)).toEqual(JSON.stringify(data));
             expect(result.getErrors instanceof Function).toBe(true);
-            expect(result.getErrors()).toEqual(["one", "two"]);
+            expect(result.getErrors()).toEqual(["one", ["three"], "four"]);
         });
     });
 
