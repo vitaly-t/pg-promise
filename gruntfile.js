@@ -6,7 +6,7 @@ module.exports = function (grunt) {
                 options: {
                     "no-gfm": true
                 },
-                src: "lib/index.js",
+                src: "lib/*.js",
                 dest: "API.md"
             }
         }

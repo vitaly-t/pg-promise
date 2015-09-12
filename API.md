@@ -1,5 +1,8 @@
 ## Modules
 <dl>
+<dt><a href="#module_formatting">formatting</a></dt>
+<dd><p>Query Formatting</p>
+</dd>
 <dt><a href="#module_pg-promise">pg-promise</a></dt>
 <dd><p>Complete access layer to node-postgres via Promises/A+</p>
 </dd>
@@ -14,6 +17,186 @@ as well as method <a href="#module_pg-promise.Database+func">func</a>.</p>
 <p>Any combination of flags is supported, except for <code>one + many</code>.</p>
 </dd>
 </dl>
+<a name="module_formatting"></a>
+## formatting
+Query Formatting
+
+**Author:** Vitaly Tomilov  
+
+* [formatting](#module_formatting)
+  * [.formatAs](#module_formatting.formatAs) : <code>object</code>
+    * [.text(text, raw)](#module_formatting.formatAs.text) ⇒ <code>\*</code>
+    * [.bool(value)](#module_formatting.formatAs.bool) ⇒ <code>\*</code>
+    * [.date(d, raw)](#module_formatting.formatAs.date) ⇒ <code>\*</code>
+    * [.number(num)](#module_formatting.formatAs.number) ⇒ <code>\*</code>
+    * [.number(arr)](#module_formatting.formatAs.number) ⇒ <code>\*</code>
+    * [.csv(values)](#module_formatting.formatAs.csv) ⇒ <code>\*</code>
+    * [.json(obj, raw)](#module_formatting.formatAs.json) ⇒ <code>\*</code>
+    * [.func(func, raw, obj)](#module_formatting.formatAs.func) ⇒ <code>\*</code>
+    * [.format(query, values)](#module_formatting.formatAs.format) ⇒ <code>\*</code>
+
+<a name="module_formatting.formatAs"></a>
+### formatting.formatAs : <code>object</code>
+**Kind**: static namespace of <code>[formatting](#module_formatting)</code>  
+
+* [.formatAs](#module_formatting.formatAs) : <code>object</code>
+  * [.text(text, raw)](#module_formatting.formatAs.text) ⇒ <code>\*</code>
+  * [.bool(value)](#module_formatting.formatAs.bool) ⇒ <code>\*</code>
+  * [.date(d, raw)](#module_formatting.formatAs.date) ⇒ <code>\*</code>
+  * [.number(num)](#module_formatting.formatAs.number) ⇒ <code>\*</code>
+  * [.number(arr)](#module_formatting.formatAs.number) ⇒ <code>\*</code>
+  * [.csv(values)](#module_formatting.formatAs.csv) ⇒ <code>\*</code>
+  * [.json(obj, raw)](#module_formatting.formatAs.json) ⇒ <code>\*</code>
+  * [.func(func, raw, obj)](#module_formatting.formatAs.func) ⇒ <code>\*</code>
+  * [.format(query, values)](#module_formatting.formatAs.format) ⇒ <code>\*</code>
+
+<a name="module_formatting.formatAs.text"></a>
+#### formatAs.text(text, raw) ⇒ <code>\*</code>
+**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>text</td>
+    </tr><tr>
+    <td>raw</td>
+    </tr>  </tbody>
+</table>
+
+<a name="module_formatting.formatAs.bool"></a>
+#### formatAs.bool(value) ⇒ <code>\*</code>
+**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>value</td>
+    </tr>  </tbody>
+</table>
+
+<a name="module_formatting.formatAs.date"></a>
+#### formatAs.date(d, raw) ⇒ <code>\*</code>
+**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>d</td>
+    </tr><tr>
+    <td>raw</td>
+    </tr>  </tbody>
+</table>
+
+<a name="module_formatting.formatAs.number"></a>
+#### formatAs.number(num) ⇒ <code>\*</code>
+**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>num</td>
+    </tr>  </tbody>
+</table>
+
+<a name="module_formatting.formatAs.number"></a>
+#### formatAs.number(arr) ⇒ <code>\*</code>
+**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>arr</td>
+    </tr>  </tbody>
+</table>
+
+<a name="module_formatting.formatAs.csv"></a>
+#### formatAs.csv(values) ⇒ <code>\*</code>
+**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>values</td>
+    </tr>  </tbody>
+</table>
+
+<a name="module_formatting.formatAs.json"></a>
+#### formatAs.json(obj, raw) ⇒ <code>\*</code>
+**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>obj</td>
+    </tr><tr>
+    <td>raw</td>
+    </tr>  </tbody>
+</table>
+
+<a name="module_formatting.formatAs.func"></a>
+#### formatAs.func(func, raw, obj) ⇒ <code>\*</code>
+**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>func</td>
+    </tr><tr>
+    <td>raw</td>
+    </tr><tr>
+    <td>obj</td>
+    </tr>  </tbody>
+</table>
+
+<a name="module_formatting.formatAs.format"></a>
+#### formatAs.format(query, values) ⇒ <code>\*</code>
+**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>query</td>
+    </tr><tr>
+    <td>values</td>
+    </tr>  </tbody>
+</table>
+
 <a name="module_pg-promise"></a>
 ## pg-promise
 Complete access layer to node-postgres via Promises/A+
@@ -76,7 +259,7 @@ Complete access layer to node-postgres via Promises/A+
     * ["error"](#module_pg-promise.event_error)
     * ["extend"](#module_pg-promise.event_extend)
   * _inner_
-    * [~as](#module_pg-promise..as) : <code>module:formatting.formatAs</code>
+    * [~as](#module_pg-promise..as) : <code>[formatAs](#module_formatting.formatAs)</code>
 
 <a name="module_pg-promise.Task"></a>
 ### pg-promise.Task
@@ -520,7 +703,7 @@ Terminates pg library (call it when exiting the application).
 ### "extend"
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
 <a name="module_pg-promise..as"></a>
-### pg-promise~as : <code>module:formatting.formatAs</code>
+### pg-promise~as : <code>[formatAs](#module_formatting.formatAs)</code>
 Namespace for the type conversion helpers.
 
 **Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
