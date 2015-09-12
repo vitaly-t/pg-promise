@@ -716,3 +716,23 @@ Binary mask that represents the result expected from queries.It is used in the 
 **Summary**: Query Result Mask.  
 **Read only**: true  
 **See**: [query](#module_pg-promise.Database+query), [func](#module_pg-promise.Database+func)  
+**Properties**
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th><th>Type</th><th>Default</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>one</td><td><code>number</code></td><td><code>1</code></td><td>Single row is expected.</td>
+    </tr><tr>
+    <td>many</td><td><code>number</code></td><td><code>2</code></td><td>One or more rows expected.</td>
+    </tr><tr>
+    <td>none</td><td><code>number</code></td><td><code>4</code></td><td>Expecting no rows.</td>
+    </tr><tr>
+    <td>any</td><td><code>number</code></td><td><code>6</code></td><td>many|none - any result is expected.</td>
+    </tr>  </tbody>
+</table>
+
