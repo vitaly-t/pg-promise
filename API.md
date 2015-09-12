@@ -24,35 +24,35 @@ Query Formatting
 **Author:** Vitaly Tomilov  
 
 * [formatting](#module_formatting)
-  * [.formatAs](#module_formatting.formatAs) : <code>object</code>
-    * [.text(text, raw)](#module_formatting.formatAs.text) ⇒ <code>\*</code>
-    * [.bool(value)](#module_formatting.formatAs.bool) ⇒ <code>\*</code>
-    * [.date(d, raw)](#module_formatting.formatAs.date) ⇒ <code>\*</code>
-    * [.number(num)](#module_formatting.formatAs.number) ⇒ <code>\*</code>
-    * [.number(arr)](#module_formatting.formatAs.number) ⇒ <code>\*</code>
-    * [.csv(values)](#module_formatting.formatAs.csv) ⇒ <code>\*</code>
-    * [.json(obj, raw)](#module_formatting.formatAs.json) ⇒ <code>\*</code>
-    * [.func(func, raw, obj)](#module_formatting.formatAs.func) ⇒ <code>\*</code>
-    * [.format(query, values)](#module_formatting.formatAs.format) ⇒ <code>\*</code>
+  * [.as](#module_formatting.as) : <code>object</code>
+    * [.text(text, raw)](#module_formatting.as.text) ⇒ <code>\*</code>
+    * [.bool(value)](#module_formatting.as.bool) ⇒ <code>\*</code>
+    * [.date(d, raw)](#module_formatting.as.date) ⇒ <code>\*</code>
+    * [.number(num)](#module_formatting.as.number) ⇒ <code>\*</code>
+    * [.number(arr)](#module_formatting.as.number) ⇒ <code>\*</code>
+    * [.csv(values)](#module_formatting.as.csv) ⇒ <code>\*</code>
+    * [.json(obj, raw)](#module_formatting.as.json) ⇒ <code>\*</code>
+    * [.func(func, raw, obj)](#module_formatting.as.func) ⇒ <code>\*</code>
+    * [.format(query, values)](#module_formatting.as.format) ⇒ <code>\*</code>
 
-<a name="module_formatting.formatAs"></a>
-### formatting.formatAs : <code>object</code>
+<a name="module_formatting.as"></a>
+### formatting.as : <code>object</code>
 **Kind**: static namespace of <code>[formatting](#module_formatting)</code>  
 
-* [.formatAs](#module_formatting.formatAs) : <code>object</code>
-  * [.text(text, raw)](#module_formatting.formatAs.text) ⇒ <code>\*</code>
-  * [.bool(value)](#module_formatting.formatAs.bool) ⇒ <code>\*</code>
-  * [.date(d, raw)](#module_formatting.formatAs.date) ⇒ <code>\*</code>
-  * [.number(num)](#module_formatting.formatAs.number) ⇒ <code>\*</code>
-  * [.number(arr)](#module_formatting.formatAs.number) ⇒ <code>\*</code>
-  * [.csv(values)](#module_formatting.formatAs.csv) ⇒ <code>\*</code>
-  * [.json(obj, raw)](#module_formatting.formatAs.json) ⇒ <code>\*</code>
-  * [.func(func, raw, obj)](#module_formatting.formatAs.func) ⇒ <code>\*</code>
-  * [.format(query, values)](#module_formatting.formatAs.format) ⇒ <code>\*</code>
+* [.as](#module_formatting.as) : <code>object</code>
+  * [.text(text, raw)](#module_formatting.as.text) ⇒ <code>\*</code>
+  * [.bool(value)](#module_formatting.as.bool) ⇒ <code>\*</code>
+  * [.date(d, raw)](#module_formatting.as.date) ⇒ <code>\*</code>
+  * [.number(num)](#module_formatting.as.number) ⇒ <code>\*</code>
+  * [.number(arr)](#module_formatting.as.number) ⇒ <code>\*</code>
+  * [.csv(values)](#module_formatting.as.csv) ⇒ <code>\*</code>
+  * [.json(obj, raw)](#module_formatting.as.json) ⇒ <code>\*</code>
+  * [.func(func, raw, obj)](#module_formatting.as.func) ⇒ <code>\*</code>
+  * [.format(query, values)](#module_formatting.as.format) ⇒ <code>\*</code>
 
-<a name="module_formatting.formatAs.text"></a>
-#### formatAs.text(text, raw) ⇒ <code>\*</code>
-**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<a name="module_formatting.as.text"></a>
+#### as.text(text, raw) ⇒ <code>\*</code>
+**Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
@@ -67,9 +67,9 @@ Query Formatting
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.formatAs.bool"></a>
-#### formatAs.bool(value) ⇒ <code>\*</code>
-**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<a name="module_formatting.as.bool"></a>
+#### as.bool(value) ⇒ <code>\*</code>
+**Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
@@ -82,9 +82,9 @@ Query Formatting
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.formatAs.date"></a>
-#### formatAs.date(d, raw) ⇒ <code>\*</code>
-**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<a name="module_formatting.as.date"></a>
+#### as.date(d, raw) ⇒ <code>\*</code>
+**Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
@@ -99,9 +99,9 @@ Query Formatting
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.formatAs.number"></a>
-#### formatAs.number(num) ⇒ <code>\*</code>
-**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<a name="module_formatting.as.number"></a>
+#### as.number(num) ⇒ <code>\*</code>
+**Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
@@ -114,9 +114,9 @@ Query Formatting
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.formatAs.number"></a>
-#### formatAs.number(arr) ⇒ <code>\*</code>
-**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<a name="module_formatting.as.number"></a>
+#### as.number(arr) ⇒ <code>\*</code>
+**Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
@@ -129,9 +129,9 @@ Query Formatting
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.formatAs.csv"></a>
-#### formatAs.csv(values) ⇒ <code>\*</code>
-**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<a name="module_formatting.as.csv"></a>
+#### as.csv(values) ⇒ <code>\*</code>
+**Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
@@ -144,9 +144,9 @@ Query Formatting
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.formatAs.json"></a>
-#### formatAs.json(obj, raw) ⇒ <code>\*</code>
-**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<a name="module_formatting.as.json"></a>
+#### as.json(obj, raw) ⇒ <code>\*</code>
+**Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
@@ -161,9 +161,9 @@ Query Formatting
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.formatAs.func"></a>
-#### formatAs.func(func, raw, obj) ⇒ <code>\*</code>
-**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<a name="module_formatting.as.func"></a>
+#### as.func(func, raw, obj) ⇒ <code>\*</code>
+**Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
@@ -180,9 +180,9 @@ Query Formatting
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.formatAs.format"></a>
-#### formatAs.format(query, values) ⇒ <code>\*</code>
-**Kind**: static method of <code>[formatAs](#module_formatting.formatAs)</code>  
+<a name="module_formatting.as.format"></a>
+#### as.format(query, values) ⇒ <code>\*</code>
+**Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
@@ -259,7 +259,7 @@ Complete access layer to node-postgres via Promises/A+
     * ["error"](#module_pg-promise.event_error)
     * ["extend"](#module_pg-promise.event_extend)
   * _inner_
-    * [~as](#module_pg-promise..as) : <code>[formatAs](#module_formatting.formatAs)</code>
+    * [~as](#module_pg-promise..as) : <code>[as](#module_formatting.as)</code>
 
 <a name="module_pg-promise.Task"></a>
 ### pg-promise.Task
@@ -703,7 +703,7 @@ Terminates pg library (call it when exiting the application).
 ### "extend"
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
 <a name="module_pg-promise..as"></a>
-### pg-promise~as : <code>[formatAs](#module_formatting.formatAs)</code>
+### pg-promise~as : <code>[as](#module_formatting.as)</code>
 Namespace for the type conversion helpers.
 
 **Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
