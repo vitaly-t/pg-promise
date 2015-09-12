@@ -96,11 +96,11 @@ Complete access layer to node-postgres via Promises/A+
 
 <a name="module_pg-promise.Task+batch"></a>
 #### task.batch(values) ⇒ <code>promise</code>
-This method is a fusion of such logic as `promise.all` and `promise.settle`,highly optimized for use within tasks and transactions, to resolve with thesame type of result as `promise.all`, while also settling all the promises,and providing a detailed summary in case any of the promises rejects.
+This method is a fusion of `promise.all` + `promise.settle` logic,highly optimized for use within tasks and transactions, to resolve with thesame type of result as `promise.all`, while also settling all the promises,and providing a detailed summary in case any of the promises rejects.
 
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
 **Summary**: Attempts to resolve every value in the input array.  
-**Returns**: <code>promise</code> - Result for the entire batch, which resolves whenevery promise in the input array has been resolved, and rejects when oneor more promise objects in the array rejected:- resolves with an array of individual resolved results;- rejects with an array of objects `{success, result}`:  - `success`: `true/false`, indicates whether the corresponding value    in the input array was resolved.  - `result`: resolved data, if `success=true`, or else the rejection reason.  The array comes extended with function `getErrors` to return the list  of just errors, with support for nested batch results.In both cases the output array is always the same size as the input one,this way providing index mapping between input and output values.  
+**Returns**: <code>promise</code> - Result for the entire batch, which resolves whenevery promise in the input array has been resolved, and rejects when oneor more promise objects in the array rejected:- resolves with an array of individual resolved results, the same as `promise.all`;- rejects with an array of objects `{success, result}`:  - `success`: `true/false`, indicates whether the corresponding value    in the input array was resolved.  - `result`: resolved data, if `success=true`, or else the rejection reason.  The array comes extended with function `getErrors`, which returns the list  of just errors, with support for nested batch results.  Calling `reason.getErrors()[0]`, for example, will get the same result as  the rejection reason that `promise.all` would provide.In both cases the output array is always the same size as the input one,this way providing index mapping between input and output values.  
 <table>
   <thead>
     <tr>
@@ -128,7 +128,7 @@ be thrown: <code>Array of values is required to execute a batch.</code></p>
 #### task.sequence(factory, [noTracking], [cb]) ⇒ <code>promise</code>
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
 **Summary**: Sequentially resolves dynamic promises returned by a promise factory.  
-**Returns**: <code>promise</code> - Result of the sequence, depending on `noTracking`:- resolves with an array of resolved data, if `noTracking` = false;- resolves with an integer - total number of resolved requests, if `noTracking` = true;- rejects with the reason when the factory function throws an error or returns a rejected promise.  
+**Returns**: <code>promise</code> - Result of the sequence, depending on `noTracking`:- resolves with an array of resolved data, if `noTracking = false`;- resolves with an integer - total number of resolved requests, if `noTracking = true`;- rejects with the reason when the factory function throws an error or returns a rejected promise.  
 <table>
   <thead>
     <tr>
@@ -193,7 +193,7 @@ This method initiates a shared connection for executing a chain of querieson th
 
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Retrieves a new or existing connection from the pool, based on thecurrent connection parameters.  
-**Returns**: <code>promise</code> - Connection result:- resolves with connection object, if successful. The object has method `done()` that mustbe called in the end of the query chain, in order to release the connection back to the pool.- rejects with the connection error when fails.  
+**Returns**: <code>promise</code> - Connection result:- resolves with the connection object, if successful. The object has method `done()` that mustbe called in the end of the query chain, in order to release the connection back to the pool.- rejects with the connection error when fails.  
 **See**: [task](#module_pg-promise.Database+task)  
 <a name="module_pg-promise.Database+query"></a>
 #### database.query(query, [values], [qrm]) ⇒ <code>promise</code>
