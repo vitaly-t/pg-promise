@@ -4,6 +4,8 @@
 // a) override the default promise library;
 // b) use pg-monitor to output all the query events;
 // c) change the default theme for pg-monitor.
+// d) add log handler to pg-monitor, to log events
+//    into a file or elsewhere.
 //
 // Packages used: pg-promise, pg-monitor, bluebird.
 ////////////////////////////////////////////////////
@@ -18,10 +20,17 @@ var options = {
 var pgp = require('pg-promise')(options);
 
 var monitor = require('pg-monitor');
-monitor.setTheme('matrix'); // change the default theme;
 
 monitor.attach(options); // attach to all query events;
-// Method API: https://github.com/vitaly-t/pg-monitor#attachoptions-events-override
+// See API: https://github.com/vitaly-t/pg-monitor#attachoptions-events-override
+
+monitor.setTheme('matrix'); // change the default theme;
+// Other themes: https://github.com/vitaly-t/pg-monitor/wiki/Color-Themes
+
+monitor.log = function (msg, info) {
+    // save the screen messages into your own log file;
+};
+// See API: https://github.com/vitaly-t/pg-monitor#log
 
 // Database connection details;
 var cn = {
