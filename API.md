@@ -13,7 +13,7 @@
 <dd><p>Binary mask that represents the result expected from queries.
 It is used in the generic <a href="#module_pg-promise.Database+query">query</a> method,
 as well as method <a href="#module_pg-promise.Database+func">func</a>.</p>
-<p>The mask is always the last optional parameter, which default so <code>queryResult.any</code>.</p>
+<p>The mask is always the last optional parameter, which defaults to <code>queryResult.any</code>.</p>
 <p>Any combination of flags is supported, except for <code>one + many</code>.</p>
 </dd>
 </dl>
@@ -710,7 +710,7 @@ Namespace for the type conversion helpers.
 **Read only**: true  
 <a name="queryResult"></a>
 ## queryResult : <code>enum</code>
-Binary mask that represents the result expected from queries.It is used in the generic [query](#module_pg-promise.Database+query) method,as well as method [func](#module_pg-promise.Database+func).The mask is always the last optional parameter, which default so `queryResult.any`.Any combination of flags is supported, except for `one + many`.
+Binary mask that represents the result expected from queries.It is used in the generic [query](#module_pg-promise.Database+query) method,as well as method [func](#module_pg-promise.Database+func).The mask is always the last optional parameter, which defaults to `queryResult.any`.Any combination of flags is supported, except for `one + many`.
 
 **Kind**: global enum  
 **Summary**: Query Result Mask.  
