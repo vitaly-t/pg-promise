@@ -3,6 +3,8 @@ node_js:
    - "0.10"
    - "0.12"
    - "4"
+script:
+   npm run travis
 addons:
   postgresql: "9.4"
 before_script:

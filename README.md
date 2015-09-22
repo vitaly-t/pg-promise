@@ -101,16 +101,14 @@ Either set up your test database accordingly or change the connection details in
 ```
 $ node test/db/init.js
 ```
+* To run all tests:
+```
+$ npm test
+```
 * To run all tests with coverage:
 ```
 $ npm run coverage
 ```
-* To run all tests without coverage:
-```
-$ npm run test-only
-```
-NOTE: The default `npm test` is used for updating [coveralls.ie](http://coveralls.io/r/vitaly-t/pg-promise) with the coverage results,
-and it is not for local usage.
 
 # Getting Started
 
