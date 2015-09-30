@@ -52,6 +52,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
     - [task](#task)    
     - [transact](#transact)
     - [extend](#extend)
+    - [noLocking](#nolocking)    
   - [Library de-initialization](#library-de-initialization)
 * [History](#history)
 * [License](#license)
@@ -873,6 +874,7 @@ var options = {
     // transact - transaction notification;
     // error - error notification;
     // extend - protocol extension event;
+    // noLocking - prevents protocol locking;
 };
 var pgp = require('pg-promise')(options);
 ```
@@ -1204,6 +1206,16 @@ The library will suppress any error thrown by the handler and write it into the 
 **NOTE:** The library will throw an error instead of making the call, if `options.extend` is set to
 a non-empty value other than a function.
 
+---
+#### noLocking
+
+By default, the library locks its protocol to read-only access, as a fool-proof mechanism.
+Specifically for the `extend` event this serves as a protection against overriding existing
+properties or trying to set them at the wrong time. 
+   
+If this provision gets in the way of using a mock-up framework for your tests, you can force
+the library to deactivate most of the locks by setting `noLocking=true` within the options.
+
 ## Library de-initialization
 
 When exiting your application, you can make the following call:
@@ -1218,6 +1230,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 1.11.0 added [noLocking](@nolocking) initialization option. Released: September 30, 2015.
 * Version 1.10.3 added enforced locks on every level of the library. Released: September 11, 2015.
 * Version 1.10.0 added support for `batch` execution within tasks and transactions. Released: September 10, 2015.
 * Version 1.9.5 added support for [Raw Custom Types](#raw-custom-types). Released: August 30, 2015.

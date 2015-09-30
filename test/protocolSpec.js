@@ -2,7 +2,8 @@ var PG = require('pg');
 var header = require('./db/header');
 var promise = header.promise;
 var options = {
-    promiseLib: promise
+    promiseLib: promise,
+    noLocking: true
 };
 var dbHeader = header(options);
 var pgpLib = dbHeader.pgpLib;
