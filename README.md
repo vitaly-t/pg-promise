@@ -1230,7 +1230,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
-* Version 1.11.0 added [noLocking](@nolocking) initialization option. Released: September 30, 2015.
+* Version 1.11.0 added [noLocking](#nolocking) initialization option. Released: September 30, 2015.
 * Version 1.10.3 added enforced locks on every level of the library. Released: September 11, 2015.
 * Version 1.10.0 added support for `batch` execution within tasks and transactions. Released: September 10, 2015.
 * Version 1.9.5 added support for [Raw Custom Types](#raw-custom-types). Released: August 30, 2015.
