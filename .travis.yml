@@ -4,7 +4,7 @@ node_js:
    - "0.12"
    - "4"
 script:
-   npm run travis
+   npm test
 addons:
   postgresql: "9.4"
 before_script:
@@ -12,6 +12,6 @@ before_script:
   - node test/db/init.js
 branches:
   only:
-    - master
+    - 2.0
 env:
   - BLUEBIRD_DEBUG=0
