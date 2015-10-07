@@ -92,7 +92,7 @@ describe("Connection", function () {
             db.connect()
                 .then(function (obj) {
                     sco = obj;
-                    return sco.raw("select * from users");
+                    return sco.result("select * from users");
                 }, function (reason) {
                     result = null;
                     return promise.reject(reason);
@@ -983,7 +983,7 @@ describe("Return data from a query must match the request type", function () {
 describe("Queries must not allow invalid QRM (Query Request Mask) combinations", function () {
     it("method 'query' must throw an error when mask is one+many", function () {
         var result, error;
-        db.query("select * from person", undefined, queryResult.one | queryResult.many)
+        db.query("select * from person", undefined, pgp.queryResult.one | pgp.queryResult.many)
             .then(function (data) {
                 result = data;
             }, function (reason) {
@@ -1053,11 +1053,11 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
 
 });
 
-describe("queryRaw", function () {
+describe("result", function () {
 
     it("must resolve with PG result instance", function () {
         var result;
-        db.queryRaw("select * from users")
+        db.result("select * from users")
             .then(function (data) {
                 result = data;
             }, function () {
@@ -1088,7 +1088,7 @@ describe("Batch", function () {
         });
         it("must throw an error", function () {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe("Array of values is required to execute a batch.");
+            expect(error.message).toBe("Batch requires an array of values.");
         });
     });
     describe("with an empty array", function () {
@@ -1106,43 +1106,6 @@ describe("Batch", function () {
         });
         it("must resolve with an empty array", function () {
             expect(result).toEqual([]);
-        });
-    });
-
-    describe("with nested functions", function () {
-        var result, ctx, THIS, taskCtx;
-
-        function testA() {
-            return promise.resolve('A');
-        }
-
-        function testB() {
-            return testA;
-        }
-
-        function testC(t) {
-            THIS = this;
-            ctx = t;
-            return testA()
-                .then(function () {
-                    return promise.resolve('C');
-                });
-        }
-
-        beforeEach(function (done) {
-            db.task(function () {
-                taskCtx = this;
-                return this.batch([testA, testB, testC]);
-            })
-                .then(function (data) {
-                    result = data;
-                })
-                .finally(function () {
-                    done();
-                });
-        });
-        it("must resolve with an empty array", function () {
-            expect(result).toEqual(['A', 'A', 'C']);
         });
     });
 
@@ -1266,9 +1229,10 @@ describe("Batch", function () {
 
 });
 
+
 describe("Sequence", function () {
 
-    describe("for an invalid factory", function () {
+    describe("for an invalid source", function () {
         var result;
         beforeEach(function (done) {
             db.tx(function () {
@@ -1283,41 +1247,7 @@ describe("Sequence", function () {
         });
         it("must reject with correct error", function () {
             expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe("Invalid factory function specified.");
-        });
-    });
-
-    describe("for an invalid factory result", function () {
-
-        var result;
-        beforeEach(function (done) {
-            db.tx(function () {
-                return promise.any([
-                    this.queue(function () {
-                        return 0;
-                    }),
-                    this.queue(function () {
-                        return 123;
-                    }),
-                    this.queue(function () {
-                        return '';
-                    })
-                ]);
-            })
-                .then(function () {
-                }, function (reason) {
-                    result = reason;
-                }).finally(function () {
-                    done();
-                });
-        });
-        it("must reject with correct error", function () {
-            var errMsg = "Invalid promise returned by factory for index 0";
-            expect(result).toBeTruthy();
-            expect(result.length).toBe(3);
-            expect(result[0]).toBe(errMsg);
-            expect(result[1]).toBe(errMsg);
-            expect(result[2]).toBe(errMsg);
+            expect(result.message).toBe("Invalid sequence source.");
         });
     });
 
@@ -1325,11 +1255,11 @@ describe("Sequence", function () {
         var result;
         beforeEach(function (done) {
             db.tx(function () {
-                return this.queue(function () {
+                return this.sequence(function () {
                     return promise.reject("testing reject");
                 });
             })
-                .then(function () {
+                .then(function (data) {
                 }, function (reason) {
                     result = reason;
                 }).finally(function () {
@@ -1337,94 +1267,23 @@ describe("Sequence", function () {
                 });
         });
         it("must reject with the same reason", function () {
-            expect(result).toBe("testing reject");
-        });
-    });
-
-    describe("with a callback that throws an error", function () {
-        var index, idxData, error;
-        beforeEach(function (done) {
-            db.task(function () {
-                return this.sequence(function () {
-                    return promise.resolve("finished");
-                }, true, function (idx, data) {
-                    index = idx;
-                    idxData = data;
-                    throw new Error("exit");
-                });
-            })
-                .then(nope, function (reason) {
-                    error = reason;
-                })
-                .done(function () {
-                    done();
-                });
-        });
-        it("must reject with the error thrown", function () {
-            expect(index).toBe(0);
-            expect(idxData).toBe("finished");
-            expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe("exit");
-        });
-    });
-
-    it("must reject with an error when the error is thrown by the factory", function () {
-        var result;
-        db.tx(function () {
-            return this.queue(function () {
-                throw new Error("error test");
+            expect(result).toEqual({
+                index: 0,
+                error: "testing reject",
+                source: undefined
             });
-        }).then(function () {
-            result = null;
-        }, function (reason) {
-            result = reason;
-        });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
-            expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe("error test");
         });
     });
 
-    it("must resolve promises in correct sequence", function () {
-        var result, ctx, THIS, length = 10;
-        db.tx(function () {
-            return this.queue(function (idx, context) {
-                THIS = this;
-                ctx = context;
-                if (idx < length) {
-                    return this.query("select $1 as value", idx);
-                }
-            });
-        }).then(function (data) {
-            result = data;
-        }, function (reason) {
-            result = reason;
-        });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
-            expect(THIS && ctx && ctx === THIS).toBeTruthy();
-            expect(result instanceof Array).toBe(true);
-            expect(result.length).toBe(length);
-            for (var i = 0; i < result.length; i++) {
-                expect(result[i][0].value).toBe(i);
-            }
-        });
-    });
-
-    describe("with noTracking=true", function () {
+    describe("without tracking", function () {
         var result;
         beforeEach(function (done) {
             db.tx(function () {
-                return this.queue(function (idx) {
+                return this.sequence(function (idx) {
                     if (idx < 10) {
                         return this.query("select $1", idx);
                     }
-                }, true);
+                });
             })
                 .then(function (data) {
                     result = data;
@@ -1433,11 +1292,14 @@ describe("Sequence", function () {
                     done();
                 });
         });
-        it("must resolve with the total number of resolved queries", function () {
-            expect(result).toBe(10);
+        it("must resolve with the stat object", function () {
+            expect(result && typeof result === 'object').toBeTruthy();
+            expect(result.total).toBe(10);
         });
     });
+
 });
+
 
 describe("Querying a function", function () {
 

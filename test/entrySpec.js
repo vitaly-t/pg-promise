@@ -1,3 +1,6 @@
+function dummy() {
+}
+
 describe("Library entry function", function () {
 
     var pgpLib, moduleName = '../lib/index';
@@ -36,8 +39,8 @@ describe("Library entry function", function () {
             var lib = pgpLib(
                 {
                     promiseLib: {
-                        resolve: null,
-                        reject: null
+                        resolve: dummy,
+                        reject: dummy
                     }
                 });
             expect(typeof(lib)).toBe('function');
@@ -49,8 +52,8 @@ describe("Library entry function", function () {
             function fakePromiseLib() {
             }
 
-            fakePromiseLib.resolve = null;
-            fakePromiseLib.reject = null;
+            fakePromiseLib.resolve = dummy;
+            fakePromiseLib.reject = dummy;
             var lib = pgpLib({
                 promiseLib: fakePromiseLib
             });

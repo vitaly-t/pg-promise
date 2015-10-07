@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "pg": "4.x",
-    "promise": "7.x"
+    "spex": "0.1.x"
   },
   "devDependencies": {
     "JSONStream": "1.x",
