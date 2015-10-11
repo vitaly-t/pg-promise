@@ -250,6 +250,8 @@ Complete access layer to node-postgres via Promises/A+
       * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>promise</code>
     * [.version](#module_pg-promise.version)
     * [.pg](#module_pg-promise.pg)
+    * [.queryResult](#module_pg-promise.queryResult)
+    * [.QueryResultError](#module_pg-promise.QueryResultError)
     * [.end()](#module_pg-promise.end)
     * ["connect"](#module_pg-promise.event_connect)
     * ["disconnect"](#module_pg-promise.event_disconnect)
@@ -674,6 +676,16 @@ Library version.
 <a name="module_pg-promise.pg"></a>
 ### pg-promise.pg
 Instance of the PG library used.
+
+**Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
+<a name="module_pg-promise.queryResult"></a>
+### pg-promise.queryResult
+Query Result Mask.
+
+**Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
+<a name="module_pg-promise.QueryResultError"></a>
+### pg-promise.QueryResultError
+Query Result Error type.
 
 **Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
 <a name="module_pg-promise.end"></a>
