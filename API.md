@@ -230,6 +230,8 @@ Complete access layer to node-postgres via Promises/A+
 * [pg-promise](#module_pg-promise)
   * _static_
     * [.Task](#module_pg-promise.Task)
+      * [.batch()](#module_pg-promise.Task+batch)
+      * [.sequence()](#module_pg-promise.Task+sequence)
     * [.Database](#module_pg-promise.Database)
       * [new Database(cn)](#new_module_pg-promise.Database_new)
       * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>promise</code>
@@ -265,6 +267,19 @@ Complete access layer to node-postgres via Promises/A+
 ### pg-promise.Task
 **Kind**: static class of <code>[pg-promise](#module_pg-promise)</code>  
 **Summary**: Internal Task implementation.  
+
+  * [.Task](#module_pg-promise.Task)
+    * [.batch()](#module_pg-promise.Task+batch)
+    * [.sequence()](#module_pg-promise.Task+sequence)
+
+<a name="module_pg-promise.Task+batch"></a>
+#### task.batch()
+**Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
+**Summary**: Resolves a predefined array of mixed values by redirecting tomethod [spex.batch](https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md)  
+<a name="module_pg-promise.Task+sequence"></a>
+#### task.sequence()
+**Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
+**Summary**: Resolves a dynamic sequence of mixed values by redirecting tomethod [spex.batch](https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md)  
 <a name="module_pg-promise.Database"></a>
 ### pg-promise.Database
 **Kind**: static class of <code>[pg-promise](#module_pg-promise)</code>  
