@@ -279,7 +279,7 @@ Complete access layer to node-postgres via Promises/A+
 <a name="module_pg-promise.Task+sequence"></a>
 #### task.sequence()
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
-**Summary**: Resolves a dynamic sequence of mixed values by redirecting tomethod [spex.batch](https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md)  
+**Summary**: Resolves a dynamic sequence of mixed values by redirecting tomethod [spex.sequence](https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md)  
 <a name="module_pg-promise.Database"></a>
 ### pg-promise.Database
 **Kind**: static class of <code>[pg-promise](#module_pg-promise)</code>  
