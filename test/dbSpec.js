@@ -768,63 +768,35 @@ describe("When a nested transaction fails", function () {
     });
 });
 
-describe("Calling a transaction with an invalid callback", function () {
-
-    it("must reject when the callback is undefined", function () {
-        var result, error;
-        db.tx()
-            .then(function (data) {
-                result = data;
-            }, function (reason) {
-                result = null;
-                error = reason;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
-            expect(result).toBeNull();
+describe("Calling without a callback", function () {
+    describe("for a transaction", function () {
+        var error;
+        beforeEach(function (done) {
+            db.tx()
+                .catch(function (reason) {
+                    error = reason;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must reject", function () {
             expect(error).toBe("Callback function must be specified for the transaction.");
         });
     });
-
-    it("must reject when the callback returns nothing", function () {
-        var result, error;
-        db.tx(function () {
-            // return nothing;
-        })
-            .then(function (data) {
-                result = data;
-            }, function (reason) {
-                result = null;
-                error = reason;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
-            expect(result).toBeNull();
-            expect(error).toBe("Transaction callback function didn't return a promise object.");
+    describe("for a task", function () {
+        var error;
+        beforeEach(function (done) {
+            db.task()
+                .catch(function (reason) {
+                    error = reason;
+                })
+                .finally(function () {
+                    done();
+                });
         });
-    });
-
-    it("must reject when the callback returns nonsense", function () {
-        var result, error;
-        db.tx(function () {
-            return 123; // not quite a promise object;
-        })
-            .then(function (data) {
-                result = data;
-            }, function (reason) {
-                result = null;
-                error = reason;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
-            expect(result).toBeNull();
-            expect(error).toBe("Transaction callback function didn't return a promise object.");
+        it("must reject", function () {
+            expect(error).toBe("Callback function must be specified for the task.");
         });
     });
 
@@ -1530,35 +1502,19 @@ describe("Task", function () {
         });
     });
 
-    describe("with invalid callback", function () {
-        var result;
-        beforeEach(function (done) {
-            db.task()
-                .then(nope, function (reason) {
-                    result = reason;
-                })
-                .finally(function () {
-                    done();
-                });
-        });
-        it("must reject with an error", function () {
-            expect(result).toBe("Callback function must be specified for the task.");
-        });
-    });
-
     describe("with a callback that returns nothing", function () {
         var result;
         beforeEach(function (done) {
             db.task(nope)
-                .then(nope, function (reason) {
-                    result = reason;
+                .then(function (data) {
+                    result = data;
                 })
                 .finally(function () {
                     done();
                 });
         });
-        it("must reject with an error", function () {
-            expect(result).toBe("Task callback function didn't return a promise object.");
+        it("must resolve with undefined", function () {
+            expect(result).toBeUndefined();
         });
     });
 
@@ -1568,15 +1524,15 @@ describe("Task", function () {
             db.task(function () {
                 return 123;
             })
-                .then(nope, function (reason) {
-                    result = reason;
+                .then(function (data) {
+                    result = data;
                 })
                 .finally(function () {
                     done();
                 });
         });
-        it("must reject with an error", function () {
-            expect(result).toBe("Task callback function didn't return a promise object.");
+        it("must resolve with the value", function () {
+            expect(result).toBe(123);
         });
     });
 
