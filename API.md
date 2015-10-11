@@ -230,8 +230,6 @@ Complete access layer to node-postgres via Promises/A+
 * [pg-promise](#module_pg-promise)
   * _static_
     * [.Task](#module_pg-promise.Task)
-      * [.batch(values)](#module_pg-promise.Task+batch) ⇒ <code>promise</code>
-      * [.sequence(factory, [noTracking], [cb])](#module_pg-promise.Task+sequence) ⇒ <code>promise</code>
     * [.Database](#module_pg-promise.Database)
       * [new Database(cn)](#new_module_pg-promise.Database_new)
       * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>promise</code>
@@ -267,68 +265,6 @@ Complete access layer to node-postgres via Promises/A+
 ### pg-promise.Task
 **Kind**: static class of <code>[pg-promise](#module_pg-promise)</code>  
 **Summary**: Internal Task implementation.  
-
-  * [.Task](#module_pg-promise.Task)
-    * [.batch(values)](#module_pg-promise.Task+batch) ⇒ <code>promise</code>
-    * [.sequence(factory, [noTracking], [cb])](#module_pg-promise.Task+sequence) ⇒ <code>promise</code>
-
-<a name="module_pg-promise.Task+batch"></a>
-#### task.batch(values) ⇒ <code>promise</code>
-This method is a fusion of `promise.all` + `promise.settle` logic,highly optimized for use within tasks and transactions, to resolve with thesame type of result as `promise.all`, while also settling all the promises,and providing a detailed summary in case any of the promises rejects.
-
-**Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
-**Summary**: Attempts to resolve every value in the input array.  
-**Returns**: <code>promise</code> - Result for the entire batch, which resolves whenevery promise in the input array has been resolved, and rejects when oneor more promise objects in the array rejected:- resolves with an array of individual resolved results, the same as `promise.all`;- rejects with an array of objects `{success, result}`:  - `success`: `true/false`, indicates whether the corresponding value    in the input array was resolved.  - `result`: resolved data, if `success=true`, or else the rejection reason.  The array comes extended with function `getErrors`, which returns the list  of just errors, with support for nested batch results.  Calling `getErrors()[0]`, for example, will get the same result as the  rejection reason that `promise.all` would provide.In both cases the output array is always the same size as the input one,this way providing index mapping between input and output values.  
-<table>
-  <thead>
-    <tr>
-      <th>Param</th><th>Type</th><th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-<tr>
-    <td>values</td><td><code>Array</code></td><td><p>array of values of the following types:</p>
-<ul>
-<li>a simple value or object, to resolve with by default;</li>
-<li>a promise object to be either resolved or rejected;</li>
-<li>a function, to be called with the task/transaction context,
-so it can return a value, an object or a promise.
-If it returns another function, the call will be repeated,
-until the returned type is a value, an object or a promise.</li>
-</ul>
-<p>If the parameter is anything other than an array, an error will
-be thrown: <code>Array of values is required to execute a batch.</code></p>
-</td>
-    </tr>  </tbody>
-</table>
-
-<a name="module_pg-promise.Task+sequence"></a>
-#### task.sequence(factory, [noTracking], [cb]) ⇒ <code>promise</code>
-**Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
-**Summary**: Sequentially resolves dynamic promises returned by a promise factory.  
-**Returns**: <code>promise</code> - Result of the sequence, depending on `noTracking`:- resolves with an array of resolved data, if `noTracking = false`;- resolves with an integer - total number of resolved requests, if `noTracking = true`;- rejects with the reason when the factory function throws an error or returns a rejected promise.  
-<table>
-  <thead>
-    <tr>
-      <th>Param</th><th>Type</th><th>Default</th><th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-<tr>
-    <td>factory</td><td><code>function</code></td><td></td><td><p>a callback function <code>(idx, t)</code> to create and return a new query
-request, based on the request index passed. When the value is anything other than
-a function, an error is thrown: <code>Invalid factory function specified.</code></p>
-</td>
-    </tr><tr>
-    <td>[noTracking]</td><td><code>boolean</code></td><td><code>false</code></td><td><p>when <code>true</code>, it prevents tracking resolved results from
-individual query requests, to avoid memory overuse during super-massive transactions.</p>
-</td>
-    </tr><tr>
-    <td>[cb]</td><td><code>function</code></td><td></td><td><p>notification callback with <code>(idx, data)</code>, for every request resolved.</p>
-</td>
-    </tr>  </tbody>
-</table>
-
 <a name="module_pg-promise.Database"></a>
 ### pg-promise.Database
 **Kind**: static class of <code>[pg-promise](#module_pg-promise)</code>  
