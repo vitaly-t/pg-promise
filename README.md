@@ -806,6 +806,7 @@ Although this has a huge implication for the library's functionality, it is not 
 For any further reference you should use documentation of the [PG] library.
 
 Note the following formatting features implemented by [pg-promise] that are not in [node-postgres]:
+* [Custom Type Formatting](#custom-type-formatting)
 * Single-value formatting: [pg-promise] doesn't require use of an array when passing a single value;
 * [Raw-Text](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#raw-text) support: injecting raw/pre-formatted text values into the query;
 * Functions as formatting parameters, with the actual values returned from the callbacks;
@@ -849,7 +850,9 @@ Compatibility with other [Promises/A+] libraries though possible, is an unknown.
 ---
 #### connect
 
-Global notification function of acquiring a new database connection.
+Global notification function of acquiring a new database connection from the
+connection pool, i.e. a virtual connection.
+
 ```javascript
 var options = {
     connect: function(client){
@@ -870,7 +873,9 @@ a non-empty value other than a function.
 ---
 #### disconnect
 
-Global notification function of releasing a database connection.
+Global notification function of releasing a database connection back to the connection pool,
+i.e. releasing the virtual connection.
+
 ```javascript
 var options = {
     disconnect: function(client){
@@ -985,7 +990,8 @@ if `options.error` is set to a non-empty value other than a function.
 ---
 #### task
 
-Global notification of a task start / finish events (introduced in v1.9.0).
+Global notification of a task start / finish events.
+
 ```javascript
 var options = {
     task: function (e) {
@@ -1013,6 +1019,7 @@ The library will suppress any error thrown by the handler and write it into the 
 #### transact
 
 Global notification of a transaction start / finish events.
+
 ```javascript
 var options = {
     transact: function (e) {
@@ -1053,6 +1060,7 @@ The extension thus becomes available across all access layers:
 
 In the example below we extend the protocol with function `addImage` that will insert
 one binary image and resolve with the new record id:
+
 ```javascript
 var options = {
     extend: function (obj) {
@@ -1130,7 +1138,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
-* Version 2.0.8 added [all the long-awaiting breaking changes](https://github.com/vitaly-t/pg-promise/wiki/2.0-Migration). Released: October 12, 2015
+* Version 2.0.8 added all the [long-outstanding breaking changes](https://github.com/vitaly-t/pg-promise/wiki/2.0-Migration). Released: October 12, 2015
 * Version 1.11.0 added [noLocking](#nolocking) initialization option. Released: September 30, 2015.
 * Version 1.10.3 added enforced locks on every level of the library. Released: September 11, 2015.
 * Version 1.10.0 added support for `batch` execution within tasks and transactions. Released: September 10, 2015.
