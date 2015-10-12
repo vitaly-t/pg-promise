@@ -316,8 +316,9 @@ but `db.proc` doesn't take a `qrm` parameter, always assuming it is `one`|`none`
 Summary for supporting procedures and functions:
 
 ```javascript
+var qrm = pgp.queryResult;
 db.func(query, values, qrm); // expects the result according to `qrm`
-db.proc(query, values); // calls db.func(query, values, pgp.queryResult.one | pgp.queryResult.none)
+db.proc(query, values); // calls db.func(query, values, qrm.one | qrm.none)
 ```
 
 ## Conversion Helpers
@@ -1129,6 +1130,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 2.0.8 added [all the long-awaiting breaking changes](https://github.com/vitaly-t/pg-promise/wiki/2.0-Migration). Released: October 12, 2015
 * Version 1.11.0 added [noLocking](#nolocking) initialization option. Released: September 30, 2015.
 * Version 1.10.3 added enforced locks on every level of the library. Released: September 11, 2015.
 * Version 1.10.0 added support for `batch` execution within tasks and transactions. Released: September 10, 2015.
