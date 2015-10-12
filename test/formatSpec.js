@@ -1,6 +1,6 @@
-var options = {};
+'use strict';
 
-var pgp = require('../lib/index')(options);
+var pgp = require('../lib/index');
 
 var dateSample = new Date();
 
@@ -11,7 +11,7 @@ var errors = {
     }
 };
 
-var func = function () {
+var dummy = function () {
 };
 
 var userObj = {
@@ -37,7 +37,7 @@ describe("Method as.bool", function () {
     });
 
     it("must correctly resolve functions", function () {
-        expect(pgp.as.bool(func)).toBe("null");
+        expect(pgp.as.bool(dummy)).toBe("null");
         expect(pgp.as.bool(function () {
             return null;
         })).toBe("null");
@@ -66,7 +66,7 @@ describe("Method as.number", function () {
     });
 
     it("must correctly resolve functions", function () {
-        expect(pgp.as.number(func)).toBe("null");
+        expect(pgp.as.number(dummy)).toBe("null");
         expect(pgp.as.number(function () {
             return null;
         })).toBe("null");
@@ -149,7 +149,7 @@ describe("Method as.text", function () {
 
     it("must correctly resolve functions", function () {
 
-        expect(pgp.as.text(func)).toBe("null");
+        expect(pgp.as.text(dummy)).toBe("null");
 
         expect(pgp.as.text(function () {
             return null;
@@ -183,7 +183,7 @@ describe("Method as.date", function () {
     });
 
     it("must correctly resolve functions", function () {
-        expect(pgp.as.date(func)).toBe("null");
+        expect(pgp.as.date(dummy)).toBe("null");
         expect(pgp.as.date(function () {
             return null;
         })).toBe("null");
@@ -275,7 +275,7 @@ describe("Method as.csv", function () {
 
     it("must correctly resolve functions", function () {
 
-        expect(pgp.as.csv(func)).toBe("");
+        expect(pgp.as.csv(dummy)).toBe("");
 
         expect(pgp.as.csv(function () {
             return null;
@@ -303,7 +303,7 @@ describe("Method as.json", function () {
 
     it("must correctly resolve functions", function () {
 
-        expect(pgp.as.json(func)).toBe("null");
+        expect(pgp.as.json(dummy)).toBe("null");
         expect(pgp.as.json(function () {
             return null;
         })).toBe("null");
@@ -344,7 +344,7 @@ describe("Method as.array", function () {
 
     it("must correctly resolve functions", function () {
 
-        expect(pgp.as.array(func)).toBe("null");
+        expect(pgp.as.array(dummy)).toBe("null");
 
         expect(pgp.as.array(function () {
             return null;
@@ -371,7 +371,7 @@ describe("Method as.array", function () {
 
 });
 
-describe("Method as.func", function () {
+describe("Method as.dummy", function () {
 
     it("must correctly convert any function return", function () {
         expect(pgp.as.func()).toBe('null');
@@ -393,9 +393,9 @@ describe("Method as.func", function () {
         })).toBe("null");
 
         expect(pgp.as.func(function () {
-            return func()
+            return dummy()
             {
-                return func()
+                return dummy()
                 {
                 }
             }
@@ -458,11 +458,11 @@ describe("Method as.func", function () {
         }).toThrow("internal error");
 
         expect(function () {
-            pgp.as.func(func, false, '');
+            pgp.as.func(dummy, false, '');
         }).toThrow(new Error("'' is not an object."));
 
         expect(function () {
-            pgp.as.func(func, false, 0);
+            pgp.as.func(dummy, false, 0);
         }).toThrow(new Error("'0' is not an object."));
 
     });
@@ -592,7 +592,7 @@ describe("Method as.format", function () {
         expect(function () {
             pgp.as.format(function () {
                 return '';
-            }, func)
+            }, dummy)
         }).toThrow(new Error(errEmptyString));
 
         expect(function () {

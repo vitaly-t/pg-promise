@@ -221,6 +221,7 @@ Complete access layer to node-postgres via Promises/A+
 <li><code>transact</code> - transaction event notification;</li>
 <li><code>error</code> - error event notification;</li>
 <li><code>extend</code> - protocol extension event;</li>
+<li><code>noLocking</code> - prevents protocol locking.</li>
 </ul>
 </td>
     </tr>  </tbody>
@@ -230,8 +231,8 @@ Complete access layer to node-postgres via Promises/A+
 * [pg-promise](#module_pg-promise)
   * _static_
     * [.Task](#module_pg-promise.Task)
-      * [.batch(values)](#module_pg-promise.Task+batch) ⇒ <code>promise</code>
-      * [.sequence(factory, [noTracking], [cb])](#module_pg-promise.Task+sequence) ⇒ <code>promise</code>
+      * [.batch(values, [cb])](#module_pg-promise.Task+batch) ⇒ <code>Promise</code>
+      * [.sequence(source, [dest], [limit], [track])](#module_pg-promise.Task+sequence) ⇒ <code>Promise</code>
     * [.Database](#module_pg-promise.Database)
       * [new Database(cn)](#new_module_pg-promise.Database_new)
       * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>promise</code>
@@ -250,6 +251,8 @@ Complete access layer to node-postgres via Promises/A+
       * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>promise</code>
     * [.version](#module_pg-promise.version)
     * [.pg](#module_pg-promise.pg)
+    * [.queryResult](#module_pg-promise.queryResult)
+    * [.QueryResultError](#module_pg-promise.QueryResultError)
     * [.end()](#module_pg-promise.end)
     * ["connect"](#module_pg-promise.event_connect)
     * ["disconnect"](#module_pg-promise.event_disconnect)
@@ -267,63 +270,50 @@ Complete access layer to node-postgres via Promises/A+
 **Summary**: Internal Task implementation.  
 
   * [.Task](#module_pg-promise.Task)
-    * [.batch(values)](#module_pg-promise.Task+batch) ⇒ <code>promise</code>
-    * [.sequence(factory, [noTracking], [cb])](#module_pg-promise.Task+sequence) ⇒ <code>promise</code>
+    * [.batch(values, [cb])](#module_pg-promise.Task+batch) ⇒ <code>Promise</code>
+    * [.sequence(source, [dest], [limit], [track])](#module_pg-promise.Task+sequence) ⇒ <code>Promise</code>
 
 <a name="module_pg-promise.Task+batch"></a>
-#### task.batch(values) ⇒ <code>promise</code>
-This method is a fusion of `promise.all` + `promise.settle` logic,highly optimized for use within tasks and transactions, to resolve with thesame type of result as `promise.all`, while also settling all the promises,and providing a detailed summary in case any of the promises rejects.
+#### task.batch(values, [cb]) ⇒ <code>Promise</code>
+For complete method documentation see [spex.batch](https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md)
 
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
-**Summary**: Attempts to resolve every value in the input array.  
-**Returns**: <code>promise</code> - Result for the entire batch, which resolves whenevery promise in the input array has been resolved, and rejects when oneor more promise objects in the array rejected:- resolves with an array of individual resolved results, the same as `promise.all`;- rejects with an array of objects `{success, result}`:  - `success`: `true/false`, indicates whether the corresponding value    in the input array was resolved.  - `result`: resolved data, if `success=true`, or else the rejection reason.  The array comes extended with function `getErrors`, which returns the list  of just errors, with support for nested batch results.  Calling `getErrors()[0]`, for example, will get the same result as the  rejection reason that `promise.all` would provide.In both cases the output array is always the same size as the input one,this way providing index mapping between input and output values.  
+**Summary**: Resolves a predefined array of mixed values by redirecting tomethod [spex.batch](https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md)  
 <table>
   <thead>
     <tr>
-      <th>Param</th><th>Type</th><th>Description</th>
+      <th>Param</th><th>Type</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>values</td><td><code>Array</code></td><td><p>array of values of the following types:</p>
-<ul>
-<li>a simple value or object, to resolve with by default;</li>
-<li>a promise object to be either resolved or rejected;</li>
-<li>a function, to be called with the task/transaction context,
-so it can return a value, an object or a promise.
-If it returns another function, the call will be repeated,
-until the returned type is a value, an object or a promise.</li>
-</ul>
-<p>If the parameter is anything other than an array, an error will
-be thrown: <code>Array of values is required to execute a batch.</code></p>
-</td>
+    <td>values</td><td><code>Array</code></td>
+    </tr><tr>
+    <td>[cb]</td><td><code>function</code></td>
     </tr>  </tbody>
 </table>
 
 <a name="module_pg-promise.Task+sequence"></a>
-#### task.sequence(factory, [noTracking], [cb]) ⇒ <code>promise</code>
+#### task.sequence(source, [dest], [limit], [track]) ⇒ <code>Promise</code>
+For complete method documentation see [spex.sequence](https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md)
+
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
-**Summary**: Sequentially resolves dynamic promises returned by a promise factory.  
-**Returns**: <code>promise</code> - Result of the sequence, depending on `noTracking`:- resolves with an array of resolved data, if `noTracking = false`;- resolves with an integer - total number of resolved requests, if `noTracking = true`;- rejects with the reason when the factory function throws an error or returns a rejected promise.  
+**Summary**: Resolves a dynamic sequence of mixed values by redirecting tomethod [spex.sequence](https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md)  
 <table>
   <thead>
     <tr>
-      <th>Param</th><th>Type</th><th>Default</th><th>Description</th>
+      <th>Param</th><th>Type</th><th>Default</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>factory</td><td><code>function</code></td><td></td><td><p>a callback function <code>(idx, t)</code> to create and return a new query
-request, based on the request index passed. When the value is anything other than
-a function, an error is thrown: <code>Invalid factory function specified.</code></p>
-</td>
+    <td>source</td><td><code>function</code></td><td></td>
     </tr><tr>
-    <td>[noTracking]</td><td><code>boolean</code></td><td><code>false</code></td><td><p>when <code>true</code>, it prevents tracking resolved results from
-individual query requests, to avoid memory overuse during super-massive transactions.</p>
-</td>
+    <td>[dest]</td><td><code>function</code></td><td></td>
     </tr><tr>
-    <td>[cb]</td><td><code>function</code></td><td></td><td><p>notification callback with <code>(idx, data)</code>, for every request resolved.</p>
-</td>
+    <td>[limit]</td><td><code>Number</code></td><td><code>0</code></td>
+    </tr><tr>
+    <td>[track]</td><td><code>Boolean</code></td><td><code>false</code></td>
     </tr>  </tbody>
 </table>
 
@@ -674,6 +664,16 @@ Library version.
 <a name="module_pg-promise.pg"></a>
 ### pg-promise.pg
 Instance of the PG library used.
+
+**Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
+<a name="module_pg-promise.queryResult"></a>
+### pg-promise.queryResult
+Query Result Mask.
+
+**Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
+<a name="module_pg-promise.QueryResultError"></a>
+### pg-promise.QueryResultError
+Query Result Error type.
 
 **Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
 <a name="module_pg-promise.end"></a>

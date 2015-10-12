@@ -5,7 +5,7 @@
 'use strict';
 
 var dbHeader = require('./header');
-var promise = dbHeader.promise;
+var promise = dbHeader.defPromise;
 var header = dbHeader({
     query: function (e) {
         console.log(e.query); // print all of the queries;

@@ -1,7 +1,9 @@
+'use strict';
+
 var pgClient = require('pg/lib/client');
 var header = require('./db/header');
 
-var promise = header.promise;
+var promise = header.defPromise;
 var options = {
     promiseLib: promise // use Bluebird for testing;
 };
@@ -10,7 +12,7 @@ var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
 // empty function;
-var nope = function () {
+var dummy = function () {
 };
 
 describe("Connect/Disconnect events", function () {
@@ -29,7 +31,7 @@ describe("Connect/Disconnect events", function () {
                 throw new Error("### Testing error output in 'disconnect'. Please ignore. ###");
             };
             db.query("select 'test'")
-                .then(nope, nope)
+                .then(dummy, dummy)
                 .finally(function () {
                     done();
                 });
@@ -64,7 +66,7 @@ describe("Connect/Disconnect events", function () {
                     t.query("select 'three'")
                 ]);
             })
-                .then(nope, nope)
+                .then(dummy, dummy)
                 .finally(function () {
                     done();
                 });
@@ -93,7 +95,7 @@ describe("Query event", function () {
                 throw new Error("### Testing error output in 'query'. Please ignore. ###");
             };
             db.query("select $1", [123])
-                .then(nope, nope)
+                .then(dummy, dummy)
                 .finally(function () {
                     done();
                 });
@@ -219,7 +221,7 @@ describe("Error event", function () {
             db.tx("Error Transaction", function () {
                 throw new Error("Test Error");
             })
-                .then(nope, function (reason) {
+                .then(dummy, function (reason) {
                     r = reason;
                 })
                 .finally(function () {
@@ -249,7 +251,7 @@ describe("Error event", function () {
                 context = e;
             };
             db.query(null)
-                .then(nope, nope)
+                .then(dummy, dummy)
                 .finally(function () {
                     done();
                 });
@@ -275,7 +277,7 @@ describe("Error event", function () {
                 context = e;
             };
             db.query("Bla-Bla", undefined, 42)
-                .then(nope, nope)
+                .then(dummy, dummy)
                 .finally(function () {
                     done();
                 });
@@ -302,7 +304,7 @@ describe("Error event", function () {
                 context = e;
             };
             db.one("select * from users")
-                .then(nope, nope)
+                .then(dummy, dummy)
                 .finally(function () {
                     done();
                 });
@@ -311,7 +313,8 @@ describe("Error event", function () {
             options.error = null;
         });
         it("must reject with correct error", function () {
-            expect(errTxt).toBe("Single row was expected from the query, but multiple returned.");
+            expect(errTxt instanceof pgp.QueryResultError).toBe(true);
+            expect(errTxt.message).toBe("Single row was expected from the query, but multiple returned.");
             expect(context.query).toBe("select * from users");
             expect(context.params).toBeUndefined();
             expect(context.client instanceof pgClient).toBe(true);
@@ -328,7 +331,7 @@ describe("Error event", function () {
                 context = e;
             };
             db.none("select * from users")
-                .then(nope, nope)
+                .then(dummy, dummy)
                 .finally(function () {
                     done();
                 });
@@ -337,7 +340,8 @@ describe("Error event", function () {
             options.error = null;
         });
         it("must reject with correct error", function () {
-            expect(errTxt).toBe("No return data was expected from the query.");
+            expect(errTxt instanceof pgp.QueryResultError).toBe(true);
+            expect(errTxt.message).toBe("No return data was expected from the query.");
             expect(context.query).toBe("select * from users");
             expect(context.params).toBeUndefined();
             expect(context.client instanceof pgClient).toBe(true);
@@ -354,7 +358,7 @@ describe("Error event", function () {
                 context = e;
             };
             db.many("select * from users where id > $1", 1000)
-                .then(nope, nope)
+                .then(dummy, dummy)
                 .finally(function () {
                     done();
                 });
@@ -363,7 +367,8 @@ describe("Error event", function () {
             options.error = null;
         });
         it("must reject with correct error", function () {
-            expect(errTxt).toBe("No data returned from the query.");
+            expect(errTxt instanceof pgp.QueryResultError).toBe(true);
+            expect(errTxt.message).toBe("No data returned from the query.");
             expect(context.query).toBe("select * from users where id > 1000");
             expect(context.params).toBeUndefined();
             expect(context.client instanceof pgClient).toBe(true);
@@ -388,7 +393,7 @@ describe("Error event", function () {
                 .finally(function () {
                     sco.done();
                     query
-                        .then(nope, function (reason) {
+                        .then(dummy, function (reason) {
                             r = reason;
                         })
                         .finally(function () {
@@ -418,7 +423,7 @@ describe("Error event", function () {
                 context = e;
             };
             db.query("${test}", params)
-                .then(nope, nope)
+                .then(dummy, dummy)
                 .finally(function () {
                     done();
                 });

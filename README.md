@@ -41,7 +41,6 @@ Complete access layer to [node-postgres] via [Promises/A+].
     - [Nested Transactions](#nested-transactions)
     - [Transactions with SAVEPOINT](#transactions-with-savepoint)
     - [Synchronous Transactions](#synchronous-transactions)    
-    - [Sequence Benchmark](#sequence-benchmark) 
 * [Advanced](#advanced)
   - [Initialization Options](#initialization-options)
     - [pgFormatting](#pgformatting)
@@ -166,7 +165,7 @@ function query(query, values, qrm);
    - format `$1, $2, etc..`, if `values` is an array;
    - format `$*propName*`, if `values` is an object (not `null` and not `Date`), where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`;
 * `values` (optional) - value/array/object to replace the variables in the query;
-* `qrm` - (optional) *Query Result Mask*, as explained below. When not passed, it defaults to `queryResult.any`.
+* `qrm` - (optional) *Query Result Mask*, as explained below. When not passed, it defaults to `pgp.queryResult.any`.
 
 When a value/property inside array/object is an array, it is treated as a [PostgreSQL Array Type](http://www.postgresql.org/docs/9.4/static/arrays.html),
 converted into the array constructor format of `array[]`, the same as calling method `as.array()`.
@@ -217,7 +216,7 @@ method `query` uses parameter `qrm` (Query Result Mask):
 // Query Result Mask flags;
 //
 // Any combination is supported, except for one + many.
-queryResult = {
+var queryResult = {
     one: 1,     // single-row result is expected;
     many: 2,    // multi-row result is expected;
     none: 4,    // no rows expected;
@@ -231,8 +230,9 @@ db.query("select * from users");
 ```
 which is equivalent to making one of the following calls:
 ```javascript
-db.query("select * from users", undefined, queryResult.many | queryResult.none);
-db.query("select * from users", undefined, queryResult.any);
+var qrm = pgp.queryResult;
+db.query("select * from users", undefined, qrm.many | qrm.none);
+db.query("select * from users", undefined, qrm.any);
 db.manyOrNone("select * from users");
 db.any("select * from users");
 ```
@@ -247,9 +247,8 @@ db.oneOrNone(query, values); // expects 1 or 0 rows
 db.manyOrNone(query, values); // expects anything, same as `any`
 ```
 
-There is however one specific method `queryRaw(query, values)`, with aliases `raw` and `result` to instruct the library
-that any result verification is to be bypassed, and instead it must resolve with the original
-[Result](https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6) object passed from the [PG] library.
+There is however one specific method `result(query, values)` to bypass any result verification, and instead resolve
+with the original [Result](https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6) object passed from the [PG] library.
 
 You can also add your own methods and properties to this protocol via the [extend](#extend) event.  
 
@@ -258,8 +257,8 @@ Each query function resolves its **data** object according to the `qrm` that was
 * `none` - **data** is `undefined`. If the query returns any kind of data, it is rejected.
 * `one` - **data** is a single object. If the query returns no data or more than one row of data, it is rejected.
 * `many` - **data** is an array of objects. If the query returns no rows, it is rejected.
-* `one`|`none` - **data** is `null`, if no data was returned; or a single object, if there was one row of data returned. If the query returns more than one row of data,
-the query is rejected.
+* `one`|`none` - **data** is `null`, if no data was returned; or a single object, if there was one row of data returned.
+    If the query returns more than one row of data, the query is rejected.
 * `many`|`none` - **data** is an array of objects. When no rows are returned, **data** is an empty array.
 
 If you try to specify `one`|`many` in the same query, such query will be rejected without executing it, telling you that such mask is invalid.
@@ -317,8 +316,9 @@ but `db.proc` doesn't take a `qrm` parameter, always assuming it is `one`|`none`
 Summary for supporting procedures and functions:
 
 ```javascript
+var qrm = pgp.queryResult;
 db.func(query, values, qrm); // expects the result according to `qrm`
-db.proc(query, values); // calls db.func(query, values, queryResult.one | queryResult.none)
+db.proc(query, values); // calls db.func(query, values, qrm.one | qrm.none)
 ```
 
 ## Conversion Helpers
@@ -364,12 +364,11 @@ pgp.as.format(query, values);
             // 'values' can be a single value, an array or an object.
 ```
 
-Version 1.4.1 extended methods `bool`, `number`, `text`, `date`, `json`, `array`
-and `csv` to accept the value-parameter as a function to be called for resolving
-the actual value.
+Methods `bool`, `number`, `text`, `date`, `json`, `array` and `csv` accept the value-parameter
+as a function to be called for resolving the actual value.
 
-For methods which take optional flag `raw` it is to indicate that the
-return text is to be without any pre-processing:
+For methods which take optional flag `raw` it is to indicate that the return text is to be without
+any pre-processing:
 * No replacing each single-quote symbol `'` with two;
 * No wrapping text into single quotes;
 * Throwing an error when the variable value is `null` or `undefined`.
@@ -378,7 +377,7 @@ This adheres to the query formatting, as well as method `as.format` when variabl
 names are appended with symbol `^`: `$1^, $2^, etc...` or `$*varName^*`, where `*`
 is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
 
-As none of these helpers are associated with any database, they can be used from anywhere.
+As none of these helpers are associated with the database, they are synchronous, and can be used from anywhere.
 
 There are some cases where you might want to use a combination of these methods instead
 of the implicit parameter formatting through query methods. For example, if you want to
@@ -409,8 +408,6 @@ function createFilter(filter){
 ```
 
 ## Custom Type Formatting
-
-Version 1.9.3 added support for custom type formatting.
 
 When we pass `values` as a single parameter or inside an array, it is verified to be an object
 that supports function `formatDBType`, as either its own or inherited. And if the function exists,
@@ -455,8 +452,7 @@ custom formatting, then `query` will be expected to use `$*propName*` as the for
 
 ### Raw Custom Types
 
-Added in 1.9.5, this features allows overriding `raw` flag for the values returned
-from custom types.
+This features allows overriding `raw` flag for the values returned from custom types.
 
 Any custom type or standard type that implements function `formatDBType` can now also set
 property `_rawDBType = true` to force raw variable formatting on the returned value.
@@ -494,8 +490,8 @@ Choosing which one to use depends on the situation and personal preferences.
 
 ### Detached Connections
 
-Queries in a detached promise chain maintain connection independently, they each acquire a connection from the pool,
-execute the query and then release the connection back to the pool.
+Queries in a detached promise chain maintain connection independently, they each acquire
+a connection from the pool, execute the query and then release the connection back to the pool.
 ```javascript
 db.one("select * from users where id=$1", 123) // find the user from id;
     .then(function(data){
@@ -544,17 +540,18 @@ or because you like squeezing every bit of performance out of your code. Other t
 from the detached-connection chaining. And besides, any long sequence of queries normally resides inside a transaction, which always
 uses shared-connection chaining automatically.
 
-**UPDATE:** With [Tasks](#tasks) added below, shared connections become even easier to use.
+**NOTE:** With later support for [Tasks](#tasks) (below), shared connections became much easier to use.
 
 ### Tasks
 
-Version 1.9.0 introduced support for tasks, also replacing the engine for transactions, i.e.
-a transaction is now just a special case of a task.
+A task represents a shared connection to be used within a callback function.
+
+A transaction, for example, is just a special type of task, wrapped in `CONNECT->COMMIT/ROLLBACK`. 
 
 ```javascript
 db.task(function (t) {
     // t = this;
-    // execute a chain of queries and return a promise;
+    // execute a chain of queries;
 })
     .then(function (data) {
         // success;
@@ -563,8 +560,6 @@ db.task(function (t) {
     });
 ```
 
-Tasks and transactions work in the same way, except a task doesn't execute any of the transaction commands - `BEGIN`/`COMMIT`/`ROLLBACK`.
-
 The purpose of tasks is simply to provide a shared connection context within the callback function to execute and return
 a promise chain, and then automatically release the connection.
 
@@ -572,9 +567,6 @@ In other words, it is to simplify the use of [shared connections](#shared-connec
 and `done` in the end (if it was connected successfully), one can call `db.task` instead, execute all queries within
 the callback and return the result.
 
-As tasks and transactions share the same engine, they are considered equally important. Therefore, tasks have received
-their own [task event](#task) to be notified when a task is being executed. 
- 
 ## Transactions
 
 Transactions can be executed within both shared and detached promise chains in the same way, performing the following actions:
@@ -589,7 +581,6 @@ Transactions can be executed within both shared and detached promise chains in t
 ### Detached Transactions
 
 ```javascript
-var promise = require('promise'); // or any other supported promise library;
 db.tx(function (t) {
     // t = this;
     // creating a sequence of transaction queries:
@@ -599,23 +590,20 @@ db.tx(function (t) {
 
     // returning a promise that determines a successful transaction:
     return this.batch([q1, q2]); // all of the queries are to be resolved;
-
-}).then(function (data) {
-    console.log(data); // printing successful transaction output
-}, function (reason) {
-    console.log(reason); // printing the reason why the transaction was rejected
-});
+})
+    .then(function (data) {
+        console.log(data); // printing successful transaction output
+    }, function (reason) {
+        console.log(reason); // printing the reason why the transaction was rejected
+    });
 ```
 
-A detached transaction acquires a connection and exposes object `t` to let all containing queries execute on the same connection.
+A detached transaction acquires a connection and exposes object `t`=`this` to let all containing queries
+execute on the same connection.
 
 ### Shared-connection Transactions
 
-When executing a transaction within a shared connection chain, parameter `t` represents the same connection as `sco` from opening a shared connection,
-so either one can be used inside such a transaction interchangeably.
-
 ```javascript
-var promise = require('promise'); // or any other supported promise library;
 var sco; // shared connection object;
 db.connect()
     .then(function (obj) {
@@ -625,10 +613,8 @@ db.connect()
     .then(function (data) {
         return sco.tx(function (t) {
             // t = this;
-            // Since it is a transaction within a shared chain, it doesn't matter whether
-            // the two calls below use object `t` or `sco`, as they are exactly the same:
-            var q1 = t.none("update users set active=$1 where id=$2", [false, data.id]);
-            var q2 = sco.one("insert into audit(entity, id) values($1, $2) returning id",
+            var q1 = this.none("update users set active=$1 where id=$2", [false, data.id]);
+            var q2 = this.one("insert into audit(entity, id) values($1, $2) returning id",
                 ['users', 123]);
 
             // returning a promise that determines a successful transaction:
@@ -643,10 +629,13 @@ db.connect()
         }
     });
 ```
+
 If you need to execute just one transaction, the detached transaction pattern is all you need.
 But even if you need to combine it with other queries in a detached chain, it will work the same.
 As stated earlier, choosing a shared chain over a detached one is mostly a matter of special requirements
 and/or personal preference.
+
+P.S. Tasks is a better way of using shared connections.
 
 ### Nested Transactions
 
@@ -666,8 +655,10 @@ db.tx(function (t) {
         queries.push(this.none("insert into users(name) values($1)", "name-" + i));
     }
     queries.push(
-        this.tx(function () {
-            return this.tx(function () {
+        this.tx(function (t1) {
+            // t1 = this != t;
+            return this.tx(function (t2) {
+                // t2 = this != t1 != t;
                 return this.one("select count(*) from users");
             });
         }));
@@ -677,17 +668,13 @@ db.tx(function (t) {
         console.log(data); // printing transaction result;
     }, function (reason) {
         console.log(reason); // printing why the transaction failed;
-    })
+    });
 ```
 
 Things to note from the example above:
-* Sub-transactions do not declare a context parameter in their callback. It is not because
-they don't receive one, they all do, but they don't care in such situation because of the shared connection
-chain that will result in the same `t` object as for the main callback, so they just reuse it from the parent,
-for simplicity;
 * A nested transaction cannot be disconnected from its container, i.e. it must get into the container's promise chain,
  or it will result in an attempt to execute against an unknown connection;
-* As expected, a failure on any level in a nested transaction will `ROLLBACK` and `reject` the entire chain.
+* A failure on any level in a nested transaction will `ROLLBACK` and `reject` the entire chain.
 
 ### Transactions with SAVEPOINT
 
@@ -744,42 +731,37 @@ transactions inside SQL functions, and not in JavaScript.
 
 ### Synchronous Transactions
 
-A regular transaction with a set of independent queries relies on method `batch([...])` to resolve
+A regular task/transaction with a set of independent queries relies on method [batch] to resolve
 all queries asynchronously.
 
-However, when it comes to executing a significant number of such queries during a bulk `INSERT` or `UPDATE`,
-such approach is no longer practical. For one thing, it implies that all requests have been
-created as promise objects, which isn't possible when dealing with a huge number if queries,
-due to memory limitations imposed by NodeJS. And for another, when one query fails, the rest
-will continue trying to execute, due to their promise nature, as being asynchronous. The latter
-will result in many errors generated by failed queries, which by no means breaks the transaction
-logic, just fills your error log with lots of query failures that are in fact of no consequence.
+However, when it comes to executing a significant number of queries during a bulk `INSERT` or `UPDATE`,
+such approach is no longer practical. For one thing, it implies that all requests have been created as promise objects,
+which isn't possible when dealing with a huge number of queries, due to memory limitations imposed by NodeJS.
+And for another, when one query fails, the rest will continue trying to execute, due to their promise nature,
+as being asynchronous. The latter may result in executing queries outside of their connection context.
 
-This is why within each transaction we have method `sequence`, to be able to execute a strict
-sequence of queries inside your transaction, one by one, and if one fails - the rest won't try to execute.
-
-In the promise architecture this is achieved by using a promise factory.
+This is why within each task/transaction we have method [sequence], to be able to execute a strict
+sequence of queries one by one, and if one fails - the rest won't try to execute.
 
 ```javascript
-function factory(idx, t) {
-    // t = this;
+function source(index, data, delay) {
     // must create and return a promise object dynamically,
-    // based on the index of the sequence (parameter idx);
-    switch (idx) {
+    // based on the index of the sequence;
+    switch (index) {
         case 0:
-            return t.query("select 0");
+            return this.query("select 0");
         case 1:
-            return t.query("select 1");
+            return this.query("select 1");
         case 2:
-            return t.query("select 2");
+            return this.query("select 2");
     }
-    // returning nothing or null indicates the end of the sequence;
+    // returning nothing/undefined indicates the end of the sequence;
     // throwing an error will result in a reject;
 }
 
 db.tx(function (t) {
     // t = this;
-    return t.sequence(factory);
+    return this.sequence(source);
 })
     .then(function (data) {
         console.log(data); // print result;
@@ -787,76 +769,6 @@ db.tx(function (t) {
         console.log(reason); // print error;
     });
 ```
-
-A simpler example, using in-line implementation and `this` context:
-
-```javascript
-db.tx(function (t) {
-    // t = this;
-    return this.sequence(function (idx) {
-        switch (idx) {
-            case 0:
-                return this.query("select 0");
-            case 1:
-                return this.query("select 1");
-            case 2:
-                return this.query("select 2");
-        }
-    });
-})
-    .then(function (data) {
-        console.log(data); // print result;
-    }, function (reason) {
-        console.log(reason); // print error;
-    });
-```
-
-By default, method `sequence` resolves with an array of resolved results from each
-query created by the factory. However, if you have too many requests in your sequence,
-such array may quickly grow out of proportion.
-
-To prevent this from happening, method `sequence` has been extended to the following syntax:
-```javascript
-sequence(factory, noTracking, cb);
-```
-Optional flag `noTracking` (default is `false`) can be passed to indicate that the
-resolved results of the sequence are not to be tracked, and the method is to resolve with just an integer -
-total number of queries that have been resolved.
-
-Optional `cb` can be passed to receive callbacks with `(idx, data)` for every query
-request that has been resolved, independent of the result tracking set by `noTracking`.
-
-Parameter `noTracking` can have a significant impact on memory consumption, depending
-on how many requests are in the sequence and the size of data they resolve with,
-and it should be used:
-* whenever the individual results from the sequence are not needed;
-* when executing super-massive transactions (north of 100,000 queries).
-
-#### Sequence Benchmark
-
-Below is a benchmark conducted on a home PC, so that you know what to expect
-in terms of the performance.
-
-A home PC was used for the test, with the following configuration:
-
-* CPU - i7-4770K @ 4GHz, Memory - 32GB;
-* Windows 8.1, with PostgreSQL 9.4 on a 256GB Samsung 840 Pro.
-
-The test was executing a single transaction with a sequence that contained 10 million inserts.
-[Bluebird] was used as the promise library of choice, with long-stack traces switched off.
-
-It took 15 minutes to execute such transaction, with CPU staying at 15% load, while
-the Node JS (0.12.5, 64-bit) process maintained stable at 70-75MB of overall memory usage. 
-
-This translates in nicely throttled inserts at 11,000 records a second. 
-
-The test executed `sequence` with parameter `noTracking` = `true`. And when executing the same test
-without parameter `noTracking` set, the test could barely pass 1m inserts, consuming way too much memory.
-
-**Conclusion**
-
-* The library is almost infinitely scalable when executing transactions with use of `sequence`
-* You should not execute a sequence larger than 100,000 queries without passing `noTracking = true` 
 
 # Advanced
 
@@ -894,6 +806,7 @@ Although this has a huge implication for the library's functionality, it is not 
 For any further reference you should use documentation of the [PG] library.
 
 Note the following formatting features implemented by [pg-promise] that are not in [node-postgres]:
+* [Custom Type Formatting](#custom-type-formatting)
 * Single-value formatting: [pg-promise] doesn't require use of an array when passing a single value;
 * [Raw-Text](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#raw-text) support: injecting raw/pre-formatted text values into the query;
 * Functions as formatting parameters, with the actual values returned from the callbacks;
@@ -907,11 +820,8 @@ When needed, use the generic `query` instead to invoke functions with redirected
 ---
 #### promiseLib
 
-Set this property to an alternative promise library compliant with the [Promises/A+] standard.
-
-By default, **pg-promise** uses version of [Promises/A+] provided by [Promise]. If you want to override
-this and force the library to use a different implementation of the standard, just set this parameter
-to the library's instance.
+By default, **pg-promise** uses ES6 Promise. If your version of NodeJS doesn't support ES6 Promise,
+or you want a different promise library to be used, set this property to the library's instance.
 
 Example of switching over to [Bluebird]:
 ```javascript
@@ -922,34 +832,27 @@ var options = {
 var pgp = require('pg-promise')(options);
 ```
 
-And if you want to use the ES6/native `Promise`, set the parameter to the main function:
-
-```javascript
-var options = {
-    promiseLib: Promise
-};
-var pgp = require('pg-promise')(options);
-```
-Please note that the library makes no assumption about the level of support for the native `Promise`
-by your Node JS environment, expecting only that the basic `resolve` and `reject` are working in
-accordance with the [Promises/A+] standard.
+This library requires only the basic `resolve` and `reject` to be available within the promise
+library that's specified.
 
 [Promises/A+] libraries that passed our compatibility test and are currently supported:
 
-* [Promise] - very solid, used by default;
+* **ES6 Promise** - used by default, though it doesn't have `done()` or `finally()`.
 * [Bluebird] - best alternative all around;
+* [Promise] - very solid library;
 * [When] - quite old, not the best support;
 * [Q] - most widely used;
 * [RSVP] - doesn't have `done()`, use `finally/catch` instead
 * [Lie] - doesn't have `done()`. Not recommended due to poor support. 
-* **ES6 Promise** - doesn't have `done()` or `finally()`. Not recommended, due to being slow and functionally limited (as of this writing). 
 
 Compatibility with other [Promises/A+] libraries though possible, is an unknown.
 
 ---
 #### connect
 
-Global notification function of acquiring a new database connection.
+Global notification function of acquiring a new database connection from the
+connection pool, i.e. a virtual connection.
+
 ```javascript
 var options = {
     connect: function(client){
@@ -970,7 +873,9 @@ a non-empty value other than a function.
 ---
 #### disconnect
 
-Global notification function of releasing a database connection.
+Global notification function of releasing a database connection back to the connection pool,
+i.e. releasing the virtual connection.
+
 ```javascript
 var options = {
     disconnect: function(client){
@@ -1085,7 +990,8 @@ if `options.error` is set to a non-empty value other than a function.
 ---
 #### task
 
-Global notification of a task start / finish events (introduced in v1.9.0).
+Global notification of a task start / finish events.
+
 ```javascript
 var options = {
     task: function (e) {
@@ -1113,6 +1019,7 @@ The library will suppress any error thrown by the handler and write it into the 
 #### transact
 
 Global notification of a transaction start / finish events.
+
 ```javascript
 var options = {
     transact: function (e) {
@@ -1153,6 +1060,7 @@ The extension thus becomes available across all access layers:
 
 In the example below we extend the protocol with function `addImage` that will insert
 one binary image and resolve with the new record id:
+
 ```javascript
 var options = {
     extend: function (obj) {
@@ -1230,6 +1138,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 2.0.8 added all the [long-outstanding breaking changes](https://github.com/vitaly-t/pg-promise/wiki/2.0-Migration). Released: October 12, 2015
 * Version 1.11.0 added [noLocking](#nolocking) initialization option. Released: September 30, 2015.
 * Version 1.10.3 added enforced locks on every level of the library. Released: September 11, 2015.
 * Version 1.10.0 added support for `batch` execution within tasks and transactions. Released: September 10, 2015.
@@ -1285,6 +1194,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[batch]:https://github.com/vitaly-t/pg-promise/blob/master/API.md#module_pg-promise.Task+batch
+[sequence]:https://github.com/vitaly-t/pg-promise/blob/master/API.md#module_pg-promise.Task+sequence
 [API]:https://github.com/vitaly-t/pg-promise/blob/master/API.md
 [pg-monitor]:https://github.com/vitaly-t/pg-monitor
 [pg-promise]:https://github.com/vitaly-t/pg-promise
