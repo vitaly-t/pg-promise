@@ -1,6 +1,8 @@
+'use strict';
+
 var PG = require('pg');
 var header = require('./db/header');
-var promise = header.promise;
+var promise = header.defPromise;
 var options = {
     promiseLib: promise,
     noLocking: true
@@ -50,17 +52,21 @@ describe("Library instance", function () {
         expect(typeof(pgp.as.func)).toBe('function');
         expect(pgpLib.as === pgp.as).toBe(true);
     });
+
+    it("must have property 'QueryResultError'", function () {
+        expect(pgp.QueryResultError instanceof Function).toBe(true);
+    });
 });
 
 describe("Query Result", function () {
     it("must be an object", function () {
-        expect(typeof(queryResult)).toBe('object');
+        expect(typeof(pgp.queryResult)).toBe('object');
     });
     it("must have all properties set correctly", function () {
-        expect(queryResult.one).toBe(1);
-        expect(queryResult.many).toBe(2);
-        expect(queryResult.none).toBe(4);
-        expect(queryResult.any).toBe(6);
+        expect(pgp.queryResult.one).toBe(1);
+        expect(pgp.queryResult.many).toBe(2);
+        expect(pgp.queryResult.none).toBe(4);
+        expect(pgp.queryResult.any).toBe(6);
     });
 });
 
@@ -70,11 +76,8 @@ describe("Database Protocol", function () {
         expect(typeof(db.connect)).toBe('function');
         expect(typeof(db.task)).toBe('function');
         expect(typeof(db.query)).toBe('function');
-        expect(typeof(db.raw)).toBe('function');
         expect(typeof(db.result)).toBe('function');
-        expect(typeof(db.queryRaw)).toBe('function');
         expect(typeof(db.tx)).toBe('function');
-        expect(typeof(db.transact)).toBe('function');
         expect(typeof(db.one)).toBe('function');
         expect(typeof(db.many)).toBe('function');
         expect(typeof(db.any)).toBe('function');
@@ -88,7 +91,6 @@ describe("Database Protocol", function () {
         // must not have task-level methods:
         expect(db.batch).toBeUndefined();
         expect(db.sequence).toBeUndefined();
-        expect(db.queue).toBeUndefined();
     });
 
     describe("on transaction level", function () {
@@ -111,11 +113,8 @@ describe("Database Protocol", function () {
             expect(protocol.connect).toBeUndefined();
             expect(typeof(db.task)).toBe('function');
             expect(typeof(protocol.query)).toBe('function');
-            expect(typeof(protocol.queryRaw)).toBe('function');
             expect(typeof(protocol.result)).toBe('function');
-            expect(typeof(protocol.raw)).toBe('function');
             expect(typeof(protocol.tx)).toBe('function');
-            expect(typeof(protocol.transact)).toBe('function');
             expect(typeof(protocol.one)).toBe('function');
             expect(typeof(protocol.many)).toBe('function');
             expect(typeof(protocol.any)).toBe('function');
@@ -126,7 +125,6 @@ describe("Database Protocol", function () {
             expect(typeof(protocol.func)).toBe('function');
             expect(typeof(protocol.proc)).toBe('function');
             expect(typeof(protocol.sequence)).toBe('function');
-            expect(typeof(protocol.queue)).toBe('function');
             expect(typeof(protocol.batch)).toBe('function');
         });
     });
@@ -150,11 +148,8 @@ describe("Database Protocol", function () {
             expect(protocol && typeof(protocol) === 'object').toBe(true);
             expect(protocol.connect).toBeUndefined();
             expect(typeof(protocol.query)).toBe('function');
-            expect(typeof(protocol.queryRaw)).toBe('function');
             expect(typeof(protocol.result)).toBe('function');
-            expect(typeof(protocol.raw)).toBe('function');
             expect(typeof(protocol.tx)).toBe('function');
-            expect(typeof(protocol.transact)).toBe('function');
             expect(typeof(protocol.task)).toBe('function');
             expect(typeof(protocol.one)).toBe('function');
             expect(typeof(protocol.many)).toBe('function');
@@ -166,7 +161,6 @@ describe("Database Protocol", function () {
             expect(typeof(protocol.func)).toBe('function');
             expect(typeof(protocol.proc)).toBe('function');
             expect(typeof(protocol.sequence)).toBe('function');
-            expect(typeof(protocol.queue)).toBe('function');
         });
     });
 
@@ -176,7 +170,8 @@ describe("Protocol Extension", function () {
 
     describe("on database level", function () {
         var result, THIS, ctx, counter = 0;
-        var pgpTest = require('./db/header')({
+        var pgpTest = header({
+            promiseLib: header.defPromise,
             extend: function (obj) {
                 ctx = obj;
                 THIS = this;
@@ -205,7 +200,8 @@ describe("Protocol Extension", function () {
 
     describe("on transaction level", function () {
         var result, THIS, ctx, counter = 0;
-        var pgpTest = require('./db/header')({
+        var pgpTest = header({
+            promiseLib: header.defPromise,
             extend: function (obj) {
                 counter++;
                 if (counter === 2) {

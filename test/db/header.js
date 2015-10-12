@@ -28,6 +28,6 @@ function main(options) {
     result.db = result.pgp(cn);
     return result;
 }
-main.promise = defPromise;
+main.defPromise = defPromise;
 
 module.exports = main;
