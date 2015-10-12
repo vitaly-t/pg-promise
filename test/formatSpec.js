@@ -1,6 +1,10 @@
-var options = {};
+'use strict';
 
-var pgp = require('../lib/index')(options);
+var header = require('./db/header');
+var options = {
+    promiseLib: header.defPromise
+};
+var pgp = header(options).pgp;
 
 var dateSample = new Date();
 

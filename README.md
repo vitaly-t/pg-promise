@@ -733,7 +733,7 @@ transactions inside SQL functions, and not in JavaScript.
 A regular task/transaction with a set of independent queries relies on method [batch] to resolve
 all queries asynchronously.
 
-However, when it comes to executing a significant number of such queries during a bulk `INSERT` or `UPDATE`,
+However, when it comes to executing a significant number of queries during a bulk `INSERT` or `UPDATE`,
 such approach is no longer practical. For one thing, it implies that all requests have been created as promise objects,
 which isn't possible when dealing with a huge number of queries, due to memory limitations imposed by NodeJS.
 And for another, when one query fails, the rest will continue trying to execute, due to their promise nature,
@@ -818,11 +818,8 @@ When needed, use the generic `query` instead to invoke functions with redirected
 ---
 #### promiseLib
 
-Set this property to an alternative promise library compliant with the [Promises/A+] standard.
-
-By default, **pg-promise** uses version of [Promises/A+] provided by [Promise]. If you want to override
-this and force the library to use a different implementation of the standard, just set this parameter
-to the library's instance.
+By default, **pg-promise** uses ES6 Promise. If your version of NodeJS doesn't support ES6 Promise,
+or you want a different promise library to be used, set this property to the library's instance.
 
 Example of switching over to [Bluebird]:
 ```javascript
@@ -833,27 +830,18 @@ var options = {
 var pgp = require('pg-promise')(options);
 ```
 
-And if you want to use the ES6/native `Promise`, set the parameter to the main function:
-
-```javascript
-var options = {
-    promiseLib: Promise
-};
-var pgp = require('pg-promise')(options);
-```
-Please note that the library makes no assumption about the level of support for the native `Promise`
-by your Node JS environment, expecting only that the basic `resolve` and `reject` are working in
-accordance with the [Promises/A+] standard.
+This library requires only the basic `resolve` and `reject` to be available within the promise
+library that's specified.
 
 [Promises/A+] libraries that passed our compatibility test and are currently supported:
 
-* [Promise] - very solid, used by default;
+* **ES6 Promise** - used by default, though it doesn't have `done()` or `finally()`.
 * [Bluebird] - best alternative all around;
+* [Promise] - very solid library;
 * [When] - quite old, not the best support;
 * [Q] - most widely used;
 * [RSVP] - doesn't have `done()`, use `finally/catch` instead
 * [Lie] - doesn't have `done()`. Not recommended due to poor support. 
-* **ES6 Promise** - doesn't have `done()` or `finally()`. Not recommended, due to being slow and functionally limited (as of this writing). 
 
 Compatibility with other [Promises/A+] libraries though possible, is an unknown.
 

@@ -1,10 +1,14 @@
+'use strict';
+
+var header = require('./db/header');
+
 function dummy() {
 }
 
 describe("Library entry function", function () {
 
     var pgpLib, moduleName = '../lib/index';
-
+/*
     beforeEach(function () {
         delete require.cache[require.resolve(moduleName)];
         pgpLib = require(moduleName);
@@ -24,8 +28,6 @@ describe("Library entry function", function () {
             db.query("select * from users")
                 .then(function (data) {
                     result = data;
-                })
-                .finally(function () {
                     done();
                 });
         });
@@ -68,7 +70,7 @@ describe("Library entry function", function () {
                     promiseLib: "test"
                 });
             })
-                .toThrow(new Error("Invalid promise library override."));
+                .toThrow(new Error("Invalid promise library specified."));
         });
     });
 
@@ -80,6 +82,16 @@ describe("Library entry function", function () {
                 .toThrow(new Error("Invalid parameter 'options' specified."));
         });
     });
+*/
 
 });
 
+if (jasmine.Runner) {
+    var _finishCallback = jasmine.Runner.prototype.finishCallback;
+    jasmine.Runner.prototype.finishCallback = function () {
+        // Run the old finishCallback:
+        _finishCallback.bind(this)();
+
+        pgp.end(); // closing pg database application pool;
+    };
+}

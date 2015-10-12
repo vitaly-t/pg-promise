@@ -1,7 +1,9 @@
+'use strict';
+
 var QueryStream = require('pg-query-stream');
 var JSONStream = require('JSONStream');
 var header = require('./db/header');
-var promise = header.promise;
+var promise = header.defPromise;
 var options = {
     promiseLib: promise
 };

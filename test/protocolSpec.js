@@ -1,6 +1,8 @@
+'use strict';
+
 var PG = require('pg');
 var header = require('./db/header');
-var promise = header.promise;
+var promise = header.defPromise;
 var options = {
     promiseLib: promise,
     noLocking: true
@@ -49,6 +51,10 @@ describe("Library instance", function () {
         expect(typeof(pgp.as.format)).toBe('function');
         expect(typeof(pgp.as.func)).toBe('function');
         expect(pgpLib.as === pgp.as).toBe(true);
+    });
+
+    it("must have property 'QueryResultError'", function(){
+        expect(pgp.QueryResultError instanceof Function).toBe(true);
     });
 });
 

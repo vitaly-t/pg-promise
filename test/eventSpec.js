@@ -1,7 +1,9 @@
+'use strict';
+
 var pgClient = require('pg/lib/client');
 var header = require('./db/header');
 
-var promise = header.promise;
+var promise = header.defPromise;
 var options = {
     promiseLib: promise // use Bluebird for testing;
 };
