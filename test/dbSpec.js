@@ -10,7 +10,7 @@ var dbHeader = header(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
-function nope() {
+function dummy() {
     // dummy/empty function;
 }
 
@@ -129,7 +129,7 @@ describe("Connection", function () {
         describe("with direction connection", function () {
             beforeEach(function (done) {
                 dbErr.connect()
-                    .then(nope, function (error) {
+                    .then(dummy, function (error) {
                         result = error;
                     })
                     .finally(function () {
@@ -143,8 +143,8 @@ describe("Connection", function () {
         });
         describe("with transaction connection", function () {
             beforeEach(function (done) {
-                dbErr.tx(nope)
-                    .then(nope, function (error) {
+                dbErr.tx(dummy)
+                    .then(dummy, function (error) {
                         result = error;
                     })
                     .finally(function () {
@@ -1061,7 +1061,7 @@ describe("Batch", function () {
             db.task(function () {
                 return this.batch();
             })
-                .then(nope, function (reason) {
+                .then(dummy, function (reason) {
                     error = reason;
                 })
                 .finally(function () {
@@ -1099,7 +1099,7 @@ describe("Batch", function () {
                     throw new Error("Ops!");
                 }]);
             })
-                .then(nope, function (reason) {
+                .then(dummy, function (reason) {
                     error = reason[0].result;
                 })
                 .finally(function () {
@@ -1118,7 +1118,7 @@ describe("Batch", function () {
             db.task(function () {
                 return this.batch([0, null, promise.reject("one"), undefined, "hello", promise.reject("two"), {test: true}]);
             })
-                .then(nope, function (reason) {
+                .then(dummy, function (reason) {
                     result = reason;
                 })
                 .finally(function () {
@@ -1172,7 +1172,7 @@ describe("Batch", function () {
             db.task(function () {
                 return this.batch([promise.reject("one"), nested, promise.reject("four")]);
             })
-                .then(nope, function (reason) {
+                .then(dummy, function (reason) {
                     result = reason;
                 })
                 .finally(function () {
@@ -1425,7 +1425,7 @@ describe("Prepared Statements", function () {
                 name: "break it",
                 text: "select * from somewhere"
             })
-                .then(nope, function (reason) {
+                .then(dummy, function (reason) {
                     result = reason;
                 })
                 .finally(function () {
@@ -1445,7 +1445,7 @@ describe("Prepared Statements", function () {
                 name: "",
                 text: "non-empty"
             })
-                .then(nope, function (reason) {
+                .then(dummy, function (reason) {
                     result = reason;
                 })
                 .finally(function () {
@@ -1464,7 +1464,7 @@ describe("Prepared Statements", function () {
                 name: "non-empty",
                 text: null
             })
-                .then(nope, function (reason) {
+                .then(dummy, function (reason) {
                     result = reason;
                 })
                 .finally(function () {
@@ -1507,7 +1507,7 @@ describe("Task", function () {
     describe("with a callback that returns nothing", function () {
         var result;
         beforeEach(function (done) {
-            db.task(nope)
+            db.task(dummy)
                 .then(function (data) {
                     result = data;
                 })
@@ -1544,7 +1544,7 @@ describe("Task", function () {
             db.task(function () {
                 throw new Error("test");
             })
-                .then(nope, function (reason) {
+                .then(dummy, function (reason) {
                     result = reason;
                 })
                 .finally(function () {

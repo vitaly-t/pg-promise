@@ -2,50 +2,59 @@
 
 var header = require('./db/header');
 
+var supportsPromise = typeof(Promise) !== 'undefined';
+
 function dummy() {
 }
 
 describe("Library entry function", function () {
 
-    var pgpLib, moduleName = '../lib/index';
-/*
-    beforeEach(function () {
-        delete require.cache[require.resolve(moduleName)];
-        pgpLib = require(moduleName);
+    afterEach(function () {
+        header({
+            promiseLib: header.defPromise
+        });
     });
 
     describe("without any promise override", function () {
         it("must return a valid library object", function () {
-            var lib = pgpLib();
-            expect(typeof(lib)).toBe('function');
+            if (supportsPromise) {
+                var lib = header();
+                expect(typeof(lib.pgp)).toBe('function');
+            } else {
+                expect(function () {
+                    header();
+                }).toThrow("Promise library must be specified.");
+            }
         })
     });
 
-    describe("without any options", function () {
-        var result;
-        beforeEach(function (done) {
-            var db = require('./db/header')().db;
-            db.query("select * from users")
-                .then(function (data) {
-                    result = data;
-                    done();
-                });
+    if(supportsPromise) {
+        describe("without any options", function () {
+            var result;
+            beforeEach(function (done) {
+                var db = header().db;
+                db.query("select * from users")
+                    .then(function (data) {
+                        result = data;
+                        done();
+                    });
+            });
+            it("must be able to execute queries", function () {
+                expect(result instanceof Array).toBe(true);
+            })
         });
-        it("must be able to execute queries", function () {
-            expect(result instanceof Array).toBe(true);
-        })
-    });
+    }
 
     describe("with a valid promise library-object override", function () {
         it("must return a valid library object", function () {
-            var lib = pgpLib(
+            var lib = header(
                 {
                     promiseLib: {
                         resolve: dummy,
                         reject: dummy
                     }
                 });
-            expect(typeof(lib)).toBe('function');
+            expect(typeof(lib.pgp)).toBe('function');
         })
     });
 
@@ -56,17 +65,17 @@ describe("Library entry function", function () {
 
             fakePromiseLib.resolve = dummy;
             fakePromiseLib.reject = dummy;
-            var lib = pgpLib({
+            var lib = header({
                 promiseLib: fakePromiseLib
             });
-            expect(typeof(lib)).toBe('function');
+            expect(typeof(lib.pgp)).toBe('function');
         })
     });
 
     describe("with invalid promise override", function () {
         it("must throw the correct error", function () {
             expect(function () {
-                pgpLib({
+                header({
                     promiseLib: "test"
                 });
             })
@@ -77,12 +86,11 @@ describe("Library entry function", function () {
     describe("with invalid options parameter", function () {
         it("must throw the correct error", function () {
             expect(function () {
-                pgpLib(123);
+                header(123);
             })
                 .toThrow(new Error("Invalid parameter 'options' specified."));
         });
     });
-*/
 
 });
 

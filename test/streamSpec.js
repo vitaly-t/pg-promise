@@ -4,9 +4,11 @@ var QueryStream = require('pg-query-stream');
 var JSONStream = require('JSONStream');
 var header = require('./db/header');
 var promise = header.defPromise;
+
 var options = {
     promiseLib: promise
 };
+
 var dbHeader = header(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;

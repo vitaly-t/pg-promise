@@ -53,7 +53,7 @@ describe("Library instance", function () {
         expect(pgpLib.as === pgp.as).toBe(true);
     });
 
-    it("must have property 'QueryResultError'", function(){
+    it("must have property 'QueryResultError'", function () {
         expect(pgp.QueryResultError instanceof Function).toBe(true);
     });
 });
@@ -170,7 +170,8 @@ describe("Protocol Extension", function () {
 
     describe("on database level", function () {
         var result, THIS, ctx, counter = 0;
-        var pgpTest = require('./db/header')({
+        var pgpTest = header({
+            promiseLib: header.defPromise,
             extend: function (obj) {
                 ctx = obj;
                 THIS = this;
@@ -199,7 +200,8 @@ describe("Protocol Extension", function () {
 
     describe("on transaction level", function () {
         var result, THIS, ctx, counter = 0;
-        var pgpTest = require('./db/header')({
+        var pgpTest = header({
+            promiseLib: header.defPromise,
             extend: function (obj) {
                 counter++;
                 if (counter === 2) {
