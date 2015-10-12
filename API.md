@@ -25,175 +25,175 @@ Query Formatting
 
 * [formatting](#module_formatting)
   * [.as](#module_formatting.as) : <code>object</code>
-    * [.text(text, raw)](#module_formatting.as.text) ⇒ <code>\*</code>
-    * [.bool(value)](#module_formatting.as.bool) ⇒ <code>\*</code>
-    * [.date(d, raw)](#module_formatting.as.date) ⇒ <code>\*</code>
-    * [.number(num)](#module_formatting.as.number) ⇒ <code>\*</code>
-    * [.number(arr)](#module_formatting.as.number) ⇒ <code>\*</code>
-    * [.csv(values)](#module_formatting.as.csv) ⇒ <code>\*</code>
-    * [.json(obj, raw)](#module_formatting.as.json) ⇒ <code>\*</code>
-    * [.func(func, raw, obj)](#module_formatting.as.func) ⇒ <code>\*</code>
-    * [.format(query, values)](#module_formatting.as.format) ⇒ <code>\*</code>
+    * [.text(text, [raw])](#module_formatting.as.text) ⇒ <code>String</code>
+    * [.bool(value)](#module_formatting.as.bool) ⇒ <code>String</code>
+    * [.date(d, [raw])](#module_formatting.as.date) ⇒ <code>String</code>
+    * [.number(num)](#module_formatting.as.number) ⇒ <code>String</code>
+    * [.number(arr)](#module_formatting.as.number) ⇒ <code>String</code>
+    * [.csv(values)](#module_formatting.as.csv) ⇒ <code>String</code>
+    * [.json(obj, [raw])](#module_formatting.as.json) ⇒ <code>String</code>
+    * [.func(func, [raw], [obj])](#module_formatting.as.func) ⇒ <code>String</code>
+    * [.format(query, values)](#module_formatting.as.format) ⇒ <code>String</code>
 
 <a name="module_formatting.as"></a>
 ### formatting.as : <code>object</code>
 **Kind**: static namespace of <code>[formatting](#module_formatting)</code>  
 
 * [.as](#module_formatting.as) : <code>object</code>
-  * [.text(text, raw)](#module_formatting.as.text) ⇒ <code>\*</code>
-  * [.bool(value)](#module_formatting.as.bool) ⇒ <code>\*</code>
-  * [.date(d, raw)](#module_formatting.as.date) ⇒ <code>\*</code>
-  * [.number(num)](#module_formatting.as.number) ⇒ <code>\*</code>
-  * [.number(arr)](#module_formatting.as.number) ⇒ <code>\*</code>
-  * [.csv(values)](#module_formatting.as.csv) ⇒ <code>\*</code>
-  * [.json(obj, raw)](#module_formatting.as.json) ⇒ <code>\*</code>
-  * [.func(func, raw, obj)](#module_formatting.as.func) ⇒ <code>\*</code>
-  * [.format(query, values)](#module_formatting.as.format) ⇒ <code>\*</code>
+  * [.text(text, [raw])](#module_formatting.as.text) ⇒ <code>String</code>
+  * [.bool(value)](#module_formatting.as.bool) ⇒ <code>String</code>
+  * [.date(d, [raw])](#module_formatting.as.date) ⇒ <code>String</code>
+  * [.number(num)](#module_formatting.as.number) ⇒ <code>String</code>
+  * [.number(arr)](#module_formatting.as.number) ⇒ <code>String</code>
+  * [.csv(values)](#module_formatting.as.csv) ⇒ <code>String</code>
+  * [.json(obj, [raw])](#module_formatting.as.json) ⇒ <code>String</code>
+  * [.func(func, [raw], [obj])](#module_formatting.as.func) ⇒ <code>String</code>
+  * [.format(query, values)](#module_formatting.as.format) ⇒ <code>String</code>
 
 <a name="module_formatting.as.text"></a>
-#### as.text(text, raw) ⇒ <code>\*</code>
+#### as.text(text, [raw]) ⇒ <code>String</code>
 **Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
-      <th>Param</th>
+      <th>Param</th><th>Type</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>text</td>
+    <td>text</td><td><code>String</code></td>
     </tr><tr>
-    <td>raw</td>
+    <td>[raw]</td><td><code>Boolean</code></td>
     </tr>  </tbody>
 </table>
 
 <a name="module_formatting.as.bool"></a>
-#### as.bool(value) ⇒ <code>\*</code>
+#### as.bool(value) ⇒ <code>String</code>
 **Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
-      <th>Param</th>
+      <th>Param</th><th>Type</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>value</td>
+    <td>value</td><td><code>Boolean</code></td>
     </tr>  </tbody>
 </table>
 
 <a name="module_formatting.as.date"></a>
-#### as.date(d, raw) ⇒ <code>\*</code>
+#### as.date(d, [raw]) ⇒ <code>String</code>
 **Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
-      <th>Param</th>
+      <th>Param</th><th>Type</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>d</td>
+    <td>d</td><td><code>Date</code></td>
     </tr><tr>
-    <td>raw</td>
+    <td>[raw]</td><td><code>Boolean</code></td>
     </tr>  </tbody>
 </table>
 
 <a name="module_formatting.as.number"></a>
-#### as.number(num) ⇒ <code>\*</code>
+#### as.number(num) ⇒ <code>String</code>
 **Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
-      <th>Param</th>
+      <th>Param</th><th>Type</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>num</td>
+    <td>num</td><td><code>Number</code></td>
     </tr>  </tbody>
 </table>
 
 <a name="module_formatting.as.number"></a>
-#### as.number(arr) ⇒ <code>\*</code>
+#### as.number(arr) ⇒ <code>String</code>
 **Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
-      <th>Param</th>
+      <th>Param</th><th>Type</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>arr</td>
+    <td>arr</td><td><code>Array</code></td>
     </tr>  </tbody>
 </table>
 
 <a name="module_formatting.as.csv"></a>
-#### as.csv(values) ⇒ <code>\*</code>
+#### as.csv(values) ⇒ <code>String</code>
 **Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
-      <th>Param</th>
+      <th>Param</th><th>Type</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>values</td>
+    <td>values</td><td><code>Array</code> | <code>value</code></td>
     </tr>  </tbody>
 </table>
 
 <a name="module_formatting.as.json"></a>
-#### as.json(obj, raw) ⇒ <code>\*</code>
+#### as.json(obj, [raw]) ⇒ <code>String</code>
 **Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
-      <th>Param</th>
+      <th>Param</th><th>Type</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>obj</td>
+    <td>obj</td><td><code>Object</code></td>
     </tr><tr>
-    <td>raw</td>
+    <td>[raw]</td><td><code>Boolean</code></td>
     </tr>  </tbody>
 </table>
 
 <a name="module_formatting.as.func"></a>
-#### as.func(func, raw, obj) ⇒ <code>\*</code>
+#### as.func(func, [raw], [obj]) ⇒ <code>String</code>
 **Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
-      <th>Param</th>
+      <th>Param</th><th>Type</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>func</td>
+    <td>func</td><td><code>function</code></td>
     </tr><tr>
-    <td>raw</td>
+    <td>[raw]</td><td><code>Boolean</code></td>
     </tr><tr>
-    <td>obj</td>
+    <td>[obj]</td><td><code>Object</code></td>
     </tr>  </tbody>
 </table>
 
 <a name="module_formatting.as.format"></a>
-#### as.format(query, values) ⇒ <code>\*</code>
+#### as.format(query, values) ⇒ <code>String</code>
 **Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
   <thead>
     <tr>
-      <th>Param</th>
+      <th>Param</th><th>Type</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>query</td>
+    <td>query</td><td><code>String</code></td>
     </tr><tr>
-    <td>values</td>
+    <td>values</td><td><code>Array</code> | <code>value</code></td>
     </tr>  </tbody>
 </table>
 
