@@ -2,9 +2,16 @@
 // This is to show a complete test application;
 ///////////////////////////////////////////////
 
-// Loading and initializing the library without options;
+// Loading and initializing the library with Bluebird;
 // See also: https://github.com/vitaly-t/pg-promise#initialization-options
-var pgp = require('pg-promise')(/*options*/);
+
+var promise = require('bluebird'); // or any other Promise/A+ compatible library;
+
+var options = {
+    promiseLib: promise // overriding the default (ES6 Promise);
+};
+
+var pgp = require('pg-promise')(options);
 
 // Database connection details;
 var cn = {
@@ -36,4 +43,6 @@ db.query("select * from users where active=$1", true)
 
         // See also:
         // https://github.com/vitaly-t/pg-promise#library-de-initialization
+
+        // NOTE: The default ES6 Promise doesn't have method `.done`.
     });

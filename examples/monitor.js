@@ -10,7 +10,7 @@
 // Packages used: pg-promise, pg-monitor, bluebird.
 ////////////////////////////////////////////////////
 
-var promise = require('bluebird');
+var promise = require('bluebird'); // or any other Promise/A+ compatible library;
 
 var options = {
     promiseLib: promise // default promise override;
