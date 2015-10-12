@@ -221,6 +221,7 @@ Complete access layer to node-postgres via Promises/A+
 <li><code>transact</code> - transaction event notification;</li>
 <li><code>error</code> - error event notification;</li>
 <li><code>extend</code> - protocol extension event;</li>
+<li><code>noLocking</code> - prevents protocol locking.</li>
 </ul>
 </td>
     </tr>  </tbody>

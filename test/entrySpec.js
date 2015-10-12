@@ -28,7 +28,7 @@ describe("Library entry function", function () {
         })
     });
 
-    if(supportsPromise) {
+    if (supportsPromise) {
         describe("without any options", function () {
             var result;
             beforeEach(function (done) {
@@ -73,22 +73,30 @@ describe("Library entry function", function () {
     });
 
     describe("with invalid promise override", function () {
+        var error = "Invalid promise library specified.";
         it("must throw the correct error", function () {
             expect(function () {
                 header({
                     promiseLib: "test"
                 });
             })
-                .toThrow(new Error("Invalid promise library specified."));
+                .toThrow(error);
+            expect(function () {
+                header({
+                    promiseLib: dummy
+                });
+            })
+                .toThrow(error);
         });
     });
 
     describe("with invalid options parameter", function () {
+        var error = "Invalid parameter 'options' specified.";
         it("must throw the correct error", function () {
             expect(function () {
                 header(123);
             })
-                .toThrow(new Error("Invalid parameter 'options' specified."));
+                .toThrow(error);
         });
     });
 

@@ -17,13 +17,13 @@ function dummy() {
 describe("Database Instantiation", function () {
     it("must throw an error when empty or no connection passed", function () {
         var err = "Connection details must be specified.";
-        expect(pgp).toThrow(new Error(err));
+        expect(pgp).toThrow(err);
         expect(function () {
             pgp(null);
-        }).toThrow(new Error(err));
+        }).toThrow(err);
         expect(function () {
             pgp("");
-        }).toThrow(new Error(err));
+        }).toThrow(err);
     });
     var testDB = pgp("invalid connection details");
     it("must return a valid, though non-connectible object", function () {
