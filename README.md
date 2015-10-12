@@ -3,8 +3,8 @@ pg-promise
 
 Complete access layer to [node-postgres] via [Promises/A+].
 
-[![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=2.0)](https://travis-ci.org/vitaly-t/pg-promise)
-[![Coverage Status](https://coveralls.io/repos/vitaly-t/pg-promise/badge.svg?branch=2.0)](https://coveralls.io/r/vitaly-t/pg-promise?branch=2.0)
+[![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
+[![Coverage Status](https://coveralls.io/repos/vitaly-t/pg-promise/badge.svg?branch=master)](https://coveralls.io/r/vitaly-t/pg-promise?branch=master)
 
 ---
 <a href="https://promisesaplus.com/"><img align="right" width="190" height="190" src="http://s8.postimg.org/k7dtue8lx/pg_promise.jpg"></a>
@@ -1194,8 +1194,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
-[batch]:https://github.com/vitaly-t/pg-promise/blob/2.0/API.md#module_pg-promise.Task+batch
-[sequence]:https://github.com/vitaly-t/pg-promise/blob/2.0/API.md#module_pg-promise.Task+sequence
+[batch]:https://github.com/vitaly-t/pg-promise/blob/master/API.md#module_pg-promise.Task+batch
+[sequence]:https://github.com/vitaly-t/pg-promise/blob/master/API.md#module_pg-promise.Task+sequence
 [API]:https://github.com/vitaly-t/pg-promise/blob/master/API.md
 [pg-monitor]:https://github.com/vitaly-t/pg-monitor
 [pg-promise]:https://github.com/vitaly-t/pg-promise
