@@ -210,7 +210,7 @@ Complete access layer to node-postgres via Promises/A+
   </thead>
   <tbody>
 <tr>
-    <td>[options]</td><td><code>object</code></td><td><p>Library initialization options:</p>
+    <td>[options]</td><td><code>Object</code></td><td><p>Library initialization options:</p>
 <ul>
 <li><code>pgFormatting</code> - redirects query formatting to PG;</li>
 <li><code>promiseLib</code> - overrides default promise library;</li>
@@ -230,31 +230,34 @@ Complete access layer to node-postgres via Promises/A+
 
 * [pg-promise](#module_pg-promise)
   * _static_
+    * [.QueryResultError](#module_pg-promise.QueryResultError) ⇐ <code>Error</code>
+      * [new QueryResultError()](#new_module_pg-promise.QueryResultError_new)
     * [.Task](#module_pg-promise.Task)
       * [.batch(values, [cb])](#module_pg-promise.Task+batch) ⇒ <code>Promise</code>
       * [.sequence(source, [dest], [limit], [track])](#module_pg-promise.Task+sequence) ⇒ <code>Promise</code>
     * [.Database](#module_pg-promise.Database)
       * [new Database(cn)](#new_module_pg-promise.Database_new)
-      * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>promise</code>
-      * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>promise</code>
-      * [.none(query, [values])](#module_pg-promise.Database+none) ⇒ <code>promise</code>
-      * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>promise</code>
-      * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>promise</code>
-      * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>promise</code>
-      * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>promise</code>
-      * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>promise</code>
-      * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>promise</code>
-      * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>promise</code>
-      * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>promise</code>
-      * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>promise</code>
-      * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>promise</code>
-      * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>promise</code>
+      * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>Promise</code>
+      * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>Promise</code>
+      * [.none(query, [values])](#module_pg-promise.Database+none) ⇒ <code>Promise</code>
+      * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>Promise</code>
+      * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>Promise</code>
+      * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>Promise</code>
+      * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>Promise</code>
+      * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>Promise</code>
+      * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>Promise</code>
+      * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>Promise</code>
+      * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>Promise</code>
+      * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>Promise</code>
+      * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>Promise</code>
+      * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>Promise</code>
     * [.version](#module_pg-promise.version)
     * [.pg](#module_pg-promise.pg)
     * [.queryResult](#module_pg-promise.queryResult)
     * [.QueryResultError](#module_pg-promise.QueryResultError)
+      * [new QueryResultError()](#new_module_pg-promise.QueryResultError_new)
     * [.end()](#module_pg-promise.end)
-    * ["connect"](#module_pg-promise.event_connect)
+    * ["connect" ({@link)](#module_pg-promise.event_connect)
     * ["disconnect"](#module_pg-promise.event_disconnect)
     * ["query"](#module_pg-promise.event_query)
     * ["task"](#module_pg-promise.event_task)
@@ -263,6 +266,15 @@ Complete access layer to node-postgres via Promises/A+
     * ["extend"](#module_pg-promise.event_extend)
   * _inner_
     * [~as](#module_pg-promise..as) : <code>[as](#module_formatting.as)</code>
+
+<a name="module_pg-promise.QueryResultError"></a>
+### pg-promise.QueryResultError ⇐ <code>Error</code>
+**Kind**: static class of <code>[pg-promise](#module_pg-promise)</code>  
+**Summary**: Query Result Error type.  
+**Extends:** <code>Error</code>  
+<a name="new_module_pg-promise.QueryResultError_new"></a>
+#### new QueryResultError()
+Custom error used as a rejection reason when a queryresult doesn't match the specified Query Result Mask.
 
 <a name="module_pg-promise.Task"></a>
 ### pg-promise.Task
@@ -323,20 +335,20 @@ For complete method documentation see [spex.sequence](https://github.com/vitaly-
 
   * [.Database](#module_pg-promise.Database)
     * [new Database(cn)](#new_module_pg-promise.Database_new)
-    * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>promise</code>
-    * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>promise</code>
-    * [.none(query, [values])](#module_pg-promise.Database+none) ⇒ <code>promise</code>
-    * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>promise</code>
-    * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>promise</code>
-    * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>promise</code>
-    * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>promise</code>
-    * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>promise</code>
-    * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>promise</code>
-    * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>promise</code>
-    * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>promise</code>
-    * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>promise</code>
-    * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>promise</code>
-    * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>promise</code>
+    * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>Promise</code>
+    * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>Promise</code>
+    * [.none(query, [values])](#module_pg-promise.Database+none) ⇒ <code>Promise</code>
+    * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>Promise</code>
+    * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>Promise</code>
+    * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>Promise</code>
+    * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>Promise</code>
+    * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>Promise</code>
+    * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>Promise</code>
+    * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>Promise</code>
+    * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>Promise</code>
+    * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>Promise</code>
+    * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>Promise</code>
+    * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>Promise</code>
 
 <a name="new_module_pg-promise.Database_new"></a>
 #### new Database(cn)
@@ -348,24 +360,24 @@ For complete method documentation see [spex.sequence](https://github.com/vitaly-
   </thead>
   <tbody>
 <tr>
-    <td>cn</td><td><code>string</code> | <code>object</code></td><td><p>Connection object or string.</p>
+    <td>cn</td><td><code>String</code> | <code>Object</code></td><td><p>Connection object or string.</p>
 </td>
     </tr>  </tbody>
 </table>
 
 <a name="module_pg-promise.Database+connect"></a>
-#### database.connect() ⇒ <code>promise</code>
+#### database.connect() ⇒ <code>Promise</code>
 This method initiates a shared connection for executing a chain of querieson the same connection. The connection must be released in the end of thechain by calling method `done()` of the connection object.This is a legacy, low-level approach to chaining queries on the same connection.A newer and simpler approach is via method [task](#module_pg-promise.Database+task),which allocates and releases the shared connection automatically.
 
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Retrieves a new or existing connection from the pool, based on thecurrent connection parameters.  
-**Returns**: <code>promise</code> - Connection result:- resolves with the connection object, if successful. The object has method `done()` that mustbe called in the end of the query chain, in order to release the connection back to the pool.- rejects with the connection error when fails.  
+**Returns**: <code>Promise</code> - Connection result:- resolves with the connection object, if successful. The object has method `done()` that mustbe called in the end of the query chain, in order to release the connection back to the pool.- rejects with the connection error when fails.  
 **See**: [task](#module_pg-promise.Database+task)  
 <a name="module_pg-promise.Database+query"></a>
-#### database.query(query, [values], [qrm]) ⇒ <code>promise</code>
+#### database.query(query, [values], [qrm]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a generic query that expects return data according to parameter &#x60;qrm&#x60;  
-**Returns**: <code>promise</code> - A promise object that represents the query result.  
+**Returns**: <code>Promise</code> - A promise object that represents the query result.  
 <table>
   <thead>
     <tr>
@@ -374,10 +386,10 @@ This method initiates a shared connection for executing a chain of querieson th
   </thead>
   <tbody>
 <tr>
-    <td>query</td><td><code>string</code> | <code>object</code></td><td></td><td><p>query string or prepared statement object</p>
+    <td>query</td><td><code>String</code> | <code>Object</code></td><td></td><td><p>query string or prepared statement object</p>
 </td>
     </tr><tr>
-    <td>[values]</td><td><code>array</code> | <code>value</code></td><td></td><td><p>formatting parameters for the query string</p>
+    <td>[values]</td><td><code>Array</code> | <code>value</code></td><td></td><td><p>formatting parameters for the query string</p>
 </td>
     </tr><tr>
     <td>[qrm]</td><td><code><a href="#queryResult">queryResult</a></code></td><td><code>queryResult.any</code></td><td><p><a href="#queryResult">Query Result Mask</a></p>
@@ -386,10 +398,10 @@ This method initiates a shared connection for executing a chain of querieson th
 </table>
 
 <a name="module_pg-promise.Database+none"></a>
-#### database.none(query, [values]) ⇒ <code>promise</code>
+#### database.none(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects no data to be returned.  
-**Returns**: <code>promise</code> - Result of the query call:- when no records are returned, the returned promise will resolve with `undefined`;- when the query returns any data, it will reject with `"No return data was expected from the query"`.  
+**Returns**: <code>Promise</code> - Result of the query call:- when no records are returned, the returned promise will resolve with `undefined`;- when the query returns any data, it will reject with `"No return data was expected from the query"`.  
 <table>
   <thead>
     <tr>
@@ -398,19 +410,19 @@ This method initiates a shared connection for executing a chain of querieson th
   </thead>
   <tbody>
 <tr>
-    <td>query</td><td><code>string</code> | <code>object</code></td><td><p>query string or prepared statement object</p>
+    <td>query</td><td><code>String</code> | <code>Object</code></td><td><p>query string or prepared statement object</p>
 </td>
     </tr><tr>
-    <td>[values]</td><td><code>array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
+    <td>[values]</td><td><code>Array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
 </td>
     </tr>  </tbody>
 </table>
 
 <a name="module_pg-promise.Database+one"></a>
-#### database.one(query, [values]) ⇒ <code>promise</code>
+#### database.one(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects exactly one row of data.  
-**Returns**: <code>promise</code> - Result of the query call:- when 1 row is returned, it will resolve with that row as a single object;- when no rows are returned, it will reject with `"No data returned from the query."`;- when more than 1 rows are returned, it will reject with  `"Single row was expected from the query, but multiple returned."`.  
+**Returns**: <code>Promise</code> - Result of the query call:- when 1 row is returned, it will resolve with that row as a single object;- when no rows are returned, it will reject with `"No data returned from the query."`;- when more than 1 rows are returned, it will reject with  `"Single row was expected from the query, but multiple returned."`.  
 <table>
   <thead>
     <tr>
@@ -419,19 +431,19 @@ This method initiates a shared connection for executing a chain of querieson th
   </thead>
   <tbody>
 <tr>
-    <td>query</td><td><code>string</code> | <code>object</code></td><td><p>query string or prepared statement object</p>
+    <td>query</td><td><code>String</code> | <code>Object</code></td><td><p>query string or prepared statement object</p>
 </td>
     </tr><tr>
-    <td>[values]</td><td><code>array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
+    <td>[values]</td><td><code>Array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
 </td>
     </tr>  </tbody>
 </table>
 
 <a name="module_pg-promise.Database+many"></a>
-#### database.many(query, [values]) ⇒ <code>promise</code>
+#### database.many(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects one or more rows.  
-**Returns**: <code>promise</code> - Result of the query call:- when 1 or more rows are returned, it will resolve with the array of rows.- when no rows are returned, it will reject with `"No data returned from the query."`;  
+**Returns**: <code>Promise</code> - Result of the query call:- when 1 or more rows are returned, it will resolve with the array of rows.- when no rows are returned, it will reject with `"No data returned from the query."`;  
 <table>
   <thead>
     <tr>
@@ -440,19 +452,19 @@ This method initiates a shared connection for executing a chain of querieson th
   </thead>
   <tbody>
 <tr>
-    <td>query</td><td><code>string</code> | <code>object</code></td><td><p>query string or prepared statement object</p>
+    <td>query</td><td><code>String</code> | <code>Object</code></td><td><p>query string or prepared statement object</p>
 </td>
     </tr><tr>
-    <td>[values]</td><td><code>array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
+    <td>[values]</td><td><code>Array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
 </td>
     </tr>  </tbody>
 </table>
 
 <a name="module_pg-promise.Database+oneOrNone"></a>
-#### database.oneOrNone(query, [values]) ⇒ <code>promise</code>
+#### database.oneOrNone(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects 0 or 1 rows.  
-**Returns**: <code>promise</code> - Result of the query call:- when no rows are returned, it will resolve with `null`;- when 1 row is returned, it will resolve with that row as a single object;- when more than 1 rows are returned, it will reject with  `"Single row was expected from the query, but multiple returned."`.  
+**Returns**: <code>Promise</code> - Result of the query call:- when no rows are returned, it will resolve with `null`;- when 1 row is returned, it will resolve with that row as a single object;- when more than 1 rows are returned, it will reject with  `"Single row was expected from the query, but multiple returned."`.  
 <table>
   <thead>
     <tr>
@@ -461,19 +473,19 @@ This method initiates a shared connection for executing a chain of querieson th
   </thead>
   <tbody>
 <tr>
-    <td>query</td><td><code>string</code> | <code>object</code></td><td><p>query string or prepared statement object</p>
+    <td>query</td><td><code>String</code> | <code>Object</code></td><td><p>query string or prepared statement object</p>
 </td>
     </tr><tr>
-    <td>[values]</td><td><code>array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
+    <td>[values]</td><td><code>Array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
 </td>
     </tr>  </tbody>
 </table>
 
 <a name="module_pg-promise.Database+manyOrNone"></a>
-#### database.manyOrNone(query, [values]) ⇒ <code>promise</code>
+#### database.manyOrNone(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects any number of rows.  
-**Returns**: <code>promise</code> - Result of the query call:- when no rows are returned, it will resolve with an empty array;- when 1 or more rows are returned, it will resolve with the array of rows.  
+**Returns**: <code>Promise</code> - Result of the query call:- when no rows are returned, it will resolve with an empty array;- when 1 or more rows are returned, it will resolve with the array of rows.  
 **See**: [Database.any](#module_pg-promise.Database+any)  
 <table>
   <thead>
@@ -483,20 +495,20 @@ This method initiates a shared connection for executing a chain of querieson th
   </thead>
   <tbody>
 <tr>
-    <td>query</td><td><code>string</code> | <code>object</code></td><td><p>query string or prepared statement object</p>
+    <td>query</td><td><code>String</code> | <code>object</code></td><td><p>query string or prepared statement object</p>
 </td>
     </tr><tr>
-    <td>[values]</td><td><code>array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
+    <td>[values]</td><td><code>Array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
 </td>
     </tr>  </tbody>
 </table>
 
 <a name="module_pg-promise.Database+any"></a>
-#### database.any(query, [values]) ⇒ <code>promise</code>
+#### database.any(query, [values]) ⇒ <code>Promise</code>
 Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Returns**: <code>promise</code> - The same as method [manyOrNone](#module_pg-promise.Database+manyOrNone)  
+**Returns**: <code>Promise</code> - The same as method [manyOrNone](#module_pg-promise.Database+manyOrNone)  
 **See**: [manyOrNone](#module_pg-promise.Database+manyOrNone)  
 <table>
   <thead>
@@ -506,19 +518,19 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
   </thead>
   <tbody>
 <tr>
-    <td>query</td><td><code>string</code> | <code>object</code></td><td><p>query string or prepared statement object</p>
+    <td>query</td><td><code>String</code> | <code>Object</code></td><td><p>query string or prepared statement object</p>
 </td>
     </tr><tr>
-    <td>[values]</td><td><code>array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
+    <td>[values]</td><td><code>Array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
 </td>
     </tr>  </tbody>
 </table>
 
 <a name="module_pg-promise.Database+result"></a>
-#### database.result(query, [values]) ⇒ <code>promise</code>
+#### database.result(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query without any expectation for the return data,to provide direct access to the [Result](https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6) object.  
-**Returns**: <code>promise</code> - Result of the query call:- resolves with the original [Result](https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6) object:  
+**Returns**: <code>Promise</code> - Result of the query call:- resolves with the original [Result](https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6) object:  
 <table>
   <thead>
     <tr>
@@ -527,19 +539,19 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
   </thead>
   <tbody>
 <tr>
-    <td>query</td><td><code>string</code> | <code>object</code></td><td><p>query string or prepared statement object</p>
+    <td>query</td><td><code>String</code> | <code>Object</code></td><td><p>query string or prepared statement object</p>
 </td>
     </tr><tr>
-    <td>[values]</td><td><code>array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
+    <td>[values]</td><td><code>Array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
 </td>
     </tr>  </tbody>
 </table>
 
 <a name="module_pg-promise.Database+stream"></a>
-#### database.stream(qs, init) ⇒ <code>promise</code>
+#### database.stream(qs, init) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Custom data streaming, with help of [pg-query-stream](https://github.com/brianc/node-pg-query-stream)  
-**Returns**: <code>promise</code> - Result of the streaming operation.Once the streaming has finished successfully, the method resolves with`{processed, duration}`:- `processed` - total number of rows that have been processed;- `duration` - streaming duration, in milliseconds.Possible rejections messages:- `Invalid or missing stream object`- `Invalid stream state`- `Invalid or missing stream initialization callback`- `Stream not initialized`  
+**Returns**: <code>Promise</code> - Result of the streaming operation.Once the streaming has finished successfully, the method resolves with`{processed, duration}`:- `processed` - total number of rows that have been processed;- `duration` - streaming duration, in milliseconds.Possible rejections messages:- `Invalid or missing stream object`- `Invalid stream state`- `Invalid or missing stream initialization callback`- `Stream not initialized`  
 <table>
   <thead>
     <tr>
@@ -557,10 +569,10 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 </table>
 
 <a name="module_pg-promise.Database+func"></a>
-#### database.func(funcName, [values], [qrm]) ⇒ <code>promise</code>
+#### database.func(funcName, [values], [qrm]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query against a database function by its name:&#x60;select * from funcName(values)&#x60;  
-**Returns**: <code>promise</code> - Result of the query call, according to `qrm`.  
+**Returns**: <code>Promise</code> - Result of the query call, according to `qrm`.  
 **See**: [query](#module_pg-promise.Database+query)  
 <table>
   <thead>
@@ -570,10 +582,10 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
   </thead>
   <tbody>
 <tr>
-    <td>funcName</td><td><code>string</code></td><td></td><td><p>name of the function to be executed.</p>
+    <td>funcName</td><td><code>String</code></td><td></td><td><p>name of the function to be executed.</p>
 </td>
     </tr><tr>
-    <td>[values]</td><td><code>array</code> | <code>value</code></td><td></td><td><p>parameters for the function.</p>
+    <td>[values]</td><td><code>Array</code> | <code>value</code></td><td></td><td><p>parameters for the function.</p>
 </td>
     </tr><tr>
     <td>[qrm]</td><td><code><a href="#queryResult">queryResult</a></code></td><td><code>queryResult.any</code></td><td><p><a href="#queryResult">Query Result Mask</a>.</p>
@@ -582,10 +594,10 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 </table>
 
 <a name="module_pg-promise.Database+proc"></a>
-#### database.proc(procName, [values]) ⇒ <code>promise</code>
+#### database.proc(procName, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query against a stored procedure via its name:&#x60;select * from procName(values)&#x60;  
-**Returns**: <code>promise</code> - The same result as method [oneOrNone](#module_pg-promise.Database+oneOrNone).  
+**Returns**: <code>Promise</code> - The same result as method [oneOrNone](#module_pg-promise.Database+oneOrNone).  
 **See**
 
 - [oneOrNone](#module_pg-promise.Database+oneOrNone)
@@ -599,19 +611,19 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
   </thead>
   <tbody>
 <tr>
-    <td>procName</td><td><code>string</code></td><td><p>name of the stored procedure to be executed.</p>
+    <td>procName</td><td><code>String</code></td><td><p>name of the stored procedure to be executed.</p>
 </td>
     </tr><tr>
-    <td>[values]</td><td><code>array</code> | <code>value</code></td><td><p>parameters for the procedure.</p>
+    <td>[values]</td><td><code>Array</code> | <code>value</code></td><td><p>parameters for the procedure.</p>
 </td>
     </tr>  </tbody>
 </table>
 
 <a name="module_pg-promise.Database+task"></a>
-#### database.task(p1, [p2]) ⇒ <code>promise</code>
+#### database.task(p1, [p2]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes the callback function with an automatically managed connection.  
-**Returns**: <code>promise</code> - Result from the task callback function.  
+**Returns**: <code>Promise</code> - Result from the task callback function.  
 <table>
   <thead>
     <tr>
@@ -620,7 +632,7 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
   </thead>
   <tbody>
 <tr>
-    <td>p1</td><td><code>object</code> | <code>function</code></td><td><p>task tag object, if <code>p2</code> is <code>undefined</code>,
+    <td>p1</td><td><code>Object</code> | <code>function</code></td><td><p>task tag object, if <code>p2</code> is <code>undefined</code>,
 or else it is the callback function for the task.</p>
 </td>
     </tr><tr>
@@ -631,12 +643,12 @@ or else <code>p2</code> isn&#39;t used.</p>
 </table>
 
 <a name="module_pg-promise.Database+tx"></a>
-#### database.tx(p1, [p2]) ⇒ <code>promise</code>
+#### database.tx(p1, [p2]) ⇒ <code>Promise</code>
 The method implements the following steps:- acquires a connection from the pool, if needed;- executes `BEGIN`;- executes the callback function;- if the callback function has resolved:  - executes `COMMIT`;  - releases the connection, if it was acquired;  - resolves with the result from the callback function;- if the callback function has rejected:  - executes `ROLLBACK`;  - releases the connection, if it was acquired;  - rejects with the result from the callback function.
 
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes the callback function as a transaction.  
-**Returns**: <code>promise</code> - Result from the transaction callback function.  
+**Returns**: <code>Promise</code> - Result from the transaction callback function.  
 <table>
   <thead>
     <tr>
@@ -645,7 +657,7 @@ The method implements the following steps:- acquires a connection from the pool
   </thead>
   <tbody>
 <tr>
-    <td>p1</td><td><code>object</code> | <code>function</code></td><td><p>transaction tag object, if <code>p2</code> is <code>undefined</code>,
+    <td>p1</td><td><code>Object</code> | <code>function</code></td><td><p>transaction tag object, if <code>p2</code> is <code>undefined</code>,
 or else it is the callback function for the transaction.</p>
 </td>
     </tr><tr>
@@ -676,14 +688,31 @@ Query Result Mask.
 Query Result Error type.
 
 **Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
+<a name="new_module_pg-promise.QueryResultError_new"></a>
+#### new QueryResultError()
+Custom error used as a rejection reason when a queryresult doesn't match the specified Query Result Mask.
+
 <a name="module_pg-promise.end"></a>
 ### pg-promise.end()
 Terminates pg library (call it when exiting the application).
 
 **Kind**: static method of <code>[pg-promise](#module_pg-promise)</code>  
 <a name="module_pg-promise.event_connect"></a>
-### "connect"
+### "connect" ({@link)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>{@link</td><td><p><a href="https://github.com/brianc/node-postgres/wiki/Client">https://github.com/brianc/node-postgres/wiki/Client</a> pg.Client} client</p>
+</td>
+    </tr>  </tbody>
+</table>
+
 <a name="module_pg-promise.event_disconnect"></a>
 ### "disconnect"
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
@@ -726,13 +755,13 @@ Binary mask that represents the result expected from queries.It is used in the 
   </thead>
   <tbody>
 <tr>
-    <td>one</td><td><code>number</code></td><td><code>1</code></td><td>Single row is expected.</td>
+    <td>one</td><td><code>Number</code></td><td><code>1</code></td><td>Single row is expected.</td>
     </tr><tr>
-    <td>many</td><td><code>number</code></td><td><code>2</code></td><td>One or more rows expected.</td>
+    <td>many</td><td><code>Number</code></td><td><code>2</code></td><td>One or more rows expected.</td>
     </tr><tr>
-    <td>none</td><td><code>number</code></td><td><code>4</code></td><td>Expecting no rows.</td>
+    <td>none</td><td><code>Number</code></td><td><code>4</code></td><td>Expecting no rows.</td>
     </tr><tr>
-    <td>any</td><td><code>number</code></td><td><code>6</code></td><td>many|none - any result is expected.</td>
+    <td>any</td><td><code>Number</code></td><td><code>6</code></td><td>many|none - any result is expected.</td>
     </tr>  </tbody>
 </table>
 
