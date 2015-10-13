@@ -90,6 +90,7 @@ describe("Database Protocol", function () {
 
         // must not have task-level methods:
         expect(db.batch).toBeUndefined();
+        expect(db.page).toBeUndefined();
         expect(db.sequence).toBeUndefined();
     });
 
@@ -124,8 +125,9 @@ describe("Database Protocol", function () {
             expect(typeof(protocol.stream)).toBe('function');
             expect(typeof(protocol.func)).toBe('function');
             expect(typeof(protocol.proc)).toBe('function');
-            expect(typeof(protocol.sequence)).toBe('function');
             expect(typeof(protocol.batch)).toBe('function');
+            expect(typeof(protocol.page)).toBe('function');
+            expect(typeof(protocol.sequence)).toBe('function');
         });
     });
 
@@ -160,6 +162,8 @@ describe("Database Protocol", function () {
             expect(typeof(protocol.stream)).toBe('function');
             expect(typeof(protocol.func)).toBe('function');
             expect(typeof(protocol.proc)).toBe('function');
+            expect(typeof(protocol.batch)).toBe('function');
+            expect(typeof(protocol.page)).toBe('function');
             expect(typeof(protocol.sequence)).toBe('function');
         });
     });
@@ -237,6 +241,76 @@ describe("Protocol Extension", function () {
 
     });
 });
+
+// SPEX tests are just for coverage, because the actual methods
+// are properly tested within the spex library itself.
+describe("spex", function () {
+
+    describe("batch", function () {
+        var result;
+        beforeEach(function (done) {
+            db.task(function () {
+                return this.batch([1, 2]);
+            })
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must work in general", function () {
+            expect(result).toEqual([1, 2]);
+        })
+    });
+
+    describe("page", function () {
+        var result;
+        beforeEach(function (done) {
+            function source() {
+            }
+
+            db.task(function () {
+                return this.page(source);
+            })
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must work in general", function () {
+            expect(result && result instanceof Object).toBeTruthy();
+            expect(result.pages).toBe(0);
+            expect(result.total).toBe(0);
+        })
+    });
+
+    describe("sequence", function () {
+        var result;
+        beforeEach(function (done) {
+            function source() {
+            }
+
+            db.task(function () {
+                return this.sequence(source);
+            })
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must work in general", function () {
+            expect(result && result instanceof Object).toBeTruthy();
+            expect(result.total).toBe(0);
+        });
+    })
+
+});
+
 
 if (jasmine.Runner) {
     var _finishCallback = jasmine.Runner.prototype.finishCallback;

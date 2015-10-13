@@ -56,14 +56,14 @@ Query Formatting
 <table>
   <thead>
     <tr>
-      <th>Param</th><th>Type</th>
+      <th>Param</th><th>Type</th><th>Default</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>text</td><td><code>String</code></td>
+    <td>text</td><td><code>String</code></td><td></td>
     </tr><tr>
-    <td>[raw]</td><td><code>Boolean</code></td>
+    <td>[raw]</td><td><code>Boolean</code></td><td><code>false</code></td>
     </tr>  </tbody>
 </table>
 
@@ -88,14 +88,14 @@ Query Formatting
 <table>
   <thead>
     <tr>
-      <th>Param</th><th>Type</th>
+      <th>Param</th><th>Type</th><th>Default</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>d</td><td><code>Date</code></td>
+    <td>d</td><td><code>Date</code></td><td></td>
     </tr><tr>
-    <td>[raw]</td><td><code>Boolean</code></td>
+    <td>[raw]</td><td><code>Boolean</code></td><td><code>false</code></td>
     </tr>  </tbody>
 </table>
 
@@ -150,14 +150,14 @@ Query Formatting
 <table>
   <thead>
     <tr>
-      <th>Param</th><th>Type</th>
+      <th>Param</th><th>Type</th><th>Default</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>obj</td><td><code>Object</code></td>
+    <td>obj</td><td><code>Object</code></td><td></td>
     </tr><tr>
-    <td>[raw]</td><td><code>Boolean</code></td>
+    <td>[raw]</td><td><code>Boolean</code></td><td><code>false</code></td>
     </tr>  </tbody>
 </table>
 
@@ -167,16 +167,16 @@ Query Formatting
 <table>
   <thead>
     <tr>
-      <th>Param</th><th>Type</th>
+      <th>Param</th><th>Type</th><th>Default</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>func</td><td><code>function</code></td>
+    <td>func</td><td><code>function</code></td><td></td>
     </tr><tr>
-    <td>[raw]</td><td><code>Boolean</code></td>
+    <td>[raw]</td><td><code>Boolean</code></td><td><code>false</code></td>
     </tr><tr>
-    <td>[obj]</td><td><code>Object</code></td>
+    <td>[obj]</td><td><code>Object</code></td><td></td>
     </tr>  </tbody>
 </table>
 
@@ -234,6 +234,7 @@ Complete access layer to node-postgres via Promises/A+
       * [new QueryResultError()](#new_module_pg-promise.QueryResultError_new)
     * [.Task](#module_pg-promise.Task)
       * [.batch(values, [cb])](#module_pg-promise.Task+batch) ⇒ <code>Promise</code>
+      * [.page(source, [dest], [limit])](#module_pg-promise.Task+page) ⇒ <code>Promise</code>
       * [.sequence(source, [dest], [limit], [track])](#module_pg-promise.Task+sequence) ⇒ <code>Promise</code>
     * [.Database](#module_pg-promise.Database)
       * [new Database(cn)](#new_module_pg-promise.Database_new)
@@ -283,6 +284,7 @@ Custom error used as a rejection reason when a queryresult doesn't match the sp
 
   * [.Task](#module_pg-promise.Task)
     * [.batch(values, [cb])](#module_pg-promise.Task+batch) ⇒ <code>Promise</code>
+    * [.page(source, [dest], [limit])](#module_pg-promise.Task+page) ⇒ <code>Promise</code>
     * [.sequence(source, [dest], [limit], [track])](#module_pg-promise.Task+sequence) ⇒ <code>Promise</code>
 
 <a name="module_pg-promise.Task+batch"></a>
@@ -302,6 +304,28 @@ For complete method documentation see [spex.batch](https://github.com/vitaly-t/s
     <td>values</td><td><code>Array</code></td>
     </tr><tr>
     <td>[cb]</td><td><code>function</code></td>
+    </tr>  </tbody>
+</table>
+
+<a name="module_pg-promise.Task+page"></a>
+#### task.page(source, [dest], [limit]) ⇒ <code>Promise</code>
+For complete method documentation see [spex.page](https://github.com/vitaly-t/spex/blob/master/docs/code/page.md)
+
+**Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
+**Summary**: Resolves a dynamic sequence of arrays/pages with mixed values, by redirecting tomethod [spex.page](https://github.com/vitaly-t/spex/blob/master/docs/code/page.md)  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>source</td><td><code>function</code></td><td></td>
+    </tr><tr>
+    <td>[dest]</td><td><code>function</code></td><td></td>
+    </tr><tr>
+    <td>[limit]</td><td><code>Number</code></td><td><code>0</code></td>
     </tr>  </tbody>
 </table>
 
