@@ -257,13 +257,13 @@ Complete access layer to node-postgres via Promises/A+
     * [.QueryResultError](#module_pg-promise.QueryResultError)
       * [new QueryResultError()](#new_module_pg-promise.QueryResultError_new)
     * [.end()](#module_pg-promise.end)
-    * ["connect" ({@link)](#module_pg-promise.event_connect)
-    * ["disconnect"](#module_pg-promise.event_disconnect)
-    * ["query"](#module_pg-promise.event_query)
-    * ["task"](#module_pg-promise.event_task)
-    * ["transact"](#module_pg-promise.event_transact)
-    * ["error"](#module_pg-promise.event_error)
-    * ["extend"](#module_pg-promise.event_extend)
+    * ["connect" (client)](#module_pg-promise.event_connect)
+    * ["disconnect" (client)](#module_pg-promise.event_disconnect)
+    * ["query" (e)](#module_pg-promise.event_query)
+    * ["task" (e)](#module_pg-promise.event_task)
+    * ["transact" (e)](#module_pg-promise.event_transact)
+    * ["error" (err, e)](#module_pg-promise.event_error)
+    * ["extend" (obj)](#module_pg-promise.event_extend)
   * _inner_
     * [~as](#module_pg-promise..as) : <code>[as](#module_formatting.as)</code>
 
@@ -698,39 +698,120 @@ Terminates pg library (call it when exiting the application).
 
 **Kind**: static method of <code>[pg-promise](#module_pg-promise)</code>  
 <a name="module_pg-promise.event_connect"></a>
-### "connect" ({@link)
+### "connect" (client)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
 <table>
   <thead>
     <tr>
-      <th>Param</th><th>Description</th>
+      <th>Param</th><th>Type</th><th>Description</th>
     </tr>
   </thead>
   <tbody>
 <tr>
-    <td>{@link</td><td><p><a href="https://github.com/brianc/node-postgres/wiki/Client">https://github.com/brianc/node-postgres/wiki/Client</a> pg.Client} client</p>
+    <td>client</td><td><code>pg.Client</code></td><td><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents the database connection.</p>
 </td>
     </tr>  </tbody>
 </table>
 
 <a name="module_pg-promise.event_disconnect"></a>
-### "disconnect"
+### "disconnect" (client)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>client</td><td><code>pg.Client</code></td><td><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents the database connection.</p>
+</td>
+    </tr>  </tbody>
+</table>
+
 <a name="module_pg-promise.event_query"></a>
-### "query"
+### "query" (e)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>e</td><td><code>Object</code></td><td><p>event context object.</p>
+</td>
+    </tr>  </tbody>
+</table>
+
 <a name="module_pg-promise.event_task"></a>
-### "task"
+### "task" (e)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>e</td><td><code>Object</code></td><td><p>event context object.</p>
+</td>
+    </tr>  </tbody>
+</table>
+
 <a name="module_pg-promise.event_transact"></a>
-### "transact"
+### "transact" (e)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>e</td><td><code>Object</code></td><td><p>event context object.</p>
+</td>
+    </tr>  </tbody>
+</table>
+
 <a name="module_pg-promise.event_error"></a>
-### "error"
+### "error" (err, e)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>err</td><td><code>String</code> | <code>Error</code></td><td><p>error text or object.</p>
+</td>
+    </tr><tr>
+    <td>e</td><td><code>Object</code></td><td><p>event context object.</p>
+</td>
+    </tr>  </tbody>
+</table>
+
 <a name="module_pg-promise.event_extend"></a>
-### "extend"
+### "extend" (obj)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>obj</td><td><code>Object</code></td><td><p>protocol object to be extended.</p>
+</td>
+    </tr>  </tbody>
+</table>
+
 <a name="module_pg-promise..as"></a>
 ### pg-promise~as : <code>[as](#module_formatting.as)</code>
 Namespace for the type conversion helpers.
