@@ -11,13 +11,11 @@
 ////////////////////////////////////////////////////
 
 var promise = require('bluebird'); // or any other Promise/A+ compatible library;
-
 var options = {
     promiseLib: promise // default promise override;
 };
-// See all options: https://github.com/vitaly-t/pg-promise#initialization-options
-
 var pgp = require('pg-promise')(options);
+// See all options: https://github.com/vitaly-t/pg-promise#initialization-options
 
 var monitor = require('pg-monitor');
 

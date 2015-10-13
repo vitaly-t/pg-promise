@@ -19,7 +19,7 @@ var db = header.db;
 (function () {
 
     db.tx(function () {
-        return promise.all([
+        return this.batch([
 
             // drop all functions;
             this.none("drop function if exists findUser(int)"),

@@ -2,16 +2,12 @@
 // This is to show a complete test application;
 ///////////////////////////////////////////////
 
-// Loading and initializing the library with Bluebird;
-// See also: https://github.com/vitaly-t/pg-promise#initialization-options
-
 var promise = require('bluebird'); // or any other Promise/A+ compatible library;
-
 var options = {
     promiseLib: promise // overriding the default (ES6 Promise);
 };
-
 var pgp = require('pg-promise')(options);
+// See also: https://github.com/vitaly-t/pg-promise#initialization-options
 
 // Database connection details;
 var cn = {
@@ -27,8 +23,8 @@ var cn = {
 var db = pgp(cn); // database instance;
 
 db.tx(function (t) {
-    // t = this
-    return promise.all([
+    // t = this;
+    return this.batch([
         t.one("insert into users(name) values($1) returning id", "John"),
         t.one("insert into events(code) values($1) returning id", 123)
     ]);
@@ -51,5 +47,6 @@ db.tx(function (t) {
         // See also:
         // https://github.com/vitaly-t/pg-promise#library-de-initialization
 
-        // NOTE: The default ES6 Promise doesn't have methods `.spread` and `.done`.
+        // NOTE: The default ES6 Promise doesn't have methods `.spread` and `.done`,
+        // but they are available within Bluebird library used here as an example.
     });
