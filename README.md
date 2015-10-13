@@ -959,7 +959,7 @@ a non-empty value other than a function.
 ---
 #### error
 
-Global notification of an error during connection, query or transaction.
+Global notification of an error during connection, query, task or transaction.
 ```javascript
 var options = {
     error: function (err, e) {

@@ -700,6 +700,7 @@ Terminates pg library (call it when exiting the application).
 <a name="module_pg-promise.event_connect"></a>
 ### "connect" (client)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+**Summary**: Global notification function of acquiring a new databaseconnection from the connection pool, i.e. a virtual connection.  
 <table>
   <thead>
     <tr>
@@ -716,6 +717,7 @@ Terminates pg library (call it when exiting the application).
 <a name="module_pg-promise.event_disconnect"></a>
 ### "disconnect" (client)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+**Summary**: Global notification function of releasing a database connectionback to the connection pool, i.e. releasing the virtual connection.  
 <table>
   <thead>
     <tr>
@@ -732,6 +734,7 @@ Terminates pg library (call it when exiting the application).
 <a name="module_pg-promise.event_query"></a>
 ### "query" (e)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+**Summary**: Global notification of a query that&#x27;s being executed.  
 <table>
   <thead>
     <tr>
@@ -748,6 +751,7 @@ Terminates pg library (call it when exiting the application).
 <a name="module_pg-promise.event_task"></a>
 ### "task" (e)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+**Summary**: Global notification of a task start / finish events.  
 <table>
   <thead>
     <tr>
@@ -764,6 +768,7 @@ Terminates pg library (call it when exiting the application).
 <a name="module_pg-promise.event_transact"></a>
 ### "transact" (e)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+**Summary**: Global notification of a transaction start / finish events.  
 <table>
   <thead>
     <tr>
@@ -780,6 +785,7 @@ Terminates pg library (call it when exiting the application).
 <a name="module_pg-promise.event_error"></a>
 ### "error" (err, e)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+**Summary**: Global notification of an error during connection, query, task or transaction.  
 <table>
   <thead>
     <tr>
@@ -799,6 +805,7 @@ Terminates pg library (call it when exiting the application).
 <a name="module_pg-promise.event_extend"></a>
 ### "extend" (obj)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+**Summary**: Extends database protocol with custom methods and properties.  
 <table>
   <thead>
     <tr>
