@@ -4,7 +4,7 @@ node_js:
    - "0.12"
    - "4"
 script:
-   npm test
+   npm run coverage
 addons:
   postgresql: "9.4"
 before_script:
