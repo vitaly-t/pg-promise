@@ -88,23 +88,6 @@ describe("Method stream", function () {
                 }
             });
         });
-        describe("with empty initialization callback", function () {
-            var result;
-            beforeEach(function (done) {
-                var stream = {
-                    _reading: false,
-                    state: 'initialized'
-                };
-                db.stream(stream, dummy)
-                    .then(dummy, function (reason) {
-                        result = reason;
-                        done();
-                    })
-            });
-            it("must throw an error", function () {
-                expect(result).toBe("Stream not initialized.");
-            });
-        });
         describe("with initialization callback throwing error", function () {
             var result;
             beforeEach(function (done) {
