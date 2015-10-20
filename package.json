@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "2.0.12",
+  "version": "2.1.0",
   "description": "PostgreSQL via promises",
   "main": "lib/index.js",
   "scripts": {
@@ -35,15 +35,15 @@
   },
   "dependencies": {
     "pg": "4.x",
-    "spex": "0.1.x"
+    "spex": "0.2"
   },
   "devDependencies": {
     "JSONStream": "1.x",
     "bluebird": "2.x",
     "coveralls": "2.x",
-    "grunt": "0.4.x",
+    "grunt": "0.4",
     "grunt-jsdoc-to-markdown": "1.x",
-    "istanbul": "0.3",
+    "istanbul": "0.4",
     "jasmine-node": "1.x",
     "jsdoc": "3.x",
     "pg-query-stream": "0.7"
