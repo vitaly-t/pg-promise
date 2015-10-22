@@ -718,6 +718,49 @@ describe("Detached Transaction", function () {
     });
 });
 
+describe("When an outer transaction fails that has a nested transaction", function () {
+    it("both transactions must rollback", function () {
+        var result, context1;
+
+        db.none('update users set login = $1', 'Before').then(function () {
+            return db.tx(function (t1) {
+                context1 = this;
+                return this.none('update users set login=$1', 'External').then(function () {
+                    return context1.tx(function (t2) {
+                        return t2.none('update users set login=$1', 'Internal')
+                    });
+                }).then(function () {
+                    return context1.one('select * from unknowntable') // emulating a bad query;
+                })
+            })
+                .then(function () {
+                    result = null; // must not get here;
+                }, function () {
+                    return promise.all([
+                        db.one('select count(*) from users where login=$1', 'External'), // 0 is expected;
+                        db.one('select count(*) from users where login=$1', 'Internal'), // 0 is expected;
+                        db.one('select count(*) from users where login=$1', 'Before') // > 0 is expected;
+                    ]);
+                })
+                .then(function (data) {
+                    result = data;
+                });
+        });
+
+
+        waitsFor(function () {
+            return result !== undefined;
+        }, "Query timed out", 5000);
+
+        runs(function () {
+            expect(result).toBeTruthy();
+            expect(result[0].count == 0).toBe(true);
+            expect(result[1].count == 0).toBe(true);
+            expect(result[2].count > 0).toBe(true);
+        });
+    });
+});
+
 describe("When a nested transaction fails", function () {
     it("both transactions must rollback", function () {
         var result, error, nestError, THIS1, THIS2, context1, context2;
