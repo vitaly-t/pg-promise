@@ -614,37 +614,37 @@ describe("Executing method query", function () {
 
 });
 
-// NOTE: The same test for 100,000 inserts works also the same.
-// Inserting just 10,000 records to avoid exceeding memory quota on the test server.
-// Also, the client shouldn't execute more than 10,000 queries within a single transaction,
-// huge transactions should  be throttled into smaller chunks.
-describe("A complex transaction with 10,000 inserts", function () {
-    it("must not fail", function () {
+describe("Transactions", function () {
+
+    // NOTE: The same test for 100,000 inserts works also the same.
+    // Inserting just 10,000 records to avoid exceeding memory quota on the test server.
+    // Also, the client shouldn't execute more than 10,000 queries within a single transaction,
+    // huge transactions should  be throttled into smaller chunks.
+    describe("A complex transaction with 10,000 inserts", function () {
+
         var result, error, context, THIS, tag;
-        db.tx("complex", function (t) {
-            tag = t.ctx.tag;
-            THIS = this;
-            context = t;
-            var queries = [
-                this.none('drop table if exists test'),
-                this.none('create table test(id serial, name text)')
-            ];
-            for (var i = 1; i <= 10000; i++) {
-                queries.push(this.none('insert into test(name) values($1)', 'name-' + i));
-            }
-            queries.push(this.one('select count(*) from test'));
-            return this.batch(queries);
-        })
-            .then(function (data) {
-                result = data;
-            }, function (reason) {
-                result = null;
-                error = reason;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 15000);
-        runs(function () {
+        beforeEach(function (done) {
+            db.tx("complex", function (t) {
+                tag = t.ctx.tag;
+                THIS = this;
+                context = t;
+                var queries = [
+                    this.none('drop table if exists test'),
+                    this.none('create table test(id serial, name text)')
+                ];
+                for (var i = 1; i <= 10000; i++) {
+                    queries.push(this.none('insert into test(name) values($1)', 'name-' + i));
+                }
+                queries.push(this.one('select count(*) from test'));
+                return this.batch(queries);
+            })
+                .then(function (data) {
+                    result = data;
+                    done();
+                });
+        });
+
+        it("must not fail", function () {
             expect(THIS === context).toBe(true);
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
@@ -655,111 +655,99 @@ describe("A complex transaction with 10,000 inserts", function () {
             expect(tag).toBe("complex");
         });
     });
-});
 
-describe("When a nested transaction fails", function () {
-    it("must return error from the nested transaction", function () {
+    describe("When a nested transaction fails", function () {
         var result, error, THIS, context;
-        db.tx(function (t) {
-            THIS = this;
-            context = t;
-            return this.batch([
-                this.none('update users set login=$1 where id=$2', ['TestName', 1]),
-                this.tx(function () {
-                    throw new Error('Nested TX failure');
-                })
-            ]);
-        })
-            .then(function (data) {
-                result = data;
-            }, function (reason) {
-                result = null;
-                error = reason[1].result;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
+        beforeEach(function (done) {
+            db.tx(function (t) {
+                THIS = this;
+                context = t;
+                return this.batch([
+                    this.none('update users set login=$1 where id=$2', ['TestName', 1]),
+                    this.tx(function () {
+                        throw new Error('Nested TX failure');
+                    })
+                ]);
+            })
+                .catch(function (reason) {
+                    error = reason[1].result;
+                    done();
+                });
+        });
+        it("must return error from the nested transaction", function () {
             expect(THIS === context).toBe(true);
-            expect(result).toBeNull();
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe('Nested TX failure');
         });
     });
-});
 
-describe("Detached Transaction", function () {
-    it("must throw an error on any query request", function () {
+    describe("Detached Transaction", function () {
         var stop, error, tx;
-        db.tx(function () {
-            tx = this;
-            return promise.resolve();
-        })
-            .then(function () {
-                try {
-                    // cannot use transaction context
-                    // outside of transaction callback;
-                    tx.query("select 'test'");
-                } catch (err) {
-                    error = err;
-                }
-                stop = true;
-            }, function (reason) {
-                error = reason;
-                stop = true;
-            });
-        waitsFor(function () {
-            return stop === true;
-        }, "Query timed out", 5000);
-        runs(function () {
+        beforeEach(function (done) {
+            db.tx(function () {
+                tx = this;
+                return promise.resolve();
+            })
+                .then(function () {
+                    try {
+                        // cannot use transaction context
+                        // outside of transaction callback;
+                        tx.query("select 'test'");
+                    } catch (err) {
+                        error = err;
+                    }
+                    stop = true;
+                }, function (reason) {
+                    error = reason;
+                    stop = true;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must throw an error on any query request", function () {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe("Unexpected call outside of transaction.");
         });
     });
-});
 
-describe("When a nested transaction fails", function () {
-    it("both transactions must rollback", function () {
-        var result, error, nestError, THIS1, THIS2, context1, context2;
-        db.tx(function (t1) {
-            THIS1 = this;
-            context1 = t1;
-            return this.batch([
-                this.none('update users set login=$1', 'External'),
-                this.tx(function (t2) {
-                    THIS2 = this;
-                    context2 = t2;
-                    return this.batch([
-                        this.none('update users set login=$1', 'Internal'),
-                        this.one('select * from unknownTable') // emulating a bad query;
-                    ]);
-                })
-            ]);
-        })
-            .then(function () {
-                result = null; // must not get here;
-            }, function (reason) {
-                nestError = reason[1].result[1].result;
-                return promise.all([
-                    db.one('select count(*) from users where login=$1', 'External'), // 0 is expected;
-                    db.one('select count(*) from users where login=$1', 'Internal') // 0 is expected;
+    describe("bottom-level failure", function () {
+        var result, nestError, THIS1, THIS2, context1, context2;
+        beforeEach(function (done) {
+            db.tx(function (t1) {
+                THIS1 = this;
+                context1 = t1;
+                return this.batch([
+                    this.none('update users set login=$1', 'External'),
+                    this.tx(function (t2) {
+                        THIS2 = this;
+                        context2 = t2;
+                        return this.batch([
+                            this.none('update users set login=$1', 'Internal'),
+                            this.one('select * from unknownTable') // emulating a bad query;
+                        ]);
+                    })
                 ]);
             })
-            .then(function (data) {
-                result = data;
-            }, function (reason) {
-                result = null;
-                error = reason;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
+                .then(dummy, function (reason) {
+                    nestError = reason[1].result[1].result;
+                    return promise.all([
+                        db.one('select count(*) from users where login=$1', 'External'), // 0 is expected;
+                        db.one('select count(*) from users where login=$1', 'Internal') // 0 is expected;
+                    ]);
+                })
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must rollback everything", function () {
             expect(THIS1 && THIS2 && context1 && context2).toBeTruthy();
             expect(THIS1 === context1).toBe(true);
             expect(THIS2 === context2).toBe(true);
             expect(THIS1 !== THIS2).toBe(true);
-            expect(error).toBeUndefined();
             expect(nestError instanceof Error).toBe(true);
             expect(nestError.message).toBe('relation "unknowntable" does not exist');
             expect(result instanceof Array).toBe(true);
@@ -768,93 +756,120 @@ describe("When a nested transaction fails", function () {
             expect(result[1].count).toBe('0'); // no changes within nested transaction;
         });
     });
-});
 
-describe("Calling without a callback", function () {
-    describe("for a transaction", function () {
-        var error;
+    describe("top-level failure", function () {
+        var result;
         beforeEach(function (done) {
-            db.tx()
-                .catch(function (reason) {
-                    error = reason;
+            db.tx(function () {
+                return this.batch([
+                    this.none('update users set login=$1 where id=1', 'Test'),
+                    this.tx(function () {
+                        return this.none('update person set name=$1 where id=1', 'Test');
+                    })
+                ])
+                    .then(function () {
+                        return promise.reject();
+                    });
+            })
+                .then(dummy, function () {
+                    return promise.all([
+                        db.one('select count(*) from users where login=$1', 'Test'), // 0 is expected;
+                        db.one('select count(*) from person where name=$1', 'Test') // 0 is expected;
+                    ]);
                 })
-                .finally(function () {
+                .then(function (data) {
+                    result = data;
                     done();
                 });
         });
-        it("must reject", function () {
-            expect(error).toBe("Callback function must be specified for the transaction.");
+        it("must rollback everything", function () {
+            expect(result instanceof Array).toBe(true);
+            expect(result.length).toBe(2);
+            expect(result[0].count).toBe('0'); // no changes within parent transaction;
+            expect(result[1].count).toBe('0'); // no changes within nested transaction;
         });
     });
-    describe("for a task", function () {
-        var error;
+
+    describe("Calling without a callback", function () {
+        describe("for a transaction", function () {
+            var error;
+            beforeEach(function (done) {
+                db.tx()
+                    .catch(function (reason) {
+                        error = reason;
+                    })
+                    .finally(function () {
+                        done();
+                    });
+            });
+            it("must reject", function () {
+                expect(error).toBe("Callback function must be specified for the transaction.");
+            });
+        });
+        describe("for a task", function () {
+            var error;
+            beforeEach(function (done) {
+                db.task()
+                    .catch(function (reason) {
+                        error = reason;
+                    })
+                    .finally(function () {
+                        done();
+                    });
+            });
+            it("must reject", function () {
+                expect(error).toBe("Callback function must be specified for the task.");
+            });
+        });
+
+    });
+
+    describe("A nested transaction (10 levels)", function () {
+        var result, THIS, context, ctx = [];
         beforeEach(function (done) {
-            db.task()
-                .catch(function (reason) {
-                    error = reason;
-                })
-                .finally(function () {
-                    done();
-                });
-        });
-        it("must reject", function () {
-            expect(error).toBe("Callback function must be specified for the task.");
-        });
-    });
-
-});
-
-describe("A nested transaction (10 levels)", function () {
-    it("must work the same no matter how many levels", function () {
-        var result, error, THIS, context, ctx = [];
-        db.tx(0, function () {
-            ctx.push(this.ctx);
-            return this.tx(1, function () {
+            db.tx(0, function () {
                 ctx.push(this.ctx);
-                return this.tx(2, function () {
+                return this.tx(1, function () {
                     ctx.push(this.ctx);
-                    return this.tx(3, function () {
+                    return this.tx(2, function () {
                         ctx.push(this.ctx);
-                        return this.tx(4, function () {
+                        return this.tx(3, function () {
                             ctx.push(this.ctx);
-                            return this.tx(5, function () {
+                            return this.tx(4, function () {
                                 ctx.push(this.ctx);
-                                return this.batch([
-                                    this.one("select 'Hello' as word"),
-                                    this.tx(6, function () {
-                                        ctx.push(this.ctx);
-                                        return this.tx(7, function () {
+                                return this.tx(5, function () {
+                                    ctx.push(this.ctx);
+                                    return this.batch([
+                                        this.one("select 'Hello' as word"),
+                                        this.tx(6, function () {
                                             ctx.push(this.ctx);
-                                            return this.tx(8, function () {
+                                            return this.tx(7, function () {
                                                 ctx.push(this.ctx);
-                                                return this.tx(9, function (t) {
+                                                return this.tx(8, function () {
                                                     ctx.push(this.ctx);
-                                                    THIS = this;
-                                                    context = t;
-                                                    return this.one("select 'World!' as word");
+                                                    return this.tx(9, function (t) {
+                                                        ctx.push(this.ctx);
+                                                        THIS = this;
+                                                        context = t;
+                                                        return this.one("select 'World!' as word");
+                                                    });
                                                 });
                                             });
-                                        });
-                                    })
-                                ]);
+                                        })
+                                    ]);
+                                });
                             });
                         });
                     });
                 });
-            });
-        })
-            .then(function (data) {
-                result = data;
-            }, function (reason) {
-                result = null;
-                error = reason;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
+            })
+                .then(function (data) {
+                    result = data;
+                    done();
+                });
+        });
+        it("must work the same no matter how many levels", function () {
             expect(THIS && context && THIS === context).toBeTruthy();
-            expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
             expect(result).toEqual([{word: 'Hello'}, {word: 'World!'}]);
             for (var i = 0; i < 10; i++) {
@@ -862,24 +877,22 @@ describe("A nested transaction (10 levels)", function () {
             }
         });
     });
+
 });
+
 
 describe("Return data from a query must match the request type", function () {
 
-    it("method 'none' must throw an error when there was data returned", function () {
-        var result, error;
-        db.none("select * from person where name=$1", 'John')
-            .then(function (data) {
-                result = data;
-            }, function (reason) {
-                result = null;
-                error = reason;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, "Query timed out", 5000);
-        runs(function () {
-            expect(result).toBeNull();
+    describe("when no data returned", function () {
+        var error;
+        beforeEach(function (done) {
+            db.none("select * from person where name=$1", 'John')
+                .catch(function (err) {
+                    error = err;
+                    done();
+                });
+        });
+        it("method 'none' must return an error", function () {
             expect(error instanceof pgp.QueryResultError).toBe(true);
             expect(error.message).toBe("No return data was expected from the query.");
         });
