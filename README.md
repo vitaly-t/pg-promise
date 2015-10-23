@@ -39,7 +39,6 @@ Complete access layer to [node-postgres] via [Promises/A+].
     - [Detached Transactions](#detached-transactions)
     - [Shared-connection Transactions](#shared-connection-transactions)
     - [Nested Transactions](#nested-transactions)
-    - [Transactions with SAVEPOINT](#transactions-with-savepoint)
     - [Synchronous Transactions](#synchronous-transactions)    
 * [Advanced](#advanced)
   - [Initialization Options](#initialization-options)
@@ -676,59 +675,6 @@ Things to note from the example above:
  or it will result in an attempt to execute against an unknown connection;
 * A failure on any level in a nested transaction will `ROLLBACK` and `reject` the entire chain.
 
-### Transactions with SAVEPOINT
-
-`SAVEPOINT` in PostgreSQL caters for advanced transaction scenarios where partial `ROLLBACK` can be executed,
-depending on the logic of the transaction.
-
-Unfortunately, this doesn't go along with the [Promises/A+] architecture that doesn't support partial `reject`.
-
-The only work-around via promises is to strip a transaction into individual commands and execute them as a promise
-chain within a shared connection. The example below shows how this can be done.
-
-```javascript
-var sco; // shared connection object;
-var txErr; // transaction error;
-var txData; // transaction data;
-db.connect()
-    .then(function (obj) {
-        sco = obj; // save the connection object;
-        return promise.all([
-            sco.none('begin'),
-            sco.none('update users set name=$1 where id=$2', ['changed1', 1]),
-            sco.none('savepoint first'), // creating savepoint;
-            sco.none('update users set name=$1 where id=$2', ['changed2', 2]),
-            sco.none('rollback to first') // reverting to the savepoint;
-        ])
-            .then(function (data) {
-                txData = data; // save the transaction output data;
-                return sco.none('commit'); // persist changes;
-            }, function (reason) {
-                txErr = reason; // save the transaction failure reason;
-                return sco.none('rollback'); // revert changes;
-            });
-    })
-    .then(function () {
-        if (txErr) {
-            console.log('Rollback Reason: ' + txErr);
-        } else {
-            console.log(txData); // successful transaction output;
-        }
-    }, function (reason) {
-        console.log(reason); // connection issue;
-    })
-    .done(function () {
-        if (sco) {
-            sco.done(); // release the connection, if it was successful;
-        }
-    });
-```
-
-The issue with stripping out a transaction like this and injecting `SAVEPOINT` - it gets much more
-complicated to control the result of individual commands within a transaction, you may need to check every
-result and change the following commands accordingly. This is why it makes much more sense to do such
-transactions inside SQL functions, and not in JavaScript.
-
 ### Synchronous Transactions
 
 A regular task/transaction with a set of independent queries relies on method [batch] to resolve
@@ -1138,6 +1084,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 2.2.0 major rework on the nested transactions support. Released: October 23, 2015
 * Version 2.0.8 added all the [long-outstanding breaking changes](https://github.com/vitaly-t/pg-promise/wiki/2.0-Migration). Released: October 12, 2015
 * Version 1.11.0 added [noLocking](#nolocking) initialization option. Released: September 30, 2015.
 * Version 1.10.3 added enforced locks on every level of the library. Released: September 11, 2015.
