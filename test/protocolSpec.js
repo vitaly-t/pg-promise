@@ -281,7 +281,7 @@ describe("spex", function () {
                 });
         });
         it("must work in general", function () {
-            expect(result && result instanceof Object).toBeTruthy();
+            expect(result && typeof result === 'object').toBe(true);
             expect(result.pages).toBe(0);
             expect(result.total).toBe(0);
         })
@@ -304,11 +304,10 @@ describe("spex", function () {
                 });
         });
         it("must work in general", function () {
-            expect(result && result instanceof Object).toBeTruthy();
+            expect(result && typeof result === 'object').toBe(true);
             expect(result.total).toBe(0);
         });
     })
-
 });
 
 
