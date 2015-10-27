@@ -297,10 +297,11 @@ We can make such call as shown below:
 
 ```javascript
 db.func('findAudit', [123, new Date()])
-    .then(function(data){
+    .then(function (data) {
         console.log(data); // printing the data returned
-    }, function(reason){
-        console.log(reason); // printing the reason why the call was rejected
+    })
+    .catch(function (error) {
+        console.log(error); // printing the error
     });
 ```
 
@@ -493,17 +494,17 @@ Queries in a detached promise chain maintain connection independently, they each
 a connection from the pool, execute the query and then release the connection back to the pool.
 ```javascript
 db.one("select * from users where id=$1", 123) // find the user from id;
-    .then(function(data){
+    .then(function (data) {
         // find 'login' records for the user found:
         return db.query("select * from audit where event=$1 and userId=$2",
             ["login", data.id]);
     })
-    .then(function(data){
-        // display found audit records;
-        console.log(data);
-    }, function(reason){
-        console.log(reason); // display reason why the call failed;
+    .then(function (data) {
+        console.log(data); // display found audit records;
     })
+    .catch(function (error) {
+        console.log(error); // display the error;
+    });
 ```
 In a situation where a single request is to be made against the database, a detached chain is the only one that makes sense.
 And even if you intend to execute multiple queries in a chain, keep in mind that even though each will use its own connection,
@@ -517,19 +518,20 @@ with all the queries down the promise chain. The connection must be released bac
 ```javascript
 var sco; // shared connection object;
 db.connect()
-    .then(function(obj) {
+    .then(function (obj) {
         sco = obj; // save the connection object;
         // find active users created before today:
         return sco.query("select * from users where active=$1 and created < $2",
             [true, new Date()]);
     })
-    .then(function(data) {
+    .then(function (data) {
         console.log(data); // display all the user details;
-    }, function(reason) {
-        console.log(reason); // display reason why the call failed;
     })
-    .done(function() {
-        if(sco) {
+    .catch(function (error) {
+        console.log(error); // display the error;
+    })
+    .finally(function () {
+        if (sco) {
             sco.done(); // release the connection, if it was successful;
         }
     });
@@ -554,8 +556,9 @@ db.task(function (t) {
 })
     .then(function (data) {
         // success;
-    }, function (reason) {
-        // failed;
+    })
+    .catch(function (error) {
+        // failed;    
     });
 ```
 
@@ -591,9 +594,10 @@ db.tx(function (t) {
     return this.batch([q1, q2]); // all of the queries are to be resolved;
 })
     .then(function (data) {
-        console.log(data); // printing successful transaction output
-    }, function (reason) {
-        console.log(reason); // printing the reason why the transaction was rejected
+        console.log(data); // printing successful transaction output;
+    })
+    .catch(function (error) {
+        console.log(error); // printing the error;
     });
 ```
 
@@ -619,10 +623,11 @@ db.connect()
             // returning a promise that determines a successful transaction:
             return t.batch([q1, q2]); // all of the queries are to be resolved;
         });
-    }, function (reason) {
-        console.log(reason); // printing the reason why the transaction was rejected;
     })
-    .done(function () {
+    .catch(function (error) {
+        console.log(error); // printing the error;
+    })
+    .finally(function () {
         if (sco) {
             sco.done(); // release the connection, if it was successful;
         }
@@ -665,8 +670,9 @@ db.tx(function (t) {
 })
     .then(function (data) {
         console.log(data); // printing transaction result;
-    }, function (reason) {
-        console.log(reason); // printing why the transaction failed;
+    })
+    .catch(function (error) {
+        console.log(error); // printing the error;
     });
 ```
 
@@ -711,8 +717,9 @@ db.tx(function (t) {
 })
     .then(function (data) {
         console.log(data); // print result;
-    }, function (reason) {
-        console.log(reason); // print error;
+    })
+    .catch(function (error) {
+        console.log(error); // print the error;
     });
 ```
 
@@ -1050,8 +1057,9 @@ var options = {
 db.users.add("John", true)
     .then(function () {
         // user added successfully;
-    }, function (reason) {
-        // error occurred;
+    })
+    .catch(function (error) {
+        // failed to add the user;
     });
 ```
 
