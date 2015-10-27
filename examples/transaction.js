@@ -22,6 +22,9 @@ var cn = {
 
 var db = pgp(cn); // database instance;
 
+// NOTE: The default ES6 Promise doesn't have methods `.spread` and `.finally`,
+// but they are available within Bluebird library used here as an example.
+
 db.tx(function (t) {
     // t = this;
     return this.batch([
@@ -30,12 +33,13 @@ db.tx(function (t) {
     ]);
 })
     .spread(function (user, event) {
-        console.log(user.id); // print new user id;
-        console.log(event.id); // print new event id;
-    }, function (reason) {
-        console.log(reason); // print error;
+        // print new user id + new event id;
+        console.log("DATA:", user.id, event.id);
     })
-    .done(function () {
+    .catch(function (error) {
+        console.log("ERROR:", error); // print the error;
+    })
+    .finally(function () {
         // If we do not close the connection pool when exiting the application,
         // it may take 30 seconds (poolIdleTimeout) before the process terminates,
         // waiting for the connection to expire in the pool.
@@ -46,7 +50,4 @@ db.tx(function (t) {
 
         // See also:
         // https://github.com/vitaly-t/pg-promise#library-de-initialization
-
-        // NOTE: The default ES6 Promise doesn't have methods `.spread` and `.done`,
-        // but they are available within Bluebird library used here as an example.
     });

@@ -41,10 +41,14 @@ var cn = {
 
 var db = pgp(cn); // database instance;
 
+// NOTE: The default ES6 Promise doesn't have method `.finally`, but it is
+// available within Bluebird library used here as an example.
+
 db.query("select * from users where active=$1", true)
     .then(function (data) {
         console.log("DATA:", data);
-    }, function (reason) {
-        console.log("REASON:", reason);
     })
-    .done(pgp.end); // closes the connection pool, for immediate exit.
+    .catch(function (error) {
+        console.log("ERROR:", error);
+    })
+    .finally(pgp.end); // closes the connection pool, for immediate exit.
