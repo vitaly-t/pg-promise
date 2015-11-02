@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "description": "PostgreSQL via promises",
   "main": "lib/index.js",
   "scripts": {
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "JSONStream": "1.x",
-    "bluebird": "2.x",
+    "bluebird": "3.x",
     "coveralls": "2.x",
     "grunt": "0.4",
     "grunt-jsdoc-to-markdown": "1.x",
