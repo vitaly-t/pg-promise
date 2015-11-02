@@ -252,7 +252,6 @@ Complete access layer to node-postgres via Promises/A+
       * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>Promise</code>
       * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>Promise</code>
       * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>Promise</code>
-    * [.version](#module_pg-promise.version)
     * [.pg](#module_pg-promise.pg)
     * [.queryResult](#module_pg-promise.queryResult)
     * [.QueryResultError](#module_pg-promise.QueryResultError)
@@ -691,12 +690,6 @@ or else <code>p2</code> isn&#39;t used.</p>
     </tr>  </tbody>
 </table>
 
-<a name="module_pg-promise.version"></a>
-### pg-promise.version
-Library version.
-
-**Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
-**Read only**: true  
 <a name="module_pg-promise.pg"></a>
 ### pg-promise.pg
 Instance of the PG library used.

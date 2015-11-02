@@ -29,16 +29,6 @@ describe("Library instance", function () {
         expect(pgpLib.end === pgp.end).toBe(true);
     });
 
-    it("must have property 'version'", function () {
-        var v = pgp.version;
-        expect(typeof(v)).toBe('object');
-        expect(typeof(v.major)).toBe('number');
-        expect(typeof(v.minor)).toBe('number');
-        expect(typeof(v.patch)).toBe('number');
-        expect(v.toString()).toBe(v.major + '.' + v.minor + '.' + v.patch);
-        expect(pgpLib.version === v).toBe(true);
-    });
-
     it("must have valid property 'as'", function () {
         expect(typeof(pgp.as)).toBe('object');
         expect(typeof(pgp.as.text)).toBe('function');
