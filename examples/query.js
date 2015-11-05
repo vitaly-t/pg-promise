@@ -39,7 +39,7 @@ db.query("select * from users where active=$1", true)
 
         // But if you normally just kill the process, then it doesn't matter.
 
-        pgp.end(); // closing the connection pool, to exit immediately.
+        pgp.end(); // for immediate app exit, closing the connection pool.
 
         // See also:
         // https://github.com/vitaly-t/pg-promise#library-de-initialization

@@ -1,6 +1,7 @@
 ////////////////////////////////////////////////////
 // This is a complete test application, which shows
 // how to use the following options:
+//
 // a) override the default promise library;
 // b) use pg-monitor to output all the query events;
 // c) change the default theme for pg-monitor.
@@ -12,7 +13,7 @@
 
 var promise = require('bluebird'); // or any other Promise/A+ compatible library;
 var options = {
-    promiseLib: promise // default promise override;
+    promiseLib: promise // overriding the default (ES6 Promise);
 };
 var pgp = require('pg-promise')(options);
 // See all options: https://github.com/vitaly-t/pg-promise#initialization-options
@@ -51,4 +52,4 @@ db.query("select * from users where active=$1", true)
     .catch(function (error) {
         console.log("ERROR:", error);
     })
-    .finally(pgp.end); // closes the connection pool, for immediate exit.
+    .finally(pgp.end); // for immediate app exit, closing the connection pool.
