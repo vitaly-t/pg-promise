@@ -726,6 +726,20 @@ describe("Named Parameters", function () {
         }).toThrow(new Error("Property 'prop2' doesn't exist."));
     });
 
+    it("must recognize 'this'", function () {
+        var obj = {
+            val1: 123,
+            val2: 'hello'
+        };
+        expect(pgp.as.format("${this}", obj)).toEqual("'" + JSON.stringify(obj) + "'");
+    });
+    it("must recognize 'this^'", function () {
+        var obj = {
+            val1: 123,
+            val2: 'hello'
+        };
+        expect(pgp.as.format("${this^}", obj)).toEqual(JSON.stringify(obj));
+    });
 });
 
 describe("Custom Format", function () {
