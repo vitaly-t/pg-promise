@@ -288,6 +288,19 @@ Leading and trailing spaces around property names are ignored.
 It is important to know that while property values `null` and `undefined` are both formatted as `null`,
 an error is thrown when the property doesn't exist at all.
 
+#### `this` reference
+
+Version 2.3.0 added support for property `this` to refer to the object itself, and to be used in those
+cases where the object needs to be formatted as a JSON string. Syntax `this^` is also supported for
+raw-text formatting.
+
+Examples:
+* `{this}` - inserts the object itself as a JSON string;
+* `{this^}` - inserts the object itself as a raw-text JSON string.
+
+NOTE: Technically, it is possible in javascript, though not recommended, for an object to contain a property
+with name `this`. And in such cases the property's value will be used instead.
+
 ## Functions and Procedures
 
 In PostgreSQL stored procedures are just functions that usually do not return anything.
