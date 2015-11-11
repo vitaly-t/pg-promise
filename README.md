@@ -186,6 +186,8 @@ console.log(pgp.as.array([[1, 2], ['three', 'four']]));
 When a value/property inside array/object is of type `object` (except for `null` and `Date`), it is automatically
 serialized into JSON, the same as calling method `as.json()`, except the latter would convert anything to JSON.
 
+#### Raw Text
+
 Raw-text values can be injected by appending the variable name with symbol `^`:
 `$1^, $2^, etc...`, `$*varName^*`, where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
 
@@ -205,6 +207,9 @@ query("...WHERE name LIKE '%${name^}%'", {name: "John"});
 // injecting a CSV-formatted text without quotes:
 query("...WHERE id IN($1^)", pgp.as.csv([1,2,3,4])); 
 ```
+
+Syntax `this^` within the [Named Parameters](#named-parameters) refers to the formatting
+object itself, to be injected as a raw-text JSON-formatted string.
 
 ### Query Result Mask
 
