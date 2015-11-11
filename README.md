@@ -295,8 +295,8 @@ cases where the object needs to be formatted as a JSON string. Syntax `this^` is
 raw-text formatting.
 
 Examples:
-* `{this}` - inserts the object itself as a JSON string;
-* `{this^}` - inserts the object itself as a raw-text JSON string.
+* `${this}` - inserts the object itself as a JSON string;
+* `${this^}` - inserts the object itself as a raw-text JSON string.
 
 NOTE: Technically, it is possible in javascript, though not recommended, for an object to contain a property
 with name `this`. And in such cases the property's value will be used instead.
