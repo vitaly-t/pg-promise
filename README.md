@@ -279,8 +279,8 @@ db.query("select * from users where name=${name} and active=$/active/", {
 });
 ```
 
-The same goes for all types of query methods as well as method `as.format(query, values)`, where `values`
-now can also be an object whose properties can be referred to by name from within the query.
+The same goes for all types of query methods as well as method `pgp.as.format(query, values)`, where `values`
+can also be an object whose properties can be referred to by name from within the query.
 
 A valid property name consists of any combination of letters, digits, underscores or `$`, and they are case-sensitive.
 Leading and trailing spaces around property names are ignored.
@@ -295,8 +295,8 @@ cases where the object needs to be formatted as a JSON string. Syntax `this^` is
 raw-text formatting.
 
 Examples:
-* `${this}` - inserts the object itself as a JSON string;
-* `${this^}` - inserts the object itself as a raw-text JSON string.
+* `${this}` - inserts the object itself as a JSON-formatted string;
+* `${this^}` - inserts the object itself as a raw-text JSON-formatted string.
 
 NOTE: Technically, it is possible in javascript, though not recommended, for an object to contain a property
 with name `this`. And in such cases the property's value will be used instead.
@@ -467,10 +467,10 @@ custom formatting, then `query` will be expected to use `$*propName*` as the for
 
 This features allows overriding `raw` flag for the values returned from custom types.
 
-Any custom type or standard type that implements function `formatDBType` can now also set
+Any custom type or standard type that implements function `formatDBType` can also set
 property `_rawDBType = true` to force raw variable formatting on the returned value.
 
-This makes the custom type formatting ultimately flexible, as now there is no limitation
+This makes the custom type formatting ultimately flexible, as there is no limitation
 as to how a custom type can format its value.
 
 For example, some special types, like UUID, do not have natural presentation in JavaScript,
@@ -478,7 +478,7 @@ so they have to be converted into text strings when passed into the query format
 For an array of UUID-s, for instance, you would have to explicitly cast the formatted value
 with `::uuid[]` appended at the end of the variable.
   
-Now you can implement your own presentation for UUID that does not require extra casting:
+You can implement your own presentation for UUID that does not require extra casting:
 
 ```javascript  
 function UUID(value) {
