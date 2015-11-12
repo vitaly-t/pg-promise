@@ -11,8 +11,5 @@ addons:
 before_script:
   - psql -c 'create database pg_promise_test;' -U postgres
   - node test/db/init.js
-branches:
-  only:
-    - 3.0
 env:
   - BLUEBIRD_DEBUG=0
