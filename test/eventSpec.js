@@ -1,6 +1,6 @@
 'use strict';
 
-var pgClient = require('pg/lib/client');
+var pgClient = require('pg-core/lib/client');
 var header = require('./db/header');
 
 var promise = header.defPromise;

@@ -1,6 +1,6 @@
 'use strict';
 
-var PG = require('pg');
+var PG = require('pg-core');
 var header = require('./db/header');
 var promise = header.defPromise;
 var options = {

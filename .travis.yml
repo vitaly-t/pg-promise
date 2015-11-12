@@ -13,6 +13,6 @@ before_script:
   - node test/db/init.js
 branches:
   only:
-    - master
+    - 3.0
 env:
   - BLUEBIRD_DEBUG=0

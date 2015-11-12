@@ -1,6 +1,6 @@
 'use strict';
 
-var pgp = require('../lib/index');
+var pgp = require('../lib');
 
 var dateSample = new Date();
 

@@ -1,10 +1,10 @@
 pg-promise
 ===========
 
-Complete access layer to [node-postgres] via [Promises/A+].
+Complete access layer to [pg-core] via [Promises/A+].
 
-[![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
-[![Coverage Status](https://coveralls.io/repos/vitaly-t/pg-promise/badge.svg?branch=master)](https://coveralls.io/r/vitaly-t/pg-promise?branch=master)
+[![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=3.0)](https://travis-ci.org/vitaly-t/pg-promise)
+[![Coverage Status](https://coveralls.io/repos/vitaly-t/pg-promise/badge.svg?branch=3.0)](https://coveralls.io/r/vitaly-t/pg-promise?branch=3.0)
 
 ---
 <a href="https://promisesaplus.com/"><img align="right" width="190" height="190" src="http://s8.postimg.org/k7dtue8lx/pg_promise.jpg"></a>
@@ -59,7 +59,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
 
 # About
 
-Built on top of [node-postgres] and its connection pool, this library translates their callback interface into one based on [Promises/A+],
+Built on top of [pg-core] and its connection pool, this library translates their callback interface into one based on [Promises/A+],
 while extending the protocol to a higher level, with automated connections and transactions management.
 
 In addition, the library provides:
@@ -137,9 +137,9 @@ var cn = {
 var cn = "postgres://username:password@host:port/database";
 ```
 
-This library doesn't use any of the connection's details, it simply passes them on to [PG] when opening a connection.
+This library doesn't use any of the connection's details, it simply passes them on to [pg-core] when opening a connection.
 For more details see pg connection parameters in [WiKi](https://github.com/brianc/node-postgres/wiki/pg#parameters) and
-[implementation](https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js).
+[implementation](https://github.com/vitaly-t/pg-core/blob/master/lib/connection-parameters.js).
 
 Create a new database instance from the connection details:
 ```javascript
@@ -252,7 +252,7 @@ db.manyOrNone(query, values); // expects anything, same as `any`
 ```
 
 There is however one specific method `result(query, values)` to bypass any result verification, and instead resolve
-with the original [Result](https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6) object passed from the [PG] library.
+with the original [Result](https://github.com/vitaly-t/pg-core/blob/master/lib/result.js#L8) object passed from the [pg-core] library.
 
 You can also add your own methods and properties to this protocol via the [extend](#extend) event.  
 
@@ -776,7 +776,7 @@ to be `true` when initializing the library, and every query formatting will redi
 Although this has a huge implication for the library's functionality, it is not within the scope of this project to detail.
 For any further reference you should use documentation of the [PG] library.
 
-Note the following formatting features implemented by [pg-promise] that are not in [node-postgres]:
+Note the following formatting features implemented by [pg-promise] that are not in [pg-core]:
 * [Custom Type Formatting](#custom-type-formatting)
 * Single-value formatting: [pg-promise] doesn't require use of an array when passing a single value;
 * [Raw-Text](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#raw-text) support: injecting raw/pre-formatted text values into the query;
@@ -1103,13 +1103,14 @@ When exiting your application, you can make the following call:
 pgp.end();
 ```
 This will release [pg] connection pool globally and make sure that the process terminates without any delay.
-If you do not call it, your process may be waiting for 30 seconds (default for [poolIdleTimeout](https://github.com/brianc/node-postgres/blob/master/lib/defaults.js#L31)),
+If you do not call it, your process may be waiting for 30 seconds (default for [poolIdleTimeout](https://github.com/vitaly-t/pg-core/blob/master/lib/defaults.js#L33)),
 waiting for the connection to expire in the pool.
 
 If, however you normally exit your application by killing the NodeJS process, then you don't need to use it.
 
 # History
 
+* Version 3.0.0 Replacing [node-postgres] dependency with [pg-core]. Released: November 11, 2015
 * Version 2.2.0 major rework on the nested transactions support. Released: October 23, 2015
 * Version 2.0.8 added all the [long-outstanding breaking changes](https://github.com/vitaly-t/pg-promise/wiki/2.0-Migration). Released: October 12, 2015
 * Version 1.11.0 added [noLocking](#nolocking) initialization option. Released: September 30, 2015.
@@ -1167,11 +1168,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[pg-core]:https://github.com/vitaly-t/pg-core
 [batch]:https://github.com/vitaly-t/pg-promise/blob/master/API.md#module_pg-promise.Task+batch
 [sequence]:https://github.com/vitaly-t/pg-promise/blob/master/API.md#module_pg-promise.Task+sequence
 [API]:https://github.com/vitaly-t/pg-promise/blob/master/API.md
 [pg-monitor]:https://github.com/vitaly-t/pg-monitor
 [pg-promise]:https://github.com/vitaly-t/pg-promise
+[node-postgres]:https://github.com/brianc/node-postgres
 [PG]:https://github.com/brianc/node-postgres
 [pg]:https://github.com/brianc/node-postgres
 [node-postgres]:https://github.com/brianc/node-postgres
