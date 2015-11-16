@@ -912,11 +912,8 @@ A task/transaction can be tagged when it is called using the following syntax:
 ```javascript
 // for tasks:
 db.task(tag, cb);
-
 // for transactions:
 db.tx(tag, cb);
-// or
-db.transact(tag, cb);
 ```
 i.e. in front of the callback function you can inject a value or object that
 tags the task/transaction, so it can be used as a reference when handling events.
