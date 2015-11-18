@@ -108,29 +108,6 @@ describe("Query event", function () {
             expect(param.query).toBe('select 123');
         });
     });
-
-    describe("with invalid handler", function () {
-        var error;
-        beforeEach(function (done) {
-            options.query = 123;
-            db.query("select $1", [123])
-                .then(function () {
-
-                }, function (reason) {
-                    error = reason;
-                }).finally(function () {
-                    done();
-                });
-        });
-        afterEach(function () {
-            options.query = null;
-        });
-        it("must reject with correct error", function () {
-            expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe("Type 'function' was expected for property 'options.query'");
-        });
-    });
-
 });
 
 describe("Start/Finish task events", function () {
