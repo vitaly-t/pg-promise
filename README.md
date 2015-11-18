@@ -215,16 +215,21 @@ object itself, to be injected as a raw-text JSON-formatted string.
 
 In order to eliminate the chances of unexpected query results and thus make the code more robust,
 method `query` uses parameter `qrm` (Query Result Mask):
+
 ```javascript
 ///////////////////////////////////////////////////////
 // Query Result Mask flags;
 //
 // Any combination is supported, except for one + many.
 var queryResult = {
-    one: 1,     // single-row result is expected;
-    many: 2,    // multi-row result is expected;
-    none: 4,    // no rows expected;
-    any: 6      // (default) = many|none = any result.
+    /** Single row is expected. */
+    one: 1,
+    /** One or more rows expected. */
+    many: 2,
+    /** Expecting no rows. */
+    none: 4,
+    /** many|none - any result is expected. */
+    any: 6
 };
 ```
 
@@ -838,9 +843,6 @@ with the database.
 
 The library will suppress any error thrown by the handler and write it into the console.
 
-**NOTE:** The library will throw an error instead of making the call, if `options.connect` is set to
-a non-empty value other than a function.
-
 ---
 #### disconnect
 
@@ -860,9 +862,6 @@ The function takes only one parameter - `client` object from the [PG] library th
 that's being released.
 
 The library will suppress any error thrown by the handler and write it into the console.
-
-**NOTE:** The library will throw an error instead of making the call, if `options.disconnect` is set to
-a non-empty value other than a function.
 
 ---
 #### query
@@ -921,9 +920,6 @@ tags the task/transaction, so it can be used as a reference when handling events
 All properties of `ctx` marked as optional are not set, unless they are relevant
 to the event.
 
-**NOTE:** The library will throw an error instead of making the call, if `options.query` is set to
-a non-empty value other than a function.
-
 ---
 #### error
 
@@ -951,9 +947,6 @@ var options = {
 For parameter `e` see documentation of the `query` event earlier.
 
 The library will suppress any error thrown by the handler and write it into the console.
-
-**NOTE:** The library will throw an error instead of making the call,
-if `options.error` is set to a non-empty value other than a function.
 
 ---
 #### task
@@ -1010,9 +1003,6 @@ var options = {
 For parameter `e` see documentation of the `query` event earlier.
 
 The library will suppress any error thrown by the handler and write it into the console.
-
-**NOTE:** The library will throw an error instead of making the call, if `options.transact` is set to
-a non-empty value other than a function.
 
 ---
 #### extend
@@ -1079,9 +1069,6 @@ db.users.add("John", true)
 ```
 
 The library will suppress any error thrown by the handler and write it into the console.
-
-**NOTE:** The library will throw an error instead of making the call, if `options.extend` is set to
-a non-empty value other than a function.
 
 ---
 #### noLocking
