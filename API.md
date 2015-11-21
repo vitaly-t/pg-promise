@@ -130,7 +130,7 @@ Converts a numeric value into its PostgreSQL number presentation,with support f
 
 <a name="module_formatting.as.number"></a>
 #### as.number(arr) ⇒ <code>String</code>
-Converts an array of values into its PostgreSQL presentationas an Array-Type constructor string: `array[]`
+Converts an array of values into its PostgreSQL presentationas an Array-Type constructor string: `array[]`.
 
 **Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
