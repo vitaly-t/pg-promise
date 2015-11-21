@@ -33,7 +33,7 @@ Query Formatting
     * [.csv(values)](#module_formatting.as.csv) ⇒ <code>String</code>
     * [.json(obj, [raw])](#module_formatting.as.json) ⇒ <code>String</code>
     * [.func(func, [raw], [obj])](#module_formatting.as.func) ⇒ <code>String</code>
-    * [.format(query, values)](#module_formatting.as.format) ⇒ <code>String</code>
+    * [.format(query, [values])](#module_formatting.as.format) ⇒ <code>String</code>
 
 <a name="module_formatting.as"></a>
 ### formatting.as : <code>object</code>
@@ -48,7 +48,7 @@ Query Formatting
   * [.csv(values)](#module_formatting.as.csv) ⇒ <code>String</code>
   * [.json(obj, [raw])](#module_formatting.as.json) ⇒ <code>String</code>
   * [.func(func, [raw], [obj])](#module_formatting.as.func) ⇒ <code>String</code>
-  * [.format(query, values)](#module_formatting.as.format) ⇒ <code>String</code>
+  * [.format(query, [values])](#module_formatting.as.format) ⇒ <code>String</code>
 
 <a name="module_formatting.as.text"></a>
 #### as.text(text, [raw]) ⇒ <code>String</code>
@@ -210,8 +210,8 @@ Calls the function to get the actual value, and then formats the resultaccordin
 </table>
 
 <a name="module_formatting.as.format"></a>
-#### as.format(query, values) ⇒ <code>String</code>
-Replaces variables in the query string with the corresponding values.
+#### as.format(query, [values]) ⇒ <code>String</code>
+Replaces variables in the query string with the corresponding values passed.
 
 **Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
@@ -225,7 +225,7 @@ Replaces variables in the query string with the corresponding values.
     <td>query</td><td><code>String</code></td><td><p>Query string with formatting variables in it.</p>
 </td>
     </tr><tr>
-    <td>values</td><td><code>Array</code> | <code>value</code></td><td><p>Formatting variable value(s).</p>
+    <td>[values]</td><td><code>Array</code> | <code>value</code></td><td><p>Formatting variable value(s).</p>
 </td>
     </tr>  </tbody>
 </table>
