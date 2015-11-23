@@ -665,7 +665,6 @@ Namespace for the type conversion helpers.
 Promise Adapter.
 
 **Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
-**Read only**: true  
 <a name="queryResult"></a>
 ## queryResult : <code>enum</code>
 Binary mask that represents the result expected from queries.It is used in the generic [query](#module_pg-promise.Database+query) method,as well as method [func](#module_pg-promise.Database+func).The mask is always the last optional parameter, which defaults to `queryResult.any`.Any combination of flags is supported, except for `one + many`.
