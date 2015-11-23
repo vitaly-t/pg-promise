@@ -518,11 +518,13 @@ Instance of the PG library used.
 Query Result Mask.
 
 **Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
+**Read only**: true  
 <a name="module_pg-promise.QueryResultError"></a>
 ### pg-promise.QueryResultError
 Query Result Error type.
 
 **Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
+**Read only**: true  
 <a name="new_module_pg-promise.QueryResultError_new"></a>
 #### new QueryResultError()
 Custom error used as a rejection reason when a queryresult doesn't match the specified Query Result Mask.
