@@ -105,10 +105,10 @@ Custom error used as a rejection reason when a queryresult doesn't match the sp
 
 <a name="module_pg-promise.Task+batch"></a>
 #### task.batch(values, [cb]) ⇒ <code>Promise</code>
-For complete method documentation see $[spex.batch].
+For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md">spex.batch</a>.
 
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
-**Summary**: Resolves a predefined array of mixed values by redirecting to method $[spex.batch].  
+**Summary**: Resolves a predefined array of mixed values by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md">spex.batch</a>.  
 <table>
   <thead>
     <tr>
@@ -125,10 +125,10 @@ For complete method documentation see $[spex.batch].
 
 <a name="module_pg-promise.Task+page"></a>
 #### task.page(source, [dest], [limit]) ⇒ <code>Promise</code>
-For complete method documentation see $[spex.page].
+For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/page.md">spex.page</a>.
 
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
-**Summary**: Resolves a dynamic sequence of arrays/pages with mixed values, by redirecting to method $[spex.page].  
+**Summary**: Resolves a dynamic sequence of arrays/pages with mixed values, by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/page.md">spex.page</a>.  
 <table>
   <thead>
     <tr>
@@ -147,10 +147,10 @@ For complete method documentation see $[spex.page].
 
 <a name="module_pg-promise.Task+sequence"></a>
 #### task.sequence(source, [dest], [limit], [track]) ⇒ <code>Promise</code>
-For complete method documentation see $[spex.sequence].
+For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md">spex.sequence</a>.
 
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
-**Summary**: Resolves a dynamic sequence of mixed values by redirecting to method $[spex.sequence].  
+**Summary**: Resolves a dynamic sequence of mixed values by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md">spex.sequence</a>.  
 <table>
   <thead>
     <tr>
@@ -543,7 +543,7 @@ Terminates pg library (call it when exiting the application).
   </thead>
   <tbody>
 <tr>
-    <td>client</td><td><code>pg.Client</code></td><td><p>$[pg.Client] object that represents the database connection.</p>
+    <td>client</td><td><code>pg.Client</code></td><td><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents the database connection.</p>
 </td>
     </tr>  </tbody>
 </table>
@@ -560,7 +560,7 @@ Terminates pg library (call it when exiting the application).
   </thead>
   <tbody>
 <tr>
-    <td>client</td><td><code>pg.Client</code></td><td><p>$[pg.Client] object that represents the database connection.</p>
+    <td>client</td><td><code>pg.Client</code></td><td><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents the database connection.</p>
 </td>
     </tr>  </tbody>
 </table>
