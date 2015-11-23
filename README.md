@@ -1083,6 +1083,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* Version 2.4.0 library re-organized for better documentation and easier maintenance. Released: November 23, 2015
 * Version 2.2.0 major rework on the nested transactions support. Released: October 23, 2015
 * Version 2.0.8 added all the [long-outstanding breaking changes](https://github.com/vitaly-t/pg-promise/wiki/2.0-Migration). Released: October 12, 2015
 * Version 1.11.0 added [noLocking](#nolocking) initialization option. Released: September 30, 2015.
@@ -1140,9 +1141,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
-[batch]:https://github.com/vitaly-t/pg-promise/blob/master/API.md#module_pg-promise.Task+batch
-[sequence]:https://github.com/vitaly-t/pg-promise/blob/master/API.md#module_pg-promise.Task+sequence
-[API]:https://github.com/vitaly-t/pg-promise/blob/master/API.md
+[batch]:https://github.com/vitaly-t/pg-promise/blob/master/API#module_pg-promise.Task+batch
+[sequence]:https://github.com/vitaly-t/pg-promise/blob/master/API#module_pg-promise.Task+sequence
+[API]:https://github.com/vitaly-t/pg-promise/blob/master/API
 [pg-monitor]:https://github.com/vitaly-t/pg-monitor
 [pg-promise]:https://github.com/vitaly-t/pg-promise
 [PG]:https://github.com/brianc/node-postgres
