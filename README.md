@@ -808,9 +808,9 @@ library that's specified.
 * [When] - quite old, not the best support;
 * [Q] - most widely used;
 * [RSVP] - doesn't have `done()`, use `finally/catch` instead
-* [Lie] - doesn't have `done()`. Not recommended due to poor support. 
+* [Lie] - doesn't have `done()`. 
 
-Compatibility with other [Promises/A+] libraries though possible, is an unknown.
+Compatibility with other [Promises/A+] is expected, but hasn't been tested.
 
 ---
 #### connect
