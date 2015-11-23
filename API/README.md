@@ -91,8 +91,7 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
 **Extends:** <code>Error</code>  
 <a name="new_module_pg-promise.QueryResultError_new"></a>
 #### new QueryResultError()
-Custom error used as a rejection reason when a query
-result doesn't match the specified Query Result Mask.
+Custom error used as a rejection reason when a queryresult doesn't match the specified Query Result Mask.
 
 <a name="module_pg-promise.Task"></a>
 ### pg-promise.Task
@@ -208,22 +207,12 @@ For complete method documentation see <a href="https://github.com/vitaly-t/spex/
 
 <a name="module_pg-promise.Database+connect"></a>
 #### database.connect() ⇒ <code>Promise</code>
-This method initiates a shared connection for executing a chain of queries
-on the same connection. The connection must be released in the end of the
-chain by calling method `done()` of the connection object.
-This is a legacy, low-level approach to chaining queries on the same connection.
-A newer and simpler approach is via method [task](#module_pg-promise.Database+task),
-which allocates and releases the shared connection automatically.
+This method initiates a shared connection for executing a chain of querieson the same connection. The connection must be released in the end of thechain by calling method `done()` of the connection object.This is a legacy, low-level approach to chaining queries on the same connection.A newer and simpler approach is via method [task](#module_pg-promise.Database+task),which allocates and releases the shared connection automatically.
 
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Retrieves a new or existing connection from the pool, based on the
-current connection parameters.  
-**Returns**: <code>Promise</code> - Connection result:
-- resolves with the connection object, if successful. The object has method `done()` that must
-be called in the end of the query chain, in order to release the connection back to the pool.
-- rejects with the connection error when fails.  
+**Summary**: Retrieves a new or existing connection from the pool, based on thecurrent connection parameters.  
+**Returns**: <code>Promise</code> - Connection result:- resolves with the connection object, if successful. The object has method `done()` that mustbe called in the end of the query chain, in order to release the connection back to the pool.- rejects with the connection error when fails.  
 **See**: [task](#module_pg-promise.Database+task)  
-
 <a name="module_pg-promise.Database+query"></a>
 #### database.query(query, [values], [qrm]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
@@ -252,9 +241,7 @@ be called in the end of the query chain, in order to release the connection back
 #### database.none(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects no data to be returned.  
-**Returns**: <code>Promise</code> - Result of the query call:
-- when no records are returned, the returned promise will resolve with `undefined`;
-- when the query returns any data, it will reject with `"No return data was expected from the query"`.  
+**Returns**: <code>Promise</code> - Result of the query call:- when no records are returned, the returned promise will resolve with `undefined`;- when the query returns any data, it will reject with `"No return data was expected from the query"`.  
 <table>
   <thead>
     <tr>
@@ -275,11 +262,7 @@ be called in the end of the query chain, in order to release the connection back
 #### database.one(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects exactly one row of data.  
-**Returns**: <code>Promise</code> - Result of the query call:
-- when 1 row is returned, it will resolve with that row as a single object;
-- when no rows are returned, it will reject with `"No data returned from the query."`;
-- when more than 1 rows are returned, it will reject with
-  `"Single row was expected from the query, but multiple returned."`.  
+**Returns**: <code>Promise</code> - Result of the query call:- when 1 row is returned, it will resolve with that row as a single object;- when no rows are returned, it will reject with `"No data returned from the query."`;- when more than 1 rows are returned, it will reject with  `"Single row was expected from the query, but multiple returned."`.  
 <table>
   <thead>
     <tr>
@@ -300,9 +283,7 @@ be called in the end of the query chain, in order to release the connection back
 #### database.many(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects one or more rows.  
-**Returns**: <code>Promise</code> - Result of the query call:
-- when 1 or more rows are returned, it will resolve with the array of rows.
-- when no rows are returned, it will reject with `"No data returned from the query."`;  
+**Returns**: <code>Promise</code> - Result of the query call:- when 1 or more rows are returned, it will resolve with the array of rows.- when no rows are returned, it will reject with `"No data returned from the query."`;  
 <table>
   <thead>
     <tr>
@@ -323,11 +304,7 @@ be called in the end of the query chain, in order to release the connection back
 #### database.oneOrNone(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects 0 or 1 rows.  
-**Returns**: <code>Promise</code> - Result of the query call:
-- when no rows are returned, it will resolve with `null`;
-- when 1 row is returned, it will resolve with that row as a single object;
-- when more than 1 rows are returned, it will reject with
-  `"Single row was expected from the query, but multiple returned."`.  
+**Returns**: <code>Promise</code> - Result of the query call:- when no rows are returned, it will resolve with `null`;- when 1 row is returned, it will resolve with that row as a single object;- when more than 1 rows are returned, it will reject with  `"Single row was expected from the query, but multiple returned."`.  
 <table>
   <thead>
     <tr>
@@ -348,9 +325,7 @@ be called in the end of the query chain, in order to release the connection back
 #### database.manyOrNone(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects any number of rows.  
-**Returns**: <code>Promise</code> - Result of the query call:
-- when no rows are returned, it will resolve with an empty array;
-- when 1 or more rows are returned, it will resolve with the array of rows.  
+**Returns**: <code>Promise</code> - Result of the query call:- when no rows are returned, it will resolve with an empty array;- when 1 or more rows are returned, it will resolve with the array of rows.  
 **See**: [Database.any](#module_pg-promise.Database+any)  
 <table>
   <thead>
@@ -394,10 +369,8 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 <a name="module_pg-promise.Database+result"></a>
 #### database.result(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Executes a query without any expectation for the return data, to provide direct access
-to the <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object.  
-**Returns**: <code>Promise</code> - Result of the query call:
-- resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object:  
+**Summary**: Executes a query without any expectation for the return data, to provide direct accessto the <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object.  
+**Returns**: <code>Promise</code> - Result of the query call:- resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object:  
 <table>
   <thead>
     <tr>
@@ -418,18 +391,7 @@ to the <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.j
 #### database.stream(qs, init) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Custom data streaming, with help of <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a>.  
-**Returns**: <code>Promise</code> - Result of the streaming operation.
-
-Once the streaming has finished successfully, the method resolves with
-`{processed, duration}`:
-- `processed` - total number of rows that have been processed;
-- `duration` - streaming duration, in milliseconds.
-
-Possible rejections messages:
-- `Invalid or missing stream object`
-- `Invalid stream state`
-- `Invalid or missing stream initialization callback`
-- `Stream not initialized`  
+**Returns**: <code>Promise</code> - Result of the streaming operation.Once the streaming has finished successfully, the method resolves with`{processed, duration}`:- `processed` - total number of rows that have been processed;- `duration` - streaming duration, in milliseconds.Possible rejections messages:- `Invalid or missing stream object`- `Invalid stream state`- `Invalid or missing stream initialization callback`- `Stream not initialized`  
 <table>
   <thead>
     <tr>
@@ -449,8 +411,7 @@ Possible rejections messages:
 <a name="module_pg-promise.Database+func"></a>
 #### database.func(funcName, [values], [qrm]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Executes a query against a database function by its name:
-&#x60;select * from funcName(values)&#x60;  
+**Summary**: Executes a query against a database function by its name:&#x60;select * from funcName(values)&#x60;  
 **Returns**: <code>Promise</code> - Result of the query call, according to `qrm`.  
 **See**: [query](#module_pg-promise.Database+query)  
 <table>
@@ -475,8 +436,7 @@ Possible rejections messages:
 <a name="module_pg-promise.Database+proc"></a>
 #### database.proc(procName, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Executes a query against a stored procedure via its name:
-&#x60;select * from procName(values)&#x60;  
+**Summary**: Executes a query against a stored procedure via its name:&#x60;select * from procName(values)&#x60;  
 **Returns**: <code>Promise</code> - The same result as method [oneOrNone](#module_pg-promise.Database+oneOrNone).  
 **See**
 
@@ -524,18 +484,7 @@ or else <code>p2</code> isn&#39;t used.</p>
 
 <a name="module_pg-promise.Database+tx"></a>
 #### database.tx(p1, [p2]) ⇒ <code>Promise</code>
-The method implements the following steps:
-- acquires a connection from the pool, if needed;
-- executes `BEGIN`;
-- executes the callback function;
-- if the callback function has resolved:
-  - executes `COMMIT`;
-  - releases the connection, if it was acquired;
-  - resolves with the result from the callback function;
-- if the callback function has rejected:
-  - executes `ROLLBACK`;
-  - releases the connection, if it was acquired;
-  - rejects with the result from the callback function.
+The method implements the following steps:- acquires a connection from the pool, if needed;- executes `BEGIN`;- executes the callback function;- if the callback function has resolved:  - executes `COMMIT`;  - releases the connection, if it was acquired;  - resolves with the result from the callback function;- if the callback function has rejected:  - executes `ROLLBACK`;  - releases the connection, if it was acquired;  - rejects with the result from the callback function.
 
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes the callback function as a transaction.  
@@ -575,8 +524,7 @@ Query Result Error type.
 **Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
 <a name="new_module_pg-promise.QueryResultError_new"></a>
 #### new QueryResultError()
-Custom error used as a rejection reason when a query
-result doesn't match the specified Query Result Mask.
+Custom error used as a rejection reason when a queryresult doesn't match the specified Query Result Mask.
 
 <a name="module_pg-promise.end"></a>
 ### pg-promise.end()
@@ -586,8 +534,7 @@ Terminates pg library (call it when exiting the application).
 <a name="module_pg-promise.event_connect"></a>
 ### "connect" (client)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
-**Summary**: Global notification function of acquiring a new database
-connection from the connection pool, i.e. a virtual connection.  
+**Summary**: Global notification function of acquiring a new databaseconnection from the connection pool, i.e. a virtual connection.  
 <table>
   <thead>
     <tr>
@@ -604,8 +551,7 @@ connection from the connection pool, i.e. a virtual connection.
 <a name="module_pg-promise.event_disconnect"></a>
 ### "disconnect" (client)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
-**Summary**: Global notification function of releasing a database connection
-back to the connection pool, i.e. releasing the virtual connection.  
+**Summary**: Global notification function of releasing a database connectionback to the connection pool, i.e. releasing the virtual connection.  
 <table>
   <thead>
     <tr>
@@ -715,13 +661,7 @@ Namespace for the type conversion helpers.
 **Read only**: true  
 <a name="queryResult"></a>
 ## queryResult : <code>enum</code>
-Binary mask that represents the result expected from queries.
-It is used in the generic [query](#module_pg-promise.Database+query) method,
-as well as method [func](#module_pg-promise.Database+func).
-
-The mask is always the last optional parameter, which defaults to `queryResult.any`.
-
-Any combination of flags is supported, except for `one + many`.
+Binary mask that represents the result expected from queries.It is used in the generic [query](#module_pg-promise.Database+query) method,as well as method [func](#module_pg-promise.Database+func).The mask is always the last optional parameter, which defaults to `queryResult.any`.Any combination of flags is supported, except for `one + many`.
 
 **Kind**: global enum  
 **Summary**: Query Result Mask.  
