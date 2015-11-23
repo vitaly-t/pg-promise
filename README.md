@@ -18,15 +18,15 @@ Complete access layer to [node-postgres] via [Promises/A+].
 
 * [About](#about)
 * [Installing](#installing)
-  - [Documentation](#documentation)
-* [Testing](#testing)
 * [Getting Started](#getting-started)
   - [Initializing](#initializing)
   - [Connecting](#connecting)
-  - [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example)  
+  - [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example)
+* [Testing](#testing)
+* [Documentation](#documentation)    
 * [Usage](#usage)
   - [Queries and Parameters](#queries-and-parameters)
-    - [Query Result Mask](#query-result-mask)    
+  - [Query Result Mask](#query-result-mask)    
   - [Named Parameters](#named-parameters)
   - [Conversion Helpers](#conversion-helpers)
   - [Custom Type Formatting](#custom-type-formatting)  
@@ -74,41 +74,6 @@ In addition, the library provides:
 $ npm install pg-promise
 ```
 
-### Documentation
-In addition to the online documentation, there is in-line API documentation,
-based on [jsDoc](https://github.com/jsdoc3/jsdoc).
-
-In order to generate it, you need to do the following:
- * `$ cd node_modules/pg-promise`
- * `$ npm install` - to install DEV dependencies of the library;
- * `$ npm run doc` - will generate the documentation;
- * open `out/index.html` in a web browser.
-
-Alternatively, you can use its converted version of the [API], which doesn't look as good though,
-and is a work in progress.
-
-# Testing
-* Install the library's dependencies:
-```
-$ npm install
-```
-* Make sure all tests can connect to your local test database, using the connection details in
-[test/db/header.js](https://github.com/vitaly-t/pg-promise/blob/master/test/db/header.js).
-Either set up your test database accordingly or change the connection details in that file.
-
-* Initialize the database with some test data:
-```
-$ node test/db/init.js
-```
-* To run all tests:
-```
-$ npm test
-```
-* To run all tests with coverage:
-```
-$ npm run coverage
-```
-
 # Getting Started
 
 ## Initializing
@@ -147,7 +112,46 @@ var db = pgp(cn);
 ```
 There can be multiple database objects in the application for different connections.
 
-To get started quickly, see our [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example) tutorial. 
+To get started quickly, see our [Learn by Example] tutorial. 
+
+# Testing
+
+* Install the library's DEV dependencies:
+```
+$ npm install
+```
+* Make sure all tests can connect to your local test database, using the connection details in
+[test/db/header.js](https://github.com/vitaly-t/pg-promise/blob/master/test/db/header.js).
+Either set up your test database accordingly or change the connection details in that file.
+
+* Initialize the database with some test data:
+```
+$ node test/db/init.js
+```
+* To run all tests:
+```
+$ npm test
+```
+* To run all tests with coverage:
+```
+$ npm run coverage
+```
+
+# Documentation
+
+[Learn by Example] is the quickest way to get started with this library, while the current
+document details most of the basic functionality the library provides.
+
+In addition to that, there is in-line API documentation, based on [jsDoc](https://github.com/jsdoc3/jsdoc).
+
+In order to generate it, you need to do the following:
+ * `$ cd node_modules/pg-promise`
+ * `$ npm install` - to install DEV dependencies of the library;
+ * `$ npm run doc` - will generate the documentation;
+ * open `out/index.html` in a web browser.
+
+Alternatively, you can use its converted version of the [API], which doesn't look as good though,
+but is being continuously improved.
 
 # Usage
 
@@ -167,24 +171,10 @@ function query(query, values, qrm);
 * `qrm` - (optional) *Query Result Mask*, as explained below. When not passed, it defaults to `pgp.queryResult.any`.
 
 When a value/property inside array/object is an array, it is treated as a [PostgreSQL Array Type](http://www.postgresql.org/docs/9.4/static/arrays.html),
-converted into the array constructor format of `array[]`, the same as calling method `as.array()`.
-
-Examples:
-```javascript
-console.log(pgp.as.array([[1, 2, 3], [4, 5, null]]));
-// will print: array[[1,2,3],[4,5,null]]
-
-console.log(pgp.as.array([['one', 'two'], [undefined, 'four']]));
-// will print: array[['one','two'],[null,'four']]
-
-console.log(pgp.as.array([[1, 2], ['three', 'four']]));
-// will print: array[[1,2],['three','four']],
-// but executing it within a query will throw an error
-// due to heterogeneous data type in the array.
-```
+converted into the array constructor format of `array[]`, the same as calling method `pgp.as.array()`.
 
 When a value/property inside array/object is of type `object` (except for `null` and `Date`), it is automatically
-serialized into JSON, the same as calling method `as.json()`, except the latter would convert anything to JSON.
+serialized into JSON, the same as calling method `pgp.as.json()`, except the latter would convert anything to JSON.
 
 #### Raw Text
 
@@ -211,7 +201,7 @@ query("...WHERE id IN($1^)", pgp.as.csv([1,2,3,4]));
 Syntax `this^` within the [Named Parameters](#named-parameters) refers to the formatting
 object itself, to be injected as a raw-text JSON-formatted string.
 
-### Query Result Mask
+## Query Result Mask
 
 In order to eliminate the chances of unexpected query results and thus make the code more robust,
 method `query` uses parameter `qrm` (Query Result Mask):
@@ -247,6 +237,7 @@ db.any("select * from users");
 ```
 
 This usage pattern is facilitated through result-specific methods that can be used instead of the generic query:
+
 ```javascript
 db.many(query, values); // expects one or more rows
 db.one(query, values); // expects a single row
@@ -261,12 +252,12 @@ with the original [Result](https://github.com/brianc/node-postgres/blob/master/l
 
 You can also add your own methods and properties to this protocol via the [extend](#extend) event.  
 
-Each query function resolves its **data** object according to the `qrm` that was used:
+Each query function resolves its **data** according to the `qrm` that was used:
 
 * `none` - **data** is `undefined`. If the query returns any kind of data, it is rejected.
 * `one` - **data** is a single object. If the query returns no data or more than one row of data, it is rejected.
 * `many` - **data** is an array of objects. If the query returns no rows, it is rejected.
-* `one`|`none` - **data** is `null`, if no data was returned; or a single object, if there was one row of data returned.
+* `one`|`none` - **data** is `null`, if no data was returned; or a single object, if one row was returned.
     If the query returns more than one row of data, the query is rejected.
 * `many`|`none` - **data** is an array of objects. When no rows are returned, **data** is an empty array.
 
@@ -315,7 +306,7 @@ with name `this`. And in such cases the property's value will be used instead.
 
 In PostgreSQL stored procedures are just functions that usually do not return anything.
 
-Suppose we want to call function **findAudit** to find audit records by **user id** and maximum timestamp.
+Suppose we want to call function **findAudit** to find audit records by `user_id` and maximum timestamp.
 We can make such call as shown below:
 
 ```javascript
@@ -328,7 +319,7 @@ db.func('findAudit', [123, new Date()])
     });
 ```
 
-We passed it **user id** = 123, plus current Date/Time as the timestamp. We assume that the function signature matches
+We passed it `user_id = 123`, plus current Date/Time as the timestamp. We assume that the function signature matches
 the parameters that we passed. All values passed are serialized automatically to comply with PostgreSQL type formats.
 
 Method `func` accepts optional third parameter - `qrm` (Query Result Mask), the same as method `query`.
@@ -338,11 +329,8 @@ but `db.proc` doesn't take a `qrm` parameter, always assuming it is `one`|`none`
 
 Summary for supporting procedures and functions:
 
-```javascript
-var qrm = pgp.queryResult;
-db.func(query, values, qrm); // expects the result according to `qrm`
-db.proc(query, values); // calls db.func(query, values, qrm.one | qrm.none)
-```
+* `func(query, values, qrm)` - expects the result according to `qrm`
+* `proc(query, values)` - calls `func(query, values, qrm.one | qrm.none)`
 
 ## Conversion Helpers
 
@@ -392,6 +380,7 @@ as a function to be called for resolving the actual value.
 
 For methods which take optional flag `raw` it is to indicate that the return text is to be without
 any pre-processing:
+
 * No replacing each single-quote symbol `'` with two;
 * No wrapping text into single quotes;
 * Throwing an error when the variable value is `null` or `undefined`.
@@ -644,7 +633,7 @@ db.connect()
                 ['users', 123]);
 
             // returning a promise that determines a successful transaction:
-            return t.batch([q1, q2]); // all of the queries are to be resolved;
+            return this.batch([q1, q2]); // all of the queries are to be resolved;
         });
     })
     .catch(function (error) {
@@ -1166,3 +1155,4 @@ DEALINGS IN THE SOFTWARE.
 [Q]:https://github.com/kriskowal/q
 [RSVP]:https://github.com/tildeio/rsvp.js
 [Lie]:https://github.com/calvinmetcalf/lie
+[Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
