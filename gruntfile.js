@@ -1,4 +1,5 @@
-"use strict";
+'use strict';
+
 module.exports = function (grunt) {
     grunt.initConfig({
         jsdoc2md: {
@@ -6,11 +7,27 @@ module.exports = function (grunt) {
                 options: {
                     "no-gfm": true
                 },
-                src: "lib/*.js",
-                dest: "API.md"
+                files: files
             }
         }
     });
     grunt.loadNpmTasks("grunt-jsdoc-to-markdown");
     grunt.registerTask("default", "jsdoc2md");
 };
+
+var codePath = "API/"; // folder for all generated code documentation;
+
+var files = [
+    {
+        src: "lib/index.js",
+        dest: codePath + "README.md"
+    },
+    {
+        src: "lib/formatting.js",
+        dest: codePath + "formatting.md"
+    },
+    {
+        src: "lib/adapter.js",
+        dest: codePath + "adapter.md"
+    }
+];
