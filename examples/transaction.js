@@ -28,8 +28,8 @@ var db = pgp(cn); // database instance;
 db.tx(function (t) {
     // t = this;
     return this.batch([
-        t.one("insert into users(name) values($1) returning id", "John"),
-        t.one("insert into events(code) values($1) returning id", 123)
+        this.one("insert into users(name) values($1) returning id", "John"),
+        this.one("insert into events(code) values($1) returning id", 123)
     ]);
 })
     .spread(function (user, event) {
