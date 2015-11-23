@@ -83,6 +83,7 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
     * ["extend" (obj)](#module_pg-promise.event_extend)
   * _inner_
     * [~as](#module_pg-promise..as) : <code>module:formatting.as</code>
+    * [~PromiseAdapter](#module_pg-promise..PromiseAdapter) : <code>module:adapter.PromiseAdapter</code>
 
 <a name="module_pg-promise.QueryResultError"></a>
 ### pg-promise.QueryResultError ⇐ <code>Error</code>
@@ -656,6 +657,12 @@ Terminates pg library (call it when exiting the application).
 <a name="module_pg-promise..as"></a>
 ### pg-promise~as : <code>module:formatting.as</code>
 Namespace for the type conversion helpers.
+
+**Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
+**Read only**: true  
+<a name="module_pg-promise..PromiseAdapter"></a>
+### pg-promise~PromiseAdapter : <code>module:adapter.PromiseAdapter</code>
+Promise Adapter.
 
 **Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
 **Read only**: true  
