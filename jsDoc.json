@@ -3,7 +3,8 @@
     "include": [
       "lib/index.js",
       "lib/formatting.js",
-      "lib/adapter.js"
+      "lib/adapter.js",
+      "lib/error.js"
     ]
   },
   "templates": {

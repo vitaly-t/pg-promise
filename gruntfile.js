@@ -30,6 +30,10 @@ var files = [
     {
         src: "lib/adapter.js",
         dest: codePath + "adapter.md"
+    },
+    {
+        src: "lib/error.js",
+        dest: codePath + "error.md"
     }
 ];
 

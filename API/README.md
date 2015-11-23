@@ -47,8 +47,6 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
 
 * [pg-promise](#module_pg-promise)
   * _static_
-    * [.QueryResultError](#module_pg-promise.QueryResultError) ⇐ <code>Error</code>
-      * [new QueryResultError()](#new_module_pg-promise.QueryResultError_new)
     * [.Task](#module_pg-promise.Task)
       * [.batch(values, [cb])](#module_pg-promise.Task+batch) ⇒ <code>Promise</code>
       * [.page(source, [dest], [limit])](#module_pg-promise.Task+page) ⇒ <code>Promise</code>
@@ -71,8 +69,6 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
       * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>Promise</code>
     * [.pg](#module_pg-promise.pg)
     * [.queryResult](#module_pg-promise.queryResult)
-    * [.QueryResultError](#module_pg-promise.QueryResultError)
-      * [new QueryResultError()](#new_module_pg-promise.QueryResultError_new)
     * [.end()](#module_pg-promise.end)
     * ["connect" (client)](#module_pg-promise.event_connect)
     * ["disconnect" (client)](#module_pg-promise.event_disconnect)
@@ -83,16 +79,8 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
     * ["extend" (obj)](#module_pg-promise.event_extend)
   * _inner_
     * [~as](#module_pg-promise..as) : <code>module:formatting.as</code>
+    * [~QueryResultError](#module_pg-promise..QueryResultError) : <code>module:error</code>
     * [~PromiseAdapter](#module_pg-promise..PromiseAdapter) : <code>module:adapter</code>
-
-<a name="module_pg-promise.QueryResultError"></a>
-### pg-promise.QueryResultError ⇐ <code>Error</code>
-**Kind**: static class of <code>[pg-promise](#module_pg-promise)</code>  
-**Summary**: Query Result Error type.  
-**Extends:** <code>Error</code>  
-<a name="new_module_pg-promise.QueryResultError_new"></a>
-#### new QueryResultError()
-Custom error used as a rejection reason when a queryresult doesn't match the specified Query Result Mask.
 
 <a name="module_pg-promise.Task"></a>
 ### pg-promise.Task
@@ -519,16 +507,6 @@ Query Result Mask.
 
 **Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
 **Read only**: true  
-<a name="module_pg-promise.QueryResultError"></a>
-### pg-promise.QueryResultError
-Query Result Error type.
-
-**Kind**: static property of <code>[pg-promise](#module_pg-promise)</code>  
-**Read only**: true  
-<a name="new_module_pg-promise.QueryResultError_new"></a>
-#### new QueryResultError()
-Custom error used as a rejection reason when a queryresult doesn't match the specified Query Result Mask.
-
 <a name="module_pg-promise.end"></a>
 ### pg-promise.end()
 Terminates pg library (call it when exiting the application).
@@ -659,6 +637,12 @@ Terminates pg library (call it when exiting the application).
 <a name="module_pg-promise..as"></a>
 ### pg-promise~as : <code>module:formatting.as</code>
 Namespace for the type conversion helpers.
+
+**Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
+**Read only**: true  
+<a name="module_pg-promise..QueryResultError"></a>
+### pg-promise~QueryResultError : <code>module:error</code>
+Query Result Error type.
 
 **Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
 **Read only**: true  
