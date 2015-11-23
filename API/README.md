@@ -211,7 +211,7 @@ This method initiates a shared connection for executing a chain of querieson th
 
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Retrieves a new or existing connection from the pool, based on thecurrent connection parameters.  
-**Returns**: <code>Promise</code> - Connection result:- resolves with the connection object, if successful. The object has method `done()` that must  be called in the end of the query chain, in order to release the connection back to the pool.- rejects with the connection error when fails.<pre>  
+**Returns**: <code>Promise</code> - Connection result:<ul><li>resolves with the connection object, if successful. The object has method `done()` that must  be called in the end of the query chain, in order to release the connection back to the pool.</li><li>rejects with the connection error when fails.</li></ul>  
 **See**: [task](#module_pg-promise.Database+task)  
 <a name="module_pg-promise.Database+query"></a>
 #### database.query(query, [values], [qrm]) ⇒ <code>Promise</code>
