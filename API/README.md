@@ -1,7 +1,7 @@
 ## Modules
 <dl>
 <dt><a href="#module_pg-promise">pg-promise</a></dt>
-<dd><p>Complete access layer to node-postgres via $[Promises/A+]</p>
+<dd><p>Complete access layer to node-postgres via <a href="https://promisesaplus.com">Promises/A+</a></p>
 </dd>
 </dl>
 ## Members
@@ -16,7 +16,7 @@ as well as method <a href="#module_pg-promise.Database+func">func</a>.</p>
 </dl>
 <a name="module_pg-promise"></a>
 ## pg-promise
-Complete access layer to node-postgres via $[Promises/A+]
+Complete access layer to node-postgres via <a href="https://promisesaplus.com">Promises/A+</a>
 
 **Author:** Vitaly Tomilov  
 <table>
@@ -369,8 +369,8 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 <a name="module_pg-promise.Database+result"></a>
 #### database.result(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Executes a query without any expectation for the return data, to provide direct accessto the $[Result] object.  
-**Returns**: <code>Promise</code> - Result of the query call:- resolves with the original $[Result] object:  
+**Summary**: Executes a query without any expectation for the return data, to provide direct accessto the <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object.  
+**Returns**: <code>Promise</code> - Result of the query call:- resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object:  
 <table>
   <thead>
     <tr>
@@ -390,7 +390,7 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 <a name="module_pg-promise.Database+stream"></a>
 #### database.stream(qs, init) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Custom data streaming, with help of $[pg-query-stream].  
+**Summary**: Custom data streaming, with help of <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a>.  
 **Returns**: <code>Promise</code> - Result of the streaming operation.Once the streaming has finished successfully, the method resolves with`{processed, duration}`:- `processed` - total number of rows that have been processed;- `duration` - streaming duration, in milliseconds.Possible rejections messages:- `Invalid or missing stream object`- `Invalid stream state`- `Invalid or missing stream initialization callback`- `Stream not initialized`  
 <table>
   <thead>
@@ -400,7 +400,7 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
   </thead>
   <tbody>
 <tr>
-    <td>qs</td><td><code>QueryStream</code></td><td><p>stream object of type $[QueryStream].</p>
+    <td>qs</td><td><code>QueryStream</code></td><td><p>stream object of type <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js#L5">QueryStream</a>.</p>
 </td>
     </tr><tr>
     <td>init</td><td><code>function</code></td><td><p>stream initialization callback</p>
