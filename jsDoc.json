@@ -2,7 +2,8 @@
   "source": {
     "include": [
       "lib/index.js",
-      "lib/formatting.js"
+      "lib/formatting.js",
+      "lib/adapter.js"
     ]
   },
   "templates": {

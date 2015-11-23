@@ -3,9 +3,6 @@
 <dt><a href="#module_pg-promise">pg-promise</a></dt>
 <dd><p>Complete access layer to node-postgres via <a href="https://promisesaplus.com">Promises/A+</a></p>
 </dd>
-<dt><a href="#module_{module_adapter}">{module:adapter}</a></dt>
-<dd><p>Promise Adapter.</p>
-</dd>
 </dl>
 ## Members
 <dl>
@@ -86,6 +83,7 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
     * ["extend" (obj)](#module_pg-promise.event_extend)
   * _inner_
     * [~as](#module_pg-promise..as) : <code>module:formatting.as</code>
+    * [~PromiseAdapter](#module_pg-promise..PromiseAdapter) : <code>module:adapter</code>
 
 <a name="module_pg-promise.QueryResultError"></a>
 ### pg-promise.QueryResultError ⇐ <code>Error</code>
@@ -662,10 +660,12 @@ Namespace for the type conversion helpers.
 
 **Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
 **Read only**: true  
-<a name="module_{module_adapter}"></a>
-## {module:adapter}
+<a name="module_pg-promise..PromiseAdapter"></a>
+### pg-promise~PromiseAdapter : <code>module:adapter</code>
 Promise Adapter.
 
+**Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
+**Read only**: true  
 <a name="queryResult"></a>
 ## queryResult : <code>enum</code>
 Binary mask that represents the result expected from queries.It is used in the generic [query](#module_pg-promise.Database+query) method,as well as method [func](#module_pg-promise.Database+func).The mask is always the last optional parameter, which defaults to `queryResult.any`.Any combination of flags is supported, except for `one + many`.
