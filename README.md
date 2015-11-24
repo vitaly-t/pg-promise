@@ -701,7 +701,7 @@ transaction/save-point is also rolled back.
 
 So, if the main principle of sub-transactions isn't supported, what good are sub-transactions in PostgreSQL,
 you might wonder. You can roll-back results of sub-transactions, without effecting the result of the
-top-level transaction, and promise logic allows easy implementation of such processing pattern. 
+top-level transaction, and promise logic allows easy implementation of such partial rollback pattern. 
  
 ### Synchronous Transactions
 
