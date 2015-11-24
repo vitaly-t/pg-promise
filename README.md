@@ -797,10 +797,7 @@ var options = {
 var pgp = require('pg-promise')(options);
 ```
 
-This library requires only the basic `resolve` and `reject` to be available within the promise
-library that's specified.
-
-[Promises/A+] libraries that passed our compatibility test and are currently supported:
+[Promises/A+] libraries that implement a recognizable promise signature and work automatically:
 
 * **ES6 Promise** - used by default, though it doesn't have `done()` or `finally()`.
 * [Bluebird] - best alternative all around;
@@ -810,7 +807,8 @@ library that's specified.
 * [RSVP] - doesn't have `done()`, use `finally/catch` instead
 * [Lie] - doesn't have `done()`. 
 
-Compatibility with other [Promises/A+] is expected, but hasn't been tested.
+For [Promises/A+] libraries that do not implement a recognizable promise signature,
+[Promise Adapter] can be used to make them compatible with **pg-promise**.
 
 ---
 #### connect
@@ -1083,7 +1081,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
-* Version 2.4.0 library re-organized for better documentation and easier maintenance. Released: November 23, 2015
+* Version 2.4.0 library re-organized for better documentation and easier maintenance. Released: November 24, 2015
 * Version 2.2.0 major rework on the nested transactions support. Released: October 23, 2015
 * Version 2.0.8 added all the [long-outstanding breaking changes](https://github.com/vitaly-t/pg-promise/wiki/2.0-Migration). Released: October 12, 2015
 * Version 1.11.0 added [noLocking](#nolocking) initialization option. Released: September 30, 2015.
@@ -1157,3 +1155,4 @@ DEALINGS IN THE SOFTWARE.
 [RSVP]:https://github.com/tildeio/rsvp.js
 [Lie]:https://github.com/calvinmetcalf/lie
 [Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
+[Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
