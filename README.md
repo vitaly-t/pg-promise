@@ -712,12 +712,12 @@ However, when it comes to executing a significant number of queries during a bul
 such approach is no longer practical. For one thing, it implies that all requests have been created as promise objects,
 which isn't possible when dealing with a huge number of queries, due to memory limitations imposed by NodeJS.
 And for another, when one query fails, the rest will continue trying to execute, due to their promise nature,
-as being asynchronous. The latter may result in executing queries outside of their connection context.
+as being asynchronous.
 
 This is why within each task/transaction we have method [sequence], to be able to execute a strict
 sequence of queries one by one, and if one fails - the rest won't try to execute.
 
-```javascript
+```js
 function source(index, data, delay) {
     // must create and return a promise object dynamically,
     // based on the index of the sequence;
@@ -729,7 +729,7 @@ function source(index, data, delay) {
         case 2:
             return this.query("select 2");
     }
-    // returning nothing/undefined indicates the end of the sequence;
+    // returning or resolving with undefined ends the sequence;
     // throwing an error will result in a reject;
 }
 
@@ -744,6 +744,8 @@ db.tx(function (t) {
         console.log(error); // print the error;
     });
 ```
+
+Sequence is based on implementation of [spex.sequence].
 
 # Advanced
 
@@ -1169,3 +1171,4 @@ DEALINGS IN THE SOFTWARE.
 [Lie]:https://github.com/calvinmetcalf/lie
 [Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
 [Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
+[spex.sequence]:https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
