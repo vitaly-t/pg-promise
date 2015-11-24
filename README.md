@@ -808,7 +808,8 @@ var pgp = require('pg-promise')(options);
 * [Lie] - doesn't have `done()`. 
 
 For [Promises/A+] libraries that do not implement a recognizable promise signature,
-[Promise Adapter] can be used to make them compatible with **pg-promise**.
+[Promise Adapter] can be used to make them compatible with **pg-promise**, mostly
+needed by smaller/simplified [Conformant Implementations](https://promisesaplus.com/implementations). 
 
 ---
 #### connect
