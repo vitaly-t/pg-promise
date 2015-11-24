@@ -688,11 +688,21 @@ db.tx(function (t) {
     });
 ```
 
-Things to note from the example above:
-* A nested transaction cannot be disconnected from its container, i.e. it must get into the container's promise chain,
- or it will result in an attempt to execute against an unknown connection;
-* A failure on any level in a nested transaction will `ROLLBACK` and `reject` the entire chain.
+#### Limitations
 
+It is important to know that PostgreSQL doesn't have proper support for nested transactions, it only
+has support for save points that can work inside a transaction as a sub-transaction. The difference
+between the two approaches is huge, as explained further.
+
+Within proper support for nested transactions, the result of a successful sub-transaction isn't rolled back
+when the parent transaction is rolled back. However, with save-points, as implemented by PostgreSQL,
+this is exactly the case, i.e. if you roll-back the top-level transaction, the result of any child
+transaction/save-point is also rolled back.
+
+So, if the main principle of sub-transactions isn't supported, what good are sub-transactions in PostgreSQL,
+you might wonder. You can roll-back results of sub-transactions, without effecting the result of the
+top-level transaction, and promise logic allows easy implementation of such processing pattern. 
+ 
 ### Synchronous Transactions
 
 A regular task/transaction with a set of independent queries relies on method [batch] to resolve
