@@ -10,7 +10,7 @@ Query Formatting
     * [.bool(value)](#module_formatting.as.bool) ⇒ <code>String</code>
     * [.date(d, [raw])](#module_formatting.as.date) ⇒ <code>String</code>
     * [.number(num)](#module_formatting.as.number) ⇒ <code>String</code>
-    * [.number(arr)](#module_formatting.as.number) ⇒ <code>String</code>
+    * [.array(arr)](#module_formatting.as.array) ⇒ <code>String</code>
     * [.csv(values)](#module_formatting.as.csv) ⇒ <code>String</code>
     * [.json(obj, [raw])](#module_formatting.as.json) ⇒ <code>String</code>
     * [.func(func, [raw], [obj])](#module_formatting.as.func) ⇒ <code>String</code>
@@ -25,7 +25,7 @@ Query Formatting
   * [.bool(value)](#module_formatting.as.bool) ⇒ <code>String</code>
   * [.date(d, [raw])](#module_formatting.as.date) ⇒ <code>String</code>
   * [.number(num)](#module_formatting.as.number) ⇒ <code>String</code>
-  * [.number(arr)](#module_formatting.as.number) ⇒ <code>String</code>
+  * [.array(arr)](#module_formatting.as.array) ⇒ <code>String</code>
   * [.csv(values)](#module_formatting.as.csv) ⇒ <code>String</code>
   * [.json(obj, [raw])](#module_formatting.as.json) ⇒ <code>String</code>
   * [.func(func, [raw], [obj])](#module_formatting.as.func) ⇒ <code>String</code>
@@ -109,8 +109,8 @@ Converts a numeric value into its PostgreSQL number presentation,with support f
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.as.number"></a>
-#### as.number(arr) ⇒ <code>String</code>
+<a name="module_formatting.as.array"></a>
+#### as.array(arr) ⇒ <code>String</code>
 Converts an array of values into its PostgreSQL presentationas an Array-Type constructor string: `array[]`.
 
 **Kind**: static method of <code>[as](#module_formatting.as)</code>  
