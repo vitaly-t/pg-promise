@@ -14,50 +14,73 @@ var db = dbHeader.db;
 
 describe("Library instance", function () {
 
-    it("must be a function", function () {
-        expect(typeof(pgp)).toBe('function');
-    });
-
     it("must have valid property 'pg'", function () {
-        expect(typeof(pgp.pg)).toBe('object');
-        expect(pgp.pg).toBe(PG); // the same library instance;
-        expect(pgpLib.pg === pgp.pg).toBe(true);
+        expect(pgpLib.pg).toBe(PG);
     });
 
     it("must have function 'end'", function () {
-        expect(typeof(pgp.end)).toBe('function');
-        expect(pgpLib.end === pgp.end).toBe(true);
+        expect(pgpLib.end instanceof Function).toBe(true);
     });
 
     it("must have valid property 'as'", function () {
-        expect(typeof(pgp.as)).toBe('object');
-        expect(typeof(pgp.as.text)).toBe('function');
-        expect(typeof(pgp.as.bool)).toBe('function');
-        expect(typeof(pgp.as.date)).toBe('function');
-        expect(typeof(pgp.as.array)).toBe('function');
-        expect(typeof(pgp.as.json)).toBe('function');
-        expect(typeof(pgp.as.csv)).toBe('function');
-        expect(typeof(pgp.as.number)).toBe('function');
-        expect(typeof(pgp.as.format)).toBe('function');
-        expect(typeof(pgp.as.func)).toBe('function');
-        expect(pgpLib.as === pgp.as).toBe(true);
+        expect(pgpLib.as && typeof pgpLib.as === 'object').toBeTruthy();
+        expect(pgpLib.as.text instanceof Function).toBe(true);
+        expect(pgpLib.as.bool instanceof Function).toBe(true);
+        expect(pgpLib.as.date instanceof Function).toBe(true);
+        expect(pgpLib.as.array instanceof Function).toBe(true);
+        expect(pgpLib.as.json instanceof Function).toBe(true);
+        expect(pgpLib.as.csv instanceof Function).toBe(true);
+        expect(pgpLib.as.number instanceof Function).toBe(true);
+        expect(pgpLib.as.format instanceof Function).toBe(true);
+        expect(pgpLib.as.func instanceof Function).toBe(true);
     });
 
-    it("must have property 'QueryResultError'", function () {
-        expect(pgp.QueryResultError instanceof Function).toBe(true);
+    it("must have function 'QueryResultError'", function () {
+        expect(pgpLib.QueryResultError instanceof Function).toBe(true);
     });
+
+    it("must have function 'PromiseAdapter'", function () {
+        expect(pgpLib.PromiseAdapter instanceof Function).toBe(true);
+    });
+
+    it("must have valid property 'queryResult'", function () {
+        expect(pgpLib.queryResult && typeof pgpLib.queryResult === 'object').toBeTruthy();
+        expect(pgpLib.queryResult.one).toBe(1);
+        expect(pgpLib.queryResult.many).toBe(2);
+        expect(pgpLib.queryResult.none).toBe(4);
+        expect(pgpLib.queryResult.any).toBe(6);
+    });
+
 });
 
-describe("Query Result", function () {
-    it("must be an object", function () {
-        expect(typeof(pgp.queryResult)).toBe('object');
+describe("Initialized instance", function () {
+
+    it("must have valid property 'pg'", function () {
+        expect(pgp.pg).toBe(PG);
     });
-    it("must have all properties set correctly", function () {
-        expect(pgp.queryResult.one).toBe(1);
-        expect(pgp.queryResult.many).toBe(2);
-        expect(pgp.queryResult.none).toBe(4);
-        expect(pgp.queryResult.any).toBe(6);
+
+    it("must have function 'end'", function () {
+        expect(pgp.end instanceof Function).toBe(true);
     });
+
+    it("must have valid property 'as'", function () {
+        expect(pgp.as && typeof pgp.as === 'object').toBeTruthy();
+        expect(pgp.as).toBe(pgpLib.as);
+    });
+
+    it("must have function 'QueryResultError'", function () {
+        expect(pgp.QueryResultError instanceof Function).toBe(true);
+    });
+
+    it("must have function 'PromiseAdapter'", function () {
+        expect(pgp.PromiseAdapter instanceof Function).toBe(true);
+    });
+
+    it("must have valid property 'queryResult'", function () {
+        expect(pgp.queryResult && typeof pgp.queryResult === 'object').toBeTruthy();
+        expect(pgp.queryResult).toBe(pgpLib.queryResult);
+    });
+
 });
 
 describe("Database Protocol", function () {
@@ -89,8 +112,8 @@ describe("Database Protocol", function () {
         var protocol;
         beforeEach(function (done) {
             db.tx(function (t) {
-                return promise.resolve(t);
-            })
+                    return promise.resolve(t);
+                })
                 .then(function (data) {
                     protocol = data;
                 })
@@ -126,8 +149,8 @@ describe("Database Protocol", function () {
         var protocol;
         beforeEach(function (done) {
             db.task(function (t) {
-                return promise.resolve(t);
-            })
+                    return promise.resolve(t);
+                })
                 .then(function (data) {
                     protocol = data;
                 })
@@ -212,8 +235,8 @@ describe("Protocol Extension", function () {
 
         beforeEach(function (done) {
             pgpTest.db.tx(function (t) {
-                return t.getOne("select 'hello' as msg");
-            })
+                    return t.getOne("select 'hello' as msg");
+                })
                 .then(function (data) {
                     result = data;
                 })
@@ -240,8 +263,8 @@ describe("spex", function () {
         var result;
         beforeEach(function (done) {
             db.task(function () {
-                return this.batch([1, 2]);
-            })
+                    return this.batch([1, 2]);
+                })
                 .then(function (data) {
                     result = data;
                 })
@@ -261,8 +284,8 @@ describe("spex", function () {
             }
 
             db.task(function () {
-                return this.page(source);
-            })
+                    return this.page(source);
+                })
                 .then(function (data) {
                     result = data;
                 })
@@ -284,8 +307,8 @@ describe("spex", function () {
             }
 
             db.task(function () {
-                return this.sequence(source);
-            })
+                    return this.sequence(source);
+                })
                 .then(function (data) {
                     result = data;
                 })
