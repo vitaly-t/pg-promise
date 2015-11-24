@@ -700,7 +700,8 @@ transaction, all inner save-points are also rolled back.
 
 Save-points are only good for *partial rollbacks*, i.e. you can roll-back results of sub-transactions, with
 yet successful *commit* for the top-level transaction. Using promises it is easy to construct your transaction
-so it would utilize that logic.
+so it would utilize that logic. This library automatically provides a transaction on the top level, and
+save-points for all sub-transactions.
 
 ### Synchronous Transactions
 
