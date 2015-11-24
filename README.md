@@ -807,9 +807,11 @@ var pgp = require('pg-promise')(options);
 * [RSVP] - doesn't have `done()`, use `finally/catch` instead
 * [Lie] - doesn't have `done()`. 
 
-For [Promises/A+] libraries that do not implement a recognizable promise signature,
-[Promise Adapter] can be used to make them compatible with **pg-promise**, mostly
-needed by smaller and simplified [Conformant Implementations](https://promisesaplus.com/implementations). 
+If you pass in a library doesn't implement a recognizable promise signature, **pg-promise** will
+throw error `Invalid promise library specified.` during initialization.
+
+For such libraries you can use [Promise Adapter] to make them compatible with **pg-promise**,
+mostly needed by smaller and simplified [Conformant Implementations](https://promisesaplus.com/implementations). 
 
 ---
 #### connect
