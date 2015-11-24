@@ -1,6 +1,7 @@
 'use strict';
 
 var header = require('./db/header');
+var PromiseAdapter = require('../lib/index').PromiseAdapter;
 
 var supportsPromise = typeof(Promise) !== 'undefined';
 
@@ -26,6 +27,47 @@ describe("Library entry function", function () {
                 }).toThrow("Promise library must be specified.");
             }
         })
+    });
+
+    describe("with PromiseAdapter override", function () {
+        var p = header.defPromise;
+
+        function create(func) {
+            return new p(func);
+        }
+
+        function resolve(data) {
+            return p.resolve(data);
+        }
+
+        function reject(reason) {
+            return p.reject(reason);
+        }
+
+        var adapter = new PromiseAdapter(create, resolve, reject);
+        it("must accept custom promise", function () {
+            var lib = header({
+                promiseLib: adapter
+            });
+            expect(lib.pgp instanceof Function).toBe(true);
+        })
+
+        describe("using PromiseAdapter", function () {
+            var result;
+            beforeEach(function (done) {
+                var lib = header({
+                    promiseLib: adapter
+                });
+                lib.db.one("select 1 as value")
+                    .then(function (data) {
+                        result = data;
+                        done();
+                    });
+            });
+            it("must return successfully", function () {
+                expect(result.value).toBe(1);
+            });
+        });
     });
 
     if (supportsPromise) {

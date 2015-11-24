@@ -323,6 +323,14 @@ describe("spex", function () {
     })
 });
 
+// This one is just for coverage;
+describe("Error protocol", function () {
+
+    it("must return correctly formatted error body", function () {
+        var error = new pgp.QueryResultError("some error");
+        expect(error.inspect()).toBe(error.stack);
+    });
+});
 
 if (jasmine.Runner) {
     var _finishCallback = jasmine.Runner.prototype.finishCallback;

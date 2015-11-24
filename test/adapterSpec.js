@@ -33,13 +33,12 @@ describe("Adapter", function () {
     });
 
     describe("with valid parameters", function () {
-        it("must be successful", function () {
+        it("must be successful with new", function () {
             expect(new PromiseAdapter(dummy, dummy, dummy)).toBeTruthy();
         });
+        it("must be successful without new", function () {
+            expect(PromiseAdapter(dummy, dummy, dummy)).toBeTruthy();
+        });
     });
-
-});
-
-describe("Promise", function () {
 
 });
