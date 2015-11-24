@@ -691,18 +691,17 @@ db.tx(function (t) {
 #### Limitations
 
 It is important to know that PostgreSQL doesn't have proper support for nested transactions, it only
-has support for save points that can work inside a transaction as a sub-transaction. The difference
-between the two approaches is huge, as explained further.
+supports *partial rollbacks* via [savepoints](http://www.postgresql.org/docs/9.4/static/sql-savepoint.html) inside transactions.
+The difference between the two techniques is huge, as explained further.
 
-Within proper support for nested transactions, the result of a successful sub-transaction isn't rolled back
-when the parent transaction is rolled back. However, with save-points, as implemented by PostgreSQL,
-this is exactly the case, i.e. if you roll-back the top-level transaction, the result of any child
-transaction/save-point is also rolled back.
+Proper support for nested transactions means that the result of a successful sub-transaction isn't rolled back
+when its parent transaction is rolled back. But with PostgreSQL save-points, if you roll-back the top-level
+transaction, all inner save-points are also rolled back.
 
-So, if the main principle of sub-transactions isn't supported, what good are sub-transactions in PostgreSQL,
-you might wonder. You can roll-back results of sub-transactions, without effecting the result of the
-top-level transaction, and promise logic allows easy implementation of such partial rollback pattern. 
- 
+Save-points are only good for *partial rollbacks*, i.e. you can roll-back results of sub-transactions, with
+yet successful *commit* for the top-level transaction. Using promises it is easy to construct your transaction
+so it would utilize that logic.
+
 ### Synchronous Transactions
 
 A regular task/transaction with a set of independent queries relies on method [batch] to resolve
