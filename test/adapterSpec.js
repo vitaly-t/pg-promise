@@ -34,10 +34,17 @@ describe("Adapter", function () {
 
     describe("with valid parameters", function () {
         it("must be successful with new", function () {
-            expect(new PromiseAdapter(dummy, dummy, dummy)).toBeTruthy();
+            var adapter = new PromiseAdapter(dummy, dummy, dummy);
+            expect(adapter instanceof PromiseAdapter).toBe(true);
         });
         it("must be successful without new", function () {
-            expect(PromiseAdapter(dummy, dummy, dummy)).toBeTruthy();
+            var adapter = PromiseAdapter(dummy, dummy, dummy);
+            expect(adapter instanceof PromiseAdapter).toBe(true);
+        });
+        it("must be successful with wrong context", function () {
+            var obj = {};
+            var adapter = PromiseAdapter.call(obj, dummy, dummy, dummy);
+            expect(adapter instanceof PromiseAdapter).toBe(true);
         });
     });
 
