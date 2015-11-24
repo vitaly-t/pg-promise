@@ -696,7 +696,7 @@ The difference between the two techniques is huge, as explained further.
 
 Proper support for nested transactions means that the result of a successful sub-transaction isn't rolled back
 when its parent transaction is rolled back. But with PostgreSQL save-points, if you roll-back the top-level
-transaction, all inner save-points are also rolled back.
+transaction, the result of all inner save-points is also rolled back.
 
 Save-points are only good for *partial rollbacks*, i.e. you can roll-back results of sub-transactions, with
 yet successful *commit* for the top-level transaction. Using promises it is easy to construct your transaction
