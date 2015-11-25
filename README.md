@@ -51,6 +51,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
     - [transact](#transact)
     - [extend](#extend)
     - [noLocking](#nolocking)    
+    - [capTX](#capTX)    
   - [Library de-initialization](#library-de-initialization)
 * [History](#history)
 * [License](#license)
@@ -764,6 +765,7 @@ var options = {
     // error - error notification;
     // extend - protocol extension event;
     // noLocking - prevents protocol locking;
+    // capTX - use capitalized transaction commands.
 };
 var pgp = require('pg-promise')(options);
 ```
@@ -1081,6 +1083,12 @@ properties or trying to set them at the wrong time.
    
 If this provision gets in the way of using a mock-up framework for your tests, you can force
 the library to deactivate most of the locks by setting `noLocking=true` within the options.
+
+---
+#### capTX
+
+By default, all commands within automated transactions are executed in low case. If you want them
+to be executed capitalized instead, set `capTX = true`. This is purely a cosmetic feature.
 
 ## Library de-initialization
 
