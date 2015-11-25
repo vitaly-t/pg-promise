@@ -51,7 +51,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
     - [transact](#transact)
     - [extend](#extend)
     - [noLocking](#nolocking)    
-    - [capTX](#capTX)    
+    - [capTX](#captx)    
   - [Library de-initialization](#library-de-initialization)
 * [History](#history)
 * [License](#license)
