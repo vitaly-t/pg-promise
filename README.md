@@ -765,7 +765,7 @@ var options = {
     // error - error notification;
     // extend - protocol extension event;
     // noLocking - prevents protocol locking;
-    // capTX - use capitalized transaction commands.
+    // capTX - capitalizes transaction commands.
 };
 var pgp = require('pg-promise')(options);
 ```
