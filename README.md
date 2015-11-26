@@ -804,7 +804,7 @@ BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE
 Transaction Mode is set via property `txMode` on the transaction function.
 
 This is the most efficient and best-performing way of configuring transactions. In combination with
-*Transaction Snapshots* you can make the most out of transaction in terms of performance and concurrency.
+*Transaction Snapshots* you can make the most out of transactions in terms of performance and concurrency.
 
 
 # Advanced
