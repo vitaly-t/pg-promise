@@ -50,7 +50,8 @@ var links = {
     "Result": "https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6",
     "pg-query-stream": "https://github.com/brianc/node-pg-query-stream",
     "QueryStream": "https://github.com/brianc/node-pg-query-stream/blob/master/index.js#L5",
-    "pg.Client": "https://github.com/brianc/node-postgres/wiki/Client"
+    "pg.Client": "https://github.com/brianc/node-postgres/wiki/Client",
+    "BEGIN": "http://www.postgresql.org/docs/9.4/static/sql-begin.html"
 };
 
 var fs = require("fs");

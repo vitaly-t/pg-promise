@@ -19,7 +19,7 @@
 ## txMode
 Extends the default `BEGIN` with Transaction Mode parameters: - isolation level - access mode - deferrable mode
 
-**See**: [BEGIN](http://www.postgresql.org/docs/9.4/static/sql-begin.html)  
+**See**: <a href="http://www.postgresql.org/docs/9.4/static/sql-begin.html">BEGIN</a>  
 **Author:** Vitaly Tomilov  
 
 * [txMode](#module_txMode)
@@ -29,7 +29,7 @@ Extends the default `BEGIN` with Transaction Mode parameters: - isolation level
 <a name="module_txMode.TransactionMode"></a>
 ### txMode.TransactionMode
 **Kind**: static class of <code>[txMode](#module_txMode)</code>  
-**See**: [BEGIN](http://www.postgresql.org/docs/9.4/static/sql-begin.html)  
+**See**: <a href="http://www.postgresql.org/docs/9.4/static/sql-begin.html">BEGIN</a>  
 <a name="new_module_txMode.TransactionMode_new"></a>
 #### new TransactionMode([tiLevel], [readOnly], [deferrable])
 **Alternative Syntax:** `TransactionMode({tiLevel, readOnly, deferrable})`Constructs a complete transaction opening command,based on Transaction Mode parameters: - isolation level - access mode - deferrable mode
@@ -48,16 +48,16 @@ Extends the default `BEGIN` with Transaction Mode parameters: - isolation level
     <td>[readOnly]</td><td><code>Boolean</code></td><td><p>Sets transaction access mode based on the read-only flag:</p>
 <ul>
 <li><code>undefined</code> - access mode not specified (default)</li>
-<li><code>true</code> - access mode is <code>READ ONLY</code></li>
-<li><code>false</code> - access mode is <code>READ WRITE</code></li>
+<li><code>true</code> - access mode is set as <code>READ ONLY</code></li>
+<li><code>false</code> - access mode is set as <code>READ WRITE</code></li>
 </ul>
 </td>
     </tr><tr>
     <td>[deferrable]</td><td><code>Boolean</code></td><td><p>Sets transaction deferrable mode based on the boolean value:</p>
 <ul>
 <li><code>undefined</code> - deferrable mode not specified (default)</li>
-<li><code>true</code> - mode set as <code>DEFERRABLE</code></li>
-<li><code>false</code> - mode set as <code>NOT DEFERRABLE</code></li>
+<li><code>true</code> - mode is set as <code>DEFERRABLE</code></li>
+<li><code>false</code> - mode is set as <code>NOT DEFERRABLE</code></li>
 </ul>
 </td>
     </tr>  </tbody>
