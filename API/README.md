@@ -13,9 +13,6 @@ as well as method <a href="#module_pg-promise.Database+func">func</a>.</p>
 <p>The mask is always the last optional parameter, which defaults to <code>queryResult.any</code>.</p>
 <p>Any combination of flags is supported, except for <code>one + many</code>.</p>
 </dd>
-<dt><a href="#exp_module_txMode--txMode">txMode</a> ⏏</dt>
-<dd><p>Instance of the Transaction Mode library.</p>
-</dd>
 </dl>
 <a name="module_pg-promise"></a>
 ## pg-promise
@@ -85,6 +82,7 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
     * [~as](#module_pg-promise..as) : <code>module:formatting.as</code>
     * [~QueryResultError](#module_pg-promise..QueryResultError) : <code>module:error</code>
     * [~PromiseAdapter](#module_pg-promise..PromiseAdapter) : <code>module:adapter</code>
+    * [~txMode](#module_pg-promise..txMode) : <code>module:txMode</code>
 
 <a name="module_pg-promise.Task"></a>
 ### pg-promise.Task
@@ -653,6 +651,12 @@ Query Result Error type.
 <a name="module_pg-promise..PromiseAdapter"></a>
 ### pg-promise~PromiseAdapter : <code>module:adapter</code>
 Promise Adapter.
+
+**Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
+**Read only**: true  
+<a name="module_pg-promise..txMode"></a>
+### pg-promise~txMode : <code>module:txMode</code>
+Instance of the Transaction Mode library.
 
 **Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
 **Read only**: true  
