@@ -751,11 +751,11 @@ Sequence is based on implementation of [spex.sequence].
 
 ### Configurable Transactions
 
-In order to fine-tune database requests in a highly asynchronous environment,
-PostgreSQL supports 3 ways of configuring transactions:
+In order to be able to fine-tune database requests in a highly asynchronous environment,
+PostgreSQL supports *Transaction Snapshots*, plus 3 ways of configuring a transaction:
 
-* [SET TRANSACTION](http://www.postgresql.org/docs/9.4/static/sql-set-transaction.html), to configure the current transaction, which your can execute as the very
-first query in your transaction function;
+* [SET TRANSACTION](http://www.postgresql.org/docs/9.4/static/sql-set-transaction.html), to configure the current transaction,
+which your can execute as the very first query in your transaction function;
 * `SET SESSION CHARACTERISTICS AS TRANSACTION` - setting default transaction properties for the entire session; 
 * [BEGIN](http://www.postgresql.org/docs/9.4/static/sql-begin.html) + `Transaction Mode` - initiates a pre-configured transaction.
 
@@ -777,14 +777,15 @@ which can extend `BEGIN` in your transaction with a complete set of configuratio
 var TransactionMode = pgp.txMode.TransactionMode;
 var isolationLevel = pgp.txMode.isolationLevel;
  
-// Create a reusable transaction mode (serializable + deferrable):
+// Create a reusable transaction mode (serializable + read-only + deferrable):
 var tmSerDef = new TransactionMode({
     tiLevel: isolationLevel.serializable,
+    readOnly: true,
     deferrable: true
 });
 
 function myTransaction() {
-    return this.none('INSERT INTO table VALUES(...)');
+    return this.query("SELECT * FROM table");
 }
 
 myTransaction.txMode = tmSerDef; // assign transaction mode;
@@ -797,12 +798,14 @@ db.tx(myTransaction)
 
 Instead of the default `BEGIN`, such transaction will initiate with the following command:
 ```
-BEGIN ISOLATION LEVEL SERIALIZABLE DEFERRABLE
+BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE
 ```
 
 Transaction Mode is set via property `txMode` on the transaction function.
 
-This is the most efficient and best-performing way of configuring transactions.
+This is the most efficient and best-performing way of configuring transactions. In combination with
+*Transaction Snapshots* you can make the most out of transaction in terms of performance and concurrency.
+
 
 # Advanced
 

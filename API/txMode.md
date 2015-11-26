@@ -70,6 +70,7 @@ isolationLevel
 **Kind**: global enum  
 **Summary**: Transaction Isolation Level.  
 **Read only**: true  
+**See**: <a href="http://www.postgresql.org/docs/9.4/static/transaction-iso.html">Transaction Isolation</a>  
 **Properties**
 
 <table>

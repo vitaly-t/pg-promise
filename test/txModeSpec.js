@@ -163,6 +163,41 @@ describe("Transaction Mode", function () {
         });
     });
 
+    describe("with serializable and read-only", function () {
+        var queries = [], result;
+        beforeEach(function (done) {
+
+            options.query = function (e) {
+                queries.push(e.query);
+            };
+
+            function txNoParams() {
+                return promise.resolve("success");
+            }
+
+            var level = pgp.txMode.isolationLevel;
+
+            txNoParams.txMode = new pgp.txMode.TransactionMode({
+                tiLevel: level.serializable,
+                readOnly: true
+            });
+
+            db.tx(txNoParams)
+                .then(function (data) {
+                    result = data;
+                    done();
+                });
+        });
+        it("must execute correct command", function () {
+            expect(result).toBe("success");
+            expect(queries.length).toBe(2);
+            expect(queries[0]).toBe('begin isolation level serializable read only');
+        });
+        afterEach(function () {
+            delete options.query;
+        });
+    });
+
     describe("with deferrable", function () {
         var queries = [], result;
         beforeEach(function (done) {
@@ -175,7 +210,13 @@ describe("Transaction Mode", function () {
                 return promise.resolve("success");
             }
 
-            txNoParams.txMode = new pgp.txMode.TransactionMode({deferrable: true});
+            var level = pgp.txMode.isolationLevel;
+
+            txNoParams.txMode = new pgp.txMode.TransactionMode({
+                tiLevel: level.serializable,
+                readOnly: true,
+                deferrable: true
+            });
 
             db.tx(txNoParams)
                 .then(function (data) {
@@ -186,7 +227,7 @@ describe("Transaction Mode", function () {
         it("must execute correct command", function () {
             expect(result).toBe("success");
             expect(queries.length).toBe(2);
-            expect(queries[0]).toBe('begin deferrable');
+            expect(queries[0]).toBe('begin isolation level serializable read only deferrable');
         });
         afterEach(function () {
             delete options.query;
@@ -205,38 +246,13 @@ describe("Transaction Mode", function () {
                 return promise.resolve("success");
             }
 
-            txNoParams.txMode = new pgp.txMode.TransactionMode({deferrable: false});
-
-            db.tx(txNoParams)
-                .then(function (data) {
-                    result = data;
-                    done();
-                });
-        });
-        it("must execute correct command", function () {
-            expect(result).toBe("success");
-            expect(queries.length).toBe(2);
-            expect(queries[0]).toBe('begin not deferrable');
-        });
-        afterEach(function () {
-            delete options.query;
-        });
-    });
-
-    describe("with a combination", function () {
-        var queries = [], result;
-        beforeEach(function (done) {
-
-            options.query = function (e) {
-                queries.push(e.query);
-            };
-
-            function txNoParams() {
-                return promise.resolve("success");
-            }
-
             var level = pgp.txMode.isolationLevel;
-            txNoParams.txMode = new pgp.txMode.TransactionMode(level.repeatableRead, true, false);
+
+            txNoParams.txMode = new pgp.txMode.TransactionMode({
+                tiLevel: level.serializable,
+                readOnly: true,
+                deferrable: false
+            });
 
             db.tx(txNoParams)
                 .then(function (data) {
@@ -247,13 +263,44 @@ describe("Transaction Mode", function () {
         it("must execute correct command", function () {
             expect(result).toBe("success");
             expect(queries.length).toBe(2);
-            expect(queries[0]).toBe('begin isolation level repeatable read read only not deferrable');
+            expect(queries[0]).toBe('begin isolation level serializable read only not deferrable');
         });
         afterEach(function () {
             delete options.query;
         });
     });
+    /*
+     describe("with a combination", function () {
+     var queries = [], result;
+     beforeEach(function (done) {
 
+     options.query = function (e) {
+     queries.push(e.query);
+     };
+
+     function txNoParams() {
+     return promise.resolve("success");
+     }
+
+     var level = pgp.txMode.isolationLevel;
+     txNoParams.txMode = new pgp.txMode.TransactionMode(level.repeatableRead, true, false);
+
+     db.tx(txNoParams)
+     .then(function (data) {
+     result = data;
+     done();
+     });
+     });
+     it("must execute correct command", function () {
+     expect(result).toBe("success");
+     expect(queries.length).toBe(2);
+     expect(queries[0]).toBe('begin isolation level repeatable read read only not deferrable');
+     });
+     afterEach(function () {
+     delete options.query;
+     });
+     });
+     */
 });
 
 if (jasmine.Runner) {
