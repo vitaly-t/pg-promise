@@ -4,7 +4,8 @@
       "lib/index.js",
       "lib/formatting.js",
       "lib/adapter.js",
-      "lib/error.js"
+      "lib/qrError.js",
+      "lib/txMode.js"
     ]
   },
   "templates": {

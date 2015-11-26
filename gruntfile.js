@@ -32,8 +32,12 @@ var files = [
         dest: codePath + "adapter.md"
     },
     {
-        src: "lib/error.js",
-        dest: codePath + "error.md"
+        src: "lib/qrError.js",
+        dest: codePath + "qrError.md"
+    },
+    {
+        src: "lib/txMode.js",
+        dest: codePath + "txMode.md"
     }
 ];
 

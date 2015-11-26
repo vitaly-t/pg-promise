@@ -13,6 +13,9 @@ as well as method <a href="#module_pg-promise.Database+func">func</a>.</p>
 <p>The mask is always the last optional parameter, which defaults to <code>queryResult.any</code>.</p>
 <p>Any combination of flags is supported, except for <code>one + many</code>.</p>
 </dd>
+<dt><a href="#exp_module_txMode--txMode">txMode</a> ⏏</dt>
+<dd><p>Instance of the Transaction Mode library.</p>
+</dd>
 </dl>
 <a name="module_pg-promise"></a>
 ## pg-promise
@@ -38,7 +41,8 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
 <li><code>transact</code> - transaction event notification;</li>
 <li><code>error</code> - error event notification;</li>
 <li><code>extend</code> - protocol extension event;</li>
-<li><code>noLocking</code> - prevents protocol locking.</li>
+<li><code>noLocking</code> - prevents protocol locking;</li>
+<li><code>capTX</code> - capitalizes transaction commands.</li>
 </ul>
 </td>
     </tr>  </tbody>
