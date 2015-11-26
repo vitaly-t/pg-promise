@@ -766,9 +766,41 @@ The second approach isn't very usable within a database framework as this one, w
 on a connection pool, so you don't really know when a new connection is created.
 
 The last method is not usable, because transactions in this library are automatic, executing `BEGIN`
-without your control, or so it was until version 2.5.0, which changed that.
+without your control, or so it was until version 2.5.0, which changed that, as explained further.
+
+---  
   
-  
+Version 2.5.0 added support for [Transaction Mode](https://github.com/vitaly-t/pg-promise/blob/master/API/txMode.md),
+which can extend `BEGIN` in your transaction with a complete set of configuration parameters.
+
+```js
+// Create a reusable transaction mode (serializable, deferrable):
+var tmSerDef = new pgp.txMode.TransactionMode({
+    tiLevel: pgp.txMode.isolationLevel.serializable,
+    deferrable: true
+});
+
+function myTransaction() {
+    return this.none('INSERT INTO table VALUES(...)');
+}
+
+myTransaction.txMode = tmSerDef; // assign transaction mode;
+
+db.tx(myTransaction)
+    .then(function(){
+        // success;
+    });
+```
+
+Instead of the default `BEGIN`, such transaction will initiate with the following command:
+```
+BEGIN ISOLATION LEVEL SERIALIZABLE DEFERRABLE
+```
+
+This is the most efficient and best-performing way of configuring transactions. 
+
+In the example above, we use the new property `pgp.txMode = {isolationLevel, TransactionMode}`,
+and we configure the Transaction Mode by setting property `txMode` on the transaction function.
 
 # Advanced
 
