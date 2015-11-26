@@ -40,6 +40,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
     - [Shared-connection Transactions](#shared-connection-transactions)
     - [Nested Transactions](#nested-transactions)
     - [Synchronous Transactions](#synchronous-transactions)    
+    - [Configurable Transactions](#configurable-transactions)
 * [Advanced](#advanced)
   - [Initialization Options](#initialization-options)
     - [pgFormatting](#pgformatting)
@@ -748,6 +749,27 @@ db.tx(function (t) {
 
 Sequence is based on implementation of [spex.sequence].
 
+### Configurable Transactions
+
+In order to fine-tune database requests in a highly asynchronous environment,
+PostgreSQL supports 3 ways of configuring transactions:
+
+* [SET TRANSACTION](http://www.postgresql.org/docs/9.4/static/sql-set-transaction.html), to configure the current transaction, which your can execute as the very
+first query in your transaction function;
+* `SET SESSION CHARACTERISTICS AS TRANSACTION` - setting default transaction properties for the entire session; 
+* [BEGIN](http://www.postgresql.org/docs/9.4/static/sql-begin.html) + `Transaction Mode` - initiates a pre-configured transaction.
+
+The first method is quite usable, but that means you have to start every transaction with
+an initial query to configure the transaction, which can be a bit awkward.
+
+The second approach isn't very usable within a database framework as this one, which relies
+on a connection pool, so you don't really know when a new connection is created.
+
+The last method is not usable, because transactions in this library are automatic, executing `BEGIN`
+without your control, or so it was until version 2.5.0, which changed that.
+  
+  
+
 # Advanced
 
 ## Initialization Options
@@ -1104,49 +1126,48 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
-* Version 2.4.0 library re-organized for better documentation and easier maintenance. Released: November 24, 2015
-* Version 2.2.0 major rework on the nested transactions support. Released: October 23, 2015
-* Version 2.0.8 added all the [long-outstanding breaking changes](https://github.com/vitaly-t/pg-promise/wiki/2.0-Migration). Released: October 12, 2015
-* Version 1.11.0 added [noLocking](#nolocking) initialization option. Released: September 30, 2015.
-* Version 1.10.3 added enforced locks on every level of the library. Released: September 11, 2015.
-* Version 1.10.0 added support for `batch` execution within tasks and transactions. Released: September 10, 2015.
-* Version 1.9.5 added support for [Raw Custom Types](#raw-custom-types). Released: August 30, 2015.
-* Version 1.9.3 added support for [Custom Type Formatting](#custom-type-formatting). Released: August 30, 2015.
-* Version 1.9.0 added support for [Tasks](#tasks) + initial [jsDoc](https://github.com/jsdoc3/jsdoc) support. Released: August 21, 2015.
-* Version 1.8.2 added support for [Prepared Statements](https://github.com/brianc/node-postgres/wiki/Prepared-Statements). Released: August 01, 2015.
-* Version 1.8.0 added support for Query Streaming via [node-pg-query-stream](https://github.com/brianc/node-pg-query-stream). Released: July 23, 2015.
-* Version 1.7.2 significant code refactoring and optimizations; added support for super-massive transactions. Released: June 27, 2015.
-* Version 1.6.0 major update for the test platform + adding coverage. Released: June 19, 2015.
-* Version 1.5.0 major changes in architecture and query formatting. Released: June 14, 2015.
-* Version 1.4.0 added `this` context to all callbacks where applicable. Released: May 31, 2015.
-* Version 1.3.1 extended [Named Parameters](#named-parameters) syntax to support `{}`,`()`,`[]`,`<>` and `//`. Released: May 24, 2015.
-* Version 1.3.0 much improved error handling and reporting. Released: May 23, 2015.
-* Version 1.2.0 extended [Named Parameters](#named-parameters) syntax with `$(varName)`. Released: May 16, 2015.
-* Version 1.1.0 added support for functions as parameters. Released: April 3, 2015.
-* Version 1.0.5 added strict query sequencing for transactions. Released: April 26, 2015.
-* Version 1.0.3 added method `queryRaw(query, values)`. Released: April 19, 2015.
-* Version 1.0.1 improved error reporting for queries. Released: April 18, 2015.
-* Version 1.0.0 official release milestone. Released: April 17, 2015.
-* Version 0.9.8 added native json support, extended numeric support for `NaN`, `+Infinity` and `-Infinity`. Released: April 16, 2015.
-* Version 0.9.7 received support for protocol extensibility. Released: April 15, 2015.
-* Version 0.9.5 received support for raw-text variables. Released: April 12, 2015.
-* Version 0.9.2 received support for PostgreSQL Array Types. Released: April 8, 2015.
-* Version 0.9.0 changed the notification protocol. Released: April 7, 2015.
-* Version 0.8.4 added support for error notifications. Released: April 6, 2015.
-* Version 0.8.0 added support for named-parameter formatting. Released: April 3, 2015.
-* Version 0.7.0 fixes the way `as.format` works (breaking change). Released: April 2, 2015.
-* Version 0.6.2 has good database test coverage. Released: March 28, 2015.
-* Version 0.5.6 introduces support for nested transaction. Released: March 22, 2015.
-* Version 0.5.3 - minor changes; March 14, 2015.
-* Version 0.5.1 included wider support for alternative promise libraries. Released: March 12, 2015.
-* Version 0.5.0 introduces many new features and fixes, such as properties **pgFormatting** and **promiseLib**. Released on March 11, 2015.
-* Version 0.4.9 represents a solid code base, backed up by comprehensive testing. Released on March 10, 2015.
-* Version 0.4.0 is a complete rewrite of most of the library, made first available on March 8, 2015.
-* Version 0.2.0 introduced on March 6th, 2015, supporting multiple databases.
-* A refined version 0.1.4 released on March 5th, 2015.
-* First solid Beta, 0.1.2 on March 4th, 2015.
-* It reached first Beta version 0.1.0 on March 4th, 2015.
-* The first draft v0.0.1 was published on March 3rd, 2015, and then rapidly incremented due to many initial changes that had to come in, mostly documentation.
+* 2.5.0 added support for [Configurable Transactions](#configurable-transactions). Released: November 26, 2015
+* 2.4.0 library re-organized for better documentation and easier maintenance. Released: November 24, 2015
+* 2.2.0 major rework on the nested transactions support. Released: October 23, 2015
+* 2.0.8 added all the [long-outstanding breaking changes](https://github.com/vitaly-t/pg-promise/wiki/2.0-Migration). Released: October 12, 2015
+* 1.11.0 added [noLocking](#nolocking) initialization option. Released: September 30, 2015.
+* 1.10.3 added enforced locks on every level of the library. Released: September 11, 2015.
+* 1.10.0 added support for `batch` execution within tasks and transactions. Released: September 10, 2015.
+* 1.9.5 added support for [Raw Custom Types](#raw-custom-types). Released: August 30, 2015.
+* 1.9.3 added support for [Custom Type Formatting](#custom-type-formatting). Released: August 30, 2015.
+* 1.9.0 added support for [Tasks](#tasks) + initial [jsDoc](https://github.com/jsdoc3/jsdoc) support. Released: August 21, 2015.
+* 1.8.2 added support for [Prepared Statements](https://github.com/brianc/node-postgres/wiki/Prepared-Statements). Released: August 01, 2015.
+* 1.8.0 added support for Query Streaming via [node-pg-query-stream](https://github.com/brianc/node-pg-query-stream). Released: July 23, 2015.
+* 1.7.2 significant code refactoring and optimizations; added support for super-massive transactions. Released: June 27, 2015.
+* 1.6.0 major update for the test platform + adding coverage. Released: June 19, 2015.
+* 1.5.0 major changes in architecture and query formatting. Released: June 14, 2015.
+* 1.4.0 added `this` context to all callbacks where applicable. Released: May 31, 2015.
+* 1.3.1 extended [Named Parameters](#named-parameters) syntax to support `{}`,`()`,`[]`,`<>` and `//`. Released: May 24, 2015.
+* 1.3.0 much improved error handling and reporting. Released: May 23, 2015.
+* 1.2.0 extended [Named Parameters](#named-parameters) syntax with `$(varName)`. Released: May 16, 2015.
+* 1.1.0 added support for functions as parameters. Released: April 3, 2015.
+* 1.0.5 added strict query sequencing for transactions. Released: April 26, 2015.
+* 1.0.3 added method `queryRaw(query, values)`. Released: April 19, 2015.
+* 1.0.1 improved error reporting for queries. Released: April 18, 2015.
+* 1.0.0 official release milestone. Released: April 17, 2015.
+* 0.9.8 added native json support, extended numeric support for `NaN`, `+Infinity` and `-Infinity`. Released: April 16, 2015.
+* 0.9.7 received support for protocol extensibility. Released: April 15, 2015.
+* 0.9.5 received support for raw-text variables. Released: April 12, 2015.
+* 0.9.2 received support for PostgreSQL Array Types. Released: April 8, 2015.
+* 0.9.0 changed the notification protocol. Released: April 7, 2015.
+* 0.8.4 added support for error notifications. Released: April 6, 2015.
+* 0.8.0 added support for named-parameter formatting. Released: April 3, 2015.
+* 0.7.0 fixes the way `as.format` works (breaking change). Released: April 2, 2015.
+* 0.6.2 has good database test coverage. Released: March 28, 2015.
+* 0.5.6 introduces support for nested transaction. Released: March 22, 2015.
+* 0.5.3 - minor changes; March 14, 2015.
+* 0.5.1 included wider support for alternative promise libraries. Released: March 12, 2015.
+* 0.5.0 introduces many new features and fixes, such as properties **pgFormatting** and **promiseLib**. Released on March 11, 2015.
+* 0.4.9 represents a solid code base, backed up by comprehensive testing. Released on March 10, 2015.
+* 0.4.0 is a complete rewrite of most of the library, made first available on March 8, 2015.
+* 0.2.0 introduced on March 6th, 2015, supporting multiple databases.
+* 0.1.4 first release. March 5th, 2015.
+* 0.0.1 initial draft. March 3rd, 2015.
 
 # License
 
