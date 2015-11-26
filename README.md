@@ -769,14 +769,17 @@ The last method is not usable, because transactions in this library are automati
 without your control, or so it was until version 2.5.0, which changed that, as explained further.
 
 ---  
-  
+
 Version 2.5.0 added support for [Transaction Mode](https://github.com/vitaly-t/pg-promise/blob/master/API/txMode.md),
 which can extend `BEGIN` in your transaction with a complete set of configuration parameters.
 
 ```js
-// Create a reusable transaction mode (serializable, deferrable):
-var tmSerDef = new pgp.txMode.TransactionMode({
-    tiLevel: pgp.txMode.isolationLevel.serializable,
+var TransactionMode = pgp.txMode.TransactionMode;
+var isolationLevel = pgp.txMode.isolationLevel;
+ 
+// Create a reusable transaction mode (serializable + deferrable):
+var tmSerDef = new TransactionMode({
+    tiLevel: isolationLevel.serializable,
     deferrable: true
 });
 
@@ -797,10 +800,9 @@ Instead of the default `BEGIN`, such transaction will initiate with the followin
 BEGIN ISOLATION LEVEL SERIALIZABLE DEFERRABLE
 ```
 
-This is the most efficient and best-performing way of configuring transactions. 
+Transaction Mode is set via property `txMode` on the transaction function.
 
-In the example above, we use the new property `pgp.txMode = {isolationLevel, TransactionMode}`,
-and we configure the Transaction Mode by setting property `txMode` on the transaction function.
+This is the most efficient and best-performing way of configuring transactions.
 
 # Advanced
 
