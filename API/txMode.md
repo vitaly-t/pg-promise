@@ -59,6 +59,8 @@ Extends the default `BEGIN` with Transaction Mode parameters: - isolation level
 <li><code>true</code> - mode is set as <code>DEFERRABLE</code></li>
 <li><code>false</code> - mode is set as <code>NOT DEFERRABLE</code></li>
 </ul>
+<p>It is used only when <code>tiLevel</code>=<code>isolationLevel.serializable</code>
+and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p>
 </td>
     </tr>  </tbody>
 </table>

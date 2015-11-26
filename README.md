@@ -778,7 +778,7 @@ var TransactionMode = pgp.txMode.TransactionMode;
 var isolationLevel = pgp.txMode.isolationLevel;
  
 // Create a reusable transaction mode (serializable + read-only + deferrable):
-var tmSerDef = new TransactionMode({
+var tmSRD = new TransactionMode({
     tiLevel: isolationLevel.serializable,
     readOnly: true,
     deferrable: true
@@ -788,7 +788,7 @@ function myTransaction() {
     return this.query("SELECT * FROM table");
 }
 
-myTransaction.txMode = tmSerDef; // assign transaction mode;
+myTransaction.txMode = tmSRD; // assign transaction mode;
 
 db.tx(myTransaction)
     .then(function(){
