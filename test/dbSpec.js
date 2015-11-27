@@ -314,6 +314,7 @@ describe("Masked Connection Log", function () {
     });
     describe("as an object", function () {
         var connection = {
+            host: 'localhost',
             password: '123'
         };
         beforeEach(function (done) {
@@ -325,6 +326,7 @@ describe("Masked Connection Log", function () {
         }, wait);
         it("must report the password masked correctly", function () {
             expect(cn).toEqual({
+                host: 'localhost',
                 password: '###'
             });
         });
