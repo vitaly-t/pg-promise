@@ -120,11 +120,17 @@ describe("Connection", function () {
     });
 
     describe("for invalid port", function () {
-        var errCN, dbErr, result;
+        var errCN, dbErr, result, log;
         beforeEach(function () {
             errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
             errCN.port = 9999;
             dbErr = pgp(errCN);
+            options.error = function (err, e) {
+                log = {
+                    err: err,
+                    e: e
+                }
+            };
         });
         describe("with direction connection", function () {
             beforeEach(function (done) {
@@ -137,6 +143,7 @@ describe("Connection", function () {
                     });
             });
             it("must report the right error", function () {
+                expect(log.e.cn).toEqual(errCN);
                 expect(result instanceof Error).toBe(true);
                 expect(result.message).toContain('connect ECONNREFUSED');
             });
@@ -156,7 +163,9 @@ describe("Connection", function () {
                 expect(result.message).toContain('connect ECONNREFUSED');
             });
         });
-
+        afterEach(function () {
+            delete options.error;
+        });
     });
 
     describe("for invalid port", function () {
@@ -292,6 +301,66 @@ describe("Connection", function () {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe("Cannot execute a query on a disconnected client.");
         });
+    });
+});
+
+describe("Masked Connection Log", function () {
+
+    var cn;
+    beforeEach(function () {
+        options.error = function (err, e) {
+            cn = e.cn;
+        };
+    });
+    describe("as an object", function () {
+        var connection = {
+            password: '123'
+        };
+        beforeEach(function (done) {
+            var errDB = pgp(connection);
+            errDB.connect()
+                .catch(function () {
+                    done();
+                });
+        });
+        it("must report the password masked correctly", function () {
+            expect(cn).toEqual({
+                password: '###'
+            });
+        });
+    });
+
+    describe("as a string", function () {
+        var connection = "postgres://username:password@server:port/database";
+        beforeEach(function (done) {
+            var errDB = pgp(connection);
+            errDB.connect()
+                .catch(function () {
+                    done();
+                });
+        });
+        it("must report the password masked correctly", function () {
+            expect(cn).toBe("postgres://username:########@server:port/database");
+        });
+    });
+
+    describe("as invalid value", function () {
+        var connection = 123;
+        beforeEach(function (done) {
+            var errDB = pgp(connection);
+            errDB.connect()
+                .catch(function () {
+                    done();
+                });
+        });
+        it("must report the original value", function () {
+            expect(cn).toBe(123);
+        });
+    });
+
+    afterEach(function () {
+        delete options.error;
+        cn = undefined;
     });
 });
 

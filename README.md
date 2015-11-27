@@ -1011,6 +1011,16 @@ For parameter `e` see documentation of the `query` event earlier.
 
 The library will suppress any error thrown by the handler and write it into the console.
 
+**connection errors**
+
+When the error relates to the database connection, property `e.cn` is set
+to the connection string/object details that were passed into the library,
+as shown in the example above.
+
+However, starting with version 2.5.2, it is no longer the original value that's
+passed with the event, but its safe copy, which has any presence of password masked
+with symbol `#`. This is to make sure no passwords are logged anywhere as open text.
+
 ---
 #### task
 
