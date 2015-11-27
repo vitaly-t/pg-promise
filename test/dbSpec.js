@@ -315,6 +315,7 @@ describe("Masked Connection Log", function () {
     describe("as an object", function () {
         var connection = {
             host: 'localhost',
+            user: 'unknown',
             password: '123'
         };
         beforeEach(function (done) {
