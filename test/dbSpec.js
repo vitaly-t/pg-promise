@@ -306,7 +306,7 @@ describe("Connection", function () {
 
 describe("Masked Connection Log", function () {
 
-    var cn;
+    var cn, wait = 20000;
     beforeEach(function () {
         options.error = function (err, e) {
             cn = e.cn;
@@ -322,7 +322,7 @@ describe("Masked Connection Log", function () {
                 .catch(function () {
                     done();
                 });
-        });
+        }, wait);
         it("must report the password masked correctly", function () {
             expect(cn).toEqual({
                 password: '###'
@@ -338,7 +338,7 @@ describe("Masked Connection Log", function () {
                 .catch(function () {
                     done();
                 });
-        });
+        }, wait);
         it("must report the password masked correctly", function () {
             expect(cn).toBe("postgres://username:########@server:port/database");
         });
@@ -352,7 +352,7 @@ describe("Masked Connection Log", function () {
                 .catch(function () {
                     done();
                 });
-        });
+        }, wait);
         it("must report the original value", function () {
             expect(cn).toBe(123);
         });
