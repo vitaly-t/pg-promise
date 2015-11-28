@@ -1432,7 +1432,7 @@ describe("Task", function () {
         });
     });
 
-    describe("with a query result", function () {
+    describe("with a notification error", function () {
         var result, event, counter = 0;
         beforeEach(function (done) {
             options.task = function (e) {
@@ -1448,10 +1448,8 @@ describe("Task", function () {
 
             myTask.tag = "testTag";
             db.task(myTask)
-                .then(function (data) {
-                    result = data;
-                })
-                .finally(function () {
+                .catch(function (error) {
+                    result = error;
                     done();
                 });
         });
@@ -1459,8 +1457,7 @@ describe("Task", function () {
             delete options.task;
         });
         it("must resolve with that result", function () {
-            expect(result && typeof result === 'object').toBeTruthy();
-            expect(result.counter > 0).toBe(true);
+            expect(result).toBe("ops!");
             expect(counter).toBe(1); // successful notification 'Start', failed for 'Finish';
             expect(event && event.ctx && typeof event.ctx === 'object').toBeTruthy();
             expect(event.ctx.tag).toBe("testTag");

@@ -1045,9 +1045,11 @@ var options = {
 };
 ```
 
-For parameter `e` see documentation of the `query` event earlier.
+If the notification handler throws an error during `task-start` event, the task will not execute,
+and it will reject with that error. And if the handler throws an error while handling `task-finish` event,
+the task, even though executed successfully, will still reject with that error.
 
-The library will suppress any error thrown by the handler and write it into the console.
+For parameter `e` see documentation of the `query` event earlier.
 
 ---
 #### transact

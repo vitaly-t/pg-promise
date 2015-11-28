@@ -111,38 +111,36 @@ describe("Query event", function () {
 });
 
 describe("Start/Finish task events", function () {
-    var result, tag, ctx, start = 0, finish = 0;
+    var result, tag, ctx, start = 0, finish = 0,
+        errMsg = "Testing error output in 'task'.";
     beforeEach(function (done) {
         options.task = function (e) {
             if (e.ctx.finish) {
                 finish++;
-                ctx = e.ctx;
             } else {
                 start++;
+                ctx = e.ctx;
                 tag = e.ctx.tag;
             }
-            throw "### Testing error output in 'task'. Please ignore. ###";
+            throw errMsg;
         };
         db.task("myTask", function () {
             return promise.resolve('SUCCESS');
         })
-            .then(function (data) {
-                result = data;
-            })
-            .finally(function () {
+            .catch(function (error) {
+                result = error;
                 done();
             });
     });
     afterEach(function () {
-        options.task = null;
+        delete options.task;
     });
 
-    it("must execute correctly", function () {
-        expect(result).toBe('SUCCESS');
+    it("must reject the task correctly", function () {
+        expect(result).toBe(errMsg);
         expect(start).toBe(1);
-        expect(finish).toBe(1);
+        expect(finish).toBe(0);
         expect(tag).toBe("myTask");
-        expect(ctx.success).toBe(true);
         expect(ctx.isTX).toBeUndefined();
     });
 });
