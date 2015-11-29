@@ -391,7 +391,7 @@ describe("Method 'none'", function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.QueryResultError).toBe(true);
-            expect(error.message).toBe("No return data was expected from the query.");
+            expect(error.message).toBe("No return data was expected.");
         });
     });
 
@@ -454,7 +454,7 @@ describe("Method 'one'", function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.QueryResultError).toBe(true);
-            expect(error.message).toBe("Single row was expected from the query, but multiple returned.");
+            expect(error.message).toBe("Multiples rows were not expected.");
         });
     });
 });
@@ -515,7 +515,7 @@ describe("Method 'oneOrNone'", function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.QueryResultError).toBe(true);
-            expect(error.message).toBe("Single row was expected from the query, but multiple returned.");
+            expect(error.message).toBe("Multiples rows were not expected.");
         });
     });
 
@@ -866,7 +866,7 @@ describe("Transactions", function () {
                     });
             });
             it("must reject", function () {
-                expect(error).toBe("Callback function must be specified for the transaction.");
+                expect(error).toBe("Callback function is required for the transaction.");
             });
         });
         describe("for a task", function () {
@@ -881,7 +881,7 @@ describe("Transactions", function () {
                     });
             });
             it("must reject", function () {
-                expect(error).toBe("Callback function must be specified for the task.");
+                expect(error).toBe("Callback function is required for the task.");
             });
         });
 
@@ -961,7 +961,7 @@ describe("Return data from a query must match the request type", function () {
         });
         it("method 'none' must return an error", function () {
             expect(error instanceof pgp.QueryResultError).toBe(true);
-            expect(error.message).toBe("No return data was expected from the query.");
+            expect(error.message).toBe("No return data was expected.");
         });
     });
 
@@ -999,7 +999,7 @@ describe("Return data from a query must match the request type", function () {
         runs(function () {
             expect(result).toBeNull();
             expect(error instanceof pgp.QueryResultError).toBe(true);
-            expect(error.message).toBe("Single row was expected from the query, but multiple returned.");
+            expect(error.message).toBe("Multiples rows were not expected.");
         });
     });
 

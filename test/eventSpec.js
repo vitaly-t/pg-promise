@@ -60,12 +60,12 @@ describe("Connect/Disconnect events", function () {
                 disconnect++;
             };
             db.tx(function (t) {
-                return this.batch([
-                    t.query("select 'one'"),
-                    t.query("select 'two'"),
-                    t.query("select 'three'")
-                ]);
-            })
+                    return this.batch([
+                        t.query("select 'one'"),
+                        t.query("select 'two'"),
+                        t.query("select 'three'")
+                    ]);
+                })
                 .then(dummy, dummy)
                 .finally(function () {
                     done();
@@ -124,8 +124,8 @@ describe("Start/Finish transaction events", function () {
             throw "### Testing error output in 'transact'. Please ignore. ###";
         };
         db.tx("myTransaction", function () {
-            return promise.resolve('SUCCESS');
-        })
+                return promise.resolve('SUCCESS');
+            })
             .then(function (data) {
                 result = data;
             })
@@ -159,8 +159,8 @@ describe("Error event", function () {
                 throw new Error("### Testing error output in 'error'. Please ignore. ###");
             };
             db.tx("Error Transaction", function () {
-                throw new Error("Test Error");
-            })
+                    throw new Error("Test Error");
+                })
                 .then(dummy, function (reason) {
                     r = reason;
                 })
@@ -254,7 +254,7 @@ describe("Error event", function () {
         });
         it("must reject with correct error", function () {
             expect(errTxt instanceof pgp.QueryResultError).toBe(true);
-            expect(errTxt.message).toBe("Single row was expected from the query, but multiple returned.");
+            expect(errTxt.message).toBe("Multiples rows were not expected.");
             expect(context.query).toBe("select * from users");
             expect(context.params).toBeUndefined();
             expect(context.client instanceof pgClient).toBe(true);
@@ -281,7 +281,7 @@ describe("Error event", function () {
         });
         it("must reject with correct error", function () {
             expect(errTxt instanceof pgp.QueryResultError).toBe(true);
-            expect(errTxt.message).toBe("No return data was expected from the query.");
+            expect(errTxt.message).toBe("No return data was expected.");
             expect(context.query).toBe("select * from users");
             expect(context.params).toBeUndefined();
             expect(context.client instanceof pgClient).toBe(true);
@@ -399,9 +399,9 @@ describe("pgFormatting", function () {
                 ctx.push(e);
             };
             promise.all([
-                db.func("findUser", 1),
-                db.one("select * from users where id=$1", [1])
-            ])
+                    db.func("findUser", 1),
+                    db.one("select * from users where id=$1", [1])
+                ])
                 .then(function (data) {
                     result = data;
                 })
@@ -428,9 +428,9 @@ describe("pgFormatting", function () {
         var err;
         beforeEach(function (done) {
             promise.any([
-                db.query(),
-                db.query(null)
-            ])
+                    db.query(),
+                    db.query(null)
+                ])
                 .then(function (data) {
                 }, function (reason) {
                     err = reason;
@@ -449,10 +449,10 @@ describe("pgFormatting", function () {
     describe("empty query", function () {
         beforeEach(function (done) {
             promise.all([
-                db.query({}),
-                db.query(""),
-                db.query("   ")
-            ])
+                    db.query({}),
+                    db.query(""),
+                    db.query("   ")
+                ])
                 .then(function (data) {
                     result = data;
                 }, function (reason) {
