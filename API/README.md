@@ -233,7 +233,7 @@ This method initiates a shared connection for executing a chain of querieson th
 #### database.none(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects no data to be returned.  
-**Returns**: <code>Promise</code> - Result of the query call:- when no records are returned, the returned promise will resolve with `undefined`;- when the query returns any data, it will reject with `No return data was expected.`.  
+**Returns**: <code>Promise</code> - Result of the query call:- when no records are returned, the returned promise will resolve with `undefined`- when the query returns any data, it will reject with `No return data was expected.`  
 <table>
   <thead>
     <tr>
@@ -254,7 +254,7 @@ This method initiates a shared connection for executing a chain of querieson th
 #### database.one(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects exactly one row of data.  
-**Returns**: <code>Promise</code> - Result of the query call:- when 1 row is returned, it will resolve with that row as a single object;- when no rows are returned, it will reject with `No data returned from the query.`;- when more than 1 rows are returned, it will reject with  `Multiples rows were not expected.`  
+**Returns**: <code>Promise</code> - Result of the query call:- when 1 row is returned, it will resolve with that row as a single object;- when no rows are returned, it will reject with `No data returned from the query.`- when more than 1 rows are returned, it will reject with  `Multiples rows were not expected.`  
 <table>
   <thead>
     <tr>
@@ -275,7 +275,7 @@ This method initiates a shared connection for executing a chain of querieson th
 #### database.many(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects one or more rows.  
-**Returns**: <code>Promise</code> - Result of the query call:- when 1 or more rows are returned, it will resolve with the array of rows.- when no rows are returned, it will reject with `No data returned from the query.`;  
+**Returns**: <code>Promise</code> - Result of the query call:- when 1 or more rows are returned, it will resolve with the array of rows.- when no rows are returned, it will reject with `No data returned from the query.`  
 <table>
   <thead>
     <tr>
@@ -383,7 +383,7 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 #### database.stream(qs, init) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Custom data streaming, with help of <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a>.  
-**Returns**: <code>Promise</code> - Result of the streaming operation.Once the streaming has finished successfully, the method resolves with`{processed, duration}`:- `processed` - total number of rows that have been processed;- `duration` - streaming duration, in milliseconds.Possible rejections messages:- `Invalid or missing stream object`- `Invalid stream state`- `Invalid or missing stream initialization callback`- `Stream not initialized`  
+**Returns**: <code>Promise</code> - Result of the streaming operation.Once the streaming has finished successfully, the method resolves with`{processed, duration}`:- `processed` - total number of rows that have been processed;- `duration` - streaming duration, in milliseconds.Possible rejections messages:- `Invalid or missing stream object.`- `Invalid stream state.`- `Invalid or missing stream initialization callback.`  
 <table>
   <thead>
     <tr>
