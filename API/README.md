@@ -183,6 +183,7 @@ For complete method documentation see <a href="https://github.com/vitaly-t/spex/
 
 <a name="new_module_pg-promise.Database_new"></a>
 #### new Database(cn)
+**Returns**: <code>Database</code> - New database instance.  
 <table>
   <thead>
     <tr>

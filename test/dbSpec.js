@@ -1443,21 +1443,21 @@ describe("Task", function () {
                 event = e;
             };
             function myTask() {
-                return this.one("select count(*) as counter from users");
+                return promise.resolve("success");
             }
 
             myTask.tag = "testTag";
             db.task(myTask)
-                .catch(function (error) {
-                    result = error;
+                .then(function (data) {
+                    result = data;
                     done();
                 });
         });
         afterEach(function () {
             delete options.task;
         });
-        it("must resolve with that result", function () {
-            expect(result).toBe("ops!");
+        it("that must be ignored", function () {
+            expect(result).toBe("success");
             expect(counter).toBe(1); // successful notification 'Start', failed for 'Finish';
             expect(event && event.ctx && typeof event.ctx === 'object').toBeTruthy();
             expect(event.ctx.tag).toBe("testTag");
