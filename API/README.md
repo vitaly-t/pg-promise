@@ -254,7 +254,7 @@ This method initiates a shared connection for executing a chain of querieson th
 #### database.one(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects exactly one row of data.  
-**Returns**: <code>Promise</code> - Result of the query call:- when 1 row is returned, it will resolve with that row as a single object;- when no rows are returned, it will reject with `No data returned from the query.`- when more than 1 rows are returned, it will reject with  `Multiples rows were not expected.`  
+**Returns**: <code>Promise</code> - Result of the query call:- when 1 row is returned, it will resolve with that row as a single object;- when no rows are returned, it will reject with `No data returned from the query.`- when more than 1 rows are returned, it will reject with  `Multiple rows were not expected.`  
 <table>
   <thead>
     <tr>
@@ -296,7 +296,7 @@ This method initiates a shared connection for executing a chain of querieson th
 #### database.oneOrNone(query, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects 0 or 1 rows.  
-**Returns**: <code>Promise</code> - Result of the query call:- when no rows are returned, it will resolve with `null`;- when 1 row is returned, it will resolve with that row as a single object;- when more than 1 rows are returned, it will reject with  `Multiples rows were not expected.`  
+**Returns**: <code>Promise</code> - Result of the query call:- when no rows are returned, it will resolve with `null`;- when 1 row is returned, it will resolve with that row as a single object;- when more than 1 rows are returned, it will reject with  `Multiple rows were not expected.`  
 <table>
   <thead>
     <tr>
