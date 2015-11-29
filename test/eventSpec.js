@@ -254,7 +254,7 @@ describe("Error event", function () {
         });
         it("must reject with correct error", function () {
             expect(errTxt instanceof pgp.QueryResultError).toBe(true);
-            expect(errTxt.message).toBe("Multiples rows were not expected.");
+            expect(errTxt.message).toBe("Multiple rows were not expected.");
             expect(context.query).toBe("select * from users");
             expect(context.params).toBeUndefined();
             expect(context.client instanceof pgClient).toBe(true);

@@ -454,7 +454,7 @@ describe("Method 'one'", function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.QueryResultError).toBe(true);
-            expect(error.message).toBe("Multiples rows were not expected.");
+            expect(error.message).toBe("Multiple rows were not expected.");
         });
     });
 });
@@ -515,7 +515,7 @@ describe("Method 'oneOrNone'", function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.QueryResultError).toBe(true);
-            expect(error.message).toBe("Multiples rows were not expected.");
+            expect(error.message).toBe("Multiple rows were not expected.");
         });
     });
 
@@ -999,7 +999,7 @@ describe("Return data from a query must match the request type", function () {
         runs(function () {
             expect(result).toBeNull();
             expect(error instanceof pgp.QueryResultError).toBe(true);
-            expect(error.message).toBe("Multiples rows were not expected.");
+            expect(error.message).toBe("Multiple rows were not expected.");
         });
     });
 
