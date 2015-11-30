@@ -813,7 +813,8 @@ Version 2.6.0 added support for ES6 generators. If you prefer writing asynchrono
 synchronous manner, you can implement your tasks and transactions as generators. 
 
 ```js
-function * getUser() {
+function * getUser(t) {
+    // t = this;
     let user = yield this.oneOrNone("select * from users where id=$1", 123);
     if (!user) {
         user = yield this.one("insert into users(name) values($1) returning *", "John");
