@@ -41,6 +41,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
     - [Nested Transactions](#nested-transactions)
     - [Synchronous Transactions](#synchronous-transactions)    
     - [Configurable Transactions](#configurable-transactions)
+    - [Generators](#generators)
 * [Advanced](#advanced)
   - [Initialization Options](#initialization-options)
     - [pgFormatting](#pgformatting)
@@ -806,6 +807,34 @@ Transaction Mode is set via property `txMode` on the transaction function.
 This is the most efficient and best-performing way of configuring transactions. In combination with
 *Transaction Snapshots* you can make the most out of transactions in terms of performance and concurrency.
 
+# Generators
+
+Version 2.6.0 added support for ES6 generators. If you prefer writing asynchronous code in a
+synchronous manner, you can implement your tasks and transactions using generators. 
+
+```js
+function * getUser() {
+    try {
+        let user = yield this.oneOrNone("select * from users where id=$1", 123);
+        if (!user) {
+            user = yield this.one("insert into users(name) values($1) returning *", "John");
+        }
+        return user;
+    } catch (err) {
+        return Promise.reject(err);
+    }
+}
+
+db.task(getUser)
+    .then(function (user) {
+        // success;
+    })
+    .catch(function (error) {
+        // error;
+    });
+```
+
+The library verifies whether the callback function is a generator, and executes it accordingly.
 
 # Advanced
 

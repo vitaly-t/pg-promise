@@ -9,8 +9,8 @@ describe("Generators - Positive", function () {
 
     var result;
 
-    function* myTask() {
-        return yield promise.resolve(123);
+    function* myTask(t) {
+        return yield t.one("select 123 as value");
     }
 
     beforeEach(function (done) {
@@ -22,7 +22,8 @@ describe("Generators - Positive", function () {
     });
 
     it("must resolve with the right value", function () {
-        expect(result).toBe(123);
+        expect(result && typeof result === 'object').toBeTruthy();
+        expect(result.value).toBe(123);
     });
 });
 
