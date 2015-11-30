@@ -1,3 +1,4 @@
+sudo: false
 matrix:
   include:
     - node_js: "0.10"
