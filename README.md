@@ -41,7 +41,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
     - [Nested Transactions](#nested-transactions)
     - [Synchronous Transactions](#synchronous-transactions)    
     - [Configurable Transactions](#configurable-transactions)
-    - [Generators](#generators)
+  - [Generators](#generators)
 * [Advanced](#advanced)
   - [Initialization Options](#initialization-options)
     - [pgFormatting](#pgformatting)
@@ -807,7 +807,7 @@ Transaction Mode is set via property `txMode` on the transaction function.
 This is the most efficient and best-performing way of configuring transactions. In combination with
 *Transaction Snapshots* you can make the most out of transactions in terms of performance and concurrency.
 
-# Generators
+## Generators
 
 Version 2.6.0 added support for ES6 generators. If you prefer writing asynchronous code in a
 synchronous manner, you can implement your tasks and transactions as generators. 
