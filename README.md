@@ -814,7 +814,7 @@ synchronous manner, you can implement your tasks and transactions as generators.
 
 ```js
 function * getUser() {
-    var user = yield this.oneOrNone("select * from users where id=$1", 123);
+    let user = yield this.oneOrNone("select * from users where id=$1", 123);
     if (!user) {
         user = yield this.one("insert into users(name) values($1) returning *", "John");
     }
@@ -1198,6 +1198,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 2.6.0 added support for [ES6 Generators](#generators). Released: November 30, 2015
 * 2.5.0 added support for [Configurable Transactions](#configurable-transactions). Released: November 26, 2015
 * 2.4.0 library re-organized for better documentation and easier maintenance. Released: November 24, 2015
 * 2.2.0 major rework on the nested transactions support. Released: October 23, 2015
