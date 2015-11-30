@@ -810,7 +810,7 @@ This is the most efficient and best-performing way of configuring transactions. 
 # Generators
 
 Version 2.6.0 added support for ES6 generators. If you prefer writing asynchronous code in a
-synchronous manner, you can implement your tasks and transactions using generators. 
+synchronous manner, you can implement your tasks and transactions as generators. 
 
 ```js
 function * getUser() {
