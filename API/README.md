@@ -552,7 +552,7 @@ Terminates pg library (call it when exiting the application).
 <a name="module_pg-promise.event_query"></a>
 ### "query" (e)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
-**Summary**: Global notification of a query that&#x27;s being executed.  
+**Summary**: Global notification of a query that&#x27;s about to execute.  
 <table>
   <thead>
     <tr>
