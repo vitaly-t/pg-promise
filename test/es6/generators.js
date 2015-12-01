@@ -7,20 +7,32 @@ var options = {};
 
 var dbHeader = header(options);
 var db = dbHeader.db;
+var pgp = dbHeader.pgp;
 
 describe("Generators - Positive", function () {
 
-    var result, tag;
+    var result, tag, query;
 
-    function* myTask(t) {
+    var tmTest = new pgp.txMode.TransactionMode({
+        tiLevel: pgp.txMode.isolationLevel.serializable
+    });
+
+    function* myTX(t) {
         return yield t.one("select 123 as value");
     }
 
+    myTX.txMode = tmTest;
+
     beforeEach(function (done) {
-        options.task = function (e) {
+        options.transact = function (e) {
             tag = e.ctx.tag;
         };
-        db.task("Custom", myTask)
+        options.query = function (e) {
+            if (!query) {
+                query = e.query;
+            }
+        };
+        db.tx("Custom", myTX)
             .then(function (data) {
                 result = data;
                 done();
@@ -31,11 +43,14 @@ describe("Generators - Positive", function () {
         expect(result && typeof result === 'object').toBeTruthy();
         expect(result.value).toBe(123);
         expect(tag).toBe("Custom");
+        expect(query).toBe("begin isolation level serializable");
     });
 
     afterEach(function () {
         delete options.task;
+        delete options.query;
     });
+
 });
 
 describe("Generators - Negative", function () {
