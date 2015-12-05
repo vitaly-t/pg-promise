@@ -242,7 +242,13 @@ This method initiates a shared connection for executing a chain of querieson th
   </thead>
   <tbody>
 <tr>
-    <td>query</td><td><code>String</code> | <code>Object</code></td><td><p>query string or prepared statement object</p>
+    <td>query</td><td><code>String</code> | <code>Object</code></td><td><ul>
+<li>query string<ul>
+<li>prepared statement object</li>
+<li>stream object</li>
+</ul>
+</li>
+</ul>
 </td>
     </tr><tr>
     <td>[values]</td><td><code>Array</code> | <code>value</code></td><td><p>formatting parameters for the query string</p>
@@ -395,7 +401,8 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
     <td>qs</td><td><code>QueryStream</code></td><td><p>stream object of type <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js#L5">QueryStream</a>.</p>
 </td>
     </tr><tr>
-    <td>init</td><td><code>function</code></td><td><p>stream initialization callback</p>
+    <td>init</td><td><code>function</code></td><td><p>stream initialization callback, with
+the same <code>this</code> context as the calling method.</p>
 </td>
     </tr>  </tbody>
 </table>
