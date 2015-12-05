@@ -218,7 +218,11 @@ This method initiates a shared connection for executing a chain of querieson th
   </thead>
   <tbody>
 <tr>
-    <td>query</td><td><code>String</code> | <code>Object</code></td><td></td><td><p>query string or prepared statement object</p>
+    <td>query</td><td><code>String</code> | <code>Object</code></td><td></td><td><ul>
+<li>query string</li>
+<li>prepared statement object</li>
+<li>stream object</li>
+</ul>
 </td>
     </tr><tr>
     <td>[values]</td><td><code>Array</code> | <code>value</code></td><td></td><td><p>formatting parameters for the query string</p>
