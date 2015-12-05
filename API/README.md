@@ -221,6 +221,7 @@ This method initiates a shared connection for executing a chain of querieson th
     <td>query</td><td><code>String</code> | <code>Object</code></td><td></td><td><ul>
 <li>query string</li>
 <li>prepared statement object</li>
+<li>function object</li>
 <li>stream object</li>
 </ul>
 </td>
@@ -249,7 +250,6 @@ This method initiates a shared connection for executing a chain of querieson th
     <td>query</td><td><code>String</code> | <code>Object</code></td><td><ul>
 <li>query string</li>
 <li>prepared statement object</li>
-<li>stream object</li>
 </ul>
 </td>
     </tr><tr>
@@ -274,7 +274,6 @@ This method initiates a shared connection for executing a chain of querieson th
     <td>query</td><td><code>String</code> | <code>Object</code></td><td><ul>
 <li>query string</li>
 <li>prepared statement object</li>
-<li>stream object</li>
 </ul>
 </td>
     </tr><tr>
@@ -299,7 +298,6 @@ This method initiates a shared connection for executing a chain of querieson th
     <td>query</td><td><code>String</code> | <code>Object</code></td><td><ul>
 <li>query string</li>
 <li>prepared statement object</li>
-<li>stream object</li>
 </ul>
 </td>
     </tr><tr>
@@ -324,7 +322,6 @@ This method initiates a shared connection for executing a chain of querieson th
     <td>query</td><td><code>String</code> | <code>Object</code></td><td><ul>
 <li>query string</li>
 <li>prepared statement object</li>
-<li>stream object</li>
 </ul>
 </td>
     </tr><tr>
@@ -350,7 +347,6 @@ This method initiates a shared connection for executing a chain of querieson th
     <td>query</td><td><code>String</code> | <code>Object</code></td><td><ul>
 <li>query string</li>
 <li>prepared statement object</li>
-<li>stream object</li>
 </ul>
 </td>
     </tr><tr>
@@ -377,7 +373,6 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
     <td>query</td><td><code>String</code> | <code>Object</code></td><td><ul>
 <li>query string</li>
 <li>prepared statement object</li>
-<li>stream object</li>
 </ul>
 </td>
     </tr><tr>
@@ -402,7 +397,6 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
     <td>query</td><td><code>String</code> | <code>Object</code></td><td><ul>
 <li>query string</li>
 <li>prepared statement object</li>
-<li>stream object</li>
 </ul>
 </td>
     </tr><tr>
