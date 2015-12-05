@@ -22,11 +22,11 @@ describe("Method stream", function () {
         var result;
         beforeEach(function (done) {
             promise.any([
-                db.stream(),
-                db.stream(null),
-                db.stream('test'),
-                db.stream({})
-            ])
+                    db.stream(),
+                    db.stream(null),
+                    db.stream('test'),
+                    db.stream({})
+                ])
                 .then(dummy, function (reason) {
                     result = reason;
                     done();
@@ -43,15 +43,15 @@ describe("Method stream", function () {
         var result;
         beforeEach(function (done) {
             promise.any([
-                db.stream({
-                    _reading: true,
-                    state: undefined
-                }),
-                db.stream({
-                    _reading: false,
-                    state: 'unknown'
-                })
-            ])
+                    db.stream({
+                        _reading: true,
+                        state: undefined
+                    }),
+                    db.stream({
+                        _reading: false,
+                        state: 'unknown'
+                    })
+                ])
                 .then(dummy, function (reason) {
                     result = reason;
                     done();
@@ -71,11 +71,11 @@ describe("Method stream", function () {
                     state: 'initialized'
                 };
                 promise.any([
-                    db.stream(stream),
-                    db.stream(stream, null),
-                    db.stream(stream, 123),
-                    db.stream(stream, {})
-                ])
+                        db.stream(stream),
+                        db.stream(stream, null),
+                        db.stream(stream, 123),
+                        db.stream(stream, {})
+                    ])
                     .then(dummy, function (reason) {
                         result = reason;
                         done();
@@ -96,8 +96,8 @@ describe("Method stream", function () {
                     state: 'initialized'
                 };
                 db.stream(stream, function () {
-                    throw new Error("initialization error");
-                })
+                        throw new Error("initialization error");
+                    })
                     .then(dummy, function (reason) {
                         result = reason;
                         done();
@@ -116,9 +116,9 @@ describe("Method stream", function () {
                     throw new Error("query notification error");
                 };
                 db.stream({
-                    _reading: false,
-                    state: 'initialized'
-                }, dummy)
+                        _reading: false,
+                        state: 'initialized'
+                    }, dummy)
                     .then(dummy, function (reason) {
                         result = reason;
                         done();
@@ -134,16 +134,17 @@ describe("Method stream", function () {
         });
 
         describe("with a valid request", function () {
-            var result, count = 0, context;
+            var result, count = 0, context, initCtx;
+            var qs = new QueryStream("select * from users where id=$1", [1]);
             beforeEach(function (done) {
                 options.query = function (e) {
                     context = e;
                     count++;
                 };
-                var qs = new QueryStream("select * from users where id=$1", [1]);
-                db.stream(qs, function (stream) {
-                    stream.pipe(JSONStream.stringify());
-                })
+                db.stream.call(qs, qs, function (stream) {
+                        initCtx = this;
+                        stream.pipe(JSONStream.stringify());
+                    })
                     .then(function (data) {
                         result = data;
                     }, dummy)
@@ -158,6 +159,7 @@ describe("Method stream", function () {
                 expect(count).toBe(1);
                 expect(context.query).toBe("select * from users where id=$1");
                 expect(JSON.stringify(context.params)).toBe('["1"]');
+                expect(initCtx).toBe(qs);
             });
             afterEach(function () {
                 options.query = null;
@@ -174,8 +176,8 @@ describe("Method stream", function () {
                 };
                 var qs = new QueryStream('select * from unknown where id=$1', [1]);
                 db.stream(qs, function (stream) {
-                    stream.pipe(JSONStream.stringify());
-                })
+                        stream.pipe(JSONStream.stringify());
+                    })
                     .then(dummy, function (reason) {
                         result = reason;
                     })
