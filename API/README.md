@@ -243,11 +243,9 @@ This method initiates a shared connection for executing a chain of querieson th
   <tbody>
 <tr>
     <td>query</td><td><code>String</code> | <code>Object</code></td><td><ul>
-<li>query string<ul>
+<li>query string</li>
 <li>prepared statement object</li>
 <li>stream object</li>
-</ul>
-</li>
 </ul>
 </td>
     </tr><tr>
