@@ -360,6 +360,7 @@ This method initiates a shared connection for executing a chain of querieson th
 Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
+**Summary**: Executes a query that expects any number of rows.  
 **Returns**: <code>Promise</code> - The same as method [manyOrNone](#module_pg-promise.Database+manyOrNone)  
 **See**: [manyOrNone](#module_pg-promise.Database+manyOrNone)  
 <table>
@@ -491,7 +492,7 @@ the same <code>this</code> context as the calling method.</p>
   </thead>
   <tbody>
 <tr>
-    <td>p1</td><td><code>Object</code> | <code>function</code></td><td><p>task tag object, if <code>p2</code> is <code>undefined</code>,
+    <td>p1</td><td><code>Object</code> | <code>function</code> | <code>generator</code></td><td><p>task tag object, if <code>p2</code> is <code>undefined</code>,
 or else it is the callback function for the task.</p>
 </td>
     </tr><tr>
@@ -516,8 +517,8 @@ The method implements the following steps:- acquires a connection from the pool
   </thead>
   <tbody>
 <tr>
-    <td>p1</td><td><code>Object</code> | <code>function</code></td><td><p>transaction tag object, if <code>p2</code> is <code>undefined</code>,
-or else it is the callback function for the transaction.</p>
+    <td>p1</td><td><code>Object</code> | <code>function</code> | <code>generator</code></td><td><p>transaction tag object, if <code>p2</code>
+is <code>undefined</code>, or else it is the callback function for the transaction.</p>
 </td>
     </tr><tr>
     <td>[p2]</td><td><code>function</code></td><td><p>transaction callback function, if it is not <code>undefined</code>,
