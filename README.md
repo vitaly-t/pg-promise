@@ -530,6 +530,9 @@ such will be used from a connection pool, so effectively you end up with the sam
 A promise chain with a shared connection starts with `connect()`, which acquires a connection from the pool to be shared
 with all the queries down the promise chain. The connection must be released back to the pool when no longer needed.
 
+**NOTE:** With the addition of [Tasks](#tasks), use of shared connections directly is no longer necessary.
+It is recommended that you use [Tasks](#tasks) instead, as they are much easier to use.
+
 ```javascript
 var sco; // shared connection object;
 db.connect()
@@ -556,11 +559,10 @@ or because you like squeezing every bit of performance out of your code. Other t
 from the detached-connection chaining. And besides, any long sequence of queries normally resides inside a transaction, which always
 uses shared-connection chaining automatically.
 
-**NOTE:** With later support for [Tasks](#tasks) (below), shared connections became much easier to use.
-
 ### Tasks
 
-A task represents a shared connection to be used within a callback function.
+A task represents a shared connection to be used within a callback function. The callback can be either
+a regular function or an ES6 generator.
 
 A transaction, for example, is just a special type of task, wrapped in `CONNECT->COMMIT/ROLLBACK`. 
 
@@ -590,7 +592,7 @@ Transactions can be executed within both shared and detached promise chains in t
 
 1. Acquires a new connection (detached chains only);
 2. Executes `BEGIN` command;
-3. Invokes your callback function with the connection object;
+3. Invokes your callback function (or generator) with the connection object;
 4. Executes `COMMIT`, if the callback resolves, or `ROLLBACK`, if the callback rejects;
 5. Releases the connection (detached chains only);
 6. Resolves with the callback result, if success; rejects with the reason, if failed.
@@ -620,6 +622,9 @@ A detached transaction acquires a connection and exposes object `t`=`this` to le
 execute on the same connection.
 
 ### Shared-connection Transactions
+
+**NOTE:** Use of shared-connection transactions is no longer necessary. When a transaction needs
+to use the connection from its container, you should execute it inside a task instead.  
 
 ```javascript
 var sco; // shared connection object;
@@ -653,8 +658,6 @@ If you need to execute just one transaction, the detached transaction pattern is
 But even if you need to combine it with other queries in a detached chain, it will work the same.
 As stated earlier, choosing a shared chain over a detached one is mostly a matter of special requirements
 and/or personal preference.
-
-P.S. Tasks is a better way of using shared connections.
 
 ### Nested Transactions
 
@@ -967,7 +970,6 @@ var options = {
             } else {
                 // this query is inside a task;
             }
-
         }
     }
 };
@@ -995,8 +997,10 @@ A task/transaction context object (`ctx`) supports the following properties:
 * `result` - optional; task/transaction result, if finished: data resolved by the task/transaction,
  if `success` is `true`, otherwise it is set to the `reason` that was passed
  when rejecting the task/transaction.
+* `context` - optional, represents custom object context for tasks and transactions.
+It is only set when a task/transaction is called via `.call` or `.apply` methods.
 
-A task/transaction can be tagged when it is called using the following syntax:
+A task/transaction can be tagged/named when it is called using the following syntax:
 ```javascript
 // for tasks:
 db.task(tag, cb);

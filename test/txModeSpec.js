@@ -12,7 +12,7 @@ var db = dbHeader.db;
 describe("Transaction Mode", function () {
 
     describe("without parameters, capitalized", function () {
-        var queries = [], result;
+        var queries = [], result, ctx, context = {};
         beforeEach(function (done) {
 
             options.capTX = true;
@@ -21,12 +21,13 @@ describe("Transaction Mode", function () {
             };
 
             function txNoParams() {
+                ctx = this.ctx.context;
                 return promise.resolve("success");
             }
 
             txNoParams.txMode = new pgp.txMode.TransactionMode();
 
-            db.tx(txNoParams)
+            db.tx.call(context, txNoParams)
                 .then(function (data) {
                     result = data;
                     done();
@@ -36,6 +37,7 @@ describe("Transaction Mode", function () {
             expect(result).toBe("success");
             expect(queries.length).toBe(2);
             expect(queries[0]).toBe('BEGIN');
+            expect(ctx).toBe(context);
         });
         afterEach(function () {
             delete options.query;
