@@ -153,8 +153,8 @@ In order to generate it, you need to do the following:
  * `$ npm run doc` - will generate the documentation;
  * open `out/index.html` in a web browser.
 
-Alternatively, you can use its converted version of the [API], which doesn't look as good though,
-but is being continuously improved.
+Alternatively, you can use its converted version of the [API], which doesn't have as good a layout,
+but is quite usable nonetheless.
 
 # Usage
 
