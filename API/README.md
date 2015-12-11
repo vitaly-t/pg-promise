@@ -238,7 +238,7 @@ This method initiates a shared connection for executing a chain of querieson th
 #### database.none(query, [values]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects no data to be returned.  
-**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call- when no records are returned, the returned promise will resolve with `undefined`- when the query returns any data, it will reject with [QueryResultError](module:pg-promise.QueryResultError),containing `No return data was expected.`  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call- when no records are returned, the returned promise will resolve with `undefined`- when the query returns any data, it will reject with [QueryResultError](#module_pg-promise..QueryResultError),containing `No return data was expected.`  
 <table>
   <thead>
     <tr>
