@@ -53,24 +53,24 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
 * [pg-promise](#module_pg-promise)
     * _static_
         * [.Task](#module_pg-promise.Task)
-            * [.batch(values, [cb])](#module_pg-promise.Task+batch) ⇒ <code>Promise</code>
-            * [.page(source, [dest], [limit])](#module_pg-promise.Task+page) ⇒ <code>Promise</code>
-            * [.sequence(source, [dest], [limit], [track])](#module_pg-promise.Task+sequence) ⇒ <code>Promise</code>
+            * [.batch(values, [cb])](#module_pg-promise.Task+batch) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+            * [.page(source, [dest], [limit])](#module_pg-promise.Task+page) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+            * [.sequence(source, [dest], [limit], [track])](#module_pg-promise.Task+sequence) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
         * [.Database](#module_pg-promise.Database) ⇒ <code>Database</code>
-            * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>Promise</code>
-            * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>Promise</code>
+            * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+            * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
             * [.none(query, [values])](#module_pg-promise.Database+none) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
-            * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>Promise</code>
-            * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>Promise</code>
-            * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>Promise</code>
-            * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>Promise</code>
-            * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>Promise</code>
-            * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>Promise</code>
-            * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>Promise</code>
-            * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>Promise</code>
-            * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>Promise</code>
-            * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>Promise</code>
-            * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>Promise</code>
+            * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+            * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+            * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+            * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+            * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+            * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+            * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+            * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+            * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+            * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+            * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
         * [.pg](#module_pg-promise.pg)
         * [.queryResult](#module_pg-promise.queryResult)
         * [.end()](#module_pg-promise.end)
@@ -93,12 +93,12 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
 **Summary**: Internal Task implementation.  
 
     * [.Task](#module_pg-promise.Task)
-        * [.batch(values, [cb])](#module_pg-promise.Task+batch) ⇒ <code>Promise</code>
-        * [.page(source, [dest], [limit])](#module_pg-promise.Task+page) ⇒ <code>Promise</code>
-        * [.sequence(source, [dest], [limit], [track])](#module_pg-promise.Task+sequence) ⇒ <code>Promise</code>
+        * [.batch(values, [cb])](#module_pg-promise.Task+batch) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+        * [.page(source, [dest], [limit])](#module_pg-promise.Task+page) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+        * [.sequence(source, [dest], [limit], [track])](#module_pg-promise.Task+sequence) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 
 <a name="module_pg-promise.Task+batch"></a>
-#### task.batch(values, [cb]) ⇒ <code>Promise</code>
+#### task.batch(values, [cb]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md">spex.batch</a>.
 
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
@@ -118,7 +118,7 @@ For complete method documentation see <a href="https://github.com/vitaly-t/spex/
 </table>
 
 <a name="module_pg-promise.Task+page"></a>
-#### task.page(source, [dest], [limit]) ⇒ <code>Promise</code>
+#### task.page(source, [dest], [limit]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/page.md">spex.page</a>.
 
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
@@ -140,7 +140,7 @@ For complete method documentation see <a href="https://github.com/vitaly-t/spex/
 </table>
 
 <a name="module_pg-promise.Task+sequence"></a>
-#### task.sequence(source, [dest], [limit], [track]) ⇒ <code>Promise</code>
+#### task.sequence(source, [dest], [limit], [track]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md">spex.sequence</a>.
 
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
@@ -182,34 +182,34 @@ For complete method documentation see <a href="https://github.com/vitaly-t/spex/
 
 
     * [.Database](#module_pg-promise.Database) ⇒ <code>Database</code>
-        * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>Promise</code>
-        * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>Promise</code>
+        * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+        * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
         * [.none(query, [values])](#module_pg-promise.Database+none) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
-        * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>Promise</code>
-        * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>Promise</code>
-        * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>Promise</code>
-        * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>Promise</code>
-        * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>Promise</code>
-        * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>Promise</code>
-        * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>Promise</code>
-        * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>Promise</code>
-        * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>Promise</code>
-        * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>Promise</code>
-        * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>Promise</code>
+        * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+        * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+        * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+        * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+        * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+        * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+        * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+        * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+        * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+        * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+        * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 
 <a name="module_pg-promise.Database+connect"></a>
-#### database.connect() ⇒ <code>Promise</code>
+#### database.connect() ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 This method initiates a shared connection for executing a chain of querieson the same connection. The connection must be released in the end of thechain by calling method `done()` of the connection object.This is a legacy, low-level approach to chaining queries on the same connection.A newer and simpler approach is via method [task](#module_pg-promise.Database+task),which allocates and releases the shared connection automatically.
 
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Retrieves a new or existing connection from the pool, based on thecurrent connection parameters.  
-**Returns**: <code>Promise</code> - Connection result:<ul><li>resolves with the connection object, if successful. The object has method `done()` that must  be called in the end of the query chain, in order to release the connection back to the pool.</li><li>rejects with the connection error when fails.</li></ul>  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Connection result:<ul><li>resolves with the connection object, if successful. The object has method `done()` that must  be called in the end of the query chain, in order to release the connection back to the pool.</li><li>rejects with the connection error when fails.</li></ul>  
 **See**: [task](#module_pg-promise.Database+task)  
 <a name="module_pg-promise.Database+query"></a>
-#### database.query(query, [values], [qrm]) ⇒ <code>Promise</code>
+#### database.query(query, [values], [qrm]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a generic query that expects return data according to parameter `qrm`  
-**Returns**: <code>Promise</code> - A promise object that represents the query result.  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - A promise object that represents the query result.  
 <table>
   <thead>
     <tr>
@@ -259,10 +259,10 @@ This method initiates a shared connection for executing a chain of querieson th
 </table>
 
 <a name="module_pg-promise.Database+one"></a>
-#### database.one(query, [values]) ⇒ <code>Promise</code>
+#### database.one(query, [values]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects exactly one row of data.  
-**Returns**: <code>Promise</code> - Result of the query call:- when 1 row is returned, it will resolve with that row as a single object;- when no rows are returned, it will reject with `No data returned from the query.`- when more than 1 rows are returned, it will reject with  `Multiple rows were not expected.`  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call:- when 1 row is returned, it will resolve with that row as a single object;- when no rows are returned, it will reject with `No data returned from the query.`- when more than 1 rows are returned, it will reject with  `Multiple rows were not expected.`  
 <table>
   <thead>
     <tr>
@@ -283,10 +283,10 @@ This method initiates a shared connection for executing a chain of querieson th
 </table>
 
 <a name="module_pg-promise.Database+many"></a>
-#### database.many(query, [values]) ⇒ <code>Promise</code>
+#### database.many(query, [values]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects one or more rows.  
-**Returns**: <code>Promise</code> - Result of the query call:- when 1 or more rows are returned, it will resolve with the array of rows.- when no rows are returned, it will reject with `No data returned from the query.`  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call:- when 1 or more rows are returned, it will resolve with the array of rows.- when no rows are returned, it will reject with `No data returned from the query.`  
 <table>
   <thead>
     <tr>
@@ -307,10 +307,10 @@ This method initiates a shared connection for executing a chain of querieson th
 </table>
 
 <a name="module_pg-promise.Database+oneOrNone"></a>
-#### database.oneOrNone(query, [values]) ⇒ <code>Promise</code>
+#### database.oneOrNone(query, [values]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects 0 or 1 rows.  
-**Returns**: <code>Promise</code> - Result of the query call:- when no rows are returned, it will resolve with `null`;- when 1 row is returned, it will resolve with that row as a single object;- when more than 1 rows are returned, it will reject with  `Multiple rows were not expected.`  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call:- when no rows are returned, it will resolve with `null`;- when 1 row is returned, it will resolve with that row as a single object;- when more than 1 rows are returned, it will reject with  `Multiple rows were not expected.`  
 <table>
   <thead>
     <tr>
@@ -331,10 +331,10 @@ This method initiates a shared connection for executing a chain of querieson th
 </table>
 
 <a name="module_pg-promise.Database+manyOrNone"></a>
-#### database.manyOrNone(query, [values]) ⇒ <code>Promise</code>
+#### database.manyOrNone(query, [values]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects any number of rows.  
-**Returns**: <code>Promise</code> - Result of the query call:- when no rows are returned, it will resolve with an empty array;- when 1 or more rows are returned, it will resolve with the array of rows.  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call:- when no rows are returned, it will resolve with an empty array;- when 1 or more rows are returned, it will resolve with the array of rows.  
 **See**: [Database.any](#module_pg-promise.Database+any)  
 <table>
   <thead>
@@ -356,12 +356,12 @@ This method initiates a shared connection for executing a chain of querieson th
 </table>
 
 <a name="module_pg-promise.Database+any"></a>
-#### database.any(query, [values]) ⇒ <code>Promise</code>
+#### database.any(query, [values]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects any number of rows.  
-**Returns**: <code>Promise</code> - The same as method [manyOrNone](#module_pg-promise.Database+manyOrNone)  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - The same as method [manyOrNone](#module_pg-promise.Database+manyOrNone)  
 **See**: [manyOrNone](#module_pg-promise.Database+manyOrNone)  
 <table>
   <thead>
@@ -383,10 +383,10 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 </table>
 
 <a name="module_pg-promise.Database+result"></a>
-#### database.result(query, [values]) ⇒ <code>Promise</code>
+#### database.result(query, [values]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query without any expectation for the return data, to provide direct accessto the <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object.  
-**Returns**: <code>Promise</code> - Result of the query call:- resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object:  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call:- resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object:  
 <table>
   <thead>
     <tr>
@@ -407,10 +407,10 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 </table>
 
 <a name="module_pg-promise.Database+stream"></a>
-#### database.stream(qs, init) ⇒ <code>Promise</code>
+#### database.stream(qs, init) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Custom data streaming, with help of <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a>.  
-**Returns**: <code>Promise</code> - Result of the streaming operation.Once the streaming has finished successfully, the method resolves with`{processed, duration}`:- `processed` - total number of rows that have been processed;- `duration` - streaming duration, in milliseconds.Possible rejections messages:- `Invalid or missing stream object.`- `Invalid stream state.`- `Invalid or missing stream initialization callback.`  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the streaming operation.Once the streaming has finished successfully, the method resolves with`{processed, duration}`:- `processed` - total number of rows that have been processed;- `duration` - streaming duration, in milliseconds.Possible rejections messages:- `Invalid or missing stream object.`- `Invalid stream state.`- `Invalid or missing stream initialization callback.`  
 <table>
   <thead>
     <tr>
@@ -429,10 +429,10 @@ the same <code>this</code> context as the calling method.</p>
 </table>
 
 <a name="module_pg-promise.Database+func"></a>
-#### database.func(funcName, [values], [qrm]) ⇒ <code>Promise</code>
+#### database.func(funcName, [values], [qrm]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query against a database function by its name:`select * from funcName(values)`  
-**Returns**: <code>Promise</code> - Result of the query call, according to `qrm`.  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call, according to `qrm`.  
 **See**: [query](#module_pg-promise.Database+query)  
 <table>
   <thead>
@@ -454,10 +454,10 @@ the same <code>this</code> context as the calling method.</p>
 </table>
 
 <a name="module_pg-promise.Database+proc"></a>
-#### database.proc(procName, [values]) ⇒ <code>Promise</code>
+#### database.proc(procName, [values]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query against a stored procedure via its name:`select * from procName(values)`  
-**Returns**: <code>Promise</code> - The same result as method [oneOrNone](#module_pg-promise.Database+oneOrNone).  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - The same result as method [oneOrNone](#module_pg-promise.Database+oneOrNone).  
 **See**
 
 - [oneOrNone](#module_pg-promise.Database+oneOrNone)
@@ -480,10 +480,10 @@ the same <code>this</code> context as the calling method.</p>
 </table>
 
 <a name="module_pg-promise.Database+task"></a>
-#### database.task(p1, [p2]) ⇒ <code>Promise</code>
+#### database.task(p1, [p2]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes the callback function with an automatically managed connection.  
-**Returns**: <code>Promise</code> - Result from the task callback function.  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result from the task callback function.  
 <table>
   <thead>
     <tr>
@@ -503,12 +503,12 @@ or else <code>p2</code> isn&#39;t used.</p>
 </table>
 
 <a name="module_pg-promise.Database+tx"></a>
-#### database.tx(p1, [p2]) ⇒ <code>Promise</code>
+#### database.tx(p1, [p2]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 The method implements the following steps:- acquires a connection from the pool, if needed;- executes `BEGIN`;- executes the callback function;- if the callback function has resolved:  - executes `COMMIT`;  - releases the connection, if it was acquired;  - resolves with the result from the callback function;- if the callback function has rejected:  - executes `ROLLBACK`;  - releases the connection, if it was acquired;  - rejects with the result from the callback function.
 
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes the callback function as a transaction.  
-**Returns**: <code>Promise</code> - Result from the transaction callback function.  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result from the transaction callback function.  
 <table>
   <thead>
     <tr>
