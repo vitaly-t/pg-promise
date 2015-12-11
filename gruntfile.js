@@ -61,6 +61,8 @@ var fs = require("fs");
 // Replaces all `$[link name]` occurrences in each MD file
 // with the corresponding link tag as defined on the list.
 function fixLinks() {
+    return;
+
     var done = this.async(), count = 0;
     files.forEach(function (f) {
         fs.readFile(f.dest, "utf-8", function (_, data) {
