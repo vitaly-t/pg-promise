@@ -2,7 +2,7 @@
 
 <dl>
 <dt><a href="#module_pg-promise">pg-promise</a></dt>
-<dd><p>Complete access layer to node-postgres via $[Promises/A+]</p>
+<dd><p>Complete access layer to node-postgres via <a href="https://promisesaplus.com">Promises/A+</a></p>
 </dd>
 </dl>
 
@@ -20,7 +20,7 @@ as well as method <a href="#module_pg-promise.Database+func">func</a>.</p>
 
 <a name="module_pg-promise"></a>
 ## pg-promise
-Complete access layer to node-postgres via $[Promises/A+]
+Complete access layer to node-postgres via <a href="https://promisesaplus.com">Promises/A+</a>
 
 **Author:** Vitaly Tomilov  
 <table>
@@ -99,10 +99,10 @@ Complete access layer to node-postgres via $[Promises/A+]
 
 <a name="module_pg-promise.Task+batch"></a>
 #### task.batch(values, [cb]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
-For complete method documentation see $[spex.batch].
+For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md">spex.batch</a>.
 
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
-**Summary**: Resolves a predefined array of mixed values by redirecting to method $[spex.batch].  
+**Summary**: Resolves a predefined array of mixed values by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md">spex.batch</a>.  
 <table>
   <thead>
     <tr>
@@ -119,10 +119,10 @@ For complete method documentation see $[spex.batch].
 
 <a name="module_pg-promise.Task+page"></a>
 #### task.page(source, [dest], [limit]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
-For complete method documentation see $[spex.page].
+For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/page.md">spex.page</a>.
 
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
-**Summary**: Resolves a dynamic sequence of arrays/pages with mixed values, by redirecting to method $[spex.page].  
+**Summary**: Resolves a dynamic sequence of arrays/pages with mixed values, by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/page.md">spex.page</a>.  
 <table>
   <thead>
     <tr>
@@ -141,10 +141,10 @@ For complete method documentation see $[spex.page].
 
 <a name="module_pg-promise.Task+sequence"></a>
 #### task.sequence(source, [dest], [limit], [track]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
-For complete method documentation see $[spex.sequence].
+For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md">spex.sequence</a>.
 
 **Kind**: instance method of <code>[Task](#module_pg-promise.Task)</code>  
-**Summary**: Resolves a dynamic sequence of mixed values by redirecting to method $[spex.sequence].  
+**Summary**: Resolves a dynamic sequence of mixed values by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md">spex.sequence</a>.  
 <table>
   <thead>
     <tr>
@@ -385,8 +385,8 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 <a name="module_pg-promise.Database+result"></a>
 #### database.result(query, [values]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Executes a query without any expectation for the return data, to provide direct accessto the $[Result] object.  
-**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call:- resolves with the original $[Result] object:  
+**Summary**: Executes a query without any expectation for the return data, to provide direct accessto the <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object.  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call:- resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object:  
 <table>
   <thead>
     <tr>
@@ -409,7 +409,7 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 <a name="module_pg-promise.Database+stream"></a>
 #### database.stream(qs, init) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Custom data streaming, with help of $[pg-query-stream].  
+**Summary**: Custom data streaming, with help of <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a>.  
 **Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the streaming operation.Once the streaming has finished successfully, the method resolves with`{processed, duration}`:- `processed` - total number of rows that have been processed;- `duration` - streaming duration, in milliseconds.Possible rejections messages:- `Invalid or missing stream object.`- `Invalid stream state.`- `Invalid or missing stream initialization callback.`  
 <table>
   <thead>
@@ -419,7 +419,7 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
   </thead>
   <tbody>
 <tr>
-    <td>qs</td><td><code>QueryStream</code></td><td><p>stream object of type $[QueryStream].</p>
+    <td>qs</td><td><code>QueryStream</code></td><td><p>stream object of type <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js#L5">QueryStream</a>.</p>
 </td>
     </tr><tr>
     <td>init</td><td><code>function</code></td><td><p>stream initialization callback, with
@@ -555,7 +555,7 @@ Terminates pg library (call it when exiting the application).
   </thead>
   <tbody>
 <tr>
-    <td>client</td><td><code>pg.Client</code></td><td><p>$[pg.Client] object that represents the database connection.</p>
+    <td>client</td><td><code>pg.Client</code></td><td><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents the database connection.</p>
 </td>
     </tr>  </tbody>
 </table>
@@ -572,7 +572,7 @@ Terminates pg library (call it when exiting the application).
   </thead>
   <tbody>
 <tr>
-    <td>client</td><td><code>pg.Client</code></td><td><p>$[pg.Client] object that represents the database connection.</p>
+    <td>client</td><td><code>pg.Client</code></td><td><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents the database connection.</p>
 </td>
     </tr>  </tbody>
 </table>

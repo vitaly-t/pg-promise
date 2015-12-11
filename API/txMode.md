@@ -23,14 +23,14 @@
 ## txMode
 Extends the default `BEGIN` with Transaction Mode parameters: - isolation level - access mode - deferrable mode
 
-**See**: $[BEGIN]  
+**See**: <a href="http://www.postgresql.org/docs/9.4/static/sql-begin.html">BEGIN</a>  
 **Author:** Vitaly Tomilov  
 <a name="module_txMode.TransactionMode"></a>
 ### txMode.TransactionMode ⇒ <code>TransactionMode</code>
 **Alternative Syntax:** `TransactionMode({tiLevel, readOnly, deferrable})`Constructs a complete transaction opening command,based on Transaction Mode parameters: - isolation level - access mode - deferrable mode
 
 **Kind**: static class of <code>[txMode](#module_txMode)</code>  
-**See**: $[BEGIN]  
+**See**: <a href="http://www.postgresql.org/docs/9.4/static/sql-begin.html">BEGIN</a>  
 <table>
   <thead>
     <tr>
@@ -69,7 +69,7 @@ isolationLevel
 **Kind**: global enum  
 **Summary**: Transaction Isolation Level.  
 **Read only**: true  
-**See**: $[Transaction Isolation]  
+**See**: <a href="http://www.postgresql.org/docs/9.4/static/transaction-iso.html">Transaction Isolation</a>  
 **Properties**
 
 <table>
