@@ -989,7 +989,7 @@ are optional:
 * `ctx` - task/transaction context object;
 
 A task/transaction context object (`ctx`) supports the following properties:
-* `isTX` - set when `ctx` is a transaction context, as opposed to just a task;
+* `isTX` - indicates when `ctx` is a transaction context (not a regular task);
 * `start` - start time of the task/transaction;
 * `finish` - optional; finish time of the task/transaction, if it has finished;
 * `tag` - optional; tag object/value passed into the task/transaction, if any;
