@@ -5,7 +5,22 @@ Query Formatting
 **Author:** Vitaly Tomilov  
 
 * [formatting](#module_formatting)
-  * [.as](#module_formatting.as) : <code>object</code>
+    * [.as](#module_formatting.as) : <code>object</code>
+        * [.text(text, [raw])](#module_formatting.as.text) ⇒ <code>String</code>
+        * [.bool(value)](#module_formatting.as.bool) ⇒ <code>String</code>
+        * [.date(d, [raw])](#module_formatting.as.date) ⇒ <code>String</code>
+        * [.number(num)](#module_formatting.as.number) ⇒ <code>String</code>
+        * [.array(arr)](#module_formatting.as.array) ⇒ <code>String</code>
+        * [.csv(values)](#module_formatting.as.csv) ⇒ <code>String</code>
+        * [.json(obj, [raw])](#module_formatting.as.json) ⇒ <code>String</code>
+        * [.func(func, [raw], [obj])](#module_formatting.as.func) ⇒ <code>String</code>
+        * [.format(query, [values])](#module_formatting.as.format) ⇒ <code>String</code>
+
+<a name="module_formatting.as"></a>
+### formatting.as : <code>object</code>
+**Kind**: static namespace of <code>[formatting](#module_formatting)</code>  
+
+* [.as](#module_formatting.as) : <code>object</code>
     * [.text(text, [raw])](#module_formatting.as.text) ⇒ <code>String</code>
     * [.bool(value)](#module_formatting.as.bool) ⇒ <code>String</code>
     * [.date(d, [raw])](#module_formatting.as.date) ⇒ <code>String</code>
@@ -15,21 +30,6 @@ Query Formatting
     * [.json(obj, [raw])](#module_formatting.as.json) ⇒ <code>String</code>
     * [.func(func, [raw], [obj])](#module_formatting.as.func) ⇒ <code>String</code>
     * [.format(query, [values])](#module_formatting.as.format) ⇒ <code>String</code>
-
-<a name="module_formatting.as"></a>
-### formatting.as : <code>object</code>
-**Kind**: static namespace of <code>[formatting](#module_formatting)</code>  
-
-* [.as](#module_formatting.as) : <code>object</code>
-  * [.text(text, [raw])](#module_formatting.as.text) ⇒ <code>String</code>
-  * [.bool(value)](#module_formatting.as.bool) ⇒ <code>String</code>
-  * [.date(d, [raw])](#module_formatting.as.date) ⇒ <code>String</code>
-  * [.number(num)](#module_formatting.as.number) ⇒ <code>String</code>
-  * [.array(arr)](#module_formatting.as.array) ⇒ <code>String</code>
-  * [.csv(values)](#module_formatting.as.csv) ⇒ <code>String</code>
-  * [.json(obj, [raw])](#module_formatting.as.json) ⇒ <code>String</code>
-  * [.func(func, [raw], [obj])](#module_formatting.as.func) ⇒ <code>String</code>
-  * [.format(query, [values])](#module_formatting.as.format) ⇒ <code>String</code>
 
 <a name="module_formatting.as.text"></a>
 #### as.text(text, [raw]) ⇒ <code>String</code>

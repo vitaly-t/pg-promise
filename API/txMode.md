@@ -1,4 +1,5 @@
 ## Modules
+
 <dl>
 <dt><a href="#module_txMode">txMode</a></dt>
 <dd><p>Extends the default <code>BEGIN</code> with Transaction Mode parameters:</p>
@@ -9,31 +10,27 @@
 </ul>
 </dd>
 </dl>
+
 ## Members
+
 <dl>
 <dt><a href="#isolationLevel">isolationLevel</a> : <code>enum</code></dt>
 <dd><p>isolationLevel</p>
 </dd>
 </dl>
+
 <a name="module_txMode"></a>
 ## txMode
 Extends the default `BEGIN` with Transaction Mode parameters: - isolation level - access mode - deferrable mode
 
 **See**: <a href="http://www.postgresql.org/docs/9.4/static/sql-begin.html">BEGIN</a>  
 **Author:** Vitaly Tomilov  
-
-* [txMode](#module_txMode)
-  * [.TransactionMode](#module_txMode.TransactionMode)
-    * [new TransactionMode([tiLevel], [readOnly], [deferrable])](#new_module_txMode.TransactionMode_new)
-
 <a name="module_txMode.TransactionMode"></a>
-### txMode.TransactionMode
-**Kind**: static class of <code>[txMode](#module_txMode)</code>  
-**See**: <a href="http://www.postgresql.org/docs/9.4/static/sql-begin.html">BEGIN</a>  
-<a name="new_module_txMode.TransactionMode_new"></a>
-#### new TransactionMode([tiLevel], [readOnly], [deferrable])
+### txMode.TransactionMode ⇒ <code>TransactionMode</code>
 **Alternative Syntax:** `TransactionMode({tiLevel, readOnly, deferrable})`Constructs a complete transaction opening command,based on Transaction Mode parameters: - isolation level - access mode - deferrable mode
 
+**Kind**: static class of <code>[txMode](#module_txMode)</code>  
+**See**: <a href="http://www.postgresql.org/docs/9.4/static/sql-begin.html">BEGIN</a>  
 <table>
   <thead>
     <tr>

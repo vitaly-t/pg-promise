@@ -3,19 +3,12 @@
 Promise Adapter
 
 **Author:** Vitaly Tomilov  
-
-* [adapter](#module_adapter)
-  * [.PromiseAdapter](#module_adapter.PromiseAdapter)
-    * [new PromiseAdapter(create, resolve, reject)](#new_module_adapter.PromiseAdapter_new)
-
 <a name="module_adapter.PromiseAdapter"></a>
 ### adapter.PromiseAdapter
-**Kind**: static class of <code>[adapter](#module_adapter)</code>  
-**Summary**: Adapter for the primary promise operations.  
-<a name="new_module_adapter.PromiseAdapter_new"></a>
-#### new PromiseAdapter(create, resolve, reject)
 Provides compatibility with promise libraries that cannot be recognized automatically,via functions that implement the primary operations with promises: - construct a new promise with a callback function - resolve a promise with some result data - reject a promise with a reason
 
+**Kind**: static class of <code>[adapter](#module_adapter)</code>  
+**Summary**: Adapter for the primary promise operations.  
 <table>
   <thead>
     <tr>

@@ -1,10 +1,13 @@
 ## Modules
+
 <dl>
 <dt><a href="#module_pg-promise">pg-promise</a></dt>
 <dd><p>Complete access layer to node-postgres via <a href="https://promisesaplus.com">Promises/A+</a></p>
 </dd>
 </dl>
+
 ## Members
+
 <dl>
 <dt><a href="#queryResult">queryResult</a> : <code>enum</code></dt>
 <dd><p>Binary mask that represents the result expected from queries.
@@ -14,6 +17,7 @@ as well as method <a href="#module_pg-promise.Database+func">func</a>.</p>
 <p>Any combination of flags is supported, except for <code>one + many</code>.</p>
 </dd>
 </dl>
+
 <a name="module_pg-promise"></a>
 ## pg-promise
 Complete access layer to node-postgres via <a href="https://promisesaplus.com">Promises/A+</a>
@@ -47,52 +51,51 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
 
 
 * [pg-promise](#module_pg-promise)
-  * _static_
-    * [.Task](#module_pg-promise.Task)
-      * [.batch(values, [cb])](#module_pg-promise.Task+batch) ⇒ <code>Promise</code>
-      * [.page(source, [dest], [limit])](#module_pg-promise.Task+page) ⇒ <code>Promise</code>
-      * [.sequence(source, [dest], [limit], [track])](#module_pg-promise.Task+sequence) ⇒ <code>Promise</code>
-    * [.Database](#module_pg-promise.Database)
-      * [new Database(cn)](#new_module_pg-promise.Database_new)
-      * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>Promise</code>
-      * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>Promise</code>
-      * [.none(query, [values])](#module_pg-promise.Database+none) ⇒ <code>Promise</code>
-      * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>Promise</code>
-      * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>Promise</code>
-      * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>Promise</code>
-      * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>Promise</code>
-      * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>Promise</code>
-      * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>Promise</code>
-      * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>Promise</code>
-      * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>Promise</code>
-      * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>Promise</code>
-      * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>Promise</code>
-      * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>Promise</code>
-    * [.pg](#module_pg-promise.pg)
-    * [.queryResult](#module_pg-promise.queryResult)
-    * [.end()](#module_pg-promise.end)
-    * ["connect" (client)](#module_pg-promise.event_connect)
-    * ["disconnect" (client)](#module_pg-promise.event_disconnect)
-    * ["query" (e)](#module_pg-promise.event_query)
-    * ["task" (e)](#module_pg-promise.event_task)
-    * ["transact" (e)](#module_pg-promise.event_transact)
-    * ["error" (err, e)](#module_pg-promise.event_error)
-    * ["extend" (obj)](#module_pg-promise.event_extend)
-  * _inner_
-    * [~as](#module_pg-promise..as) : <code>module:formatting.as</code>
-    * [~QueryResultError](#module_pg-promise..QueryResultError) : <code>module:error</code>
-    * [~PromiseAdapter](#module_pg-promise..PromiseAdapter) : <code>module:adapter</code>
-    * [~txMode](#module_pg-promise..txMode) : <code>module:txMode</code>
+    * _static_
+        * [.Task](#module_pg-promise.Task)
+            * [.batch(values, [cb])](#module_pg-promise.Task+batch) ⇒ <code>Promise</code>
+            * [.page(source, [dest], [limit])](#module_pg-promise.Task+page) ⇒ <code>Promise</code>
+            * [.sequence(source, [dest], [limit], [track])](#module_pg-promise.Task+sequence) ⇒ <code>Promise</code>
+        * [.Database](#module_pg-promise.Database) ⇒ <code>Database</code>
+            * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>Promise</code>
+            * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>Promise</code>
+            * [.none(query, [values])](#module_pg-promise.Database+none) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+            * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>Promise</code>
+            * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>Promise</code>
+            * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>Promise</code>
+            * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>Promise</code>
+            * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>Promise</code>
+            * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>Promise</code>
+            * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>Promise</code>
+            * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>Promise</code>
+            * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>Promise</code>
+            * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>Promise</code>
+            * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>Promise</code>
+        * [.pg](#module_pg-promise.pg)
+        * [.queryResult](#module_pg-promise.queryResult)
+        * [.end()](#module_pg-promise.end)
+        * ["connect" (client)](#module_pg-promise.event_connect)
+        * ["disconnect" (client)](#module_pg-promise.event_disconnect)
+        * ["query" (e)](#module_pg-promise.event_query)
+        * ["task" (e)](#module_pg-promise.event_task)
+        * ["transact" (e)](#module_pg-promise.event_transact)
+        * ["error" (err, e)](#module_pg-promise.event_error)
+        * ["extend" (obj)](#module_pg-promise.event_extend)
+    * _inner_
+        * [~as](#module_pg-promise..as) : <code>module:formatting.as</code>
+        * [~QueryResultError](#module_pg-promise..QueryResultError) : <code>module:error</code>
+        * [~PromiseAdapter](#module_pg-promise..PromiseAdapter) : <code>module:adapter</code>
+        * [~txMode](#module_pg-promise..txMode) : <code>module:txMode</code>
 
 <a name="module_pg-promise.Task"></a>
 ### pg-promise.Task
 **Kind**: static class of <code>[pg-promise](#module_pg-promise)</code>  
 **Summary**: Internal Task implementation.  
 
-  * [.Task](#module_pg-promise.Task)
-    * [.batch(values, [cb])](#module_pg-promise.Task+batch) ⇒ <code>Promise</code>
-    * [.page(source, [dest], [limit])](#module_pg-promise.Task+page) ⇒ <code>Promise</code>
-    * [.sequence(source, [dest], [limit], [track])](#module_pg-promise.Task+sequence) ⇒ <code>Promise</code>
+    * [.Task](#module_pg-promise.Task)
+        * [.batch(values, [cb])](#module_pg-promise.Task+batch) ⇒ <code>Promise</code>
+        * [.page(source, [dest], [limit])](#module_pg-promise.Task+page) ⇒ <code>Promise</code>
+        * [.sequence(source, [dest], [limit], [track])](#module_pg-promise.Task+sequence) ⇒ <code>Promise</code>
 
 <a name="module_pg-promise.Task+batch"></a>
 #### task.batch(values, [cb]) ⇒ <code>Promise</code>
@@ -161,28 +164,8 @@ For complete method documentation see <a href="https://github.com/vitaly-t/spex/
 </table>
 
 <a name="module_pg-promise.Database"></a>
-### pg-promise.Database
+### pg-promise.Database ⇒ <code>Database</code>
 **Kind**: static class of <code>[pg-promise](#module_pg-promise)</code>  
-
-  * [.Database](#module_pg-promise.Database)
-    * [new Database(cn)](#new_module_pg-promise.Database_new)
-    * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>Promise</code>
-    * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>Promise</code>
-    * [.none(query, [values])](#module_pg-promise.Database+none) ⇒ <code>Promise</code>
-    * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>Promise</code>
-    * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>Promise</code>
-    * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>Promise</code>
-    * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>Promise</code>
-    * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>Promise</code>
-    * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>Promise</code>
-    * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>Promise</code>
-    * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>Promise</code>
-    * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>Promise</code>
-    * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>Promise</code>
-    * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>Promise</code>
-
-<a name="new_module_pg-promise.Database_new"></a>
-#### new Database(cn)
 **Returns**: <code>Database</code> - New database instance.  
 <table>
   <thead>
@@ -197,6 +180,23 @@ For complete method documentation see <a href="https://github.com/vitaly-t/spex/
     </tr>  </tbody>
 </table>
 
+
+    * [.Database](#module_pg-promise.Database) ⇒ <code>Database</code>
+        * [.connect()](#module_pg-promise.Database+connect) ⇒ <code>Promise</code>
+        * [.query(query, [values], [qrm])](#module_pg-promise.Database+query) ⇒ <code>Promise</code>
+        * [.none(query, [values])](#module_pg-promise.Database+none) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
+        * [.one(query, [values])](#module_pg-promise.Database+one) ⇒ <code>Promise</code>
+        * [.many(query, [values])](#module_pg-promise.Database+many) ⇒ <code>Promise</code>
+        * [.oneOrNone(query, [values])](#module_pg-promise.Database+oneOrNone) ⇒ <code>Promise</code>
+        * [.manyOrNone(query, [values])](#module_pg-promise.Database+manyOrNone) ⇒ <code>Promise</code>
+        * [.any(query, [values])](#module_pg-promise.Database+any) ⇒ <code>Promise</code>
+        * [.result(query, [values])](#module_pg-promise.Database+result) ⇒ <code>Promise</code>
+        * [.stream(qs, init)](#module_pg-promise.Database+stream) ⇒ <code>Promise</code>
+        * [.func(funcName, [values], [qrm])](#module_pg-promise.Database+func) ⇒ <code>Promise</code>
+        * [.proc(procName, [values])](#module_pg-promise.Database+proc) ⇒ <code>Promise</code>
+        * [.task(p1, [p2])](#module_pg-promise.Database+task) ⇒ <code>Promise</code>
+        * [.tx(p1, [p2])](#module_pg-promise.Database+tx) ⇒ <code>Promise</code>
+
 <a name="module_pg-promise.Database+connect"></a>
 #### database.connect() ⇒ <code>Promise</code>
 This method initiates a shared connection for executing a chain of querieson the same connection. The connection must be released in the end of thechain by calling method `done()` of the connection object.This is a legacy, low-level approach to chaining queries on the same connection.A newer and simpler approach is via method [task](#module_pg-promise.Database+task),which allocates and releases the shared connection automatically.
@@ -208,7 +208,7 @@ This method initiates a shared connection for executing a chain of querieson th
 <a name="module_pg-promise.Database+query"></a>
 #### database.query(query, [values], [qrm]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Executes a generic query that expects return data according to parameter &#x60;qrm&#x60;  
+**Summary**: Executes a generic query that expects return data according to parameter `qrm`  
 **Returns**: <code>Promise</code> - A promise object that represents the query result.  
 <table>
   <thead>
@@ -235,10 +235,10 @@ This method initiates a shared connection for executing a chain of querieson th
 </table>
 
 <a name="module_pg-promise.Database+none"></a>
-#### database.none(query, [values]) ⇒ <code>Promise</code>
+#### database.none(query, [values]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects no data to be returned.  
-**Returns**: <code>Promise</code> - Result of the query call:- when no records are returned, the returned promise will resolve with `undefined`- when the query returns any data, it will reject with `No return data was expected.`  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call- when no records are returned, the returned promise will resolve with `undefined`- when the query returns any data, it will reject with [module:error~QueryResultError](module:error~QueryResultError),containing `No return data was expected.`  
 <table>
   <thead>
     <tr>
@@ -431,7 +431,7 @@ the same <code>this</code> context as the calling method.</p>
 <a name="module_pg-promise.Database+func"></a>
 #### database.func(funcName, [values], [qrm]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Executes a query against a database function by its name:&#x60;select * from funcName(values)&#x60;  
+**Summary**: Executes a query against a database function by its name:`select * from funcName(values)`  
 **Returns**: <code>Promise</code> - Result of the query call, according to `qrm`.  
 **See**: [query](#module_pg-promise.Database+query)  
 <table>
@@ -456,7 +456,7 @@ the same <code>this</code> context as the calling method.</p>
 <a name="module_pg-promise.Database+proc"></a>
 #### database.proc(procName, [values]) ⇒ <code>Promise</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Executes a query against a stored procedure via its name:&#x60;select * from procName(values)&#x60;  
+**Summary**: Executes a query against a stored procedure via its name:`select * from procName(values)`  
 **Returns**: <code>Promise</code> - The same result as method [oneOrNone](#module_pg-promise.Database+oneOrNone).  
 **See**
 
@@ -580,7 +580,7 @@ Terminates pg library (call it when exiting the application).
 <a name="module_pg-promise.event_query"></a>
 ### "query" (e)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
-**Summary**: Global notification of a query that&#x27;s about to execute.  
+**Summary**: Global notification of a query that's about to execute.  
 <table>
   <thead>
     <tr>
