@@ -42,10 +42,10 @@
     "bluebird": "3.x",
     "coveralls": "2.x",
     "grunt": "0.4",
-    "grunt-jsdoc-to-markdown": "1.x",
+    "grunt-jsdoc-to-markdown": "1.1",
     "istanbul": "0.4",
     "jasmine-node": "1.x",
-    "jsdoc": "3.x",
+    "jsdoc": "3.3",
     "pg-query-stream": "1.x"
   }
 }
