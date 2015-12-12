@@ -238,7 +238,7 @@ This method initiates a shared connection for executing a chain of querieson th
 #### database.none(query, [values]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query that expects no data to be returned.  
-**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call- when no records are returned, the returned promise will resolve with `undefined`- when the query returns any data, it will reject with [QueryResultError](#module_pg-promise..QueryResultError),= `No return data was expected.`  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call- when no records are returned, the returned promise will resolve with `undefined`- when the query returns any data, it will reject with [QueryResultError](#module_pg-promise..QueryResultError)= `No return data was expected.`  
 <table>
   <thead>
     <tr>
@@ -386,7 +386,7 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 #### database.result(query, [values]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes a query without any expectation for the return data, to provide direct accessto the <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object.  
-**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call:- resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object:  
+**Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the query call:- resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object  
 <table>
   <thead>
     <tr>
@@ -409,7 +409,7 @@ Alias for method [manyOrNone](#module_pg-promise.Database+manyOrNone)
 <a name="module_pg-promise.Database+stream"></a>
 #### database.stream(qs, init) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Custom data streaming, with help of <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a>.  
+**Summary**: Custom data streaming, with the help of <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a>.  
 **Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result of the streaming operation.Once the streaming has finished successfully, the method resolves with`{processed, duration}`:- `processed` - total number of rows that have been processed;- `duration` - streaming duration, in milliseconds.Possible rejections messages:- `Invalid or missing stream object.`- `Invalid stream state.`- `Invalid or missing stream initialization callback.`  
 <table>
   <thead>
@@ -504,7 +504,7 @@ or else <code>p2</code> isn&#39;t used.</p>
 
 <a name="module_pg-promise.Database+tx"></a>
 #### database.tx(p1, [p2]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
-The method implements the following steps:- acquires a connection from the pool, if needed;- executes `BEGIN`;- executes the callback function;- if the callback function has resolved:  - executes `COMMIT`;  - releases the connection, if it was acquired;  - resolves with the result from the callback function;- if the callback function has rejected:  - executes `ROLLBACK`;  - releases the connection, if it was acquired;  - rejects with the result from the callback function.
+Executes a task as a transaction. The transaction will do `ROLLBACK`,if the callback function returns a rejected promise or throws an error;and it will do `COMMIT` in all other cases.
 
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
 **Summary**: Executes the callback function as a transaction.  
