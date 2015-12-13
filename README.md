@@ -69,8 +69,8 @@ In addition, the library provides:
 
 * its own, more flexible query formatting;
 * event reporting for connectivity, errors, queries and transactions;
-* support for all popular promise libraries + ES6 generators
-* declarative approach to controlling query results;
+* support for all popular promise libraries + ES6 generators;
+* declarative approach to controlling query results.
 
 # Installing
 ```
