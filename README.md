@@ -70,7 +70,7 @@ In addition, the library provides:
 * its own, more flexible query formatting;
 * event reporting for connectivity, errors, queries and transactions;
 * declarative approach to controlling query results;
-* support for all popular promise libraries.
+* support for all popular promise libraries + ES6 generators
 
 # Installing
 ```
@@ -85,7 +85,7 @@ $ npm install pg-promise
 // Loading and initializing the library:
 var pgp = require('pg-promise')(/*options*/);
 ```
-You can pass `options` parameter when initializing the library (see chapter [Initialization Options](#advanced)).
+You can pass `options` parameter when initializing the library (see [Initialization Options](#advanced)).
 
 ## Connecting
 
@@ -1048,8 +1048,8 @@ When the error relates to the database connection, property `e.cn` is set
 to the connection string/object details that were passed into the library,
 as shown in the example above.
 
-However, starting with version 2.5.3, it is no longer the original value that's
-passed with the event, but its safe copy, which has any presence of password masked
+Starting with version 2.5.3, it is no longer the original value that's passed
+with the event, but its safe copy, which has any presence of a password masked
 with symbol `#`. This is to make sure no passwords are logged anywhere as open text.
 
 ---
