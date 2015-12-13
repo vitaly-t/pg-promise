@@ -69,8 +69,8 @@ In addition, the library provides:
 
 * its own, more flexible query formatting;
 * event reporting for connectivity, errors, queries and transactions;
-* declarative approach to controlling query results;
 * support for all popular promise libraries + ES6 generators
+* declarative approach to controlling query results;
 
 # Installing
 ```
@@ -188,10 +188,14 @@ Raw text is injected without any pre-processing, which means:
 * No replacing each single-quote symbol `'` with two;
 * No wrapping text into single quotes.
 
-This is to allow for special-case variable formatting, like in the following examples:
+Unlike regular variables, value for raw-text variables cannot be `null` or `undefined`,
+because of the ambiguous meaning in this case. If such values are passed in, the formatter
+will throw error `Values null/undefined cannot be used as raw text.` 
 
-```javascript
-// injecting "John" name without quotes:
+**usage examples:**
+
+```js
+// injecting name without quotes:
 query("...WHERE name LIKE '%$1^%'", "John");
 
 // injecting value of property 'name' without quotes:
@@ -201,8 +205,8 @@ query("...WHERE name LIKE '%${name^}%'", {name: "John"});
 query("...WHERE id IN($1^)", pgp.as.csv([1,2,3,4])); 
 ```
 
-Syntax `this^` within the [Named Parameters](#named-parameters) refers to the formatting
-object itself, to be injected as a raw-text JSON-formatted string.
+Special syntax `this^` within the [Named Parameters](#named-parameters) refers
+to the formatting object itself, to be injected as a raw-text JSON-formatted string.
 
 ## Query Result Mask
 
