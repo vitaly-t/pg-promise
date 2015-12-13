@@ -299,10 +299,8 @@ an error is thrown when the property doesn't exist at all.
 #### `this` reference
 
 Version 2.3.0 added support for property `this` to refer to the object itself, and to be used in those
-cases where the object needs to be formatted as a JSON string. Syntax `this^` is also supported for
-raw-text formatting.
+cases where the object needs to be formatted as a JSON string:
 
-Examples:
 * `${this}` - inserts the object itself as a JSON-formatted string;
 * `${this^}` - inserts the object itself as a raw-text JSON-formatted string.
 
@@ -328,7 +326,7 @@ which will execute:
 INSERT INTO documents(id, doc) VALUES(123, '{"id":123,"body":"some text"}')
 ```
 
-NOTE: Technically, it is possible in javascript, though not recommended, for an object to contain a property
+**NOTE:** Technically, it is possible in javascript, though not recommended, for an object to contain a property
 with name `this`. And in such cases the property's value will be used instead.
 
 ## Functions and Procedures
