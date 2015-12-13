@@ -298,8 +298,8 @@ an error is thrown when the property doesn't exist at all.
 
 #### `this` reference
 
-Version 2.3.0 added support for property `this` to refer to the object itself, and to be used in those
-cases where the object needs to be formatted as a JSON string:
+Version 2.3.0 added support for property `this`, as a reference to the formatting object itself,
+so it can be inserted as a JSON-formatted string, alongside its properties.
 
 * `${this}` - inserts the object itself as a JSON-formatted string;
 * `${this^}` - inserts the object itself as a raw-text JSON-formatted string.
