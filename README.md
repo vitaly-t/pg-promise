@@ -926,7 +926,7 @@ connection pool, i.e. a virtual connection.
 var options = {
     connect: function(client){
         var cp = client.connectionParameters;
-        console.log("Connected to database '" + cp.database + "'");
+        console.log("Connected to database:", cp.database);
     }
 };
 ```
@@ -946,7 +946,7 @@ i.e. releasing the virtual connection.
 var options = {
     disconnect: function(client){
         var cp = client.connectionParameters;
-        console.log("Disconnecting from database '" + cp.database + "'");
+        console.log("Disconnecting from database:", cp.database);
     }
 };
 ```
@@ -1021,7 +1021,7 @@ Global notification of an error during connection, query, task or transaction.
 ```javascript
 var options = {
     error: function (err, e) {
-        console.log("Error: " + err);
+        console.log("Error:", err);
         if (e.cn) {
             // this is a connection-related error;
             // cn = connection details that were used.
@@ -1060,10 +1060,10 @@ Global notification of a task start / finish events.
 ```javascript
 var options = {
     task: function (e) {
-        console.log("Start Time: " + e.ctx.start);
+        console.log("Start Time:", e.ctx.start);
         if (e.ctx.finish) {
             // this is a task `finish` event;
-            console.log("Finish Time: " + e.ctx.finish);
+            console.log("Finish Time:", e.ctx.finish);
             if (e.ctx.success) {
                 // e.ctx.result = the data resolved;
             } else {
@@ -1088,10 +1088,10 @@ Global notification of a transaction start / finish events.
 ```javascript
 var options = {
     transact: function (e) {
-        console.log("Start Time: " + e.ctx.start);
+        console.log("Start Time:", e.ctx.start);
         if (e.ctx.finish) {
             // this is a transaction `finish` event;
-            console.log("Finish Time: " + e.ctx.finish);
+            console.log("Finish Time:", e.ctx.finish);
             if (e.ctx.success) {
                 // e.ctx.result = the data resolved;
             } else {
