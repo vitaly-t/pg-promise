@@ -866,10 +866,10 @@ If you want to get the most out the query-related events, you should use [pg-mon
 By default, **pg-promise** provides its own implementation of the query formatting,
 as explained in [Queries and Parameters](#queries-and-parameters).
 
-If, however, you want to use query formatting that's implemented by the [PG] library, set parameter `pgFormatting`
+If, however, you want your queries formatted by the [PG] library, set parameter `pgFormatting`
 to be `true` when initializing the library, and every query formatting will redirect to the [PG]'s implementation.
 
-Although this has a huge implication for the library's functionality, it is not within the scope of this project to detail.
+Although this has a huge implication to the library's functionality, it is not within the scope of this project to detail.
 For any further reference you should use documentation of the [PG] library.
 
 Note the following formatting features implemented by [pg-promise] that are not in [node-postgres]:
@@ -880,6 +880,7 @@ Note the following formatting features implemented by [pg-promise] that are not 
 * [PostgreSQL Array Constructors](http://www.postgresql.org/docs/9.1/static/arrays.html#ARRAYS-INPUT) are used when formatting arrays,
 not the old string syntax;
 * Automatic conversion of numeric `NaN`, `+Infinity` and `-Infinity` into their string presentation;
+* Support for [this reference](#this-reference);
 
 **NOTE:** Formatting parameters for calling functions (methods `func` and `proc`) is not affected by this override.
 When needed, use the generic `query` instead to invoke functions with redirected query formatting.
@@ -909,7 +910,7 @@ var pgp = require('pg-promise')(options);
 * [RSVP] - doesn't have `done()`, use `finally/catch` instead
 * [Lie] - doesn't have `done()`. 
 
-If you pass in a library doesn't implement a recognizable promise signature, **pg-promise** will
+If you pass in a library that doesn't implement a recognizable promise signature, **pg-promise** will
 throw error `Invalid promise library specified.` during initialization.
 
 For such libraries you can use [Promise Adapter] to make them compatible with **pg-promise**,
