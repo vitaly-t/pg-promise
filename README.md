@@ -306,6 +306,28 @@ Examples:
 * `${this}` - inserts the object itself as a JSON-formatted string;
 * `${this^}` - inserts the object itself as a raw-text JSON-formatted string.
 
+**example:**
+
+```js
+var doc = {
+    id: 123,
+    body: "some text"
+};
+
+db.none("INSERT INTO documents(id, doc) VALUES(${id}, ${this})", doc)
+    .then(function () {
+        // success;
+    })
+    .catch(function (error) {
+        // error;
+    });
+```    
+
+which will execute:
+```
+INSERT INTO documents(id, doc) VALUES(123, '{"id":123,"body":"some text"}')
+```
+
 NOTE: Technically, it is possible in javascript, though not recommended, for an object to contain a property
 with name `this`. And in such cases the property's value will be used instead.
 
