@@ -1064,16 +1064,16 @@ conditions are met:
 * The received data contains 1 or more records;
 * The number of rows meets the expectation as per `QueryResultMask`, if applicable.
 
+Parameter `data` is always a non-empty array, containing objects - rows. If any of those
+objects are modified during notification, the client will receive the modified data.
+
+Parameter `result` is the original [Result] object, if the data comes from a regular query,
+in which case `data = result.rows`. When the data comes from a stream, parameter `result` is `null`.
+
 This event notification serves two purposes:
 
 * Provide selective data logging for debugging;
 * Pre-process data before it reaches the client. 
-
-Parameter `data` is always a non-empty array, containing objects - rows. If any of those
-objects are modified during notification, the client will receive the modified data.
-
-Parameter `result` is the [Result] object, if the data comes from a regular query.
-When the data comes from a stream, parameter `result` is `null`.
 
 **NOTES:**
 * If you are pre-processing the data, you should only change properties of the individual elements

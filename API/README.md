@@ -78,7 +78,7 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
         * ["connect" (client)](#module_pg-promise.event_connect)
         * ["disconnect" (client)](#module_pg-promise.event_disconnect)
         * ["query" (e)](#module_pg-promise.event_query)
-        * ["receive" (data, e)](#module_pg-promise.event_receive)
+        * ["receive" (data, result, e)](#module_pg-promise.event_receive)
         * ["task" (e)](#module_pg-promise.event_task)
         * ["transact" (e)](#module_pg-promise.event_transact)
         * ["error" (err, e)](#module_pg-promise.event_error)
@@ -597,7 +597,7 @@ Terminates pg library (call it when exiting the application).
 </table>
 
 <a name="module_pg-promise.event_receive"></a>
-### "receive" (data, e)
+### "receive" (data, result, e)
 **Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
 **Summary**: Global notification of any received data.  
 <table>
@@ -608,7 +608,10 @@ Terminates pg library (call it when exiting the application).
   </thead>
   <tbody>
 <tr>
-    <td>data</td><td><code>Object</code></td><td><p>received data.</p>
+    <td>data</td><td><code>Array</code></td><td><p>array of received data rows.</p>
+</td>
+    </tr><tr>
+    <td>result</td><td><code>Object</code></td><td><p>original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object, if available.</p>
 </td>
     </tr><tr>
     <td>e</td><td><code>Object</code></td><td><p>event context object.</p>
