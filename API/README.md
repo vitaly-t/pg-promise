@@ -38,6 +38,7 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
 <li><code>connect</code> - database <code>connect</code> notification;</li>
 <li><code>disconnect</code> - database <code>disconnect</code> notification;</li>
 <li><code>query</code> - query execution notification;</li>
+<li><code>receive</code> - received data notification;</li>
 <li><code>task</code> - task event notification;</li>
 <li><code>transact</code> - transaction event notification;</li>
 <li><code>error</code> - error event notification;</li>
@@ -77,6 +78,7 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
         * ["connect" (client)](#module_pg-promise.event_connect)
         * ["disconnect" (client)](#module_pg-promise.event_disconnect)
         * ["query" (e)](#module_pg-promise.event_query)
+        * ["receive" (data, e)](#module_pg-promise.event_receive)
         * ["task" (e)](#module_pg-promise.event_task)
         * ["transact" (e)](#module_pg-promise.event_transact)
         * ["error" (err, e)](#module_pg-promise.event_error)
@@ -589,6 +591,26 @@ Terminates pg library (call it when exiting the application).
   </thead>
   <tbody>
 <tr>
+    <td>e</td><td><code>Object</code></td><td><p>event context object.</p>
+</td>
+    </tr>  </tbody>
+</table>
+
+<a name="module_pg-promise.event_receive"></a>
+### "receive" (data, e)
+**Kind**: event emitted by <code>[pg-promise](#module_pg-promise)</code>  
+**Summary**: Global notification of any received data.  
+<table>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>data</td><td><code>Object</code></td><td><p>received data.</p>
+</td>
+    </tr><tr>
     <td>e</td><td><code>Object</code></td><td><p>event context object.</p>
 </td>
     </tr>  </tbody>

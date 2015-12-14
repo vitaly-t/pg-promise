@@ -1072,7 +1072,7 @@ Parameter `data` is always a non-empty array, containing objects - rows. If any 
 objects are modified during notification, the client will receive the modified data.
 
 **NOTES:**
-* If you are pre-processing the data, you should only change properties of the array elements
+* If you are pre-processing the data, you should only change properties of the individual elements
 (objects - rows), but never the elements themselves, much less the array's length, as it will
 break the client's expectation for the data size.
 * You should always consider possible performance impact when handling this event,
