@@ -48,6 +48,7 @@ Complete access layer to [node-postgres] via [Promises/A+].
     - [promiseLib](#promiselib)
     - [connect](#connect)
     - [query](#query)
+    - [receive](#receive)    
     - [error](#error)
     - [task](#task)    
     - [transact](#transact)
@@ -872,6 +873,7 @@ var options = {
     // connect - database 'connect' notification;
     // disconnect - database 'disconnect' notification;
     // query - query execution notification;
+    // receive - received data notification;
     // task - task notification;
     // transact - transaction notification;
     // error - error notification;
@@ -1004,8 +1006,8 @@ Notification happens just before the query execution. And if the handler throws
 an error, the query execution will be rejected with that error.
 
 Parameter `e` is the event's context object that shares its format between events
-`query`, `error`, `task` and `transact`. It supports the following properties, all of which
-are optional:
+`query`, `receive`, `error`, `task` and `transact`. It supports the following properties,
+all of which are optional:
 
 * `cn` - connection details, passed only with a connection-related `error` event.
 * `client` - object from the [PG] library that represents the connection;
@@ -1037,6 +1039,45 @@ tags the task/transaction, so it can be used as a reference when handling events
 
 All properties of `ctx` marked as optional are not set, unless they are relevant
 to the event.
+
+---
+#### receive
+
+Introduced in version 2.8.0
+
+Global notification of any data received from the database, by means of a query
+or from a stream.
+
+```js
+var options = {
+    receive: function (data, e) {
+        console.log("DATA:", data);
+        // e = event context object;
+    }
+};
+```
+
+The event is fired before the data reaches the client, and only when the following
+conditions are met:
+
+* The received data contains 1 or more records;
+* The number of rows meets the expectation as per `QueryResultMask`, if applicable.
+
+This event notification serves two purposes:
+
+* Provide selective data logging for debugging;
+* Pre-process data before it reaches the client. 
+
+Parameter `data` is always a non-empty array, containing objects - rows. If any of those
+objects are modified during notification, the client will receive the modified data.
+
+**NOTES:**
+* If you are pre-processing the data, you should only change properties of the array elements
+(objects - rows), but never the elements themselves, much less the array's length, as it will
+break the client's expectation for the data size.
+* You should always consider possible performance impact when handling this event,
+especially if you are pre-processing the data.
+* If the event handler throws an error, the original request will be rejected with that error.
 
 ---
 #### error
@@ -1228,6 +1269,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 2.8.0 added support for [event receive](#receive). Released: December 14, 2015
 * 2.6.0 added support for [ES6 Generators](#generators). Released: November 30, 2015
 * 2.5.0 added support for [Configurable Transactions](#configurable-transactions). Released: November 26, 2015
 * 2.4.0 library re-organized for better documentation and easier maintenance. Released: November 24, 2015
