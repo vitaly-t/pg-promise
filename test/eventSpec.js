@@ -2,6 +2,7 @@
 
 var QueryStream = require('pg-query-stream');
 var JSONStream = require('JSONStream');
+var pgResult = require('pg/lib/result');
 var pgClient = require('pg/lib/client');
 var header = require('./db/header');
 
@@ -88,28 +89,65 @@ describe("Connect/Disconnect events", function () {
 
 describe("Query event", function () {
 
-    describe("with valid handler", function () {
+    describe("positive", function () {
         var param, counter = 0;
         beforeEach(function (done) {
             options.query = function (e) {
                 counter++;
                 param = e;
-                throw new Error("### Testing error output in 'query'. Please ignore. ###");
             };
             db.query("select $1", [123])
-                .then(dummy, dummy)
-                .finally(function () {
+                .then(function () {
                     done();
                 });
-        });
-        afterEach(function () {
-            options.query = null;
         });
         it("must pass query and parameters correctly", function () {
             expect(counter).toBe(1);
             expect(param.query).toBe('select 123');
+            expect(param.params).toBeUndefined();
         });
     });
+
+    describe("negative, with an error object", function () {
+        var result, errMsg = "Throwing a new Error during 'query' notification.";
+        beforeEach(function (done) {
+            options.query = function () {
+                throw new Error(errMsg);
+            };
+            db.query("select $1", [123])
+                .catch(function (error) {
+                    result = error;
+                    done();
+                });
+        });
+        it("must reject with the right error", function () {
+            expect(result).toEqual(new Error(errMsg));
+        });
+    });
+
+    describe("negative, with undefined", function () {
+        var result, handled;
+        beforeEach(function (done) {
+            options.query = function () {
+                throw undefined;
+            };
+            db.query("select $1", [123])
+                .catch(function (error) {
+                    handled = true;
+                    result = error;
+                    done();
+                });
+        });
+        it("must reject with undefined", function () {
+            expect(handled).toBe(true);
+            expect(result).toBeUndefined();
+        });
+    });
+
+    afterEach(function () {
+        delete options.query;
+    });
+
 });
 
 describe("Start/Finish transaction events", function () {
@@ -406,11 +444,12 @@ describe("Error event", function () {
 describe("Receive event", function () {
 
     describe("query positive", function () {
-        var ctx, data, counter = 0;
+        var ctx, data, res, counter = 0;
         beforeEach(function (done) {
             options.receive = function (d, r, e) {
                 counter++;
                 data = d;
+                res = r;
                 ctx = e;
             };
             db.one("select $1 as value", [123])
@@ -425,6 +464,7 @@ describe("Receive event", function () {
             expect(data).toEqual([{
                 value: 123
             }]);
+            expect(res instanceof pgResult).toBe(true);
         });
     });
 
@@ -445,12 +485,32 @@ describe("Receive event", function () {
         });
     });
 
+    describe("query negative, undefined", function () {
+        var result, handled;
+        beforeEach(function (done) {
+            options.receive = function () {
+                throw undefined;
+            };
+            db.one("select $1 as value", [123])
+                .catch(function (error) {
+                    handled = true;
+                    result = error;
+                    done();
+                });
+        });
+        it("must reject with undefined", function () {
+            expect(handled).toBe(true);
+            expect(result).toBeUndefined();
+        });
+    });
+
     describe("stream positive", function () {
-        var ctx, data, counter = 0;
+        var ctx, data, res, counter = 0;
         beforeEach(function (done) {
             options.receive = function (d, r, e) {
                 counter++;
                 data = d;
+                res = r;
                 ctx = e;
             };
             var qs = new QueryStream("select $1::int as value", [123]);
@@ -468,6 +528,7 @@ describe("Receive event", function () {
             expect(data).toEqual([{
                 value: 123
             }]);
+            expect(res).toBe(null);
         });
     });
 
@@ -488,6 +549,28 @@ describe("Receive event", function () {
         });
         it("must reject with the right error", function () {
             expect(result).toBe("ops!");
+        });
+    });
+
+    describe("stream negative, undefined", function () {
+        var result, handled;
+        beforeEach(function (done) {
+            options.receive = function () {
+                throw undefined;
+            };
+            var qs = new QueryStream("select $1::int as value", [123]);
+            db.stream(qs, function (s) {
+                    s.pipe(JSONStream.stringify());
+                })
+                .catch(function (error) {
+                    handled = true;
+                    result = error;
+                    done();
+                });
+        });
+        it("must reject with undefined", function () {
+            expect(handled).toBe(true);
+            expect(result).toBeUndefined();
         });
     });
 

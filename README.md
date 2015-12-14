@@ -1045,7 +1045,7 @@ to the event.
 
 Introduced in version 2.8.0
 
-Global notification of any data received from the database, by means of a query
+Global notification of any data received from the database, from a regular query
 or from a stream.
 
 ```js
@@ -1058,11 +1058,8 @@ var options = {
 };
 ```
 
-The event is fired before the data reaches the client, and only when the following
-conditions are met:
-
-* The received data contains 1 or more records;
-* The number of rows meets the expectation as per `QueryResultMask`, if applicable.
+The event is fired before the data reaches the client, and only when the data
+contains 1 or more records.
 
 Parameter `data` is always a non-empty array, containing objects - rows. If any of those
 objects are modified during notification, the client will receive the modified data.
@@ -1072,15 +1069,13 @@ in which case `data = result.rows`. When the data comes from a stream, parameter
 
 This event notification serves two purposes:
 
-* Provide selective data logging for debugging;
-* Pre-process data before it reaches the client. 
+* Providing selective data logging for debugging;
+* Pre-processing data before it reaches the client. 
 
 **NOTES:**
-* If you are pre-processing the data, you should only change properties of the individual elements
-(objects - rows), but never the elements themselves, much less the array's length, as it will
-break the client's expectation for the data size.
-* You should always consider possible performance impact when handling this event,
-especially if you are pre-processing the data.
+* If you alter the size of `data` directly or though the `result` object, it may affect `QueryResultMask`
+  validation for regular queries, which is executed right after this notification.  
+* When adding data pre-processing, you should consider possible performance penalty this may bring. 
 * If the event handler throws an error, the original request will be rejected with that error.
 
 ---
