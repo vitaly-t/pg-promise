@@ -408,7 +408,7 @@ describe("Receive event", function () {
     describe("query positive", function () {
         var ctx, data, counter = 0;
         beforeEach(function (done) {
-            options.receive = function (d, e) {
+            options.receive = function (d, r, e) {
                 counter++;
                 data = d;
                 ctx = e;
@@ -448,7 +448,7 @@ describe("Receive event", function () {
     describe("stream positive", function () {
         var ctx, data, counter = 0;
         beforeEach(function (done) {
-            options.receive = function (d, e) {
+            options.receive = function (d, r, e) {
                 counter++;
                 data = d;
                 ctx = e;

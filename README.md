@@ -256,7 +256,7 @@ db.manyOrNone(query, values); // expects anything, same as `any`
 ```
 
 There is however one specific method `result(query, values)` to bypass any result verification, and instead resolve
-with the original [Result](https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6) object passed from the [PG] library.
+with the original [Result] object passed from the [PG] library.
 
 You can also add your own methods and properties to this protocol via the [extend](#extend) event.  
 
@@ -1050,8 +1050,9 @@ or from a stream.
 
 ```js
 var options = {
-    receive: function (data, e) {
+    receive: function (data, result, e) {
         console.log("DATA:", data);
+        // result = original Result object, if available;
         // e = event context object;
     }
 };
@@ -1070,6 +1071,9 @@ This event notification serves two purposes:
 
 Parameter `data` is always a non-empty array, containing objects - rows. If any of those
 objects are modified during notification, the client will receive the modified data.
+
+Parameter `result` is the [Result] object, if the data comes from a regular query.
+When the data comes from a stream, parameter `result` is `null`.
 
 **NOTES:**
 * If you are pre-processing the data, you should only change properties of the individual elements
@@ -1346,3 +1350,4 @@ DEALINGS IN THE SOFTWARE.
 [Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
 [Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
 [spex.sequence]:https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
+[Result]:https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6
