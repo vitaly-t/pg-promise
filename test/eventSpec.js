@@ -1,5 +1,7 @@
 'use strict';
 
+var QueryStream = require('pg-query-stream');
+var JSONStream = require('JSONStream');
 var pgClient = require('pg/lib/client');
 var header = require('./db/header');
 
@@ -168,9 +170,6 @@ describe("Error event", function () {
                     done();
                 });
         });
-        afterEach(function () {
-            options.error = null;
-        });
         it("must report errors", function () {
             expect(r instanceof Error).toBe(true);
             expect(r.message).toBe('Test Error');
@@ -196,9 +195,6 @@ describe("Error event", function () {
                     done();
                 });
         });
-        afterEach(function () {
-            options.error = null;
-        });
         it("must fail correctly", function () {
             var msg = "Parameter 'query' must be a non-empty text string.";
             expect(txt).toBe(msg);
@@ -221,9 +217,6 @@ describe("Error event", function () {
                 .finally(function () {
                     done();
                 });
-        });
-        afterEach(function () {
-            options.error = null;
         });
         it("must reject with correct error", function () {
             var msg = "Invalid Query Result Mask specified.";
@@ -249,9 +242,6 @@ describe("Error event", function () {
                     done();
                 });
         });
-        afterEach(function () {
-            options.error = null;
-        });
         it("must reject with correct error", function () {
             expect(errTxt instanceof pgp.QueryResultError).toBe(true);
             expect(errTxt.message).toBe("Multiple rows were not expected.");
@@ -275,9 +265,6 @@ describe("Error event", function () {
                 .finally(function () {
                     done();
                 });
-        });
-        afterEach(function () {
-            options.error = null;
         });
         it("must reject with correct error", function () {
             expect(errTxt instanceof pgp.QueryResultError).toBe(true);
@@ -303,9 +290,6 @@ describe("Error event", function () {
                     done();
                 });
         });
-        afterEach(function () {
-            options.error = null;
-        });
         it("must reject with correct error", function () {
             expect(errTxt instanceof pgp.QueryResultError).toBe(true);
             expect(errTxt.message).toBe("No data returned from the query.");
@@ -316,7 +300,7 @@ describe("Error event", function () {
         });
     });
 
-    describe("for loose requests", function () {
+    describe("for loose query requests", function () {
         var errTxt, r, context, counter = 0, msg = "Loose request outside an expired connection.";
         beforeEach(function (done) {
             options.error = function (err, e) {
@@ -341,15 +325,50 @@ describe("Error event", function () {
                         });
                 });
         });
-        afterEach(function () {
-            options.error = null;
-        });
         it("must notify with correct error", function () {
             expect(errTxt).toBe(msg);
             expect(r).toBe(msg);
             expect(context.query).toBe("select * from users where(false)");
             expect(context.client).toBeUndefined();
             expect(context.params).toBeUndefined();
+            expect(counter).toBe(1);
+        });
+    });
+
+    describe("for loose stream requests", function () {
+        var errTxt, r, context, counter = 0, msg = "Loose request outside an expired connection.";
+        beforeEach(function (done) {
+            options.error = function (err, e) {
+                counter++;
+                errTxt = err;
+                context = e;
+            };
+            var query, sco;
+            var qs = new QueryStream("select $1::int", [123]);
+            db.connect()
+                .then(function (obj) {
+                    sco = obj;
+                    query = sco.stream(qs, function (s) {
+                        s.pipe(JSONStream.stringify());
+                    });
+                })
+                .finally(function () {
+                    sco.done();
+                    query
+                        .then(dummy, function (reason) {
+                            r = reason;
+                        })
+                        .finally(function () {
+                            done();
+                        });
+                });
+        });
+        it("must notify with correct error", function () {
+            expect(errTxt).toBe(msg);
+            expect(r).toBe(msg);
+            expect(context.query).toBe("select $1::int");
+            expect(context.client).toBeUndefined();
+            expect(context.params).toEqual(['123']);
             expect(counter).toBe(1);
         });
     });
@@ -368,9 +387,6 @@ describe("Error event", function () {
                     done();
                 });
         });
-        afterEach(function () {
-            options.error = null;
-        });
         it("must report the parameters correctly", function () {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe("Property 'test' doesn't exist.");
@@ -379,6 +395,104 @@ describe("Error event", function () {
             expect(context.client instanceof pgClient).toBe(true);
             expect(counter).toBe(1);
         });
+    });
+
+    afterEach(function () {
+        delete options.error;
+    });
+
+});
+
+describe("Receive event", function () {
+
+    describe("query positive", function () {
+        var ctx, data, counter = 0;
+        beforeEach(function (done) {
+            options.receive = function (d, e) {
+                counter++;
+                data = d;
+                ctx = e;
+            };
+            db.one("select $1 as value", [123])
+                .then(function () {
+                    done();
+                });
+        });
+        it("must pass in correct data and context", function () {
+            expect(counter).toBe(1);
+            expect(ctx.query).toBe('select 123 as value');
+            expect(ctx.params).toBeUndefined();
+            expect(data).toEqual([{
+                value: 123
+            }]);
+        });
+    });
+
+    describe("query negative", function () {
+        var result;
+        beforeEach(function (done) {
+            options.receive = function () {
+                throw "ops!";
+            };
+            db.one("select $1 as value", [123])
+                .catch(function (error) {
+                    result = error;
+                    done();
+                });
+        });
+        it("must reject with the right error", function () {
+            expect(result).toBe("ops!");
+        });
+    });
+
+    describe("stream positive", function () {
+        var ctx, data, counter = 0;
+        beforeEach(function (done) {
+            options.receive = function (d, e) {
+                counter++;
+                data = d;
+                ctx = e;
+            };
+            var qs = new QueryStream("select $1::int as value", [123]);
+            db.stream(qs, function (s) {
+                    s.pipe(JSONStream.stringify());
+                })
+                .then(function () {
+                    done();
+                });
+        });
+        it("must pass in correct data and context", function () {
+            expect(counter).toBe(1);
+            expect(ctx.query).toBe('select $1::int as value');
+            expect(ctx.params).toEqual(['123']);
+            expect(data).toEqual([{
+                value: 123
+            }]);
+        });
+    });
+
+    describe("stream negative", function () {
+        var result;
+        beforeEach(function (done) {
+            options.receive = function () {
+                throw "ops!";
+            };
+            var qs = new QueryStream("select $1::int as value", [123]);
+            db.stream(qs, function (s) {
+                    s.pipe(JSONStream.stringify());
+                })
+                .catch(function (error) {
+                    result = error;
+                    done();
+                });
+        });
+        it("must reject with the right error", function () {
+            expect(result).toBe("ops!");
+        });
+    });
+
+    afterEach(function () {
+        delete options.receive;
     });
 
 });
@@ -424,6 +538,7 @@ describe("pgFormatting", function () {
             expect(ctx[0].params === 1).toBe(true);
         });
     });
+
     describe("null query", function () {
         var err;
         beforeEach(function (done) {
