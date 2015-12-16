@@ -498,7 +498,7 @@ the same <code>this</code> context as the calling method.</p>
 or else it is the callback function for the task.</p>
 </td>
     </tr><tr>
-    <td>[p2]</td><td><code>function</code></td><td><p>task callback function, if it is not <code>undefined</code>,
+    <td>[p2]</td><td><code>function</code> | <code>generator</code></td><td><p>task callback function, if it is not <code>undefined</code>,
 or else <code>p2</code> is ignored.</p>
 </td>
     </tr>  </tbody>
@@ -523,7 +523,7 @@ Executes a task as a transaction. The transaction will execute `ROLLBACK`in the
 is <code>undefined</code>, or else it is the callback function for the transaction.</p>
 </td>
     </tr><tr>
-    <td>[p2]</td><td><code>function</code></td><td><p>transaction callback function, if it is not <code>undefined</code>,
+    <td>[p2]</td><td><code>function</code> | <code>generator</code></td><td><p>transaction callback function, if it is not <code>undefined</code>,
 or else <code>p2</code> is ignored.</p>
 </td>
     </tr>  </tbody>
