@@ -1065,7 +1065,7 @@ Parameter `data` is always a non-empty array, containing objects - rows. If any 
 objects are modified during notification, the client will receive the modified data.
 
 Parameter `result` is the original [Result] object, if the data comes from a regular query,
-in which case `data = result.rows`. When the data comes from a stream, parameter `result` is `null`.
+in which case `data = result.rows`. When the data comes from a stream, parameter `result` is `undefined`.
 
 This event notification serves two purposes:
 

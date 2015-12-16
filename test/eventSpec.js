@@ -528,7 +528,7 @@ describe("Receive event", function () {
             expect(data).toEqual([{
                 value: 123
             }]);
-            expect(res).toBe(null);
+            expect(res).toBeUndefined();
         });
     });
 
