@@ -484,7 +484,7 @@ the same <code>this</code> context as the calling method.</p>
 <a name="module_pg-promise.Database+task"></a>
 #### database.task(p1, [p2]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Executes the callback function with an automatically managed connection.  
+**Summary**: Executes a callback function (or generator) with an automatically managed connection.  
 **Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result from the task callback function.  
 <table>
   <thead>
@@ -499,17 +499,17 @@ or else it is the callback function for the task.</p>
 </td>
     </tr><tr>
     <td>[p2]</td><td><code>function</code></td><td><p>task callback function, if it is not <code>undefined</code>,
-or else <code>p2</code> isn&#39;t used.</p>
+or else <code>p2</code> is ignored.</p>
 </td>
     </tr>  </tbody>
 </table>
 
 <a name="module_pg-promise.Database+tx"></a>
 #### database.tx(p1, [p2]) ⇒ <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code>
-Executes a task as a transaction. The transaction will do `ROLLBACK`,if the callback function returns a rejected promise or throws an error;and it will do `COMMIT` in all other cases.
+Executes a task as a transaction. The transaction will execute `ROLLBACK`in the end, if the callback function returns a rejected promise or throwsan error; and it will execute `COMMIT` in all other cases.
 
 **Kind**: instance method of <code>[Database](#module_pg-promise.Database)</code>  
-**Summary**: Executes the callback function as a transaction.  
+**Summary**: Executes a callback function (or generator) as a transaction.  
 **Returns**: <code>[Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise)</code> - Result from the transaction callback function.  
 <table>
   <thead>
@@ -524,7 +524,7 @@ is <code>undefined</code>, or else it is the callback function for the transacti
 </td>
     </tr><tr>
     <td>[p2]</td><td><code>function</code></td><td><p>transaction callback function, if it is not <code>undefined</code>,
-or else <code>p2</code> isn&#39;t used.</p>
+or else <code>p2</code> is ignored.</p>
 </td>
     </tr>  </tbody>
 </table>

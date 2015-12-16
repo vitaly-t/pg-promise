@@ -192,7 +192,7 @@ Calls the function to get the actual value, and then formats the resultaccordin
 
 <a name="module_formatting.as.format"></a>
 #### as.format(query, [values]) ⇒ <code>String</code>
-Replaces variables in the query string with the corresponding values passed.
+Replaces variables in a string with the values passed in.
 
 **Kind**: static method of <code>[as](#module_formatting.as)</code>  
 <table>
