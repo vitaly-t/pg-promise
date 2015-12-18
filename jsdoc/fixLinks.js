@@ -1,0 +1,27 @@
+'use strict';
+
+// Automatic links:
+var links = {
+    "Promises/A+": "https://promisesaplus.com",
+    "spex.batch": "https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md",
+    "spex.page": "https://github.com/vitaly-t/spex/blob/master/docs/code/page.md",
+    "spex.sequence": "https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md",
+    "Result": "https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6",
+    "pg-query-stream": "https://github.com/brianc/node-pg-query-stream",
+    "QueryStream": "https://github.com/brianc/node-pg-query-stream/blob/master/index.js#L5",
+    "pg.Client": "https://github.com/brianc/node-postgres/wiki/Client",
+    "BEGIN": "http://www.postgresql.org/docs/9.4/static/sql-begin.html",
+    "Transaction Isolation": "http://www.postgresql.org/docs/9.4/static/transaction-iso.html"
+};
+
+function fixLinks(source) {
+    return source.replace(/\$\[[a-z\s\/\+-\.]+\]/gi, function (name) {
+        var sln = name.replace(/\$\[|\]/g, ''); // stripped link name;
+        if (sln in links) {
+            return "<a href=\"" + links[sln] + "\">" + sln + "</a>"
+        }
+        return name;
+    });
+}
+
+module.exports = fixLinks;
