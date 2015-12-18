@@ -10,7 +10,7 @@
   },
   "templates": {
     "default": {
-      "layoutFile": "static/layout.html"
+      "layoutFile": "jsdoc/layout.html"
     }
   },
   "plugins": [
