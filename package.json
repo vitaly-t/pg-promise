@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "2.8.4",
+  "version": "2.8.5",
   "description": "PostgreSQL via promises",
   "main": "lib/index.js",
   "scripts": {
@@ -9,6 +9,9 @@
     "coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test",
     "travis": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test --captureExceptions && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
+  "files": [
+    "lib"
+  ],
   "homepage": "https://github.com/vitaly-t/pg-promise",
   "repository": {
     "type": "git",

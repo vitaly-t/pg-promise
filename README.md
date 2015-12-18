@@ -120,10 +120,16 @@ To get started quickly, see our [Learn by Example] tutorial.
 
 # Testing
 
+* Clone the repository (or download, if you prefer):
+```
+$ git clone https://github.com/vitaly-t/pg-promise
+```
+
 * Install the library's DEV dependencies:
 ```
 $ npm install
 ```
+
 * Make sure all tests can connect to your local test database, using the connection details in
 [test/db/header.js](https://github.com/vitaly-t/pg-promise/blob/master/test/db/header.js).
 Either set up your test database accordingly or change the connection details in that file.
@@ -132,10 +138,12 @@ Either set up your test database accordingly or change the connection details in
 ```
 $ node test/db/init.js
 ```
+
 * To run all tests:
 ```
 $ npm test
 ```
+
 * To run all tests with coverage:
 ```
 $ npm run coverage
@@ -149,13 +157,14 @@ document details most of the basic functionality the library provides.
 In addition to that, there is in-line API documentation, based on [jsDoc](https://github.com/jsdoc3/jsdoc).
 
 In order to generate it, you need to do the following:
- * `$ cd node_modules/pg-promise`
- * `$ npm install` - to install DEV dependencies of the library;
+
+ * Either clone or download the repository;
+ * Install DEV dependencies of the library;
  * `$ npm run doc` - will generate the documentation;
  * open `out/index.html` in a web browser.
 
 Alternatively, you can use its converted version of the [API], which doesn't have as good a layout,
-but is quite usable nonetheless.
+but is usable nonetheless.
 
 # Usage
 
