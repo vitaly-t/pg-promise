@@ -1093,13 +1093,14 @@ var options = {
 var humps = require('humps');
 
 function camelizeColumns(data) {
-    for (var name in data[0]) {
-        var camel = humps.camelize(name);
-        if (camel !== name) {
+    var template = data[0];
+    for (var prop in template) {
+        var camel = humps.camelize(prop);
+        if (!(camel in template)) {
             for (var i = 0; i < data.length; i++) {
                 var d = data[i];
-                d[camel] = d[name];
-                delete d[name];
+                d[camel] = d[prop];
+                delete d[prop];
             }
         }
     }
