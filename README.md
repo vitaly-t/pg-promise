@@ -1081,6 +1081,31 @@ This event notification serves two purposes:
 * Providing selective data logging for debugging;
 * Pre-processing data before it reaches the client. 
 
+Example below camelizes all column names: 
+
+```js
+var options = {
+    receive: function (data/*, result, e*/) {
+        camelizeColumns(data);
+    }
+};
+
+var humps = require('humps');
+
+function camelizeColumns(data) {
+    for (var name in data[0]) {
+        var camel = humps.camelize(name);
+        if (camel !== name) {
+            for (var i = 0; i < data.length; i++) {
+                var d = data[i];
+                d[camel] = d[name];
+                delete d[name];
+            }
+        }
+    }
+}
+```
+
 **NOTES:**
 * If you alter the size of `data` directly or though the `result` object, it may affect `QueryResultMask`
   validation for regular queries, which is executed right after this notification.  
