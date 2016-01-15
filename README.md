@@ -1,7 +1,7 @@
 pg-promise
 ===========
 
-Complete access layer to [node-postgres] via [Promises/A+].
+Advanced access layer to [node-postgres] via [Promises/A+].
 
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
 [![Coverage Status](https://coveralls.io/repos/vitaly-t/pg-promise/badge.svg?branch=master)](https://coveralls.io/r/vitaly-t/pg-promise?branch=master)
