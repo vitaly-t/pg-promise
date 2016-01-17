@@ -88,6 +88,7 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
         * [~as](#module_pg-promise..as) : <code>module:formatting.as</code>
         * [~QueryResultError](#module_pg-promise..QueryResultError) : <code>module:error</code>
         * [~PromiseAdapter](#module_pg-promise..PromiseAdapter) : <code>module:adapter</code>
+        * [~QueryFile](#module_pg-promise..QueryFile) : <code>module:queryFile</code>
         * [~txMode](#module_pg-promise..txMode) : <code>module:txMode</code>
 
 <a name="module_pg-promise.Task"></a>
@@ -709,6 +710,12 @@ Query Result Error type.
 <a name="module_pg-promise..PromiseAdapter"></a>
 ### pg-promise~PromiseAdapter : <code>module:adapter</code>
 Promise Adapter.
+
+**Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
+**Read only**: true  
+<a name="module_pg-promise..QueryFile"></a>
+### pg-promise~QueryFile : <code>module:queryFile</code>
+Query File.
 
 **Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
 **Read only**: true  

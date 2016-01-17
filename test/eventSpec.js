@@ -234,7 +234,7 @@ describe("Error event", function () {
                 });
         });
         it("must fail correctly", function () {
-            var msg = "Parameter 'query' must be a non-empty text string.";
+            var msg = "Query must be a non-empty text string.";
             expect(txt).toBe(msg);
             expect(context.params).toBeUndefined();
             expect(context.client instanceof pgClient).toBe(true);

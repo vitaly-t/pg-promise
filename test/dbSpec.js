@@ -610,7 +610,7 @@ describe("Method 'manyOrNone'", function () {
 describe("Executing method query", function () {
 
     it("with invalid query as parameter must throw an error", function () {
-        var finished, result, error = "Parameter 'query' must be a non-empty text string.";
+        var finished, result, error = "Query must be a non-empty text string.";
         promise.any([
                 db.query(),
                 db.query(''),

@@ -41,6 +41,10 @@ var files = [
     {
         src: "lib/txMode.js",
         dest: codePath + "txMode.md"
+    },
+    {
+        src: "lib/queryFile.js",
+        dest: codePath + "queryFile.md"
     }
 ];
 
