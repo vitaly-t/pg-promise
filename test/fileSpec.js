@@ -84,18 +84,16 @@ describe("QueryFile / Positive:", function () {
     describe("modified file", function () {
         var q1 = "select 1";
         var q2 = "select 2";
-        var qf;
-        beforeEach(function (done) {
-            fs.writeFileSync(sqlTemp, q1);
-            qf = new QueryFile(sqlTemp, {debug: true});
-            setTimeout(function () {
-                done();
-            }, 500);
-        });
         it("must be read again", function () {
+            fs.writeFileSync(sqlTemp, q1);
+            var qf = new QueryFile(sqlTemp, {debug: true});
             expect(qf.query).toBe(q1);
             expect(qf.error).toBeUndefined();
+
             fs.writeFileSync(sqlTemp, q2);
+            var t = new Date();
+            t.setTime(t.getTime() + 60 * 60 * 1000);
+            fs.utimesSync(sqlTemp, t, t);
             qf.prepare();
             expect(qf.query).toBe(q2);
             expect(qf.error).toBeUndefined();
