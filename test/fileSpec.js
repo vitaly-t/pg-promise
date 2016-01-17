@@ -90,7 +90,7 @@ describe("QueryFile / Positive:", function () {
             qf = new QueryFile(sqlTemp, {debug: true});
             setTimeout(function () {
                 done();
-            }, 100);
+            }, 500);
         });
         it("must be read again", function () {
             expect(qf.query).toBe(q1);
