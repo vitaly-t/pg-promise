@@ -561,15 +561,20 @@ File `findUser.sql`:
 /*
     multi-line comments
 */
-SELECT * FROM Users WHERE Id = ${id} -- single-line comments
+SELECT * FROM Users WHERE id = ${id} -- single-line comments
 ```
 
 Every query method of the library recognizes type `QueryFile` as a query provider.
 
-When `debug` mode is set, any query request will check if the file has changed since
-it was last read, and if so - it will be read afresh.
+The file provider itself never throws any error, leaving it to the query method to
+report it in a generic way.
 
-For detailed documentation see [QueryFile API](queryFile.md).
+One of the most useful features implemented by class `QueryFile` is its `debug` mode.
+When `debug` mode is set, any query request will check if the file has changed since
+it was last read, and if so - it will be read afresh. This way you can write sql
+queries and see immediate updates without having to restart your application.
+
+For detailed documentation see [QueryFile API](./queryFile.md).
 
 ## Connections
 
