@@ -31,6 +31,7 @@ Advanced access layer to [node-postgres] via [Promises/A+].
   - [Conversion Helpers](#conversion-helpers)
   - [Custom Type Formatting](#custom-type-formatting)  
     - [Raw Custom Types](#raw-custom-types)
+  - [Query Files](#query-files)    
   - [Connections](#connections)  
     - [Detached Connections](#detached-connections)
     - [Shared Connections](#shared-connections)
@@ -531,7 +532,45 @@ function UUID(value) {
   
 When you chain one custom-formatting type to return another one, please note that
 setting `_rawDBType` on any level will set the flag for the entire chain.
+
+## Query Files
   
+Version 2.9.0 introduced support for Query Files to increase productivity of developing
+SQL queries. 
+
+Example:
+
+```js  
+function sql(file) {
+    return new pgp.QueryFile(file, {debug: true, minify: true});
+}
+
+var sqlFindUser = sql('./sql/findUser.sql');
+
+db.query(sqlFindUser, {id: 123})
+    .then(user=> {
+        console.log("USER:", user);
+    })
+    .catch(error=> {
+        console.log("ERROR:", error);
+    });
+```
+  
+File `findUser.sql`:
+```sql
+/*
+    multi-line comments
+*/
+SELECT * FROM Users WHERE Id = ${id} -- single-line comments
+```
+
+Every query method of the library recognizes type `QueryFile` as a query provider.
+
+When `debug` mode is set, any query request will check if the file has changed since
+it was last read, and if so - it will be read afresh.
+
+For detailed documentation see [QueryFile API](queryFile.md).
+
 ## Connections
 
 The library supports promise-chained queries on shared and detached connections.
@@ -1303,6 +1342,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 2.9.0 added support for [Query Files](#query-files). Released: January 18, 2016
 * 2.8.0 added support for [event receive](#receive). Released: December 14, 2015
 * 2.6.0 added support for [ES6 Generators](#generators). Released: November 30, 2015
 * 2.5.0 added support for [Configurable Transactions](#configurable-transactions). Released: November 26, 2015
