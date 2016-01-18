@@ -547,7 +547,7 @@ function sql(file) {
 
 var sqlFindUser = sql('./sql/findUser.sql');
 
-db.query(sqlFindUser, {id: 123})
+db.one(sqlFindUser, {id: 123})
     .then(user=> {
         console.log("USER:", user);
     })
