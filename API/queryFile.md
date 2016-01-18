@@ -54,12 +54,10 @@ or <code>false</code> otherwise.</p>
     <td>[options.minify]</td><td><code>Boolean</code></td><td><code>false</code></td><td><p>Minifies the SQL:</p>
 <ol>
 <li>Removes all comments</li>
+<li>Normalizes multi-line strings</li>
 <li>Removes trailing empty symbols</li>
 <li>Flattens SQL into a single line</li>
 </ol>
-<p><strong>IMPORTANT:</strong></p>
-<p>Do not minify SQL that contains multi-line strings or strings with comment-like
-content. Minification is very basic, and will not work in those cases.</p>
 </td>
     </tr>  </tbody>
 </table>
