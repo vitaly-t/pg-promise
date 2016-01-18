@@ -541,10 +541,6 @@ SQL queries.
 Example:
 
 ```js  
-function sql(file) {
-    return new pgp.QueryFile(file, {debug: true, minify: true});
-}
-
 var sqlFindUser = sql('./sql/findUser.sql');
 
 db.one(sqlFindUser, {id: 123})
@@ -554,14 +550,18 @@ db.one(sqlFindUser, {id: 123})
     .catch(error=> {
         console.log("ERROR:", error);
     });
+    
+function sql(file) {
+    return new pgp.QueryFile(file, {debug: true, minify: true});
+}
 ```
   
 File `findUser.sql`:
 ```sql
 /*
-    multi-line comments
+    multi-line comment
 */
-SELECT * FROM Users WHERE id = ${id} -- single-line comments
+SELECT * FROM Users WHERE id = ${id} -- single-line comment
 ```
 
 Every query method of the library recognizes type `QueryFile` as a query provider.
