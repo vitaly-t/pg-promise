@@ -566,7 +566,7 @@ SELECT * FROM Users WHERE id = ${id} -- single-line comments
 
 Every query method of the library recognizes type `QueryFile` as a query provider.
 
-The file provider itself never throws any error, leaving it to the query method to
+The query provider itself never throws any error, leaving it to the query method to
 report it in a generic way.
 
 One of the most useful features implemented by class `QueryFile` is its `debug` mode.
@@ -574,7 +574,7 @@ When `debug` mode is set, any query request will check if the file has changed s
 it was last read, and if so - it will be read afresh. This way you can write sql
 queries and see immediate updates without having to restart your application.
 
-For detailed documentation see [QueryFile API](./queryFile.md).
+For detailed documentation see [QueryFile API](API/queryFile.md).
 
 ## Connections
 
@@ -1395,7 +1395,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # License
 
-Copyright (c) 2015 Vitaly Tomilov (vitaly.tomilov@gmail.com)
+Copyright (c) 2016 Vitaly Tomilov (vitaly.tomilov@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
