@@ -561,7 +561,9 @@ File `findUser.sql`:
 /*
     multi-line comment
 */
-SELECT * FROM Users WHERE id = ${id} -- single-line comment
+SELECT name, dob -- single-line comment
+FROM Users
+WHERE id = ${id}
 ```
 
 Every query method of the library recognizes type `QueryFile` as a query provider.
