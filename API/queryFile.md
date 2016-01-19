@@ -28,7 +28,7 @@ Query File
 
 <a name="new_module_queryFile.QueryFile_new"></a>
 #### new QueryFile(file, [options])
-Reads a file with SQL and prepares it for execution. The file can containboth single-line and multi-line comments, but only one SQL query, as thelibrary doesn't support results from multiple queries.
+Reads a file with SQL and prepares it for execution. The file can containboth single-line and multi-line comments, but only one SQL query, as thelibrary doesn't support results from multiple queries.The type is available from the library's root: `pgp.QueryFile`.
 
 <table>
   <thead>
@@ -58,7 +58,7 @@ or <code>false</code> otherwise.</p>
 <li>Removes trailing empty symbols</li>
 <li>Flattens SQL into a single line</li>
 </ol>
-<p>Failure to parse SQL will result in <a href="module:errors.SQLParseError">SQLParseError</a>.</p>
+<p>Failure to parse SQL will result in <a href="module:errors~SQLParseError">SQLParseError</a>.</p>
 </td>
     </tr>  </tbody>
 </table>

@@ -15,6 +15,7 @@ It is used in the generic <a href="#module_pg-promise.Database+query">query</a> 
 as well as method <a href="#module_pg-promise.Database+func">func</a>.</p>
 <p>The mask is always the last optional parameter, which defaults to <code>queryResult.any</code>.</p>
 <p>Any combination of flags is supported, except for <code>one + many</code>.</p>
+<p>The type is available from the library&#39;s root: <code>pgp.queryResult</code>.</p>
 </dd>
 </dl>
 
@@ -734,7 +735,7 @@ Instance of the Transaction Mode library.
 **Read only**: true  
 <a name="queryResult"></a>
 ## queryResult : <code>enum</code>
-Binary mask that represents the result expected from queries.It is used in the generic [query](#module_pg-promise.Database+query) method,as well as method [func](#module_pg-promise.Database+func).The mask is always the last optional parameter, which defaults to `queryResult.any`.Any combination of flags is supported, except for `one + many`.
+Binary mask that represents the result expected from queries.It is used in the generic [query](#module_pg-promise.Database+query) method,as well as method [func](#module_pg-promise.Database+func).The mask is always the last optional parameter, which defaults to `queryResult.any`.Any combination of flags is supported, except for `one + many`.The type is available from the library's root: `pgp.queryResult`.
 
 **Kind**: global enum  
 **Summary**: Query Result Mask.  

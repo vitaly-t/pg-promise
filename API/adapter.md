@@ -14,7 +14,7 @@ Promise Adapter
 **Summary**: Adapter for the primary promise operations.  
 <a name="new_module_adapter.PromiseAdapter_new"></a>
 #### new PromiseAdapter(create, resolve, reject)
-Provides compatibility with promise libraries that cannot be recognized automatically,via functions that implement the primary operations with promises: - construct a new promise with a callback function - resolve a promise with some result data - reject a promise with a reason
+Provides compatibility with promise libraries that cannot be recognized automatically,via functions that implement the primary operations with promises: - construct a new promise with a callback function - resolve a promise with some result data - reject a promise with a reasonThe type is available from the library's root: `pgp.PromiseAdapter`.
 
 <table>
   <thead>
