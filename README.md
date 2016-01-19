@@ -1349,6 +1349,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 2.9.1 added custom SQL parser for external files. Released: January 19, 2016
 * 2.9.0 added support for [Query Files](#query-files). Released: January 18, 2016
 * 2.8.0 added support for [event receive](#receive). Released: December 14, 2015
 * 2.6.0 added support for [ES6 Generators](#generators). Released: November 30, 2015

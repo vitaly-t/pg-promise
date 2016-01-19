@@ -17,7 +17,7 @@ Custom Errors
 **Extends:** <code>Error</code>  
 <a name="new_module_errors.QueryResultError_new"></a>
 #### new QueryResultError()
-Thrown when a query result doesn't match its Query Result Mask.
+Thrown when a query result doesn't match its Query Result Mask.The type is available from the library's root: `pgp.QueryResultError`
 
 <a name="module_errors.SQLParsingError"></a>
 ### errors.SQLParsingError ⇐ <code>Error</code>
@@ -26,5 +26,5 @@ Thrown when a query result doesn't match its Query Result Mask.
 **Extends:** <code>Error</code>  
 <a name="new_module_errors.SQLParsingError_new"></a>
 #### new SQLParsingError()
-Represents a failure to parse an external SQL file.
+Represents a failure to parse an external SQL file.The type is available from the library's root: `pgp.SQLParsingError`
 

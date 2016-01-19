@@ -51,13 +51,14 @@ time on every query request, so if it changes, the file is read afresh.</p>
 or <code>false</code> otherwise.</p>
 </td>
     </tr><tr>
-    <td>[options.minify]</td><td><code>Boolean</code></td><td><code>false</code></td><td><p>Minifies the SQL:</p>
+    <td>[options.minify]</td><td><code>Boolean</code></td><td><code>false</code></td><td><p>Parses and minifies the SQL:</p>
 <ol>
 <li>Removes all comments</li>
 <li>Normalizes multi-line strings</li>
 <li>Removes trailing empty symbols</li>
 <li>Flattens SQL into a single line</li>
 </ol>
+<p>Failure to parse SQL will result in <a href="module:errors.SQLParseError">SQLParseError</a>.</p>
 </td>
     </tr>  </tbody>
 </table>
