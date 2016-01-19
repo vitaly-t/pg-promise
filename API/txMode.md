@@ -1,40 +1,20 @@
-## Modules
-
-<dl>
-<dt><a href="#module_txMode">txMode</a></dt>
-<dd><p>Extends the default <code>BEGIN</code> with Transaction Mode parameters:</p>
-<ul>
-<li>isolation level</li>
-<li>access mode</li>
-<li>deferrable mode</li>
-</ul>
-</dd>
-</dl>
-
-## Members
-
-<dl>
-<dt><a href="#isolationLevel">isolationLevel</a> : <code>enum</code></dt>
-<dd><p>isolationLevel</p>
-</dd>
-</dl>
-
-<a name="module_txMode"></a>
-## txMode
+<a name="txMode"></a>
+## txMode : <code>object</code>
 Extends the default `BEGIN` with Transaction Mode parameters: - isolation level - access mode - deferrable mode
 
+**Kind**: global namespace  
 **See**: <a href="http://www.postgresql.org/docs/9.4/static/sql-begin.html">BEGIN</a>  
-**Author:** Vitaly Tomilov  
 
-* [txMode](#module_txMode)
-    * [.TransactionMode](#module_txMode.TransactionMode)
-        * [new TransactionMode([tiLevel], [readOnly], [deferrable])](#new_module_txMode.TransactionMode_new)
+* [txMode](#txMode) : <code>object</code>
+    * [.TransactionMode](#txMode.TransactionMode)
+        * [new TransactionMode([tiLevel], [readOnly], [deferrable])](#new_txMode.TransactionMode_new)
+    * [.isolationLevel](#txMode.isolationLevel) : <code>enum</code>
 
-<a name="module_txMode.TransactionMode"></a>
+<a name="txMode.TransactionMode"></a>
 ### txMode.TransactionMode
-**Kind**: static class of <code>[txMode](#module_txMode)</code>  
+**Kind**: static class of <code>[txMode](#txMode)</code>  
 **See**: <a href="http://www.postgresql.org/docs/9.4/static/sql-begin.html">BEGIN</a>  
-<a name="new_module_txMode.TransactionMode_new"></a>
+<a name="new_txMode.TransactionMode_new"></a>
 #### new TransactionMode([tiLevel], [readOnly], [deferrable])
 **Alternative Syntax:** `TransactionMode({tiLevel, readOnly, deferrable})`Constructs a complete transaction opening command,based on Transaction Mode parameters: - isolation level - access mode - deferrable mode
 
@@ -46,7 +26,7 @@ Extends the default `BEGIN` with Transaction Mode parameters: - isolation level
   </thead>
   <tbody>
 <tr>
-    <td>[tiLevel]</td><td><code><a href="#isolationLevel">isolationLevel</a></code> | <code>Object</code></td><td><p>Transaction Isolation Level</p>
+    <td>[tiLevel]</td><td><code>isolationLevel</code> | <code>Object</code></td><td><p>Transaction Isolation Level</p>
 </td>
     </tr><tr>
     <td>[readOnly]</td><td><code>Boolean</code></td><td><p>Sets transaction access mode based on the read-only flag:</p>
@@ -69,11 +49,9 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p>
     </tr>  </tbody>
 </table>
 
-<a name="isolationLevel"></a>
-## isolationLevel : <code>enum</code>
-isolationLevel
-
-**Kind**: global enum  
+<a name="txMode.isolationLevel"></a>
+### txMode.isolationLevel : <code>enum</code>
+**Kind**: static enum property of <code>[txMode](#txMode)</code>  
 **Summary**: Transaction Isolation Level.  
 **Read only**: true  
 **See**: <a href="http://www.postgresql.org/docs/9.4/static/transaction-iso.html">Transaction Isolation</a>  

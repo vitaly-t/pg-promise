@@ -45,7 +45,7 @@ or <code>false</code> otherwise.</p>
 <li>Removes trailing empty symbols</li>
 <li>Flattens SQL into a single line</li>
 </ol>
-<p>Failure to parse SQL will result in <a href="SQLParsingError">SQLParseError</a>.</p>
+<p>Failure to parse SQL will result in <a href="errors.SQLParsingError">SQLParseError</a>.</p>
 </td>
     </tr>  </tbody>
 </table>

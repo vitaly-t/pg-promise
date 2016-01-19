@@ -1,41 +1,25 @@
-<a name="module_formatting"></a>
-## formatting
-Query Formatting
+<a name="formatting"></a>
+## formatting : <code>object</code>
+Namespace for the type conversion helpers.
 
-**Author:** Vitaly Tomilov  
+**Kind**: global namespace  
 
-* [formatting](#module_formatting)
-    * [.as](#module_formatting.as) : <code>object</code>
-        * [.text(text, [raw])](#module_formatting.as.text) ⇒ <code>String</code>
-        * [.bool(value)](#module_formatting.as.bool) ⇒ <code>String</code>
-        * [.date(d, [raw])](#module_formatting.as.date) ⇒ <code>String</code>
-        * [.number(num)](#module_formatting.as.number) ⇒ <code>String</code>
-        * [.array(arr)](#module_formatting.as.array) ⇒ <code>String</code>
-        * [.csv(values)](#module_formatting.as.csv) ⇒ <code>String</code>
-        * [.json(obj, [raw])](#module_formatting.as.json) ⇒ <code>String</code>
-        * [.func(func, [raw], [obj])](#module_formatting.as.func) ⇒ <code>String</code>
-        * [.format(query, [values])](#module_formatting.as.format) ⇒ <code>String</code>
+* [formatting](#formatting) : <code>object</code>
+    * [.text(text, [raw])](#formatting.text) ⇒ <code>String</code>
+    * [.bool(value)](#formatting.bool) ⇒ <code>String</code>
+    * [.date(d, [raw])](#formatting.date) ⇒ <code>String</code>
+    * [.number(num)](#formatting.number) ⇒ <code>String</code>
+    * [.array(arr)](#formatting.array) ⇒ <code>String</code>
+    * [.csv(values)](#formatting.csv) ⇒ <code>String</code>
+    * [.json(obj, [raw])](#formatting.json) ⇒ <code>String</code>
+    * [.func(func, [raw], [obj])](#formatting.func) ⇒ <code>String</code>
+    * [.format(query, [values])](#formatting.format) ⇒ <code>String</code>
 
-<a name="module_formatting.as"></a>
-### formatting.as : <code>object</code>
-**Kind**: static namespace of <code>[formatting](#module_formatting)</code>  
-
-* [.as](#module_formatting.as) : <code>object</code>
-    * [.text(text, [raw])](#module_formatting.as.text) ⇒ <code>String</code>
-    * [.bool(value)](#module_formatting.as.bool) ⇒ <code>String</code>
-    * [.date(d, [raw])](#module_formatting.as.date) ⇒ <code>String</code>
-    * [.number(num)](#module_formatting.as.number) ⇒ <code>String</code>
-    * [.array(arr)](#module_formatting.as.array) ⇒ <code>String</code>
-    * [.csv(values)](#module_formatting.as.csv) ⇒ <code>String</code>
-    * [.json(obj, [raw])](#module_formatting.as.json) ⇒ <code>String</code>
-    * [.func(func, [raw], [obj])](#module_formatting.as.func) ⇒ <code>String</code>
-    * [.format(query, [values])](#module_formatting.as.format) ⇒ <code>String</code>
-
-<a name="module_formatting.as.text"></a>
-#### as.text(text, [raw]) ⇒ <code>String</code>
+<a name="formatting.text"></a>
+### formatting.text(text, [raw]) ⇒ <code>String</code>
 Converts a value into PostgreSQL text presentation, fixing single-quote symbolsand wrapping the result in quotes (unless flag `raw` is set).
 
-**Kind**: static method of <code>[as](#module_formatting.as)</code>  
+**Kind**: static method of <code>[formatting](#formatting)</code>  
 <table>
   <thead>
     <tr>
@@ -52,11 +36,11 @@ Converts a value into PostgreSQL text presentation, fixing single-quote symbols
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.as.bool"></a>
-#### as.bool(value) ⇒ <code>String</code>
+<a name="formatting.bool"></a>
+### formatting.bool(value) ⇒ <code>String</code>
 Converts a truthy value into PostgreSQL boolean presentation.
 
-**Kind**: static method of <code>[as](#module_formatting.as)</code>  
+**Kind**: static method of <code>[formatting](#formatting)</code>  
 <table>
   <thead>
     <tr>
@@ -70,11 +54,11 @@ Converts a truthy value into PostgreSQL boolean presentation.
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.as.date"></a>
-#### as.date(d, [raw]) ⇒ <code>String</code>
+<a name="formatting.date"></a>
+### formatting.date(d, [raw]) ⇒ <code>String</code>
 Converts a `Date`-type value into PostgreSQL date/time presentation,as a UTC string, wrapped in quotes (unless flag `raw` is set).
 
-**Kind**: static method of <code>[as](#module_formatting.as)</code>  
+**Kind**: static method of <code>[formatting](#formatting)</code>  
 <table>
   <thead>
     <tr>
@@ -91,11 +75,11 @@ Converts a `Date`-type value into PostgreSQL date/time presentation,as a UTC st
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.as.number"></a>
-#### as.number(num) ⇒ <code>String</code>
+<a name="formatting.number"></a>
+### formatting.number(num) ⇒ <code>String</code>
 Converts a numeric value into its PostgreSQL number presentation,with support for `NaN`, `+Infinity` and `-Infinity`.
 
-**Kind**: static method of <code>[as](#module_formatting.as)</code>  
+**Kind**: static method of <code>[formatting](#formatting)</code>  
 <table>
   <thead>
     <tr>
@@ -109,11 +93,11 @@ Converts a numeric value into its PostgreSQL number presentation,with support f
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.as.array"></a>
-#### as.array(arr) ⇒ <code>String</code>
+<a name="formatting.array"></a>
+### formatting.array(arr) ⇒ <code>String</code>
 Converts an array of values into its PostgreSQL presentationas an Array-Type constructor string: `array[]`.
 
-**Kind**: static method of <code>[as](#module_formatting.as)</code>  
+**Kind**: static method of <code>[formatting](#formatting)</code>  
 <table>
   <thead>
     <tr>
@@ -127,11 +111,11 @@ Converts an array of values into its PostgreSQL presentationas an Array-Type co
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.as.csv"></a>
-#### as.csv(values) ⇒ <code>String</code>
+<a name="formatting.csv"></a>
+### formatting.csv(values) ⇒ <code>String</code>
 Converts a single value or an array of values into a CSV string,with all values formatted according to their type.
 
-**Kind**: static method of <code>[as](#module_formatting.as)</code>  
+**Kind**: static method of <code>[formatting](#formatting)</code>  
 <table>
   <thead>
     <tr>
@@ -145,11 +129,11 @@ Converts a single value or an array of values into a CSV string,with all values
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.as.json"></a>
-#### as.json(obj, [raw]) ⇒ <code>String</code>
+<a name="formatting.json"></a>
+### formatting.json(obj, [raw]) ⇒ <code>String</code>
 Converts any value into JSON (using `JSON.stringify`), and returns itas a formatted text string (unless flag `raw` is set).
 
-**Kind**: static method of <code>[as](#module_formatting.as)</code>  
+**Kind**: static method of <code>[formatting](#formatting)</code>  
 <table>
   <thead>
     <tr>
@@ -166,11 +150,11 @@ Converts any value into JSON (using `JSON.stringify`), and returns itas a forma
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.as.func"></a>
-#### as.func(func, [raw], [obj]) ⇒ <code>String</code>
+<a name="formatting.func"></a>
+### formatting.func(func, [raw], [obj]) ⇒ <code>String</code>
 Calls the function to get the actual value, and then formats the resultaccording to its type + `raw` flag.
 
-**Kind**: static method of <code>[as](#module_formatting.as)</code>  
+**Kind**: static method of <code>[formatting](#formatting)</code>  
 <table>
   <thead>
     <tr>
@@ -190,11 +174,11 @@ Calls the function to get the actual value, and then formats the resultaccordin
     </tr>  </tbody>
 </table>
 
-<a name="module_formatting.as.format"></a>
-#### as.format(query, [values]) ⇒ <code>String</code>
+<a name="formatting.format"></a>
+### formatting.format(query, [values]) ⇒ <code>String</code>
 Replaces variables in a string with the values passed in.
 
-**Kind**: static method of <code>[as](#module_formatting.as)</code>  
+**Kind**: static method of <code>[formatting](#formatting)</code>  
 <table>
   <thead>
     <tr>
