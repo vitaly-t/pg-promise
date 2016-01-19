@@ -39,6 +39,10 @@ describe("Library instance", function () {
         expect(pgpLib.QueryResultError instanceof Function).toBe(true);
     });
 
+    it("must have function 'SQLParsingError'", function () {
+        expect(pgpLib.SQLParsingError instanceof Function).toBe(true);
+    });
+
     it("must have function 'PromiseAdapter'", function () {
         expect(pgpLib.PromiseAdapter instanceof Function).toBe(true);
     });

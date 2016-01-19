@@ -86,7 +86,8 @@ Complete access layer to node-postgres via <a href="https://promisesaplus.com">P
         * ["extend" (obj)](#module_pg-promise.event_extend)
     * _inner_
         * [~as](#module_pg-promise..as) : <code>module:formatting.as</code>
-        * [~QueryResultError](#module_pg-promise..QueryResultError) : <code>module:error</code>
+        * [~QueryResultError](#module_pg-promise..QueryResultError) : <code>module:errors</code>
+        * [~SQLParsingError](#module_pg-promise..SQLParsingError) : <code>module:errors</code>
         * [~PromiseAdapter](#module_pg-promise..PromiseAdapter) : <code>module:adapter</code>
         * [~QueryFile](#module_pg-promise..QueryFile) : <code>module:queryFile</code>
         * [~txMode](#module_pg-promise..txMode) : <code>module:txMode</code>
@@ -702,8 +703,14 @@ Namespace for the type conversion helpers.
 **Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
 **Read only**: true  
 <a name="module_pg-promise..QueryResultError"></a>
-### pg-promise~QueryResultError : <code>module:error</code>
+### pg-promise~QueryResultError : <code>module:errors</code>
 Query Result Error type.
+
+**Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
+**Read only**: true  
+<a name="module_pg-promise..SQLParsingError"></a>
+### pg-promise~SQLParsingError : <code>module:errors</code>
+SQL Parsing Error type.
 
 **Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
 **Read only**: true  

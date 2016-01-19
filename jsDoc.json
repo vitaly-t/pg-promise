@@ -5,7 +5,7 @@
       "lib/formatting.js",
       "lib/adapter.js",
       "lib/queryFile.js",
-      "lib/qrError.js",
+      "lib/errors.js",
       "lib/txMode.js"
     ]
   },

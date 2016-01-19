@@ -1,6 +1,8 @@
 'use strict';
 
+var LB = require('os').EOL;
 var fs = require('fs');
+var utils = require('../lib/utils');
 var header = require('./db/header');
 var promise = header.defPromise;
 var options = {
@@ -135,6 +137,139 @@ describe("QueryFile / Negative:", function () {
             qf.prepare();
             expect(qf.query).toBeUndefined();
             expect(qf.error instanceof Error).toBe(true);
+        });
+    });
+});
+
+describe("EOL", function () {
+
+    it("must detect empty text correctly", function () {
+        expect(utils.getEOL("")).toBe(LB);
+        expect(utils.getEOL(" ")).toBe(LB);
+    });
+
+    it("must detect Unix correctly", function () {
+        expect(utils.getEOL("\n")).toBe("\n");
+        expect(utils.getEOL("\r\n\n\n")).toBe("\n");
+    });
+
+    it("must detect Windows correctly", function () {
+        expect(utils.getEOL("\r\n")).toBe("\r\n");
+        expect(utils.getEOL("\r\n\n\r\n")).toBe("\r\n");
+    });
+});
+
+function minify(sql) {
+    return utils.minifySQL(sql, "test.sql")
+}
+
+describe("Minify/Positive", function () {
+
+    describe("single-line comment", function () {
+        it("must return an empty string", function () {
+            expect(minify("--comment")).toBe("");
+        });
+    });
+
+    describe("single-line comment with a prefix", function () {
+        it("must return the prefix", function () {
+            expect(minify("text--comment")).toBe("text");
+        });
+    });
+
+    describe("comments in strings", function () {
+        it("must be skipped", function () {
+            expect(minify("'--comment'")).toBe("'--comment'");
+            expect(minify("'/*comment*/'")).toBe("'/*comment*/'");
+        });
+    });
+
+    describe("empty text", function () {
+        it("must be returned empty", function () {
+            expect(minify("")).toBe("");
+            expect(minify("''")).toBe("''");
+        });
+    });
+    describe("quotes in strings", function () {
+        it("must be ignored", function () {
+            expect(minify("''''")).toBe("''''");
+            expect(minify("''''''")).toBe("''''''");
+        });
+    });
+
+    describe("with multiple lines", function () {
+        it("must be ignored", function () {
+            expect(minify("--comment" + LB + "text")).toBe("text");
+            expect(minify("--comment" + LB + LB + "text")).toBe("text");
+            expect(minify("/*start" + LB + "end*/")).toBe("");
+            expect(minify("/*start" + LB + "end*/text")).toBe("text");
+            expect(minify("start-/*comment*/end")).toBe("start-end");
+            expect(minify("start/*comment*/" + LB + "end")).toBe("start end");
+
+            expect(minify("start/*comment*/" + LB + " end")).toBe("start end");
+
+            expect(minify("/*comment*/end " + LB)).toBe("end");
+        });
+    });
+
+});
+
+describe("Minify/Negative", function () {
+
+    describe("quotes in strings", function () {
+        var errMsg = "SQL Parsing Error: unclosed text block." + LB + "test.sql at {line:1,col:1}";
+        it("must throw an error", function () {
+            expect(function () {
+                minify("'");
+            }).toThrow(errMsg);
+
+            expect(function () {
+                minify("'''");
+            }).toThrow(errMsg);
+
+            try {
+                minify("'''text");
+            } catch (e) {
+                expect(e.inspect()).toBe(e.message + LB + LB + e.stack);
+            }
+        });
+    });
+
+    describe("unclosed multi-lines", function () {
+        var errMsg = "SQL Parsing Error: unclosed multi-line comment." + LB + "test.sql at {line:1,col:1}";
+        it("must throw an error", function () {
+            expect(function () {
+                minify("/*");
+            }).toThrow(errMsg);
+
+            expect(function () {
+                minify("/*text");
+            }).toThrow(errMsg);
+        });
+    });
+
+});
+
+describe("Index Position:", function () {
+    function pos(text, idx) {
+        return utils.getIndexPos(text, idx, "\r\n");
+    }
+
+    describe("", function () {
+        it("", function () {
+            expect(pos("123\r\n456", 0)).toEqual({
+                line: 1,
+                col: 1
+            });
+            expect(pos("123\r\n456", 5)).toEqual({
+                line: 2,
+                col: 1
+            });
+            expect(pos("123\r\n", 3)).toEqual({
+                line: 1,
+                col: 3
+            });
+
         });
     });
 });
