@@ -541,7 +541,7 @@ SQL queries.
 Example:
 
 ```js
-// Instantiate QueryFile only once per file:
+// Create QueryFile globally, once per file:
 var sqlFindUser = sql('./sql/findUser.sql');
 
 db.one(sqlFindUser, {id: 123})
@@ -569,13 +569,16 @@ WHERE id = ${id}
 
 Every query method of the library recognizes type `QueryFile` as a query provider.
 
-The query provider itself never throws any error, leaving it for the query method to
-reject with.
+You should only create a single instance of `QueryFile` per file, and then use that
+instance throughout the application.
 
 One of the most useful features implemented by class `QueryFile` is its `debug` mode.
 When `debug` mode is set, any query request will check if the file has changed since
 it was last read, and if so - it will be read afresh. This way you can write sql
 queries and see immediate updates without having to restart your application.
+
+The query provider itself never throws any error, leaving it for query methods to
+reject with.
 
 For detailed documentation see [QueryFile API](API/queryFile.md).
 
