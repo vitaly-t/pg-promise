@@ -541,7 +541,8 @@ SQL queries.
 Example:
 
 ```js
-var sqlFindUser = sql('./sql/findUser.sql'); // create it only once!
+// Instantiate QueryFile only once per file:
+var sqlFindUser = sql('./sql/findUser.sql');
 
 db.one(sqlFindUser, {id: 123})
     .then(user=> {
