@@ -1,30 +1,27 @@
-<a name="module_errors"></a>
-## errors
-Custom Errors
+## Classes
 
-**Author:** Vitaly Tomilov  
+<dl>
+<dt><a href="#QueryResultError">QueryResultError</a> ⇐ <code>Error</code></dt>
+<dd></dd>
+<dt><a href="#SQLParsingError">SQLParsingError</a> ⇐ <code>Error</code></dt>
+<dd></dd>
+</dl>
 
-* [errors](#module_errors)
-    * [.QueryResultError](#module_errors.QueryResultError) ⇐ <code>Error</code>
-        * [new QueryResultError()](#new_module_errors.QueryResultError_new)
-    * [.SQLParsingError](#module_errors.SQLParsingError) ⇐ <code>Error</code>
-        * [new SQLParsingError()](#new_module_errors.SQLParsingError_new)
-
-<a name="module_errors.QueryResultError"></a>
-### errors.QueryResultError ⇐ <code>Error</code>
-**Kind**: static class of <code>[errors](#module_errors)</code>  
+<a name="QueryResultError"></a>
+## QueryResultError ⇐ <code>Error</code>
+**Kind**: global class  
 **Summary**: Query Result Error type.  
 **Extends:** <code>Error</code>  
-<a name="new_module_errors.QueryResultError_new"></a>
-#### new QueryResultError()
+<a name="new_QueryResultError_new"></a>
+### new QueryResultError()
 Thrown when a query result doesn't match its Query Result Mask.The type is available from the library's root: `pgp.QueryResultError`.
 
-<a name="module_errors.SQLParsingError"></a>
-### errors.SQLParsingError ⇐ <code>Error</code>
-**Kind**: static class of <code>[errors](#module_errors)</code>  
+<a name="SQLParsingError"></a>
+## SQLParsingError ⇐ <code>Error</code>
+**Kind**: global class  
 **Summary**: SQL Parsing Error type.  
 **Extends:** <code>Error</code>  
-<a name="new_module_errors.SQLParsingError_new"></a>
-#### new SQLParsingError()
+<a name="new_SQLParsingError_new"></a>
+### new SQLParsingError()
 Represents a failure to parse an external SQL file.The type is available from the library's root: `pgp.SQLParsingError`.
 
