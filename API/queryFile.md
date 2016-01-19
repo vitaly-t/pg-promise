@@ -76,7 +76,7 @@ When property [error](#QueryFile+error) is set, the query is `undefined`.
 **Read only**: true  
 <a name="QueryFile.prepare"></a>
 ### QueryFile.prepare()
-If the the query hasn't been prepared yet, it will read the fileand process the contents according the parameters passed into theconstructor.
+If the the query hasn't been prepared yet, it will read the fileand process the contents according to the parameters passed intothe constructor.
 
 **Kind**: static method of <code>[QueryFile](#QueryFile)</code>  
 **Summary**: Prepares the query for execution.  
