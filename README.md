@@ -573,7 +573,7 @@ You should only create a single instance of `QueryFile` per file, and then use t
 instance throughout the application.
 
 One of the most useful features implemented by class `QueryFile` is its `debug` mode.
-When `debug` mode is set, any query request will check if the file has changed since
+When `debug` mode is set, every query request will check if the file has changed since
 it was last read, and if so - it will be read afresh. This way you can write sql
 queries and see immediate updates without having to restart your application.
 
