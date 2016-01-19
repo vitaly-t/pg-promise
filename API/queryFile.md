@@ -15,7 +15,7 @@
 
 <a name="new_QueryFile_new"></a>
 ### new QueryFile(file, [options])
-Reads a file with SQL and prepares it for execution, also parses andminifies it, if required.The SQL can be of any complexity, with both single and multi-line comments.If the file contains more than one query, you will not be able to get theindividual results, because the library doesn't support results from multiplequeries.IMPORTANT: For any given SQL file you should only create a single reusableinstance of this class throughout the application.The type is available from the library's root: `pgp.QueryFile`.
+Reads a file with SQL and prepares it for execution, also parses andminifies it, if required.The SQL can be of any complexity, with both single and multi-line comments.If the file contains more than one query, you will not be able to get theindividual results, because the library doesn't support results from multiplequeries.For any given SQL file you should only create a single instance of this classthroughout the application.The type is available from the library's root: `pgp.QueryFile`.
 
 <table>
   <thead>
