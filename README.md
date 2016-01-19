@@ -540,8 +540,8 @@ SQL queries.
 
 Example:
 
-```js  
-var sqlFindUser = sql('./sql/findUser.sql');
+```js
+var sqlFindUser = sql('./sql/findUser.sql'); // create it only once!
 
 db.one(sqlFindUser, {id: 123})
     .then(user=> {
@@ -568,8 +568,8 @@ WHERE id = ${id}
 
 Every query method of the library recognizes type `QueryFile` as a query provider.
 
-The query provider itself never throws any error, leaving it to the query method to
-report it in a generic way.
+The query provider itself never throws any error, leaving it for the query method to
+reject with.
 
 One of the most useful features implemented by class `QueryFile` is its `debug` mode.
 When `debug` mode is set, any query request will check if the file has changed since
