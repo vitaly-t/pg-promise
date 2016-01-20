@@ -90,7 +90,6 @@ Advanced access layer to node-postgres via <a href="https://promisesaplus.com">P
         * [~pg](#module_pg-promise..pg) : <code>[PG](https://github.com/brianc/node-postgres/blob/master/lib/index.js#L8)</code>
         * [~queryResult](#module_pg-promise..queryResult) : <code>[queryResult](#queryResult)</code>
         * [~QueryResultError](#module_pg-promise..QueryResultError) : <code>errors.QueryResultError</code>
-        * [~SQLParsingError](#module_pg-promise..SQLParsingError) : <code>errors.SQLParsingError</code>
         * [~PromiseAdapter](#module_pg-promise..PromiseAdapter) : <code>PromiseAdapter</code>
         * [~QueryFile](#module_pg-promise..QueryFile) : <code>QueryFile</code>
         * [~txMode](#module_pg-promise..txMode) : <code>txMode</code>
@@ -120,12 +119,6 @@ Query Result Mask.
 <a name="module_pg-promise..QueryResultError"></a>
 ### pg-promise~QueryResultError : <code>errors.QueryResultError</code>
 QueryResultError type.
-
-**Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
-**Read only**: true  
-<a name="module_pg-promise..SQLParsingError"></a>
-### pg-promise~SQLParsingError : <code>errors.SQLParsingError</code>
-SQLParsingError type.
 
 **Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
 **Read only**: true  
