@@ -43,6 +43,10 @@ describe("Library instance", function () {
         expect(pgpLib.PromiseAdapter instanceof Function).toBe(true);
     });
 
+    it("must have function 'minify'", function () {
+        expect(pgpLib.minify instanceof Function).toBe(true);
+    });
+
     it("must have valid property 'queryResult'", function () {
         expect(pgpLib.queryResult && typeof pgpLib.queryResult === 'object').toBeTruthy();
         expect(pgpLib.queryResult.one).toBe(1);
@@ -74,6 +78,10 @@ describe("Initialized instance", function () {
 
     it("must have function 'PromiseAdapter'", function () {
         expect(pgp.PromiseAdapter instanceof Function).toBe(true);
+    });
+
+    it("must have function 'minify'", function () {
+        expect(pgp.minify instanceof Function).toBe(true);
     });
 
     it("must have valid property 'queryResult'", function () {

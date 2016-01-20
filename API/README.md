@@ -88,6 +88,7 @@ Advanced access layer to node-postgres via <a href="https://promisesaplus.com">P
     * _inner_
         * [~as](#module_pg-promise..as) : <code>formatting</code>
         * [~pg](#module_pg-promise..pg) : <code>[PG](https://github.com/brianc/node-postgres/blob/master/lib/index.js#L8)</code>
+        * [~pg](#module_pg-promise..pg) : <code>[PG](https://github.com/brianc/node-postgres/blob/master/lib/index.js#L8)</code>
         * [~queryResult](#module_pg-promise..queryResult) : <code>[queryResult](#queryResult)</code>
         * [~QueryResultError](#module_pg-promise..QueryResultError) : <code>errors.QueryResultError</code>
         * [~PromiseAdapter](#module_pg-promise..PromiseAdapter) : <code>PromiseAdapter</code>
@@ -107,7 +108,12 @@ Namespace for the type conversion helpers.
 **Read only**: true  
 <a name="module_pg-promise..pg"></a>
 ### pg-promise~pg : <code>[PG](https://github.com/brianc/node-postgres/blob/master/lib/index.js#L8)</code>
-Instance of the PG library used.
+Instance of the PG library that's used.
+
+**Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
+<a name="module_pg-promise..pg"></a>
+### pg-promise~pg : <code>[PG](https://github.com/brianc/node-postgres/blob/master/lib/index.js#L8)</code>
+Instance of the pg-minify library that's used.
 
 **Kind**: inner property of <code>[pg-promise](#module_pg-promise)</code>  
 <a name="module_pg-promise..queryResult"></a>

@@ -546,12 +546,14 @@ var sqlFindUser = sql('./sql/findUser.sql');
 
 db.one(sqlFindUser, {id: 123})
     .then(user=> {
-        console.log("USER:", user);
+        console.log(user);
     })
     .catch(error=> {
-        console.log("ERROR:", error);
+        if (error instanceof pgp.minify.SQLParsingError) {
+            // => failed to parse the SQL file
+        }
     });
-    
+
 function sql(file) {
     return new pgp.QueryFile(file, {debug: true, minify: true});
 }
