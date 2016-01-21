@@ -39,7 +39,7 @@ or <code>false</code> otherwise.</p>
 </td>
     </tr><tr>
     <td>[options.minify]</td><td><code>Boolean</code></td><td><code>false</code></td><td><p>Parses and minifies the SQL using <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a>.</p>
-<p>Failure to parse SQL will result in <a href="https://github.com/vitaly-t/pg-minify/blob/master/lib/error.js#L10">SQLParsingError</a>.</p>
+<p>Failure to parse SQL will result in <a href="https://github.com/vitaly-t/pg-minify/blob/master/lib/error.js">SQLParsingError</a>.</p>
 </td>
     </tr>  </tbody>
 </table>

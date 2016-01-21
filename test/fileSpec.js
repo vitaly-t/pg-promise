@@ -146,7 +146,6 @@ describe("QueryFile / Negative:", function () {
             var qf = new QueryFile(sqlInvalid, {minify: true});
             expect(qf.error instanceof minify.SQLParsingError).toBe(true);
             expect(qf.error.file).toBe(sqlInvalid);
-            expect(qf.error.message).toBe("Error parsing SQL at {line:1,col:8}: Unclosed text block." + LB + "File: " + sqlInvalid);
         });
     });
 });

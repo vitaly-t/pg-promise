@@ -13,7 +13,7 @@ var links = {
     "BEGIN": "http://www.postgresql.org/docs/9.4/static/sql-begin.html",
     "Transaction Isolation": "http://www.postgresql.org/docs/9.4/static/transaction-iso.html",
     "pg-minify": "https://github.com/vitaly-t/pg-minify",
-    "SQLParsingError": "https://github.com/vitaly-t/pg-minify/blob/master/lib/error.js#L10"
+    "SQLParsingError": "https://github.com/vitaly-t/pg-minify/blob/master/lib/error.js"
 };
 
 function fixLinks(source) {
