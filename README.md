@@ -153,19 +153,9 @@ $ npm run coverage
 # Documentation
 
 [Learn by Example] is the quickest way to get started with this library, while the current
-document details most of the basic functionality the library provides.
+document details most of the basic functionality this library provides.
 
-In addition to that, there is in-line API documentation, based on [jsDoc](https://github.com/jsdoc3/jsdoc).
-
-In order to generate it, you need to do the following:
-
- * Either clone or download the repository;
- * Install DEV dependencies of the library;
- * `$ npm run doc` - will generate the documentation;
- * open `out/index.html` in a web browser.
-
-Alternatively, you can use its converted version of the [API], which doesn't have as good a layout,
-but is usable nonetheless.
+For the protocol see the [API Documentation].
 
 # Usage
 
@@ -1355,6 +1345,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 3.0.3 Complete replacement of the API with GitHub-hosted one. Released: January 21, 2016
 * 2.9.3 Replaced all SQL processing with [pg-minify] dependency. Released: January 20, 2016
 * 2.9.1 added custom SQL parser for external files. Released: January 19, 2016
 * 2.9.0 added support for [Query Files](#query-files). Released: January 18, 2016
@@ -1417,9 +1408,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
-[batch]:https://github.com/vitaly-t/pg-promise/blob/master/API#module_pg-promise.Task+batch
-[sequence]:https://github.com/vitaly-t/pg-promise/blob/master/API#module_pg-promise.Task+sequence
-[API]:https://github.com/vitaly-t/pg-promise/blob/master/API
+[batch]:http://vitaly-t.github.io/pg-promise/Task.html#.batch
+[sequence]:http://vitaly-t.github.io/pg-promise/Task.html#.sequence
+[API]:http://vitaly-t.github.io/pg-promise
+[API Documentation]:http://vitaly-t.github.io/pg-promise
 [pg-minify]:https://github.com/vitaly-t/pg-minify
 [pg-monitor]:https://github.com/vitaly-t/pg-monitor
 [pg-promise]:https://github.com/vitaly-t/pg-promise
