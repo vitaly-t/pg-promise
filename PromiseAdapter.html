@@ -65,7 +65,14 @@
 
 
 <div class="description">
-    Provides compatibility with promise libraries that cannot be recognized automatically,via functions that implement the primary operations with promises: - construct a new promise with a callback function - resolve a promise with some result data - reject a promise with a reasonThe type is available from the library's root: `pgp.PromiseAdapter`.
+    <p>Provides compatibility with promise libraries that cannot be recognized automatically,
+via functions that implement the primary operations with promises:</p>
+<ul>
+<li>construct a new promise with a callback function</li>
+<li>resolve a promise with some result data</li>
+<li>reject a promise with a reason</li>
+</ul>
+<p>The type is available from the library's root: <code>pgp.PromiseAdapter</code>.</p>
 </div>
 
 
@@ -117,7 +124,9 @@
 
             
 
-            <td class="description last">A function that takes a callback parameter and returns a new promise object.The callback parameter is expected to be `function(resolve, reject)`.Passing in anything other than a function will throw `Adapter requires a function to create a promise.`</td>
+            <td class="description last"><p>A function that takes a callback parameter and returns a new promise object.
+The callback parameter is expected to be <code>function(resolve, reject)</code>.</p>
+<p>Passing in anything other than a function will throw <code>Adapter requires a function to create a promise.</code></p></td>
         </tr>
 
     
@@ -140,7 +149,8 @@
 
             
 
-            <td class="description last">A function that takes an optional data parameter and resolves a promise with it.Passing in anything other than a function will throw `Adapter requires a function to resolve a promise.`</td>
+            <td class="description last"><p>A function that takes an optional data parameter and resolves a promise with it.</p>
+<p>Passing in anything other than a function will throw <code>Adapter requires a function to resolve a promise.</code></p></td>
         </tr>
 
     
@@ -163,7 +173,8 @@
 
             
 
-            <td class="description last">A function that takes an optional error parameter and rejects a promise with it.Passing in anything other than a function will throw `Adapter requires a function to reject a promise.`</td>
+            <td class="description last"><p>A function that takes an optional error parameter and rejects a promise with it.</p>
+<p>Passing in anything other than a function will throw <code>Adapter requires a function to reject a promise.</code></p></td>
         </tr>
 
     

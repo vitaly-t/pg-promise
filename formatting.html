@@ -53,7 +53,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Namespace for the type conversion helpers.</div>
+            <div class="description"><p>Namespace for the type conversion helpers.</p></div>
         
 
         
@@ -131,7 +131,8 @@
 
 
 <div class="description">
-    Converts an array of values into its PostgreSQL presentationas an Array-Type constructor string: `array[]`.
+    <p>Converts an array of values into its PostgreSQL presentation
+as an Array-Type constructor string: <code>array[]</code>.</p>
 </div>
 
 
@@ -183,7 +184,7 @@
 
             
 
-            <td class="description last">Array to be converted.</td>
+            <td class="description last"><p>Array to be converted.</p></td>
         </tr>
 
     
@@ -280,7 +281,7 @@
 
 
 <div class="description">
-    Converts a truthy value into PostgreSQL boolean presentation.
+    <p>Converts a truthy value into PostgreSQL boolean presentation.</p>
 </div>
 
 
@@ -332,7 +333,7 @@
 
             
 
-            <td class="description last">Value to be converted.</td>
+            <td class="description last"><p>Value to be converted.</p></td>
         </tr>
 
     
@@ -429,7 +430,8 @@
 
 
 <div class="description">
-    Converts a single value or an array of values into a CSV string,with all values formatted according to their type.
+    <p>Converts a single value or an array of values into a CSV string,
+with all values formatted according to their type.</p>
 </div>
 
 
@@ -484,7 +486,7 @@
 
             
 
-            <td class="description last">Value(s) to be converted.</td>
+            <td class="description last"><p>Value(s) to be converted.</p></td>
         </tr>
 
     
@@ -581,7 +583,8 @@
 
 
 <div class="description">
-    Converts a `Date`-type value into PostgreSQL date/time presentation,as a UTC string, wrapped in quotes (unless flag `raw` is set).
+    <p>Converts a <code>Date</code>-type value into PostgreSQL date/time presentation,
+as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
 </div>
 
 
@@ -649,7 +652,7 @@
                 </td>
             
 
-            <td class="description last">Value to be converted.</td>
+            <td class="description last"><p>Value to be converted.</p></td>
         </tr>
 
     
@@ -688,7 +691,7 @@
                 </td>
             
 
-            <td class="description last">Indicates when the value is not to be formatted.</td>
+            <td class="description last"><p>Indicates when the value is not to be formatted.</p></td>
         </tr>
 
     
@@ -785,7 +788,7 @@
 
 
 <div class="description">
-    Replaces variables in a string with the values passed in.
+    <p>Replaces variables in a string with the values passed in.</p>
 </div>
 
 
@@ -847,7 +850,7 @@
 
             
 
-            <td class="description last">Query string with formatting variables in it.</td>
+            <td class="description last"><p>Query string with formatting variables in it.</p></td>
         </tr>
 
     
@@ -883,7 +886,7 @@
 
             
 
-            <td class="description last">Formatting variable value(s).</td>
+            <td class="description last"><p>Formatting variable value(s).</p></td>
         </tr>
 
     
@@ -980,7 +983,8 @@
 
 
 <div class="description">
-    Calls the function to get the actual value, and then formats the resultaccording to its type + `raw` flag.
+    <p>Calls the function to get the actual value, and then formats the result
+according to its type + <code>raw</code> flag.</p>
 </div>
 
 
@@ -1048,7 +1052,7 @@
                 </td>
             
 
-            <td class="description last">Function to be called.</td>
+            <td class="description last"><p>Function to be called.</p></td>
         </tr>
 
     
@@ -1087,7 +1091,7 @@
                 </td>
             
 
-            <td class="description last">Indicates when the result is not to be formatted.</td>
+            <td class="description last"><p>Indicates when the result is not to be formatted.</p></td>
         </tr>
 
     
@@ -1124,7 +1128,7 @@
                 </td>
             
 
-            <td class="description last">`this` context to be passed into the function.</td>
+            <td class="description last"><p><code>this</code> context to be passed into the function.</p></td>
         </tr>
 
     
@@ -1221,7 +1225,8 @@
 
 
 <div class="description">
-    Converts any value into JSON (using `JSON.stringify`), and returns itas a formatted text string (unless flag `raw` is set).
+    <p>Converts any value into JSON (using <code>JSON.stringify</code>), and returns it
+as a formatted text string (unless flag <code>raw</code> is set).</p>
 </div>
 
 
@@ -1289,7 +1294,7 @@
                 </td>
             
 
-            <td class="description last">Object/Value to be converted.</td>
+            <td class="description last"><p>Object/Value to be converted.</p></td>
         </tr>
 
     
@@ -1328,7 +1333,7 @@
                 </td>
             
 
-            <td class="description last">Indicates when the result is not to be formatted.</td>
+            <td class="description last"><p>Indicates when the result is not to be formatted.</p></td>
         </tr>
 
     
@@ -1425,7 +1430,8 @@
 
 
 <div class="description">
-    Converts a numeric value into its PostgreSQL number presentation,with support for `NaN`, `+Infinity` and `-Infinity`.
+    <p>Converts a numeric value into its PostgreSQL number presentation,
+with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</code>.</p>
 </div>
 
 
@@ -1477,7 +1483,7 @@
 
             
 
-            <td class="description last">Value to be converted.</td>
+            <td class="description last"><p>Value to be converted.</p></td>
         </tr>
 
     
@@ -1574,7 +1580,8 @@
 
 
 <div class="description">
-    Converts a value into PostgreSQL text presentation, fixing single-quote symbolsand wrapping the result in quotes (unless flag `raw` is set).
+    <p>Converts a value into PostgreSQL text presentation, fixing single-quote symbols
+and wrapping the result in quotes (unless flag <code>raw</code> is set).</p>
 </div>
 
 
@@ -1642,7 +1649,7 @@
                 </td>
             
 
-            <td class="description last">Value to be converted.</td>
+            <td class="description last"><p>Value to be converted.</p></td>
         </tr>
 
     
@@ -1681,7 +1688,7 @@
                 </td>
             
 
-            <td class="description last">Indicates when the value is not to be formatted.</td>
+            <td class="description last"><p>Indicates when the value is not to be formatted.</p></td>
         </tr>
 
     

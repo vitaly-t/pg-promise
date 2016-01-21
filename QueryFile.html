@@ -65,7 +65,15 @@
 
 
 <div class="description">
-    Reads a file with SQL and prepares it for execution, also parses andminifies it, if required.The SQL can be of any complexity, with both single and multi-line comments.If the file contains more than one query, you will not be able to get theindividual results, because the library doesn't support results from multiplequeries.For any given SQL file you should only create a single instance of this classthroughout the application.The type is available from the library's root: `pgp.QueryFile`.
+    <p>Reads a file with SQL and prepares it for execution, also parses and
+minifies it, if required.</p>
+<p>The SQL can be of any complexity, with both single and multi-line comments.</p>
+<p>If the file contains more than one query, you will not be able to get the
+individual results, because the library doesn't support results from multiple
+queries.</p>
+<p>For any given SQL file you should only create a single instance of this class
+throughout the application.</p>
+<p>The type is available from the library's root: <code>pgp.QueryFile</code>.</p>
 </div>
 
 
@@ -127,7 +135,8 @@
 
             
 
-            <td class="description last">Name/path of the SQL file with the query. If there is any problem readingthe file, it will be reported when executing the query.</td>
+            <td class="description last"><p>Name/path of the SQL file with the query. If there is any problem reading
+the file, it will be reported when executing the query.</p></td>
         </tr>
 
     
@@ -160,7 +169,7 @@
 
             
 
-            <td class="description last">A set of configuration options.
+            <td class="description last"><p>A set of configuration options.</p>
                 <h6>Properties</h6>
                 
 
@@ -220,7 +229,10 @@
                 </td>
             
 
-            <td class="description last">When in debug mode, the query file is checked for its last modificationtime on every query request, so if it changes, the file is read afresh.The default for this property is `true` when `NODE_ENV` = `development`,or `false` otherwise.</td>
+            <td class="description last"><p>When in debug mode, the query file is checked for its last modification
+time on every query request, so if it changes, the file is read afresh.</p>
+<p>The default for this property is <code>true</code> when <code>NODE_ENV</code> = <code>development</code>,
+or <code>false</code> otherwise.</p></td>
         </tr>
 
     
@@ -259,7 +271,8 @@
                 </td>
             
 
-            <td class="description last">Parses and minifies the SQL using <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a>.Failure to parse SQL will result in <a href="https://github.com/vitaly-t/pg-minify/blob/master/lib/error.js">SQLParsingError</a>.</td>
+            <td class="description last"><p>Parses and minifies the SQL using <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a>.</p>
+<p>Failure to parse SQL will result in <a href="https://github.com/vitaly-t/pg-minify/blob/master/lib/error.js">SQLParsingError</a>.</p></td>
         </tr>
 
     
@@ -574,7 +587,7 @@
 
 
 <div class="description">
-    When property <a href="QueryFile.html#error">error</a> is set, the query is `undefined`.
+    <p>When property <a href="QueryFile.html#error">error</a> is set, the query is <code>undefined</code>.</p>
 </div>
 
 
@@ -663,7 +676,9 @@
 
 
 <div class="description">
-    If the the query hasn't been prepared yet, it will read the fileand process the contents according to the parameters passed intothe constructor.
+    <p>If the the query hasn't been prepared yet, it will read the file
+and process the contents according to the parameters passed into
+the constructor.</p>
 </div>
 
 
