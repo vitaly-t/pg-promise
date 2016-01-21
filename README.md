@@ -574,7 +574,7 @@ queries and see immediate updates without having to restart your application.
 The query provider itself never throws any error, leaving it for query methods to
 reject with.
 
-For detailed documentation see [QueryFile API](API/queryFile.md).
+For detailed documentation see [QueryFile API].
 
 ## Connections
 
@@ -852,8 +852,8 @@ without your control, or so it was until version 2.5.0, which changed that, as e
 
 ---  
 
-Version 2.5.0 added support for [Transaction Mode](https://github.com/vitaly-t/pg-promise/blob/master/API/txMode.md),
-which can extend `BEGIN` in your transaction with a complete set of configuration parameters.
+Version 2.5.0 added support for [Transaction Mode], which can extend `BEGIN` in your transaction with
+a complete set of configuration parameters.
 
 ```js
 var TransactionMode = pgp.txMode.TransactionMode;
@@ -1414,6 +1414,8 @@ DEALINGS IN THE SOFTWARE.
 [sequence]:http://vitaly-t.github.io/pg-promise/Task.html#.sequence
 [API]:http://vitaly-t.github.io/pg-promise
 [API Documentation]:http://vitaly-t.github.io/pg-promise
+[QueryFile API]:http://vitaly-t.github.io/pg-promise/QueryFile.html
+[Transaction Mode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
 [pg-minify]:https://github.com/vitaly-t/pg-minify
 [pg-monitor]:https://github.com/vitaly-t/pg-monitor
 [pg-promise]:https://github.com/vitaly-t/pg-promise
