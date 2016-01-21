@@ -15,6 +15,7 @@
     }
   },
   "plugins": [
+    "plugins/markdown",
     "jsdoc/shortLinks"
   ]
 }
