@@ -85,9 +85,11 @@ $ npm install pg-promise
 
 ```javascript
 // Loading and initializing the library:
-var pgp = require('pg-promise')(/*options*/);
+var pgp = require('pg-promise')({
+    // Initialization Options
+});
 ```
-You can pass `options` parameter when initializing the library (see [Initialization Options](#advanced)).
+See also: [Initialization Options](#advanced).
 
 ## Connecting
 
