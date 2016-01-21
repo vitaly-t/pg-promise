@@ -64,14 +64,7 @@
 
 
 <div class="description">
-    <p><strong>Alternative Syntax:</strong> <code>TransactionMode({tiLevel, readOnly, deferrable})</code></p>
-<p>Constructs a complete transaction opening command,
-based on Transaction Mode parameters:</p>
-<ul>
-<li>isolation level</li>
-<li>access mode</li>
-<li>deferrable mode</li>
-</ul>
+    **Alternative Syntax:** `TransactionMode({tiLevel, readOnly, deferrable})`Constructs a complete transaction opening command,based on Transaction Mode parameters: - isolation level - access mode - deferrable mode
 </div>
 
 
@@ -138,7 +131,7 @@ based on Transaction Mode parameters:</p>
 
             
 
-            <td class="description last"><p>Transaction Isolation Level</p></td>
+            <td class="description last">Transaction Isolation Level</td>
         </tr>
 
     
@@ -171,12 +164,7 @@ based on Transaction Mode parameters:</p>
 
             
 
-            <td class="description last"><p>Sets transaction access mode based on the read-only flag:</p>
-<ul>
-<li><code>undefined</code> - access mode not specified (default)</li>
-<li><code>true</code> - access mode is set as <code>READ ONLY</code></li>
-<li><code>false</code> - access mode is set as <code>READ WRITE</code></li>
-</ul></td>
+            <td class="description last">Sets transaction access mode based on the read-only flag: - `undefined` - access mode not specified (default) - `true` - access mode is set as `READ ONLY` - `false` - access mode is set as `READ WRITE`</td>
         </tr>
 
     
@@ -209,14 +197,7 @@ based on Transaction Mode parameters:</p>
 
             
 
-            <td class="description last"><p>Sets transaction deferrable mode based on the boolean value:</p>
-<ul>
-<li><code>undefined</code> - deferrable mode not specified (default)</li>
-<li><code>true</code> - mode is set as <code>DEFERRABLE</code></li>
-<li><code>false</code> - mode is set as <code>NOT DEFERRABLE</code></li>
-</ul>
-<p>It is used only when <code>tiLevel</code>=<code>isolationLevel.serializable</code>
-and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
+            <td class="description last">Sets transaction deferrable mode based on the boolean value: - `undefined` - deferrable mode not specified (default) - `true` - mode is set as `DEFERRABLE` - `false` - mode is set as `NOT DEFERRABLE`It is used only when `tiLevel`=`isolationLevel.serializable`and `readOnly`=`true`, or else it is ignored.</td>
         </tr>
 
     
