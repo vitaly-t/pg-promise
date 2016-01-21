@@ -37,67 +37,137 @@
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>'use strict';
+        <h2>QueryResultError</h2>
+        
+    
+</header>
 
-/**
- * @constructor PromiseAdapter
- * @summary Adapter for the primary promise operations.
- * @description
- * Provides compatibility with promise libraries that cannot be recognized automatically,
- * via functions that implement the primary operations with promises:
- *
- *  - construct a new promise with a callback function
- *  - resolve a promise with some result data
- *  - reject a promise with a reason
- *
- * The type is available from the library's root: `pgp.PromiseAdapter`.
- *
- * @param {Function} create
- * A function that takes a callback parameter and returns a new promise object.
- * The callback parameter is expected to be `function(resolve, reject)`.
- *
- * Passing in anything other than a function will throw `Adapter requires a function to create a promise.`
- *
- * @param {Function} resolve
- * A function that takes an optional data parameter and resolves a promise with it.
- *
- * Passing in anything other than a function will throw `Adapter requires a function to resolve a promise.`
- *
- * @param {Function} reject
- * A function that takes an optional error parameter and rejects a promise with it.
- *
- * Passing in anything other than a function will throw `Adapter requires a function to reject a promise.`
- */
-function PromiseAdapter(create, resolve, reject) {
+<article>
+    <div class="container-overview">
+    
+        
 
-    if (!(this instanceof PromiseAdapter)) {
-        return new PromiseAdapter(create, resolve, reject);
-    }
+    
 
-    this.create = create;
-    this.resolve = resolve;
-    this.reject = reject;
+    <h4 class="name" id="QueryResultError"><span class="type-signature"></span>new QueryResultError<span class="signature">()</span><span class="type-signature"></span></h4>
 
-    if (typeof create !== 'function') {
-        throw new TypeError('Adapter requires a function to create a promise.');
-    }
+    
+    <p class="summary">Query Result Error type.</p>
+    
 
-    if (typeof resolve !== 'function') {
-        throw new TypeError('Adapter requires a function to resolve a promise.');
-    }
 
-    if (typeof reject !== 'function') {
-        throw new TypeError('Adapter requires a function to reject a promise.');
-    }
-}
 
-module.exports = PromiseAdapter;
-</code></pre>
-        </article>
-    </section>
+<div class="description">
+    <p>Thrown when a query result doesn't match its Query Result Mask.</p>
+<p>The type is available from the library's root: <code>pgp.QueryResultError</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>Error</li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
