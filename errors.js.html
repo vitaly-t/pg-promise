@@ -16,15 +16,26 @@
             color: DarkCyan;
             font-size: 20pt;
         }
-        code{
+
+        code {
             background-color: #EEE;
             color: Maroon !important;
         }
-        html{
-            font-size:14pt;
+
+        html {
+            font-size: 14pt;
         }
+
         html, body, section {
             background-color: White;
+        }
+
+        nav > h3 {
+            /*color: Maroon;*/
+        }
+        nav {
+            position: fixed;
+            right:0;
         }
     </style>
 </head>
@@ -71,9 +82,6 @@ QueryResultError.prototype.inspect = function () {
     return this.stack;
 };
 
-/**
- *
- */
 module.exports = {
     QueryResultError: QueryResultError
 };

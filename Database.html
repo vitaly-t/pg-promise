@@ -16,15 +16,26 @@
             color: DarkCyan;
             font-size: 20pt;
         }
-        code{
+
+        code {
             background-color: #EEE;
             color: Maroon !important;
         }
-        html{
-            font-size:14pt;
+
+        html {
+            font-size: 14pt;
         }
+
         html, body, section {
             background-color: White;
+        }
+
+        nav > h3 {
+            /*color: Maroon;*/
+        }
+        nav {
+            position: fixed;
+            right:0;
         }
     </style>
 </head>
@@ -596,7 +607,7 @@
     <p>Result of the query call:</p>
 <ul>
 <li>when 1 or more rows are returned, it resolves with the array of rows</li>
-<li>when no rows are returned, it rejects with QueryResultError
+<li>when no rows are returned, it rejects with <a href="QueryResultError.html">QueryResultError</a>
 = <code>No data returned from the query.</code></li>
 </ul>
 </div>
@@ -1018,7 +1029,7 @@
     <p>Result of the query call:</p>
 <ul>
 <li>when no records are returned, it resolves with <code>undefined</code></li>
-<li>when any data is returned, it rejects with QueryResultError
+<li>when any data is returned, it rejects with <a href="QueryResultError.html">QueryResultError</a>
 = <code>No return data was expected.</code></li>
 </ul>
 </div>
@@ -1226,9 +1237,9 @@
     <p>Result of the query call:</p>
 <ul>
 <li>when 1 row is returned, it resolves with that row as a single object;</li>
-<li>when no rows are returned, it rejects with QueryResultError
+<li>when no rows are returned, it rejects with <a href="QueryResultError.html">QueryResultError</a>
 = <code>No data returned from the query.</code></li>
-<li>when multiple rows are returned, it rejects with QueryResultError
+<li>when multiple rows are returned, it rejects with <a href="QueryResultError.html">QueryResultError</a>
 = <code>Multiple rows were not expected.</code></li>
 </ul>
 </div>
@@ -1437,7 +1448,7 @@
 <ul>
 <li>when no rows are returned, it resolves with <code>null</code></li>
 <li>when 1 row is returned, it resolves with that row as a single object</li>
-<li>when multiple rows are returned, it rejects with QueryResultError
+<li>when multiple rows are returned, it rejects with <a href="QueryResultError.html">QueryResultError</a>
 = <code>Multiple rows were not expected.</code></li>
 </ul>
 </div>

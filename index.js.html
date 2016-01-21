@@ -16,15 +16,26 @@
             color: DarkCyan;
             font-size: 20pt;
         }
-        code{
+
+        code {
             background-color: #EEE;
             color: Maroon !important;
         }
-        html{
-            font-size:14pt;
+
+        html {
+            font-size: 14pt;
         }
+
         html, body, section {
             background-color: White;
+        }
+
+        nav > h3 {
+            /*color: Maroon;*/
+        }
+        nav {
+            position: fixed;
+            right:0;
         }
     </style>
 </head>
@@ -278,7 +289,7 @@ function $extend(ctx, obj) {
      * @param {Array|value} [values] - formatting parameters for the query string
      * @returns {external:Promise} Result of the query call:
      * - when no records are returned, it resolves with `undefined`
-     * - when any data is returned, it rejects with {@link errors.QueryResultError QueryResultError}
+     * - when any data is returned, it rejects with {@link QueryResultError}
      * = `No return data was expected.`
      */
     obj.none = function (query, values) {
@@ -294,9 +305,9 @@ function $extend(ctx, obj) {
      * @param {Array|value} [values] - formatting parameters for the query string
      * @returns {external:Promise} Result of the query call:
      * - when 1 row is returned, it resolves with that row as a single object;
-     * - when no rows are returned, it rejects with {@link errors.QueryResultError QueryResultError}
+     * - when no rows are returned, it rejects with {@link QueryResultError}
      * = `No data returned from the query.`
-     * - when multiple rows are returned, it rejects with {@link errors.QueryResultError QueryResultError}
+     * - when multiple rows are returned, it rejects with {@link QueryResultError}
      * = `Multiple rows were not expected.`
      */
     obj.one = function (query, values) {
@@ -312,7 +323,7 @@ function $extend(ctx, obj) {
      * @param {Array|value} [values] - formatting parameters for the query string
      * @returns {external:Promise} Result of the query call:
      * - when 1 or more rows are returned, it resolves with the array of rows
-     * - when no rows are returned, it rejects with {@link errors.QueryResultError QueryResultError}
+     * - when no rows are returned, it rejects with {@link QueryResultError}
      * = `No data returned from the query.`
      */
     obj.many = function (query, values) {
@@ -329,7 +340,7 @@ function $extend(ctx, obj) {
      * @returns {external:Promise} Result of the query call:
      * - when no rows are returned, it resolves with `null`
      * - when 1 row is returned, it resolves with that row as a single object
-     * - when multiple rows are returned, it rejects with {@link errors.QueryResultError QueryResultError}
+     * - when multiple rows are returned, it rejects with {@link QueryResultError}
      * = `Multiple rows were not expected.`
      */
     obj.oneOrNone = function (query, values) {
