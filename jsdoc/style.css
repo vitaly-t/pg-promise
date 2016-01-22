@@ -21,6 +21,8 @@ section {
 
 div#main {
     margin-left: 220px;
+    float: none;
+    max-width:1200px;
 }
 
 code {
@@ -39,6 +41,7 @@ nav {
     position: fixed;
     font-size: 16px;
     margin-top: 15px;
+    float: none;
 }
 
 nav h3 {
