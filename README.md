@@ -48,6 +48,7 @@ Advanced access layer to [node-postgres] via [Promises/A+].
     - [pgFormatting](#pgformatting)
     - [promiseLib](#promiselib)
     - [connect](#connect)
+    - [disconnect](#disconnect)
     - [query](#query)
     - [receive](#receive)    
     - [error](#error)
