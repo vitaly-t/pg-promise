@@ -108,21 +108,492 @@
 
             
 
-            <td class="description last"><p>Library initialization options:</p>
-<ul>
-<li><code>pgFormatting</code> - redirects query formatting to PG;</li>
-<li><code>promiseLib</code> - overrides default promise library;</li>
-<li><code>connect</code> - database <code>connect</code> notification;</li>
-<li><code>disconnect</code> - database <code>disconnect</code> notification;</li>
-<li><code>query</code> - query execution notification;</li>
-<li><code>receive</code> - received data notification;</li>
-<li><code>task</code> - task event notification;</li>
-<li><code>transact</code> - transaction event notification;</li>
-<li><code>error</code> - error event notification;</li>
-<li><code>extend</code> - protocol extension event;</li>
-<li><code>noLocking</code> - prevents protocol locking;</li>
-<li><code>capTX</code> - capitalizes transaction commands.</li>
-</ul></td>
+            <td class="description last"><p>Library Initialization Options.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>pgFormatting</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Redirects query formatting to PG.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>promiseLib</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    Promise
+                
+                </td>
+            
+
+            <td class="description last"><p>Override for the default promise library.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>noLocking</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Prevents protocol locking.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>capTX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Capitalizes transaction commands.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>connect</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Event <a href="global.html#event:connect">connect</a> handler.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disconnect</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Event <a href="global.html#event:disconnect">disconnect</a> handler.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Event <a href="global.html#event:query">query</a> handler.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>receive</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Event <a href="global.html#event:receive">receive</a> handler.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>task</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Event <a href="global.html#event:task">task</a> handler.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>transact</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Event <a href="global.html#event:transact">transact</a> handler.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Event <a href="global.html#event:error">error</a> handler.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>extend</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Event <a href="global.html#event:extend">extend</a> handler.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -269,7 +740,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1285">line 1285</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1310">line 1310</a>
     </li></ul></dd>
     
 
@@ -341,7 +812,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1298">line 1298</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1323">line 1323</a>
     </li></ul></dd>
     
 
@@ -413,7 +884,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1292">line 1292</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1317">line 1317</a>
     </li></ul></dd>
     
 
@@ -485,7 +956,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1318">line 1318</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1343">line 1343</a>
     </li></ul></dd>
     
 
@@ -557,7 +1028,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1325">line 1325</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1350">line 1350</a>
     </li></ul></dd>
     
 
@@ -629,7 +1100,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1304">line 1304</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1329">line 1329</a>
     </li></ul></dd>
     
 
@@ -701,7 +1172,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1311">line 1311</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1336">line 1336</a>
     </li></ul></dd>
     
 
@@ -773,7 +1244,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1332">line 1332</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1357">line 1357</a>
     </li></ul></dd>
     
 
@@ -851,7 +1322,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1281">line 1281</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1306">line 1306</a>
     </li></ul></dd>
     
 

@@ -1245,19 +1245,44 @@ var $notify = {
  * @author Vitaly Tomilov
  * @module pg-promise
  * @param {Object} [options]
- * Library initialization options:
- * - `pgFormatting` - redirects query formatting to PG;
- * - `promiseLib` - overrides default promise library;
- * - `connect` - database `connect` notification;
- * - `disconnect` - database `disconnect` notification;
- * - `query` - query execution notification;
- * - `receive` - received data notification;
- * - `task` - task event notification;
- * - `transact` - transaction event notification;
- * - `error` - error event notification;
- * - `extend` - protocol extension event;
- * - `noLocking` - prevents protocol locking;
- * - `capTX` - capitalizes transaction commands.
+ * Library Initialization Options.
+ *
+ * @param {Boolean} [options.pgFormatting=false]
+ * Redirects query formatting to PG.
+ *
+ * @param {Object|Function} [options.promiseLib=Promise]
+ * Override for the default promise library.
+ *
+ * @param {Boolean} [options.noLocking=false]
+ * Prevents protocol locking.
+ *
+ * @param {Boolean} [options.capTX=false]
+ * Capitalizes transaction commands.
+ *
+ * @param {Function} [options.connect]
+ * Event {@link event:connect connect} handler.
+ *
+ * @param {Function} [options.disconnect]
+ * Event {@link event:disconnect disconnect} handler.
+ *
+ * @param {Function} [options.query]
+ * Event {@link event:query query} handler.
+ *
+ * @param {Function} [options.receive]
+ * Event {@link event:receive receive} handler.
+ *
+ * @param {Function} [options.task]
+ * Event {@link event:task task} handler.
+ *
+ * @param {Function} [options.transact]
+ * Event {@link event:transact transact} handler.
+ *
+ * @param {Function} [options.error]
+ * Event {@link event:error error} handler.
+ *
+ * @param {Function} [options.extend]
+ * Event {@link event:extend extend} handler.
+ *
  */
 function $main(options) {
 
