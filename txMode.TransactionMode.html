@@ -13,6 +13,9 @@
             font-size: 24px;
         }
 
+        div#main{
+            margin-left:20px;
+        }
         code {
             background-color: #EEE;
             color: Maroon !important;
@@ -23,27 +26,53 @@
         }
 
         html, body, section {
-            background-color: White;
+            background-color: #FFFFF0;
         }
 
-        nav > h3 {
+        body{
+            margin: 0;
+        }
+
+        .nav-body h3 {
             color: #4d4e53;
             font-size: 20px;
         }
 
         nav {
-            font-size: 16px;
-            right: 0;
+            background-color: White;
+            border-width: 1px 1px 1px 0;
+            border-color: #DDD;
+            border-style: solid;
+            border-radius: 0px 10px 10px 0px;
+
+            padding: 0 20px 0 0;
+            width: auto;
+
+            float: left;
         }
 
-        nav > ul > li > a {
+        .nav-body li a {
             color: #707070 !important;
+        }
+
+        .nav-body {
+            font-size: 16px;
+            padding: 10px 10px 20px 30px;
         }
 
     </style>
 </head>
 
 <body>
+
+<nav>
+    <div>
+        <img width="190" height="190" src="http://s8.postimg.org/k7dtue8lx/pg_promise.jpg">
+    </div>
+    <div class="nav-body">
+        <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    </div>
+</nav>
 
 <div id="main">
     <h1 class="page-title">pg-promise</h1>
@@ -349,15 +378,6 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
 
 
 </div>
-
-<nav>
-    <div>
-        <img width="190" height="190" src="http://s8.postimg.org/k7dtue8lx/pg_promise.jpg">
-    </div>
-
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
-
-</nav>
 
 <br class="clear">
 
