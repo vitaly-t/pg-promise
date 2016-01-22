@@ -676,7 +676,9 @@ i.e. releasing the virtual connection.</p>
 
             
 
-            <td class="description last"><p>event context object.</p></td>
+            <td class="description last"><p>Event Context Object.</p>
+<p>This type of object is used by several events. See event <a href="global.html#event:query">query</a>
+for its complete documentation.</p></td>
         </tr>
 
     
@@ -717,7 +719,7 @@ i.e. releasing the virtual connection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1096">line 1096</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1152">line 1152</a>
     </li></ul></dd>
     
 
@@ -846,7 +848,7 @@ i.e. releasing the virtual connection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1114">line 1114</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1174">line 1174</a>
     </li></ul></dd>
     
 
@@ -885,8 +887,8 @@ i.e. releasing the virtual connection.</p>
 
 <div class="description">
     <p>Global notification of a query that's about to execute.</p>
-<p>Notification happens just before the query execution. And if the handler throws an error,
-the query execution will be rejected with that error.</p>
+<p>Notification happens just before the query execution. And if the handler throws an error, the query execution
+will be rejected with that error.</p>
 </div>
 
 
@@ -939,6 +941,8 @@ the query execution will be rejected with that error.</p>
             
 
             <td class="description last"><p>Event Context Object.</p>
+<p>This is a shared-type object that's passed in with the following events: <a href="global.html#event:query">query</a>,
+<a href="global.html#event:receive">receive</a>, <a href="global.html#event:error">error</a>, <a href="global.html#event:task">task</a> and <a href="global.html#event:transact">transact</a>.</p>
                 <h6>Properties</h6>
                 
 
@@ -995,7 +999,10 @@ the query execution will be rejected with that error.</p>
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Set only for event <a href="global.html#event:error">error</a>, and only when the error is connection-related.</p>
+<p>It is a safe copy of the connection string/object that was used when initializing <code>db</code> - the database instance.</p>
+<p>If the original connection contains a password, the safe copy contains it masked with symbol <code>#</code>, so the connection
+can be logged safely, without exposing the password.</p></td>
         </tr>
 
     
@@ -1031,7 +1038,8 @@ the query execution will be rejected with that error.</p>
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Query string/object that was passed into the query method. This property is only set during events <a href="global.html#event:query">query</a>
+and <a href="global.html#event:receive">receive</a>.</p></td>
         </tr>
 
     
@@ -1053,8 +1061,6 @@ the query execution will be rejected with that error.</p>
             
                 <td class="attributes">
                 
-                    &lt;optional><br>
-                
 
                 
 
@@ -1064,7 +1070,7 @@ the query execution will be rejected with that error.</p>
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents the connection. It is set always.</p></td>
         </tr>
 
     
@@ -1092,7 +1098,21 @@ the query execution will be rejected with that error.</p>
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Formatting parameters for the query.</p>
+<p>It is set only for events <a href="global.html#event:query">query</a>, <a href="global.html#event:receive">receive</a> and <a href="global.html#event:error">error</a>, and only
+when it is needed for logging. This library takes an extra step in figuring out when formatting parameters are of any value
+to the event logging:</p>
+<ul>
+<li>when an error occurs related to the query formatting, event <a href="global.html#event:error">error</a> is sent with the property set.</li>
+<li>when initialization parameter <code>pgFormat</code> is used, and all query formatting is done within the <a href="https://github.com/brianc/node-postgres">PG</a> library, events
+<a href="global.html#event:query">query</a> and <a href="global.html#event:receive">receive</a> will have this property set also, since this library no longer
+handles the query formatting.</li>
+</ul>
+<p>When this parameter is not set, it means one of the two things:</p>
+<ul>
+<li>there were no parameters passed into the query method;</li>
+<li>property <code>query</code> of this object already contains all the formatting values in it, so logging only the query is sufficient.</li>
+</ul></td>
         </tr>
 
     
@@ -1125,7 +1145,10 @@ the query execution will be rejected with that error.</p>
 
             
 
-            <td class="description last">
+            <td class="description last"><p>Task/Transaction Context Object.</p>
+<p>This property is always set for events <a href="global.html#event:task">task</a> and <a href="global.html#event:transact">transact</a>, while for events
+<a href="global.html#event:query">query</a>, <a href="global.html#event:receive">receive</a> and <a href="global.html#event:error">error</a> it is only set when the event occurred
+while executing a task or transaction.</p>
                 <h6>Properties</h6>
                 
 
@@ -1177,7 +1200,7 @@ the query execution will be rejected with that error.</p>
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Indicates whether <code>ctx</code> represents a transaction. When <code>false</code>, object <code>ctx</code> represents a task.</p></td>
         </tr>
 
     
@@ -1208,7 +1231,7 @@ the query execution will be rejected with that error.</p>
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Date/Time of when this task or transaction started the execution.</p></td>
         </tr>
 
     
@@ -1241,7 +1264,9 @@ the query execution will be rejected with that error.</p>
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Data/Time of when this task or transaction has finished, and the property is set only after this happened.</p>
+<p>Verifying for this property being set is the key condition to determining whether it is a <code>start</code> or <code>finish</code> notification
+during events <a href="global.html#event:task">task</a> and <a href="global.html#event:transact">transact</a>.</p></td>
         </tr>
 
     
@@ -1548,7 +1573,9 @@ the query execution will be rejected with that error.</p>
 
             
 
-            <td class="description last"><p>event context object.</p></td>
+            <td class="description last"><p>Event Context Object.</p>
+<p>This type of object is used by several events. See event <a href="global.html#event:query">query</a>
+for its complete documentation.</p></td>
         </tr>
 
     
@@ -1589,7 +1616,7 @@ the query execution will be rejected with that error.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1048">line 1048</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1093">line 1093</a>
     </li></ul></dd>
     
 
@@ -1677,7 +1704,9 @@ the query execution will be rejected with that error.</p>
 
             
 
-            <td class="description last"><p>event context object.</p></td>
+            <td class="description last"><p>Event Context Object.</p>
+<p>This type of object is used by several events. See event <a href="global.html#event:query">query</a>
+for its complete documentation.</p></td>
         </tr>
 
     
@@ -1718,7 +1747,7 @@ the query execution will be rejected with that error.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1066">line 1066</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1114">line 1114</a>
     </li></ul></dd>
     
 
@@ -1806,7 +1835,9 @@ the query execution will be rejected with that error.</p>
 
             
 
-            <td class="description last"><p>event context object.</p></td>
+            <td class="description last"><p>Event Context Object.</p>
+<p>This type of object is used by several events. See event <a href="global.html#event:query">query</a>
+for its complete documentation.</p></td>
         </tr>
 
     
@@ -1847,7 +1878,7 @@ the query execution will be rejected with that error.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1081">line 1081</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1133">line 1133</a>
     </li></ul></dd>
     
 
