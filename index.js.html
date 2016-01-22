@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -973,9 +973,25 @@ function $task(ctx, obj, isTX) {
 var $notify = {
     /**
      * @event connect
-     * @summary Global notification function of acquiring a new database
-     * connection from the connection pool, i.e. a virtual connection.
-     * @param {pg.Client} client - $[pg.Client] object that represents the database connection.
+     * @description
+     * Global notification of acquiring a new database connection from the connection pool,
+     * i.e. a virtual connection.
+     *
+     * The library will suppress any error thrown by the handler and write it into the console.
+     *
+     * @param {external:Client} client - $[pg.Client] object that represents connection with the database.
+     *
+     * @example
+     *
+     * var options = {
+     *
+     *     // pg-promise initialization options...
+     *
+     *     connect: function (client) {
+     *         var cp = client.connectionParameters;
+     *         console.log("Connected to database:", cp.database);
+     *     }
+     * };
      */
     connect: function (options, client) {
         if (options &amp;&amp; options.connect instanceof Function) {
@@ -991,9 +1007,25 @@ var $notify = {
     },
     /**
      * @event disconnect
-     * @summary Global notification function of releasing a database connection
-     * back to the connection pool, i.e. releasing the virtual connection.
-     * @param {pg.Client} client - $[pg.Client] object that represents the database connection.
+     * @description
+     * Global notification of releasing a database connection back to the connection pool,
+     * i.e. releasing the virtual connection.
+     *
+     * The library will suppress any error thrown by the handler and write it into the console.
+     *
+     * @param {external:Client} client - $[pg.Client] object that represents connection with the database.
+     *
+     * @example
+     *
+     * var options = {
+     *
+     *     // pg-promise initialization options...
+     *
+     *     disconnect: function(client){
+     *        var cp = client.connectionParameters;
+     *        console.log("Disconnecting from database:", cp.database);
+     *     }
+     * };
      */
     disconnect: function (options, client) {
         if (options &amp;&amp; options.disconnect instanceof Function) {
@@ -1009,8 +1041,27 @@ var $notify = {
     },
     /**
      * @event query
-     * @summary Global notification of a query that's about to execute.
-     * @param {Object} e - event context object.
+     * @description
+     * Global notification of a query that's about to execute.
+     *
+     * Notification happens just before the query execution. And if the handler throws an error,
+     * the query execution will be rejected with that error.
+     *
+     * @param {Object} e - Event Context Object.
+     *
+     * @param {String|Object} [e.cn]
+     * @param {String|Object} [e.query]
+     * @param {external:Client} [e.client]
+     * @param {} [e.params]
+     * @param {Object} [e.ctx]
+     *
+     * @param {Boolean} e.ctx.isTX
+     * @param {Date} e.ctx.start
+     * @param {Date} [e.ctx.finish]
+     * @param {} [e.ctx.tag]
+     * @param {Boolean} [e.ctx.success]
+     * @param {} e.ctx.result
+     * @param {Object} e.ctx.context
      */
     query: function (options, context) {
         if (options &amp;&amp; options.query instanceof Function) {
@@ -1274,6 +1325,11 @@ module.exports = $main;
 /**
  * @external PG
  * @see https://github.com/brianc/node-postgres/blob/master/lib/index.js#L8
+ */
+
+/**
+ * @external Client
+ * @see https://github.com/brianc/node-postgres/blob/master/lib/client.js#L12
  */
 
 /**

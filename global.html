@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -320,10 +320,14 @@ as well as method func.</p>
     <h4 class="name" id="event:connect">connect</h4>
 
     
-    <p class="summary">Global notification function of acquiring a new databaseconnection from the connection pool, i.e. a virtual connection.</p>
-    
 
 
+
+<div class="description">
+    <p>Global notification of acquiring a new database connection from the connection pool,
+i.e. a virtual connection.</p>
+<p>The library will suppress any error thrown by the handler and write it into the console.</p>
+</div>
 
 
 
@@ -364,7 +368,7 @@ as well as method func.</p>
             <td class="type">
             
                 
-<span class="param-type">pg.Client</span>
+<span class="param-type"><a href="external-Client.html">external:Client</a></span>
 
 
             
@@ -374,7 +378,7 @@ as well as method func.</p>
 
             
 
-            <td class="description last"><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents the database connection.</p></td>
+            <td class="description last"><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents connection with the database.</p></td>
         </tr>
 
     
@@ -440,6 +444,11 @@ as well as method func.</p>
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    connect: function (client) {        var cp = client.connectionParameters;        console.log("Connected to database:", cp.database);    }};</code></pre>
+
+
 
         
             
@@ -449,10 +458,14 @@ as well as method func.</p>
     <h4 class="name" id="event:disconnect">disconnect</h4>
 
     
-    <p class="summary">Global notification function of releasing a database connectionback to the connection pool, i.e. releasing the virtual connection.</p>
-    
 
 
+
+<div class="description">
+    <p>Global notification of releasing a database connection back to the connection pool,
+i.e. releasing the virtual connection.</p>
+<p>The library will suppress any error thrown by the handler and write it into the console.</p>
+</div>
 
 
 
@@ -493,7 +506,7 @@ as well as method func.</p>
             <td class="type">
             
                 
-<span class="param-type">pg.Client</span>
+<span class="param-type"><a href="external-Client.html">external:Client</a></span>
 
 
             
@@ -503,7 +516,7 @@ as well as method func.</p>
 
             
 
-            <td class="description last"><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents the database connection.</p></td>
+            <td class="description last"><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents connection with the database.</p></td>
         </tr>
 
     
@@ -544,7 +557,7 @@ as well as method func.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line963">line 963</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line979">line 979</a>
     </li></ul></dd>
     
 
@@ -567,6 +580,11 @@ as well as method func.</p>
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    disconnect: function(client){       var cp = client.connectionParameters;       console.log("Disconnecting from database:", cp.database);    }};</code></pre>
 
 
 
@@ -699,7 +717,7 @@ as well as method func.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1045">line 1045</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1096">line 1096</a>
     </li></ul></dd>
     
 
@@ -828,7 +846,7 @@ as well as method func.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1063">line 1063</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1114">line 1114</a>
     </li></ul></dd>
     
 
@@ -862,10 +880,14 @@ as well as method func.</p>
     <h4 class="name" id="event:query">query</h4>
 
     
-    <p class="summary">Global notification of a query that's about to execute.</p>
-    
 
 
+
+<div class="description">
+    <p>Global notification of a query that's about to execute.</p>
+<p>Notification happens just before the query execution. And if the handler throws an error,
+the query execution will be rejected with that error.</p>
+</div>
 
 
 
@@ -916,7 +938,442 @@ as well as method func.</p>
 
             
 
-            <td class="description last"><p>event context object.</p></td>
+            <td class="description last"><p>Event Context Object.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>client</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="external-Client.html">external:Client</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ctx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>isTX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>finish</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tag</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>success</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>result</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>context</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -957,7 +1414,7 @@ as well as method func.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line981">line 981</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1013">line 1013</a>
     </li></ul></dd>
     
 
@@ -1132,7 +1589,7 @@ as well as method func.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line997">line 997</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1048">line 1048</a>
     </li></ul></dd>
     
 
@@ -1261,7 +1718,7 @@ as well as method func.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1015">line 1015</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1066">line 1066</a>
     </li></ul></dd>
     
 
@@ -1390,7 +1847,7 @@ as well as method func.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1030">line 1030</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1081">line 1081</a>
     </li></ul></dd>
     
 
