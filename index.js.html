@@ -196,9 +196,26 @@ function Database(cn, options) {
  * .catch(function (error) {
  *       // error;
  *   });
+ *
  */
 function Task(ctx, tag, isTX) {
 
+    /**
+     * @member {Object} Task.ctx
+     * @summary Task Context Object
+     *
+     * @property {Object} [context]
+     * If the operation was invoked with an object context - `task.call(obj,...)` or
+     * `tx.call(obj,...)`, this property is set with the context object that was passed in.
+     *
+     * @property {Boolean} isTX
+     * Indicates whether this task represents a transaction.
+     *
+     * @property {} [tag]
+     * Tag value as it was passed into the task.
+     *
+     * @see event {@link event:query query}
+     */
     this.ctx = ctx.ctx = {}; // task context object;
 
     $npm.utils.addReadProp(this.ctx, 'isTX', isTX);
@@ -1104,9 +1121,20 @@ var $notify = {
      * during events {@link event:task task} and {@link event:transact transact}.
      *
      * @param {} [e.ctx.tag]
+     * Tag value as it was passed into the task or transaction.
+     *
      * @param {Boolean} [e.ctx.success]
-     * @param {} e.ctx.result
-     * @param {Object} e.ctx.context
+     * Once the operation is finished, this property indicates whether it was successful.
+     *
+     * @param {} [e.ctx.result]
+     * Once the operation has finished, this property contains its result,
+     * depending on property `success`:
+     * - data resolved by the operation, if `success` = `true`
+     * - error / rejection reason, if `success` = `false`
+     *
+     * @param {Object} [e.ctx.context]
+     * If the operation was invoked with an object context - `task.call(obj,...)` or `tx.call(obj,...)`,
+     * this property is set with the context object that was passed in.
      */
     query: function (options, context) {
         if (options &amp;&amp; options.query instanceof Function) {

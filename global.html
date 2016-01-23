@@ -419,7 +419,7 @@ i.e. a virtual connection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line945">line 945</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line962">line 962</a>
     </li></ul></dd>
     
 
@@ -557,7 +557,7 @@ i.e. releasing the virtual connection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line979">line 979</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line996">line 996</a>
     </li></ul></dd>
     
 
@@ -719,7 +719,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1152">line 1152</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1180">line 1180</a>
     </li></ul></dd>
     
 
@@ -848,7 +848,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1174">line 1174</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1202">line 1202</a>
     </li></ul></dd>
     
 
@@ -1294,7 +1294,7 @@ during events <a href="global.html#event:task">task</a> and <a href="global.html
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Tag value as it was passed into the task or transaction.</p></td>
         </tr>
 
     
@@ -1327,7 +1327,7 @@ during events <a href="global.html#event:task">task</a> and <a href="global.html
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Once the operation is finished, this property indicates whether it was successful.</p></td>
         </tr>
 
     
@@ -1344,6 +1344,8 @@ during events <a href="global.html#event:task">task</a> and <a href="global.html
             
                 <td class="attributes">
                 
+                    &lt;optional><br>
+                
 
                 
 
@@ -1353,7 +1355,12 @@ during events <a href="global.html#event:task">task</a> and <a href="global.html
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Once the operation has finished, this property contains its result,
+depending on property <code>success</code>:</p>
+<ul>
+<li>data resolved by the operation, if <code>success</code> = <code>true</code></li>
+<li>error / rejection reason, if <code>success</code> = <code>false</code></li>
+</ul></td>
         </tr>
 
     
@@ -1375,6 +1382,8 @@ during events <a href="global.html#event:task">task</a> and <a href="global.html
             
                 <td class="attributes">
                 
+                    &lt;optional><br>
+                
 
                 
 
@@ -1384,7 +1393,8 @@ during events <a href="global.html#event:task">task</a> and <a href="global.html
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>If the operation was invoked with an object context - <code>task.call(obj,...)</code> or <code>tx.call(obj,...)</code>,
+this property is set with the context object that was passed in.</p></td>
         </tr>
 
     
@@ -1439,7 +1449,7 @@ during events <a href="global.html#event:task">task</a> and <a href="global.html
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1013">line 1013</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1030">line 1030</a>
     </li></ul></dd>
     
 
@@ -1616,7 +1626,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1093">line 1093</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1121">line 1121</a>
     </li></ul></dd>
     
 
@@ -1747,7 +1757,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1114">line 1114</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1142">line 1142</a>
     </li></ul></dd>
     
 
@@ -1878,7 +1888,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1133">line 1133</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1161">line 1161</a>
     </li></ul></dd>
     
 
