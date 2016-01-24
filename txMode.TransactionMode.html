@@ -42,7 +42,7 @@
 
     
 
-    <h4 class="name" id="TransactionMode"><span class="type-signature"></span>new TransactionMode<span class="signature">(tiLevel<span class="signature-attributes">opt</span>, readOnly<span class="signature-attributes">opt</span>, deferrable<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {TransactionMode}</span></h4>
+    <h4 class="name" id="TransactionMode"><span class="type-signature"></span>new TransactionMode<span class="signature">(tiLevel<span class="signature-attributes">opt</span>, readOnly<span class="signature-attributes">opt</span>, deferrable<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -50,8 +50,7 @@
 
 <div class="description">
     <p><strong>Alternative Syntax:</strong> <code>TransactionMode({tiLevel, readOnly, deferrable})</code></p>
-<p>Constructs a complete transaction opening command,
-based on Transaction Mode parameters:</p>
+<p>Constructs a complete transaction-opening command, based on the parameters:</p>
 <ul>
 <li>isolation level</li>
 <li>access mode</li>
@@ -124,7 +123,8 @@ based on Transaction Mode parameters:</p>
 
             
 
-            <td class="description last"><p>Transaction Isolation Level</p></td>
+            <td class="description last"><p>Transaction Isolation Level, or an object with parameters, if the alternative
+syntax is used.</p></td>
         </tr>
 
     
@@ -160,8 +160,8 @@ based on Transaction Mode parameters:</p>
             <td class="description last"><p>Sets transaction access mode based on the read-only flag:</p>
 <ul>
 <li><code>undefined</code> - access mode not specified (default)</li>
-<li><code>true</code> - access mode is set as <code>READ ONLY</code></li>
-<li><code>false</code> - access mode is set as <code>READ WRITE</code></li>
+<li><code>true</code> - access mode is set to <code>READ ONLY</code></li>
+<li><code>false</code> - access mode is set to <code>READ WRITE</code></li>
 </ul></td>
         </tr>
 
@@ -198,8 +198,8 @@ based on Transaction Mode parameters:</p>
             <td class="description last"><p>Sets transaction deferrable mode based on the boolean value:</p>
 <ul>
 <li><code>undefined</code> - deferrable mode not specified (default)</li>
-<li><code>true</code> - mode is set as <code>DEFERRABLE</code></li>
-<li><code>false</code> - mode is set as <code>NOT DEFERRABLE</code></li>
+<li><code>true</code> - mode is set to <code>DEFERRABLE</code></li>
+<li><code>false</code> - mode is set to <code>NOT DEFERRABLE</code></li>
 </ul>
 <p>It is used only when <code>tiLevel</code>=<code>isolationLevel.serializable</code>
 and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
@@ -273,24 +273,11 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
 
 
 
-<h5>Returns:</h5>
-
-        
 
 
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">TransactionMode</span>
-
-
-    </dd>
-</dl>
-
+    <h5>Example</h5>
     
+    <pre class="prettyprint"><code>var TransactionMode = pgp.txMode.TransactionMode;var isolationLevel = pgp.txMode.isolationLevel;// Create a reusable transaction mode (serializable + read-only + deferrable):var tmSRD = new TransactionMode({    tiLevel: isolationLevel.serializable,    readOnly: true,    deferrable: true});function myTransaction() {    return this.query("SELECT * FROM table");}myTransaction.txMode = tmSRD; // assign transaction mode;db.tx(myTransaction)    .then(function(){        // success;    });// Instead of the default BEGIN, such transaction will initiate with:// BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE</code></pre>
 
 
 
