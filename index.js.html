@@ -1008,6 +1008,7 @@ var $notify = {
      *         var cp = client.connectionParameters;
      *         console.log("Connected to database:", cp.database);
      *     }
+     *
      * };
      */
     connect: function (options, client) {
@@ -1042,6 +1043,7 @@ var $notify = {
      *        var cp = client.connectionParameters;
      *        console.log("Disconnecting from database:", cp.database);
      *     }
+     *
      * };
      */
     disconnect: function (options, client) {
@@ -1208,12 +1210,42 @@ var $notify = {
     },
     /**
      * @event error
-     * @summary Global notification of an error during connection, query, task or transaction.
-     * @param {String|Error} err - error text or object.
-     * @param {Object} e - Event Context Object.
+     * @summary Global notification of every error encountered by this library.
+     *
+     * @param {} err
+     * The error encountered, of the value and type exactly as it was reported.
+     *
+     * @param {Object} e
+     * Event Context Object.
      *
      * This type of object is used by several events. See event {@link event:query query}
      * for its complete documentation.
+     *
+     * @example
+     * var options = {
+     *
+     *     // pg-promise initialization options...
+     *
+     *     error: function (err, e) {
+     *
+     *         if (e.cn) {
+     *             // this is a connection-related error
+     *             // cn = safe connection details passed into the library
+     *         }
+     *
+     *         if (e.query) {
+     *             // query details are available
+     *             if (e.params) {
+     *                 // query parameters are available
+     *             }
+     *         }
+     *
+     *         if (e.ctx) {
+     *             // occurred inside a task or transaction
+     *         }
+     *       }
+     *
+     * };
      *
      */
     error: function (options, err, context) {

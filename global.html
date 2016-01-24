@@ -446,7 +446,7 @@ i.e. a virtual connection.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    connect: function (client) {        var cp = client.connectionParameters;        console.log("Connected to database:", cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    connect: function (client) {        var cp = client.connectionParameters;        console.log("Connected to database:", cp.database);    }};</code></pre>
 
 
 
@@ -557,7 +557,7 @@ i.e. releasing the virtual connection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line996">line 996</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line997">line 997</a>
     </li></ul></dd>
     
 
@@ -584,7 +584,7 @@ i.e. releasing the virtual connection.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    disconnect: function(client){       var cp = client.connectionParameters;       console.log("Disconnecting from database:", cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    disconnect: function(client){       var cp = client.connectionParameters;       console.log("Disconnecting from database:", cp.database);    }};</code></pre>
 
 
 
@@ -596,7 +596,7 @@ i.e. releasing the virtual connection.</p>
     <h4 class="name" id="event:error">error</h4>
 
     
-    <p class="summary">Global notification of an error during connection, query, task or transaction.</p>
+    <p class="summary">Global notification of every error encountered by this library.</p>
     
 
 
@@ -639,21 +639,13 @@ i.e. releasing the virtual connection.</p>
 
             <td class="type">
             
-                
-<span class="param-type">String</span>
-|
-
-<span class="param-type">Error</span>
-
-
-            
             </td>
 
             
 
             
 
-            <td class="description last"><p>error text or object.</p></td>
+            <td class="description last"><p>The error encountered, of the value and type exactly as it was reported.</p></td>
         </tr>
 
     
@@ -719,7 +711,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1180">line 1180</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1182">line 1182</a>
     </li></ul></dd>
     
 
@@ -742,6 +734,11 @@ for its complete documentation.</p></td>
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    error: function (err, e) {        if (e.cn) {            // this is a connection-related error            // cn = safe connection details passed into the library        }        if (e.query) {            // query details are available            if (e.params) {                // query parameters are available            }        }        if (e.ctx) {            // occurred inside a task or transaction        }      }};</code></pre>
 
 
 
@@ -848,7 +845,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1202">line 1202</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1234">line 1234</a>
     </li></ul></dd>
     
 
@@ -1449,7 +1446,7 @@ this property is set with the context object that was passed in.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1030">line 1030</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1032">line 1032</a>
     </li></ul></dd>
     
 
@@ -1626,7 +1623,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1121">line 1121</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1123">line 1123</a>
     </li></ul></dd>
     
 
@@ -1757,7 +1754,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1142">line 1142</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1144">line 1144</a>
     </li></ul></dd>
     
 
@@ -1888,7 +1885,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1161">line 1161</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1163">line 1163</a>
     </li></ul></dd>
     
 
