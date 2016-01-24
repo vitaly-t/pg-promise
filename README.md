@@ -1153,7 +1153,7 @@ function camelizeColumns(data) {
 ```
 
 **NOTES:**
-* If you alter the size of `data` directly or though the `result` object, it may affect `QueryResultMask`
+* If you alter the size of `data` directly or through the `result` object, it may affect `QueryResultMask`
   validation for regular queries, which is executed right after this notification.  
 * When adding data pre-processing, you should consider possible performance penalty this may bring. 
 * If the event handler throws an error, the original request will be rejected with that error.
