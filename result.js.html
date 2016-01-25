@@ -24,97 +24,44 @@
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-            <span class="ancestors"><a href="module-pg-promise.html">pg-promise</a>~</span>pg-minify</h2>
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
 
-<article>
-    <div class="container-overview">
-    
-        
+/**
+ * @enum {Number}
+ * @alias queryResult
+ * @readonly
+ * @summary Query Result Mask.
+ * @description
+ * Binary mask that represents the result expected from queries.
+ * It is used in the generic {@link module:pg-promise.Database#query query} method,
+ * as well as method {@link module:pg-promise.Database#func func}.
+ *
+ * The mask is always the last optional parameter, which defaults to `queryResult.any`.
+ *
+ * Any combination of flags is supported, except for `one + many`.
+ *
+ * The type is available from the library's root: `pgp.queryResult`.
+ *
+ * @see {@link module:pg-promise.Database#query query}, {@link module:pg-promise.Database#func func}
+ */
+var queryResult = {
+    /** Single row is expected. */
+    one: 1,
+    /** One or more rows expected. */
+    many: 2,
+    /** Expecting no rows. */
+    none: 4,
+    /** many|none - any result is expected. */
+    any: 6
+};
 
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line180">line 180</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="https://github.com/vitaly-t/pg-minify">https://github.com/vitaly-t/pg-minify</a></li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+module.exports = queryResult;
+</code></pre>
+        </article>
+    </section>
 
 
 

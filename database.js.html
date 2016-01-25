@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>pg-promise API</title>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabaseContext.html">DatabaseContext</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <div class="home-link">
+        <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
+    </div>
+</nav>
+
+<div id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+var $npm = {
+    utils: require('./utils'),
+    events: require('./events'),
+    context: require('./dbContext'),
+    result: require('./result')
+};
+
+var $p;
+
+/**
+ * @constructor Database
+ * @param {String|Object} cn
+ * Connection object or string
+ */
+function Database(cn, options) {
+    /**
+     * @method pg-promise.Database.connect
+     * @summary Retrieves a new or existing connection from the pool, based on the
+     * current connection parameters.
+     * @description
+     * This method initiates a shared connection for executing a chain of queries
+     * on the same connection. The connection must be released in the end of the
+     * chain by calling method `done()` of the connection object.
+     * This is a legacy, low-level approach to chaining queries on the same connection.
+     * A newer and simpler approach is via method {@link module:pg-promise.Database#task task},
+     * which allocates and releases the shared connection automatically.
+     * @returns {external:Promise} Connection result:
+     * &lt;ul>
+     * &lt;li>resolves with the connection object, if successful. The object has method `done()` that must
+     *   be called in the end of the query chain, in order to release the connection back to the pool.&lt;/li>
+     * &lt;li>rejects with the connection error when fails.&lt;/li>
+     * &lt;/ul>
+     * @see {@link module:pg-promise.Database#task task}
+     */
+    this.connect = function () {
+        var ctx = createContext();
+        var self = {
+            // Generic query method;
+            query: function (query, values, qrm) {
+                if (!ctx.db) {
+                    throw new Error("Cannot execute a query on a disconnected client.");
+                }
+                return $npm.query.call(this, ctx, query, values, qrm);
+            },
+            // Connection release method;
+            done: function () {
+                if (!ctx.db) {
+                    throw new Error("Cannot invoke done() on a disconnected client.");
+                }
+                ctx.disconnect();
+            }
+        };
+        $npm.extend(ctx, self); // extending the protocol;
+        return $npm.connect(ctx)
+            .then(function (db) {
+                ctx.connect(db);
+                return self;
+            });
+    };
+
+    /**
+     * @method Database.query
+     * @summary Executes a generic query that expects return data according to parameter `qrm`
+     * @param {String|Object} query -
+     * - query string
+     * - prepared statement object
+     * - function object
+     * - stream object
+     * @param {Array|value} [values] - formatting parameters for the query string
+     * @param {queryResult} [qrm=queryResult.any] - {@link queryResult Query Result Mask}
+     * @returns {external:Promise} A promise object that represents the query result.
+     */
+    this.query = function (query, values, qrm) {
+        var self = this, ctx = createContext();
+        return $npm.connect(ctx)
+            .then(function (db) {
+                ctx.connect(db);
+                return $npm.query.call(self, ctx, query, values, qrm);
+            })
+            .then(function (data) {
+                ctx.disconnect();
+                return data;
+            })
+            .catch(function (error) {
+                ctx.disconnect();
+                return $p.reject(error);
+            });
+    };
+
+    $npm.extend(createContext(), this); // extending root protocol;
+
+    function createContext() {
+        return new $npm.context(cn, options);
+    }
+}
+
+module.exports = function (p) {
+    $p = p;
+    $npm.connect = require('./connect')(p);
+    $npm.extend = require('./extend')(p);
+    $npm.query = require('./query')(p);
+    return Database;
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

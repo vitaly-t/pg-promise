@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>pg-promise API</title>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabaseContext.html">DatabaseContext</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <div class="home-link">
+        <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
+    </div>
+</nav>
+
+<div id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+var $npm = {
+    utils: require('./utils'),
+    mode: require('./txMode'),
+    events: require('./events')
+};
+
+var $p;
+
+/**
+ * @constructor Task
+ * @extends Database
+ * @summary Extends {@link Database} for an automatic connection session,
+ * with methods for executing multiple database queries.
+ * @description
+ * All query methods of this library automatically manage their database connection:
+ * 1. allocate a new connection from the connection pool
+ * 2. execute the query
+ * 3. release the connection back to the pool
+ *
+ * When executing more than one request at a time, such approach is no longer prudent.
+ * One should allocate and release the connection only once, while executing all the
+ * required queries within the same connection session. More importantly, a transaction
+ * can only work within a single connection.
+ *
+ * This class provides an interface for tasks and transactions to implement a connection
+ * session, during which you can execute multiple queries against the same connection.
+ *
+ * @example
+ * db.task(function (t) {
+ *       // this = t = task protocol context;
+ *       // this.ctx = task config + state context;
+ *       return t.one("select * from users where id=$1", 123)
+ *           .then(function (user) {
+ *               return t.any("select * from events where login=$1", user.name);
+ *           });
+ *   })
+ * .then(function (events) {
+ *       // success;
+ *   })
+ * .catch(function (error) {
+ *       // error;
+ *   });
+ *
+ */
+function Task(ctx, tag, isTX) {
+
+    /**
+     * @member {Object} Task.ctx
+     * @summary Task Context Object
+     *
+     * @property {Object} [context]
+     * If the operation was invoked with an object context - `task.call(obj,...)` or
+     * `tx.call(obj,...)`, this property is set with the context object that was passed in.
+     *
+     * @property {Boolean} isTX
+     * Indicates whether this task represents a transaction.
+     *
+     * @property {} [tag]
+     * Tag value as it was passed into the task.
+     *
+     * @see event {@link event:query query}
+     */
+    this.ctx = ctx.ctx = {}; // task context object;
+
+    $npm.utils.addReadProp(this.ctx, 'isTX', isTX);
+
+    if ('context' in ctx) {
+        $npm.utils.addReadProp(this.ctx, 'context', ctx.context);
+    }
+
+    if (tag !== undefined) {
+        $npm.utils.addReadProp(this.ctx, 'tag', tag);
+    }
+
+    // generic query method;
+    this.query = function (query, values, qrm) {
+        if (!ctx.db) {
+            throw new Error("Unexpected call outside of " + (isTX ? "transaction." : "task."));
+        }
+        return $npm.query.call(this, ctx, query, values, qrm);
+    };
+
+    /**
+     * @method Task.batch
+     * @summary Resolves a predefined array of mixed values by redirecting to method $[spex.batch].
+     * @description
+     * For complete method documentation see $[spex.batch].
+     * @param {Array} values
+     * @param {Function} [cb]
+     * @returns {external:Promise}
+     */
+    this.batch = function (values, cb) {
+        return $npm.spex.batch.call(this, values, cb);
+    };
+
+    /**
+     * @method Task.page
+     * @summary Resolves a dynamic sequence of arrays/pages with mixed values, by redirecting to method $[spex.page].
+     * @description
+     * For complete method documentation see $[spex.page].
+     * @param {Function} source
+     * @param {Function} [dest]
+     * @param {Number} [limit=0]
+     * @returns {external:Promise}
+     */
+    this.page = function (source, dest, limit) {
+        return $npm.spex.page.call(this, source, dest, limit);
+    };
+
+    /**
+     * @method Task.sequence
+     * @summary Resolves a dynamic sequence of mixed values by redirecting to method $[spex.sequence].
+     * @description
+     * For complete method documentation see $[spex.sequence].
+     * @param {Function} source
+     * @param {Function} [dest]
+     * @param {Number} [limit=0]
+     * @param {Boolean} [track=false]
+     * @returns {external:Promise}
+     */
+    this.sequence = function (source, dest, limit, track) {
+        return $npm.spex.sequence.call(this, source, dest, limit, track);
+    };
+
+}
+
+///////////////////////////////////////
+// Implements a task/transaction logic;
+function $task(ctx, obj, isTX) {
+
+    // callback invocation helper;
+    function callback() {
+        var result, cb = ctx.cb;
+        if (cb.constructor.name === 'GeneratorFunction') {
+            cb = $npm.async(cb);
+        }
+        try {
+            result = cb.call(obj, obj); // invoking the callback function;
+        } catch (err) {
+            $npm.events.error(ctx.options, err, {
+                client: ctx.db.client,
+                ctx: ctx.ctx
+            });
+            return $p.reject(err); // reject with the error;
+        }
+        if (result &amp;&amp; result.then instanceof Function) {
+            return result; // result is a valid promise object;
+        }
+        return $p.resolve(result);
+    }
+
+    // updates the task context and notifies the client;
+    function update(start, success, result) {
+        var c = ctx.ctx;
+        if (start) {
+            $npm.utils.addReadProp(c, 'start', new Date());
+        } else {
+            c.finish = new Date();
+            c.success = success;
+            c.result = result;
+            $npm.utils.lock(c, true);
+        }
+        (isTX ? $npm.events.transact : $npm.events.task)(ctx.options, {
+            client: ctx.db.client,
+            ctx: c
+        });
+    }
+
+    var cbData, cbReason, success,
+        spName, // Save-Point Name;
+        capTX = ctx.options &amp;&amp; ctx.options.capTX; // capitalize transaction commands;
+
+    update(true);
+
+    if (isTX) {
+        // executing a transaction;
+        spName = "level_" + ctx.txLevel;
+        return begin()
+            .then(function () {
+                    return callback()
+                        .then(function (data) {
+                            cbData = data; // save callback data;
+                            success = true;
+                            return commit();
+                        }, function (reason) {
+                            cbReason = reason; // save callback failure reason;
+                            return rollback();
+                        })
+                        .then(function () {
+                                if (success) {
+                                    update(false, true, cbData);
+                                    return cbData;
+                                } else {
+                                    update(false, false, cbReason);
+                                    return $p.reject(cbReason);
+                                }
+                            },
+                            // istanbul ignore next: either `commit` or `rollback` has failed, which is
+                            // impossible to replicate in a test environment, so skipping from the test;
+                            function (reason) {
+                                update(false, false, reason);
+                                return $p.reject(reason);
+                            });
+                },
+                // istanbul ignore next: `begin` has failed, which is impossible
+                // to replicate in a test environment, so skipping from the test;
+                function (reason) {
+                    update(false, false, reason);
+                    return $p.reject(reason);
+                });
+    }
+
+    function begin() {
+        if (!ctx.txLevel &amp;&amp; ctx.cb.txMode instanceof $npm.mode.TransactionMode) {
+            var b = ctx.cb.txMode.begin(capTX);
+            return capTX ? exec(b, 'SAVEPOINT') : exec(b, 'savepoint');
+        }
+        return capTX ? exec('BEGIN', 'SAVEPOINT') : exec('begin', 'savepoint');
+    }
+
+    function commit() {
+        return capTX ? exec('COMMIT', 'RELEASE SAVEPOINT') : exec('commit', 'release savepoint');
+    }
+
+    function rollback() {
+        return capTX ? exec('ROLLBACK', 'ROLLBACK TO SAVEPOINT') : exec('rollback', 'rollback to savepoint');
+    }
+
+    function exec(top, nested) {
+        return obj.none(ctx.txLevel ? nested + ' ' + spName : top);
+    }
+
+    // executing a task;
+    return callback()
+        .then(function (data) {
+            update(false, true, data);
+            return data;
+        })
+        .catch(function (error) {
+            update(false, false, error);
+            return $p.reject(error);
+        });
+
+}
+
+Task.exec = $task;
+
+module.exports = function (p) {
+    $p = p;
+    $npm.query = require('./query')(p);
+    $npm.spex = require('spex')(require('./promise').promiseLib);
+    $npm.async = require('./async')(p);
+    return Task;
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
