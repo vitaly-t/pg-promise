@@ -1,19 +1,14 @@
 {
   "source": {
     "include": [
-      "lib/index.js",
-      "lib/formatting.js",
-      "lib/adapter.js",
-      "lib/queryFile.js",
-      "lib/errors.js",
-      "lib/txMode.js"
+      "lib"
     ]
   },
   "templates": {
     "default": {
       "layoutFile": "jsdoc/layout.html",
-      "staticFiles":{
-        "include":[
+      "staticFiles": {
+        "include": [
           "./jsdoc/style.css"
         ]
       }
