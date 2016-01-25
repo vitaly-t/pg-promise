@@ -444,7 +444,7 @@ function createFilter(filter){
     if(filter.name){
         // add name-like condition with a raw-text variable
         // by appending '^' to its name;
-        cnd.push(pgp.format("name like '%$1^%'", filter.name));
+        cnd.push(pgp.as.format("name like '%$1^%'", filter.name));
     }
     return cnd.join(" and "); // returning the complete filter string;
 }
