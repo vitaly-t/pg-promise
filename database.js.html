@@ -41,8 +41,26 @@ var $p; // promise interface;
 
 /**
  * @constructor Database
+ * @description
+ * Represents an extensible database protocol. This type is not available directly,
+ * it can only be created via the library's base call.
+ *
  * @param {String|Object} cn
  * Connection object or string
+ *
+ * @see {@link event:extend extend}
+ *
+ * @example
+ * // Loading and initializing the library:
+ * var pgp = require('pg-promise')({
+ *     // Initialization Options
+ * });
+ *
+ * var cn = "postgres://username:password@host:port/database";
+ *
+ * // Creating a new database instance from the connection details:
+ * var db = pgp(cn);
+ *
  */
 function Database(cn, options) {
 
