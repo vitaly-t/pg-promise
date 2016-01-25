@@ -44,8 +44,6 @@
     <h4 class="name" id="QueryFile"><span class="type-signature"></span>new QueryFile<span class="signature">(file, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
-    <p class="summary">SQL query file provider.</p>
-    
 
 
 
@@ -330,6 +328,11 @@ or <code>false</code> otherwise.</p></td>
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Proper way to organize an sql provider://// - have all sql files for Users in ./sql/users// - have all sql files for Products in ./sql/products// - have your sql provider module as ./sql/index.jsvar QueryFile = require('pg-promise').QueryFile;// Helper for linking to external query files:function sql(file) {    var relativePath = './db/sql/';    return new QueryFile(relativePath + file, {minify: true});}var sqlProvider = {    // external queries for Users:    users: {        add: sql('users/create.sql'),        search: sql('users/search.sql'),        report: sql('users/report.sql'),    },    // external queries for Products:    products: {        add: sql('products/add.sql'),        quote: sql('products/quote.sql'),        search: sql('products/search.sql'),    }};module.exports = sqlProvider;</code></pre>
+
+
 
     
     </div>
@@ -406,7 +409,7 @@ or <code>false</code> otherwise.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line125">line 125</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line158">line 158</a>
     </li></ul></dd>
     
 
@@ -427,7 +430,7 @@ or <code>false</code> otherwise.</p></td>
 <h4 class="name" id="file"><span class="type-signature">(readonly) </span>file<span class="type-signature"> :String</span></h4>
 
 
-<p class="summary">File name/path passed into the constructor.</p>
+<p class="summary">File name that was passed into the constructor.</p>
 
 
 
@@ -476,7 +479,7 @@ or <code>false</code> otherwise.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line138">line 138</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line171">line 171</a>
     </li></ul></dd>
     
 
@@ -546,7 +549,7 @@ or <code>false</code> otherwise.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line150">line 150</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line183">line 183</a>
     </li></ul></dd>
     
 
@@ -625,7 +628,7 @@ or <code>false</code> otherwise.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line110">line 110</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line143">line 143</a>
     </li></ul></dd>
     
 
@@ -707,7 +710,7 @@ the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line67">line 67</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line100">line 100</a>
     </li></ul></dd>
     
 
