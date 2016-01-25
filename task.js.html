@@ -155,9 +155,9 @@ function Task(ctx, tag, isTX) {
 
 }
 
-///////////////////////////////////////
-// Implements a task/transaction logic;
-function $task(ctx, obj, isTX) {
+//////////////////////////
+// Executes a task
+function execTask(ctx, obj, isTX) {
 
     // callback invocation helper;
     function callback() {
@@ -274,13 +274,13 @@ function $task(ctx, obj, isTX) {
 
 }
 
-Task.exec = $task;
+Task.exec = execTask;
 
 module.exports = function (p) {
     $p = p;
     $npm.query = require('./query')(p);
-    $npm.spex = require('spex')(require('./promise').promiseLib);
     $npm.async = require('./async')(p);
+    $npm.spex = require('spex')(require('./promise').promiseLib);
     return Task;
 };
 </code></pre>
