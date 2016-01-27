@@ -216,12 +216,16 @@ to the formatting object itself, to be injected as a raw-text JSON-formatted str
 
 ### SQL Names
 
-Introduced in version 3.1.0, this feature simplifies formatting for SQL names/identifiers,
-by appending the variable with symbol `~` (tilde):
+Introduced in version 3.1.0, this feature simplifies formatting for SQL names/identifiers.
+
+When a variable ends with `~` (tilde), it represents an SQL name or identifier, which must be
+a text string, to be wrapped in double quotes.
+
+Variable values `null` or `undefined` are treated the same as an empty text string. 
 
 ```js
-query('INSERT INTO $1~', 'tableName');
-// => INSERT INTO "tableName"
+query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
+// => INSERT INTO "Table Name"("Column Name") VALUES(...)
 
 query('SELECT ${column~} FROM ${table~}', {
     column: 'Column Name',
@@ -1368,7 +1372,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
-* 3.1.0 Adding support for SQL Names. Released: January 27, 2016
+* 3.1.0 Adding support for [SQL Names]. Released: January 27, 2016
 * 3.0.3 Complete replacement of the API with GitHub-hosted one. Released: January 21, 2016
 * 2.9.3 Replaced all SQL processing with [pg-minify] dependency. Released: January 20, 2016
 * 2.9.1 added custom SQL parser for external files. Released: January 19, 2016
