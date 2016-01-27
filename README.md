@@ -405,6 +405,10 @@ pgp.as.text(value, raw);
                     // fixing single-quote symbols and wrapping the result
                     // in quotes (unless flag 'raw' is set);
 
+pgp.as.name(value);
+                    // converts value into PostgreSQL name/identifier,
+                    // wrapped in double quotes.
+
 pgp.as.date(value, raw);
                     // converts value into PostgreSQL date/time presentation,
                     // wrapped in quotes (unless flag 'raw' is set);
