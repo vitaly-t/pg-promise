@@ -468,6 +468,37 @@ describe("Method as.dummy", function () {
     });
 });
 
+describe("Method as.name", function () {
+
+    describe("with a non-string", function () {
+        var error = new TypeError("An sql name/identifier must be a string.");
+        it("must throw na error", function () {
+            expect(function () {
+                pgp.as.name(123);
+            }).toThrow(error);
+        });
+    });
+
+    describe("with an empty value", function () {
+        it("must return an empty quoted text", function () {
+            expect(pgp.as.name()).toBe('""');
+            expect(pgp.as.name(null)).toBe('""');
+            expect(pgp.as.name('')).toBe('""');
+        });
+    });
+
+    describe("with a function", function () {
+        function getName() {
+            return "name";
+        }
+
+        it("must use the function value", function () {
+            expect(pgp.as.name(getName)).toBe('"name"');
+        });
+    });
+
+});
+
 describe("Method as.format", function () {
 
     it("must return a correctly formatted string", function () {
@@ -758,6 +789,7 @@ describe("Named Parameters", function () {
 });
 
 describe("Custom Format", function () {
+
     function MyType(v) {
         this.value = v;
         this._rawDBType = true;
@@ -767,16 +799,19 @@ describe("Custom Format", function () {
     }
 
     var test = new MyType(12.3);
+
     describe("as array value", function () {
         it("must covert correctly", function () {
             expect(pgp.as.format("$1", [test])).toBe("12.3000");
         });
     });
+
     describe("as one value", function () {
         it("must covert correctly", function () {
             expect(pgp.as.format("$1", test)).toBe("12.3000");
         });
     });
+
     describe("for Date override", function () {
         beforeEach(function () {
             Date.prototype.formatDBType = function () {
@@ -795,6 +830,7 @@ describe("Custom Format", function () {
             delete Date.prototype.formatDBType;
         });
     });
+
     describe("for Array override", function () {
         beforeEach(function () {
             Array.prototype.formatDBType = function () {
@@ -827,3 +863,52 @@ describe("Custom Format", function () {
 
 });
 
+describe("SQL Names", function () {
+
+    describe("direct", function () {
+        it("must format correctly", function () {
+            expect(pgp.as.format('$1~', 'name')).toBe('"name"');
+            expect(pgp.as.format('${name~}', {name: 'hello'})).toBe('"hello"');
+        });
+    });
+
+    describe("from a function", function () {
+        function getName() {
+            return 'hello';
+        }
+
+        it("must use the function result", function () {
+            expect(pgp.as.format('$1~', getName)).toBe('"hello"');
+        });
+
+    });
+
+    describe("from a mixed type", function () {
+
+        function CS(name) {
+            this.name = name;
+            this.formatDBType = function () {
+                return this.name;
+            };
+        }
+
+        var csTest = new CS('customType');
+
+        function getName() {
+            return csTest;
+        }
+
+        it("must resolve the mixed type", function () {
+            expect(pgp.as.format('$1~', getName)).toBe('"customType"');
+        });
+    });
+
+    describe("with a wrong object type", function () {
+        it("must reject the object with an error", function () {
+            expect(function () {
+                pgp.as.format('$1~', [{}]);
+            }).toThrow(new TypeError("An sql name/identifier must be a string."));
+        });
+    });
+
+});

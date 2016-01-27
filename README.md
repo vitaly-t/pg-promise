@@ -26,11 +26,13 @@ Advanced access layer to [node-postgres] via [Promises/A+].
 * [Documentation](#documentation)    
 * [Usage](#usage)
   - [Queries and Parameters](#queries-and-parameters)
+    - [Raw Text](#raw-text)  
+    - [SQL Names](#sql-names)    
   - [Query Result Mask](#query-result-mask)    
   - [Named Parameters](#named-parameters)
   - [Conversion Helpers](#conversion-helpers)
   - [Custom Type Formatting](#custom-type-formatting)  
-    - [Raw Custom Types](#raw-custom-types)
+    - [Raw Custom Types](#raw-custom-types)   
   - [Query Files](#query-files)    
   - [Connections](#connections)  
     - [Detached Connections](#detached-connections)
@@ -183,7 +185,7 @@ converted into the array constructor format of `array[]`, the same as calling me
 When a value/property inside array/object is of type `object` (except for `null` and `Date`), it is automatically
 serialized into JSON, the same as calling method `pgp.as.json()`, except the latter would convert anything to JSON.
 
-#### Raw Text
+### Raw Text
 
 Raw-text values can be injected by appending the variable name with symbol `^`:
 `$1^, $2^, etc...`, `$*varName^*`, where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
@@ -211,6 +213,24 @@ query("...WHERE id IN($1^)", pgp.as.csv([1,2,3,4]));
 
 Special syntax `this^` within the [Named Parameters](#named-parameters) refers
 to the formatting object itself, to be injected as a raw-text JSON-formatted string.
+
+### SQL Names
+
+Introduced in version 3.1.0, this feature simplifies formatting for SQL names/identifiers,
+by appending the variable with symbol `~` (tilde):
+
+```js
+query('INSERT INTO $1~', 'tableName');
+// => INSERT INTO "tableName"
+
+query('SELECT ${column~} FROM ${table~}', {
+    column: 'Column Name',
+    table: 'Table Name'
+});
+// => SELECT "Column Name" FROM "Table Name"
+```
+
+The protocol has been extended with method [as.name].
 
 ## Query Result Mask
 
@@ -1348,6 +1368,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 3.1.0 Adding support for SQL Names. Released: January 27, 2016
 * 3.0.3 Complete replacement of the API with GitHub-hosted one. Released: January 21, 2016
 * 2.9.3 Replaced all SQL processing with [pg-minify] dependency. Released: January 20, 2016
 * 2.9.1 added custom SQL parser for external files. Released: January 19, 2016
@@ -1411,6 +1432,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
 [batch]:http://vitaly-t.github.io/pg-promise/Task.html#.batch
 [sequence]:http://vitaly-t.github.io/pg-promise/Task.html#.sequence
 [API]:http://vitaly-t.github.io/pg-promise
