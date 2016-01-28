@@ -861,6 +861,18 @@ describe("Custom Format", function () {
         });
     });
 
+    describe('raw inheritance/mutation', function () {
+        var obj = {
+            // raw flag here must apply to every value of the array returned;
+            _rawDBType: true,
+            formatDBType: function () {
+                return ['first', 'second'];
+            }
+        };
+        it("must work", function () {
+            expect(pgp.as.format("$1, $2", obj)).toBe("first, second");
+        });
+    });
 });
 
 describe("SQL Names", function () {
