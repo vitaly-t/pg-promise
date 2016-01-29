@@ -484,6 +484,7 @@ describe("Method as.name", function () {
             expect(pgp.as.name()).toBe('""');
             expect(pgp.as.name(null)).toBe('""');
             expect(pgp.as.name('')).toBe('""');
+            expect(pgp.as.name('""')).toBe('""');
         });
     });
 
@@ -497,6 +498,15 @@ describe("Method as.name", function () {
         });
     });
 
+    describe("with a regular name", function () {
+        it("must return the name", function () {
+            expect(pgp.as.name('name')).toBe('"name"');
+        });
+        it("must not repeat double quotes", function () {
+            expect(pgp.as.name('"name"')).toBe('"name"');
+            expect(pgp.as.name(' \t "name" \t ')).toBe(' \t "name" \t ');
+        });
+    });
 });
 
 describe("Method as.format", function () {
@@ -880,6 +890,7 @@ describe("SQL Names", function () {
     describe("direct", function () {
         it("must format correctly", function () {
             expect(pgp.as.format('$1~', 'name')).toBe('"name"');
+            expect(pgp.as.format('$1~', '"name"')).toBe('"name"');
             expect(pgp.as.format('${name~}', {name: 'hello'})).toBe('"hello"');
         });
     });
