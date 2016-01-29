@@ -35,6 +35,9 @@ var minify = require('pg-minify');
 
 /**
  * @constructor QueryFile
+ *
+ * @summary Represents an external SQL file
+ *
  * @description
  *
  * Reads a file with SQL and prepares it for execution, also parses and minifies it, if required.
@@ -69,6 +72,7 @@ var minify = require('pg-minify');
  * Failure to parse SQL will result in $[SQLParsingError].
  *
  * @example
+ * // File sql.js
  *
  * // Proper way to organize an sql provider:
  * //
@@ -101,6 +105,21 @@ var minify = require('pg-minify');
  *
  * module.exports = sqlProvider;
  *
+ * @example
+ * // Testing our SQL provider
+ *
+ * var db = require('./db'); // our database module;
+ * var sql = require('./sql').users; // our sql for users;
+ *
+ * module.exports = {
+ *     addUser: function (name, age) {
+ *         return db.none(sql.add, [name, age]);
+ *     },
+ *     findUser: function (name) {
+ *         return db.any(sql.search, name);
+ *     }
+ * };
+ *
  */
 function QueryFile(file, options) {
 
@@ -131,6 +150,8 @@ function QueryFile(file, options) {
      * If the the query hasn't been prepared yet, it will read the file
      * and process the contents according to the parameters passed into
      * the constructor.
+     *
+     * This method is meant primarily for internal use by the library.
      */
     this.prepare = function () {
         var lastMod;
@@ -175,6 +196,8 @@ function QueryFile(file, options) {
      * @summary Prepared query string.
      * @description
      * When property {@link QueryFile#error error} is set, the query is `undefined`.
+     *
+     * This property is meant primarily for internal use by the library.
      */
     Object.defineProperty(this, 'query', {
         get: function () {
@@ -187,7 +210,10 @@ function QueryFile(file, options) {
      * @type Error
      * @default undefined
      * @readonly
-     * @summary Error, if thrown while preparing the query.
+     * @description
+     * Error, if thrown while preparing the query.
+     *
+     * This property is meant primarily for internal use by the library.
      */
     Object.defineProperty(this, 'error', {
         get: function () {
@@ -199,7 +225,10 @@ function QueryFile(file, options) {
      * @name QueryFile#file
      * @type String
      * @readonly
-     * @summary File name that was passed into the constructor.
+     * @description
+     * File name that was passed into the constructor.
+     *
+     * This property is meant primarily for internal use by the library.
      */
     Object.defineProperty(this, 'file', {
         get: function () {
@@ -211,7 +240,10 @@ function QueryFile(file, options) {
      * @name QueryFile#options
      * @type Object
      * @readonly
-     * @summary Set of options, as configured during the object's construction.
+     * @description
+     * Set of options, as configured during the object's construction.
+     *
+     * This property is meant primarily for internal use by the library.
      */
     Object.defineProperty(this, 'options', {
         get: function () {

@@ -44,6 +44,8 @@
     <h4 class="name" id="QueryFile"><span class="type-signature"></span>new QueryFile<span class="signature">(file, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
+    <p class="summary">Represents an external SQL file</p>
+    
 
 
 
@@ -326,9 +328,11 @@ or <code>false</code> otherwise.</p></td>
 
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// Proper way to organize an sql provider://// - have all sql files for Users in ./sql/users// - have all sql files for Products in ./sql/products// - have your sql provider module as ./sql/index.jsvar QueryFile = require('pg-promise').QueryFile;// Helper for linking to external query files:function sql(file) {    var relativePath = './db/sql/';    return new QueryFile(relativePath + file, {minify: true});}var sqlProvider = {    // external queries for Users:    users: {        add: sql('users/create.sql'),        search: sql('users/search.sql'),        report: sql('users/report.sql'),    },    // external queries for Products:    products: {        add: sql('products/add.sql'),        quote: sql('products/quote.sql'),        search: sql('products/search.sql'),    }};module.exports = sqlProvider;</code></pre>
+    <pre class="prettyprint"><code>// File sql.js// Proper way to organize an sql provider://// - have all sql files for Users in ./sql/users// - have all sql files for Products in ./sql/products// - have your sql provider module as ./sql/index.jsvar QueryFile = require('pg-promise').QueryFile;// Helper for linking to external query files:function sql(file) {    var relativePath = './db/sql/';    return new QueryFile(relativePath + file, {minify: true});}var sqlProvider = {    // external queries for Users:    users: {        add: sql('users/create.sql'),        search: sql('users/search.sql'),        report: sql('users/report.sql'),    },    // external queries for Products:    products: {        add: sql('products/add.sql'),        quote: sql('products/quote.sql'),        search: sql('products/search.sql'),    }};module.exports = sqlProvider;</code></pre>
+
+    <pre class="prettyprint"><code>// Testing our SQL providervar db = require('./db'); // our database module;var sql = require('./sql').users; // our sql for users;module.exports = {    addUser: function (name, age) {        return db.none(sql.add, [name, age]);    },    findUser: function (name) {        return db.any(sql.search, name);    }};</code></pre>
 
 
 
@@ -353,9 +357,12 @@ or <code>false</code> otherwise.</p></td>
 <h4 class="name" id="error"><span class="type-signature">(readonly) </span>error<span class="type-signature"> :Error</span></h4>
 
 
-<p class="summary">Error, if thrown while preparing the query.</p>
 
 
+<div class="description">
+    <p>Error, if thrown while preparing the query.</p>
+<p>This property is meant primarily for internal use by the library.</p>
+</div>
 
 
 
@@ -407,7 +414,7 @@ or <code>false</code> otherwise.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line156">line 156</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line179">line 179</a>
     </li></ul></dd>
     
 
@@ -428,9 +435,12 @@ or <code>false</code> otherwise.</p></td>
 <h4 class="name" id="file"><span class="type-signature">(readonly) </span>file<span class="type-signature"> :String</span></h4>
 
 
-<p class="summary">File name that was passed into the constructor.</p>
 
 
+<div class="description">
+    <p>File name that was passed into the constructor.</p>
+<p>This property is meant primarily for internal use by the library.</p>
+</div>
 
 
 
@@ -477,7 +487,7 @@ or <code>false</code> otherwise.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line169">line 169</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line195">line 195</a>
     </li></ul></dd>
     
 
@@ -498,9 +508,12 @@ or <code>false</code> otherwise.</p></td>
 <h4 class="name" id="options"><span class="type-signature">(readonly) </span>options<span class="type-signature"> :Object</span></h4>
 
 
-<p class="summary">Set of options, as configured during the object's construction.</p>
 
 
+<div class="description">
+    <p>Set of options, as configured during the object's construction.</p>
+<p>This property is meant primarily for internal use by the library.</p>
+</div>
 
 
 
@@ -547,7 +560,7 @@ or <code>false</code> otherwise.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line181">line 181</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line210">line 210</a>
     </li></ul></dd>
     
 
@@ -574,6 +587,7 @@ or <code>false</code> otherwise.</p></td>
 
 <div class="description">
     <p>When property <a href="QueryFile.html#error">error</a> is set, the query is <code>undefined</code>.</p>
+<p>This property is meant primarily for internal use by the library.</p>
 </div>
 
 
@@ -626,7 +640,7 @@ or <code>false</code> otherwise.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line141">line 141</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line162">line 162</a>
     </li></ul></dd>
     
 
@@ -665,6 +679,7 @@ or <code>false</code> otherwise.</p></td>
     <p>If the the query hasn't been prepared yet, it will read the file
 and process the contents according to the parameters passed into
 the constructor.</p>
+<p>This method is meant primarily for internal use by the library.</p>
 </div>
 
 
@@ -708,7 +723,7 @@ the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line98">line 98</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line117">line 117</a>
     </li></ul></dd>
     
 

@@ -65,16 +65,23 @@ var $p; // promise interface;
 function Database(cn, options) {
 
     /**
-     * @method pg-promise.Database.connect
-     * @summary Retrieves a new or existing connection from the pool, based on the
-     * current connection parameters.
+     * @method Database.connect
+     * @deprecated
+     * Method {@link Database.task task} offers a safer (automatic) way of opening and
+     * releasing the connection.
+     *
+     * @summary Retrieves a new or existing connection from the pool, based on the current
+     * connection parameters.
+     *
      * @description
-     * This method initiates a shared connection for executing a chain of queries
-     * on the same connection. The connection must be released in the end of the
-     * chain by calling method `done()` of the connection object.
+     * This method initiates a shared connection for executing a chain of queries on the
+     * same connection. The connection must be released in the end of the chain by calling
+     * method `done()` on the connection object.
+     *
      * This is a legacy, low-level approach to chaining queries on the same connection.
-     * A newer and simpler approach is via method {@link module:pg-promise.Database#task task},
-     * which allocates and releases the shared connection automatically.
+     * A newer and safer approach is via methods {@link Database.task task}, which allocates
+     * and releases the shared connection automatically.
+     *
      * @returns {external:Promise} Connection result:
      * &lt;ul>
      * &lt;li>resolves with the connection object, if successful. The object has method `done()` that must
@@ -115,8 +122,7 @@ function Database(cn, options) {
      * @param {String|Object} query -
      * - query string
      * - prepared statement object
-     * - function object
-     * - stream object
+     * - {@link QueryFile} object
      * @param {Array|value} [values] - formatting parameters for the query string
      * @param {queryResult} [qrm=queryResult.any] - {@link queryResult Query Result Mask}
      * @returns {external:Promise} A promise object that represents the query result.
@@ -155,6 +161,7 @@ function Database(cn, options) {
          * @param {String|Object} query -
          * - query string
          * - prepared statement object
+         * - {@link QueryFile} object
          * @param {Array|value} [values] - formatting parameters for the query string
          * @returns {external:Promise} Result of the query call:
          * - when no records are returned, it resolves with `undefined`
@@ -171,6 +178,7 @@ function Database(cn, options) {
          * @param {String|Object} query -
          * - query string
          * - prepared statement object
+         * - {@link QueryFile} object
          * @param {Array|value} [values] - formatting parameters for the query string
          * @returns {external:Promise} Result of the query call:
          * - when 1 row is returned, it resolves with that row as a single object;
@@ -189,6 +197,7 @@ function Database(cn, options) {
          * @param {String|Object} query -
          * - query string
          * - prepared statement object
+         * - {@link QueryFile} object
          * @param {Array|value} [values] - formatting parameters for the query string
          * @returns {external:Promise} Result of the query call:
          * - when 1 or more rows are returned, it resolves with the array of rows
@@ -205,6 +214,7 @@ function Database(cn, options) {
          * @param {String|Object} query -
          * - query string
          * - prepared statement object
+         * - {@link QueryFile} object
          * @param {Array|value} [values] - formatting parameters for the query string
          * @returns {external:Promise} Result of the query call:
          * - when no rows are returned, it resolves with `null`
@@ -222,6 +232,7 @@ function Database(cn, options) {
          * @param {String|Object} query -
          * - query string
          * - prepared statement object
+         * - {@link QueryFile} object
          * @param {Array|value} [values] - formatting parameters for the query string
          * @returns {external:Promise} Result of the query call:
          * - when no rows are returned, it resolves with an empty array
@@ -233,12 +244,14 @@ function Database(cn, options) {
         };
 
         /**
-         * Alias for method {@link Database.manyOrNone manyOrNone}
          * @method Database.any
          * @summary Executes a query that expects any number of rows.
+         * @description
+         * This is an alias for method {@link Database.manyOrNone manyOrNone}.
          * @param {String|Object} query -
          * - query string
          * - prepared statement object
+         * - {@link QueryFile} object
          * @param {Array|value} [values] - formatting parameters for the query string
          * @returns {external:Promise} The same as method {@link Database.manyOrNone manyOrNone}
          * @see {@link Database.manyOrNone}
@@ -254,6 +267,7 @@ function Database(cn, options) {
          * @param {String|Object} query -
          * - query string
          * - prepared statement object
+         * - {@link QueryFile} object
          * @param {Array|value} [values] - formatting parameters for the query string
          * @returns {external:Promise} Result of the query call:
          * - resolves with the original $[Result] object

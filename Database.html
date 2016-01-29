@@ -215,7 +215,7 @@ it can only be created via the library's base call.</p>
 
 
 <div class="description">
-    <p>Alias for method <a href="Database.html#.manyOrNone">manyOrNone</a></p>
+    <p>This is an alias for method <a href="Database.html#.manyOrNone">manyOrNone</a>.</p>
 </div>
 
 
@@ -283,6 +283,7 @@ it can only be created via the library's base call.</p>
             <td class="description last"><ul>
 <li>query string</li>
 <li>prepared statement object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
 
@@ -360,7 +361,7 @@ it can only be created via the library's base call.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line206">line 206</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line217">line 217</a>
     </li></ul></dd>
     
 
@@ -395,6 +396,131 @@ it can only be created via the library's base call.</p>
         
 <div class="param-desc">
     <p>The same as method <a href="Database.html#.manyOrNone">manyOrNone</a></p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".connect"><span class="type-signature">(static) </span>connect<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+    <p class="summary">Retrieves a new or existing connection from the pool, based on the currentconnection parameters.</p>
+    
+
+
+
+<div class="description">
+    <p>This method initiates a shared connection for executing a chain of queries on the
+same connection. The connection must be released in the end of the chain by calling
+method <code>done()</code> on the connection object.</p>
+<p>This is a legacy, low-level approach to chaining queries on the same connection.
+A newer and safer approach is via methods <a href="Database.html#.task">task</a>, which allocates
+and releases the shared connection automatically.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>Method <a href="Database.html#.task">task</a> offers a safer (automatic) way of opening andreleasing the connection.</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>task</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Connection result:</p>
+<ul>
+<li>resolves with the connection object, if successful. The object has method <code>done()</code> that must
+  be called in the end of the query chain, in order to release the connection back to the pool.</li>
+<li>rejects with the connection error when fails.</li>
+</ul>
 </div>
 
 
@@ -493,6 +619,7 @@ it can only be created via the library's base call.</p>
             <td class="description last"><ul>
 <li>query string</li>
 <li>prepared statement object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
 
@@ -570,7 +697,7 @@ it can only be created via the library's base call.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line157">line 157</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line165">line 165</a>
     </li></ul></dd>
     
 
@@ -701,6 +828,7 @@ it can only be created via the library's base call.</p>
             <td class="description last"><ul>
 <li>query string</li>
 <li>prepared statement object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
 
@@ -778,7 +906,7 @@ it can only be created via the library's base call.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line190">line 190</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line200">line 200</a>
     </li></ul></dd>
     
 
@@ -915,6 +1043,7 @@ it can only be created via the library's base call.</p>
             <td class="description last"><ul>
 <li>query string</li>
 <li>prepared statement object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
 
@@ -992,7 +1121,7 @@ it can only be created via the library's base call.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line123">line 123</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line129">line 129</a>
     </li></ul></dd>
     
 
@@ -1123,6 +1252,7 @@ it can only be created via the library's base call.</p>
             <td class="description last"><ul>
 <li>query string</li>
 <li>prepared statement object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
 
@@ -1200,7 +1330,7 @@ it can only be created via the library's base call.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line139">line 139</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line146">line 146</a>
     </li></ul></dd>
     
 
@@ -1333,6 +1463,7 @@ it can only be created via the library's base call.</p>
             <td class="description last"><ul>
 <li>query string</li>
 <li>prepared statement object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
 
@@ -1410,7 +1541,7 @@ it can only be created via the library's base call.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line173">line 173</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line182">line 182</a>
     </li></ul></dd>
     
 
@@ -1613,7 +1744,7 @@ it can only be created via the library's base call.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line274">line 274</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line288">line 288</a>
     </li></ul></dd>
     
 
@@ -1754,8 +1885,7 @@ it can only be created via the library's base call.</p>
             <td class="description last"><ul>
 <li>query string</li>
 <li>prepared statement object</li>
-<li>function object</li>
-<li>stream object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
 
@@ -1876,7 +2006,7 @@ it can only be created via the library's base call.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line83">line 83</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line90">line 90</a>
     </li></ul></dd>
     
 
@@ -2002,6 +2132,7 @@ it can only be created via the library's base call.</p>
             <td class="description last"><ul>
 <li>query string</li>
 <li>prepared statement object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
 
@@ -2079,7 +2210,7 @@ it can only be created via the library's base call.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line221">line 221</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line234">line 234</a>
     </li></ul></dd>
     
 
@@ -2257,7 +2388,7 @@ the same <code>this</code> context as the calling method.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line236">line 236</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line250">line 250</a>
     </li></ul></dd>
     
 
@@ -2474,7 +2605,7 @@ or else <code>p2</code> is ignored.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line288">line 288</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line302">line 302</a>
     </li></ul></dd>
     
 
@@ -2685,7 +2816,7 @@ or else <code>p2</code> is ignored.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line301">line 301</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line315">line 315</a>
     </li></ul></dd>
     
 
