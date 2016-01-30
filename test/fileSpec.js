@@ -66,14 +66,41 @@ describe("QueryFile / Positive:", function () {
         });
     });
 
+    describe("compressed query", function () {
+        var result, sql;
+        beforeEach(function (done) {
+            sql = QueryFile(sqlUsers, {compress: true});
+            db.query(sql)
+                .then(function (data) {
+                    result = data;
+                    done();
+                });
+        });
+        it("must resolve with data", function () {
+            expect(sql.query).toBe("select*from users");
+            expect(result instanceof Array).toBe(true);
+            expect(result.length > 0).toBe(true);
+        });
+    });
+
     describe("property options", function () {
-        var options = {
+        var options1 = {
             debug: process.env.NODE_ENV === 'development',
-            minify: false
+            minify: false,
+            compress: false
+        }, options2 = {
+            debug: false,
+            compress: true
+        }, options3 = {
+            debug: false,
+            minify: true,
+            compress: true
         };
-        Object.freeze(options);
+        Object.freeze(options1);
+        Object.freeze(options3);
         it("must be consistent with the settings", function () {
-            expect(QueryFile(sqlSimple).options).toEqual(options);
+            expect(QueryFile(sqlSimple).options).toEqual(options1);
+            expect(QueryFile(sqlSimple, options2).options).toEqual(options3);
         });
     });
 

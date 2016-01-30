@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "PostgreSQL via promises",
   "main": "lib/index.js",
   "scripts": {
@@ -39,7 +39,7 @@
   "dependencies": {
     "pg": "4.x",
     "spex": "0.4",
-    "pg-minify": "^0.1.4"
+    "pg-minify": "^0.2.0"
   },
   "devDependencies": {
     "JSONStream": "1.x",
