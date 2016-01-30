@@ -253,7 +253,50 @@ or <code>false</code> otherwise.</p></td>
             
 
             <td class="description last"><p>Parses and minifies the SQL using <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a>.</p>
+<p>If option <code>compress</code> is set, then the default for <code>minify</code> is also <code>true</code>.</p>
 <p>Failure to parse SQL will result in <a href="https://github.com/vitaly-t/pg-minify/blob/master/lib/error.js">SQLParsingError</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>compress</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Sets option <code>compress</code> as supported by <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a>, to uglify the SQL.</p>
+<p>This option has no meaning, if <code>minify</code> is explicitly set
+to <code>false</code>. However, if <code>minify</code> is not specified and <code>compress</code>
+is specified as <code>true</code>, then <code>minify</code> defaults to <code>true</code>.</p></td>
         </tr>
 
     
@@ -412,7 +455,7 @@ or <code>false</code> otherwise.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line176">line 176</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line192">line 192</a>
     </li></ul></dd>
     
 
@@ -485,7 +528,7 @@ or <code>false</code> otherwise.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line192">line 192</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line208">line 208</a>
     </li></ul></dd>
     
 
@@ -558,7 +601,7 @@ or <code>false</code> otherwise.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line207">line 207</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line223">line 223</a>
     </li></ul></dd>
     
 
@@ -638,7 +681,7 @@ or <code>false</code> otherwise.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line159">line 159</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line175">line 175</a>
     </li></ul></dd>
     
 
@@ -721,7 +764,7 @@ the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line114">line 114</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line130">line 130</a>
     </li></ul></dd>
     
 
