@@ -112,9 +112,11 @@ function $main(options) {
 }
 
 var rootNameSpace = {
+
     /**
      * Terminates pg library (call it when exiting the application).
-     * @alias module:pg-promise.end
+     * @member {Function} end
+     * @readonly
      */
     end: function () {
         $npm.pg.end();
@@ -130,12 +132,14 @@ var rootNameSpace = {
     /**
      * Instance of the $[PG] library that's used.
      * @member {external:PG} pg
+     * @readonly
      */
     pg: $npm.pg,
 
     /**
      * Instance of the $[pg-minify] library that's used.
      * @member {external:pg-minify} minify
+     * @readonly
      */
     minify: $npm.minify,
 
