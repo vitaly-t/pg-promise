@@ -209,13 +209,12 @@ it can only be created via the library's base call.</p>
     <h4 class="name" id=".any"><span class="type-signature">(static) </span>any<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Executes a query that expects any number of rows.</p>
-    
 
 
 
 <div class="description">
-    <p>This is simply a shorter alias for method <a href="Database.html#.manyOrNone">manyOrNone</a>.</p>
+    <p>Executes a query that expects any number of rows.</p>
+<p>This is simply a shorter alias for method <a href="Database.html#.manyOrNone">manyOrNone</a>.</p>
 </div>
 
 
@@ -320,7 +319,12 @@ it can only be created via the library's base call.</p>
 
             
 
-            <td class="description last"><p>formatting parameters for the query string</p></td>
+            <td class="description last"><p>Formatting parameters for the query string:</p>
+<ul>
+<li>a single value - for variable <code>$1</code></li>
+<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
+<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
+</ul></td>
         </tr>
 
     
@@ -361,7 +365,7 @@ it can only be created via the library's base call.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line227">line 227</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line266">line 266</a>
     </li></ul></dd>
     
 
@@ -742,7 +746,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line282">line 282</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line338">line 338</a>
     </li></ul></dd>
     
 
@@ -914,7 +918,12 @@ and releases the shared connection automatically.</p>
 
             
 
-            <td class="description last"><p>formatting parameters for the query string</p></td>
+            <td class="description last"><p>Formatting parameters for the query string:</p>
+<ul>
+<li>a single value - for variable <code>$1</code></li>
+<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
+<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
+</ul></td>
         </tr>
 
     
@@ -955,7 +964,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line175">line 175</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line193">line 193</a>
     </li></ul></dd>
     
 
@@ -1123,7 +1132,12 @@ and releases the shared connection automatically.</p>
 
             
 
-            <td class="description last"><p>formatting parameters for the query string</p></td>
+            <td class="description last"><p>Formatting parameters for the query string:</p>
+<ul>
+<li>a single value - for variable <code>$1</code></li>
+<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
+<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
+</ul></td>
         </tr>
 
     
@@ -1164,7 +1178,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line210">line 210</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line242">line 242</a>
     </li></ul></dd>
     
 
@@ -1338,7 +1352,12 @@ and releases the shared connection automatically.</p>
 
             
 
-            <td class="description last"><p>formatting parameters for the query string</p></td>
+            <td class="description last"><p>Formatting parameters for the query string:</p>
+<ul>
+<li>a single value - for variable <code>$1</code></li>
+<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
+<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
+</ul></td>
         </tr>
 
     
@@ -1379,7 +1398,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line139">line 139</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line142">line 142</a>
     </li></ul></dd>
     
 
@@ -1547,7 +1566,12 @@ and releases the shared connection automatically.</p>
 
             
 
-            <td class="description last"><p>formatting parameters for the query string</p></td>
+            <td class="description last"><p>Formatting parameters for the query string:</p>
+<ul>
+<li>a single value - for variable <code>$1</code></li>
+<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
+<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
+</ul></td>
         </tr>
 
     
@@ -1588,7 +1612,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line156">line 156</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line166">line 166</a>
     </li></ul></dd>
     
 
@@ -1758,7 +1782,12 @@ and releases the shared connection automatically.</p>
 
             
 
-            <td class="description last"><p>formatting parameters for the query string</p></td>
+            <td class="description last"><p>Formatting parameters for the query string:</p>
+<ul>
+<li>a single value - for variable <code>$1</code></li>
+<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
+<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
+</ul></td>
         </tr>
 
     
@@ -1799,7 +1828,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line192">line 192</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line217">line 217</a>
     </li></ul></dd>
     
 
@@ -2005,7 +2034,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line307">line 307</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line364">line 364</a>
     </li></ul></dd>
     
 
@@ -2190,7 +2219,12 @@ according to parameter <code>qrm</code>.</p>
                 </td>
             
 
-            <td class="description last"><p>Formatting parameters for the query string</p></td>
+            <td class="description last"><p>Formatting parameters for the query string:</p>
+<ul>
+<li>a single value - for variable <code>$1</code></li>
+<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
+<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
+</ul></td>
         </tr>
 
     
@@ -2326,10 +2360,13 @@ according to parameter <code>qrm</code>.</p>
     <h4 class="name" id=".result"><span class="type-signature">(static) </span>result<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Executes a query without any expectation for the return data,to provide direct access to the <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object.</p>
-    
 
 
+
+<div class="description">
+    <p>Executes a query without any expectation for the return data,
+to provide direct access to the <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object.</p>
+</div>
 
 
 
@@ -2433,7 +2470,12 @@ according to parameter <code>qrm</code>.</p>
 
             
 
-            <td class="description last"><p>formatting parameters for the query string</p></td>
+            <td class="description last"><p>Formatting parameters for the query string:</p>
+<ul>
+<li>a single value - for variable <code>$1</code></li>
+<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
+<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
+</ul></td>
         </tr>
 
     
@@ -2474,7 +2516,7 @@ according to parameter <code>qrm</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line244">line 244</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line291">line 291</a>
     </li></ul></dd>
     
 
@@ -2652,7 +2694,7 @@ the same <code>this</code> context as the calling method.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line260">line 260</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line316">line 316</a>
     </li></ul></dd>
     
 
@@ -2870,7 +2912,7 @@ for the task.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line329">line 329</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line386">line 386</a>
     </li></ul></dd>
     
 
@@ -3079,7 +3121,7 @@ function for the transaction.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line348">line 348</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line405">line 405</a>
     </li></ul></dd>
     
 
