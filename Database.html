@@ -215,7 +215,7 @@ it can only be created via the library's base call.</p>
 
 
 <div class="description">
-    <p>This is an alias for method <a href="Database.html#.manyOrNone">manyOrNone</a>.</p>
+    <p>This is simply a shorter alias for method <a href="Database.html#.manyOrNone">manyOrNone</a>.</p>
 </div>
 
 
@@ -361,7 +361,7 @@ it can only be created via the library's base call.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line217">line 217</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line227">line 227</a>
     </li></ul></dd>
     
 
@@ -622,7 +622,7 @@ and releases the shared connection automatically.</p>
                 </td>
             
 
-            <td class="description last"><p>name of the function to be executed.</p></td>
+            <td class="description last"><p>Name of the function to be executed.</p></td>
         </tr>
 
     
@@ -662,7 +662,7 @@ and releases the shared connection automatically.</p>
                 </td>
             
 
-            <td class="description last"><p>parameters for the function.</p></td>
+            <td class="description last"><p>Parameters for the function - one value or an array of values.</p></td>
         </tr>
 
     
@@ -742,7 +742,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line272">line 272</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line282">line 282</a>
     </li></ul></dd>
     
 
@@ -753,6 +753,8 @@ and releases the shared connection automatically.</p>
     <dd class="tag-see">
         <ul>
             <li><a href="Database.html#.query">Database.query</a></li>
+        
+            <li><a href="Database.html#.proc">Database.proc</a></li>
         </ul>
     </dd>
     
@@ -776,7 +778,7 @@ and releases the shared connection automatically.</p>
 
         
 <div class="param-desc">
-    <p>Result of the query call, according to <code>qrm</code>.</p>
+    <p>Result of the query call, according to parameter <code>qrm</code>.</p>
 </div>
 
 
@@ -953,7 +955,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line165">line 165</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line175">line 175</a>
     </li></ul></dd>
     
 
@@ -1162,7 +1164,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line200">line 200</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line210">line 210</a>
     </li></ul></dd>
     
 
@@ -1377,7 +1379,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line129">line 129</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line139">line 139</a>
     </li></ul></dd>
     
 
@@ -1586,7 +1588,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line146">line 146</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line156">line 156</a>
     </li></ul></dd>
     
 
@@ -1797,7 +1799,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line182">line 182</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line192">line 192</a>
     </li></ul></dd>
     
 
@@ -1864,7 +1866,7 @@ and releases the shared connection automatically.</p>
 
 <div class="description">
     <p>Executes a query against a stored procedure via its name:
-<code>select * from procName(values)</code></p>
+<code>select * from procName(values)</code>, expecting back 0 or 1 rows.</p>
 </div>
 
 
@@ -1926,7 +1928,7 @@ and releases the shared connection automatically.</p>
 
             
 
-            <td class="description last"><p>name of the stored procedure to be executed.</p></td>
+            <td class="description last"><p>Name of the stored procedure to be executed.</p></td>
         </tr>
 
     
@@ -1962,7 +1964,7 @@ and releases the shared connection automatically.</p>
 
             
 
-            <td class="description last"><p>parameters for the procedure.</p></td>
+            <td class="description last"><p>Parameters for the procedure - one value or an array of values.</p></td>
         </tr>
 
     
@@ -2003,7 +2005,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line289">line 289</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line307">line 307</a>
     </li></ul></dd>
     
 
@@ -2068,10 +2070,13 @@ and releases the shared connection automatically.</p>
     <h4 class="name" id=".query"><span class="type-signature">(static) </span>query<span class="signature">(query, values<span class="signature-attributes">opt</span>, qrm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Executes a generic query that expects return data according to parameter `qrm`</p>
-    
 
 
+
+<div class="description">
+    <p>Executes a generic query request that expects return data
+according to parameter <code>qrm</code>.</p>
+</div>
 
 
 
@@ -2185,7 +2190,7 @@ and releases the shared connection automatically.</p>
                 </td>
             
 
-            <td class="description last"><p>formatting parameters for the query string</p></td>
+            <td class="description last"><p>Formatting parameters for the query string</p></td>
         </tr>
 
     
@@ -2469,7 +2474,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line234">line 234</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line244">line 244</a>
     </li></ul></dd>
     
 
@@ -2647,7 +2652,7 @@ the same <code>this</code> context as the calling method.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line250">line 250</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line260">line 260</a>
     </li></ul></dd>
     
 
@@ -2787,8 +2792,8 @@ the same <code>this</code> context as the calling method.</p></td>
 
             
 
-            <td class="description last"><p>task tag object, if <code>p2</code> is <code>undefined</code>,
-or else it is the callback function for the task.</p></td>
+            <td class="description last"><p>Tag object for the task, if <code>p2</code> is <code>undefined</code>, or else it is the callback function
+for the task.</p></td>
         </tr>
 
     
@@ -2824,8 +2829,7 @@ or else it is the callback function for the task.</p></td>
 
             
 
-            <td class="description last"><p>task callback function, if it is not <code>undefined</code>,
-or else <code>p2</code> is ignored.</p></td>
+            <td class="description last"><p>Task callback function, if it is not <code>undefined</code>, or else it is ignored.</p></td>
         </tr>
 
     
@@ -2866,7 +2870,7 @@ or else <code>p2</code> is ignored.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line305">line 305</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line329">line 329</a>
     </li></ul></dd>
     
 
@@ -2893,7 +2897,7 @@ or else <code>p2</code> is ignored.</p></td>
 
         
 <div class="param-desc">
-    <p>Result from the task callback function.</p>
+    <p>Result from the callback function.</p>
 </div>
 
 
@@ -2997,8 +3001,8 @@ in all other cases.</p>
 
             
 
-            <td class="description last"><p>transaction tag object, if <code>p2</code>
-is <code>undefined</code>, or else it is the callback function for the transaction.</p></td>
+            <td class="description last"><p>Tag for the transaction, if <code>p2</code> is <code>undefined</code>, or else it is the callback
+function for the transaction.</p></td>
         </tr>
 
     
@@ -3034,8 +3038,7 @@ is <code>undefined</code>, or else it is the callback function for the transacti
 
             
 
-            <td class="description last"><p>transaction callback function, if it is not <code>undefined</code>,
-or else <code>p2</code> is ignored.</p></td>
+            <td class="description last"><p>Transaction callback function, if it is not <code>undefined</code>, or else it is ignored.</p></td>
         </tr>
 
     
@@ -3076,7 +3079,7 @@ or else <code>p2</code> is ignored.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line320">line 320</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line348">line 348</a>
     </li></ul></dd>
     
 
@@ -3103,7 +3106,7 @@ or else <code>p2</code> is ignored.</p></td>
 
         
 <div class="param-desc">
-    <p>Result from the transaction callback function.</p>
+    <p>Result from the callback function.</p>
 </div>
 
 
