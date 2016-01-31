@@ -299,8 +299,9 @@ function Database(cn, options) {
         };
 
         /**
-         * @method pg-promise.Database.func
-         * @summary Executes a query against a database function by its name:
+         * @method Database.func
+         * @description
+         * Executes a query against a database function by its name:
          * `select * from funcName(values)`
          * @param {String} funcName - name of the function to be executed.
          * @param {Array|value} [values] - parameters for the function.
@@ -316,8 +317,10 @@ function Database(cn, options) {
 
         /**
          * @method Database.proc
-         * @summary Executes a query against a stored procedure via its name:
+         * @description
+         * Executes a query against a stored procedure via its name:
          * `select * from procName(values)`
+         *
          * @param {String} procName - name of the stored procedure to be executed.
          * @param {Array|value} [values] - parameters for the procedure.
          * @returns {external:Promise} The same result as method {@link Database.oneOrNone oneOrNone}.
@@ -330,7 +333,9 @@ function Database(cn, options) {
 
         /**
          * @method Database.task
-         * @summary Executes a callback function (or generator) with an automatically managed connection.
+         * @description
+         * Executes a callback function (or generator) with an automatically managed connection.
+         *
          * @param {Object|Function|generator} p1 - task tag object, if `p2` is `undefined`,
          * or else it is the callback function for the task.
          * @param {Function|generator} [p2] - task callback function, if it is not `undefined`,
@@ -343,11 +348,13 @@ function Database(cn, options) {
 
         /**
          * @method Database.tx
-         * @summary Executes a callback function (or generator) as a transaction.
          * @description
-         * Executes a task as a transaction. The transaction will execute `ROLLBACK`
-         * in the end, if the callback function returns a rejected promise or throws
-         * an error; and it will execute `COMMIT` in all other cases.
+         * Executes a callback function (or generator) as a transaction.
+         *
+         * The transaction will execute `ROLLBACK` in the end, if the callback function
+         * returns a rejected promise or throws an error; and it will execute `COMMIT`
+         * in all other cases.
+         *
          * @param {Object|Function|generator} p1 - transaction tag object, if `p2`
          * is `undefined`, or else it is the callback function for the transaction.
          * @param {Function|generator} [p2] - transaction callback function, if it is not `undefined`,

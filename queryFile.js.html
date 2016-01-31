@@ -149,7 +149,7 @@ function QueryFile(file, options) {
         if (options.compress !== undefined) {
             opt.compress = !!options.compress;
         }
-        if (opt.compress &amp;&amp; !opt.minify &amp;&amp; options.minify === undefined) {
+        if (opt.compress &amp;&amp; options.minify === undefined) {
             opt.minify = true;
         }
     }

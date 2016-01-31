@@ -546,6 +546,262 @@ and releases the shared connection automatically.</p>
 
     
 
+    <h4 class="name" id=".func"><span class="type-signature">(static) </span>func<span class="signature">(funcName, values<span class="signature-attributes">opt</span>, qrm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a query against a database function by its name:
+<code>select * from funcName(values)</code></p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>funcName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>name of the function to be executed.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>parameters for the function.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>qrm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#queryResult">queryResult</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    queryResult.any
+                
+                </td>
+            
+
+            <td class="description last"><p><a href="global.html#queryResult">Query Result Mask</a>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line272">line 272</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html#.query">Database.query</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Result of the query call, according to <code>qrm</code>.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id=".many"><span class="type-signature">(static) </span>many<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
@@ -1603,10 +1859,13 @@ and releases the shared connection automatically.</p>
     <h4 class="name" id=".proc"><span class="type-signature">(static) </span>proc<span class="signature">(procName, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Executes a query against a stored procedure via its name:`select * from procName(values)`</p>
-    
 
 
+
+<div class="description">
+    <p>Executes a query against a stored procedure via its name:
+<code>select * from procName(values)</code></p>
+</div>
 
 
 
@@ -1744,7 +2003,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line288">line 288</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line289">line 289</a>
     </li></ul></dd>
     
 
@@ -1756,7 +2015,7 @@ and releases the shared connection automatically.</p>
         <ul>
             <li><a href="Database.html#.oneOrNone">Database.oneOrNone</a></li>
         
-            <li>Database.func</li>
+            <li><a href="Database.html#.func">Database.func</a></li>
         </ul>
     </dd>
     
@@ -2456,10 +2715,12 @@ the same <code>this</code> context as the calling method.</p></td>
     <h4 class="name" id=".task"><span class="type-signature">(static) </span>task<span class="signature">(p1, p2<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Executes a callback function (or generator) with an automatically managed connection.</p>
-    
 
 
+
+<div class="description">
+    <p>Executes a callback function (or generator) with an automatically managed connection.</p>
+</div>
 
 
 
@@ -2605,7 +2866,7 @@ or else <code>p2</code> is ignored.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line302">line 302</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line305">line 305</a>
     </li></ul></dd>
     
 
@@ -2661,15 +2922,14 @@ or else <code>p2</code> is ignored.</p></td>
     <h4 class="name" id=".tx"><span class="type-signature">(static) </span>tx<span class="signature">(p1, p2<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Executes a callback function (or generator) as a transaction.</p>
-    
 
 
 
 <div class="description">
-    <p>Executes a task as a transaction. The transaction will execute <code>ROLLBACK</code>
-in the end, if the callback function returns a rejected promise or throws
-an error; and it will execute <code>COMMIT</code> in all other cases.</p>
+    <p>Executes a callback function (or generator) as a transaction.</p>
+<p>The transaction will execute <code>ROLLBACK</code> in the end, if the callback function
+returns a rejected promise or throws an error; and it will execute <code>COMMIT</code>
+in all other cases.</p>
 </div>
 
 
@@ -2816,7 +3076,7 @@ or else <code>p2</code> is ignored.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line315">line 315</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line320">line 320</a>
     </li></ul></dd>
     
 
