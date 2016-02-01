@@ -22,8 +22,8 @@ Advanced access layer to [node-postgres] via [Promises/A+].
   - [Initializing](#initializing)
   - [Connecting](#connecting)
   - [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example)
-* [Testing](#testing)
-* [Documentation](#documentation)    
+* [Documentation](#documentation)  
+* [Testing](#testing)    
 * [Usage](#usage)
   - [Queries and Parameters](#queries-and-parameters)
     - [Raw Text](#raw-text)  
@@ -124,6 +124,13 @@ There can be multiple database objects in the application for different connecti
 
 To get started quickly, see our [Learn by Example] tutorial. 
 
+# Documentation
+
+[Learn by Example] is the quickest way to get started with this library, while the current
+document details most of the basic functionality this library provides.
+
+For the protocol see the [API Documentation], and for everything else - [Wiki pages](https://github.com/vitaly-t/pg-promise/wiki).
+
 # Testing
 
 * Clone the repository (or download, if you prefer):
@@ -154,13 +161,6 @@ $ npm test
 ```
 $ npm run coverage
 ```
-
-# Documentation
-
-[Learn by Example] is the quickest way to get started with this library, while the current
-document details most of the basic functionality this library provides.
-
-For the protocol see the [API Documentation].
 
 # Usage
 
