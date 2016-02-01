@@ -97,7 +97,9 @@ See also: [Initialization Options](#advanced).
 ## Connecting
 
 Use one of the two ways to specify database connection details:
+
 * Configuration Object:
+
 ```javascript
 var cn = {
     host: 'localhost', // server name or IP address;
@@ -107,7 +109,9 @@ var cn = {
     password: 'user_password'
 };
 ```
+
 * Connection String:
+
 ```javascript
 var cn = "postgres://username:password@host:port/database";
 ```
@@ -116,13 +120,13 @@ This library doesn't use any of the connection's details, it simply passes them 
 For more details see pg connection parameters in [WiKi](https://github.com/brianc/node-postgres/wiki/pg#parameters) and
 [implementation](https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js).
 
-Create a new database instance from the connection details:
+Create a global/shared database instance from the connection details:
+
 ```javascript
 var db = pgp(cn);
 ```
-There can be multiple database objects in the application for different connections.
 
-To get started quickly, see our [Learn by Example] tutorial. 
+You would only create more than one database instance to communicate with different databases.
 
 # Documentation
 
