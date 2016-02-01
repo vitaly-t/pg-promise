@@ -21,8 +21,7 @@ Advanced access layer to [node-postgres] via [Promises/A+].
 * [Getting Started](#getting-started)
   - [Initializing](#initializing)
   - [Connecting](#connecting)
-  - [Learn by Example](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example)
-* [Documentation](#documentation)  
+  - [Documentation](#documentation)  
 * [Testing](#testing)    
 * [Usage](#usage)
   - [Queries and Parameters](#queries-and-parameters)
@@ -128,7 +127,7 @@ var db = pgp(cn);
 
 You would only create more than one database instance to communicate with different databases.
 
-# Documentation
+## Documentation
 
 [Learn by Example] is the quickest way to get started with this library, while the current
 document details most of the basic functionality this library provides.
