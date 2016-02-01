@@ -237,6 +237,10 @@ query('SELECT ${column~} FROM ${table~}', {
 // => SELECT "Column Name" FROM "Table Name"
 ```
 
+Relying on this type of formatting for sql names and identifiers, alongside with regular
+variable formatting makes your application impervious to sql injection, so no other
+provision is needed.
+
 The protocol has been extended with method [as.name].
 
 ## Query Result Mask
