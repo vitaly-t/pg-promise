@@ -254,15 +254,19 @@ function $formatFunction(funcName, values) {
  * Namespace for the type conversion helpers.
  */
 var $as = {
+
     /**
      * @method formatting.text
      * @description
      * Converts a value into PostgreSQL text presentation, fixing single-quote symbols
      * and wrapping the result in single quotes (unless flag `raw` is set).
-     * @param {String} text
-     * Value to be converted.
+     *
+     * @param {String|Function} text
+     * Value to be converted, or a function that returns the value.
+     *
      * @param {Boolean} [raw=false]
      * Indicates when the value is not to be formatted.
+     *
      * @returns {String}
      */
     text: function (text, raw) {
@@ -276,45 +280,41 @@ var $as = {
         }
         return raw ? text : TEXT(safeText(text));
     },
+
     /**
      * @method formatting.name
      * @description
      * Properly formats an sql name or identifier, fixing double-quote symbols
-     * and wrapping the result in double quotes, if it hasn't been done yet.
+     * and wrapping the result in double quotes.
      *
-     * When the name is not a string, `null` or `undefined`, the method throws
-     * `An sql name/identifier must be a string.`
+     * Implements a safe way to format SQL Names to neutralize SQL Injection.
      *
-     * @param {String} name
-     * SQL name or identifier.
+     * @param {String|Function} name
+     * SQL name or identifier, or a function that returns it.
+     *
+     * The name must be at least 1 character long.
      *
      * @returns {String}
-     * The name wrapped in double quotes:
-     * - when a string is passed in, it is returned wrapped in double quotes
-     * - when `null` or `undefined` are passed in, `""` is returned.
+     * The SQL Name/Identifier wrapped in double quotes.
      */
     name: function (name) {
-        if (isNull(name)) {
-            return '""';
-        }
         name = resolveFunc(name);
-        if (typeof name !== 'string') {
-            throw new TypeError("An sql name/identifier must be a string.");
+        if (typeof name !== 'string' || !name.length) {
+            throw new TypeError("An sql name/identifier must be a non-empty text string.");
         }
-        if (/^\s*".*"\s*$/.test(name)) {
-            // name is already in double quotes;
-            return name;
-        }
-        // replace each double quote with two,
-        // and then wrap in double quotes;
+        // replace each double quote with two, and then wrap in double quotes;
+        // NOTE: Disallowing double-quotes within the name prevents SQL injection.
         return '"' + name.replace(/"/g, '""') + '"';
     },
+
     /**
      * @method formatting.bool
      * @description
      * Converts a truthy value into PostgreSQL boolean presentation.
-     * @param {Boolean} value
-     * Value to be converted.
+     *
+     * @param {Boolean|Function} value
+     * Value to be converted, or a function that returns the value.
+     *
      * @returns {String}
      */
     bool: function (value) {
@@ -324,15 +324,19 @@ var $as = {
         }
         return value ? 'true' : 'false';
     },
+
     /**
      * @method formatting.date
      * @description
      * Converts a `Date`-type value into PostgreSQL date/time presentation,
      * as a UTC string, wrapped in quotes (unless flag `raw` is set).
-     * @param {Date} d
-     * Value to be converted.
+     *
+     * @param {Date|Function} d
+     * Date object to be converted, or a function that returns one.
+     *
      * @param {Boolean} [raw=false]
      * Indicates when the value is not to be formatted.
+     *
      * @returns {String}
      */
     date: function (d, raw) {
@@ -349,13 +353,16 @@ var $as = {
         }
         throw new TypeError(TEXT(d) + " is not a Date object.");
     },
+
     /**
      * @method formatting.number
      * @description
      * Converts a numeric value into its PostgreSQL number presentation,
      * with support for `NaN`, `+Infinity` and `-Infinity`.
-     * @param {Number} num
-     * Value to be converted.
+     *
+     * @param {Number|Function} num
+     * Number to be converted, or a function that returns one.
+     *
      * @returns {String}
      */
     number: function (num) {
@@ -381,13 +388,16 @@ var $as = {
         }
         return TEXT("NaN");
     },
+
     /**
      * @method formatting.array
      * @description
-     * Converts an array of values into its PostgreSQL presentation
-     * as an Array-Type constructor string: `array[]`.
-     * @param {Array} arr
-     * Array to be converted.
+     * Converts an array of values into its PostgreSQL presentation as an Array-Type
+     * constructor string: `array[]`.
+     *
+     * @param {Array|Function} arr
+     * Array to be converted, or a function that returns one.
+     *
      * @returns {String}
      */
     array: function (arr) {
@@ -400,27 +410,34 @@ var $as = {
         }
         throw new TypeError(TEXT(arr) + " is not an Array object.");
     },
+
     /**
      * @method formatting.csv
      * @description
      * Converts a single value or an array of values into a CSV string,
      * with all values formatted according to their type.
-     * @param {Array|value} values
-     * Value(s) to be converted.
+     *
+     * @param {Array|value|Function} values
+     * Value(s) to be converted, or a function that returns it.
+     *
      * @returns {String}
      */
     csv: function (values) {
         return formatCSV(resolveFunc(values));
     },
+
     /**
      * @method formatting.json
      * @description
      * Converts any value into JSON (using `JSON.stringify`), and returns it as
      * a valid string, with single-quote symbols fixed, unless flag `raw` is set.
-     * @param {Object} obj
-     * Object/Value to be converted.
+     *
+     * @param {Object|Function} obj
+     * Object/Value to be converted, or a function that returns it.
+     *
      * @param {Boolean} [raw=false]
      * Indicates when the result is not to be formatted.
+     *
      * @returns {String}
      */
     json: function (obj, raw) {
@@ -432,17 +449,22 @@ var $as = {
         var s = JSON.stringify(obj);
         return raw ? s : TEXT(safeText(s));
     },
+
     /**
      * @method formatting.func
      * @description
      * Calls the function to get the actual value, and then formats the result
      * according to its type + `raw` flag.
+     *
      * @param {Function} func
      * Function to be called.
+     *
      * @param {Boolean} [raw=false]
      * Indicates when the result is not to be formatted.
+     *
      * @param {Object} [obj]
      * `this` context to be passed into the function.
+     *
      * @returns {String}
      */
     func: function (func, raw, obj) {
@@ -461,15 +483,20 @@ var $as = {
         }
         throw new TypeError(TEXT(obj) + " is not an object.");
     },
+
     /**
      * @method formatting.format
      * @description
      * Replaces variables in a string with the values passed in.
+     *
      * @param {String} query
      * Query string with formatting variables in it.
+     *
      * @param {Array|value} [values]
      * Formatting variable value(s).
+     *
      * @returns {String}
+     * Formatted query string.
      */
     format: function (query, values) {
         return $formatQuery(query, values);

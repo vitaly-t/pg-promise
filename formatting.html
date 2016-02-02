@@ -116,8 +116,8 @@
 
 
 <div class="description">
-    <p>Converts an array of values into its PostgreSQL presentation
-as an Array-Type constructor string: <code>array[]</code>.</p>
+    <p>Converts an array of values into its PostgreSQL presentation as an Array-Type
+constructor string: <code>array[]</code>.</p>
 </div>
 
 
@@ -160,6 +160,9 @@ as an Array-Type constructor string: <code>array[]</code>.</p>
             
                 
 <span class="param-type">Array</span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -169,7 +172,7 @@ as an Array-Type constructor string: <code>array[]</code>.</p>
 
             
 
-            <td class="description last"><p>Array to be converted.</p></td>
+            <td class="description last"><p>Array to be converted, or a function that returns one.</p></td>
         </tr>
 
     
@@ -210,7 +213,7 @@ as an Array-Type constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line355">line 355</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line363">line 363</a>
     </li></ul></dd>
     
 
@@ -309,6 +312,9 @@ as an Array-Type constructor string: <code>array[]</code>.</p>
             
                 
 <span class="param-type">Boolean</span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -318,7 +324,7 @@ as an Array-Type constructor string: <code>array[]</code>.</p>
 
             
 
-            <td class="description last"><p>Value to be converted.</p></td>
+            <td class="description last"><p>Value to be converted, or a function that returns the value.</p></td>
         </tr>
 
     
@@ -359,7 +365,7 @@ as an Array-Type constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line283">line 283</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line281">line 281</a>
     </li></ul></dd>
     
 
@@ -462,6 +468,9 @@ with all values formatted according to their type.</p>
 |
 
 <span class="param-type">value</span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -471,7 +480,7 @@ with all values formatted according to their type.</p>
 
             
 
-            <td class="description last"><p>Value(s) to be converted.</p></td>
+            <td class="description last"><p>Value(s) to be converted, or a function that returns it.</p></td>
         </tr>
 
     
@@ -512,7 +521,7 @@ with all values formatted according to their type.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line374">line 374</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line385">line 385</a>
     </li></ul></dd>
     
 
@@ -616,6 +625,9 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
             
                 
 <span class="param-type">Date</span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -637,7 +649,7 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
                 </td>
             
 
-            <td class="description last"><p>Value to be converted.</p></td>
+            <td class="description last"><p>Date object to be converted, or a function that returns one.</p></td>
         </tr>
 
     
@@ -717,7 +729,7 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line298">line 298</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line299">line 299</a>
     </li></ul></dd>
     
 
@@ -912,7 +924,7 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line435">line 435</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line458">line 458</a>
     </li></ul></dd>
     
 
@@ -938,6 +950,10 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>Formatted query string.</p>
+</div>
+
 
 
 <dl>
@@ -1154,7 +1170,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line406">line 406</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line424">line 424</a>
     </li></ul></dd>
     
 
@@ -1258,6 +1274,9 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
             
                 
 <span class="param-type">Object</span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -1279,7 +1298,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
                 </td>
             
 
-            <td class="description last"><p>Object/Value to be converted.</p></td>
+            <td class="description last"><p>Object/Value to be converted, or a function that returns it.</p></td>
         </tr>
 
     
@@ -1359,7 +1378,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line386">line 386</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line400">line 400</a>
     </li></ul></dd>
     
 
@@ -1416,9 +1435,8 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
 
 <div class="description">
     <p>Properly formats an sql name or identifier, fixing double-quote symbols
-and wrapping the result in double quotes, if it hasn't been done yet.</p>
-<p>When the name is not a string, <code>null</code> or <code>undefined</code>, the method throws
-<code>An sql name/identifier must be a string.</code></p>
+and wrapping the result in double quotes.</p>
+<p>Implements a safe way to format SQL Names to neutralize SQL Injection.</p>
 </div>
 
 
@@ -1461,6 +1479,9 @@ and wrapping the result in double quotes, if it hasn't been done yet.</p>
             
                 
 <span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -1470,7 +1491,8 @@ and wrapping the result in double quotes, if it hasn't been done yet.</p>
 
             
 
-            <td class="description last"><p>SQL name or identifier.</p></td>
+            <td class="description last"><p>SQL name or identifier, or a function that returns it.</p>
+<p>The name must be at least 1 character long.</p></td>
         </tr>
 
     
@@ -1511,7 +1533,7 @@ and wrapping the result in double quotes, if it hasn't been done yet.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line250">line 250</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line255">line 255</a>
     </li></ul></dd>
     
 
@@ -1538,11 +1560,7 @@ and wrapping the result in double quotes, if it hasn't been done yet.</p>
 
         
 <div class="param-desc">
-    <p>The name wrapped in double quotes:</p>
-<ul>
-<li>when a string is passed in, it is returned wrapped in double quotes</li>
-<li>when <code>null</code> or <code>undefined</code> are passed in, <code>&quot;&quot;</code> is returned.</li>
-</ul>
+    <p>The SQL Name/Identifier wrapped in double quotes.</p>
 </div>
 
 
@@ -1619,6 +1637,9 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
             
                 
 <span class="param-type">Number</span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -1628,7 +1649,7 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
 
             
 
-            <td class="description last"><p>Value to be converted.</p></td>
+            <td class="description last"><p>Number to be converted, or a function that returns one.</p></td>
         </tr>
 
     
@@ -1669,7 +1690,7 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line323">line 323</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line328">line 328</a>
     </li></ul></dd>
     
 
@@ -1773,6 +1794,9 @@ and wrapping the result in single quotes (unless flag <code>raw</code> is set).<
             
                 
 <span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -1794,7 +1818,7 @@ and wrapping the result in single quotes (unless flag <code>raw</code> is set).<
                 </td>
             
 
-            <td class="description last"><p>Value to be converted.</p></td>
+            <td class="description last"><p>Value to be converted, or a function that returns the value.</p></td>
         </tr>
 
     
@@ -1874,7 +1898,7 @@ and wrapping the result in single quotes (unless flag <code>raw</code> is set).<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line228">line 228</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line229">line 229</a>
     </li></ul></dd>
     
 

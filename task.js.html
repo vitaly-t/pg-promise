@@ -245,22 +245,24 @@ Task.exec = function (ctx, obj, isTX) {
 
     function begin() {
         if (!ctx.txLevel &amp;&amp; ctx.cb.txMode instanceof $npm.mode.TransactionMode) {
-            var b = ctx.cb.txMode.begin(capTX);
-            return capTX ? exec(b, 'SAVEPOINT') : exec(b, 'savepoint');
+            return exec(ctx.cb.txMode.begin(capTX), 'savepoint');
         }
-        return capTX ? exec('BEGIN', 'SAVEPOINT') : exec('begin', 'savepoint');
+        return exec('begin', 'savepoint');
     }
 
     function commit() {
-        return capTX ? exec('COMMIT', 'RELEASE SAVEPOINT') : exec('commit', 'release savepoint');
+        return exec('commit', 'release savepoint');
     }
 
     function rollback() {
-        return capTX ? exec('ROLLBACK', 'ROLLBACK TO SAVEPOINT') : exec('rollback', 'rollback to savepoint');
+        return exec('rollback', 'rollback to savepoint');
     }
 
     function exec(top, nested) {
-        return obj.none(ctx.txLevel ? nested + ' ' + spName : top);
+        if (ctx.txLevel) {
+            return obj.none((capTX ? nested.toUpperCase() : nested) + ' ' + spName);
+        }
+        return obj.none(capTX ? top.toUpperCase() : top);
     }
 
     // executing a task;
