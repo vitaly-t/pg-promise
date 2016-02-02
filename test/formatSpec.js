@@ -470,21 +470,31 @@ describe("Method as.dummy", function () {
 
 describe("Method as.name", function () {
 
-    describe("with a non-string", function () {
-        var error = new TypeError("An sql name/identifier must be a string.");
+    describe("with an empty or non-string", function () {
+        var error = new TypeError("An sql name/identifier must be a non-empty text string.");
         it("must throw na error", function () {
             expect(function () {
+                pgp.as.name();
+            }).toThrow(error);
+            expect(function () {
+                pgp.as.name(null);
+            }).toThrow(error);
+            expect(function () {
                 pgp.as.name(123);
+            }).toThrow(error);
+            expect(function () {
+                pgp.as.name('');
             }).toThrow(error);
         });
     });
 
-    describe("with an empty value", function () {
-        it("must return an empty quoted text", function () {
-            expect(pgp.as.name()).toBe('""');
-            expect(pgp.as.name(null)).toBe('""');
-            expect(pgp.as.name('')).toBe('""');
-            expect(pgp.as.name('""')).toBe('""');
+    describe("with regular names", function () {
+        it("must return the right name", function () {
+            expect(pgp.as.name('a')).toBe('"a"');
+            expect(pgp.as.name(' ')).toBe('" "');
+            expect(pgp.as.name('\t')).toBe('"\t"');
+            expect(pgp.as.name('"')).toBe('""""');
+            expect(pgp.as.name('""')).toBe('""""""');
         });
     });
 
@@ -495,16 +505,6 @@ describe("Method as.name", function () {
 
         it("must use the function value", function () {
             expect(pgp.as.name(getName)).toBe('"name"');
-        });
-    });
-
-    describe("with a regular name", function () {
-        it("must return the name", function () {
-            expect(pgp.as.name('name')).toBe('"name"');
-        });
-        it("must not repeat double quotes", function () {
-            expect(pgp.as.name('"name"')).toBe('"name"');
-            expect(pgp.as.name(' \t "name" \t ')).toBe(' \t "name" \t ');
         });
     });
 });
@@ -890,7 +890,7 @@ describe("SQL Names", function () {
     describe("direct", function () {
         it("must format correctly", function () {
             expect(pgp.as.format('$1~', 'name')).toBe('"name"');
-            expect(pgp.as.format('$1~', '"name"')).toBe('"name"');
+            expect(pgp.as.format('$1~', '"name"')).toBe('"""name"""');
             expect(pgp.as.format('${name~}', {name: 'hello'})).toBe('"hello"');
         });
     });
@@ -930,7 +930,7 @@ describe("SQL Names", function () {
         it("must reject the object with an error", function () {
             expect(function () {
                 pgp.as.format('$1~', [{}]);
-            }).toThrow(new TypeError("An sql name/identifier must be a string."));
+            }).toThrow(new TypeError("An sql name/identifier must be a non-empty text string."));
         });
     });
 
