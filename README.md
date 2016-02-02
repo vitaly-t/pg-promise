@@ -222,9 +222,7 @@ to the formatting object itself, to be injected as a raw-text JSON-formatted str
 Introduced in version 3.1.0, this feature simplifies formatting for SQL names/identifiers.
 
 When a variable ends with `~` (tilde), it represents an SQL name or identifier, which must be
-a text string, to be wrapped in double quotes.
-
-Variable values `null` or `undefined` are treated the same as an empty text string. 
+a text string of at least 1 character long. Such name is then wrapped in double quotes.
 
 ```js
 query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
