@@ -123,7 +123,7 @@ var db = pgp(cn);
 
 You need only one database instance per connection details.
 
-A connection object has the benefit of being changeable: it is used by the library directly,
+A configuration object has the benefit of being changeable: it is used by the library directly,
 and changing properties of the original object will cause immediate reconnection.
 
 This library doesn't use any of the connection's details, it simply passes them on to [PG] when opening a connection.
