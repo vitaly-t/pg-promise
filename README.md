@@ -115,17 +115,20 @@ var cn = {
 var cn = "postgres://username:password@host:port/database";
 ```
 
-This library doesn't use any of the connection's details, it simply passes them on to [PG] when opening a connection.
-For more details see pg connection parameters in [WiKi](https://github.com/brianc/node-postgres/wiki/pg#parameters) and
-[implementation](https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js).
-
 Create a global/shared database instance from the connection details:
 
 ```javascript
 var db = pgp(cn);
 ```
 
-You would only create more than one database instance to communicate with different databases.
+You need only one database instance per connection details.
+
+A connection object has the benefit of being changeable: it is used by the library directly,
+and changing properties of the original object will cause reconnection on the very next query.
+
+This library doesn't use any of the connection's details, it simply passes them on to [PG] when opening a connection.
+For more details see pg connection parameters in [WiKi](https://github.com/brianc/node-postgres/wiki/pg#parameters) and
+[implementation](https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js).
 
 ## Documentation
 
