@@ -213,7 +213,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line363">line 363</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line382">line 382</a>
     </li></ul></dd>
     
 
@@ -365,7 +365,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line281">line 281</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line300">line 300</a>
     </li></ul></dd>
     
 
@@ -521,7 +521,7 @@ with all values formatted according to their type.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line385">line 385</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line404">line 404</a>
     </li></ul></dd>
     
 
@@ -688,7 +688,7 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
                 </td>
             
 
-            <td class="description last"><p>Indicates when the value is not to be formatted.</p></td>
+            <td class="description last"><p>Indicates when not to escape the value.</p></td>
         </tr>
 
     
@@ -729,7 +729,7 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line299">line 299</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line318">line 318</a>
     </li></ul></dd>
     
 
@@ -924,7 +924,7 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line458">line 458</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line477">line 477</a>
     </li></ul></dd>
     
 
@@ -1053,7 +1053,7 @@ according to its type + <code>raw</code> flag.</p>
                 </td>
             
 
-            <td class="description last"><p>Function to be called.</p></td>
+            <td class="description last"><p>Function to be called, with support for nesting.</p></td>
         </tr>
 
     
@@ -1092,7 +1092,7 @@ according to its type + <code>raw</code> flag.</p>
                 </td>
             
 
-            <td class="description last"><p>Indicates when the result is not to be formatted.</p></td>
+            <td class="description last"><p>Indicates when not to escape the result.</p></td>
         </tr>
 
     
@@ -1129,7 +1129,7 @@ according to its type + <code>raw</code> flag.</p>
                 </td>
             
 
-            <td class="description last"><p><code>this</code> context to be passed into the function.</p></td>
+            <td class="description last"><p><code>this</code> context to be passed into the function on all nested levels.</p></td>
         </tr>
 
     
@@ -1170,7 +1170,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line424">line 424</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line443">line 443</a>
     </li></ul></dd>
     
 
@@ -1337,7 +1337,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
                 </td>
             
 
-            <td class="description last"><p>Indicates when the result is not to be formatted.</p></td>
+            <td class="description last"><p>Indicates when not to escape the result.</p></td>
         </tr>
 
     
@@ -1378,7 +1378,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line400">line 400</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line419">line 419</a>
     </li></ul></dd>
     
 
@@ -1434,9 +1434,9 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
 
 
 <div class="description">
-    <p>Properly formats an sql name or identifier, fixing double-quote symbols
+    <p>Properly escapes an sql name or identifier, fixing double-quote symbols
 and wrapping the result in double quotes.</p>
-<p>Implements a safe way to format SQL Names to neutralize SQL Injection.</p>
+<p>Implements a safe way to format SQL Names that neutralizes SQL Injection.</p>
 </div>
 
 
@@ -1492,7 +1492,9 @@ and wrapping the result in double quotes.</p>
             
 
             <td class="description last"><p>SQL name or identifier, or a function that returns it.</p>
-<p>The name must be at least 1 character long.</p></td>
+<p>The name must be at least 1 character long.</p>
+<p>If <code>name</code> is a function, it can be a nested one, to be called until a non-function
+value is returned, which is expected to be a text string of at least 1 character long.</p></td>
         </tr>
 
     
@@ -1533,7 +1535,7 @@ and wrapping the result in double quotes.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line255">line 255</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line267">line 267</a>
     </li></ul></dd>
     
 
@@ -1560,7 +1562,10 @@ and wrapping the result in double quotes.</p>
 
         
 <div class="param-desc">
-    <p>The SQL Name/Identifier wrapped in double quotes.</p>
+    <p>The SQL Name/Identifier properly escaped for compliance with the PostgreSQL standard
+for SQL names and identifiers.</p>
+<p>When <code>name</code> doesn't resolve into a non-empty string, an error is thrown:
+<code>An sql name/identifier must be a non-empty text string.</code></p>
 </div>
 
 
@@ -1690,7 +1695,7 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line328">line 328</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line347">line 347</a>
     </li></ul></dd>
     
 
@@ -1739,15 +1744,19 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
 
     
 
-    <h4 class="name" id=".text"><span class="type-signature">(static) </span>text<span class="signature">(text, raw<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    <h4 class="name" id=".text"><span class="type-signature">(static) </span>text<span class="signature">(value, raw<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {String}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Converts a value into PostgreSQL text presentation, fixing single-quote symbols
-and wrapping the result in single quotes (unless flag <code>raw</code> is set).</p>
+    <p>Converts a value into PostgreSQL text presentation, escaped as required.</p>
+<p>Escaping the result means:</p>
+<ol>
+<li>Every single-quote (apostrophe) is replaced with two</li>
+<li>The resulting text is wrapped in apostrophes</li>
+</ol>
 </div>
 
 
@@ -1787,13 +1796,13 @@ and wrapping the result in single quotes (unless flag <code>raw</code> is set).<
 
         <tr>
             
-                <td class="name"><code>text</code></td>
+                <td class="name"><code>value</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">value</span>
 |
 
 <span class="param-type">function</span>
@@ -1818,7 +1827,9 @@ and wrapping the result in single quotes (unless flag <code>raw</code> is set).<
                 </td>
             
 
-            <td class="description last"><p>Value to be converted, or a function that returns the value.</p></td>
+            <td class="description last"><p>Value to be converted, or a function that returns the value.</p>
+<p>If it is a function, it can be a nested one, to be called until a non-function
+value is returned.</p></td>
         </tr>
 
     
@@ -1857,7 +1868,7 @@ and wrapping the result in single quotes (unless flag <code>raw</code> is set).<
                 </td>
             
 
-            <td class="description last"><p>Indicates when the value is not to be formatted.</p></td>
+            <td class="description last"><p>Indicates when not to escape the resulting text.</p></td>
         </tr>
 
     
@@ -1924,6 +1935,16 @@ and wrapping the result in single quotes (unless flag <code>raw</code> is set).<
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <ul>
+<li><code>null</code> string, if the <code>value</code> resolves as <code>null</code> or <code>undefined</code></li>
+<li>escaped result of <code>value.toString()</code>, if the <code>value</code> isn't a string</li>
+<li><p>escaped string version, if <code>value</code> is a string.</p>
+<p>The result is not escaped, if <code>raw</code> was passed in as <code>true</code>.</p>
+</li>
+</ul>
+</div>
+
 
 
 <dl>
