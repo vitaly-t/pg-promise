@@ -194,11 +194,12 @@ serialized into JSON, the same as calling method `pgp.as.json()`, except the lat
 
 ### Raw Text
 
-Raw-text values can be injected by appending the variable name with symbol `^`:
+Raw-text values can be injected by ending the variable name with `^`:
 `$1^, $2^, etc...`, `$*varName^*`, where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
 
 Raw text is injected without any pre-processing, which means:
-* No replacing each single-quote symbol `'` with two;
+
+* No proper escaping (replacing each single-quote symbol `'` with two);
 * No wrapping text into single quotes.
 
 Unlike regular variables, value for raw-text variables cannot be `null` or `undefined`,
@@ -225,8 +226,8 @@ to the formatting object itself, to be injected as a raw-text JSON-formatted str
 
 Introduced in version 3.1.0, this feature simplifies formatting for SQL names/identifiers.
 
-When a variable ends with `~` (tilde), it represents an SQL name or identifier, which must be
-a text string of at least 1 character long. Such name is then wrapped in double quotes.
+When a variable ends with `~` (tilde), it represents an SQL name or identifier, which must be a text
+string of at least 1 character long. Such name is then properly escaped and wrapped in double quotes.
 
 ```js
 query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
@@ -239,9 +240,8 @@ query('SELECT ${column~} FROM ${table~}', {
 // => SELECT "Column Name" FROM "Table Name"
 ```
 
-Relying on this type of formatting for sql names and identifiers, alongside with regular
-variable formatting makes your application impervious to sql injection, so no other
-provision is needed.
+Relying on this type of formatting for sql names and identifiers, along with regular variable formatting
+makes your application impervious to sql injection.
 
 The protocol has been extended with method [as.name].
 
