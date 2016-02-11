@@ -957,7 +957,7 @@ The library verifies whether the callback function is a generator, and executes 
 ## Initialization Options
 
 When initializing the library, you can pass object `options` with a set of global properties.
-See [API->options](http://vitaly-t.github.io/pg-promise/module-pg-promise.html).
+See [API / options](http://vitaly-t.github.io/pg-promise/module-pg-promise.html).
 
 ---
 #### pgFormatting
@@ -1018,17 +1018,17 @@ mostly needed by smaller and simplified [Conformant Implementations](https://pro
 ---
 #### connect
 
-See [API->connect](http://vitaly-t.github.io/pg-promise/global.html#event:connect).
+See [API / event `connect`](http://vitaly-t.github.io/pg-promise/global.html#event:connect).
 
 ---
 #### disconnect
 
-See [API->disconnect](http://vitaly-t.github.io/pg-promise/global.html#event:disconnect).
+See [API / event `disconnect`](http://vitaly-t.github.io/pg-promise/global.html#event:disconnect).
 
 ---
 #### query
 
-See [API->query](http://vitaly-t.github.io/pg-promise/global.html#event:query).
+See [API / event `query`](http://vitaly-t.github.io/pg-promise/global.html#event:query).
 
 ---
 #### receive
@@ -1097,63 +1097,17 @@ function camelizeColumns(data) {
 ---
 #### error
 
-See [API->error](http://vitaly-t.github.io/pg-promise/global.html#event:error).
+See [API / event `error`](http://vitaly-t.github.io/pg-promise/global.html#event:error).
 
 ---
 #### task
 
-Global notification of a task start / finish events.
-
-```javascript
-var options = {
-    task: function (e) {
-        console.log("Start Time:", e.ctx.start);
-        if (e.ctx.finish) {
-            // this is a task `finish` event;
-            console.log("Finish Time:", e.ctx.finish);
-            if (e.ctx.success) {
-                // e.ctx.result = the data resolved;
-            } else {
-                // e.ctx.result = the rejection reason;
-            }
-        } else {
-            // this is a task `start` event;
-        }
-    }
-};
-```
-
-For parameter `e` see documentation of the `query` event earlier.
-
-The library will suppress any error thrown by the handler and write it into the console.
+See [API / event `task`](http://vitaly-t.github.io/pg-promise/global.html#event:task).
 
 ---
 #### transact
 
-Global notification of a transaction start / finish events.
-
-```javascript
-var options = {
-    transact: function (e) {
-        console.log("Start Time:", e.ctx.start);
-        if (e.ctx.finish) {
-            // this is a transaction `finish` event;
-            console.log("Finish Time:", e.ctx.finish);
-            if (e.ctx.success) {
-                // e.ctx.result = the data resolved;
-            } else {
-                // e.ctx.result = the rejection reason;
-            }
-        } else {
-            // this is a transaction `start` event;
-        }
-    }
-};
-```
-
-For parameter `e` see documentation of the `query` event earlier.
-
-The library will suppress any error thrown by the handler and write it into the console.
+See [API / event `transact`](http://vitaly-t.github.io/pg-promise/global.html#event:transact).
 
 ---
 #### extend
