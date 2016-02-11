@@ -37,6 +37,7 @@ var $npm = {
 /////////////////////////////////
 // Client notification helpers;
 var $events = {
+
     /**
      * @event connect
      * @description
@@ -72,6 +73,7 @@ var $events = {
             }
         }
     },
+
     /**
      * @event disconnect
      * @description
@@ -107,6 +109,7 @@ var $events = {
             }
         }
     },
+
     /**
      * @event query
      * @description
@@ -198,6 +201,7 @@ var $events = {
             }
         }
     },
+
     /**
      * @event receive
      * @summary Global notification of any received data.
@@ -219,14 +223,38 @@ var $events = {
             }
         }
     },
+
     /**
      * @event task
-     * @summary Global notification of a task start / finish events.
+     * @description
+     * Global notification of a task start / finish events.
+     *
+     * The library will suppress any error thrown by the handler and write it into the console.
      *
      * @param {Object} e - Event Context Object.
      *
      * This type of object is used by several events. See event {@link event:query query}
      * for its complete documentation.
+     *
+     * @example
+     *
+     * var options = {
+     *     task: function (e) {
+     *         if (e.ctx.finish) {
+     *             // this is a task->finish event;
+     *             console.log("Finish Time:", e.ctx.finish);
+     *             if (e.ctx.success) {
+     *                 // e.ctx.result = resolved data;
+     *             } else {
+     *                 // e.ctx.result = error/rejection reason;
+     *             }
+     *         } else {
+     *             // this is a task->start event;
+     *             console.log("Start Time:", e.ctx.start);
+     *         }
+     *     }
+     * };
+     *
      */
     task: function (options, context) {
         if (options &amp;&amp; options.task instanceof Function) {
@@ -238,14 +266,38 @@ var $events = {
             }
         }
     },
+
     /**
      * @event transact
-     * @summary Global notification of a transaction start / finish events.
+     * @description
+     * Global notification of a transaction start / finish events.
+     *
+     * The library will suppress any error thrown by the handler and write it into the console.
      *
      * @param {Object} e - Event Context Object.
      *
      * This type of object is used by several events. See event {@link event:query query}
      * for its complete documentation.
+     *
+     * @example
+     *
+     * var options = {
+     *     transact: function (e) {
+     *         if (e.ctx.finish) {
+     *             // this is a transaction->finish event;
+     *             console.log("Finish Time:", e.ctx.finish);
+     *             if (e.ctx.success) {
+     *                 // e.ctx.result = resolved data;
+     *             } else {
+     *                 // e.ctx.result = error/rejection reason;
+     *             }
+     *         } else {
+     *             // this is a transaction->start event;
+     *             console.log("Start Time:", e.ctx.start);
+     *         }
+     *     }
+     * };
+     *
      */
     transact: function (options, context) {
         if (options &amp;&amp; options.transact instanceof Function) {
@@ -257,6 +309,7 @@ var $events = {
             }
         }
     },
+
     /**
      * @event error
      * @description
@@ -313,6 +366,7 @@ var $events = {
             }
         }
     },
+
     /**
      * @event extend
      * @summary Extends database protocol with custom methods and properties.
@@ -330,6 +384,7 @@ var $events = {
             }
         }
     },
+
     /**
      * @event unexpected
      * @param {String} event - unhandled event name.

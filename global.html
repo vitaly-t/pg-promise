@@ -419,7 +419,7 @@ i.e. a virtual connection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line11">line 11</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
@@ -557,7 +557,7 @@ i.e. releasing the virtual connection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line46">line 46</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line48">line 48</a>
     </li></ul></dd>
     
 
@@ -714,7 +714,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line231">line 231</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line284">line 284</a>
     </li></ul></dd>
     
 
@@ -848,7 +848,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line287">line 287</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line341">line 341</a>
     </li></ul></dd>
     
 
@@ -1449,7 +1449,7 @@ this property is set with the context object that was passed in.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line81">line 81</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line84">line 84</a>
     </li></ul></dd>
     
 
@@ -1626,7 +1626,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line172">line 172</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line176">line 176</a>
     </li></ul></dd>
     
 
@@ -1660,10 +1660,13 @@ for its complete documentation.</p></td>
     <h4 class="name" id="event:task">task</h4>
 
     
-    <p class="summary">Global notification of a task start / finish events.</p>
-    
 
 
+
+<div class="description">
+    <p>Global notification of a task start / finish events.</p>
+<p>The library will suppress any error thrown by the handler and write it into the console.</p>
+</div>
 
 
 
@@ -1757,7 +1760,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line193">line 193</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line198">line 198</a>
     </li></ul></dd>
     
 
@@ -1780,6 +1783,11 @@ for its complete documentation.</p></td>
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var options = {    task: function (e) {        if (e.ctx.finish) {            // this is a task->finish event;            console.log("Finish Time:", e.ctx.finish);            if (e.ctx.success) {                // e.ctx.result = resolved data;            } else {                // e.ctx.result = error/rejection reason;            }        } else {            // this is a task->start event;            console.log("Start Time:", e.ctx.start);        }    }};</code></pre>
 
 
 
@@ -1791,10 +1799,13 @@ for its complete documentation.</p></td>
     <h4 class="name" id="event:transact">transact</h4>
 
     
-    <p class="summary">Global notification of a transaction start / finish events.</p>
-    
 
 
+
+<div class="description">
+    <p>Global notification of a transaction start / finish events.</p>
+<p>The library will suppress any error thrown by the handler and write it into the console.</p>
+</div>
 
 
 
@@ -1888,7 +1899,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line212">line 212</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line241">line 241</a>
     </li></ul></dd>
     
 
@@ -1911,6 +1922,11 @@ for its complete documentation.</p></td>
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var options = {    transact: function (e) {        if (e.ctx.finish) {            // this is a transaction->finish event;            console.log("Finish Time:", e.ctx.finish);            if (e.ctx.success) {                // e.ctx.result = resolved data;            } else {                // e.ctx.result = error/rejection reason;            }        } else {            // this is a transaction->start event;            console.log("Start Time:", e.ctx.start);        }    }};</code></pre>
 
 
 
