@@ -956,26 +956,8 @@ The library verifies whether the callback function is a generator, and executes 
 
 ## Initialization Options
 
-When initializing the library, you can pass object `options` with a set of global properties:
-```javascript
-var options = {
-    // pgFormatting - redirects query formatting to PG;
-    // promiseLib - overrides default promise library;
-    // connect - database 'connect' notification;
-    // disconnect - database 'disconnect' notification;
-    // query - query execution notification;
-    // receive - received data notification;
-    // task - task notification;
-    // transact - transaction notification;
-    // error - error notification;
-    // extend - protocol extension event;
-    // noLocking - prevents protocol locking;
-    // capTX - capitalizes transaction commands.
-};
-var pgp = require('pg-promise')(options);
-```
-
-If you want to get the most out the query-related events, you should use [pg-monitor].
+When initializing the library, you can pass object `options` with a set of global properties.
+See [API->options](http://vitaly-t.github.io/pg-promise/module-pg-promise.html).
 
 ---
 #### pgFormatting
