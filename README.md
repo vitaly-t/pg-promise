@@ -1036,100 +1036,17 @@ mostly needed by smaller and simplified [Conformant Implementations](https://pro
 ---
 #### connect
 
-Global notification function of acquiring a new database connection from the
-connection pool, i.e. a virtual connection.
-
-```javascript
-var options = {
-    connect: function(client){
-        var cp = client.connectionParameters;
-        console.log("Connected to database:", cp.database);
-    }
-};
-```
-
-The function takes only one parameter - `client` object from the [PG] library that represents connection
-with the database.
-
-The library will suppress any error thrown by the handler and write it into the console.
+See [API->connect](http://vitaly-t.github.io/pg-promise/global.html#event:connect).
 
 ---
 #### disconnect
 
-Global notification function of releasing a database connection back to the connection pool,
-i.e. releasing the virtual connection.
-
-```javascript
-var options = {
-    disconnect: function(client){
-        var cp = client.connectionParameters;
-        console.log("Disconnecting from database:", cp.database);
-    }
-};
-```
-
-The function takes only one parameter - `client` object from the [PG] library that represents the connection
-that's being released.
-
-The library will suppress any error thrown by the handler and write it into the console.
+See [API->disconnect](http://vitaly-t.github.io/pg-promise/global.html#event:disconnect).
 
 ---
 #### query
 
-Global notification of a query that's being executed.
-```javascript
-var options = {
-    query: function (e) {
-        console.log("Query:", e.query);
-        if (e.ctx) {
-            // this query is executing inside a task or transaction,
-            if (e.ctx.isTX) {
-                // this query is inside a transaction;
-            } else {
-                // this query is inside a task;
-            }
-        }
-    }
-};
-```
-
-Notification happens just before the query execution. And if the handler throws
-an error, the query execution will be rejected with that error.
-
-Parameter `e` is the event's context object that shares its format between events
-`query`, `receive`, `error`, `task` and `transact`. It supports the following properties,
-all of which are optional:
-
-* `cn` - connection details, passed only with a connection-related `error` event.
-* `client` - object from the [PG] library that represents the connection;
-* `query` - input query string;
-* `params` - input query parameters;
-* `ctx` - task/transaction context object;
-
-A task/transaction context object (`ctx`) supports the following properties:
-* `isTX` - indicates when `ctx` is a transaction context (not a regular task);
-* `start` - start time of the task/transaction;
-* `finish` - optional; finish time of the task/transaction, if it has finished;
-* `tag` - optional; tag object/value passed into the task/transaction, if any;
-* `success` - optional; indicates success for a finished task/transaction;
-* `result` - optional; task/transaction result, if finished: data resolved by the task/transaction,
- if `success` is `true`, otherwise it is set to the `reason` that was passed
- when rejecting the task/transaction.
-* `context` - optional, represents custom object context for tasks and transactions.
-It is only set when a task/transaction is called via `.call` or `.apply` methods.
-
-A task/transaction can be tagged/named when it is called using the following syntax:
-```javascript
-// for tasks:
-db.task(tag, cb);
-// for transactions:
-db.tx(tag, cb);
-```
-i.e. in front of the callback function you can inject a value or object that
-tags the task/transaction, so it can be used as a reference when handling events.
-
-All properties of `ctx` marked as optional are not set, unless they are relevant
-to the event.
+See [API->query](http://vitaly-t.github.io/pg-promise/global.html#event:query).
 
 ---
 #### receive
