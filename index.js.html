@@ -46,6 +46,7 @@ var $npm = {
  * Advanced access layer to node-postgres via $[Promises/A+]
  * @author Vitaly Tomilov
  * @module pg-promise
+ *
  * @param {Object} [options]
  * Library Initialization Options.
  *
@@ -84,6 +85,14 @@ var $npm = {
  *
  * @param {Function} [options.extend]
  * Event {@link event:extend extend} handler.
+ *
+ * @example
+ *
+ * var options = {
+ *   // Initialization Options
+ * };
+ *
+ * var pgp = require('pg-promise')(options);
  *
  */
 function $main(options) {
