@@ -1,3 +1,5 @@
+'use strict';
+
 ////////////////////////////////////////////////////
 // This is a complete test application, which shows
 // how to use the following options:
