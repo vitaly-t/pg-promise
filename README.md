@@ -1097,40 +1097,7 @@ function camelizeColumns(data) {
 ---
 #### error
 
-Global notification of an error during connection, query, task or transaction.
-```javascript
-var options = {
-    error: function (err, e) {
-        console.log("Error:", err);
-        if (e.cn) {
-            // this is a connection-related error;
-            // cn = connection details that were used.
-        }
-        if (e.query) {
-            console.log("Query:", e.query);
-            if (e.params) {
-                console.log("Parameters:", e.params);
-            }
-        }
-        if (e.ctx) {
-            // print transaction details;
-        }
-    }
-};
-```
-For parameter `e` see documentation of the `query` event earlier.
-
-The library will suppress any error thrown by the handler and write it into the console.
-
-**connection errors**
-
-When the error relates to the database connection, property `e.cn` is set
-to the connection string/object details that were passed into the library,
-as shown in the example above.
-
-Starting with version 2.5.3, it is no longer the original value that's passed
-with the event, but its safe copy, which has any presence of a password masked
-with symbol `#`. This is to make sure no passwords are logged anywhere as open text.
+See [API->error](http://vitaly-t.github.io/pg-promise/global.html#event:error).
 
 ---
 #### task
