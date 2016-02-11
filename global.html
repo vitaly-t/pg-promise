@@ -596,10 +596,13 @@ i.e. releasing the virtual connection.</p>
     <h4 class="name" id="event:error">error</h4>
 
     
-    <p class="summary">Global notification of every error encountered by this library.</p>
-    
 
 
+
+<div class="description">
+    <p>Global notification of every error encountered by this library.</p>
+<p>The library will suppress any error thrown by the handler and write it into the console.</p>
+</div>
 
 
 
@@ -645,7 +648,7 @@ i.e. releasing the virtual connection.</p>
 
             
 
-            <td class="description last"><p>The error encountered, of the value and type exactly as it was reported.</p></td>
+            <td class="description last"><p>The error encountered, of the same value and type as it was reported.</p></td>
         </tr>
 
     
@@ -738,7 +741,7 @@ for its complete documentation.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    error: function (err, e) {        if (e.cn) {            // this is a connection-related error            // cn = safe connection details passed into the library        }        if (e.query) {            // query details are available            if (e.params) {                // query parameters are available            }        }        if (e.ctx) {            // occurred inside a task or transaction        }      }};</code></pre>
+    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    error: function (err, e) {        if (e.cn) {            // this is a connection-related error            // cn = safe connection details passed into the library:            //      if password is present, it is masked by #        }        if (e.query) {            // query string is available            if (e.params) {                // query parameters are available            }        }        if (e.ctx) {            // occurred inside a task or transaction        }      }};</code></pre>
 
 
 
@@ -845,7 +848,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line283">line 283</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line287">line 287</a>
     </li></ul></dd>
     
 

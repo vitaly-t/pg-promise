@@ -259,10 +259,13 @@ var $events = {
     },
     /**
      * @event error
-     * @summary Global notification of every error encountered by this library.
+     * @description
+     * Global notification of every error encountered by this library.
+     *
+     * The library will suppress any error thrown by the handler and write it into the console.
      *
      * @param {} err
-     * The error encountered, of the value and type exactly as it was reported.
+     * The error encountered, of the same value and type as it was reported.
      *
      * @param {Object} e
      * Event Context Object.
@@ -279,11 +282,12 @@ var $events = {
      *
      *         if (e.cn) {
      *             // this is a connection-related error
-     *             // cn = safe connection details passed into the library
+     *             // cn = safe connection details passed into the library:
+     *             //      if password is present, it is masked by #
      *         }
      *
      *         if (e.query) {
-     *             // query details are available
+     *             // query string is available
      *             if (e.params) {
      *                 // query parameters are available
      *             }
