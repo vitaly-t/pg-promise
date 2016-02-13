@@ -1058,12 +1058,12 @@ See [API / event `extend`](http://vitaly-t.github.io/pg-promise/global.html#even
 ---
 #### noLocking
 
-See [API / `noLocking`](http://vitaly-t.github.io/pg-promise/API/module-pg-promise.html).
+See [API / `noLocking`](http://vitaly-t.github.io/pg-promise/module-pg-promise.html).
 
 ---
 #### capTX
 
-See [API / `capTX`](http://vitaly-t.github.io/pg-promise/API/module-pg-promise.html).
+See [API / `capTX`](http://vitaly-t.github.io/pg-promise/module-pg-promise.html).
 
 ## Library de-initialization
 
