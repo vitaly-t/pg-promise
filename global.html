@@ -714,7 +714,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line284">line 284</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line330">line 330</a>
     </li></ul></dd>
     
 
@@ -753,10 +753,23 @@ for its complete documentation.</p></td>
     <h4 class="name" id="event:extend">extend</h4>
 
     
-    <p class="summary">Extends database protocol with custom methods and properties.</p>
-    
 
 
+
+<div class="description">
+    <p>Extends database protocol with custom methods and properties.</p>
+<p>Override this event to extend the existing access layer with your own functions and
+properties best suited for your application.</p>
+<p>The extension thus becomes available across all access layers:</p>
+<ul>
+<li>Within the root/default database protocol;</li>
+<li>Inside transactions, including nested ones;</li>
+<li>Inside tasks, including nested ones.</li>
+</ul>
+<p>All pre-defined methods and properties are read-only, so you will get an error,
+if you try overriding them.</p>
+<p>The library will suppress any error thrown by the handler and write it into the console.</p>
+</div>
 
 
 
@@ -848,7 +861,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line341">line 341</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line387">line 387</a>
     </li></ul></dd>
     
 
@@ -871,6 +884,13 @@ for its complete documentation.</p></td>
 
 
 
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// In the example below we extend the protocol with function `addImage`// that will insert one binary image and resolve with the new record id.var options = {    extend: function (obj) {        // obj = this;        obj.addImage = function (data) {            return obj.one("insert into images(data) values($1) returning id", '\\x' + data);        }    }};</code></pre>
+
+    <pre class="prettyprint"><code>// It is best to extend the protocol by adding whole entity repositories to it// as shown in the following example.// Users repository;function repUsers(obj) {    return {        add: function (name, active) {            return obj.none("insert into users values($1, $2)", [name, active]);        },        delete: function (id) {            return obj.none("delete from users where id = $1", id);        }    }}// Overriding 'extend' event;var options = {    extend: function (obj) {        // obj = this;        this.users = repUsers(this);    }};// Usage example:db.users.add("John", true)    .then(function () {        // user added successfully;    })    .catch(function (error) {        // failed to add the user;    });</code></pre>
 
 
 
@@ -1355,8 +1375,7 @@ during events <a href="global.html#event:task">task</a> and <a href="global.html
 
             
 
-            <td class="description last"><p>Once the operation has finished, this property contains its result,
-depending on property <code>success</code>:</p>
+            <td class="description last"><p>Once the operation has finished, this property contains its result, depending on property <code>success</code>:</p>
 <ul>
 <li>data resolved by the operation, if <code>success</code> = <code>true</code></li>
 <li>error / rejection reason, if <code>success</code> = <code>false</code></li>
@@ -1393,8 +1412,8 @@ depending on property <code>success</code>:</p>
 
             
 
-            <td class="description last"><p>If the operation was invoked with an object context - <code>task.call(obj,...)</code> or <code>tx.call(obj,...)</code>,
-this property is set with the context object that was passed in.</p></td>
+            <td class="description last"><p>If the operation was invoked with an object context - <code>task.call(obj,...)</code> or <code>tx.call(obj,...)</code>, this property is set with
+the context object that was passed in.</p></td>
         </tr>
 
     
@@ -1483,10 +1502,25 @@ this property is set with the context object that was passed in.</p></td>
     <h4 class="name" id="event:receive">receive</h4>
 
     
-    <p class="summary">Global notification of any received data.</p>
-    
 
 
+
+<div class="description">
+    <p>Global notification of any data received from the database, coming from a regular query or from a stream.</p>
+<p>The event is fired before the data reaches the client, and only when receiving 1 or more records.</p>
+<p>This event notification serves two purposes:</p>
+<ul>
+<li>Providing selective data logging for debugging;</li>
+<li>Pre-processing data before it reaches the client.</li>
+</ul>
+<p><strong>NOTES:</strong></p>
+<ul>
+<li>If you alter the size of <code>data</code> directly or through the <code>result</code> object, it may affect <code>QueryResultMask</code>
+validation for regular queries, which is executed right after this notification.</li>
+<li>When adding data pre-processing, you should consider possible performance penalty this may bring.</li>
+<li>If the event handler throws an error, the original request will be rejected with that error.</li>
+</ul>
+</div>
 
 
 
@@ -1537,7 +1571,8 @@ this property is set with the context object that was passed in.</p></td>
 
             
 
-            <td class="description last"><p>array of received data rows.</p></td>
+            <td class="description last"><p>A non-empty array of received data objects/rows.</p>
+<p>If any of those objects are modified during notification, the client will receive the modified data.</p></td>
         </tr>
 
     
@@ -1560,7 +1595,10 @@ this property is set with the context object that was passed in.</p></td>
 
             
 
-            <td class="description last"><p>original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object, if available.</p></td>
+            <td class="description last"><ul>
+<li>original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object, if the data comes from a regular query, in which case <code>data = result.rows</code>.</li>
+<li><code>undefined</code> when the data comes from a stream.</li>
+</ul></td>
         </tr>
 
     
@@ -1584,8 +1622,7 @@ this property is set with the context object that was passed in.</p></td>
             
 
             <td class="description last"><p>Event Context Object.</p>
-<p>This type of object is used by several events. See event <a href="global.html#event:query">query</a>
-for its complete documentation.</p></td>
+<p>This type of object is used by several events. See event <a href="global.html#event:query">query</a> for its complete documentation.</p></td>
         </tr>
 
     
@@ -1626,7 +1663,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line176">line 176</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line175">line 175</a>
     </li></ul></dd>
     
 
@@ -1649,6 +1686,11 @@ for its complete documentation.</p></td>
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize column names:var options = {    receive: function (data, result, e) {        camelizeColumns(data);    }};var humps = require('humps');function camelizeColumns(data) {    var template = data[0];    for (var prop in template) {        var camel = humps.camelize(prop);        if (!(camel in template)) {            for (var i = 0; i &lt; data.length; i++) {                var d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
 
 
 
@@ -1760,7 +1802,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line198">line 198</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line244">line 244</a>
     </li></ul></dd>
     
 
@@ -1899,7 +1941,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line241">line 241</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line287">line 287</a>
     </li></ul></dd>
     
 

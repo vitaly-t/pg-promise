@@ -59,8 +59,19 @@ var $npm = {
  * @param {Boolean} [options.noLocking=false]
  * Prevents protocol locking.
  *
+ * By default, the library locks its protocol to read-only access, as a fool-proof mechanism.
+ * Specifically for the extend event this serves as a protection against overriding existing
+ * properties or trying to set them at the wrong time.
+ *
+ * If this provision gets in the way of using a mock-up framework for your tests, you can force
+ * the library to deactivate most of the locks by setting `noLocking` = `true` within the options.
+ *
  * @param {Boolean} [options.capTX=false]
  * Capitalizes transaction commands.
+ *
+ * By default, all commands within automated transactions are executed in low case.
+ * If you want them to be executed capitalized instead, set `capTX` = `true`.
+ * This is purely a cosmetic feature.
  *
  * @param {Function} [options.connect]
  * Event {@link event:connect connect} handler.

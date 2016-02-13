@@ -181,14 +181,13 @@ var $events = {
      * Once the operation is finished, this property indicates whether it was successful.
      *
      * @param {} [e.ctx.result]
-     * Once the operation has finished, this property contains its result,
-     * depending on property `success`:
+     * Once the operation has finished, this property contains its result, depending on property `success`:
      * - data resolved by the operation, if `success` = `true`
      * - error / rejection reason, if `success` = `false`
      *
      * @param {Object} [e.ctx.context]
-     * If the operation was invoked with an object context - `task.call(obj,...)` or `tx.call(obj,...)`,
-     * this property is set with the context object that was passed in.
+     * If the operation was invoked with an object context - `task.call(obj,...)` or `tx.call(obj,...)`, this property is set with
+     * the context object that was passed in.
      */
     query: function (options, context) {
         if (options &amp;&amp; options.query instanceof Function) {
@@ -204,13 +203,60 @@ var $events = {
 
     /**
      * @event receive
-     * @summary Global notification of any received data.
-     * @param {Array} data - array of received data rows.
-     * @param {Object} result - original $[Result] object, if available.
-     * @param {Object} e - Event Context Object.
+     * @description
+     * Global notification of any data received from the database, coming from a regular query or from a stream.
      *
-     * This type of object is used by several events. See event {@link event:query query}
-     * for its complete documentation.
+     * The event is fired before the data reaches the client, and only when receiving 1 or more records.
+     *
+     * This event notification serves two purposes:
+     *  - Providing selective data logging for debugging;
+     *  - Pre-processing data before it reaches the client.
+     *
+     * **NOTES:**
+     * - If you alter the size of `data` directly or through the `result` object, it may affect `QueryResultMask`
+     *   validation for regular queries, which is executed right after this notification.
+     * - When adding data pre-processing, you should consider possible performance penalty this may bring.
+     * - If the event handler throws an error, the original request will be rejected with that error.
+
+     * @param {Array} data
+     * A non-empty array of received data objects/rows.
+     *
+     * If any of those objects are modified during notification, the client will receive the modified data.
+     *
+     * @param {Object} result
+     * - original $[Result] object, if the data comes from a regular query, in which case `data = result.rows`.
+     * - `undefined` when the data comes from a stream.
+     *
+     * @param {Object} e
+     * Event Context Object.
+     *
+     * This type of object is used by several events. See event {@link event:query query} for its complete documentation.
+     *
+     * @example
+     *
+     * // Example below shows the fastest way to camelize column names:
+     *
+     * var options = {
+     *     receive: function (data, result, e) {
+     *         camelizeColumns(data);
+     *     }
+     * };
+     *
+     * var humps = require('humps');
+     *
+     * function camelizeColumns(data) {
+     *     var template = data[0];
+     *     for (var prop in template) {
+     *         var camel = humps.camelize(prop);
+     *         if (!(camel in template)) {
+     *             for (var i = 0; i &lt; data.length; i++) {
+     *                 var d = data[i];
+     *                 d[camel] = d[prop];
+     *                 delete d[prop];
+     *             }
+     *         }
+     *     }
+     * }
      */
     receive: function (options, data, result, context) {
         if (options &amp;&amp; options.receive instanceof Function) {
@@ -369,8 +415,73 @@ var $events = {
 
     /**
      * @event extend
-     * @summary Extends database protocol with custom methods and properties.
+     * @description
+     * Extends database protocol with custom methods and properties.
+     *
+     * Override this event to extend the existing access layer with your own functions and
+     * properties best suited for your application.
+     *
+     * The extension thus becomes available across all access layers:
+     *
+     * - Within the root/default database protocol;
+     * - Inside transactions, including nested ones;
+     * - Inside tasks, including nested ones.
+     *
+     * All pre-defined methods and properties are read-only, so you will get an error,
+     * if you try overriding them.
+     *
+     * The library will suppress any error thrown by the handler and write it into the console.
+     *
      * @param {Object} obj - protocol object to be extended.
+     *
+     * @example
+     *
+     * // In the example below we extend the protocol with function `addImage`
+     * // that will insert one binary image and resolve with the new record id.
+     *
+     * var options = {
+     *     extend: function (obj) {
+     *         // obj = this;
+     *         obj.addImage = function (data) {
+     *             return obj.one("insert into images(data) values($1) returning id", '\\x' + data);
+     *         }
+     *     }
+     * };
+     *
+     * @example
+     *
+     * // It is best to extend the protocol by adding whole entity repositories to it
+     * // as shown in the following example.
+     *
+     * // Users repository;
+     * function repUsers(obj) {
+     *     return {
+     *         add: function (name, active) {
+     *             return obj.none("insert into users values($1, $2)", [name, active]);
+     *         },
+     *         delete: function (id) {
+     *             return obj.none("delete from users where id = $1", id);
+     *         }
+     *     }
+     * }
+     *
+     * // Overriding 'extend' event;
+     * var options = {
+     *     extend: function (obj) {
+     *         // obj = this;
+     *         this.users = repUsers(this);
+     *     }
+     * };
+     *
+     * // Usage example:
+     * db.users.add("John", true)
+     *     .then(function () {
+     *         // user added successfully;
+     *     })
+     *     .catch(function (error) {
+     *         // failed to add the user;
+     *     });
+     *
      */
     extend: function (options, obj) {
         if (options &amp;&amp; options.extend instanceof Function) {
