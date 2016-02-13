@@ -1033,66 +1033,7 @@ See [API / event `query`](http://vitaly-t.github.io/pg-promise/global.html#event
 ---
 #### receive
 
-Introduced in version 2.8.0
-
-Global notification of any data received from the database, from a regular query
-or from a stream.
-
-```js
-var options = {
-    receive: function (data, result, e) {
-        console.log("DATA:", data);
-        // result = original Result object, if available;
-        // e = event context object;
-    }
-};
-```
-
-The event is fired before the data reaches the client, and only when the data
-contains 1 or more records.
-
-Parameter `data` is always a non-empty array, containing objects - rows. If any of those
-objects are modified during notification, the client will receive the modified data.
-
-Parameter `result` is the original [Result] object, if the data comes from a regular query,
-in which case `data = result.rows`. When the data comes from a stream, parameter `result` is `undefined`.
-
-This event notification serves two purposes:
-
-* Providing selective data logging for debugging;
-* Pre-processing data before it reaches the client. 
-
-Example below camelizes all column names: 
-
-```js
-var options = {
-    receive: function (data/*, result, e*/) {
-        camelizeColumns(data);
-    }
-};
-
-var humps = require('humps');
-
-function camelizeColumns(data) {
-    var template = data[0];
-    for (var prop in template) {
-        var camel = humps.camelize(prop);
-        if (!(camel in template)) {
-            for (var i = 0; i < data.length; i++) {
-                var d = data[i];
-                d[camel] = d[prop];
-                delete d[prop];
-            }
-        }
-    }
-}
-```
-
-**NOTES:**
-* If you alter the size of `data` directly or through the `result` object, it may affect `QueryResultMask`
-  validation for regular queries, which is executed right after this notification.  
-* When adding data pre-processing, you should consider possible performance penalty this may bring. 
-* If the event handler throws an error, the original request will be rejected with that error.
+See [API / event `receive`](http://vitaly-t.github.io/pg-promise/global.html#event:receive).
 
 ---
 #### error
@@ -1112,84 +1053,17 @@ See [API / event `transact`](http://vitaly-t.github.io/pg-promise/global.html#ev
 ---
 #### extend
 
-Override this event to extend the existing access layer with your own functions
-and properties best suited for your application.
-
-The extension thus becomes available across all access layers:
-
-* Within the root/default database protocol;
-* Inside transactions, including nested ones;
-* Inside tasks, including nested ones.
-
-In the example below we extend the protocol with function `addImage` that will insert
-one binary image and resolve with the new record id:
-
-```javascript
-var options = {
-    extend: function (obj) {
-        // obj = this;
-        obj.addImage = function (data) {
-            return obj.one("insert into images(data) values($1) returning id",
-                '\\x' + data);
-        }
-    }
-};
-```
-
-NOTE: All pre-defined methods and properties are read-only, so you will get an error,
-if you try overriding them.
-
-It is best to extend the protocol by adding whole entity repositories to it as shown
-in the following example.
-
-```javascript
-// Users repository;
-function repUsers(obj) {
-    return {
-        add: function (name, active) {
-            return obj.none("insert into users values($1, $2)", [name, active]);
-        },
-        delete: function (id) {
-            return obj.none("delete from users where id=$1", id);
-        }
-    }
-}
-
-// Overriding 'extend' event;
-var options = {
-    extend: function (obj) {
-        // obj = this;
-        this.users = repUsers(this);
-    }
-};
-
-// Usage example:
-db.users.add("John", true)
-    .then(function () {
-        // user added successfully;
-    })
-    .catch(function (error) {
-        // failed to add the user;
-    });
-```
-
-The library will suppress any error thrown by the handler and write it into the console.
+See [API / event `extend`](http://vitaly-t.github.io/pg-promise/global.html#event:extend).
 
 ---
 #### noLocking
 
-By default, the library locks its protocol to read-only access, as a fool-proof mechanism.
-Specifically for the `extend` event this serves as a protection against overriding existing
-properties or trying to set them at the wrong time. 
-   
-If this provision gets in the way of using a mock-up framework for your tests, you can force
-the library to deactivate most of the locks by setting `noLocking=true` within the options.
+See [API / `noLocking`](http://vitaly-t.github.io/pg-promise/API/module-pg-promise.html).
 
 ---
 #### capTX
 
-By default, all commands within automated transactions are executed in low case. If you want them
-to be executed capitalized instead, set `capTX = true`. This is purely a cosmetic feature.
+See [API / `capTX`](http://vitaly-t.github.io/pg-promise/API/module-pg-promise.html).
 
 ## Library de-initialization
 
