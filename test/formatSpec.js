@@ -728,6 +728,15 @@ describe("Named Parameters", function () {
 
     });
 
+    it("must allow partial replacements", function () {
+        expect(pgp.as.format("${first}, ${ second  }, ${third}",
+            {
+                first: 'one',
+                third: 'three'
+            }, {partial: true}))
+            .toBe("'one', ${ second  }, 'three'");
+    });
+
     it("must ignore invalid-formatted variables", function () {
         expect(pgp.as.format("$()", {})).toBe("$()");
         expect(pgp.as.format("$((test))", {})).toBe("$((test))");

@@ -18,6 +18,7 @@ var sqlSimple = './test/sql/simple.sql';
 var sqlUsers = './test/sql/allUsers.sql';
 var sqlUnknown = './test/sql/unknown.sql';
 var sqlInvalid = './test/sql/invalid.sql';
+var sqlParams = './test/sql/params.sql';
 var sqlTemp = './test/sql/temp.sql';
 
 describe("QueryFile / Positive:", function () {
@@ -33,6 +34,17 @@ describe("QueryFile / Positive:", function () {
         var qf = new QueryFile(sqlUsers, {debug: true, minify: true});
         it("must return minified query", function () {
             expect(qf.query).toBe("select * from users");
+        });
+    });
+
+    describe("with params set", function () {
+        var params = {
+            schema: "public",
+            table: "users"
+        };
+        var qf = new QueryFile(sqlParams, {minify: true, params: params});
+        it("must return pre-formatted query", function () {
+            expect(qf.query).toBe('SELECT ${column~} FROM "public"."users"');
         });
     });
 
@@ -175,4 +187,5 @@ describe("QueryFile / Negative:", function () {
             expect(qf.error.file).toBe(sqlInvalid);
         });
     });
+
 });
