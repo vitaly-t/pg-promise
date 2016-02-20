@@ -331,7 +331,10 @@ A valid property name consists of any combination of letters, digits, underscore
 Leading and trailing spaces around property names are ignored.
 
 It is important to know that while property values `null` and `undefined` are both formatted as `null`,
-an error is thrown when the property doesn't exist at all.
+an error is thrown when the property doesn't exist at all (except for `partial` replacements - see below).
+
+Version 3.2.0 added support for `partial` replacements, which when used will simply ignore variables that do
+not exist in the formatting object.
 
 #### `this` reference
 
@@ -604,13 +607,15 @@ Every query method of the library recognizes type `QueryFile` as a query provide
 You should only create a single instance of `QueryFile` per file, and then use that
 instance throughout the application.
 
-One of the most useful features implemented by class `QueryFile` is its `debug` mode.
-When `debug` mode is set, every query request will check if the file has changed since
-it was last read, and if so - it will be read afresh. This way you can write sql
-queries and see immediate updates without having to restart your application.
+Most useful features of class `QueryFile`:
 
-The query provider itself never throws any error, leaving it for query methods to
-reject with.
+* `debug` mode, to make every query request check if the file has changed since it was last read,
+  and if so - read it afresh. This way you can write sql queries and see immediate updates without having
+  to restart your application.
+* Added in v3.2.0: `params` option for static SQL pre-formatting, to inject certain values only once,
+  like a schema name or a configurable table name.
+
+The query provider itself never throws any error, leaving it for query methods to reject with.
 
 For detailed documentation see [QueryFile API].
 
@@ -1079,6 +1084,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 3.2.0 Adding formatting options support, specifically option `partial`, add its use within [Query Files](#query-files). Released: February 20, 2016
 * 3.1.0 Adding support for [SQL Names]. Released: January 27, 2016
 * 3.0.3 Complete replacement of the API with GitHub-hosted one. Released: January 21, 2016
 * 2.9.3 Replaced all SQL processing with [pg-minify] dependency. Released: January 20, 2016
