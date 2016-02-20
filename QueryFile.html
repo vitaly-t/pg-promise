@@ -300,6 +300,55 @@ is specified as <code>true</code>, then <code>minify</code> defaults to <code>tr
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Static formatting parameters to be applied to the SQL, using the same method <a href="formatting.html#.format">as.format</a>,
+but with option <code>partial</code> = <code>true</code>.</p>
+<p>Most of the time query formatting is fully dynamic, and applied just before executing the query.
+In some cases though you may need to pre-format SQL with static values. Examples of it can be a
+schema name, or a configurable table name.</p>
+<p>This option makes two-step SQL formatting easy: you can pre-format the SQL initially, and then
+apply the second-step dynamic formatting when executing the query.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -344,7 +393,7 @@ is specified as <code>true</code>, then <code>minify</code> defaults to <code>tr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line7">line 7</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line8">line 8</a>
     </li></ul></dd>
     
 
@@ -455,7 +504,7 @@ is specified as <code>true</code>, then <code>minify</code> defaults to <code>tr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line192">line 192</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line210">line 210</a>
     </li></ul></dd>
     
 
@@ -528,7 +577,7 @@ is specified as <code>true</code>, then <code>minify</code> defaults to <code>tr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line208">line 208</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line226">line 226</a>
     </li></ul></dd>
     
 
@@ -601,7 +650,7 @@ is specified as <code>true</code>, then <code>minify</code> defaults to <code>tr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line223">line 223</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line241">line 241</a>
     </li></ul></dd>
     
 
@@ -681,7 +730,7 @@ is specified as <code>true</code>, then <code>minify</code> defaults to <code>tr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line175">line 175</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line193">line 193</a>
     </li></ul></dd>
     
 
@@ -764,7 +813,7 @@ the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line130">line 130</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line145">line 145</a>
     </li></ul></dd>
     
 
