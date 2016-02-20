@@ -785,7 +785,18 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
 
 
 <div class="description">
-    <p>Replaces variables in a string with the values passed in.</p>
+    <p>Replaces variables in a string according to the type of <code>values</code>:</p>
+<ul>
+<li>Replaces <code>$1</code> occurrences when <code>values</code> is of type <code>string</code>, <code>boolean</code>, <code>number</code>, <code>Date</code>, or when it is <code>null</code>.</li>
+<li>Replaces variables <code>$1</code>, <code>$2</code>, ...<code>$9999</code> when <code>values</code> is an array of parameters.</li>
+<li>Replaces <code>$*propName*</code>, where <code>*</code> is any of <code>{}</code>, <code>()</code>, <code>[]</code>, <code>&lt;&gt;</code>, <code>//</code>, when <code>values</code> is an object
+that's not a <code>Date</code> or <code>null</code>.</li>
+</ul>
+<p>By default, each variable is automatically formatted according to its type, unless it is a special variable:</p>
+<ul>
+<li>Raw-Text variables use symbol <code>^</code> in the end: <code>$1^</code>, <code>$2^</code>,..., and <code>$*propName^*</code> (see <code>*</code> above)</li>
+<li>SQL Name/Identifier variables use <code>~</code> (tilde) in the end: <code>$1~</code>, <code>$2~</code>,..., and <code>$*propName~*</code> (see <code>*</code> above)</li>
+</ul>
 </div>
 
 
@@ -886,7 +897,7 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
 
             
 
-            <td class="description last"><p>Formatting variable value(s).</p></td>
+            <td class="description last"><p>Formatting parameter(s) / variable value(s).</p></td>
         </tr>
 
     

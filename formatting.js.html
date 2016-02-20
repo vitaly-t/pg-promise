@@ -510,13 +510,22 @@ var $as = {
     /**
      * @method formatting.format
      * @description
-     * Replaces variables in a string with the values passed in.
+     * Replaces variables in a string according to the type of `values`:
+     *
+     * - Replaces `$1` occurrences when `values` is of type `string`, `boolean`, `number`, `Date`, or when it is `null`.
+     * - Replaces variables `$1`, `$2`, ...`$9999` when `values` is an array of parameters.
+     * - Replaces `$*propName*`, where `*` is any of `{}`, `()`, `[]`, `&lt;>`, `//`, when `values` is an object
+     *   that's not a `Date` or `null`.
+     *
+     * By default, each variable is automatically formatted according to its type, unless it is a special variable:
+     * - Raw-Text variables use symbol `^` in the end: `$1^`, `$2^`,..., and `$*propName^*` (see `*` above)
+     * - SQL Name/Identifier variables use `~` (tilde) in the end: `$1~`, `$2~`,..., and `$*propName~*` (see `*` above)
      *
      * @param {String} query
      * Query string with formatting variables in it.
      *
      * @param {Array|Object|value} [values]
-     * Formatting variable value(s).
+     * Formatting parameter(s) / variable value(s).
      *
      * @param {Object} [options]
      * Formatting Options.
