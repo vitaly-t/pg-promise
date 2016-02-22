@@ -776,6 +776,14 @@ describe("Named Parameters", function () {
         }).toThrow(new Error("Property 'prop2' doesn't exist."));
     });
 
+    describe("json modifier", function () {
+        it("must replace any value with json", function () {
+            expect(pgp.as.format("$1:json", 'hello')).toBe('\'"hello"\'');
+            expect(pgp.as.format("$1:json", ['hello'])).toBe('\'"hello"\'');
+            expect(pgp.as.format("${data:json}", {data: [1, 'two']})).toBe("'[1,\"two\"]'");
+        });
+    });
+
     describe("'this' formatting", function () {
 
         it("must recognize 'this'", function () {
