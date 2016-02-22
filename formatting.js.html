@@ -29,28 +29,44 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
+var formatModifier = {
+    raw: 1, // Raw-Text variable
+    name: 2, // SQL Name/Identifier
+    json: 3 // JSON modifier
+};
+
+// Format Modification Map;
+var fmMap = {
+    '^': formatModifier.raw,
+    ':raw': formatModifier.raw,
+    '~': formatModifier.name,
+    ':name': formatModifier.name,
+    ':json': formatModifier.json
+};
+
 ////////////////////////////////////////////////////
 // Converts a single value into its Postgres format.
-// All known data types are supported.
 //
-// It can only fail in the following cases:
-//   1. function-parameter or custom type throw an error;
-//   2. 'value' = null/undefined, while 'raw' = true;
-//   3. function-parameter returns null/undefined,
-//      while 'raw' = true.
-function formatValue(value, isRaw, isName, obj) {
-    if (isName) {
+// All known data types are supported.
+function formatValue(value, fm, obj) {
+    if (fm === formatModifier.name) {
         if (value instanceof Function) {
-            return formatValue(resolveFunc(value, obj), false, true, obj);
+            return formatValue(resolveFunc(value, obj), formatModifier.name, obj);
         }
         if (value &amp;&amp; typeof value === 'object') {
             var ctf = value['formatDBType']; // custom type formatting;
             if (ctf instanceof Function) {
-                return formatValue(resolveFunc(ctf, value), false, true, obj);
+                return formatValue(resolveFunc(ctf, value), formatModifier.name, obj);
             }
         }
         return $as.name(value);
     }
+
+    if (fm === formatModifier.json) {
+        return $as.json(value);
+    }
+
+    var isRaw = fm === formatModifier.raw;
 
     if (isNull(value)) {
         throwIfRaw(isRaw);
@@ -70,7 +86,8 @@ function formatValue(value, isRaw, isName, obj) {
             // type = 'object';
             var ctf = value['formatDBType']; // custom type formatting;
             if (ctf instanceof Function) {
-                return formatValue(resolveFunc(ctf, value), isRaw || value._rawDBType, false, obj);
+                var mod = (isRaw || value._rawDBType) ? formatModifier.raw : null;
+                return formatValue(resolveFunc(ctf, value), mod, obj);
             }
             if (value instanceof Date) {
                 return $as.date(value, isRaw);
@@ -113,60 +130,53 @@ function formatCSV(values) {
 // Query formatting helpers;
 var formatAs = {
 
-    // Replaces each $*propName* with the corresponding property value,
-    // where * is one of the following open-close pairs: {}, (), [], &lt;>, //
-    // NOTE: Combinations of different open-close symbols are not allowed.
-    //
-    // Symbol ^ in the end of a property name is recognized for injecting
-    // raw-text values, while symbol ~ is for injecting quoted identifiers.
-    //
-    // A valid property name consists of any combination of letters,
-    // digits, underscores or '$', and they are case-sensitive.
-    // Leading and trailing spaces around property names are ignored.
-    //
-    // Property with name 'this' refers to the formatting object itself,
-    // to be injected as a JSON-formatted string.
     object: function (query, obj, raw, options) {
-        var pattern = /\$(?:({)|(\()|(&lt;)|(\[)|(\/))\s*[a-z0-9\$_]+[\^~]?\s*(?:(?=\2)(?=\3)(?=\4)(?=\5)}|(?=\1)(?=\3)(?=\4)(?=\5)\)|(?=\1)(?=\2)(?=\4)(?=\5)>|(?=\1)(?=\2)(?=\3)(?=\5)]|(?=\1)(?=\2)(?=\3)(?=\4)\/)/gi;
+        var pattern = /\$(?:({)|(\()|(&lt;)|(\[)|(\/))\s*[a-z0-9\$_]+([\^~]|:raw|:name|:json)?\s*(?:(?=\2)(?=\3)(?=\4)(?=\5)}|(?=\1)(?=\3)(?=\4)(?=\5)\)|(?=\1)(?=\2)(?=\4)(?=\5)>|(?=\1)(?=\2)(?=\3)(?=\5)]|(?=\1)(?=\2)(?=\3)(?=\4)\/)/gi;
         var partial = options &amp;&amp; options.partial;
         return query.replace(pattern, function (name) {
-            var svn = name.replace(/^\$[{(&lt;[/]|[\s})>\]/]/g, ''); // stripped variable name;
-            var ls = svn[svn.length - 1], isRaw = ls === '^', isName = ls === '~';
-            var prop = (isRaw || isName) ? svn.substring(0, svn.length - 1) : svn;
-            isRaw = isRaw || raw;
-            if (prop in obj) {
-                return formatValue(obj[prop], isRaw, isName, obj);
+            var v = formatAs.stripName(name.replace(/^\$[{(&lt;[/]|[\s})>\]/]/g, ''), raw);
+            if (v.name in obj) {
+                return formatValue(obj[v.name], v.fm, obj);
             }
-            if (prop === 'this') {
-                return formatValue(obj, isRaw, isName);
+            if (v.name === 'this') {
+                return formatValue(obj, v.fm);
             }
             if (partial) {
                 return name;
             }
             // property must exist as the object's own or inherited;
-            throw new Error("Property '" + prop + "' doesn't exist.");
+            throw new Error("Property '" + v.name + "' doesn't exist.");
         });
     },
 
-    // Replaces "$1, $2,...$9999" with the corresponding array values.
-    // Variables "$1^, $2^,..." are replaced with their raw-text equivalents.
-    // Variables "$1~, $2~,..." are formatted as quoted identifiers.
     array: function (query, array, raw) {
-        return query.replace(/\$([1-9][0-9]{0,3}[\^~]?)/g, function (name, idx) {
-            var ls = name[name.length - 1], isRaw = raw || ls === '^', isName = ls === '~';
-            idx = parseInt(idx) - 1; // also strips off '^'/'~', if there is any;
-            return idx &lt; array.length ? formatValue(array[idx], isRaw, isName) : name;
+        return query.replace(/\$([1-9][0-9]{0,3}([\^~]|:raw|:name|:json)?)/g, function (name, idx) {
+            var v = formatAs.stripName(name, raw);
+            idx = parseInt(idx) - 1;
+            return idx &lt; array.length ? formatValue(array[idx], v.fm) : name;
         });
     },
 
-    // Replaces each occurrence of "$1" with the value passed.
-    // Each "$1^" is replaced with its raw-text equivalent.
-    // Each "$1~" is replaced with the quoted identifier.
     value: function (query, value, raw) {
-        return query.replace(/\$1(?![0-9])[\^~]?/g, function (name) {
-            var ls = name[name.length - 1], r = raw || ls === '^', isName = ls === '~';
-            return formatValue(value, r, isName);
+        return query.replace(/\$1(?![0-9])([\^~]|:raw|:name|:json)?/g, function (name) {
+            var v = formatAs.stripName(name, raw);
+            return formatValue(value, v.fm);
         });
+    },
+
+    stripName: function (name, raw) {
+        var mod = name.match(/\^|~|:raw|:name|:json/);
+        if (mod) {
+            return {
+                name: name.substr(0, mod.index),
+                fm: fmMap[mod[0]]
+            };
+        } else {
+            return {
+                name: name,
+                fm: raw ? formatModifier.raw : null
+            };
+        }
     }
 };
 
@@ -498,11 +508,12 @@ var $as = {
         if (typeof func !== 'function') {
             throw new TypeError(TEXT(func) + " is not a function.");
         }
+        var fm = raw ? formatModifier.raw : null;
         if (isNull(obj)) {
-            return formatValue(resolveFunc(func), raw);
+            return formatValue(resolveFunc(func), fm);
         }
         if (typeof obj === 'object') {
-            return formatValue(resolveFunc(func, obj), raw, false, obj);
+            return formatValue(resolveFunc(func, obj), fm, obj);
         }
         throw new TypeError(TEXT(obj) + " is not an object.");
     },
@@ -515,11 +526,18 @@ var $as = {
      * - Replaces `$1` occurrences when `values` is of type `string`, `boolean`, `number`, `Date`, or when it is `null`.
      * - Replaces variables `$1`, `$2`, ...`$9999` when `values` is an array of parameters.
      * - Replaces `$*propName*`, where `*` is any of `{}`, `()`, `[]`, `&lt;>`, `//`, when `values` is an object
-     *   that's not a `Date` or `null`.
+     *   that's not a `Date` or `null`. Special property name `this` refers to the formatting object itself,
+     *   to be injected as a JSON string.
      *
      * By default, each variable is automatically formatted according to its type, unless it is a special variable:
-     * - Raw-Text variables use symbol `^` in the end: `$1^`, `$2^`,..., and `$*propName^*` (see `*` above)
-     * - SQL Name/Identifier variables use `~` (tilde) in the end: `$1~`, `$2~`,..., and `$*propName~*` (see `*` above)
+     * - Raw-text variables end with `:raw` or symbol `^`, and prevent escaping the text. Such variables are not
+     *   allowed to be `null` or `undefined`.
+     *   - `$1:raw`, `$2:raw`,..., and `$*propName:raw*` (see `*` above)
+     *   - `$1^`, `$2^`,..., and `$*propName^*` (see `*` above)
+     * - SQL name variables end with `:name` or symbol `~` (tilde), and provide proper escaping for SQL names/identifiers:
+     *   - `$1:name`, `$2:name`,..., and `$*propName:name*` (see `*` above)
+     *   - `$1~`, `$2~`,..., and `$*propName~*` (see `*` above)
+     * - JSON override ends with `:json` to format the value of any type as a JSON string
      *
      * @param {String} query
      * Query string with formatting variables in it.
