@@ -192,9 +192,11 @@ converted into the array constructor format of `array[]`, the same as calling me
 When a value/property inside array/object is of type `object` (except for `null` and `Date`), it is automatically
 serialized into JSON, the same as calling method `pgp.as.json()`, except the latter would convert anything to JSON.
 
+For the most current SQL formatting support see method [as.format]
+
 ### Raw Text
 
-Raw-text values can be injected by ending the variable name with `^`:
+Raw-text values can be injected by ending the variable name with `^` or `:raw`:
 `$1^, $2^, etc...`, `$*varName^*`, where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
 
 Raw text is injected without any pre-processing, which means:
@@ -222,11 +224,13 @@ query("...WHERE id IN($1^)", pgp.as.csv([1,2,3,4]));
 Special syntax `this^` within the [Named Parameters](#named-parameters) refers
 to the formatting object itself, to be injected as a raw-text JSON-formatted string.
 
+For the most current SQL formatting support see method [as.format]
+
 ### SQL Names
 
 Introduced in version 3.1.0, this feature simplifies formatting for SQL names/identifiers.
 
-When a variable ends with `~` (tilde), it represents an SQL name or identifier, which must be a text
+When a variable ends with `~` (tilde) or `:name`, it represents an SQL name or identifier, which must be a text
 string of at least 1 character long. Such name is then properly escaped and wrapped in double quotes.
 
 ```js
@@ -243,7 +247,7 @@ query('SELECT ${column~} FROM ${table~}', {
 Relying on this type of formatting for sql names and identifiers, along with regular variable formatting
 makes your application impervious to sql injection.
 
-The protocol has been extended with method [as.name].
+See methods: [as.name], [as.format]
 
 ## Query Result Mask
 
@@ -365,6 +369,9 @@ which will execute:
 ```
 INSERT INTO documents(id, doc) VALUES(123, '{"id":123,"body":"some text"}')
 ```
+
+Version 3.2.1 and later allows syntax `:json` as an alternative to formatting the value
+as a JSON string.
 
 **NOTE:** Technically, it is possible in javascript, though not recommended, for an object to contain a property
 with name `this`. And in such cases the property's value will be used instead.
@@ -1084,6 +1091,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 3.2.1 Adding support for `:raw`, `:name` and `:json` as formatting overrides. Released: February 22, 2016
 * 3.2.0 Adding formatting options support, specifically option `partial`, add its use within [Query Files](#query-files). Released: February 20, 2016
 * 3.1.0 Adding support for [SQL Names]. Released: January 27, 2016
 * 3.0.3 Complete replacement of the API with GitHub-hosted one. Released: January 21, 2016
@@ -1149,6 +1157,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
 [batch]:http://vitaly-t.github.io/pg-promise/Task.html#.batch
 [sequence]:http://vitaly-t.github.io/pg-promise/Task.html#.sequence
