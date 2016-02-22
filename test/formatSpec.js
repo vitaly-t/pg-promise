@@ -791,6 +791,17 @@ describe("Named Parameters", function () {
         });
     });
 
+    describe("csv modifier", function () {
+        it("must replace any value with csv", function () {
+            expect(pgp.as.format("$1:csv", 'hello')).toBe("'hello'");
+            expect(pgp.as.format("${data:csv}", {data: [1, 'two']})).toBe("1,'two'");
+        });
+        it("must ignore invalid flags", function () {
+            expect(pgp.as.format("$1 :csv", 'hello')).toBe("'hello' :csv");
+            expect(pgp.as.format("$1: csv", 'hello')).toBe("'hello': csv");
+        });
+    });
+
     describe("'this' formatting", function () {
 
         it("must recognize 'this'", function () {
