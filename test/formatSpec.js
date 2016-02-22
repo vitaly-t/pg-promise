@@ -517,6 +517,7 @@ describe("Method as.format", function () {
 
         expect(pgp.as.format("$1", [])).toBe("$1");
         expect(pgp.as.format("$1^", [])).toBe("$1^");
+        expect(pgp.as.format("$1:raw", [])).toBe("$1:raw");
 
         expect(pgp.as.format("$1")).toBe("$1");
         expect(pgp.as.format("$1", null)).toBe("null");
@@ -525,9 +526,11 @@ describe("Method as.format", function () {
 
         expect(pgp.as.format("$1", "one")).toBe("'one'");
         expect(pgp.as.format("$1^", "one")).toBe("one");
+        expect(pgp.as.format("$1:raw", "one")).toBe("one");
 
         expect(pgp.as.format("$1", ["one"])).toBe("'one'");
         expect(pgp.as.format("$1^", ["one"])).toBe("one");
+        expect(pgp.as.format("$1:raw", ["one"])).toBe("one");
 
         expect(pgp.as.format("$1, $1", "one")).toBe("'one', 'one'");
 
@@ -782,6 +785,10 @@ describe("Named Parameters", function () {
             expect(pgp.as.format("$1:json", ['hello'])).toBe('\'"hello"\'');
             expect(pgp.as.format("${data:json}", {data: [1, 'two']})).toBe("'[1,\"two\"]'");
         });
+        it("must ignore invalid flags", function () {
+            expect(pgp.as.format("$1 :json", 'hello')).toBe("'hello' :json");
+            expect(pgp.as.format("$1: json", 'hello')).toBe("'hello': json");
+        });
     });
 
     describe("'this' formatting", function () {
@@ -874,7 +881,7 @@ describe("Custom Format", function () {
 
     describe("with custom object - formatter", function () {
         var values = {
-            test: 123
+            test: 'hello'
         };
 
         function CustomFormatter() {
@@ -884,7 +891,19 @@ describe("Custom Format", function () {
         }
 
         it("must redirect to named formatting", function () {
-            expect(pgp.as.format("${test}", new CustomFormatter)).toBe("123");
+            expect(pgp.as.format("${test}", new CustomFormatter())).toBe("'hello'");
+        });
+    });
+
+    describe("with a simple value", function () {
+        function SimpleFormatter() {
+            this.formatDBType = function () {
+                return 'value';
+            }
+        }
+
+        it("must return the simple value", function () {
+            expect(pgp.as.format("$1", [new SimpleFormatter()])).toBe("'value'");
         });
     });
 
@@ -918,9 +937,8 @@ describe("SQL Names", function () {
         }
 
         it("must use the function result", function () {
-            expect(pgp.as.format('$1~', getName)).toBe('"hello"');
+            expect(pgp.as.format('$1:name', getName)).toBe('"hello"');
         });
-
     });
 
     describe("from a mixed type", function () {
