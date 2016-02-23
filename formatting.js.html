@@ -132,7 +132,7 @@ function formatCSV(values) {
 var formatAs = {
 
     object: function (query, obj, raw, options) {
-        var pattern = /\$(?:({)|(\()|(&lt;)|(\[)|(\/))\s*[a-z0-9\$_]+([\^~]|:raw|:name|:json|:csv)?\s*(?:(?=\2)(?=\3)(?=\4)(?=\5)}|(?=\1)(?=\3)(?=\4)(?=\5)\)|(?=\1)(?=\2)(?=\4)(?=\5)>|(?=\1)(?=\2)(?=\3)(?=\5)]|(?=\1)(?=\2)(?=\3)(?=\4)\/)/gi;
+        var pattern = /\$(?:({)|(\()|(&lt;)|(\[)|(\/))\s*[a-z0-9\$_]+(\^|~|:raw|:name|:json|:csv)?\s*(?:(?=\2)(?=\3)(?=\4)(?=\5)}|(?=\1)(?=\3)(?=\4)(?=\5)\)|(?=\1)(?=\2)(?=\4)(?=\5)>|(?=\1)(?=\2)(?=\3)(?=\5)]|(?=\1)(?=\2)(?=\3)(?=\4)\/)/gi;
         var partial = options &amp;&amp; options.partial;
         return query.replace(pattern, function (name) {
             var v = formatAs.stripName(name.replace(/^\$[{(&lt;[/]|[\s})>\]/]/g, ''), raw);
@@ -151,15 +151,15 @@ var formatAs = {
     },
 
     array: function (query, array, raw) {
-        return query.replace(/\$([1-9][0-9]{0,3}([\^~]|:raw|:name|:json|:csv)?)/g, function (name, idx) {
-            var v = formatAs.stripName(name, raw);
-            idx = parseInt(idx) - 1;
+        return query.replace(/\$([1-9][0-9]{0,3}(?![0-9])(\^|~|:raw|:name|:json|:csv)?)/g, function (name) {
+            var v = formatAs.stripName(name.substr(1), raw);
+            var idx = parseInt(v.name) - 1;
             return idx &lt; array.length ? formatValue(array[idx], v.fm) : name;
         });
     },
 
     value: function (query, value, raw) {
-        return query.replace(/\$1(?![0-9])([\^~]|:raw|:name|:json|:csv)?/g, function (name) {
+        return query.replace(/\$1(?![0-9])(\^|~|:raw|:name|:json|:csv)?/g, function (name) {
             var v = formatAs.stripName(name, raw);
             return formatValue(value, v.fm);
         });
