@@ -371,7 +371,7 @@ describe("Method as.array", function () {
 
 });
 
-describe("Method as.dummy", function () {
+describe("Method as.func", function () {
 
     it("must correctly convert any function return", function () {
         expect(pgp.as.func()).toBe('null');
@@ -391,6 +391,10 @@ describe("Method as.dummy", function () {
         expect(pgp.as.func(function () {
             return null;
         })).toBe("null");
+
+        expect(pgp.as.func(function () {
+            return 'hello';
+        }, true)).toBe("hello");
 
         expect(pgp.as.func(function () {
             return dummy()
@@ -779,29 +783,6 @@ describe("Named Parameters", function () {
         }).toThrow(new Error("Property 'prop2' doesn't exist."));
     });
 
-    describe("json modifier", function () {
-        it("must replace any value with json", function () {
-            expect(pgp.as.format("$1:json", 'hello')).toBe('\'"hello"\'');
-            expect(pgp.as.format("$1:json", ['hello'])).toBe('\'"hello"\'');
-            expect(pgp.as.format("${data:json}", {data: [1, 'two']})).toBe("'[1,\"two\"]'");
-        });
-        it("must ignore invalid flags", function () {
-            expect(pgp.as.format("$1 :json", 'hello')).toBe("'hello' :json");
-            expect(pgp.as.format("$1: json", 'hello')).toBe("'hello': json");
-        });
-    });
-
-    describe("csv modifier", function () {
-        it("must replace any value with csv", function () {
-            expect(pgp.as.format("$1:csv", 'hello')).toBe("'hello'");
-            expect(pgp.as.format("${data:csv}", {data: [1, 'two']})).toBe("1,'two'");
-        });
-        it("must ignore invalid flags", function () {
-            expect(pgp.as.format("$1 :csv", 'hello')).toBe("'hello' :csv");
-            expect(pgp.as.format("$1: csv", 'hello')).toBe("'hello': csv");
-        });
-    });
-
     describe("'this' formatting", function () {
 
         it("must recognize 'this'", function () {
@@ -833,6 +814,75 @@ describe("Named Parameters", function () {
 
 });
 
+describe("Format Modifiers", function () {
+
+    function SimpleValue() {
+        this.formatDBType = function () {
+            return 'hello';
+        };
+    }
+
+    function RawValue() {
+        this._rawDBType = true;
+        this.formatDBType = function () {
+            return 'experiment';
+        };
+    }
+
+    describe("json modifier", function () {
+        it("must replace any value with json", function () {
+            expect(pgp.as.format("$1:json", 'hello')).toBe('\'"hello"\'');
+            expect(pgp.as.format("$1:json", ['hello'])).toBe('\'"hello"\'');
+            expect(pgp.as.format("${data:json}", {data: [1, 'two']})).toBe("'[1,\"two\"]'");
+        });
+        it("must ignore invalid flags", function () {
+            expect(pgp.as.format("$1 :json", 'hello')).toBe("'hello' :json");
+            expect(pgp.as.format("$1: json", 'hello')).toBe("'hello': json");
+        });
+        it("must resolve custom types", function () {
+            expect(pgp.as.format("$1:json", [new SimpleValue()])).toBe("'\"hello\"'");
+        });
+        it("must resolve custom raw types inside array", function () {
+            expect(pgp.as.format("$1:json", [new RawValue()])).toBe('"experiment"');
+        });
+        it("must resolve custom raw types directly", function () {
+            expect(pgp.as.format("$1:json", new RawValue())).toBe('"experiment"');
+        });
+
+    });
+
+    function SimpleArray() {
+        this.formatDBType = function () {
+            return [1, 'two'];
+        };
+    }
+
+    function RawArray() {
+        this._rawDBType = true;
+        this.formatDBType = function () {
+            return [1, 'two'];
+        };
+    }
+
+    describe("csv modifier", function () {
+        it("must replace any value with csv", function () {
+            expect(pgp.as.format("$1:csv", 'hello')).toBe("'hello'");
+            expect(pgp.as.format("${data:csv}", {data: [1, 'two']})).toBe("1,'two'");
+        });
+        it("must ignore invalid flags", function () {
+            expect(pgp.as.format("$1 :csv", 'hello')).toBe("'hello' :csv");
+            expect(pgp.as.format("$1: csv", 'hello')).toBe("'hello': csv");
+        });
+        it("must resolve custom types", function () {
+            expect(pgp.as.format("$1:csv", [new SimpleArray()])).toBe("1,'two'");
+        });
+        it("must resolve custom raw types", function () {
+            expect(pgp.as.format("$1:csv", [new RawArray()])).toBe("1,'two'");
+        });
+    });
+
+});
+
 describe("Custom Format", function () {
 
     function MyType(v) {
@@ -846,7 +896,7 @@ describe("Custom Format", function () {
     var test = new MyType(12.3);
 
     describe("as array value", function () {
-        it("must covert correctly", function () {
+        it("must convert correctly", function () {
             expect(pgp.as.format("$1", [test])).toBe("12.3000");
         });
     });
