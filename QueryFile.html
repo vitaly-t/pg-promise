@@ -227,6 +227,9 @@ or <code>false</code> otherwise.</p></td>
             
                 
 <span class="param-type">Boolean</span>
+|
+
+<span class="param-type">String</span>
 
 
             
@@ -252,8 +255,14 @@ or <code>false</code> otherwise.</p></td>
                 </td>
             
 
-            <td class="description last"><p>Parses and minifies the SQL using <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a>.</p>
-<p>If option <code>compress</code> is set, then the default for <code>minify</code> is also <code>true</code>.</p>
+            <td class="description last"><p>Parses and minifies the SQL using <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a>:</p>
+<ul>
+<li><code>false</code> - do not use <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a></li>
+<li><code>true</code> - use <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a> to parse and minify SQL</li>
+<li><code>'after'</code> - use <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a> after applying static formatting parameters
+(option <code>params</code>), as opposed to before it (default)</li>
+</ul>
+<p>If option <code>compress</code> is set, then the default for <code>minify</code> is <code>true</code>.</p>
 <p>Failure to parse SQL will result in <a href="https://github.com/vitaly-t/pg-minify/blob/master/lib/error.js">SQLParsingError</a>.</p></td>
         </tr>
 
@@ -293,10 +302,13 @@ or <code>false</code> otherwise.</p></td>
                 </td>
             
 
-            <td class="description last"><p>Sets option <code>compress</code> as supported by <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a>, to uglify the SQL.</p>
-<p>This option has no meaning, if <code>minify</code> is explicitly set
-to <code>false</code>. However, if <code>minify</code> is not specified and <code>compress</code>
-is specified as <code>true</code>, then <code>minify</code> defaults to <code>true</code>.</p></td>
+            <td class="description last"><p>Sets option <code>compress</code> as supported by <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a>, to uglify the SQL:</p>
+<ul>
+<li><code>false</code> - no compression to be applied, keep minimum spaces for easier read</li>
+<li><code>true</code> - remove all unnecessary spaces from SQL</li>
+</ul>
+<p>This option has no meaning, if <code>minify</code> is explicitly set to <code>false</code>. However, if <code>minify</code> is not
+specified and <code>compress</code> is specified as <code>true</code>, then <code>minify</code> defaults to <code>true</code>.</p></td>
         </tr>
 
     
@@ -504,7 +516,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line210">line 210</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line219">line 219</a>
     </li></ul></dd>
     
 
@@ -577,7 +589,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line226">line 226</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line235">line 235</a>
     </li></ul></dd>
     
 
@@ -650,7 +662,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line241">line 241</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line250">line 250</a>
     </li></ul></dd>
     
 
@@ -730,7 +742,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line193">line 193</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line202">line 202</a>
     </li></ul></dd>
     
 
@@ -813,7 +825,7 @@ the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line145">line 145</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line151">line 151</a>
     </li></ul></dd>
     
 
