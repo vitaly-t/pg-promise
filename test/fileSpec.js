@@ -162,7 +162,7 @@ describe("QueryFile / Negative:", function () {
     describe("inspect", function () {
         var qf = new QueryFile(sqlUnknown);
         it("must return the error", function () {
-            expect(qf.inspect()).toBe(qf.error);
+            expect(qf.inspect()).toBe(qf.error.message);
         });
     });
 
