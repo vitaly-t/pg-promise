@@ -37,7 +37,7 @@ describe("QueryFile / Positive:", function () {
         });
     });
 
-    describe("with params set", function () {
+    describe("default with params", function () {
         var params = {
             schema: "public",
             table: "users"
@@ -45,6 +45,22 @@ describe("QueryFile / Positive:", function () {
         var qf = new QueryFile(sqlParams, {minify: true, params: params});
         it("must return pre-formatted query", function () {
             expect(qf.query).toBe('SELECT ${column~} FROM "public"."users"');
+        });
+    });
+
+    describe("compression with params", function () {
+        var params = {
+            schema: "public",
+            table: "users",
+            column: "col"
+        };
+        var qf1 = new QueryFile(sqlParams, {minify: true, compress: true, params: params});
+        it("must return uncompressed replacements by default", function () {
+            expect(qf1.query).toBe('SELECT "col" FROM "public"."users"');
+        });
+        var qf2 = new QueryFile(sqlParams, {minify: "after", compress: true, params: params});
+        it("must return compressed replacements for 'after'", function () {
+            expect(qf2.query).toBe('SELECT"col"FROM"public"."users"');
         });
     });
 
