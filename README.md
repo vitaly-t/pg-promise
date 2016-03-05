@@ -1091,6 +1091,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 3.3.0 Adding strict variable requirement to `$1, $2,...` formatting. Released: March 05, 2016
 * 3.2.1 Adding support for formatting overrides: `:raw`, `:name`, `:json` and `:csv`. Released: February 22, 2016
 * 3.2.0 Adding formatting options support, specifically option `partial`, add its use within [Query Files](#query-files). Released: February 20, 2016
 * 3.1.0 Adding support for [SQL Names]. Released: January 27, 2016

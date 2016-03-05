@@ -8,6 +8,9 @@ var dateSample = new Date();
 var errors = {
     rawNull: function () {
         return "Values null/undefined cannot be used as raw text.";
+    },
+    range: function (variable, length) {
+        return "Variable " + variable + " out of range. Parameters array length: " + length;
     }
 };
 
@@ -519,9 +522,11 @@ describe("Method as.format", function () {
 
         expect(pgp.as.format("", [])).toBe("");
 
-        expect(pgp.as.format("$1", [])).toBe("$1");
-        expect(pgp.as.format("$1^", [])).toBe("$1^");
-        expect(pgp.as.format("$1:raw", [])).toBe("$1:raw");
+        expect(pgp.as.format("$1", [], {partial: true})).toBe("$1");
+
+        expect(pgp.as.format("$1^", [], {partial: true})).toBe("$1^");
+
+        expect(pgp.as.format("$1:raw", [], {partial: true})).toBe("$1:raw");
 
         expect(pgp.as.format("$1")).toBe("$1");
         expect(pgp.as.format("$1", null)).toBe("null");
@@ -564,7 +569,7 @@ describe("Method as.format", function () {
         // - variables not defined;
         // - variables are repeated;
         // - long variable names present;
-        expect(pgp.as.format("$1$2,$3,$4,$5,$6,$7,$8,$9,$10$11,$12,$13,$14,$15,$1,$3", [1, 2, 'C', 'DDD', 'E', 'F', 'G', 'H', 'I', 88, 99, 'LLL']))
+        expect(pgp.as.format("$1$2,$3,$4,$5,$6,$7,$8,$9,$10$11,$12,$13,$14,$15,$1,$3", [1, 2, 'C', 'DDD', 'E', 'F', 'G', 'H', 'I', 88, 99, 'LLL'], {partial: true}))
             .toBe("12,'C','DDD','E','F','G','H','I',8899,'LLL',$13,$14,$15,1,'C'");
 
         // test that variable names are not confused for longer ones;
@@ -579,14 +584,14 @@ describe("Method as.format", function () {
         ])).toBe("'one', array[2,3]");
 
         // check that gaps are handled correctly;
-        expect(pgp.as.format("$2, $4, $6", [1, 2, 3, 4, 5])).toBe("2, 4, $6");
+        expect(pgp.as.format("$2, $4, $6", [1, 2, 3, 4, 5], {partial: true})).toBe("2, 4, $6");
 
         ///////////////////////////////////////////////////
         // test that inserting strings with variable names
         // in them doesn't effect formatting;
 
         // a) for regular variables;
-        expect(pgp.as.format("$1, $2, $3^, $4", ["$2", "$3", "$2,$3"])).toBe("'$2', '$3', $2,$3, $4");
+        expect(pgp.as.format("$1, $2, $3^, $4", ["$2", "$3", "$2,$3"], {partial: true})).toBe("'$2', '$3', $2,$3, $4");
 
         // b) for the Named Parameters;
         expect(pgp.as.format("${one}, ${two}, ${three^}, $four", {
@@ -654,6 +659,14 @@ describe("Method as.format", function () {
         expect(function () {
             pgp.as.format("$1^", [undefined]);
         }).toThrow(new Error(errors.rawNull()));
+
+        expect(function () {
+            pgp.as.format("$1", []);
+        }).toThrow(new RangeError(errors.range("$1", 0)));
+
+        expect(function () {
+            pgp.as.format("$3", [1, 2]);
+        }).toThrow(new RangeError(errors.range("$3", 2)));
 
     });
 
