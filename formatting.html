@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -73,7 +73,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line237">line 237</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line244">line 244</a>
     </li></ul></dd>
     
 
@@ -213,7 +213,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line397">line 397</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line404">line 404</a>
     </li></ul></dd>
     
 
@@ -365,7 +365,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line315">line 315</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line322">line 322</a>
     </li></ul></dd>
     
 
@@ -521,7 +521,7 @@ with all values formatted according to their type.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line419">line 419</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line426">line 426</a>
     </li></ul></dd>
     
 
@@ -729,7 +729,7 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line333">line 333</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line340">line 340</a>
     </li></ul></dd>
     
 
@@ -788,10 +788,13 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
     <p>Replaces variables in a string according to the type of <code>values</code>:</p>
 <ul>
 <li>Replaces <code>$1</code> occurrences when <code>values</code> is of type <code>string</code>, <code>boolean</code>, <code>number</code>, <code>Date</code>, or when it is <code>null</code>.</li>
-<li>Replaces variables <code>$1</code>, <code>$2</code>, ...<code>$9999</code> when <code>values</code> is an array of parameters.</li>
+<li>Replaces variables <code>$1</code>, <code>$2</code>, ...<code>$9999</code> when <code>values</code> is an array of parameters. When a variable is out of range,
+it throws <a href="external-RangeError.html">RangeError</a> = <code>Variable $n out of range. Parameters array length: x</code>, unless
+option <code>partial</code> is used.</li>
 <li>Replaces <code>$*propName*</code>, where <code>*</code> is any of <code>{}</code>, <code>()</code>, <code>[]</code>, <code>&lt;&gt;</code>, <code>//</code>, when <code>values</code> is an object
 that's not a <code>Date</code> or <code>null</code>. Special property name <code>this</code> refers to the formatting object itself,
-to be injected as a JSON string.</li>
+to be injected as a JSON string. When referencing a property that doesn't exist in the formatting object, it throws
+<a href="external-Error.html">Error</a> = <code>Property 'PropName' doesn't exist</code>, unless option <code>partial</code> is used.</li>
 </ul>
 <p>By default, each variable is automatically formatted according to its type, unless it is a special variable:</p>
 <ul>
@@ -1004,9 +1007,8 @@ allowed to be <code>null</code> or <code>undefined</code>.<ul>
                 </td>
             
 
-            <td class="description last"><p>When Named Parameters are used, this option indicates that we intend to do
-only partial replacement, i.e. no error should be thrown when encountering
-the name of a property that doesn't exist in the formatting object.</p></td>
+            <td class="description last"><p>Indicates that we intend to do only a partial replacement, i.e. throw no error when encountering a variable or
+property name that's not valid within the formatting parameter(s).</p></td>
         </tr>
 
     
@@ -1054,7 +1056,7 @@ the name of a property that doesn't exist in the formatting object.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line493">line 493</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line500">line 500</a>
     </li></ul></dd>
     
 
@@ -1300,7 +1302,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line458">line 458</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line465">line 465</a>
     </li></ul></dd>
     
 
@@ -1508,7 +1510,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line434">line 434</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line441">line 441</a>
     </li></ul></dd>
     
 
@@ -1665,7 +1667,7 @@ value is returned, which is expected to be a text string of at least 1 character
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line282">line 282</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line289">line 289</a>
     </li></ul></dd>
     
 
@@ -1825,7 +1827,7 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line362">line 362</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line369">line 369</a>
     </li></ul></dd>
     
 
@@ -2039,7 +2041,7 @@ value is returned.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line244">line 244</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line251">line 251</a>
     </li></ul></dd>
     
 
