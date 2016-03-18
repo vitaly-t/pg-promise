@@ -2,7 +2,8 @@
 
 The following scenario is very common in adding new records:
 
-Insert a new record, if it doesn't exist yet, and return its `id`.
+* try finding a specific record, and if found - return its id;
+* if no record found, add a new record and return the new id.
 
 ```sql
 -- a simple table example
