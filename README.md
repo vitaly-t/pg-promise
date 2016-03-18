@@ -1,6 +1,8 @@
 pg-promise
 ===========
 
+[![Join the chat at https://gitter.im/vitaly-t/pg-promise](https://badges.gitter.im/vitaly-t/pg-promise.svg)](https://gitter.im/vitaly-t/pg-promise?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Advanced access layer to [node-postgres] via [Promises/A+].
 
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
