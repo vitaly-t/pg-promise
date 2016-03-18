@@ -20,7 +20,7 @@ function getInsertUserId(name) {
     return db.tx(function (t) {
             return t.oneOrNone('SELECT id FROM Users WHERE name = $1', name)
                 .then(function (user) {
-                    return user || t.one('INSERT INTO Users(name) VALUES($1)', name);
+                    return user || t.one('INSERT INTO Users(name) VALUES($1) RETURNING id', name);
                 });
         })
         .then(function (user) {
@@ -48,8 +48,21 @@ The same function `getInsertUserId`, simplified for the ES6 syntax:
 ```js
 function getInsertUserId(name) {
     return db.tx(t=>t.oneOrNone('SELECT id FROM Users WHERE name = $1', name)
-        .then(user=>user || t.one('INSERT INTO Users(name) VALUES($1)', name)))
+        .then(user=>user || t.one('INSERT INTO Users(name) VALUES($1) RETURNING id', name)))
         .then(user=>user.id);
 }
 ```
 
+The same function `getInsertUserId`, using ES6 generators:
+
+```js
+function getInsertUserId(name) {
+    return db.tx(function *(t) {
+            let user = yield t.oneOrNone('SELECT id FROM Users WHERE name = $1', name);
+            return yield user || t.one('INSERT INTO Users(name) VALUES($1) RETURNING id', name);
+        })
+        .then(function (user) {
+            return user.id;
+        });
+}
+```
