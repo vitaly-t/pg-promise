@@ -12,8 +12,8 @@ CREATE TABLE Users(
 );
 ```
 
-Let's implement a function, in accordance with that logic, to take a user's `name`,
-and return a new or existing `id` of the record. 
+Let's implement a function, according to that logic, to take a user's `name`, and return
+a new or existing `id` of the record. 
  
 ```js
 function getInsertUserId(name) {
@@ -31,7 +31,7 @@ function getInsertUserId(name) {
 
 We are using a transaction to make sure that a parallel request doesn't create a conflict.
 
-Using the function:
+Example of calling the function:
 
 ```js 
 getInsertUserId('name')
@@ -43,7 +43,7 @@ getInsertUserId('name')
     });
 ```
 
-The same function `getInsertUserId`, using ES6 syntax:
+The same function `getInsertUserId`, simplified for the ES6 syntax:
 
 ```js
 function getInsertUserId(name) {
