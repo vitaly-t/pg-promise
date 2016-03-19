@@ -3,7 +3,7 @@
 The following scenario is very common in adding new records:
 
 * try finding a specific record, and if found - return its id;
-* if no record found, add a new record and return the new id.
+* if no record found, add a new one and return the new id.
 
 ```sql
 -- a simple table example
@@ -71,8 +71,8 @@ function getInsertUserId(name) {
 It is possible to wrap the whole operation into a single query, which would offer a much better
 performance, because:
 
-* Our transaction executes 3-4 queries: `BEGIN`, `SELECT`, [`INSERT`], `COMMIT`, and extra round-trips are expensive
-* Transactions are blocking operations, and may require complex tuning for high traffic (see [Configurable Transactions](https://github.com/vitaly-t/pg-promise#configurable-transactions))
+* our transaction executes 3-4 queries: `BEGIN`, `SELECT`, [`INSERT`], `COMMIT`, and extra round-trips are expensive
+* transactions are blocking operations, and may require complex tuning for high traffic (see [Configurable Transactions](https://github.com/vitaly-t/pg-promise#configurable-transactions))
 
 Implementing such a single-query operation isn't trivial, and can vary based on whether it is
 for PostgreSQL 9.5+ or an older version of the server.
