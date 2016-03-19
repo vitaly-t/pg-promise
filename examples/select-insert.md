@@ -8,12 +8,12 @@ The following scenario is very common in adding new records:
 ```sql
 -- a simple table example
 CREATE TABLE Users(
-	id SERIAL NOT NULL,
+	id SERIAL PRIMARY KEY,
 	name TEXT UNIQUE -- unique user name
 );
 ```
 
-Let's implement a function, according to that logic, to take a user's `name`, and return
+Let's implement a function, according to that logic, to search by user's `name`, and return
 a new or existing `id` of the record. 
  
 ```js
