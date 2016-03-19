@@ -77,7 +77,7 @@ performance, because:
 Implementing such a single-query operation isn't trivial, and it can vary based on whether you are
 developing for PostgreSQL 9.5+ or an older version.
 
-The following posts will help you get started writing your own single-query solution:
+The following posts will help you get started writing your own single-query solution for this:
 
-* [Id from a conditional INSERT](http://stackoverflow.com/questions/36083669/get-id-from-a-conditional-insert/36090746#36090746)
-* [SELECT ⇒ INSERT in a function](http://stackoverflow.com/questions/15939902/is-select-or-insert-in-a-function-prone-to-race-conditions/15950324#15950324)
+* [Id from a conditional INSERT](http://stackoverflow.com/questions/36083669/get-id-from-a-conditional-insert)
+* [SELECT ⇒ INSERT in a function](http://stackoverflow.com/questions/15939902/is-select-or-insert-in-a-function-prone-to-race-conditions)
