@@ -66,7 +66,7 @@ function getInsertUserId(name) {
 }
 ```
 
-## One-query alternative
+## Single-query alternative
 
 It is possible to wrap the whole operation into a single query, which would offer much better
 performance, because:
