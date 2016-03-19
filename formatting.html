@@ -73,7 +73,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line244">line 244</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line249">line 249</a>
     </li></ul></dd>
     
 
@@ -213,7 +213,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line404">line 404</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line423">line 423</a>
     </li></ul></dd>
     
 
@@ -365,7 +365,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line322">line 322</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line341">line 341</a>
     </li></ul></dd>
     
 
@@ -521,7 +521,7 @@ with all values formatted according to their type.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line426">line 426</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line445">line 445</a>
     </li></ul></dd>
     
 
@@ -729,7 +729,7 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line340">line 340</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line359">line 359</a>
     </li></ul></dd>
     
 
@@ -802,6 +802,12 @@ to be injected as a JSON string. When referencing a property that doesn't exist 
 allowed to be <code>null</code> or <code>undefined</code>.<ul>
 <li><code>$1:raw</code>, <code>$2:raw</code>,..., and <code>$*propName:raw*</code> (see <code>*</code> above)</li>
 <li><code>$1^</code>, <code>$2^</code>,..., and <code>$*propName^*</code> (see <code>*</code> above)</li>
+</ul>
+</li>
+<li>Open-value variables end with <code>:value</code> or symbol <code>#</code>, to be escaped, but not wrapped in quotes. Such variables are
+not allowed to be <code>null</code> or <code>undefined</code>.<ul>
+<li><code>$1:value</code>, <code>$2:value</code>,..., and <code>$*propName:value*</code> (see <code>*</code> above)</li>
+<li><code>$1#</code>, <code>$2#</code>,..., and <code>$*propName#*</code> (see <code>*</code> above)</li>
 </ul>
 </li>
 <li>SQL name variables end with <code>:name</code> or symbol <code>~</code> (tilde), and provide proper escaping for SQL names/identifiers:<ul>
@@ -1056,7 +1062,7 @@ property name that's not valid within the formatting parameter(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line500">line 500</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line519">line 519</a>
     </li></ul></dd>
     
 
@@ -1302,7 +1308,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line465">line 465</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line484">line 484</a>
     </li></ul></dd>
     
 
@@ -1510,7 +1516,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line441">line 441</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line460">line 460</a>
     </li></ul></dd>
     
 
@@ -1667,7 +1673,7 @@ value is returned, which is expected to be a text string of at least 1 character
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line289">line 289</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line294">line 294</a>
     </li></ul></dd>
     
 
@@ -1827,7 +1833,7 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line369">line 369</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line388">line 388</a>
     </li></ul></dd>
     
 
@@ -2041,7 +2047,7 @@ value is returned.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line251">line 251</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line256">line 256</a>
     </li></ul></dd>
     
 
@@ -2077,6 +2083,150 @@ value is returned.</p></td>
 </ul>
 </div>
 
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".value"><span class="type-signature">(static) </span>value<span class="signature">(value)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Documentation is in progress...</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line327">line 327</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
