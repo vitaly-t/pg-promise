@@ -206,38 +206,39 @@ Raw text is injected without any pre-processing, which means:
 * No proper escaping (replacing each single-quote symbol `'` with two);
 * No wrapping text into single quotes.
 
-Unlike regular variables, value for raw-text variables cannot be `null` or `undefined`,
-because of the ambiguous meaning in this case. If such values are passed in, the formatter
-will throw error `Values null/undefined cannot be used as raw text.` 
+Unlike regular variables, value for raw-text variables cannot be `null` or `undefined`, because of the ambiguous meaning
+in this case. If such values are passed in, the formatter will throw error `Values null/undefined cannot be used as raw text.` 
 
-**usage examples:**
-
-```js
-// injecting name without quotes:
-query("...WHERE name LIKE '%$1^%'", "John");
-
-// injecting value of property 'name' without quotes:
-query("...WHERE name LIKE '%${name^}%'", {name: "John"});
-
-// injecting a CSV-formatted text without quotes:
-query("...WHERE id IN($1^)", pgp.as.csv([1,2,3,4])); 
-```
-
-Special syntax `this^` within the [Named Parameters](#named-parameters) refers
-to the formatting object itself, to be injected as a raw-text JSON-formatted string.
+Special syntax `this^` within the [Named Parameters](#named-parameters) refers to the formatting object itself, to be injected
+as a raw-text JSON-formatted string.
 
 For the most current SQL formatting support see method [as.format]
 
 ### Open Values
 
-Open values were added in version 3.4.0, to simplify formatting for such special cases as `LIKE` filters.
+Open values were added in version 3.4.0, to simplify concatenation of string values within a query,
+primarily for such special cases as `LIKE` filters.
 
 Names for open-value variables end with either `:value` or symbol `#`, and it means that such a value
 is to be properly formatted and escaped, but not to be wrapped in quotes when it is a text.
 
-Similar to raw-text variables, open-value variables are also not allowed to be `null` or `undefined`,
-but the difference is that raw-text variables are not escaped, while open-value variables are escaped.
+Similar to raw-text variables, open-value variables are also not allowed to be `null` or `undefined`, and they
+will throw error `Open values cannot be null or undefined.` And the difference is that raw-text variables are not
+escaped, while open-value variables are properly escaped.
 
+Below is an example of formatting `LIKE` filter that ends with a value: 
+
+```js
+// using `$1#` or `$1:value` syntax:
+query("...WHERE name LIKE '%$1#'", "berg");
+query("...WHERE name LIKE '%$1:value'", "berg");
+
+// using `${propName#}` or `${propName:value}` syntax:
+query("...WHERE name LIKE '%${filter#}'", {filter: "berg"});
+query("...WHERE name LIKE '%${filter:value}'", {filter: "berg"});
+```
+
+The formatting protocol has been also extended with method [as.value].
 
 ### SQL Names
 
@@ -502,9 +503,9 @@ function createFilter(filter){
         cnd.push(pgp.as.format("active = $1", filter.active));
     }
     if(filter.name){
-        // add name-like condition with a raw-text variable
-        // by appending '^' to its name;
-        cnd.push(pgp.as.format("name like '%$1^%'", filter.name));
+        // add name-like condition with an open-value variable
+        // by appending '#' to its name (v.3.4.0 or later);
+        cnd.push(pgp.as.format("name like '%$1#%'", filter.name));
     }
     return cnd.join(" and "); // returning the complete filter string;
 }
