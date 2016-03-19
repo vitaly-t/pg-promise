@@ -68,7 +68,7 @@ function getInsertUserId(name) {
 
 ## Single-query alternative
 
-It is possible to wrap the whole operation into a single query, which would offer much better
+It is possible to wrap the whole operation into a single query, which would offer a much better
 performance, because:
 
 * Our transaction executes 3-4 queries: `BEGIN`, `SELECT`, [`INSERT`], `COMMIT`, and extra round-trips are expensive
