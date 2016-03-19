@@ -28,6 +28,7 @@ Advanced access layer to [node-postgres] via [Promises/A+].
 * [Usage](#usage)
   - [Queries and Parameters](#queries-and-parameters)
     - [Raw Text](#raw-text)  
+    - [Open Values](#open-values)    
     - [SQL Names](#sql-names)    
   - [Query Result Mask](#query-result-mask)    
   - [Named Parameters](#named-parameters)
@@ -226,6 +227,17 @@ Special syntax `this^` within the [Named Parameters](#named-parameters) refers
 to the formatting object itself, to be injected as a raw-text JSON-formatted string.
 
 For the most current SQL formatting support see method [as.format]
+
+### Open Values
+
+Open values were added in version 3.4.0, to simplify formatting for such special cases as `LIKE` filters.
+
+Names for open-value variables end with either `:value` or symbol `#`, and it means that such a value
+is to be properly formatted and escaped, but not to be wrapped in quotes when it is a text.
+
+Similar to raw-text variables, open-value variables are also not allowed to be `null` or `undefined`,
+but the difference is that raw-text variables are not escaped, while open-value variables are escaped.
+
 
 ### SQL Names
 
@@ -1092,6 +1104,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 3.4.0 Adding support for [Open Values](#open-values). Released: March 20, 2016
 * 3.3.0 Adding strict variable requirement to `$1, $2,...` formatting. Released: March 05, 2016
 * 3.2.1 Adding support for formatting overrides: `:raw`, `:name`, `:json` and `:csv`. Released: February 22, 2016
 * 3.2.0 Adding formatting options support, specifically option `partial`, add its use within [Query Files](#query-files). Released: February 20, 2016
@@ -1159,6 +1172,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[as.value]:http://vitaly-t.github.io/pg-promise/formatting.html#.value
 [as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
 [batch]:http://vitaly-t.github.io/pg-promise/Task.html#.batch

@@ -177,6 +177,24 @@ describe("Method as.text", function () {
 
 });
 
+describe("Method as.value", function () {
+    it("must correctly convert any type", function () {
+        expect(pgp.as.value(1)).toBe("1");
+        expect(pgp.as.value(true)).toBe("true");
+    });
+    it("must correctly escape text", function () {
+        expect(pgp.as.value("text")).toBe("text");
+        expect(pgp.as.value("te'xt")).toBe("te''xt");
+    });
+
+    it("must correctly format values", function () {
+        expect(pgp.as.format('$1:value', 'val')).toBe('val');
+        expect(pgp.as.format('$1#', 'val')).toBe('val');
+        expect(pgp.as.format('$1#', "val'ue")).toBe("val''ue");
+    });
+
+});
+
 describe("Method as.date", function () {
     it("must correctly convert any date", function () {
         expect(pgp.as.date()).toBe("null");

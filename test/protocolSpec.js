@@ -33,6 +33,8 @@ describe("Library instance", function () {
         expect(pgpLib.as.number instanceof Function).toBe(true);
         expect(pgpLib.as.format instanceof Function).toBe(true);
         expect(pgpLib.as.func instanceof Function).toBe(true);
+        expect(pgpLib.as.name instanceof Function).toBe(true);
+        expect(pgpLib.as.value instanceof Function).toBe(true);
     });
 
     it("must have function 'QueryResultError'", function () {
