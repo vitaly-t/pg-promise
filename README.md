@@ -229,11 +229,11 @@ escaped, while open-value variables are properly escaped.
 Below is an example of formatting `LIKE` filter that ends with a value: 
 
 ```js
-// using `$1#` or `$1:value` syntax:
+// using $1# or $1:value syntax:
 query("...WHERE name LIKE '%$1#'", "berg");
 query("...WHERE name LIKE '%$1:value'", "berg");
 
-// using `${propName#}` or `${propName:value}` syntax:
+// using ${propName#} or ${propName:value} syntax:
 query("...WHERE name LIKE '%${filter#}'", {filter: "berg"});
 query("...WHERE name LIKE '%${filter:value}'", {filter: "berg"});
 ```
@@ -268,7 +268,7 @@ See methods: [as.name], [as.format]
 In order to eliminate the chances of unexpected query results and thus make the code more robust,
 method `query` uses parameter `qrm` (Query Result Mask):
 
-```javascript
+```js
 ///////////////////////////////////////////////////////
 // Query Result Mask flags;
 //
@@ -487,7 +487,7 @@ There are some cases where you might want to use a combination of these methods 
 of the implicit parameter formatting through query methods. For example, if you want to
 generate a filter string to be used where applicable, you might use a code like this:
 
-```javascript
+```js
 function createFilter(filter){
     var cnd = []; // conditions;
     if(filter.start){
