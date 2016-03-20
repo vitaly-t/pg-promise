@@ -52,11 +52,18 @@ describe("Method as.buffer", function () {
             expect(pgp.as.format("$1^", [data])).toBe(hex);
         });
 
-        it("must format as open values correctly", function () {
+        it("must format open values correctly", function () {
             expect(pgp.as.format("$1#", data)).toBe(hex);
             expect(pgp.as.format("$1:value", [data])).toBe(hex);
         });
 
+        it("must work in any other context", function () {
+            expect(pgp.as.csv(new Buffer([1, 2, 3]))).toBe("1,2,3");
+            var input = [23, new Buffer([1, 2, 3]), "Hello"], output = "23,'\\x010203','Hello'";
+            expect(pgp.as.csv(input)).toBe(output);
+            expect(pgp.as.format("$1,$2,$3", input)).toBe(output);
+            expect(pgp.as.format("$1:csv", [input])).toBe(output);
+        });
     });
 
     describe("Negative:", function () {
@@ -361,8 +368,6 @@ describe("Method as.csv", function () {
         // test array-type as a parameter;
         expect(pgp.as.csv([1, [2, 3], 4])).toBe("1,array[2,3],4");
         expect(pgp.as.csv([1, [['two'], ['three']], 4])).toBe("1,array[['two'],['three']],4");
-
-        expect(pgp.as.csv(new Buffer([1, 2, 3]))).toBe("1,2,3");
     });
 
     it("must correctly resolve functions", function () {
