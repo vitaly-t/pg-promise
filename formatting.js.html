@@ -101,6 +101,9 @@ function formatValue(value, fm, obj) {
             if (value instanceof Array) {
                 return $as.array(value);
             }
+            if (value instanceof Buffer) {
+                return $as.buffer(value, isRaw);
+            }
             return $as.json(value, isRaw);
     }
 }
@@ -260,7 +263,7 @@ function $formatQuery(query, values, raw, options) {
             // $1, $2,... formatting to be applied;
             return formatAs.array(query, values, raw, options);
         }
-        if (!(values instanceof Date)) {
+        if (!(values instanceof Date || values instanceof Buffer)) {
             // $*propName* formatting to be applied;
             return formatAs.object(query, values, raw, options);
         }
@@ -294,8 +297,8 @@ var $as = {
      * @param {value|Function} value
      * Value to be converted, or a function that returns the value.
      *
-     * If it is a function, it can be a nested one, to be called until a non-function
-     * value is returned.
+     * If the `value` resolves as `null` or `undefined`, while `raw`=`true`,
+     * it will throw `Values null/undefined cannot be used as raw text.`
      *
      * @param {Boolean} [raw=false]
      * Indicates when not to escape the resulting text.
@@ -333,15 +336,11 @@ var $as = {
      *
      * The name must be at least 1 character long.
      *
-     * If `name` is a function, it can be a nested one, to be called until a non-function
-     * value is returned, which is expected to be a text string of at least 1 character long.
+     * If `name` doesn't resolve into a non-empty string, it throws `An sql name/identifier must be a non-empty text string.`
      *
      * @returns {String}
      * The SQL Name/Identifier properly escaped for compliance with the PostgreSQL standard
      * for SQL names and identifiers.
-     *
-     * When `name` doesn't resolve into a non-empty string, an error is thrown:
-     * `An sql name/identifier must be a non-empty text string.`
      */
     name: function (name) {
         name = resolveFunc(name);
@@ -356,15 +355,51 @@ var $as = {
     /**
      * @method formatting.value
      * @description
-     * Documentation is in progress...
-     * 
-     * @param value
+     * Represents an open value, one to be formatted according to its type, properly escaped,
+     * but without surrounding quotes for text types.
+     *
+     * @param {value|Function} value
+     * Value to be converted, or a function that returns the value.
+     *
+     * If `value` resolves as `null` or `undefined`, it will throw `Open values cannot be null or undefined.`
      *
      * @returns {String}
-     *
+     * Formatted and properly escaped string, but without surrounding quotes for text types.
      */
     value: function (value) {
+        val = resolveFunc(value);
+        if (isNull(value)) {
+            throw new TypeError("Open values cannot be null or undefined.");
+        }
         return safeText(formatValue(value, fmFlags.raw));
+    },
+
+    /**
+     * @method formatting.buffer
+     * @description
+     * Converts an object of type `Buffer` into a hex string compatible with PostgreSQL type `bytea`.
+     *
+     * @param {Buffer|Function} obj
+     * Object to be converted, or a function that returns one.
+     *
+     * @param {Boolean} [raw=false]
+     * Indicates when not to wrap the resulting string in quotes.
+     *
+     * The generated hex string doesn't need to be escaped.
+     *
+     * @returns {String}
+     */
+    buffer: function (obj, raw) {
+        obj = resolveFunc(obj);
+        if (isNull(obj)) {
+            throwIfRaw(raw);
+            return 'null';
+        }
+        if (obj instanceof Buffer) {
+            var s = "\\x" + obj.toString("hex");
+            return raw ? s : TEXT(s);
+        }
+        throw new TypeError(TEXT(obj) + " is not a Buffer object.");
     },
 
     /**
@@ -483,7 +518,16 @@ var $as = {
      * @returns {String}
      */
     csv: function (values) {
-        return formatCSV(resolveFunc(values));
+        values = resolveFunc(values);
+        if (values instanceof Buffer) {
+            var json = values.toJSON();
+            // Node.js 0.10 converts Buffer into JSON differently than the later
+            // versions. That's why we exclude this line from the test coverage.
+            //
+            // istanbul ignore next
+            return (json.data || json).join(',');
+        }
+        return formatCSV(values);
     },
 
     /**

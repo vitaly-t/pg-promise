@@ -73,7 +73,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line249">line 249</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line252">line 252</a>
     </li></ul></dd>
     
 
@@ -213,7 +213,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line423">line 423</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line458">line 458</a>
     </li></ul></dd>
     
 
@@ -365,7 +365,215 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line341">line 341</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line376">line 376</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".buffer"><span class="type-signature">(static) </span>buffer<span class="signature">(obj, raw<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Converts an object of type <code>Buffer</code> into a hex string compatible with PostgreSQL type <code>bytea</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Buffer</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Object to be converted, or a function that returns one.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>raw</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Indicates when not to wrap the resulting string in quotes.</p>
+<p>The generated hex string doesn't need to be escaped.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line348">line 348</a>
     </li></ul></dd>
     
 
@@ -521,7 +729,7 @@ with all values formatted according to their type.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line445">line 445</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line480">line 480</a>
     </li></ul></dd>
     
 
@@ -729,7 +937,7 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line359">line 359</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line394">line 394</a>
     </li></ul></dd>
     
 
@@ -1062,7 +1270,7 @@ property name that's not valid within the formatting parameter(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line519">line 519</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line563">line 563</a>
     </li></ul></dd>
     
 
@@ -1308,7 +1516,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line484">line 484</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line528">line 528</a>
     </li></ul></dd>
     
 
@@ -1516,7 +1724,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line460">line 460</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line504">line 504</a>
     </li></ul></dd>
     
 
@@ -1631,8 +1839,7 @@ and wrapping the result in double quotes.</p>
 
             <td class="description last"><p>SQL name or identifier, or a function that returns it.</p>
 <p>The name must be at least 1 character long.</p>
-<p>If <code>name</code> is a function, it can be a nested one, to be called until a non-function
-value is returned, which is expected to be a text string of at least 1 character long.</p></td>
+<p>If <code>name</code> doesn't resolve into a non-empty string, it throws <code>An sql name/identifier must be a non-empty text string.</code></p></td>
         </tr>
 
     
@@ -1673,7 +1880,7 @@ value is returned, which is expected to be a text string of at least 1 character
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line294">line 294</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line297">line 297</a>
     </li></ul></dd>
     
 
@@ -1702,8 +1909,6 @@ value is returned, which is expected to be a text string of at least 1 character
 <div class="param-desc">
     <p>The SQL Name/Identifier properly escaped for compliance with the PostgreSQL standard
 for SQL names and identifiers.</p>
-<p>When <code>name</code> doesn't resolve into a non-empty string, an error is thrown:
-<code>An sql name/identifier must be a non-empty text string.</code></p>
 </div>
 
 
@@ -1833,7 +2038,7 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line388">line 388</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line423">line 423</a>
     </li></ul></dd>
     
 
@@ -1966,8 +2171,8 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
             
 
             <td class="description last"><p>Value to be converted, or a function that returns the value.</p>
-<p>If it is a function, it can be a nested one, to be called until a non-function
-value is returned.</p></td>
+<p>If the <code>value</code> resolves as <code>null</code> or <code>undefined</code>, while <code>raw</code>=<code>true</code>,
+it will throw <code>Values null/undefined cannot be used as raw text.</code></p></td>
         </tr>
 
     
@@ -2047,7 +2252,7 @@ value is returned.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line256">line 256</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line259">line 259</a>
     </li></ul></dd>
     
 
@@ -2113,7 +2318,8 @@ value is returned.</p></td>
 
 
 <div class="description">
-    <p>Documentation is in progress...</p>
+    <p>Represents an open value, one to be formatted according to its type, properly escaped,
+but without surrounding quotes for text types.</p>
 </div>
 
 
@@ -2154,13 +2360,22 @@ value is returned.</p></td>
 
             <td class="type">
             
+                
+<span class="param-type">value</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
             </td>
 
             
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Value to be converted, or a function that returns the value.</p>
+<p>If <code>value</code> resolves as <code>null</code> or <code>undefined</code>, it will throw <code>Open values cannot be null or undefined.</code></p></td>
         </tr>
 
     
@@ -2201,7 +2416,7 @@ value is returned.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line327">line 327</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line326">line 326</a>
     </li></ul></dd>
     
 
@@ -2227,6 +2442,10 @@ value is returned.</p></td>
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>Formatted and properly escaped string, but without surrounding quotes for text types.</p>
+</div>
+
 
 
 <dl>
