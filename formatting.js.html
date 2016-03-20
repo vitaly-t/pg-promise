@@ -367,7 +367,7 @@ var $as = {
      * Formatted and properly escaped string, but without surrounding quotes for text types.
      */
     value: function (value) {
-        val = resolveFunc(value);
+        value = resolveFunc(value);
         if (isNull(value)) {
             throw new TypeError("Open values cannot be null or undefined.");
         }
@@ -505,15 +505,18 @@ var $as = {
         }
         throw new TypeError(TEXT(arr) + " is not an Array object.");
     },
-
+    
     /**
      * @method formatting.csv
      * @description
-     * Converts a single value or an array of values into a CSV string,
-     * with all values formatted according to their type.
+     * Converts a single value or an array of values into a CSV string, with all values formatted
+     * according to their type.
      *
-     * @param {Array|value|Function} values
+     * @param {Array|Buffer|value|Function} values
      * Value(s) to be converted, or a function that returns it.
+     *
+     * When the `values` resolves as type `Buffer`, the output is a comma-separated list of byte
+     * values from the buffer, formatted as integers.
      *
      * @returns {String}
      */
@@ -594,12 +597,12 @@ var $as = {
      * @description
      * Replaces variables in a string according to the type of `values`:
      *
-     * - Replaces `$1` occurrences when `values` is of type `string`, `boolean`, `number`, `Date`, or when it is `null`.
+     * - Replaces `$1` occurrences when `values` is of type `string`, `boolean`, `number`, `Date`, `Buffer` or when it is `null`.
      * - Replaces variables `$1`, `$2`, ...`$9999` when `values` is an array of parameters. When a variable is out of range,
      *   it throws {@link external:RangeError RangeError} = `Variable $n out of range. Parameters array length: x`, unless
      *   option `partial` is used.
      * - Replaces `$*propName*`, where `*` is any of `{}`, `()`, `[]`, `&lt;>`, `//`, when `values` is an object
-     *   that's not a `Date` or `null`. Special property name `this` refers to the formatting object itself,
+     *   that's not a `Date`, `Buffer` or `null`. Special property name `this` refers to the formatting object itself,
      *   to be injected as a JSON string. When referencing a property that doesn't exist in the formatting object, it throws
      *   {@link external:Error Error} = `Property 'PropName' doesn't exist`, unless option `partial` is used.
      *

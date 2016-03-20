@@ -629,8 +629,8 @@ constructor string: <code>array[]</code>.</p>
 
 
 <div class="description">
-    <p>Converts a single value or an array of values into a CSV string,
-with all values formatted according to their type.</p>
+    <p>Converts a single value or an array of values into a CSV string, with all values formatted
+according to their type.</p>
 </div>
 
 
@@ -675,6 +675,9 @@ with all values formatted according to their type.</p>
 <span class="param-type">Array</span>
 |
 
+<span class="param-type">Buffer</span>
+|
+
 <span class="param-type">value</span>
 |
 
@@ -688,7 +691,9 @@ with all values formatted according to their type.</p>
 
             
 
-            <td class="description last"><p>Value(s) to be converted, or a function that returns it.</p></td>
+            <td class="description last"><p>Value(s) to be converted, or a function that returns it.</p>
+<p>When the <code>values</code> resolves as type <code>Buffer</code>, the output is a comma-separated list of byte
+values from the buffer, formatted as integers.</p></td>
         </tr>
 
     
@@ -995,12 +1000,12 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
 <div class="description">
     <p>Replaces variables in a string according to the type of <code>values</code>:</p>
 <ul>
-<li>Replaces <code>$1</code> occurrences when <code>values</code> is of type <code>string</code>, <code>boolean</code>, <code>number</code>, <code>Date</code>, or when it is <code>null</code>.</li>
+<li>Replaces <code>$1</code> occurrences when <code>values</code> is of type <code>string</code>, <code>boolean</code>, <code>number</code>, <code>Date</code>, <code>Buffer</code> or when it is <code>null</code>.</li>
 <li>Replaces variables <code>$1</code>, <code>$2</code>, ...<code>$9999</code> when <code>values</code> is an array of parameters. When a variable is out of range,
 it throws <a href="external-RangeError.html">RangeError</a> = <code>Variable $n out of range. Parameters array length: x</code>, unless
 option <code>partial</code> is used.</li>
 <li>Replaces <code>$*propName*</code>, where <code>*</code> is any of <code>{}</code>, <code>()</code>, <code>[]</code>, <code>&lt;&gt;</code>, <code>//</code>, when <code>values</code> is an object
-that's not a <code>Date</code> or <code>null</code>. Special property name <code>this</code> refers to the formatting object itself,
+that's not a <code>Date</code>, <code>Buffer</code> or <code>null</code>. Special property name <code>this</code> refers to the formatting object itself,
 to be injected as a JSON string. When referencing a property that doesn't exist in the formatting object, it throws
 <a href="external-Error.html">Error</a> = <code>Property 'PropName' doesn't exist</code>, unless option <code>partial</code> is used.</li>
 </ul>
@@ -1270,7 +1275,7 @@ property name that's not valid within the formatting parameter(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line563">line 563</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line566">line 566</a>
     </li></ul></dd>
     
 
@@ -1516,7 +1521,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line528">line 528</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line531">line 531</a>
     </li></ul></dd>
     
 
@@ -1724,7 +1729,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line504">line 504</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line507">line 507</a>
     </li></ul></dd>
     
 
