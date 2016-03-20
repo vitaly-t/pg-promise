@@ -52,6 +52,11 @@ describe("Method as.buffer", function () {
             expect(pgp.as.format("$1^", [data])).toBe(hex);
         });
 
+        it("must format as open values correctly", function () {
+            expect(pgp.as.format("$1#", data)).toBe(hex);
+            expect(pgp.as.format("$1:value", [data])).toBe(hex);
+        });
+
     });
 
     describe("Negative:", function () {
