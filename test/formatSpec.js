@@ -259,15 +259,15 @@ describe("Method as.value", function () {
         var err = "Open values cannot be null or undefined.";
         expect(function () {
             pgp.as.value();
-        }).toThrow(new Error(err));
+        }).toThrow(new TypeError(err));
 
         expect(function () {
             pgp.as.format('$1#', [null]);
-        }).toThrow(new Error(err));
+        }).toThrow(new TypeError(err));
 
         expect(function () {
             pgp.as.format('$1#', [undefined]);
-        }).toThrow(new Error(err));
+        }).toThrow(new TypeError(err));
     });
 
 });

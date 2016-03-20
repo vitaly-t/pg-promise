@@ -191,7 +191,7 @@ function query(query, values, qrm);
 When a value/property inside array/object is an array, it is treated as a [PostgreSQL Array Type](http://www.postgresql.org/docs/9.4/static/arrays.html),
 converted into the array constructor format of `array[]`, the same as calling method `pgp.as.array()`.
 
-When a value/property inside array/object is of type `object` (except for `null` and `Date`), it is automatically
+When a value/property inside array/object is of type `object` (except for `null`, `Date` or `Buffer`), it is automatically
 serialized into JSON, the same as calling method `pgp.as.json()`, except the latter would convert anything to JSON.
 
 For the most current SQL formatting support see method [as.format]
@@ -332,8 +332,8 @@ leaving the burden of all extra checks to the library.
 
 ## Named Parameters
 
-The library supports named parameters in query formatting, with the syntax of `$*propName*`,
-where `*` is any of the following open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
+The library supports named parameters in query formatting, with the syntax of `$*propName*`, where `*` is any of the following open-close
+pairs: `{}`, `()`, `<>`, `[]`, `//`
 
 ```javascript
 db.query("select * from users where name=${name} and active=$/active/", {
@@ -342,8 +342,8 @@ db.query("select * from users where name=${name} and active=$/active/", {
 });
 ```
 
-The same goes for all types of query methods as well as method `pgp.as.format(query, values)`, where `values`
-can also be an object whose properties can be referred to by name from within the query.
+The same goes for all types of query methods as well as method [as.format], where `values` can also be an object whose properties can be
+referred to by name from within the query.
 
 A valid property name consists of any combination of letters, digits, underscores or `$`, and they are case-sensitive.
 Leading and trailing spaces around property names are ignored.
@@ -351,8 +351,8 @@ Leading and trailing spaces around property names are ignored.
 It is important to know that while property values `null` and `undefined` are both formatted as `null`,
 an error is thrown when the property doesn't exist at all (except for `partial` replacements - see below).
 
-Version 3.2.0 added support for `partial` replacements, which when used will simply ignore variables that do
-not exist in the formatting object.
+Version 3.2.0 added support for `partial` replacements within method [as.format], which when used will simply ignore variables that do not
+exist in the formatting object.
 
 #### `this` reference
 
@@ -423,93 +423,8 @@ Summary for supporting procedures and functions:
 ## Conversion Helpers
 
 The library provides several helper functions to convert javascript types into their proper PostgreSQL presentation that can be passed
-directly into queries or functions as parameters. All of such helper functions are located within namespace `pgp.as`, and each function
+directly into queries or functions as parameters. All of such helper functions are located within namespace [pgp.as], and each function
 returns a formatted string when successful or throws an error when it fails.
-
-```javascript
-pgp.as.bool(value); // converts value into PostgreSQL boolean presentation;
-
-pgp.as.number(value);
-                    // converts value into PostgreSQL number presentation,
-                    // with support for NaN, +Infinity and -Infinity;
-
-pgp.as.text(value, raw);
-                    // converts value into PostgreSQL text presentation,
-                    // fixing single-quote symbols and wrapping the result
-                    // in quotes (unless flag 'raw' is set);
-
-pgp.as.name(value);
-                    // converts value into PostgreSQL name/identifier,
-                    // wrapped in double quotes.
-
-pgp.as.date(value, raw);
-                    // converts value into PostgreSQL date/time presentation,
-                    // wrapped in quotes (unless flag 'raw' is set);
-
-pgp.as.json(value, raw);
-                    // converts any value into JSON (using JSON.stringify),
-                    // then fixes single-quote symbols and wraps it up in
-                    // single quotes (unless flag 'raw' is set);
-
-pgp.as.array(value); // converts value-array into PostgreSQL Array Type constructor
-                     // string: array[]
-
-pgp.as.csv(value);  // returns a CSV string with values formatted according
-                    // to their type, using the above methods;
-
-pgp.as.func(func, raw, obj);
-                    // calls the function to get the actual value, and then
-                    // formats it according to the returned type + 'raw' flag;
-                    // obj - optional, 'this' context for the function. 
-
-pgp.as.format(query, values);
-            // replaces variables in the query with their 'values' as specified;
-            // 'values' can be a single value, an array or an object.
-```
-
-Methods `bool`, `number`, `text`, `date`, `json`, `array` and `csv` accept the value-parameter
-as a function to be called for resolving the actual value.
-
-For methods which take optional flag `raw` it is to indicate that the return text is to be without
-any pre-processing:
-
-* No replacing each single-quote symbol `'` with two;
-* No wrapping text into single quotes;
-* Throwing an error when the variable value is `null` or `undefined`.
-
-This adheres to the query formatting, as well as method `as.format` when variable
-names are appended with symbol `^`: `$1^, $2^, etc...` or `$*varName^*`, where `*`
-is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
-
-As none of these helpers are associated with the database, they are synchronous, and can be used from anywhere.
-
-There are some cases where you might want to use a combination of these methods instead
-of the implicit parameter formatting through query methods. For example, if you want to
-generate a filter string to be used where applicable, you might use a code like this:
-
-```js
-function createFilter(filter){
-    var cnd = []; // conditions;
-    if(filter.start){
-        // add start date condition;
-        cnd.push(pgp.as.format("start >= $1::date", filter.start));
-    }
-    if(filter.end){
-        // add end date condition;
-        cnd.push(pgp.as.format("end <= $1::date", filter.end));
-    }
-    if(filter.active !== undefined){
-        // add active flag;
-        cnd.push(pgp.as.format("active = $1", filter.active));
-    }
-    if(filter.name){
-        // add name-like condition with an open-value variable
-        // by appending '#' to its name (v.3.4.0 or later);
-        cnd.push(pgp.as.format("name like '%$1#%'", filter.name));
-    }
-    return cnd.join(" and "); // returning the complete filter string;
-}
-```
 
 ## Custom Type Formatting
 
@@ -961,10 +876,7 @@ synchronous manner, you can implement your tasks and transactions as generators.
 function * getUser(t) {
     // t = this;
     let user = yield this.oneOrNone("select * from users where id=$1", 123);
-    if (!user) {
-        user = yield this.one("insert into users(name) values($1) returning *", "John");
-    }
-    return user;
+    return yield user || this.one("insert into users(name) values($1) returning *", "John");
 }
 
 db.task(getUser)
@@ -1105,7 +1017,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
-* 3.4.0 Adding support for [Open Values](#open-values). Released: March 20, 2016
+* 3.4.0 Adding support for [Open Values](#open-values) and type `Buffer`. Released: March 20, 2016
 * 3.3.0 Adding strict variable requirement to `$1, $2,...` formatting. Released: March 05, 2016
 * 3.2.1 Adding support for formatting overrides: `:raw`, `:name`, `:json` and `:csv`. Released: February 22, 2016
 * 3.2.0 Adding formatting options support, specifically option `partial`, add its use within [Query Files](#query-files). Released: February 20, 2016
@@ -1173,6 +1085,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[pgp.as]:http://vitaly-t.github.io/pg-promise/formatting.html
 [as.value]:http://vitaly-t.github.io/pg-promise/formatting.html#.value
 [as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
