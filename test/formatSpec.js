@@ -58,8 +58,10 @@ describe("Method as.buffer", function () {
         });
 
         it("must work in any other context", function () {
-            expect(pgp.as.csv(new Buffer([1, 2, 3]))).toBe("1,2,3");
-            var input = [23, new Buffer([1, 2, 3]), "Hello"], output = "23,'\\x010203','Hello'";
+            var input = [23, new Buffer([1, 2, 3]), "Hello"], output = "23,'\\x010203','Hello'",
+                simple = new Buffer([1, 2, 3]), jsonSimple = JSON.stringify(simple);
+            expect(pgp.as.csv(simple)).toBe("1,2,3");
+            expect(pgp.as.format("$1:json", [simple])).toEqual("'" + jsonSimple + "'");
             expect(pgp.as.csv(input)).toBe(output);
             expect(pgp.as.format("$1,$2,$3", input)).toBe(output);
             expect(pgp.as.format("$1:csv", [input])).toBe(output);
