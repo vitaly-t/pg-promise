@@ -11,6 +11,9 @@ var errors = {
     },
     range: function (variable, length) {
         return "Variable " + variable + " out of range. Parameters array length: " + length;
+    },
+    buffer: function (value) {
+        return "'" + value + "' is not a Buffer object."
     }
 };
 
@@ -22,6 +25,53 @@ var userObj = {
     dob: new Date(1980, 5, 15),
     active: true
 };
+
+describe("Method as.buffer", function () {
+
+    describe("Positive:", function () {
+        var data = new Buffer([1, 2, 3]);
+        var hex = "\\x010203";
+
+        it("must hex-format data", function () {
+            expect(pgp.as.buffer(data)).toBe("'" + hex + "'");
+            expect(pgp.as.buffer(data, true)).toBe(hex);
+        });
+
+        it("must format null/undefined correctly", function () {
+            expect(pgp.as.buffer()).toBe('null');
+            expect(pgp.as.buffer(null)).toBe('null');
+        });
+
+        it("must format values correctly", function () {
+            expect(pgp.as.format("$1", data)).toBe("'" + hex + "'");
+            expect(pgp.as.format("$1", [data])).toBe("'" + hex + "'");
+        });
+
+        it("must format raw values correctly", function () {
+            expect(pgp.as.format("$1^", data)).toBe(hex);
+            expect(pgp.as.format("$1^", [data])).toBe(hex);
+        });
+
+    });
+
+    describe("Negative:", function () {
+        it("must throw error on invalid data", function () {
+            expect(function () {
+                pgp.as.buffer(123);
+            }).toThrow(new TypeError(errors.buffer(123)));
+
+            expect(function () {
+                pgp.as.buffer(null, true);
+            }).toThrow(new Error(errors.rawNull()));
+
+            expect(function () {
+                pgp.as.buffer(undefined, true);
+            }).toThrow(new Error(errors.rawNull()));
+
+        });
+
+    });
+});
 
 describe("Method as.bool", function () {
 
@@ -198,7 +248,7 @@ describe("Method as.value", function () {
         expect(function () {
             pgp.as.value();
         }).toThrow(new Error(err));
-        
+
         expect(function () {
             pgp.as.format('$1#', [null]);
         }).toThrow(new Error(err));
@@ -307,6 +357,7 @@ describe("Method as.csv", function () {
         expect(pgp.as.csv([1, [2, 3], 4])).toBe("1,array[2,3],4");
         expect(pgp.as.csv([1, [['two'], ['three']], 4])).toBe("1,array[['two'],['three']],4");
 
+        expect(pgp.as.csv(new Buffer([1, 2, 3]))).toBe("1,2,3");
     });
 
     it("must correctly resolve functions", function () {
