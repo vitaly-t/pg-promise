@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -1007,13 +1007,13 @@ to be injected as a JSON string. When referencing a property that doesn't exist 
 <p>By default, each variable is automatically formatted according to its type, unless it is a special variable:</p>
 <ul>
 <li>Raw-text variables end with <code>:raw</code> or symbol <code>^</code>, and prevent escaping the text. Such variables are not
-allowed to be <code>null</code> or <code>undefined</code>.<ul>
+allowed to be <code>null</code> or <code>undefined</code>, or the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Values null/undefined cannot be used as raw text.</code><ul>
 <li><code>$1:raw</code>, <code>$2:raw</code>,..., and <code>$*propName:raw*</code> (see <code>*</code> above)</li>
 <li><code>$1^</code>, <code>$2^</code>,..., and <code>$*propName^*</code> (see <code>*</code> above)</li>
 </ul>
 </li>
 <li>Open-value variables end with <code>:value</code> or symbol <code>#</code>, to be escaped, but not wrapped in quotes. Such variables are
-not allowed to be <code>null</code> or <code>undefined</code>.<ul>
+not allowed to be <code>null</code> or <code>undefined</code>, or the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Open values cannot be null or undefined.</code><ul>
 <li><code>$1:value</code>, <code>$2:value</code>,..., and <code>$*propName:value*</code> (see <code>*</code> above)</li>
 <li><code>$1#</code>, <code>$2#</code>,..., and <code>$*propName#*</code> (see <code>*</code> above)</li>
 </ul>
@@ -1839,7 +1839,7 @@ and wrapping the result in double quotes.</p>
 
             <td class="description last"><p>SQL name or identifier, or a function that returns it.</p>
 <p>The name must be at least 1 character long.</p>
-<p>If <code>name</code> doesn't resolve into a non-empty string, it throws <code>An sql name/identifier must be a non-empty text string.</code></p></td>
+<p>If <code>name</code> doesn't resolve into a non-empty string, it throws <a href="external-TypeError.html">TypeError</a> = <code>An sql name/identifier must be a non-empty text string.</code></p></td>
         </tr>
 
     
@@ -2172,7 +2172,7 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
 
             <td class="description last"><p>Value to be converted, or a function that returns the value.</p>
 <p>If the <code>value</code> resolves as <code>null</code> or <code>undefined</code>, while <code>raw</code>=<code>true</code>,
-it will throw <code>Values null/undefined cannot be used as raw text.</code></p></td>
+it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values null/undefined cannot be used as raw text.</code></p></td>
         </tr>
 
     
@@ -2375,7 +2375,7 @@ but without surrounding quotes for text types.</p>
             
 
             <td class="description last"><p>Value to be converted, or a function that returns the value.</p>
-<p>If <code>value</code> resolves as <code>null</code> or <code>undefined</code>, it will throw <code>Open values cannot be null or undefined.</code></p></td>
+<p>If <code>value</code> resolves as <code>null</code> or <code>undefined</code>, it will throw <a href="external-TypeError.html">TypeError</a> = <code>Open values cannot be null or undefined.</code></p></td>
         </tr>
 
     

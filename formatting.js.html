@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -219,7 +219,7 @@ function safeText(text) {
 // Throws an exception, if flag 'raw' is set.
 function throwIfRaw(raw) {
     if (raw) {
-        throw new Error("Values null/undefined cannot be used as raw text.");
+        throw new TypeError("Values null/undefined cannot be used as raw text.");
     }
 }
 
@@ -298,7 +298,7 @@ var $as = {
      * Value to be converted, or a function that returns the value.
      *
      * If the `value` resolves as `null` or `undefined`, while `raw`=`true`,
-     * it will throw `Values null/undefined cannot be used as raw text.`
+     * it will throw {@link external:TypeError TypeError} = `Values null/undefined cannot be used as raw text.`
      *
      * @param {Boolean} [raw=false]
      * Indicates when not to escape the resulting text.
@@ -336,7 +336,7 @@ var $as = {
      *
      * The name must be at least 1 character long.
      *
-     * If `name` doesn't resolve into a non-empty string, it throws `An sql name/identifier must be a non-empty text string.`
+     * If `name` doesn't resolve into a non-empty string, it throws {@link external:TypeError TypeError} = `An sql name/identifier must be a non-empty text string.`
      *
      * @returns {String}
      * The SQL Name/Identifier properly escaped for compliance with the PostgreSQL standard
@@ -361,7 +361,7 @@ var $as = {
      * @param {value|Function} value
      * Value to be converted, or a function that returns the value.
      *
-     * If `value` resolves as `null` or `undefined`, it will throw `Open values cannot be null or undefined.`
+     * If `value` resolves as `null` or `undefined`, it will throw {@link external:TypeError TypeError} = `Open values cannot be null or undefined.`
      *
      * @returns {String}
      * Formatted and properly escaped string, but without surrounding quotes for text types.
@@ -596,11 +596,11 @@ var $as = {
      *
      * By default, each variable is automatically formatted according to its type, unless it is a special variable:
      * - Raw-text variables end with `:raw` or symbol `^`, and prevent escaping the text. Such variables are not
-     *   allowed to be `null` or `undefined`.
+     *   allowed to be `null` or `undefined`, or the method will throw {@link external:TypeError TypeError} = `Values null/undefined cannot be used as raw text.`
      *   - `$1:raw`, `$2:raw`,..., and `$*propName:raw*` (see `*` above)
      *   - `$1^`, `$2^`,..., and `$*propName^*` (see `*` above)
      * - Open-value variables end with `:value` or symbol `#`, to be escaped, but not wrapped in quotes. Such variables are
-     *   not allowed to be `null` or `undefined`.
+     *   not allowed to be `null` or `undefined`, or the method will throw {@link external:TypeError TypeError} = `Open values cannot be null or undefined.`
      *   - `$1:value`, `$2:value`,..., and `$*propName:value*` (see `*` above)
      *   - `$1#`, `$2#`,..., and `$*propName#*` (see `*` above)
      * - SQL name variables end with `:name` or symbol `~` (tilde), and provide proper escaping for SQL names/identifiers:
@@ -639,6 +639,11 @@ module.exports = {
 /**
  * @external Error
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
+ */
+
+/**
+ * @external TypeError
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError
  */
 
 /**
