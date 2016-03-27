@@ -60,7 +60,7 @@ Advanced access layer to [node-postgres] via [Promises/A+].
     - [transact](#transact)
     - [extend](#extend)
     - [noLocking](#nolocking)    
-    - [capTX](#captx)    
+    - [capSQL](#capsql)    
   - [Library de-initialization](#library-de-initialization)
 * [History](#history)
 * [License](#license)
@@ -999,9 +999,9 @@ See [API / event `extend`](http://vitaly-t.github.io/pg-promise/global.html#even
 See [API / `noLocking`](http://vitaly-t.github.io/pg-promise/module-pg-promise.html).
 
 ---
-#### capTX
+#### capSQL
 
-See [API / `capTX`](http://vitaly-t.github.io/pg-promise/module-pg-promise.html).
+See [API / `capSQL`](http://vitaly-t.github.io/pg-promise/module-pg-promise.html).
 
 ## Library de-initialization
 

@@ -718,7 +718,7 @@ describe("Transactions", function () {
     describe("When a nested transaction fails", function () {
         var result, error, THIS, context;
         beforeEach(function (done) {
-            options.capTX = true;
+            options.capSQL = true;
             db.tx(function (t) {
                     THIS = this;
                     context = t;
@@ -740,7 +740,7 @@ describe("Transactions", function () {
             expect(error.message).toBe('Nested TX failure');
         });
         afterEach(function () {
-            delete options.capTX;
+            delete options.capSQL;
         });
     });
 
@@ -890,7 +890,7 @@ describe("Transactions", function () {
     describe("A nested transaction (10 levels)", function () {
         var result, THIS, context, ctx = [];
         beforeEach(function (done) {
-            options.capTX = true;
+            options.capSQL = true;
             db.tx(0, function () {
                     ctx.push(this.ctx);
                     return this.tx(1, function () {
@@ -941,7 +941,7 @@ describe("Transactions", function () {
             }
         });
         afterEach(function () {
-            delete options.capTX;
+            delete options.capSQL;
         });
     });
 
@@ -1139,6 +1139,7 @@ describe("Querying a function", function () {
     describe("that expects multiple rows", function () {
         var result;
         beforeEach(function (done) {
+            options.capSQL = true;
             db.func("getUsers")
                 .then(function (data) {
                     result = data;
@@ -1151,6 +1152,9 @@ describe("Querying a function", function () {
             expect(result instanceof Array).toBe(true);
             expect(result.length >= 4).toBe(true);
         })
+        afterEach(function () {
+            delete options.capSQL;
+        });
     });
 
     describe("that expects a single row", function () {
@@ -1171,8 +1175,11 @@ describe("Querying a function", function () {
     });
 
     describe("with function-parameter that throws an error", function () {
-        var result;
+        var result, errCtx;
         beforeEach(function (done) {
+            options.error = function (err, e) {
+                errCtx = e;
+            };
             db.proc("findUser", [function () {
                     throw new Error("format failed");
                 }])
@@ -1184,10 +1191,37 @@ describe("Querying a function", function () {
                     done();
                 });
         });
-        it("must return correctly", function () {
+        it("must throw an error", function () {
             expect(result instanceof Error).toBe(true);
             expect(result.message).toBe("format failed");
-        })
+            expect(errCtx.query).toBe('select * from findUser(...)');
+        });
+        afterEach(function () {
+            delete options.error;
+        });
+    });
+
+    describe("with function-parameter that throws an error + capitalized", function () {
+        var errCtx;
+        beforeEach(function (done) {
+            options.capSQL = true;
+            options.error = function (err, e) {
+                errCtx = e;
+            };
+            db.func("findUser", [function () {
+                    throw 1;
+                }])
+                .catch(function () {
+                    done();
+                });
+        });
+        it("must throw an error", function () {
+            expect(errCtx.query).toBe('SELECT * FROM findUser(...)');
+        });
+        afterEach(function () {
+            delete options.error;
+            delete options.capSQL;
+        });
     });
 
     describe("with invalid parameters", function () {

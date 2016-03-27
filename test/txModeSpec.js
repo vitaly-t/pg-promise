@@ -15,7 +15,7 @@ describe("Transaction Mode", function () {
         var queries = [], result, ctx, context = {};
         beforeEach(function (done) {
 
-            options.capTX = true;
+            options.capSQL = true;
             options.query = function (e) {
                 queries.push(e.query);
             };
@@ -41,7 +41,7 @@ describe("Transaction Mode", function () {
         });
         afterEach(function () {
             delete options.query;
-            delete options.capTX;
+            delete options.capSQL;
         });
     });
 
