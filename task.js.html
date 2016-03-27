@@ -201,7 +201,7 @@ Task.exec = function (ctx, obj, isTX) {
 
     var cbData, cbReason, success,
         spName, // Save-Point Name;
-        capTX = ctx.options &amp;&amp; ctx.options.capTX; // capitalize transaction commands;
+        capSQL = ctx.options &amp;&amp; ctx.options.capSQL; // capitalize sql;
 
     update(true);
 
@@ -245,7 +245,7 @@ Task.exec = function (ctx, obj, isTX) {
 
     function begin() {
         if (!ctx.txLevel &amp;&amp; ctx.cb.txMode instanceof $npm.mode.TransactionMode) {
-            return exec(ctx.cb.txMode.begin(capTX), 'savepoint');
+            return exec(ctx.cb.txMode.begin(capSQL), 'savepoint');
         }
         return exec('begin', 'savepoint');
     }
@@ -260,9 +260,9 @@ Task.exec = function (ctx, obj, isTX) {
 
     function exec(top, nested) {
         if (ctx.txLevel) {
-            return obj.none((capTX ? nested.toUpperCase() : nested) + ' ' + spName);
+            return obj.none((capSQL ? nested.toUpperCase() : nested) + ' ' + spName);
         }
-        return obj.none(capTX ? top.toUpperCase() : top);
+        return obj.none(capSQL ? top.toUpperCase() : top);
     }
 
     // executing a task;

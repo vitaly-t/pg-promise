@@ -66,11 +66,12 @@ var $npm = {
  * If this provision gets in the way of using a mock-up framework for your tests, you can force
  * the library to deactivate most of the locks by setting `noLocking` = `true` within the options.
  *
- * @param {Boolean} [options.capTX=false]
- * Capitalizes transaction commands.
+ * @param {Boolean} [options.capSQL=false]
+ * Capitalizes all generated SQL commands.
  *
- * By default, all commands within automated transactions are executed in low case.
- * If you want them to be executed capitalized instead, set `capTX` = `true`.
+ * By default, all internal SQL within the library is generated using the low case.
+ * If, however, you want all SQL to be capitalized instead, set `capSQL` = `true`.
+ *
  * This is purely a cosmetic feature.
  *
  * @param {Function} [options.connect]
