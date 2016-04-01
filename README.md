@@ -96,7 +96,7 @@ var pgp = require('pg-promise')({
 });
 ```
 
-- or without [Initialization Options]:
+&#8722; or without [Initialization Options]:
 
 ```javascript
 var pgp = require('pg-promise')();
