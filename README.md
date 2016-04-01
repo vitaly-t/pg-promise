@@ -88,14 +88,20 @@ $ npm install pg-promise
 
 ## Initializing
 
+Loading and initializing the library with [Initialization Options]:
+
 ```javascript
-// Loading and initializing the library:
 var pgp = require('pg-promise')({
     // Initialization Options
 });
 ```
-See also: [Initialization Options](#advanced).
 
+- or without [Initialization Options]:
+
+```javascript
+var pgp = require('pg-promise')();
+```
+ 
 ## Connecting
 
 Use one of the two ways to specify database connection details:
@@ -1085,6 +1091,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[Initialization Options]:#advanced
 [pgp.as]:http://vitaly-t.github.io/pg-promise/formatting.html
 [as.value]:http://vitaly-t.github.io/pg-promise/formatting.html#.value
 [as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
