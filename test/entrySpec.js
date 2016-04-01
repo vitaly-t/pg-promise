@@ -145,7 +145,7 @@ describe("Library entry function", function () {
     });
 
     describe("with a connection instead of options", function () {
-        var error = "Invalid library initialization: must initialize the library before creating a database connection.";
+        var error = "Invalid library initialization: must initialize the library before creating a database object.";
         it("must throw an error", function () {
             expect(function () {
                 header('postgres://ops');
