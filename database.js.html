@@ -538,9 +538,9 @@ function Database(cn, options) {
     }
 }
 
-module.exports = function (p) {
+module.exports = function (p, pg) {
     $p = p;
-    $npm.connect = require('./connect')(p);
+    $npm.connect = require('./connect')(p, pg);
     $npm.query = require('./query')(p);
     $npm.task = require('./task')(p);
     return Database;

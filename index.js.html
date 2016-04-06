@@ -53,6 +53,9 @@ var $npm = {
  * @param {Boolean} [options.pgFormatting=false]
  * Redirects query formatting to PG.
  *
+ * @param {Boolean} [options.pgNative=false]
+ * Use `pg-native` (must be installed).
+ *
  * @param {Object|Function} [options.promiseLib=Promise]
  * Override for the default promise library.
  *
@@ -114,8 +117,8 @@ function $main(options) {
         if (typeof options === 'string') {
             // Check for invalid initialization: it must not be a connection string.
             var pg = require.cache[require.resolve('pg')];
-            var pcs = pg.require('pg-connection-string');
-            var cn = pcs.parse(options);
+            var pgCS = pg.require('pg-connection-string');
+            var cn = pgCS.parse(options);
             invalidInit = cn &amp;&amp; cn.database !== options;
         }
         if (typeof options === 'object') {
@@ -135,16 +138,31 @@ function $main(options) {
         //
         // 1. Initialize the library:
         //     var pgp = require('pg-promise')(/*initialization options*/);
-        // 2. Create database connection:
+        // 2. Create a database object:
         //     var db = pgp(connection);
         //
-        // If you skip the first step, you get this error.
-        throw new TypeError("Invalid library initialization: must initialize the library before creating a database connection.");
+        // If you skip the first step, you will get this error.
+        throw new TypeError("Invalid library initialization: must initialize the library before creating a database object.");
+    }
+
+    if (options) {
+        // Locking properties that cannot be changed later:
+        $npm.utils.addReadProp(options, 'promiseLib', options.promiseLib);
+        $npm.utils.addReadProp(options, 'pgNative', options.pgNative);
     }
 
     $npm.promise(options ? options.promiseLib : null);
+    
+    // istanbul ignore next:
+    // we do not cover code specific to native bindings
+    if (options &amp;&amp; options.pgNative &amp;&amp; !initialized) {
+        $npm.pg = $npm.pg.native;
+        rootNameSpace.pg = $npm.pg;
+    }
 
-    var Database = require('./database')($npm.promise.p);
+    initialized++;
+
+    var Database = require('./database')($npm.promise.p, $npm.pg);
 
     var inst = function (cn) {
         var t = typeof cn;
@@ -157,6 +175,12 @@ function $main(options) {
 
     $npm.utils.addProperties(inst, rootNameSpace);
     $npm.utils.lock(inst);
+
+    // istanbul ignore next:
+    // we do not cover the library misuse;
+    if (initialized > 1 &amp;&amp; !$main.suppressWarnings) {
+        console.warn("WARNING: You should not initialize pg-promise more than once.");
+    }
 
     return inst;
 }
@@ -228,6 +252,8 @@ var rootNameSpace = {
      */
     txMode: $npm.mode
 };
+
+var initialized = 0;
 
 $npm.utils.lock(rootNameSpace.as, true);
 $npm.utils.lock(rootNameSpace.txMode, true);
