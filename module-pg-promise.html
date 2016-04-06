@@ -170,7 +170,8 @@
                 </td>
             
 
-            <td class="description last"><p>Redirects query formatting to PG.</p></td>
+            <td class="description last"><p>Redirects query formatting to PG.</p>
+<p>This property can be set dynamically (before or after initialization).</p></td>
         </tr>
 
     
@@ -209,8 +210,9 @@
                 </td>
             
 
-            <td class="description last"><p>Use <a href="https://github.com/brianc/node-postgres#native-bindings">Native Bindings</a> (<a href="https://github.com/brianc/node-pg-native">pg-native</a> must be installed).</p>
-<p>Added in v.3.5.0</p></td>
+            <td class="description last"><p>Use <a href="https://github.com/brianc/node-postgres#native-bindings">Native Bindings</a> (library <a href="https://github.com/brianc/node-pg-native">pg-native</a> must be installed).</p>
+<p>Added in v.3.5.0.</p>
+<p>This is a static property (can only be set prior to initialization).</p></td>
         </tr>
 
     
@@ -252,7 +254,8 @@
                 </td>
             
 
-            <td class="description last"><p>Override for the default promise library.</p></td>
+            <td class="description last"><p>Override for the default promise library.</p>
+<p>This is a static property (can only be set prior to initialization).</p></td>
         </tr>
 
     
@@ -296,7 +299,8 @@
 Specifically for the extend event this serves as a protection against overriding existing
 properties or trying to set them at the wrong time.</p>
 <p>If this provision gets in the way of using a mock-up framework for your tests, you can force
-the library to deactivate most of the locks by setting <code>noLocking</code> = <code>true</code> within the options.</p></td>
+the library to deactivate most of the locks by setting <code>noLocking</code> = <code>true</code> within the options.</p>
+<p>This property can be set dynamically (before or after initialization).</p></td>
         </tr>
 
     
@@ -338,7 +342,8 @@ the library to deactivate most of the locks by setting <code>noLocking</code> = 
             <td class="description last"><p>Capitalizes all generated SQL commands.</p>
 <p>By default, all internal SQL within the library is generated using the low case.
 If, however, you want all SQL to be capitalized instead, set <code>capSQL</code> = <code>true</code>.</p>
-<p>This is purely a cosmetic feature.</p></td>
+<p>This is purely a cosmetic feature.</p>
+<p>This property can be set dynamically (before or after initialization).</p></td>
         </tr>
 
     
@@ -375,7 +380,8 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
                 </td>
             
 
-            <td class="description last"><p>Event <a href="global.html#event:connect">connect</a> handler.</p></td>
+            <td class="description last"><p>Event <a href="global.html#event:connect">connect</a> handler.</p>
+<p>This property can be set dynamically (before or after initialization).</p></td>
         </tr>
 
     
@@ -412,7 +418,8 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
                 </td>
             
 
-            <td class="description last"><p>Event <a href="global.html#event:disconnect">disconnect</a> handler.</p></td>
+            <td class="description last"><p>Event <a href="global.html#event:disconnect">disconnect</a> handler.</p>
+<p>This property can be set dynamically (before or after initialization).</p></td>
         </tr>
 
     
@@ -449,7 +456,8 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
                 </td>
             
 
-            <td class="description last"><p>Event <a href="global.html#event:query">query</a> handler.</p></td>
+            <td class="description last"><p>Event <a href="global.html#event:query">query</a> handler.</p>
+<p>This property can be set dynamically (before or after initialization).</p></td>
         </tr>
 
     
@@ -523,7 +531,8 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
                 </td>
             
 
-            <td class="description last"><p>Event <a href="global.html#event:task">task</a> handler.</p></td>
+            <td class="description last"><p>Event <a href="global.html#event:task">task</a> handler.</p>
+<p>This property can be set dynamically (before or after initialization).</p></td>
         </tr>
 
     
@@ -560,7 +569,8 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
                 </td>
             
 
-            <td class="description last"><p>Event <a href="global.html#event:transact">transact</a> handler.</p></td>
+            <td class="description last"><p>Event <a href="global.html#event:transact">transact</a> handler.</p>
+<p>This property can be set dynamically (before or after initialization).</p></td>
         </tr>
 
     
@@ -597,7 +607,8 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
                 </td>
             
 
-            <td class="description last"><p>Event <a href="global.html#event:error">error</a> handler.</p></td>
+            <td class="description last"><p>Event <a href="global.html#event:error">error</a> handler.</p>
+<p>This property can be set dynamically (before or after initialization).</p></td>
         </tr>
 
     
@@ -634,7 +645,8 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
                 </td>
             
 
-            <td class="description last"><p>Event <a href="global.html#event:extend">extend</a> handler.</p></td>
+            <td class="description last"><p>Event <a href="global.html#event:extend">extend</a> handler.</p>
+<p>This property can be set dynamically (before or after initialization).</p></td>
         </tr>
 
     
@@ -793,7 +805,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line172">line 172</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line196">line 196</a>
     </li></ul></dd>
     
 
@@ -865,7 +877,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line163">line 163</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line187">line 187</a>
     </li></ul></dd>
     
 
@@ -937,7 +949,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line189">line 189</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line213">line 213</a>
     </li></ul></dd>
     
 
@@ -1010,7 +1022,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line179">line 179</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line203">line 203</a>
     </li></ul></dd>
     
 
@@ -1082,7 +1094,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line210">line 210</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line234">line 234</a>
     </li></ul></dd>
     
 
@@ -1154,7 +1166,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line217">line 217</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line241">line 241</a>
     </li></ul></dd>
     
 
@@ -1226,7 +1238,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line196">line 196</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line220">line 220</a>
     </li></ul></dd>
     
 
@@ -1298,7 +1310,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line203">line 203</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line227">line 227</a>
     </li></ul></dd>
     
 
@@ -1370,7 +1382,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line224">line 224</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line248">line 248</a>
     </li></ul></dd>
     
 
