@@ -344,7 +344,14 @@ function Database(cn, options) {
 
         /**
          * @method Database.stream
-         * @summary Custom data streaming, with the help of $[pg-query-stream].
+         * @description Custom data streaming, with the help of $[pg-query-stream].
+         *
+         * This method doesn't work when initialization option `pgNative` is set,
+         * because $[pg-query-stream] doesn't support $[Native Bindings].
+         *
+         * And if you call this method while using option `pgNative`, it will throw {@link external:Error Error} =
+         * `Streaming doesn't work with native bindings.`
+         *
          * @param {QueryStream} qs - stream object of type $[QueryStream].
          * @param {Function} init - stream initialization callback, with
          * the same `this` context as the calling method.
@@ -363,7 +370,7 @@ function Database(cn, options) {
         obj.stream = function (qs, init) {
             return obj.query.call(this, qs, init, $npm.special.cache.streamQuery);
         };
-        
+
         /**
          * @method Database.func
          * @description

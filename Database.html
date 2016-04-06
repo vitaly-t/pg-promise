@@ -752,7 +752,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line338">line 338</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line345">line 345</a>
     </li></ul></dd>
     
 
@@ -2041,7 +2041,7 @@ expecting back 0 or 1 rows.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line369">line 369</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line376">line 376</a>
     </li></ul></dd>
     
 
@@ -2582,10 +2582,16 @@ to provide direct access to the <a href="https://github.com/brianc/node-postgres
     <h4 class="name" id=".stream"><span class="type-signature">(static) </span>stream<span class="signature">(qs, init)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Custom data streaming, with the help of <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a>.</p>
-    
 
 
+
+<div class="description">
+    <p>Custom data streaming, with the help of <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a>.</p>
+<p>This method doesn't work when initialization option <code>pgNative</code> is set,
+because <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a> doesn't support <a href="https://github.com/brianc/node-postgres#native-bindings">Native Bindings</a>.</p>
+<p>And if you call this method while using option <code>pgNative</code>, it will throw <a href="external-Error.html">Error</a> =
+<code>Streaming doesn't work with native bindings.</code></p>
+</div>
 
 
 
@@ -2919,7 +2925,7 @@ for the task.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line393">line 393</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line400">line 400</a>
     </li></ul></dd>
     
 
@@ -3128,7 +3134,7 @@ function for the transaction.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line412">line 412</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line419">line 419</a>
     </li></ul></dd>
     
 
