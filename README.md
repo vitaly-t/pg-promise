@@ -889,7 +889,7 @@ The library verifies whether the callback function is a generator, and executes 
 ## Initialization Options
 
 When initializing the library, you can pass object `options` with a set of global properties.
-See [API / options](http://vitaly-t.github.io/pg-promise/module-pg-promise.html).
+See [API / options](http://vitaly-t.github.io/pg-promise/module-pg-promise.html) for complete list of supported options.
 
 ---
 #### pgFormatting
@@ -946,11 +946,6 @@ throw error `Invalid promise library specified.` during initialization.
 
 For such libraries you can use [Promise Adapter] to make them compatible with **pg-promise**,
 mostly needed by smaller and simplified [Conformant Implementations](https://promisesaplus.com/implementations). 
-
----
-
-The rest of options are now fully within the [API Documentation].
-
 
 ## Library de-initialization
 
