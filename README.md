@@ -49,18 +49,6 @@ Advanced access layer to [node-postgres] via [Promises/A+].
   - [Generators](#generators)
 * [Advanced](#advanced)
   - [Initialization Options](#initialization-options)
-    - [pgFormatting](#pgformatting)
-    - [promiseLib](#promiselib)
-    - [connect](#connect)
-    - [disconnect](#disconnect)
-    - [query](#query)
-    - [receive](#receive)    
-    - [error](#error)
-    - [task](#task)    
-    - [transact](#transact)
-    - [extend](#extend)
-    - [noLocking](#nolocking)    
-    - [capSQL](#capsql)    
   - [Library de-initialization](#library-de-initialization)
 * [History](#history)
 * [License](#license)
@@ -960,54 +948,9 @@ For such libraries you can use [Promise Adapter] to make them compatible with **
 mostly needed by smaller and simplified [Conformant Implementations](https://promisesaplus.com/implementations). 
 
 ---
-#### connect
 
-See [API / event `connect`](http://vitaly-t.github.io/pg-promise/global.html#event:connect).
+The rest of options are now fully within the [API Documentation].
 
----
-#### disconnect
-
-See [API / event `disconnect`](http://vitaly-t.github.io/pg-promise/global.html#event:disconnect).
-
----
-#### query
-
-See [API / event `query`](http://vitaly-t.github.io/pg-promise/global.html#event:query).
-
----
-#### receive
-
-See [API / event `receive`](http://vitaly-t.github.io/pg-promise/global.html#event:receive).
-
----
-#### error
-
-See [API / event `error`](http://vitaly-t.github.io/pg-promise/global.html#event:error).
-
----
-#### task
-
-See [API / event `task`](http://vitaly-t.github.io/pg-promise/global.html#event:task).
-
----
-#### transact
-
-See [API / event `transact`](http://vitaly-t.github.io/pg-promise/global.html#event:transact).
-
----
-#### extend
-
-See [API / event `extend`](http://vitaly-t.github.io/pg-promise/global.html#event:extend).
-
----
-#### noLocking
-
-See [API / `noLocking`](http://vitaly-t.github.io/pg-promise/module-pg-promise.html).
-
----
-#### capSQL
-
-See [API / `capSQL`](http://vitaly-t.github.io/pg-promise/module-pg-promise.html).
 
 ## Library de-initialization
 
