@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>pg-promise API</title>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <div class="home-link">
+        <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
+    </div>
+</nav>
+
+<div id="main">
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>TransactionMode</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="TransactionMode"><span class="type-signature"></span>new TransactionMode<span class="signature">(tiLevel<span class="signature-attributes">opt</span>, readOnly<span class="signature-attributes">opt</span>, deferrable<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p><strong>Alternative Syntax:</strong> <code>TransactionMode({tiLevel, readOnly, deferrable})</code></p>
+<p>Constructs a complete transaction-opening command, based on the parameters:</p>
+<ul>
+<li>isolation level</li>
+<li>access mode</li>
+<li>deferrable mode</li>
+</ul>
+<p>The type is available from the library's root: <code>pgp.txMode.TransactionMode</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tiLevel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#isolationLevel">isolationLevel</a></span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Transaction Isolation Level, or an object with parameters, if the alternative
+syntax is used.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>readOnly</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Sets transaction access mode based on the read-only flag:</p>
+<ul>
+<li><code>undefined</code> - access mode not specified (default)</li>
+<li><code>true</code> - access mode is set to <code>READ ONLY</code></li>
+<li><code>false</code> - access mode is set to <code>READ WRITE</code></li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>deferrable</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Sets transaction deferrable mode based on the boolean value:</p>
+<ul>
+<li><code>undefined</code> - deferrable mode not specified (default)</li>
+<li><code>true</code> - mode is set to <code>DEFERRABLE</code></li>
+<li><code>false</code> - mode is set to <code>NOT DEFERRABLE</code></li>
+</ul>
+<p>It is used only when <code>tiLevel</code>=<code>isolationLevel.serializable</code>
+and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="txMode.js.html">txMode.js</a>, <a href="txMode.js.html#line32">line 32</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="http://www.postgresql.org/docs/9.5/static/sql-begin.html">BEGIN</a>, <a href="global.html#isolationLevel">isolationLevel</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var TransactionMode = pgp.txMode.TransactionMode;var isolationLevel = pgp.txMode.isolationLevel;// Create a reusable transaction mode (serializable + read-only + deferrable):var tmSRD = new TransactionMode({    tiLevel: isolationLevel.serializable,    readOnly: true,    deferrable: true});function myTransaction() {    return this.query("SELECT * FROM table");}myTransaction.txMode = tmSRD; // assign transaction mode;db.tx(myTransaction)    .then(function(){        // success;    });// Instead of the default BEGIN, such transaction will initiate with:// BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE</code></pre>
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
