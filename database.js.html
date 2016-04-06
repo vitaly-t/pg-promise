@@ -139,6 +139,9 @@ function Database(cn, options) {
      *
      * @returns {external:Promise}
      * A promise object that represents the query result.
+     *
+     * When the query result is an array, it is extended with a hidden
+     * property `duration` - query duration in milliseconds.
      */
     this.query = function (query, values, qrm) {
         var self = this, ctx = createContext();
@@ -336,7 +339,8 @@ function Database(cn, options) {
          *
          * @returns {external:Promise}
          * Result of the query call:
-         * - resolves with the original $[Result] object
+         * - resolves with the original $[Result] object, extended with
+         * property `duration` - query duration in milliseconds.
          */
         obj.result = function (query, values) {
             return obj.query.call(this, query, values, $npm.special.cache.resultQuery);

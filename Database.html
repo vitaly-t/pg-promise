@@ -365,7 +365,7 @@ it can only be created via the library's base call.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line266">line 266</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line269">line 269</a>
     </li></ul></dd>
     
 
@@ -752,7 +752,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line345">line 345</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line349">line 349</a>
     </li></ul></dd>
     
 
@@ -970,7 +970,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line193">line 193</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line196">line 196</a>
     </li></ul></dd>
     
 
@@ -1184,7 +1184,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line242">line 242</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line245">line 245</a>
     </li></ul></dd>
     
 
@@ -1404,7 +1404,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line142">line 142</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line145">line 145</a>
     </li></ul></dd>
     
 
@@ -1618,7 +1618,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line166">line 166</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line169">line 169</a>
     </li></ul></dd>
     
 
@@ -1834,7 +1834,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line217">line 217</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line220">line 220</a>
     </li></ul></dd>
     
 
@@ -2041,7 +2041,7 @@ expecting back 0 or 1 rows.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line376">line 376</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line380">line 380</a>
     </li></ul></dd>
     
 
@@ -2339,6 +2339,8 @@ according to parameter <code>qrm</code>.</p>
         
 <div class="param-desc">
     <p>A promise object that represents the query result.</p>
+<p>When the query result is an array, it is extended with a hidden
+property <code>duration</code> - query duration in milliseconds.</p>
 </div>
 
 
@@ -2523,7 +2525,7 @@ to provide direct access to the <a href="https://github.com/brianc/node-postgres
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line291">line 291</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line294">line 294</a>
     </li></ul></dd>
     
 
@@ -2552,7 +2554,8 @@ to provide direct access to the <a href="https://github.com/brianc/node-postgres
 <div class="param-desc">
     <p>Result of the query call:</p>
 <ul>
-<li>resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object</li>
+<li>resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object, extended with
+property <code>duration</code> - query duration in milliseconds.</li>
 </ul>
 </div>
 
@@ -2707,7 +2710,7 @@ the same <code>this</code> context as the calling method.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line316">line 316</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line320">line 320</a>
     </li></ul></dd>
     
 
@@ -2925,7 +2928,7 @@ for the task.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line400">line 400</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line404">line 404</a>
     </li></ul></dd>
     
 
@@ -3134,7 +3137,7 @@ function for the transaction.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line419">line 419</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line423">line 423</a>
     </li></ul></dd>
     
 
