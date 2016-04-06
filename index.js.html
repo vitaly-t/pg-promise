@@ -54,7 +54,9 @@ var $npm = {
  * Redirects query formatting to PG.
  *
  * @param {Boolean} [options.pgNative=false]
- * Use `pg-native` (must be installed).
+ * Use $[Native Bindings] ($[pg-native] must be installed).
+ *
+ * Added in v.3.5.0
  *
  * @param {Object|Function} [options.promiseLib=Promise]
  * Override for the default promise library.
@@ -152,7 +154,7 @@ function $main(options) {
     }
 
     $npm.promise(options ? options.promiseLib : null);
-    
+
     // istanbul ignore next:
     // we do not cover code specific to native bindings
     if (options &amp;&amp; options.pgNative &amp;&amp; !initialized) {
@@ -202,9 +204,12 @@ var rootNameSpace = {
      * @readonly
      */
     as: $npm.formatting.as,
-
+    
     /**
-     * Instance of the $[PG] library that's used.
+     * Instance of the $[PG] library that's used (by default).
+     *
+     * When options `pgNative` is set, it is an instance of $[pg-native].
+     *
      * @member {external:PG} pg
      * @readonly
      */
