@@ -145,7 +145,13 @@ describe("Connection", function () {
             it("must report the right error", function () {
                 expect(log.e.cn).toEqual(errCN);
                 expect(result instanceof Error).toBe(true);
-                expect(result.message).toContain('connect ECONNREFUSED');
+
+                if (options.pgNative) {
+                    expect(result.message).toContain('could not connect to server');
+                } else {
+                    expect(result.message).toContain('connect ECONNREFUSED');
+                }
+
             });
         });
         describe("with transaction connection", function () {
@@ -160,7 +166,11 @@ describe("Connection", function () {
             });
             it("must report the right error", function () {
                 expect(result instanceof Error).toBe(true);
-                expect(result.message).toContain('connect ECONNREFUSED');
+                if (options.pgNative) {
+                    expect(result.message).toContain('could not connect to server');
+                } else {
+                    expect(result.message).toContain('connect ECONNREFUSED');
+                }
             });
         });
         afterEach(function () {
@@ -185,7 +195,11 @@ describe("Connection", function () {
         });
         it("must report the right error", function () {
             expect(result instanceof Error).toBe(true);
-            expect(result.message).toContain('connect ECONNREFUSED');
+            if (options.pgNative) {
+                expect(result.message).toContain('could not connect to server');
+            } else {
+                expect(result.message).toContain('connect ECONNREFUSED');
+            }
         });
     });
 
@@ -812,7 +826,7 @@ describe("Transactions", function () {
             expect(THIS2 === context2).toBe(true);
             expect(THIS1 !== THIS2).toBe(true);
             expect(nestError instanceof Error).toBe(true);
-            expect(nestError.message).toBe('relation "unknowntable" does not exist');
+            expect(nestError.message).toContain('relation "unknowntable" does not exist');
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(2);
             expect(result[0].count).toBe('0'); // no changes within parent transaction;
@@ -1129,7 +1143,9 @@ describe("result", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result instanceof pgResult).toBe(true);
+            if(!options.pgNative) {
+                expect(result instanceof pgResult).toBe(true);
+            }
         });
     });
 });
@@ -1319,7 +1335,7 @@ describe("Prepared Statements", function () {
         });
         it("must return an error", function () {
             expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe('relation "somewhere" does not exist');
+            expect(result.message).toContain('relation "somewhere" does not exist');
         });
     });
 

@@ -13,6 +13,10 @@ var dbHeader = header(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
+if (options.pgNative) {
+    return; // streams do not work with native binding;
+}
+
 function dummy() {
     // dummy/empty function;
 }

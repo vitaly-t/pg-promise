@@ -18,8 +18,22 @@ var cn = {
 };
 
 pgpLib.suppressErrors = true; // suppress console output for error messages;
+pgpLib.suppressWarnings = true; // suppress console output for warning messages;
 
 function main(options) {
+    var pgNative = eval(process.env.PG_NATIVE);
+    if (pgNative) {
+        if (options && typeof options === 'object') {
+            if (!('pgNative' in options))
+                options.pgNative = true;
+        } else {
+            if (!options) {
+                options = {
+                    pgNative: true
+                };
+            }
+        }
+    }
     var result = {
         pgpLib: pgpLib,
         pgp: pgpLib(options),

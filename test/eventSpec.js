@@ -2,8 +2,10 @@
 
 var QueryStream = require('pg-query-stream');
 var JSONStream = require('JSONStream');
+
 var pgResult = require('pg/lib/result');
 var pgClient = require('pg/lib/client');
+
 var header = require('./db/header');
 
 var promise = header.defPromise;
@@ -46,8 +48,10 @@ describe("Connect/Disconnect events", function () {
         it("must be sent correctly", function () {
             expect(connect).toBe(1);
             expect(disconnect).toBe(1);
-            expect(p1 instanceof pgClient).toBe(true);
-            expect(p2 instanceof pgClient).toBe(true);
+            if (!options.pgNative) {
+                expect(p1 instanceof pgClient).toBe(true);
+                expect(p2 instanceof pgClient).toBe(true);
+            }
         });
     });
 
@@ -81,8 +85,10 @@ describe("Connect/Disconnect events", function () {
         it("must be sent correctly", function () {
             expect(connect).toBe(1);
             expect(disconnect).toBe(1);
-            expect(p1 instanceof pgClient).toBe(true);
-            expect(p2 instanceof pgClient).toBe(true);
+            if (!options.pgNative) {
+                expect(p1 instanceof pgClient).toBe(true);
+                expect(p2 instanceof pgClient).toBe(true);
+            }
         });
     });
 });
@@ -215,7 +221,9 @@ describe("Error event", function () {
             expect(error.message).toBe('Test Error');
             expect(counter).toBe(1);
             expect(context.ctx.tag).toBe("Error Transaction");
-            expect(context.client instanceof pgClient).toBe(true);
+            if (!options.pgNative) {
+                expect(context.client instanceof pgClient).toBe(true);
+            }
         });
     });
 
@@ -237,7 +245,9 @@ describe("Error event", function () {
             var msg = "Query must be a non-empty text string.";
             expect(txt).toBe(msg);
             expect(context.params).toBeUndefined();
-            expect(context.client instanceof pgClient).toBe(true);
+            if (!options.pgNative) {
+                expect(context.client instanceof pgClient).toBe(true);
+            }
             expect(counter).toBe(1);
         });
     });
@@ -261,7 +271,9 @@ describe("Error event", function () {
             expect(txt).toBe(msg);
             expect(context.query).toBe("Bla-Bla");
             expect(context.params).toBeUndefined();
-            expect(context.client instanceof pgClient).toBe(true);
+            if (!options.pgNative) {
+                expect(context.client instanceof pgClient).toBe(true);
+            }
             expect(counter).toBe(1);
         });
     });
@@ -285,7 +297,9 @@ describe("Error event", function () {
             expect(errTxt.message).toBe("Multiple rows were not expected.");
             expect(context.query).toBe("select * from users");
             expect(context.params).toBeUndefined();
-            expect(context.client instanceof pgClient).toBe(true);
+            if (!options.pgNative) {
+                expect(context.client instanceof pgClient).toBe(true);
+            }
             expect(counter).toBe(1);
         });
     });
@@ -309,7 +323,9 @@ describe("Error event", function () {
             expect(errTxt.message).toBe("No return data was expected.");
             expect(context.query).toBe("select * from users");
             expect(context.params).toBeUndefined();
-            expect(context.client instanceof pgClient).toBe(true);
+            if (!options.pgNative) {
+                expect(context.client instanceof pgClient).toBe(true);
+            }
             expect(counter).toBe(1);
         });
     });
@@ -333,7 +349,9 @@ describe("Error event", function () {
             expect(errTxt.message).toBe("No data returned from the query.");
             expect(context.query).toBe("select * from users where id > 1000");
             expect(context.params).toBeUndefined();
-            expect(context.client instanceof pgClient).toBe(true);
+            if (!options.pgNative) {
+                expect(context.client instanceof pgClient).toBe(true);
+            }
             expect(counter).toBe(1);
         });
     });
@@ -373,43 +391,45 @@ describe("Error event", function () {
         });
     });
 
-    describe("for loose stream requests", function () {
-        var errTxt, r, context, counter = 0, msg = "Loose request outside an expired connection.";
-        beforeEach(function (done) {
-            options.error = function (err, e) {
-                counter++;
-                errTxt = err;
-                context = e;
-            };
-            var query, sco;
-            var qs = new QueryStream("select $1::int", [123]);
-            db.connect()
-                .then(function (obj) {
-                    sco = obj;
-                    query = sco.stream(qs, function (s) {
-                        s.pipe(JSONStream.stringify());
-                    });
-                })
-                .finally(function () {
-                    sco.done();
-                    query
-                        .then(dummy, function (reason) {
-                            r = reason;
-                        })
-                        .finally(function () {
-                            done();
+    if (!options.pgNative) {
+        describe("for loose stream requests", function () {
+            var errTxt, r, context, counter = 0, msg = "Loose request outside an expired connection.";
+            beforeEach(function (done) {
+                options.error = function (err, e) {
+                    counter++;
+                    errTxt = err;
+                    context = e;
+                };
+                var query, sco;
+                var qs = new QueryStream("select $1::int", [123]);
+                db.connect()
+                    .then(function (obj) {
+                        sco = obj;
+                        query = sco.stream(qs, function (s) {
+                            s.pipe(JSONStream.stringify());
                         });
-                });
+                    })
+                    .finally(function () {
+                        sco.done();
+                        query
+                            .then(dummy, function (reason) {
+                                r = reason;
+                            })
+                            .finally(function () {
+                                done();
+                            });
+                    });
+            });
+            it("must notify with correct error", function () {
+                expect(errTxt).toBe(msg);
+                expect(r).toBe(msg);
+                expect(context.query).toBe("select $1::int");
+                expect(context.client).toBeUndefined();
+                expect(context.params).toEqual(['123']);
+                expect(counter).toBe(1);
+            });
         });
-        it("must notify with correct error", function () {
-            expect(errTxt).toBe(msg);
-            expect(r).toBe(msg);
-            expect(context.query).toBe("select $1::int");
-            expect(context.client).toBeUndefined();
-            expect(context.params).toEqual(['123']);
-            expect(counter).toBe(1);
-        });
-    });
+    }
 
     describe("for invalid parameters", function () {
         var error, context, counter = 0, params = {};
@@ -430,7 +450,9 @@ describe("Error event", function () {
             expect(error.message).toBe("Property 'test' doesn't exist.");
             expect(context.query).toBe("${test}");
             expect(context.params).toBe(params);
-            expect(context.client instanceof pgClient).toBe(true);
+            if (!options.pgNative) {
+                expect(context.client instanceof pgClient).toBe(true);
+            }
             expect(counter).toBe(1);
         });
     });
@@ -464,7 +486,9 @@ describe("Receive event", function () {
             expect(data).toEqual([{
                 value: 123
             }]);
-            expect(res instanceof pgResult).toBe(true);
+            if (!options.pgNative) {
+                expect(res instanceof pgResult).toBe(true);
+            }
         });
     });
 
@@ -504,75 +528,79 @@ describe("Receive event", function () {
         });
     });
 
-    describe("stream positive", function () {
-        var ctx, data, res, counter = 0;
-        beforeEach(function (done) {
-            options.receive = function (d, r, e) {
-                counter++;
-                data = d;
-                res = r;
-                ctx = e;
-            };
-            var qs = new QueryStream("select $1::int as value", [123]);
-            db.stream(qs, function (s) {
-                    s.pipe(JSONStream.stringify());
-                })
-                .then(function () {
-                    done();
-                });
-        });
-        it("must pass in correct data and context", function () {
-            expect(counter).toBe(1);
-            expect(ctx.query).toBe('select $1::int as value');
-            expect(ctx.params).toEqual(['123']);
-            expect(data).toEqual([{
-                value: 123
-            }]);
-            expect(res).toBeUndefined();
-        });
-    });
+    if (!options.pgNative) {
+        // Cannot test streams against native bindings;
 
-    describe("stream negative", function () {
-        var result;
-        beforeEach(function (done) {
-            options.receive = function () {
-                throw "ops!";
-            };
-            var qs = new QueryStream("select $1::int as value", [123]);
-            db.stream(qs, function (s) {
-                    s.pipe(JSONStream.stringify());
-                })
-                .catch(function (error) {
-                    result = error;
-                    done();
-                });
+        describe("stream positive", function () {
+            var ctx, data, res, counter = 0;
+            beforeEach(function (done) {
+                options.receive = function (d, r, e) {
+                    counter++;
+                    data = d;
+                    res = r;
+                    ctx = e;
+                };
+                var qs = new QueryStream("select $1::int as value", [123]);
+                db.stream(qs, function (s) {
+                        s.pipe(JSONStream.stringify());
+                    })
+                    .then(function () {
+                        done();
+                    });
+            });
+            it("must pass in correct data and context", function () {
+                expect(counter).toBe(1);
+                expect(ctx.query).toBe('select $1::int as value');
+                expect(ctx.params).toEqual(['123']);
+                expect(data).toEqual([{
+                    value: 123
+                }]);
+                expect(res).toBeUndefined();
+            });
         });
-        it("must reject with the right error", function () {
-            expect(result).toBe("ops!");
-        });
-    });
 
-    describe("stream negative, undefined", function () {
-        var result, handled;
-        beforeEach(function (done) {
-            options.receive = function () {
-                throw undefined;
-            };
-            var qs = new QueryStream("select $1::int as value", [123]);
-            db.stream(qs, function (s) {
-                    s.pipe(JSONStream.stringify());
-                })
-                .catch(function (error) {
-                    handled = true;
-                    result = error;
-                    done();
-                });
+        describe("stream negative", function () {
+            var result;
+            beforeEach(function (done) {
+                options.receive = function () {
+                    throw "ops!";
+                };
+                var qs = new QueryStream("select $1::int as value", [123]);
+                db.stream(qs, function (s) {
+                        s.pipe(JSONStream.stringify());
+                    })
+                    .catch(function (error) {
+                        result = error;
+                        done();
+                    });
+            });
+            it("must reject with the right error", function () {
+                expect(result).toBe("ops!");
+            });
         });
-        it("must reject with undefined", function () {
-            expect(handled).toBe(true);
-            expect(result).toBeUndefined();
+
+        describe("stream negative, undefined", function () {
+            var result, handled;
+            beforeEach(function (done) {
+                options.receive = function () {
+                    throw undefined;
+                };
+                var qs = new QueryStream("select $1::int as value", [123]);
+                db.stream(qs, function (s) {
+                        s.pipe(JSONStream.stringify());
+                    })
+                    .catch(function (error) {
+                        handled = true;
+                        result = error;
+                        done();
+                    });
+            });
+            it("must reject with undefined", function () {
+                expect(handled).toBe(true);
+                expect(result).toBeUndefined();
+            });
         });
-    });
+    }
 
     afterEach(function () {
         delete options.receive;
@@ -638,10 +666,12 @@ describe("pgFormatting", function () {
                 });
         });
         it("must provide the original pg response", function () {
-            expect(err.length).toBe(2);
-            expect(err[0] instanceof Error && err[1] instanceof Error).toBe(true);
-            expect(err[0].message).toBe("Cannot read property 'submit' of undefined");
-            expect(err[1].message).toBe("Cannot read property 'submit' of null");
+            if (!options.pgNative) {
+                expect(err.length).toBe(2);
+                expect(err[0] instanceof Error && err[1] instanceof Error).toBe(true);
+                expect(err[0].message).toBe("Cannot read property 'submit' of undefined");
+                expect(err[1].message).toBe("Cannot read property 'submit' of null");
+            }
         })
     });
     describe("empty query", function () {

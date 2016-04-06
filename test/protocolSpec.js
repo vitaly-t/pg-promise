@@ -17,11 +17,11 @@ describe("Library instance", function () {
     it("must have valid property 'pg'", function () {
         expect(pgpLib.pg).toBe(PG);
     });
-    
+
     it("must have function 'end'", function () {
         expect(pgpLib.end instanceof Function).toBe(true);
     });
-    
+
     it("must have valid property 'as'", function () {
         expect(pgpLib.as && typeof pgpLib.as === 'object').toBeTruthy();
         expect(pgpLib.as.text instanceof Function).toBe(true);
@@ -63,7 +63,11 @@ describe("Library instance", function () {
 describe("Initialized instance", function () {
 
     it("must have valid property 'pg'", function () {
-        expect(pgp.pg).toBe(PG);
+        if (options.pgNative) {
+            expect(pgp.pg).toBe(PG.native);
+        } else {
+            expect(pgp.pg).toBe(PG);
+        }
     });
 
     it("must have function 'end'", function () {
