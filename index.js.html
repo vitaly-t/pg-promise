@@ -39,8 +39,7 @@ var $npm = {
     queryFile: require('./queryFile'),
     errors: require('./errors'),
     utils: require('./utils'),
-    mode: require('./txMode'),
-    database: require('./database')
+    mode: require('./txMode')
 };
 
 /**
@@ -197,8 +196,8 @@ function $main(options) {
         config.pg = $npm.pg.native;
         config.native = true;
     }
-
-    var Database = $npm.database(config);
+    
+    var Database = require('./database')(config);
 
     var inst = function (cn) {
         var t = typeof cn;
