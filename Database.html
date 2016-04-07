@@ -365,7 +365,7 @@ it can only be created via the library's base call.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line272">line 272</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line281">line 281</a>
     </li></ul></dd>
     
 
@@ -752,7 +752,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line352">line 352</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line362">line 362</a>
     </li></ul></dd>
     
 
@@ -817,10 +817,13 @@ be called in the end of the query chain, in order to release the connection back
     <h4 class="name" id=".many"><span class="type-signature">(static) </span>many<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Executes a query that expects one or more rows.</p>
-    
 
 
+
+<div class="description">
+    <p>Executes a query that expects one or more rows.
+When the query returns no data, the method rejects.</p>
+</div>
 
 
 
@@ -970,7 +973,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line199">line 199</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line203">line 203</a>
     </li></ul></dd>
     
 
@@ -1031,10 +1034,12 @@ be called in the end of the query chain, in order to release the connection back
     <h4 class="name" id=".manyOrNone"><span class="type-signature">(static) </span>manyOrNone<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Executes a query that expects any number of rows.</p>
-    
 
 
+
+<div class="description">
+    <p>Executes a query that expects any number of rows.</p>
+</div>
 
 
 
@@ -1184,7 +1189,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line248">line 248</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line256">line 256</a>
     </li></ul></dd>
     
 
@@ -1251,10 +1256,13 @@ be called in the end of the query chain, in order to release the connection back
     <h4 class="name" id=".none"><span class="type-signature">(static) </span>none<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Executes a query that expects no data to be returned.</p>
-    
 
 
+
+<div class="description">
+    <p>Executes a query that expects no data to be returned.
+If the query returns any kind of data, the method rejects.</p>
+</div>
 
 
 
@@ -1465,10 +1473,13 @@ be called in the end of the query chain, in order to release the connection back
     <h4 class="name" id=".one"><span class="type-signature">(static) </span>one<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Executes a query that expects exactly one row of data.</p>
-    
 
 
+
+<div class="description">
+    <p>Executes a query that expects exactly one row of data.
+When 0 or more than 1 rows are returned, the method rejects.</p>
+</div>
 
 
 
@@ -1618,7 +1629,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line172">line 172</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line174">line 174</a>
     </li></ul></dd>
     
 
@@ -1681,10 +1692,13 @@ be called in the end of the query chain, in order to release the connection back
     <h4 class="name" id=".oneOrNone"><span class="type-signature">(static) </span>oneOrNone<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Executes a query that expects 0 or 1 rows.</p>
-    
 
 
+
+<div class="description">
+    <p>Executes a query that expects 0 or 1 rows.
+When the query returns more than 1 row, the method rejects.</p>
+</div>
 
 
 
@@ -1834,7 +1848,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line223">line 223</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line229">line 229</a>
     </li></ul></dd>
     
 
@@ -2041,7 +2055,7 @@ expecting back 0 or 1 rows.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line383">line 383</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line393">line 393</a>
     </li></ul></dd>
     
 
@@ -2374,7 +2388,7 @@ property <code>duration</code> - query duration in milliseconds.</p>
 
 <div class="description">
     <p>Executes a query without any expectation for the return data,
-to provide direct access to the <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object.</p>
+to resolve with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object when successful.</p>
 </div>
 
 
@@ -2525,7 +2539,7 @@ to provide direct access to the <a href="https://github.com/brianc/node-postgres
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line297">line 297</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line306">line 306</a>
     </li></ul></dd>
     
 
@@ -2710,7 +2724,7 @@ the same <code>this</code> context as the calling method.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line323">line 323</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line332">line 332</a>
     </li></ul></dd>
     
 
@@ -2928,7 +2942,7 @@ for the task.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line407">line 407</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line417">line 417</a>
     </li></ul></dd>
     
 
@@ -3137,7 +3151,7 @@ function for the transaction.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line426">line 426</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line436">line 436</a>
     </li></ul></dd>
     
 
