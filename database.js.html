@@ -37,8 +37,6 @@ var $npm = {
     utils: require('./utils')
 };
 
-var $p; // promise interface;
-
 /**
  * @constructor Database
  * @description
@@ -62,8 +60,10 @@ var $p; // promise interface;
  * var db = pgp(cn);
  *
  */
-function Database(cn, options) {
+function Database(cn, options, config) {
 
+    var $p = config.promise;
+    
     /**
      * @method Database.connect
      * @deprecated
@@ -98,7 +98,7 @@ function Database(cn, options) {
                 if (!ctx.db) {
                     throw new Error("Cannot execute a query on a disconnected client.");
                 }
-                return $npm.query.call(this, ctx, query, values, qrm);
+                return config.npm.query.call(this, ctx, query, values, qrm);
             },
             // Connection release method;
             done: function () {
@@ -109,7 +109,7 @@ function Database(cn, options) {
             }
         };
         extend(ctx, self); // extending the protocol;
-        return $npm.connect(ctx)
+        return config.npm.connect(ctx)
             .then(function (db) {
                 ctx.connect(db);
                 return self;
@@ -145,10 +145,10 @@ function Database(cn, options) {
      */
     this.query = function (query, values, qrm) {
         var self = this, ctx = createContext();
-        return $npm.connect(ctx)
+        return config.npm.connect(ctx)
             .then(function (db) {
                 ctx.connect(db);
-                return $npm.query.call(self, ctx, query, values, qrm);
+                return config.npm.query.call(self, ctx, query, values, qrm);
             })
             .then(function (data) {
                 ctx.disconnect();
@@ -513,19 +513,19 @@ function Database(cn, options) {
                 }
             }
 
-            var tsk = new $npm.task(taskCtx, tag, isTX);
+            var tsk = new config.npm.task(taskCtx, tag, isTX, config);
             extend(taskCtx, tsk);
 
             if (taskCtx.db) {
                 // reuse existing connection;
-                return $npm.task.exec(taskCtx, tsk, isTX);
+                return config.npm.task.exec(taskCtx, tsk, isTX, config);
             }
 
             // connection required;
-            return $npm.connect(taskCtx)
+            return config.npm.connect(taskCtx)
                 .then(function (db) {
                     taskCtx.connect(db);
-                    return $npm.task.exec(taskCtx, tsk, isTX);
+                    return config.npm.task.exec(taskCtx, tsk, isTX, config);
                 })
                 .then(function (data) {
                     taskCtx.disconnect();
@@ -549,11 +549,11 @@ function Database(cn, options) {
     }
 }
 
-module.exports = function (p, pg) {
-    $p = p;
-    $npm.connect = require('./connect')(p, pg);
-    $npm.query = require('./query')(p);
-    $npm.task = require('./task')(p);
+module.exports = function (config) {
+    var npm = config.npm;
+    npm.connect = npm.connect || require('./connect')(config);
+    npm.query = npm.query || require('./query')(config);
+    npm.task = npm.task || require('./task')(config);
     return Database;
 };
 </code></pre>

@@ -35,8 +35,6 @@ var $npm = {
     events: require('./events')
 };
 
-var $p; // promise interface;
-
 /**
  * @constructor Task
  * @extends Database
@@ -75,7 +73,7 @@ var $p; // promise interface;
  *   });
  *
  */
-function Task(ctx, tag, isTX) {
+function Task(ctx, tag, isTX, config) {
 
     /**
      * @member {Object} Task.ctx
@@ -110,7 +108,7 @@ function Task(ctx, tag, isTX) {
         if (!ctx.db) {
             throw new Error("Unexpected call outside of " + (isTX ? "transaction." : "task."));
         }
-        return $npm.query.call(this, ctx, query, values, qrm);
+        return config.npm.query.call(this, ctx, query, values, qrm);
     };
 
     /**
@@ -123,7 +121,7 @@ function Task(ctx, tag, isTX) {
      * @returns {external:Promise}
      */
     this.batch = function (values, cb) {
-        return $npm.spex.batch.call(this, values, cb);
+        return config.npm.spex.batch.call(this, values, cb);
     };
 
     /**
@@ -137,7 +135,7 @@ function Task(ctx, tag, isTX) {
      * @returns {external:Promise}
      */
     this.page = function (source, dest, limit) {
-        return $npm.spex.page.call(this, source, dest, limit);
+        return config.npm.spex.page.call(this, source, dest, limit);
     };
 
     /**
@@ -152,20 +150,22 @@ function Task(ctx, tag, isTX) {
      * @returns {external:Promise}
      */
     this.sequence = function (source, dest, limit, track) {
-        return $npm.spex.sequence.call(this, source, dest, limit, track);
+        return config.npm.spex.sequence.call(this, source, dest, limit, track);
     };
 
 }
 
 //////////////////////////
 // Executes a task;
-Task.exec = function (ctx, obj, isTX) {
+Task.exec = function (ctx, obj, isTX, config) {
 
+    var $p = config.promise;
+    
     // callback invocation helper;
     function callback() {
         var result, cb = ctx.cb;
         if (cb.constructor.name === 'GeneratorFunction') {
-            cb = $npm.async(cb);
+            cb = config.npm.async(cb);
         }
         try {
             result = cb.call(obj, obj); // invoking the callback function;
@@ -278,11 +278,11 @@ Task.exec = function (ctx, obj, isTX) {
 
 };
 
-module.exports = function (p) {
-    $p = p;
-    $npm.query = require('./query')(p);
-    $npm.async = require('./async')(p);
-    $npm.spex = require('spex')(require('./promise').promiseLib);
+module.exports = function (config) {
+    var npm = config.npm;
+    npm.query = npm.query || require('./query')(config);
+    npm.async = npm.async || require('./async')(config);
+    npm.spex = npm.spex || require('spex')(config.promiseLib);
     return Task;
 };
 </code></pre>

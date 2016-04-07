@@ -181,23 +181,29 @@ function $main(options) {
         $npm.utils.addReadProp(options, 'pgNative', options.pgNative);
     }
 
-    $npm.promise(options ? options.promiseLib : null);
+    var p = $npm.promise(options ? options.promiseLib : null);
 
+    var config = {
+        promiseLib: p.promiseLib,
+        promise: p.promise,
+        pg: $npm.pg,
+        native: false,
+        npm: {}
+    };
+    
     // istanbul ignore next:
     // we do not cover code specific to native bindings
-    if (options &amp;&amp; options.pgNative &amp;&amp; !initialized) {
-        $npm.pg = $npm.pg.native;
-        rootNameSpace.pg = $npm.pg;
+    if (options &amp;&amp; options.pgNative) {
+        config.pg = $npm.pg.native;
+        config.native = true;
     }
 
-    initialized++;
-
-    var Database = require('./database')($npm.promise.p, $npm.pg);
+    var Database = require('./database')(config);
 
     var inst = function (cn) {
         var t = typeof cn;
         if (cn &amp;&amp; (t === 'string' || t === 'object')) {
-            return new Database(cn, options);
+            return new Database(cn, options, config);
         }
         // cannot access a database without connection details;
         throw new TypeError("Invalid connection details.");
@@ -205,14 +211,6 @@ function $main(options) {
 
     $npm.utils.addProperties(inst, rootNameSpace);
     $npm.utils.lock(inst);
-    
-    // istanbul ignore next:
-    // we do not cover the library misuse;
-    if (initialized > 1 &amp;&amp; !$main.suppressWarnings) {
-        // Initializing the library more than once creates ambiguity in its configuration settings,
-        // resulting in configuration conflicts between modules that use the library.
-        console.warn("WARNING: You should not initialize pg-promise more than once.");
-    }
 
     return inst;
 }
@@ -238,7 +236,7 @@ var rootNameSpace = {
     /**
      * Instance of the $[PG] library that's used (by default).
      *
-     * When option `pgNative` is set, it is an instance of $[pg-native].
+     * If you want to access the $[Native Bindings], use `pgp.pg.native`.
      *
      * @member {external:PG} pg
      * @readonly
@@ -287,15 +285,6 @@ var rootNameSpace = {
      */
     txMode: $npm.mode
 };
-
-var initialized = 0;
-
-// istanbul ignore next:
-// we cannot do coverage in production
-if (process.env.NODE_ENV === 'production') {
-    // do not show internal warnings in production:
-    $main.suppressWarnings = true;
-}
 
 $npm.utils.lock(rootNameSpace.as, true);
 $npm.utils.lock(rootNameSpace.txMode, true);
