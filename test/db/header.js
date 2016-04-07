@@ -18,7 +18,6 @@ var cn = {
 };
 
 pgpLib.suppressErrors = true; // suppress console output for error messages;
-pgpLib.suppressWarnings = true; // suppress console output for warning messages;
 
 function main(options) {
     var pgNative = eval(process.env.PG_NATIVE);

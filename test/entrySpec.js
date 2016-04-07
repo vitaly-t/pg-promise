@@ -1,9 +1,16 @@
 'use strict';
 
-var header = require('./db/header');
 var PromiseAdapter = require('../lib/index').PromiseAdapter;
-
 var supportsPromise = typeof(Promise) !== 'undefined';
+
+var header = require('./db/header');
+var promise = header.defPromise;
+var options = {
+    promiseLib: promise
+};
+var dbHeader = header(options);
+var pgp = dbHeader.pgp;
+var db = dbHeader.db;
 
 function dummy() {
 }
@@ -160,6 +167,64 @@ describe("Library entry function", function () {
                     database: 'myDB'
                 });
             }).toThrow(error);
+        });
+    });
+
+    describe("multi-init", function () {
+
+        var PromiseOne = [
+            function (cb) {
+                return new promise.Promise(cb);
+            },
+            function (data) {
+                return promise.resolve(data);
+            },
+            function (reason) {
+                return promise.reject('reject-one');
+            }
+        ];
+
+        var PromiseTwo = [
+            function (cb) {
+                return new promise.Promise(cb);
+            },
+            function (data) {
+                return promise.resolve(data);
+            },
+            function (reason) {
+                return promise.reject('reject-two');
+            }
+        ];
+
+        var one = PromiseAdapter.apply(null, PromiseOne);
+        var two = PromiseAdapter.apply(null, PromiseTwo);
+        var result;
+
+        beforeEach(function (done) {
+            var pg1 = header({promiseLib: one}), db1 = pg1.db;
+            var pg2 = header({promiseLib: two}), db2 = pg2.db;
+            db.task(function (t) {
+                    return t.batch([
+                        db1.query('select $1', []), db2.query('select $1', [])
+                    ])
+                })
+                .catch(function (error) {
+                    result = error;
+                    done();
+                });
+        });
+
+        it("must be supported", function () {
+            expect(result).toEqual([
+                {
+                    success: false,
+                    result: 'reject-one'
+                },
+                {
+                    success: false,
+                    result: 'reject-two'
+                }
+            ]);
         });
     });
 
