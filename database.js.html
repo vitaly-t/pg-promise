@@ -34,7 +34,10 @@ var $npm = {
     special: require('./special'),
     context: require('./dbContext'),
     events: require('./events'),
-    utils: require('./utils')
+    utils: require('./utils'),
+    connect: require('./connect'),
+    query: require('./query'),
+    task: require('./task')
 };
 
 /**
@@ -63,7 +66,7 @@ var $npm = {
 function Database(cn, options, config) {
 
     var $p = config.promise;
-    
+
     /**
      * @method Database.connect
      * @deprecated
@@ -551,9 +554,9 @@ function Database(cn, options, config) {
 
 module.exports = function (config) {
     var npm = config.npm;
-    npm.connect = npm.connect || require('./connect')(config);
-    npm.query = npm.query || require('./query')(config);
-    npm.task = npm.task || require('./task')(config);
+    npm.connect = $npm.connect(config);
+    npm.query = $npm.query(config);
+    npm.task = $npm.task(config);
     return Database;
 };
 </code></pre>
