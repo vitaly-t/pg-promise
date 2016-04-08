@@ -294,11 +294,15 @@ function QueryFile(file, options) {
     this.prepare();
 }
 
-// well-formatted output when passed into console.log():
+// well-formatted output:
 // - output the error message when in error state;
 // - output the sql content when in normal state.
-QueryFile.prototype.inspect = function () {
+QueryFile.prototype.toString = function () {
     return this.error ? this.error.message : this.query;
+};
+
+QueryFile.prototype.inspect = function () {
+    return this.toString();
 };
 
 module.exports = QueryFile;

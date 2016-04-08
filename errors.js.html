@@ -165,8 +165,7 @@ QueryResultError.prototype = Object.create(Error.prototype, {
     }
 });
 
-// well-formatted output when passed into console.log();
-QueryResultError.prototype.inspect = function () {
+QueryResultError.prototype.toString = function () {
     var lines = [
         "QueryResultError {",
         "    code: queryResultErrorCode." + errorMessages[this.code].name,
@@ -179,6 +178,10 @@ QueryResultError.prototype.inspect = function () {
     }
     lines.push("}");
     return lines.join(EOL);
+};
+
+QueryResultError.prototype.inspect = function () {
+    return this.toString();
 };
 
 module.exports = {
