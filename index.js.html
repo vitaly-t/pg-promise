@@ -196,9 +196,9 @@ function $main(options) {
         config.pg = $npm.pg.native;
         config.native = true;
     }
-
+    
     var Database = require('./database')(config);
-
+    
     var inst = function (cn) {
         var t = typeof cn;
         if (cn &amp;&amp; (t === 'string' || t === 'object')) {
@@ -208,8 +208,7 @@ function $main(options) {
         throw new TypeError("Invalid connection details.");
     };
 
-    $npm.utils.addProperties(inst, rootNameSpace);
-    $npm.utils.lock(inst);
+    $npm.utils.addReadProperties(inst, rootNameSpace);
 
     return inst;
 }
@@ -292,14 +291,7 @@ var rootNameSpace = {
     txMode: $npm.mode
 };
 
-$npm.utils.lock(rootNameSpace.as, true);
-$npm.utils.lock(rootNameSpace.txMode, true);
-$npm.utils.lock(rootNameSpace.PromiseAdapter, true);
-$npm.utils.lock(rootNameSpace.QueryFile, true);
-$npm.utils.lock(rootNameSpace.QueryResultError, true);
-$npm.utils.lock(rootNameSpace.queryResult, true);
-
-$npm.utils.addProperties($main, rootNameSpace);
+$npm.utils.addReadProperties($main, rootNameSpace);
 
 module.exports = $main;
 

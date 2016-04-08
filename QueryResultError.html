@@ -165,9 +165,30 @@ match its Query Result Mask - the value of <a href="global.html#queryResult">que
 
             
 
-            <td class="description last"><p>The original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object that was received.</p>
-<p>If you write the error object into the console, you will also see virtual property <code>receive</code> there,
-which is the value of <code>result.rows.length</code>.</p></td>
+            <td class="description last"><p>The original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object that was received.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>received</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Total number of rows received. It is simply the value of <code>result.rows.length</code>.</p></td>
         </tr>
 
     
@@ -273,7 +294,7 @@ Otherwise, the values are within the pre-formatted <code>query</code> string.</p
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line36">line 36</a>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line38">line 38</a>
     </li></ul></dd>
     
 
@@ -307,7 +328,7 @@ Otherwise, the values are within the pre-formatted <code>query</code> string.</p
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var QueryResultError = pgp.QueryResultError;var qrec = pgp.queryResultErrorCode;var options = {  // pg-promise initialization options...  error: function (err, e) {      if (err instanceof pgp.QueryResultError) {          // A query returned unexpected number of records, and thus rejected;                    // we can check the error code, if want specifics:          if(err.code === qrec.noData){              // expected some data, but received none;          }          // If you write QueryResultError into the console, you will get a nicely formatted output,          // including virtual property `received` =  total number of rows received from the query.          console.log(err);                    // See also: err, e.query, e.params, etc.      }  }};</code></pre>
+    <pre class="prettyprint"><code>var QueryResultError = pgp.QueryResultError;var qrec = pgp.queryResultErrorCode;var options = {  // pg-promise initialization options...  error: function (err, e) {      if (err instanceof pgp.QueryResultError) {          // A query returned unexpected number of records, and thus rejected;                    // we can check the error code, if we want specifics:          if(err.code === qrec.noData){              // expected some data, but received none;          }          // If you write QueryResultError into the console,          // you will get a nicely formatted output.          console.log(err);                    // See also: err, e.query, e.params, etc.      }  }};</code></pre>
 
 
 
