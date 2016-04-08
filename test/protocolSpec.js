@@ -38,8 +38,9 @@ describe("Library instance", function () {
         expect(pgpLib.as.buffer instanceof Function).toBe(true);
     });
 
-    it("must have function 'QueryResultError'", function () {
+    it("must have all error types", function () {
         expect(pgpLib.QueryResultError instanceof Function).toBe(true);
+        expect(pgpLib.queryResultErrorCode instanceof Object).toBe(true);
     });
 
     it("must have function 'PromiseAdapter'", function () {
@@ -75,8 +76,9 @@ describe("Initialized instance", function () {
         expect(pgp.as).toBe(pgpLib.as);
     });
 
-    it("must have function 'QueryResultError'", function () {
+    it("must have all error types", function () {
         expect(pgp.QueryResultError instanceof Function).toBe(true);
+        expect(pgp.queryResultErrorCode instanceof Object).toBe(true);
     });
 
     it("must have function 'PromiseAdapter'", function () {
