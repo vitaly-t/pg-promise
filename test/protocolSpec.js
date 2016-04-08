@@ -337,9 +337,14 @@ describe("spex", function () {
 // This one is just for coverage;
 describe("Error protocol", function () {
 
+    var result = {
+        rows: []
+    };
     it("must return correctly formatted error body", function () {
-        var error = new pgp.QueryResultError("some error");
-        expect(error.inspect()).toBe(error.stack);
+        var error1 = new pgp.QueryResultError(0, result, '');
+        var error2 = new pgp.QueryResultError(0, result, '', []);
+        expect(typeof error1.inspect()).toBe('string');
+        expect(typeof error2.inspect()).toBe('string');
     });
 });
 

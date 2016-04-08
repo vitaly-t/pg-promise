@@ -961,6 +961,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 3.6.0 Extending [QueryResultError] for better diagnostics. Released: April 8, 2016
 * 3.5.0 Adding support for [Native Bindings]. Released: April 06, 2016
 * 3.4.0 Adding support for [Open Values](#open-values) and type `Buffer`. Released: March 20, 2016
 * 3.3.0 Adding strict variable requirement to `$1, $2,...` formatting. Released: March 05, 2016
@@ -1030,6 +1031,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[QueryResultError]:http://vitaly-t.github.io/pg-promise/QueryResultError.html
 [Native Bindings]:https://github.com/brianc/node-postgres#native-bindings
 [Initialization Options]:#advanced
 [pgp.as]:http://vitaly-t.github.io/pg-promise/formatting.html
