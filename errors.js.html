@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -28,6 +28,39 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
+
+var EOL = require('os').EOL;
+
+/**
+ * @enum {Number}
+ * @alias queryResultErrorCode
+ * @readonly
+ * @summary Query Result Error Code.
+ * @description
+ * Represents an integer code for each type of error supported by type {@link QueryResultError}.
+ *
+ * It is to be used for reliable error detection when needed.
+ *
+ * The type is available from the library's root: `pgp.queryResultErrorCode`.
+ *
+ * @see {@link QueryResultError}
+ */
+var queryResultErrorCode = {
+    /** No data returned from the query. */
+    noData: 0,
+
+    /** No return data was expected. */
+    notEmpty: 1,
+
+    /** Multiple rows were not expected. */
+    multiple: 2
+};
+
+var errorMessages = [
+    {name: "noData", message: "No data returned from the query."},
+    {name: "notEmpty", message: "No return data was expected."},
+    {name: "multiple", message: "Multiple rows were not expected."}
+];
 
 /**
  * @constructor QueryResultError
@@ -52,7 +85,35 @@
  *
  * The type is available from the library's root: `pgp.QueryResultError`.
  *
+ * @property {string} message
+ * Standard {@link external:Error Error} property - the error message.
+ *
+ * @property {object} stack
+ * Standard {@link external:Error Error} property - the stack trace.
+ *
+ * @property {object} result
+ * The original $[Result] object that was received.
+ *
+ * If you write the error object into the console, you will also see virtual property `receive` there,
+ * which is the value of `result.rows.length`.
+ *
+ * @property {number} code
+ * Error code - {@link queryResultErrorCode} value.
+ *
+ * @property {string} query
+ * Query that was executed.
+ *
+ * Normally, it is the query already formatted with values, if there were any.
+ * But if you are using initialization option `pgFormatting`, then the query string is before formatting.
+ *
+ * @property {} values
+ * Values passed in as query parameters. Available only when initialization option `pgFormatting` is used.
+ * Otherwise, the values are within the pre-formatted `query` string.
+ *
  * @example
+ *
+ * var QueryResultError = pgp.QueryResultError;
+ * var qrec = pgp.queryResultErrorCode;
  *
  * var options = {
  *
@@ -61,7 +122,18 @@
  *   error: function (err, e) {
  *       if (err instanceof pgp.QueryResultError) {
  *           // A query returned unexpected number of records, and thus rejected;
- *           // See: err, e.query, e.params, etc.
+ *           
+ *           // we can check the error code, if want specifics:
+ *           if(err.code === qrec.noData){
+ *               // expected some data, but received none;
+ *           }
+ *
+ *           // If you write QueryResultError into the console, you will get a nicely formatted output,
+ *           // including virtual property `received` =  total number of rows received from the query.
+ *
+ *           console.log(err);
+ *           
+ *           // See also: err, e.query, e.params, etc.
  *       }
  *   }
  * };
@@ -71,11 +143,15 @@
  * {@link Database.oneOrNone oneOrNone}, {@link Database.many many}
  *
  */
-function QueryResultError() {
+function QueryResultError(code, result, query, values) {
     var temp = Error.apply(this, arguments);
     temp.name = this.name = 'QueryResultError';
     this.stack = temp.stack;
-    this.message = temp.message;
+    this.message = errorMessages[code].message;
+    this.code = code;
+    this.result = result;
+    this.query = query;
+    this.values = values;
 }
 
 QueryResultError.prototype = Object.create(Error.prototype, {
@@ -88,11 +164,23 @@ QueryResultError.prototype = Object.create(Error.prototype, {
 
 // well-formatted output when passed into console.log();
 QueryResultError.prototype.inspect = function () {
-    return this.stack;
+    var lines = [
+        "QueryResultError {",
+        "    code: queryResultErrorCode." + errorMessages[this.code].name,
+        "    message: " + this.message,
+        "    received: " + this.result.rows.length, // total number of rows received;
+        "    query: " + this.query
+    ];
+    if (this.values !== undefined) {
+        lines.push("    values: " + JSON.stringify(this.values));
+    }
+    lines.push("}");
+    return lines.join(EOL);
 };
 
 module.exports = {
-    QueryResultError: QueryResultError
+    QueryResultError: QueryResultError,
+    queryResultErrorCode: queryResultErrorCode
 };
 </code></pre>
         </article>
