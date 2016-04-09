@@ -404,7 +404,7 @@ describe("Method 'none'", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeUndefined();
-            expect(error instanceof pgp.QueryResultError).toBe(true);
+            expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.message).toBe("No return data was expected.");
         });
     });
@@ -447,7 +447,7 @@ describe("Method 'one'", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeUndefined();
-            expect(error instanceof pgp.QueryResultError).toBe(true);
+            expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.message).toBe("No data returned from the query.");
         });
     });
@@ -467,7 +467,7 @@ describe("Method 'one'", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeUndefined();
-            expect(error instanceof pgp.QueryResultError).toBe(true);
+            expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.message).toBe("Multiple rows were not expected.");
         });
     });
@@ -528,7 +528,7 @@ describe("Method 'oneOrNone'", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeUndefined();
-            expect(error instanceof pgp.QueryResultError).toBe(true);
+            expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.message).toBe("Multiple rows were not expected.");
         });
     });
@@ -571,7 +571,7 @@ describe("Method 'many'", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeUndefined();
-            expect(error instanceof pgp.QueryResultError).toBe(true);
+            expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.message).toBe("No data returned from the query.");
         });
     });
@@ -974,7 +974,7 @@ describe("Return data from a query must match the request type", function () {
                 });
         });
         it("method 'none' must return an error", function () {
-            expect(error instanceof pgp.QueryResultError).toBe(true);
+            expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.message).toBe("No return data was expected.");
         });
     });
@@ -993,7 +993,7 @@ describe("Return data from a query must match the request type", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeNull();
-            expect(error instanceof pgp.QueryResultError).toBe(true);
+            expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.message).toBe("No data returned from the query.");
         });
     });
@@ -1012,7 +1012,7 @@ describe("Return data from a query must match the request type", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeNull();
-            expect(error instanceof pgp.QueryResultError).toBe(true);
+            expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.message).toBe("Multiple rows were not expected.");
         });
     });
@@ -1143,7 +1143,7 @@ describe("result", function () {
             return result !== undefined;
         }, "Query timed out", 5000);
         runs(function () {
-            if(!options.pgNative) {
+            if (!options.pgNative) {
                 expect(result instanceof pgResult).toBe(true);
             }
         });

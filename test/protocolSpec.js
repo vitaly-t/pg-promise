@@ -14,12 +14,12 @@ var db = dbHeader.db;
 
 describe("Library instance", function () {
 
-    it("must have valid property 'pg'", function () {
-        expect(pgpLib.pg).toBe(PG);
+    it("must NOT have property 'pg'", function () {
+        expect(pgpLib.pg).toBeUndefined();
     });
 
-    it("must have function 'end'", function () {
-        expect(pgpLib.end instanceof Function).toBe(true);
+    it("must NOT have function 'end'", function () {
+        expect(pgpLib.end).toBeUndefined();
     });
 
     it("must have valid property 'as'", function () {
@@ -39,8 +39,9 @@ describe("Library instance", function () {
     });
 
     it("must have all error types", function () {
-        expect(pgpLib.QueryResultError instanceof Function).toBe(true);
-        expect(pgpLib.queryResultErrorCode instanceof Object).toBe(true);
+        expect(pgp.errors && pgp.errors instanceof Object).toBeTruthy();
+        expect(pgpLib.errors.QueryResultError instanceof Function).toBe(true);
+        expect(pgpLib.errors.queryResultErrorCode instanceof Object).toBe(true);
     });
 
     it("must have function 'PromiseAdapter'", function () {
@@ -77,8 +78,9 @@ describe("Initialized instance", function () {
     });
 
     it("must have all error types", function () {
-        expect(pgp.QueryResultError instanceof Function).toBe(true);
-        expect(pgp.queryResultErrorCode instanceof Object).toBe(true);
+        expect(pgp.errors && pgp.errors instanceof Object).toBeTruthy();
+        expect(pgp.errors.QueryResultError instanceof Function).toBe(true);
+        expect(pgp.errors.queryResultErrorCode instanceof Object).toBe(true);
     });
 
     it("must have function 'PromiseAdapter'", function () {
@@ -343,8 +345,8 @@ describe("Error protocol", function () {
         rows: []
     };
     it("must return correctly formatted error body", function () {
-        var error1 = new pgp.QueryResultError(0, result, '');
-        var error2 = new pgp.QueryResultError(0, result, '', []);
+        var error1 = new pgp.errors.QueryResultError(0, result, '');
+        var error2 = new pgp.errors.QueryResultError(0, result, '', []);
         expect(typeof error1.inspect()).toBe('string');
         expect(typeof error2.inspect()).toBe('string');
     });

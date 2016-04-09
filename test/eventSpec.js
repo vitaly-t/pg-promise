@@ -293,7 +293,7 @@ describe("Error event", function () {
                 });
         });
         it("must reject with correct error", function () {
-            expect(errTxt instanceof pgp.QueryResultError).toBe(true);
+            expect(errTxt instanceof pgp.errors.QueryResultError).toBe(true);
             expect(errTxt.message).toBe("Multiple rows were not expected.");
             expect(context.query).toBe("select * from users");
             expect(context.params).toBeUndefined();
@@ -319,7 +319,7 @@ describe("Error event", function () {
                 });
         });
         it("must reject with correct error", function () {
-            expect(errTxt instanceof pgp.QueryResultError).toBe(true);
+            expect(errTxt instanceof pgp.errors.QueryResultError).toBe(true);
             expect(errTxt.message).toBe("No return data was expected.");
             expect(context.query).toBe("select * from users");
             expect(context.params).toBeUndefined();
@@ -345,7 +345,7 @@ describe("Error event", function () {
                 });
         });
         it("must reject with correct error", function () {
-            expect(errTxt instanceof pgp.QueryResultError).toBe(true);
+            expect(errTxt instanceof pgp.errors.QueryResultError).toBe(true);
             expect(errTxt.message).toBe("No data returned from the query.");
             expect(context.query).toBe("select * from users where id > 1000");
             expect(context.params).toBeUndefined();

@@ -961,6 +961,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 3.7.0 Modifying the protocol to accommodate changes in `pg` 4.5.3 for isolated [Native Bindings]. Released: April 9, 2016
 * 3.6.0 Extending [QueryResultError] for better diagnostics. Released: April 8, 2016
 * 3.5.0 Adding support for [Native Bindings]. Released: April 06, 2016
 * 3.4.0 Adding support for [Open Values](#open-values) and type `Buffer`. Released: March 20, 2016
