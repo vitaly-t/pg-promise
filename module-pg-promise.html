@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -759,6 +759,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
 
 <div class="description">
     <p>Namespace for the <a href="formatting.html">type conversion helpers</a>.</p>
+<p>Available as <code>pgp.as</code>, before and after initializing the library.</p>
 </div>
 
 
@@ -806,7 +807,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line198">line 198</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line214">line 214</a>
     </li></ul></dd>
     
 
@@ -831,6 +832,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
 
 <div class="description">
     <p>Terminates pg library (call it when exiting the application).</p>
+<p>Available as <code>pgp.end</code>, after initializing the library.</p>
 </div>
 
 
@@ -878,7 +880,80 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line189">line 189</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line197">line 197</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~errors"><span class="type-signature">(inner, readonly) </span>errors<span class="type-signature"> :<a href="errors.html">errors</a></span></h4>
+
+
+
+
+<div class="description">
+    <p><a href="errors.html">Errors</a> - namespace for all error types.</p>
+<p> Available as <code>pgp.errors</code>, before and after initializing the library.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="errors.html">errors</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line264">line 264</a>
     </li></ul></dd>
     
 
@@ -903,6 +978,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
 
 <div class="description">
     <p>Instance of the <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a> library that's used.</p>
+<p>Available as <code>pgp.minify</code>, before and after initializing the library.</p>
 </div>
 
 
@@ -950,7 +1026,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line215">line 215</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line224">line 224</a>
     </li></ul></dd>
     
 
@@ -974,8 +1050,12 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
 
 
 <div class="description">
-    <p>Instance of the <a href="https://github.com/brianc/node-postgres">PG</a> library that's used (by default).</p>
-<p>If you want to access the <a href="https://github.com/brianc/node-postgres#native-bindings">Native Bindings</a>, use <code>pgp.pg.native</code>.</p>
+    <p>Instance of the <a href="https://github.com/brianc/node-postgres">PG</a> library that's being used, depending on initialization option <code>pgNative</code>:</p>
+<ul>
+<li>regular <code>pg</code> module instance, without option <code>pgNative</code>, or equal to <code>false</code> (default)</li>
+<li><code>pg</code> module instance with <a href="https://github.com/brianc/node-postgres#native-bindings">Native Bindings</a>, if option <code>pgNative</code> was set.</li>
+</ul>
+<p>Available as <code>pgp.pg</code>, after initializing the library.</p>
 </div>
 
 
@@ -1023,7 +1103,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line205">line 205</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line185">line 185</a>
     </li></ul></dd>
     
 
@@ -1048,6 +1128,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
 
 <div class="description">
     <p><a href="PromiseAdapter.html">PromiseAdapter</a> type.</p>
+<p>Available as <code>pgp.PromiseAdapter</code>, before and after initializing the library.</p>
 </div>
 
 
@@ -1095,7 +1176,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line243">line 243</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line244">line 244</a>
     </li></ul></dd>
     
 
@@ -1120,6 +1201,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
 
 <div class="description">
     <p><a href="QueryFile.html">QueryFile</a> type.</p>
+<p>Available as <code>pgp.QueryFile</code>, before and after initializing the library.</p>
 </div>
 
 
@@ -1167,7 +1249,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line250">line 250</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line254">line 254</a>
     </li></ul></dd>
     
 
@@ -1192,6 +1274,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
 
 <div class="description">
     <p>Query Result Mask enumerator.</p>
+<p>Available as <code>pgp.queryResult</code>, before and after initializing the library.</p>
 </div>
 
 
@@ -1239,151 +1322,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line222">line 222</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~QueryResultError"><span class="type-signature">(inner, readonly) </span>QueryResultError<span class="type-signature"> :<a href="QueryResultError.html">QueryResultError</a></span></h4>
-
-
-
-
-<div class="description">
-    <p><a href="QueryResultError.html">QueryResultError</a> type.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="QueryResultError.html">QueryResultError</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line229">line 229</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~queryResultErrorCode"><span class="type-signature">(inner, readonly) </span>queryResultErrorCode<span class="type-signature"> :<a href="global.html#queryResultErrorCode">queryResultErrorCode</a></span></h4>
-
-
-
-
-<div class="description">
-    <p><a href="global.html#queryResultErrorCode">queryResultErrorCode</a> type.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line236">line 236</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line234">line 234</a>
     </li></ul></dd>
     
 
@@ -1408,6 +1347,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
 
 <div class="description">
     <p><a href="txMode.html">Transaction Mode</a> namespace.</p>
+<p>Available as <code>pgp.txMode</code>, before and after initializing the library.</p>
 </div>
 
 
@@ -1455,7 +1395,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line257">line 257</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line274">line 274</a>
     </li></ul></dd>
     
 

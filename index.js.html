@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -160,6 +160,7 @@ function $main(options) {
             }
         }
     }
+
     if (invalidInit) {
         // The most common mistake in using the library - trying to pass in a database
         // connection object or string as the library's initialization object.
@@ -196,9 +197,9 @@ function $main(options) {
         config.pg = $npm.pg.native;
         config.native = true;
     }
-    
+
     var Database = require('./database')(config);
-    
+
     var inst = function (cn) {
         var t = typeof cn;
         if (cn &amp;&amp; (t === 'string' || t === 'object')) {
@@ -210,83 +211,102 @@ function $main(options) {
 
     $npm.utils.addReadProperties(inst, rootNameSpace);
 
+    /**
+     * @member {external:PG} pg
+     * @readonly
+     * @description
+     * Instance of the $[PG] library that's being used, depending on initialization option `pgNative`:
+     *  - regular `pg` module instance, without option `pgNative`, or equal to `false` (default)
+     *  - `pg` module instance with $[Native Bindings], if option `pgNative` was set.
+     *
+     * Available as `pgp.pg`, after initializing the library.
+     */
+    $npm.utils.addReadProp(inst, 'pg', config.pg);
+
+    /**
+     * @member {Function} end
+     * @readonly
+     * @description
+     * Terminates pg library (call it when exiting the application).
+     *
+     * Available as `pgp.end`, after initializing the library.
+     */
+    $npm.utils.addReadProp(inst, 'end', function () {
+        config.pg.end();
+    });
+
     return inst;
 }
 
 var rootNameSpace = {
 
     /**
-     * Terminates pg library (call it when exiting the application).
-     * @member {Function} end
-     * @readonly
-     */
-    end: function () {
-        $npm.pg.end();
-    },
-
-    /**
-     * Namespace for the {@link formatting type conversion helpers}.
      * @member {formatting} as
      * @readonly
+     * @description
+     * Namespace for the {@link formatting type conversion helpers}.
+     *
+     * Available as `pgp.as`, before and after initializing the library.
      */
     as: $npm.formatting.as,
 
     /**
-     * Instance of the $[PG] library that's used (by default).
-     *
-     * If you want to access the $[Native Bindings], use `pgp.pg.native`.
-     *
-     * @member {external:PG} pg
-     * @readonly
-     */
-    pg: $npm.pg,
-
-    /**
-     * Instance of the $[pg-minify] library that's used.
      * @member {external:pg-minify} minify
      * @readonly
+     * @description
+     * Instance of the $[pg-minify] library that's used.
+     *
+     * Available as `pgp.minify`, before and after initializing the library.
      */
     minify: $npm.minify,
 
     /**
-     * Query Result Mask enumerator.
      * @member {queryResult} queryResult
      * @readonly
+     * @description
+     * Query Result Mask enumerator.
+     *
+     * Available as `pgp.queryResult`, before and after initializing the library.
      */
     queryResult: $npm.result,
 
     /**
-     * {@link QueryResultError} type.
-     * @member {QueryResultError} QueryResultError
-     * @readonly
-     */
-    QueryResultError: $npm.errors.QueryResultError,
-
-    /**
-     * {@link queryResultErrorCode} type.
-     * @member {queryResultErrorCode} queryResultErrorCode
-     * @readonly
-     */
-    queryResultErrorCode: $npm.errors.queryResultErrorCode,
-
-    /**
-     * {@link PromiseAdapter} type.
      * @member {PromiseAdapter} PromiseAdapter
      * @readonly
+     * @description
+     * {@link PromiseAdapter} type.
+     *
+     * Available as `pgp.PromiseAdapter`, before and after initializing the library.
      */
     PromiseAdapter: $npm.adapter,
 
     /**
-     * {@link QueryFile} type.
      * @member {QueryFile} QueryFile
      * @readonly
+     * @description
+     * {@link QueryFile} type.
+     *
+     * Available as `pgp.QueryFile`, before and after initializing the library.
      */
     QueryFile: $npm.queryFile,
 
     /**
-     * {@link txMode Transaction Mode} namespace.
+     * @member {errors} errors
+     * @readonly
+     * @description
+     * {@link errors Errors} - namespace for all error types.
+     *
+     *  Available as `pgp.errors`, before and after initializing the library.
+     */
+    errors: $npm.errors,
+
+    /**
      * @member {txMode} txMode
      * @readonly
+     * @description
+     * {@link txMode Transaction Mode} namespace.
+     *
+     * Available as `pgp.txMode`, before and after initializing the library.
      */
     txMode: $npm.mode
 };
