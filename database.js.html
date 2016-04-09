@@ -549,14 +549,14 @@ function Database(cn, options, config) {
                     return $p.reject(error);
                 });
         }
-
+        
         // lock all default properties to read-only,
         // to prevent override by the client.
         $npm.utils.lock(obj, false, ctx.options);
-
+        
         // extend the protocol;
         $npm.events.extend(ctx.options, obj);
-
+        
         // freeze the protocol permanently;
         $npm.utils.lock(obj, true, ctx.options);
     }
