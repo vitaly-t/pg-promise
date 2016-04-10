@@ -1,5 +1,7 @@
 ### TypeScript for pg-promise
 
+Complete set of ambient declarations for [pg-promise] version 3.7.0 or later.
+
 | File             | Description                      |
 |------------------|----------------------------------|
 |[pg-promise.d.ts] | Main script file for [pg-promise]|
