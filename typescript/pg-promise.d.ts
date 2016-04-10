@@ -103,8 +103,8 @@ declare module "pg-promise" {
         page(source:Function, {dest:Function, limit:number}):Promise<{pages:number, total:number, duration:number}>;
 
         // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
-        sequence(source:Function, dest?:Function, limit?:number, track?:Boolean):Promise<any>;
-        sequence(source:Function, {dest:Function, limit: number, track:Boolean}):Promise<any>;
+        sequence(source:Function, dest?:Function, limit?:number, track?:boolean):Promise<any>;
+        sequence(source:Function, {dest:Function, limit:number, track:boolean}):Promise<any>;
 
         ctx:TaskContext;
     }
