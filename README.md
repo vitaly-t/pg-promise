@@ -129,8 +129,10 @@ For more details see pg connection parameters in [WiKi](https://github.com/brian
 
 ## Documentation
 
-[Learn by Example] is the quickest way to get started with this library, while the current
-document details most of the basic functionality this library provides.
+[Learn by Example] is the quickest way to get started with this library, while the current document details most of the
+basic functionality this library provides.
+
+If you are writing in TypeScript, check out [pg-promise-ts](https://github.com/vitaly-t/pg-promise-ts). 
 
 For the protocol see the [API Documentation], and for everything else - [Wiki pages](https://github.com/vitaly-t/pg-promise/wiki).
 
