@@ -99,12 +99,12 @@ declare module "pg-promise" {
         batch(values:any[], {cb:Function}):Promise<any[]>;
 
         // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/page.md
-        page(source:Function, dest?:Function, limit?:Number):Promise<{pages:number, total:number, duration:number}>;
-        page(source:Function, {dest:Function, limit:Number}):Promise<{pages:number, total:number, duration:number}>;
+        page(source:Function, dest?:Function, limit?:number):Promise<{pages:number, total:number, duration:number}>;
+        page(source:Function, {dest:Function, limit:number}):Promise<{pages:number, total:number, duration:number}>;
 
         // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
-        sequence(source:Function, dest?:Function, limit?:Number, track?:Boolean):Promise<any>;
-        sequence(source:Function, {dest:Function, limit:Number, track:Boolean}):Promise<any>;
+        sequence(source:Function, dest?:Function, limit?:number, track?:Boolean):Promise<any>;
+        sequence(source:Function, {dest:Function, limit: number, track:Boolean}):Promise<any>;
 
         ctx:TaskContext;
     }
@@ -121,7 +121,7 @@ declare module "pg-promise" {
         func(func:Function, raw?:boolean, obj?:Object):string;
         json(obj:any, raw?:boolean):string;
         name(name:string|Function):string;
-        number(value:Number|Function):string;
+        number(value:number|Function):string;
         text(value:any, raw?:boolean):string;
         value(value:any):string;
     }
