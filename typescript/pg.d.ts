@@ -41,7 +41,7 @@ declare module "pg" {
     interface pgTypes {
         setTypeParser:(oid:number, format:string|((value:any)=>string))=>void;
         getTypeParser:(oid:number, format?:string)=>any;
-        arrayParser:(source:string, transform?:Function)=>Array;
+        arrayParser:(source:string, transform?:Function)=>any[];
     }
 
     interface pgDefaults {

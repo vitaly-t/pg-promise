@@ -112,7 +112,7 @@ declare module "pg-promise" {
     // Query formatting namespace;
     // API: http://vitaly-t.github.io/pg-promise/formatting.html
     interface Formatting {
-        array(arr:Array<any>):string;
+        array(arr:any[]):string;
         bool(value:any):string;
         buffer(obj:Object, raw?:boolean):string;
         csv(values:any):string;
@@ -220,7 +220,7 @@ declare module "pg-promise" {
         end:Function,
         pg:PG
     }
-    
+
     // Default library interface (before initialization)
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface pgPromise extends pgRoot {
