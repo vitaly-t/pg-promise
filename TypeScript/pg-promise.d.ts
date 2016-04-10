@@ -7,11 +7,12 @@ declare module "pg-promise" {
     import {PG, Client, Result} from "pg";
     import * as pgMinify from "pg-minify";
 
-    // temporary? how else to expose promises?
+    // temporary? Is there a better way to declare promises?
     interface Promise<R> {
     }
 
-    // Query Result Mask
+    // Query Result Mask;
+    // API: http://vitaly-t.github.io/pg-promise/global.html#queryResult
     enum queryResult {
         one = 1,
         many = 2,
@@ -19,7 +20,8 @@ declare module "pg-promise" {
         any = 6
     }
 
-    // Transaction Isolation Level
+    // Transaction Isolation Level;
+    // API: http://vitaly-t.github.io/pg-promise/global.html#isolationLevel
     enum isolationLevel{
         none = 0,
         serializable = 1,
@@ -27,13 +29,16 @@ declare module "pg-promise" {
         readCommitted = 3
     }
 
-    // Query Result Error Code
+    // Query Result Error Code;
+    // API: http://vitaly-t.github.io/pg-promise/global.html#queryResultErrorCode
     enum queryResultErrorCode {
         noData = 0,
         notEmpty = 1,
         multiple = 2
     }
 
+    // Query Result Error;
+    // API: http://vitaly-t.github.io/pg-promise/QueryResultError.html
     interface QueryResultError extends Error {
         result:Result,
         received:number,
@@ -43,9 +48,10 @@ declare module "pg-promise" {
     }
 
     // Base database protocol
+    // API: http://vitaly-t.github.io/pg-promise/Database.html
     interface BaseProtocol {
 
-        // generic method:
+        // generic query method;
         query(query:any, values?:any, qrm?:queryResult):Promise<any>;
 
         // result-specific methods;
@@ -70,6 +76,7 @@ declare module "pg-promise" {
     }
 
     // Database full protocol;
+    // API: http://vitaly-t.github.io/pg-promise/Database.html
     interface Database extends BaseProtocol {
         connect():Promise<Connection>;
     }
@@ -99,6 +106,7 @@ declare module "pg-promise" {
     }
 
     // Query formatting namespace;
+    // API: http://vitaly-t.github.io/pg-promise/formatting.html
     interface Formatting {
         array(arr:Array<any>):string;
         bool(value:any):string;
@@ -115,6 +123,7 @@ declare module "pg-promise" {
     }
 
     // Generic Event Context interface;
+    // See: http://vitaly-t.github.io/pg-promise/global.html#event:query
     interface EventContext {
         client:Client;
         cn?:any;
@@ -124,6 +133,7 @@ declare module "pg-promise" {
     }
 
     // Event context extension for tasks/transactions;
+    // See: http://vitaly-t.github.io/pg-promise/global.html#event:query
     interface TaskContext {
         isTX:boolean;
         start:Date;
@@ -135,6 +145,7 @@ declare module "pg-promise" {
     }
 
     // Database connection configuration interface;
+    // See: https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js#L36
     interface Config {
         host?:string,
         port?:number,
@@ -148,10 +159,14 @@ declare module "pg-promise" {
         fallback_application_name?:string
     }
 
+    // Promise Adapter;
+    // API: http://vitaly-t.github.io/pg-promise/PromiseAdapter.html
     export class PromiseAdapter {
-        constructor(create:(cb)=>(resolve, reject)=>void, resolve:(data)=>void, reject:(reason)=>void);
+        constructor(create:(cb)=>(resolve:Function, reject:Function)=>void, resolve:(data:any)=>void, reject:(reason:any)=>void);
     }
 
+    // Query File class;
+    // API: http://vitaly-t.github.io/pg-promise/QueryFile.html
     export class QueryFile {
         constructor(file:string, options?:{
             debug?:boolean,
@@ -162,18 +177,21 @@ declare module "pg-promise" {
     }
 
     // Errors namespace
+    // API: http://vitaly-t.github.io/pg-promise/errors.html
     interface errors {
         QueryResultError:QueryResultError,
         queryResultErrorCode:queryResultErrorCode,
     }
 
     // Transaction Mode namespace;
+    // API: http://vitaly-t.github.io/pg-promise/txMode.html
     interface TXMode {
         isolationLevel:isolationLevel,
         TransactionMode:Function
     }
 
     // Main protocol of the library;
+    // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface pgRoot {
         minify:pgMinify,
         PromiseAdapter:PromiseAdapter,
@@ -185,6 +203,7 @@ declare module "pg-promise" {
     }
 
     // Post-initialization interface;
+    // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface pgMain extends pgRoot {
         (cn:string|Config):Database,
         end:Function,
@@ -192,6 +211,7 @@ declare module "pg-promise" {
     }
 
     // Default library interface (before initialization)
+    // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface pgPromise extends pgRoot {
         (options?:{
             pgFormatting?:boolean;

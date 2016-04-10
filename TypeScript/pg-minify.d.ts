@@ -1,29 +1,18 @@
+//////////////////////////////////////////////////////////
+// Module pg-minify that's used and exposed by pg-promise
+//
+// Supported version of pg-minify: 0.2.4 and later.
+//
+// pg-minify: https://github.com/vitaly-t/pg-minify
+//////////////////////////////////////////////////////////
+
 declare module "pg-minify" {
 
     enum parsingErrorCode {
-        /**
-         * Unclosed multi-line comment.
-         * @type {number}
-         */
-        unclosedMLC = 1,
-
-        /**
-         * Unclosed text block.
-         * @type {number}
-         */
-        unclosedText = 2,
-
-        /**
-         * Unclosed quoted identifier.
-         * @type {number}
-         */
-        unclosedQI = 3,
-
-        /**
-         * Multi-line quoted identifiers are not supported.
-         * @type {number}
-         */
-        multiLineQI = 4
+        unclosedMLC = 1,    // Unclosed multi-line comment.
+        unclosedText = 2,   // Unclosed text block.
+        unclosedQI = 3,     // Unclosed quoted identifier.
+        multiLineQI = 4     // Multi-line quoted identifiers are not supported.
     }
 
     interface ErrorPosition {
@@ -36,7 +25,7 @@ declare module "pg-minify" {
         position:ErrorPosition
     }
     
-    // Default library interface (before initialization)
+    // Default library interface
     interface pgMinify {
         (sql:string, options?:{compress?:boolean}):string,
         SQLParsingError:SQLParsingError,

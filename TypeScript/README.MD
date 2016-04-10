@@ -1,6 +1,6 @@
-# TypeScript for pg-promise
+### TypeScript for pg-promise
 
-|                  |                                  |
+| File             | Description                      |
 |------------------|----------------------------------|
 |[pg-promise.d.ts] | Main script file for [pg-promise]|
 |[pg-minify.d.ts]  | Additional types from [pg-minify]|

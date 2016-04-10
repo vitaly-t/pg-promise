@@ -1,6 +1,10 @@
-///////////////////////////////////////////////////////////////////////////////
-// Declaring only the part of the 'pg' module that may be used via 'pg-promise'
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+// Declaring only the part of the 'pg' module that's useful within pg-promise
+//
+// Supported version of pg: 4.5.3 and later.
+//
+// pg: https://github.com/brianc/node-postgres
+//////////////////////////////////////////////////////////////////////////////
 
 declare module "pg" {
 
@@ -25,6 +29,7 @@ declare module "pg" {
         query:(config:Object, values:any, callback:(err:Error, result:Result)=>void)=>Query
     }
 
+    // Default library interface
     interface PG {
         Client:(config:Object)=>Client,
         defaults:pgDefaults,
