@@ -52,21 +52,21 @@ declare module "pg-promise" {
     interface BaseProtocol {
 
         // generic query method;
-        query(query:any, values?:any, qrm?:queryResult):Promise<any>;
+        query(query:any, values?:any, qrm?:queryResult):Promise<Object|Object[]|void>;
 
         // result-specific methods;
         none(query:any, values?:any):Promise<void>;
-        one(query:any, values?:any):Promise<any>;
-        oneOrNone(query:any, values?:any):Promise<any>;
-        many(query:any, values?:any):Promise<any[]>;
-        manyOrNone(query:any, values?:any):Promise<any[]>;
-        any(query:any, values?:any):Promise<any[]>;
+        one(query:any, values?:any):Promise<Object>;
+        oneOrNone(query:any, values?:any):Promise<Object|void>;
+        many(query:any, values?:any):Promise<Object[]>;
+        manyOrNone(query:any, values?:any):Promise<Object[]>;
+        any(query:any, values?:any):Promise<Object[]>;
         result(query:any, values?:any):Promise<Result>;
 
         stream(qs:Object, init:Function):Promise<{processed:number, duration:number}>;
 
-        func(funcName:string, values?:any[] | any, qrm?:queryResult):Promise<any>;
-        proc(procName:string, values?:any[] | any):Promise<any>;
+        func(funcName:string, values?:any[] | any, qrm?:queryResult):Promise<Object|Object[]|void>;
+        proc(procName:string, values?:any[] | any):Promise<Object|void>;
 
         task(cb:TaskCallback):Promise<any>;
         task(tag:any, cb:TaskCallback):Promise<any>;
