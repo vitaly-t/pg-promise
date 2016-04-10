@@ -132,7 +132,7 @@ For more details see pg connection parameters in [WiKi](https://github.com/brian
 [Learn by Example] is the quickest way to get started with this library, while the current document details most of the
 basic functionality this library provides.
 
-If you are writing in TypeScript, check out [pg-promise-ts](https://github.com/vitaly-t/pg-promise-ts). 
+If you are writing in TypeScript, see [\typescript](https://github.com/vitaly-t/pg-promise/tree/master/typescript). 
 
 For the protocol see the [API Documentation], and for everything else - [Wiki pages](https://github.com/vitaly-t/pg-promise/wiki).
 
@@ -963,6 +963,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 3.7.1 Adding internal typescript support to the library. Released: April 10, 2016
 * 3.7.0 Modifying the protocol to accommodate changes in `pg` 4.5.3 for isolated [Native Bindings]. Released: April 9, 2016
 * 3.6.0 Extending [QueryResultError] for better diagnostics. Released: April 8, 2016
 * 3.5.0 Adding support for [Native Bindings]. Released: April 06, 2016
