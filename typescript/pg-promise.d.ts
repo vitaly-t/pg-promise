@@ -174,7 +174,7 @@ declare module "pg-promise" {
     export class QueryFile {
         constructor(file:string, options?:{
             debug?:boolean,
-            minify?:boolean|'auto',
+            minify?:boolean|'after',
             compress?:boolean,
             params?:any
         });
