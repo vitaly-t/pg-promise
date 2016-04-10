@@ -1,6 +1,6 @@
-///////////////////////////////////
-// Interface for pg-promise v3.7.0
-///////////////////////////////////
+////////////////////////////////////////
+// Requires pg-promise v3.7.0 or later.
+////////////////////////////////////////
 
 declare module "pg-promise" {
 
@@ -61,9 +61,9 @@ declare module "pg-promise" {
         many(query:any, values?:any):Promise<any[]>;
         manyOrNone(query:any, values?:any):Promise<any[]>;
         any(query:any, values?:any):Promise<any[]>;
-        result(query:any, values?:any):Promise<Object>;
+        result(query:any, values?:any):Promise<Result>;
 
-        stream(qs:Object, init:Function):Promise<any>;
+        stream(qs:Object, init:Function):Promise<{processed:number, duration:number}>;
 
         func(funcName:string, values?:any[] | any, qrm?:queryResult):Promise<any>;
         proc(procName:string, values?:any[] | any):Promise<any>;
@@ -91,14 +91,18 @@ declare module "pg-promise" {
     }
 
     // Task/Transaction interface;
+    // API: http://vitaly-t.github.io/pg-promise/Task.html
     interface Task extends BaseProtocol {
 
-        batch(values:any[], cb?:Function):Promise<any>;
-        batch(values:any[], {cb:Function}):Promise<any>;
+        // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md
+        batch(values:any[], cb?:Function):Promise<any[]>;
+        batch(values:any[], {cb:Function}):Promise<any[]>;
 
-        page(source:Function, dest?:Function, limit?:Number):Promise<any>;
-        page(source:Function, {dest:Function, limit:Number}):Promise<any>;
+        // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/page.md
+        page(source:Function, dest?:Function, limit?:Number):Promise<{pages:number, total:number, duration:number}>;
+        page(source:Function, {dest:Function, limit:Number}):Promise<{pages:number, total:number, duration:number}>;
 
+        // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
         sequence(source:Function, dest?:Function, limit?:Number, track?:Boolean):Promise<any>;
         sequence(source:Function, {dest:Function, limit:Number, track:Boolean}):Promise<any>;
 
