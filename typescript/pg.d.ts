@@ -26,7 +26,7 @@ declare module "pg" {
     }
 
     interface Client {
-        query:(config:Object, values:any, callback:(err:Error, result:Result)=>void)=>Query
+        query:(config:any, values:any, callback:(err:Error, result:Result)=>void)=>Query
     }
 
     // Default library interface
@@ -37,9 +37,11 @@ declare module "pg" {
     }
 
     // Interface of 'pg-types' module;
+    // See: https://github.com/brianc/node-pg-types
     interface pgTypes {
-        setTypeParser:(oid:number, format:string|((value:any)=>string))=>void
-        getTypeParser:(oid:number, format?:string)=>any
+        setTypeParser:(oid:number, format:string|((value:any)=>string))=>void;
+        getTypeParser:(oid:number, format?:string)=>any;
+        arrayParser:(source:string, transform?:Function)=>Array;
     }
 
     interface pgDefaults {

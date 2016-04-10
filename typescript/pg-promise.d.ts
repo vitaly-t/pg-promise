@@ -96,15 +96,15 @@ declare module "pg-promise" {
 
         // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md
         batch(values:any[], cb?:Function):Promise<any[]>;
-        batch(values:any[], {cb:Function}):Promise<any[]>;
+        batch(values:any[], options:{cb?:Function}):Promise<any[]>;
 
         // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/page.md
         page(source:Function, dest?:Function, limit?:number):Promise<{pages:number, total:number, duration:number}>;
-        page(source:Function, {dest:Function, limit:number}):Promise<{pages:number, total:number, duration:number}>;
+        page(source:Function, options:{dest?:Function, limit?:number}):Promise<{pages:number, total:number, duration:number}>;
 
         // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
         sequence(source:Function, dest?:Function, limit?:number, track?:boolean):Promise<any>;
-        sequence(source:Function, {dest:Function, limit:number, track:boolean}):Promise<any>;
+        sequence(source:Function, options:{dest?:Function, limit?:number, track?:boolean}):Promise<any>;
 
         ctx:TaskContext;
     }
@@ -163,7 +163,7 @@ declare module "pg-promise" {
         fallback_application_name?:string
     }
 
-    // Promise Adapter;
+    // Promise Adapter class;
     // API: http://vitaly-t.github.io/pg-promise/PromiseAdapter.html
     export class PromiseAdapter {
         constructor(create:(cb)=>(resolve:Function, reject:Function)=>void, resolve:(data:any)=>void, reject:(reason:any)=>void);
@@ -180,6 +180,13 @@ declare module "pg-promise" {
         });
     }
 
+    // Transaction Mode class;
+    // API: http://vitaly-t.github.io/pg-promise/TransactionMode.html
+    export class TransactionMode {
+        constructor(tiLevel?:isolationLevel, readOnly?:boolean, deferrable?:boolean);
+        constructor(options:{tiLevel?:isolationLevel, readOnly?:boolean, deferrable?:boolean});
+    }
+
     // Errors namespace
     // API: http://vitaly-t.github.io/pg-promise/errors.html
     interface errors {
@@ -191,7 +198,7 @@ declare module "pg-promise" {
     // API: http://vitaly-t.github.io/pg-promise/txMode.html
     interface TXMode {
         isolationLevel:isolationLevel,
-        TransactionMode:Function
+        TransactionMode:TransactionMode
     }
 
     // Main protocol of the library;
@@ -213,7 +220,7 @@ declare module "pg-promise" {
         end:Function,
         pg:PG
     }
-
+    
     // Default library interface (before initialization)
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface pgPromise extends pgRoot {
