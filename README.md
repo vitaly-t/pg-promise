@@ -22,7 +22,7 @@ Advanced access layer to [node-postgres] via [Promises/A+].
 * [Installing](#installing)
 * [Getting Started](#getting-started)
   - [Initializing](#initializing)
-  - [Connecting](#connecting)
+  - [Connection](#connection)
   - [Documentation](#documentation)  
 * [Testing](#testing)    
 * [Usage](#usage)
@@ -90,7 +90,7 @@ var pgp = require('pg-promise')({
 var pgp = require('pg-promise')();
 ```
  
-## Connecting
+## Connection
 
 Use one of the two ways to specify database connection details:
 
@@ -112,18 +112,19 @@ var cn = {
 var cn = "postgres://username:password@host:port/database";
 ```
 
-Create a global/shared database instance from the connection details:
+Create a global/shared database object from the connection details:
 
 ```javascript
 var db = pgp(cn);
 ```
 
-You need only one database instance per connection details.
+Object `db` represents the database protocol, with lazy database connection, i.e. only the actual query methods
+acquire and release the connection. Therefore, you need only one global `db` instance per connection details.
 
-A configuration object has the benefit of being changeable: it is used by the library directly,
-and changing properties of the original object will cause immediate reconnection.
+Use of a configuration object has the benefit of being changeable: it is used by the library directly, and changing
+properties of the original object will reconnect with the next query.
 
-This library doesn't use any of the connection's details, it simply passes them on to [PG] when opening a connection.
+This library does not use any of the connection's details, it simply passes them on to [PG] when opening a connection.
 For more details see pg connection parameters in [WiKi](https://github.com/brianc/node-postgres/wiki/pg#parameters) and
 [implementation](https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js).
 
@@ -380,8 +381,7 @@ which will execute:
 INSERT INTO documents(id, doc) VALUES(123, '{"id":123,"body":"some text"}')
 ```
 
-Version 3.2.1 and later allows syntax `:json` as an alternative to formatting the value
-as a JSON string.
+Version 3.2.1 and later allows syntax `:json` as an alternative to formatting the value as a JSON string.
 
 **NOTE:** Technically, it is possible in javascript, though not recommended, for an object to contain a property
 with name `this`. And in such cases the property's value will be used instead.
@@ -500,12 +500,15 @@ setting `_rawDBType` on any level will set the flag for the entire chain.
 
 ## Query Files
   
-Version 2.9.0 introduced support for Query Files to increase productivity of developing
-SQL queries. 
+Version 2.9.0 introduced support for Query Files to increase productivity of developing SQL queries. 
 
 Example:
 
 ```js
+function sql(file) {
+    return new pgp.QueryFile(file, {minify: true});
+}
+
 // Create QueryFile globally, once per file:
 var sqlFindUser = sql('./sql/findUser.sql');
 
@@ -518,10 +521,6 @@ db.one(sqlFindUser, {id: 123})
             // => failed to parse the SQL file
         }
     });
-
-function sql(file) {
-    return new pgp.QueryFile(file, {debug: true, minify: true});
-}
 ```
   
 File `findUser.sql`:
@@ -536,16 +535,14 @@ WHERE id = ${id}
 
 Every query method of the library recognizes type `QueryFile` as a query provider.
 
-You should only create a single instance of `QueryFile` per file, and then use that
-instance throughout the application.
+You should only create a single instance of `QueryFile` per file, and then use that instance throughout the application.
 
 Most useful features of class `QueryFile`:
 
-* `debug` mode, to make every query request check if the file has changed since it was last read,
-  and if so - read it afresh. This way you can write sql queries and see immediate updates without having
-  to restart your application.
-* Added in v3.2.0: `params` option for static SQL pre-formatting, to inject certain values only once,
-  like a schema name or a configurable table name.
+* `debug` mode, to make every query request check if the file has changed since it was last read, and if so - read it afresh.
+  This way you can write sql queries and see immediate updates without having to restart your application.
+* Added in v3.2.0: `params` option for static SQL pre-formatting, to inject certain values only once, like a schema name or a
+  configurable table name.
 
 The query provider itself never throws any error, leaving it for query methods to reject with.
 
@@ -553,13 +550,14 @@ For detailed documentation see [QueryFile API].
 
 ## Connections
 
-The library supports promise-chained queries on shared and detached connections.
-Choosing which one to use depends on the situation and personal preferences.
+The library supports promise-chained queries on shared and detached connections. Choosing which one to use depends on the
+situation and personal preferences.
 
 ### Detached Connections
 
-Queries in a detached promise chain maintain connection independently, they each acquire
-a connection from the pool, execute the query and then release the connection back to the pool.
+Queries in a detached promise chain maintain connection independently, they each acquire a connection from the pool,
+execute the query and then release the connection back to the pool.
+
 ```javascript
 db.one("select * from users where id=$1", 123) // find the user from id;
     .then(function (data) {
@@ -580,11 +578,11 @@ such will be used from a connection pool, so effectively you end up with the sam
 
 ### Shared Connections
 
+**NOTE:** With the addition of [Tasks](#tasks), use of shared connections directly is considered obsolete.
+It is recommended that you use [Tasks](#tasks) instead, as they are much easier and safer to use.
+
 A promise chain with a shared connection starts with `connect()`, which acquires a connection from the pool to be shared
 with all the queries down the promise chain. The connection must be released back to the pool when no longer needed.
-
-**NOTE:** With the addition of [Tasks](#tasks), use of shared connections directly is no longer necessary.
-It is recommended that you use [Tasks](#tasks) instead, as they are much easier to use.
 
 ```javascript
 var sco; // shared connection object;
@@ -607,15 +605,15 @@ db.connect()
         }
     });
 ```
+
 Shared-connection chaining is when you want absolute control over the connection, either because you want to execute lots of queries in one go,
 or because you like squeezing every bit of performance out of your code. Other than that, the author hasn't seen any performance difference
-from the detached-connection chaining. And besides, any long sequence of queries normally resides inside a transaction, which always
+from the detached-connection chaining. And besides, any long sequence of queries normally resides inside a task or transaction, which always
 uses shared-connection chaining automatically.
 
 ### Tasks
 
-A task represents a shared connection to be used within a callback function. The callback can be either
-a regular function or an ES6 generator.
+A task represents a shared connection to be used within a callback function. The callback can be either a regular function or an ES6 generator.
 
 A transaction, for example, is just a special type of task, wrapped in `CONNECT->COMMIT/ROLLBACK`. 
 
@@ -679,7 +677,7 @@ execute on the same connection.
 **NOTE:** Use of shared-connection transactions is no longer necessary. When a transaction needs
 to use the connection from its container, you should execute it inside a task instead.  
 
-```javascript
+```js
 var sco; // shared connection object;
 db.connect()
     .then(function (obj) {
@@ -865,8 +863,8 @@ This is the most efficient and best-performing way of configuring transactions. 
 
 ## Generators
 
-Version 2.6.0 added support for ES6 generators. If you prefer writing asynchronous code in a
-synchronous manner, you can implement your tasks and transactions as generators. 
+Version 2.6.0 added support for ES6 generators. If you prefer writing asynchronous code in a synchronous manner,
+you can implement your tasks and transactions as generators. 
 
 ```js
 function * getUser(t) {
