@@ -21,7 +21,7 @@ Advanced access layer to [node-postgres] via [Promises/A+].
 * [About](#about)
 * [Installing](#installing)
 * [Getting Started](#getting-started)
-  - [Initializing](#initializing)
+  - [Initialization](#initialization)
   - [Connection](#connection)
   - [Documentation](#documentation)  
 * [Testing](#testing)    
@@ -74,7 +74,7 @@ $ npm install pg-promise
 
 # Getting Started
 
-## Initializing
+## Initialization
 
 Loading and initializing the library with [Initialization Options]:
 
