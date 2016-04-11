@@ -118,8 +118,8 @@ Create a global/shared database object from the connection details:
 var db = pgp(cn);
 ```
 
-Object `db` represents the database protocol, with lazy database connection, i.e. only the actual query methods
-acquire and release the connection. Therefore, you should create only one `db` object per connection details.
+Object `db` represents the database protocol, with lazy database connection, i.e. only the actual query methods acquire
+and release the connection. Therefore, you should create only one global/shared `db` object per connection details.
 
 Use of a configuration object has the benefit of being changeable: it is used by the library directly, and changing
 properties of the original object will reconnect with the next query.
