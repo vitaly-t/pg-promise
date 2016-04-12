@@ -8,6 +8,20 @@ Complete set of ambient declarations for [pg-promise] version 3.7.0 or later.
 |[pg-minify.d.ts]  | Additional types from [pg-minify]|
 |[pg.d.ts]         | Additional types from [pg]|
 
+#### Usage
+
+```ts
+/// <reference path="node_modules/pg-promise/typescript/pg-promise.d.ts" />
+
+import * as pgPromise from "pg-promise";
+
+var pgp = pgPromise({
+    // Initialization Options
+});
+
+var db = pgp("postgres://username:password@host:port/database");
+```
+
 [pg-promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-promise.d.ts
 [pg-minify.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-minify.d.ts
 [pg.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg.d.ts
