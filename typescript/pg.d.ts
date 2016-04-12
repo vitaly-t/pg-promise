@@ -26,11 +26,11 @@ declare module "pg" {
         rowCount:number,
         rows:Object[],
         fields:Column[],
-        
+
         duration:number, // pg-promise extension
-        
+
         // the ones below are not available with the Native Bindings;
-        
+
         rowAsArray:boolean
     }
 
@@ -38,8 +38,16 @@ declare module "pg" {
 
     }
 
+    interface Connection {
+        user:string;
+        password?:string;
+        database:string;
+        port:number;
+    }
+
     export interface Client {
-        query:(config:any, values:any, callback:(err:Error, result:Result)=>void)=>Query
+        query:(config:any, values:any, callback:(err:Error, result:Result)=>void)=>Query;
+        connectionParameters:Connection
     }
 
     // Default library interface
