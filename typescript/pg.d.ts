@@ -37,17 +37,30 @@ declare module "pg" {
     interface Query {
 
     }
-
-    interface Connection {
-        user:string;
-        password?:string;
+    
+    interface ConnectionParameters {
         database:string;
+        user:string;
+        password:string;
         port:number;
+        host:string;
+        ssl:boolean;
+        binary:boolean;
+        client_encoding:string;
+        application_name:string;
+        fallback_application_name:string;
+        isDomainSocket:boolean;
     }
 
     export interface Client {
         query:(config:any, values:any, callback:(err:Error, result:Result)=>void)=>Query;
-        connectionParameters:Connection
+        connectionParameters:ConnectionParameters;
+        database:string;
+        user:string;
+        password:string;
+        port:number;
+        host:string;
+        ssl:boolean;
     }
 
     // Default library interface
