@@ -9,8 +9,16 @@
 declare module "pg" {
 
     interface Column {
-        name:string, // column name
-        dataTypeID:number
+        name:string,
+        dataTypeID:number,
+
+        // the ones below are not available with the Native Bindings;
+
+        tableID:number,
+        columnID:number,
+        dataTypeSize:number,
+        dataTypeModifier:number,
+        format:string
     }
 
     export interface Result {
@@ -18,7 +26,12 @@ declare module "pg" {
         rowCount:number,
         rows:Object[],
         fields:Column[],
-        duration:number // pg-promise extension
+        
+        duration:number, // pg-promise extension
+        
+        // the ones below are not available with the Native Bindings;
+        
+        rowAsArray:boolean
     }
 
     interface Query {
@@ -83,15 +96,15 @@ declare module "pg" {
         poolLog:boolean,
 
         client_encoding:string,
-        
+
         ssl:boolean,
-        
+
         application_name?:string,
-        
+
         fallback_application_name?:string,
-        
+
         parseInputDatesAsUTC:boolean
     }
-    
+
     export default PG;
 }
