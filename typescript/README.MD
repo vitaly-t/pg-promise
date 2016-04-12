@@ -24,7 +24,9 @@ var db = pgp("postgres://username:password@host:port/database");
 
 Example of compiling into JavaScript:
 
+```
 tsc myApp.ts --target es6 --module commonjs
+```
 
 [pg-promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-promise.d.ts
 [pg-minify.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-minify.d.ts
