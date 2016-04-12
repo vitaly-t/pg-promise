@@ -13,7 +13,7 @@ declare module "pg" {
         dataTypeID:number
     }
 
-    interface Result {
+    export interface Result {
         command:string,
         rowCount:number,
         rows:Object[],
@@ -25,12 +25,12 @@ declare module "pg" {
 
     }
 
-    interface Client {
+    export interface Client {
         query:(config:any, values:any, callback:(err:Error, result:Result)=>void)=>Query
     }
 
     // Default library interface
-    interface PG {
+    export interface PG {
         Client:(config:Object)=>Client,
         defaults:pgDefaults,
         types:pgTypes

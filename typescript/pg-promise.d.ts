@@ -2,58 +2,21 @@
 // Requires pg-promise v3.7.0 or later.
 ////////////////////////////////////////
 
+/// <reference path="./pg.d.ts" />
+/// <reference path="./pg-minify.d.ts" />
+
 declare module "pg-promise" {
 
-    import {PG, Client, Result} from "pg";
+    import * as pg from "pg";
     import * as pgMinify from "pg-minify";
-
-    // temporary? Is there a better way to declare promises?
-    interface Promise<R> {
-    }
-
-    // Query Result Mask;
-    // API: http://vitaly-t.github.io/pg-promise/global.html#queryResult
-    enum queryResult {
-        one = 1,
-        many = 2,
-        none = 4,
-        any = 6
-    }
-
-    // Transaction Isolation Level;
-    // API: http://vitaly-t.github.io/pg-promise/global.html#isolationLevel
-    enum isolationLevel{
-        none = 0,
-        serializable = 1,
-        repeatableRead = 2,
-        readCommitted = 3
-    }
-
-    // Query Result Error Code;
-    // API: http://vitaly-t.github.io/pg-promise/global.html#queryResultErrorCode
-    enum queryResultErrorCode {
-        noData = 0,
-        notEmpty = 1,
-        multiple = 2
-    }
-
-    // Query Result Error;
-    // API: http://vitaly-t.github.io/pg-promise/QueryResultError.html
-    interface QueryResultError extends Error {
-        result:Result,
-        received:number,
-        code:queryResultErrorCode,
-        query:string,
-        values?:any
-    }
 
     // Base database protocol
     // API: http://vitaly-t.github.io/pg-promise/Database.html
     interface BaseProtocol {
 
         // generic query method;
-        query(query:any, values?:any, qrm?:queryResult):Promise<Object|Object[]|void>;
-
+        query(query:any, values?:any, qrm?:pgPromise.queryResult):Promise<Object|Object[]|void>;
+        
         // result-specific methods;
         none(query:any, values?:any):Promise<void>;
         one(query:any, values?:any):Promise<Object>;
@@ -61,11 +24,12 @@ declare module "pg-promise" {
         many(query:any, values?:any):Promise<Object[]>;
         manyOrNone(query:any, values?:any):Promise<Object[]>;
         any(query:any, values?:any):Promise<Object[]>;
-        result(query:any, values?:any):Promise<Result>;
+
+        result(query:any, values?:any):Promise<pg.Result>;
 
         stream(qs:Object, init:Function):Promise<{processed:number, duration:number}>;
 
-        func(funcName:string, values?:any[] | any, qrm?:queryResult):Promise<Object|Object[]|void>;
+        func(funcName:string, values?:any[] | any, qrm?:pgPromise.queryResult):Promise<Object|Object[]|void>;
         proc(procName:string, values?:any[] | any):Promise<Object|void>;
 
         task(cb:TaskCallback):Promise<any>;
@@ -87,7 +51,7 @@ declare module "pg-promise" {
     }
 
     interface TaskCallback {
-        (t:Task):Promise<any>
+        (t:Task):any;
     }
 
     // Task/Transaction interface;
@@ -113,23 +77,34 @@ declare module "pg-promise" {
     // API: http://vitaly-t.github.io/pg-promise/formatting.html
     interface Formatting {
         array(arr:any[]):string;
+
         bool(value:any):string;
+
         buffer(obj:Object, raw?:boolean):string;
+
         csv(values:any):string;
+
         date(d:Date|Function, raw?:boolean):string;
+
         format(query:string, values?:any, options?:{partial?:boolean}):string;
+
         func(func:Function, raw?:boolean, obj?:Object):string;
+
         json(obj:any, raw?:boolean):string;
+
         name(name:string|Function):string;
+
         number(value:number|Function):string;
+
         text(value:any, raw?:boolean):string;
+
         value(value:any):string;
     }
 
     // Generic Event Context interface;
     // See: http://vitaly-t.github.io/pg-promise/global.html#event:query
     interface EventContext {
-        client:Client;
+        client:pg.Client;
         cn?:any;
         query?:any;
         params?:any;
@@ -163,83 +138,126 @@ declare module "pg-promise" {
         fallback_application_name?:string
     }
 
-    // Promise Adapter class;
-    // API: http://vitaly-t.github.io/pg-promise/PromiseAdapter.html
-    export class PromiseAdapter {
-        constructor(create:(cb)=>(resolve:Function, reject:Function)=>void, resolve:(data:any)=>void, reject:(reason:any)=>void);
-    }
-
-    // Query File class;
-    // API: http://vitaly-t.github.io/pg-promise/QueryFile.html
-    export class QueryFile {
-        constructor(file:string, options?:{
-            debug?:boolean,
-            minify?:boolean|'after',
-            compress?:boolean,
-            params?:any
-        });
+    // Transaction Isolation Level;
+    // API: http://vitaly-t.github.io/pg-promise/global.html#isolationLevel
+    enum isolationLevel{
+        none = 0,
+        serializable = 1,
+        repeatableRead = 2,
+        readCommitted = 3
     }
 
     // Transaction Mode class;
     // API: http://vitaly-t.github.io/pg-promise/TransactionMode.html
-    export class TransactionMode {
+    class TransactionMode {
         constructor(tiLevel?:isolationLevel, readOnly?:boolean, deferrable?:boolean);
         constructor(options:{tiLevel?:isolationLevel, readOnly?:boolean, deferrable?:boolean});
     }
 
+    // Query Result Error;
+    // API: http://vitaly-t.github.io/pg-promise/QueryResultError.html
+    class QueryResultError implements Error {
+        name:string;
+        message:string;
+        result:pg.Result;
+        received:number;
+        code:queryResultErrorCode;
+        query:string;
+        values:any; // TODO: should it be optional?
+    }
+
+    // Query Result Error Code;
+    // API: http://vitaly-t.github.io/pg-promise/global.html#queryResultErrorCode
+    enum queryResultErrorCode {
+        noData = 0,
+        notEmpty = 1,
+        multiple = 2
+    }
+
     // Errors namespace
     // API: http://vitaly-t.github.io/pg-promise/errors.html
-    interface errors {
-        QueryResultError:QueryResultError,
-        queryResultErrorCode:queryResultErrorCode,
+    interface Errors {
+        QueryResultError:typeof QueryResultError;
+        queryResultErrorCode:typeof queryResultErrorCode;
     }
 
     // Transaction Mode namespace;
     // API: http://vitaly-t.github.io/pg-promise/txMode.html
     interface TXMode {
-        isolationLevel:isolationLevel,
-        TransactionMode:TransactionMode
-    }
-
-    // Main protocol of the library;
-    // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-    interface pgRoot {
-        minify:pgMinify,
-        PromiseAdapter:PromiseAdapter,
-        QueryFile:QueryFile,
-        queryResult:queryResult,
-        errors:errors,
-        txMode:TXMode,
-        as:Formatting
+        isolationLevel:typeof isolationLevel,
+        TransactionMode:typeof TransactionMode
     }
 
     // Post-initialization interface;
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-    interface pgMain extends pgRoot {
+    interface pgMain {
         (cn:string|Config):Database,
+        PromiseAdapter:typeof pgPromise.PromiseAdapter;
+        QueryFile:typeof pgPromise.QueryFile;
+        queryResult:typeof pgPromise.queryResult;
+        minify:typeof pgMinify,
+        errors:Errors;
+        txMode:TXMode;
+        as:Formatting;
         end:Function,
-        pg:PG
+        pg:pg.PG
+    }
+
+    // Main protocol of the library;
+    // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
+    namespace pgPromise {
+        export var minify:typeof pgMinify;
+
+        // Query Result Mask;
+        // API: http://vitaly-t.github.io/pg-promise/global.html#queryResult
+        export enum queryResult {
+            one = 1,
+            many = 2,
+            none = 4,
+            any = 6
+        }
+
+        // Query File class;
+        // API: http://vitaly-t.github.io/pg-promise/QueryFile.html
+        export class QueryFile {
+            constructor(file:string, options?:{
+                debug?:boolean,
+                minify?:boolean|'after',
+                compress?:boolean,
+                params?:any
+            });
+        }
+
+        // Promise Adapter class;
+        // API: http://vitaly-t.github.io/pg-promise/PromiseAdapter.html
+        export class PromiseAdapter {
+            constructor(create:(cb)=>(resolve:Function, reject:Function)=>void, resolve:(data:any)=>void, reject:(reason:any)=>void);
+        }
+        
+        export var txMode:TXMode;
+        export var errors:Errors;
+        export var as:Formatting;
+
     }
 
     // Default library interface (before initialization)
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-    interface pgPromise extends pgRoot {
-        (options?:{
-            pgFormatting?:boolean;
-            pgNative?:boolean,
-            promiseLib?:any;
-            connect?:(client:Client) => void;
-            disconnect?:(client:Client) => void;
-            query?:(e:EventContext) => void;
-            receive?:(data:any[], result:any, e:EventContext) => void;
-            task?:(e:EventContext) => void;
-            transact?:(e:EventContext) => void;
-            error?:(err:any, e:EventContext) => void;
-            extend?:(obj:any) => void;
-            noLocking?:boolean;
-            capSQL?:boolean;
-        }):pgMain
-    }
+    function pgPromise(options?:{
+        pgFormatting?:boolean;
+        pgNative?:boolean,
+        promiseLib?:any;
+        connect?:(client:pg.Client) => void;
+        disconnect?:(client:pg.Client) => void;
+        query?:(e:EventContext) => void;
+        receive?:(data:any[], result:any, e:EventContext) => void;
+        task?:(e:EventContext) => void;
+        transact?:(e:EventContext) => void;
+        error?:(err:any, e:EventContext) => void;
+        extend?:(obj:any) => void;
+        noLocking?:boolean;
+        capSQL?:boolean;
+    }):pgMain;
 
-    export default pgPromise;
+    export=pgPromise;
+
 }

@@ -7,30 +7,29 @@
 //////////////////////////////////////////////////////////
 
 declare module "pg-minify" {
-
-    enum parsingErrorCode {
-        unclosedMLC = 1,    // Unclosed multi-line comment.
-        unclosedText = 2,   // Unclosed text block.
-        unclosedQI = 3,     // Unclosed quoted identifier.
-        multiLineQI = 4     // Multi-line quoted identifiers are not supported.
-    }
-
+    
     interface ErrorPosition {
         line:number,
         column:number
     }
 
-    interface SQLParsingError extends Error {
-        code:parsingErrorCode,
-        position:ErrorPosition
-    }
-    
-    // Default library interface
-    interface pgMinify {
-        (sql:string, options?:{compress?:boolean}):string,
-        SQLParsingError:SQLParsingError,
-        parsingErrorCode:parsingErrorCode
+    namespace pgMinify {
+        export enum parsingErrorCode {
+            unclosedMLC = 1,    // Unclosed multi-line comment.
+            unclosedText = 2,   // Unclosed text block.
+            unclosedQI = 3,     // Unclosed quoted identifier.
+            multiLineQI = 4     // Multi-line quoted identifiers are not supported.
+        }
+
+        export class SQLParsingError implements Error {
+            name:string;
+            message:string;
+            code:parsingErrorCode;
+            position:ErrorPosition;
+        }
     }
 
-    export default pgMinify;
+    function pgMinify(sql:string, options?:{compress?:boolean}):string;
+
+    export = pgMinify;
 }
