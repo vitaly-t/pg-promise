@@ -1,6 +1,6 @@
 ### TypeScript for pg-promise
 
-Complete set of ambient declarations for [pg-promise] version 3.7.0 or later.
+Complete TypeScript declarations for [pg-promise] version 3.7.0 or later.
 
 | File             | Description                      |
 |------------------|----------------------------------|
@@ -21,6 +21,10 @@ var pgp = pgPromise({
 
 var db = pgp("postgres://username:password@host:port/database");
 ```
+
+Example of compiling into JavaScript:
+
+tsc myApp.ts --target es6 --module commonjs
 
 [pg-promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-promise.d.ts
 [pg-minify.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-minify.d.ts

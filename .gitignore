@@ -2,3 +2,5 @@
 node_modules/
 coverage/
 API/
+typescript/test/*.js
+

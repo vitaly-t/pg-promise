@@ -7,13 +7,14 @@
 //////////////////////////////////////////////////////////
 
 declare module "pg-minify" {
-    
+
     interface ErrorPosition {
         line:number,
         column:number
     }
 
     namespace pgMinify {
+
         export enum parsingErrorCode {
             unclosedMLC = 1,    // Unclosed multi-line comment.
             unclosedText = 2,   // Unclosed text block.
@@ -27,6 +28,7 @@ declare module "pg-minify" {
             code:parsingErrorCode;
             position:ErrorPosition;
         }
+
     }
 
     function pgMinify(sql:string, options?:{compress?:boolean}):string;

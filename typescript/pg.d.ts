@@ -83,15 +83,15 @@ declare module "pg" {
         poolLog:boolean,
 
         client_encoding:string,
-
+        
         ssl:boolean,
-
+        
         application_name?:string,
-
+        
         fallback_application_name?:string,
-
+        
         parseInputDatesAsUTC:boolean
     }
-
+    
     export default PG;
 }

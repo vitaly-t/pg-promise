@@ -163,7 +163,7 @@ declare module "pg-promise" {
         received:number;
         code:queryResultErrorCode;
         query:string;
-        values:any; // TODO: should it be optional?
+        values:any;
     }
 
     // Query Result Error Code;
