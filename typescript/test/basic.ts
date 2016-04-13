@@ -8,11 +8,6 @@ var pgp = lib({
     capSQL: true
 });
 
-pgp.as.array(()=> {
-    return [];
-});
-
-
 pgp.pg.defaults.poolSize = 20;
 
 var sql = pgp.minify('test--query');
