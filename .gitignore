@@ -2,6 +2,8 @@
 node_modules/
 coverage/
 API/
-typescript/**/*.js
-*.map
+typescript/*.js
+typescript/*.map
+test/typescript/*.js
+test/typescript/*.map
 typings/

@@ -1,12 +1,23 @@
-/// <reference path="../pg-promise.d.ts" />
+/// <reference path="../../typescript/pg-promise.d.ts" />
 
 import * as lib from "pg-promise";
 
 var pgp = lib({
-    receive: (data, result, e)=>{
+    receive: (data, result, e)=> {
         var d = data[0].prop;
         var r = result.fields[0].name;
         var query = e.query;
+    },
+    query: (e)=> {
+        var query = e.query;
+    },
+    error: (err, e)=> {
+        var query = e.query;
+    },
+    extend: (obj)=> {
+        obj['method'] = (val)=> {
+            return obj.one(null, val);
+        }
     }
 });
 
@@ -21,5 +32,5 @@ db.task(t=> {
     .then(data=> {
     })
     .catch(error=> {
-        
+
     });

@@ -33,8 +33,8 @@ declare module "pg-promise" {
 
         // functions and procedures
 
-        func(funcName:string, values?:Array<any> | any, qrm?:pgPromise.queryResult):XPromise<any>;
-        proc(procName:string, values?:Array<any> | any):XPromise<any>;
+        func(funcName:string, values?:any, qrm?:pgPromise.queryResult):XPromise<any>;
+        proc(procName:string, values?:any):XPromise<any>;
 
         // tasks & transactions
 

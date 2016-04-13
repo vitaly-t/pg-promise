@@ -1,10 +1,18 @@
-/// <reference path="../pg-promise.d.ts" />
+/// <reference path="../../typescript/pg-promise.d.ts" />
 
 import * as lib from "pg-promise";
 
 var pgp = lib();
 
 var db = pgp('connection');
+
+var qrm = lib.queryResult;
+
+db.query('', [], qrm.one | qrm.none)
+    .then(data=> {
+        var d1 = data.value;
+        var d2 = data[0].value;
+    });
 
 db.none('')
     .then(data=> {
@@ -28,4 +36,14 @@ db.many('')
 db.result('')
     .then(data=> {
         var value = data.rows[0].name;
+    });
+
+db.task(t=> {
+        return t.batch([
+            t.one('')
+        ]);
+    })
+    .then(data=> {
+        var d = data.value;
+        var d = data[0].value;
     });
