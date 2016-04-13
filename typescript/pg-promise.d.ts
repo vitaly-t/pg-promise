@@ -34,11 +34,11 @@ declare module "pg-promise" {
         func(funcName:string, values?:Array<any> | any, qrm?:pgPromise.queryResult):XPromise<Object|Array<Object>|void>;
         proc(procName:string, values?:Array<any> | any):XPromise<Object|void>;
 
-        task(cb:TaskCallback):XPromise<any>;
-        task(tag:any, cb:TaskCallback):XPromise<any>;
+        task(cb:(t:Task)=>any):XPromise<any>;
+        task(tag:any, cb:(t:Task)=>any):XPromise<any>;
 
-        tx(cb:TaskCallback):XPromise<any>;
-        tx(tag:any, cb:TaskCallback):XPromise<any>;
+        tx(cb:(t:Task)=>any):XPromise<any>;
+        tx(tag:any, cb:(t:Task)=>any):XPromise<any>;
     }
 
     // Database full protocol;
@@ -50,10 +50,6 @@ declare module "pg-promise" {
     // 'Database Connected' interface;
     interface Connected extends BaseProtocol {
         done():void;
-    }
-
-    interface TaskCallback {
-        (t:Task):any;
     }
 
     // Task/Transaction interface;

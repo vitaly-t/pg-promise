@@ -8,10 +8,6 @@ var pgp = lib({
     capSQL: true
 });
 
-pgp.pg.defaults.poolSize = 20;
-
-var sql = pgp.minify('test--query');
-
 var db = pgp('connection');
 
 db.task(t=> {
