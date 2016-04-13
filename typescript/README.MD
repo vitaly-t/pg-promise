@@ -29,7 +29,7 @@ Example of compiling into JavaScript:
 tsc myApp.ts --target es6 --module commonjs
 ```
 
-And if you want to make use of a custom promise library, see file [promise.d.ts]. 
+And if you want to make full use of a custom promise library, see file [promise.d.ts]. 
 
 
 [promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/promise.d.ts
