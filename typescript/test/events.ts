@@ -1,11 +1,13 @@
 /// <reference path="../pg-promise.d.ts" />
-//
-// To run: tsc basic.ts --target es6 --module commonjs
 
 import * as lib from "pg-promise";
 
 var pgp = lib({
-    capSQL: true
+    receive: (data, result, e)=>{
+        var d = data[0].prop;
+        var r = result.fields[0].name;
+        var query = e.query;
+    }
 });
 
 var db = pgp('connection');
@@ -19,5 +21,5 @@ db.task(t=> {
     .then(data=> {
     })
     .catch(error=> {
-
+        
     });

@@ -24,7 +24,7 @@ declare module "pg" {
     export interface Result {
         command:string,
         rowCount:number,
-        rows:Array<Object>,
+        rows:Array<any>,
         fields:Array<Column>,
 
         duration:number, // pg-promise extension

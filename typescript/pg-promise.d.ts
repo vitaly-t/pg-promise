@@ -17,15 +17,15 @@ declare module "pg-promise" {
     interface BaseProtocol {
 
         // generic query method;
-        query(query:any, values?:any, qrm?:pgPromise.queryResult):XPromise<Object|Array<Object>|void>;
+        query(query:any, values?:any, qrm?:pgPromise.queryResult):XPromise<any>;
 
         // result-specific methods;
         none(query:any, values?:any):XPromise<void>;
-        one(query:any, values?:any):XPromise<Object>;
-        oneOrNone(query:any, values?:any):XPromise<Object|void>;
-        many(query:any, values?:any):XPromise<Array<Object>>;
-        manyOrNone(query:any, values?:any):XPromise<Array<Object>>;
-        any(query:any, values?:any):XPromise<Array<Object>>;
+        one(query:any, values?:any):XPromise<any>;
+        oneOrNone(query:any, values?:any):XPromise<any>;
+        many(query:any, values?:any):XPromise<Array<any>>;
+        manyOrNone(query:any, values?:any):XPromise<Array<any>>;
+        any(query:any, values?:any):XPromise<Array<any>>;
 
         result(query:any, values?:any):XPromise<pg.Result>;
 
@@ -33,8 +33,8 @@ declare module "pg-promise" {
 
         // functions and procedures
 
-        func(funcName:string, values?:Array<any> | any, qrm?:pgPromise.queryResult):XPromise<Object|Array<Object>|void>;
-        proc(procName:string, values?:Array<any> | any):XPromise<Object|void>;
+        func(funcName:string, values?:Array<any> | any, qrm?:pgPromise.queryResult):XPromise<any>;
+        proc(procName:string, values?:Array<any> | any):XPromise<any>;
 
         // tasks & transactions
 
@@ -259,7 +259,7 @@ declare module "pg-promise" {
         connect?:(client:pg.Client) => void;
         disconnect?:(client:pg.Client) => void;
         query?:(e:EventContext) => void;
-        receive?:(data:Array<Object>, result:pg.Result|void, e:EventContext) => void;
+        receive?:(data:Array<any>, result:pg.Result, e:EventContext) => void;
         task?:(e:EventContext) => void;
         transact?:(e:EventContext) => void;
         error?:(err:any, e:EventContext) => void;
