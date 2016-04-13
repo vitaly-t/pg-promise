@@ -25,6 +25,8 @@ declare module "pg-minify" {
         export class SQLParsingError implements Error {
             name:string;
             message:string;
+            stack:string;
+            error:string;
             code:parsingErrorCode;
             position:ErrorPosition;
         }

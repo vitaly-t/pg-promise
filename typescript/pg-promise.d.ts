@@ -31,8 +31,12 @@ declare module "pg-promise" {
 
         stream(qs:Object, init:(stream:Object)=>void):XPromise<{processed:number, duration:number}>;
 
+        // functions and procedures
+
         func(funcName:string, values?:Array<any> | any, qrm?:pgPromise.queryResult):XPromise<Object|Array<Object>|void>;
         proc(procName:string, values?:Array<any> | any):XPromise<Object|void>;
+
+        // tasks & transactions
 
         task(cb:(t:Task)=>any):XPromise<any>;
         task(tag:any, cb:(t:Task)=>any):XPromise<any>;
@@ -47,7 +51,7 @@ declare module "pg-promise" {
         connect():XPromise<Connected>;
     }
 
-    // 'Database Connected' interface;
+    // Database protocol in connected state;
     interface Connected extends BaseProtocol {
         done():void;
     }
@@ -156,13 +160,20 @@ declare module "pg-promise" {
     // Query Result Error;
     // API: http://vitaly-t.github.io/pg-promise/QueryResultError.html
     class QueryResultError implements Error {
+
+        // standard error properties:
         name:string;
         message:string;
+        stack:string;
+
+        // extended properties:
         result:pg.Result;
         received:number;
         code:queryResultErrorCode;
         query:string;
         values:any;
+
+        toString():string;
     }
 
     // Query Result Error Code;
