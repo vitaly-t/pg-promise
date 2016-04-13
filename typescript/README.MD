@@ -32,7 +32,7 @@ tsc myApp.ts --target es6 --module commonjs
 And if you want to make use of a custom promise library, see file [promise.d.ts]. 
 
 
-[promise.d.ts]::https://github.com/vitaly-t/pg-promise/blob/master/typescript/promise.d.ts
+[promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/promise.d.ts
 [pg-promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-promise.d.ts
 [pg-minify.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-minify.d.ts
 [pg.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg.d.ts
