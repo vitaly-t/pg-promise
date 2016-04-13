@@ -4,3 +4,5 @@ coverage/
 API/
 typescript/test/*.js
 
+*.map
+typings/

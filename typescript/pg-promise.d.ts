@@ -4,45 +4,47 @@
 
 /// <reference path="./pg.d.ts" />
 /// <reference path="./pg-minify.d.ts" />
+/// <reference path="./promise.d.ts" />
 
 declare module "pg-promise" {
 
     import * as pg from "pg";
     import * as pgMinify from "pg-minify";
+    import XPromise=require("promise");
 
     // Base database protocol
     // API: http://vitaly-t.github.io/pg-promise/Database.html
     interface BaseProtocol {
 
         // generic query method;
-        query(query:any, values?:any, qrm?:pgPromise.queryResult):Promise<Object|Object[]|void>;
-        
+        query(query:any, values?:any, qrm?:pgPromise.queryResult):XPromise<Object|Array<Object>|void>;
+
         // result-specific methods;
-        none(query:any, values?:any):Promise<void>;
-        one(query:any, values?:any):Promise<Object>;
-        oneOrNone(query:any, values?:any):Promise<Object|void>;
-        many(query:any, values?:any):Promise<Object[]>;
-        manyOrNone(query:any, values?:any):Promise<Object[]>;
-        any(query:any, values?:any):Promise<Object[]>;
+        none(query:any, values?:any):XPromise<void>;
+        one(query:any, values?:any):XPromise<Object>;
+        oneOrNone(query:any, values?:any):XPromise<Object|void>;
+        many(query:any, values?:any):XPromise<Array<Object>>;
+        manyOrNone(query:any, values?:any):XPromise<Array<Object>>;
+        any(query:any, values?:any):XPromise<Array<Object>>;
 
-        result(query:any, values?:any):Promise<pg.Result>;
+        result(query:any, values?:any):XPromise<pg.Result>;
 
-        stream(qs:Object, init:Function):Promise<{processed:number, duration:number}>;
+        stream(qs:Object, init:(stream:Object)=>void):XPromise<{processed:number, duration:number}>;
 
-        func(funcName:string, values?:any[] | any, qrm?:pgPromise.queryResult):Promise<Object|Object[]|void>;
-        proc(procName:string, values?:any[] | any):Promise<Object|void>;
+        func(funcName:string, values?:Array<any> | any, qrm?:pgPromise.queryResult):XPromise<Object|Array<Object>|void>;
+        proc(procName:string, values?:Array<any> | any):XPromise<Object|void>;
 
-        task(cb:TaskCallback):Promise<any>;
-        task(tag:any, cb:TaskCallback):Promise<any>;
+        task(cb:TaskCallback):XPromise<any>;
+        task(tag:any, cb:TaskCallback):XPromise<any>;
 
-        tx(cb:TaskCallback):Promise<any>;
-        tx(tag:any, cb:TaskCallback):Promise<any>;
+        tx(cb:TaskCallback):XPromise<any>;
+        tx(tag:any, cb:TaskCallback):XPromise<any>;
     }
 
     // Database full protocol;
     // API: http://vitaly-t.github.io/pg-promise/Database.html
     interface Database extends BaseProtocol {
-        connect():Promise<Connection>;
+        connect():XPromise<Connection>;
     }
 
     // Database connected manually;
@@ -59,16 +61,16 @@ declare module "pg-promise" {
     interface Task extends BaseProtocol {
 
         // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md
-        batch(values:any[], cb?:Function):Promise<any[]>;
-        batch(values:any[], options:{cb?:Function}):Promise<any[]>;
+        batch(values:Array<any>, cb?:(index:number, success:boolean, result:any, delay:number)=>any):XPromise<Array<any>>;
+        batch(values:Array<any>, options:{cb?:(index:number, success:boolean, result:any, delay:number)=>any}):XPromise<Array<any>>;
 
         // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/page.md
-        page(source:Function, dest?:Function, limit?:number):Promise<{pages:number, total:number, duration:number}>;
-        page(source:Function, options:{dest?:Function, limit?:number}):Promise<{pages:number, total:number, duration:number}>;
+        page(source:(index:number, data:any, delay:number)=>any, dest?:(index:number, data:any, delay:number)=>any, limit?:number):XPromise<{pages:number, total:number, duration:number}>;
+        page(source:(index:number, data:any, delay:number)=>any, options:{dest?:(index:number, data:any, delay:number)=>any, limit?:number}):XPromise<{pages:number, total:number, duration:number}>;
 
         // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
-        sequence(source:Function, dest?:Function, limit?:number, track?:boolean):Promise<any>;
-        sequence(source:Function, options:{dest?:Function, limit?:number, track?:boolean}):Promise<any>;
+        sequence(source:(index:number, data:any, delay:number)=>any, dest?:(index:number, data:any, delay:number)=>any, limit?:number, track?:boolean):XPromise<any>;
+        sequence(source:(index:number, data:any, delay:number)=>any, options:{dest?:(index:number, data:any, delay:number)=>any, limit?:number, track?:boolean}):XPromise<any>;
 
         ctx:TaskContext;
     }
@@ -76,7 +78,8 @@ declare module "pg-promise" {
     // Query formatting namespace;
     // API: http://vitaly-t.github.io/pg-promise/formatting.html
     interface Formatting {
-        array(arr:any[]):string;
+
+        array(arr:Array<any>|(()=>Array<any>)):string;
 
         bool(value:any):string;
 
@@ -84,21 +87,21 @@ declare module "pg-promise" {
 
         csv(values:any):string;
 
-        date(d:Date|Function, raw?:boolean):string;
+        date(d:Date|(()=>Date), raw?:boolean):string;
 
         format(query:string, values?:any, options?:{partial?:boolean}):string;
 
-        func(func:Function, raw?:boolean, obj?:Object):string;
+        func(func:()=>any, raw?:boolean, obj?:Object):string;
 
-        json(obj:any, raw?:boolean):string;
+        json(obj:any|(()=>any), raw?:boolean):string;
 
-        name(name:string|Function):string;
+        name(name:string|(()=>string)):string;
 
-        number(value:number|Function):string;
+        number(value:number|(()=>number)):string;
 
-        text(value:any, raw?:boolean):string;
+        text(value:any|(()=>any), raw?:boolean):string;
 
-        value(value:any):string;
+        value(value:any|(()=>any)):string;
     }
 
     // Generic Event Context interface;
@@ -199,7 +202,7 @@ declare module "pg-promise" {
         errors:Errors;
         txMode:TXMode;
         as:Formatting;
-        end:Function,
+        end():void,
         pg:pg.PG
     }
 
@@ -233,7 +236,7 @@ declare module "pg-promise" {
         export class PromiseAdapter {
             constructor(create:(cb)=>Object, resolve:(data:any)=>void, reject:(reason:any)=>void);
         }
-        
+
         export var txMode:TXMode;
         export var errors:Errors;
         export var as:Formatting;
@@ -249,11 +252,11 @@ declare module "pg-promise" {
         connect?:(client:pg.Client) => void;
         disconnect?:(client:pg.Client) => void;
         query?:(e:EventContext) => void;
-        receive?:(data:any[], result:any, e:EventContext) => void;
+        receive?:(data:Array<Object>, result:pg.Result|void, e:EventContext) => void;
         task?:(e:EventContext) => void;
         transact?:(e:EventContext) => void;
         error?:(err:any, e:EventContext) => void;
-        extend?:(obj:any) => void;
+        extend?:(obj:Object) => void;
         noLocking?:boolean;
         capSQL?:boolean;
     }):pgMain;

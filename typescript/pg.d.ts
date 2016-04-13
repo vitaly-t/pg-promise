@@ -24,8 +24,8 @@ declare module "pg" {
     export interface Result {
         command:string,
         rowCount:number,
-        rows:Object[],
-        fields:Column[],
+        rows:Array<Object>,
+        fields:Array<Column>,
 
         duration:number, // pg-promise extension
 
@@ -75,7 +75,7 @@ declare module "pg" {
     interface pgTypes {
         setTypeParser:(oid:number, format:string|((value:any)=>string))=>void;
         getTypeParser:(oid:number, format?:string)=>any;
-        arrayParser:(source:string, transform?:Function)=>any[];
+        arrayParser:(source:string, transform:(entry:any)=>any)=>Array<any>;
     }
 
     interface pgDefaults {
