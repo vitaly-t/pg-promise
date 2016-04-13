@@ -44,11 +44,11 @@ declare module "pg-promise" {
     // Database full protocol;
     // API: http://vitaly-t.github.io/pg-promise/Database.html
     interface Database extends BaseProtocol {
-        connect():XPromise<Connection>;
+        connect():XPromise<Connected>;
     }
 
-    // Database connected manually;
-    interface Connection extends BaseProtocol {
+    // 'Database Connected' interface;
+    interface Connected extends BaseProtocol {
         done():void;
     }
 
@@ -81,11 +81,11 @@ declare module "pg-promise" {
 
         array(arr:Array<any>|(()=>Array<any>)):string;
 
-        bool(value:any):string;
+        bool(value:any|(()=>any)):string;
 
-        buffer(obj:Object, raw?:boolean):string;
+        buffer(obj:Object|(()=>Object), raw?:boolean):string;
 
-        csv(values:any):string;
+        csv(values:any|(()=>any)):string;
 
         date(d:Date|(()=>Date), raw?:boolean):string;
 
@@ -256,7 +256,7 @@ declare module "pg-promise" {
         task?:(e:EventContext) => void;
         transact?:(e:EventContext) => void;
         error?:(err:any, e:EventContext) => void;
-        extend?:(obj:Object) => void;
+        extend?:(obj:Database) => void;
         noLocking?:boolean;
         capSQL?:boolean;
     }):pgMain;
