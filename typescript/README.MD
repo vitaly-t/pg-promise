@@ -31,7 +31,12 @@ tsc myApp.ts --target es6 --module commonjs
 
 And if you want to make full use of a custom promise library, see file [promise.d.ts]. 
 
+#### Limitations
 
+There is only one limitation - event [extend] is not fully supported. It is used for extending the database
+protocol dynamically, which would be very awkward to replicate with TypeScript ambient declarations.
+
+[extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
 [promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/promise.d.ts
 [pg-promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-promise.d.ts
 [pg-minify.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-minify.d.ts
