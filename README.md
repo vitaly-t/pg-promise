@@ -128,6 +128,8 @@ This library does not use any of the connection's details, it simply passes them
 For more details see pg connection parameters in [WiKi](https://github.com/brianc/node-postgres/wiki/pg#parameters) and
 [implementation](https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js).
 
+API: [Database].
+
 ## Documentation
 
 [Learn by Example] is the quickest way to get started with this library, while the current document details most of the
@@ -961,6 +963,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 3.8.0 Added Database Context support (see [Database]). Released: April 14, 2016
 * 3.7.1 Adding internal typescript support to the library. Released: April 10, 2016
 * 3.7.0 Modifying the protocol to accommodate changes in `pg` 4.5.3 for isolated [Native Bindings]. Released: April 9, 2016
 * 3.6.0 Extending [QueryResultError] for better diagnostics. Released: April 8, 2016
@@ -1033,6 +1036,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[Database]:http://vitaly-t.github.io/pg-promise/Database.html
 [QueryResultError]:http://vitaly-t.github.io/pg-promise/QueryResultError.html
 [Native Bindings]:https://github.com/brianc/node-postgres#native-bindings
 [Initialization Options]:#advanced

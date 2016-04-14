@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v3.7.0 or later.
+// Requires pg-promise v3.8.0 or later.
 ////////////////////////////////////////
 
 /// <reference path="./pg.d.ts" />
@@ -108,10 +108,11 @@ declare module "pg-promise" {
     // See: http://vitaly-t.github.io/pg-promise/global.html#event:query
     interface EventContext {
         client:pg.Client;
-        cn?:any;
-        query?:any;
-        params?:any;
-        ctx?:TaskContext;
+        cn:any;
+        dc:any;
+        query:any;
+        params:any;
+        ctx:TaskContext;
     }
 
     // Event context extension for tasks/transactions;
@@ -119,11 +120,12 @@ declare module "pg-promise" {
     interface TaskContext {
         isTX:boolean;
         start:Date;
-        finish?:Date;
-        tag?:any;
-        success?:boolean;
-        result?:any;
-        context?:Object;
+        finish:Date;
+        tag:any;
+        dc:any;
+        success:boolean;
+        result:any;
+        context:Object;
     }
 
     // Database connection configuration interface;
@@ -201,7 +203,7 @@ declare module "pg-promise" {
     // Post-initialization interface;
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface pgMain {
-        <Ext>(cn:string|Config):Database<Ext> & Ext,
+        <Ext>(cn:string|Config, dc?:any):Database<Ext> & Ext,
         PromiseAdapter:typeof pgPromise.PromiseAdapter;
         QueryFile:typeof pgPromise.QueryFile;
         queryResult:typeof pgPromise.queryResult;
@@ -261,14 +263,14 @@ declare module "pg-promise" {
         pgFormatting?:boolean;
         pgNative?:boolean,
         promiseLib?:any;
-        connect?:(client:pg.Client) => void;
-        disconnect?:(client:pg.Client) => void;
+        connect?:(client:pg.Client, dc:any) => void;
+        disconnect?:(client:pg.Client, dc:any) => void;
         query?:(e:EventContext) => void;
         receive?:(data:Array<any>, result:pg.Result, e:EventContext) => void;
         task?:(e:EventContext) => void;
         transact?:(e:EventContext) => void;
         error?:(err:any, e:EventContext) => void;
-        extend?:(obj:Database<Ext>&Ext) => void;
+        extend?:(obj:Database<Ext>&Ext, dc:any) => void;
         noLocking?:boolean;
         capSQL?:boolean;
     }

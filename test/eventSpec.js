@@ -12,7 +12,9 @@ var promise = header.defPromise;
 var options = {
     promiseLib: promise // use Bluebird for testing;
 };
-var dbHeader = header(options);
+var testDC = 'test_DC_123';
+
+var dbHeader = header(options, testDC);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
@@ -23,14 +25,16 @@ var dummy = function () {
 describe("Connect/Disconnect events", function () {
 
     describe("during a query", function () {
-        var p1, p2, connect = 0, disconnect = 0;
+        var p1, p2, dc1, dc2, connect = 0, disconnect = 0;
         beforeEach(function (done) {
-            options.connect = function (client) {
+            options.connect = function (client, dc) {
+                dc1 = dc;
                 p1 = client;
                 connect++;
                 throw new Error("### Testing error output in 'connect'. Please ignore. ###");
             };
-            options.disconnect = function (client) {
+            options.disconnect = function (client, dc) {
+                dc2 = dc;
                 p2 = client;
                 disconnect++;
                 throw new Error("### Testing error output in 'disconnect'. Please ignore. ###");
@@ -52,21 +56,26 @@ describe("Connect/Disconnect events", function () {
                 expect(p1 instanceof pgClient).toBe(true);
                 expect(p2 instanceof pgClient).toBe(true);
             }
+            expect(dc1).toBe(testDC);
+            expect(dc2).toBe(testDC);
         });
     });
 
     describe("during a transaction", function () {
-        var p1, p2, connect = 0, disconnect = 0;
+        var p1, p2, dc1, dc2, ctx, connect = 0, disconnect = 0;
         beforeEach(function (done) {
-            options.connect = function (client) {
+            options.connect = function (client, dc) {
+                dc1 = dc;
                 p1 = client;
                 connect++;
             };
-            options.disconnect = function (client) {
+            options.disconnect = function (client, dc) {
+                dc2 = dc;
                 p2 = client;
                 disconnect++;
             };
             db.tx(function (t) {
+                    ctx = t.ctx;
                     return this.batch([
                         t.query("select 'one'"),
                         t.query("select 'two'"),
@@ -89,6 +98,9 @@ describe("Connect/Disconnect events", function () {
                 expect(p1 instanceof pgClient).toBe(true);
                 expect(p2 instanceof pgClient).toBe(true);
             }
+            expect(dc1).toBe(testDC);
+            expect(dc2).toBe(testDC);
+            expect(ctx.dc).toBe(testDC);
         });
     });
 });
@@ -111,6 +123,7 @@ describe("Query event", function () {
             expect(counter).toBe(1);
             expect(param.query).toBe('select 123');
             expect(param.params).toBeUndefined();
+            expect(param.dc).toBe(testDC);
         });
     });
 
@@ -157,15 +170,17 @@ describe("Query event", function () {
 });
 
 describe("Start/Finish transaction events", function () {
-    var result, tag, ctx, start = 0, finish = 0;
+    var result, tag, ctx, e1, e2, start = 0, finish = 0;
     beforeEach(function (done) {
         options.transact = function (e) {
             if (e.ctx.finish) {
                 finish++;
                 ctx = e.ctx;
+                e1 = e;
             } else {
                 start++;
                 tag = e.ctx.tag;
+                e2 = e;
             }
             throw "### Testing error output in 'transact'. Please ignore. ###";
         };
@@ -190,6 +205,9 @@ describe("Start/Finish transaction events", function () {
         expect(tag).toBe("myTransaction");
         expect(ctx.success).toBe(true);
         expect(ctx.isTX).toBe(true);
+        expect(ctx.dc).toBe(testDC);
+        expect(e1.dc).toBe(testDC);
+        expect(e2.dc).toBe(testDC);
     });
 });
 
@@ -221,6 +239,7 @@ describe("Error event", function () {
             expect(error.message).toBe('Test Error');
             expect(counter).toBe(1);
             expect(context.ctx.tag).toBe("Error Transaction");
+            expect(context.dc).toBe(testDC);
             if (!options.pgNative) {
                 expect(context.client instanceof pgClient).toBe(true);
             }
@@ -483,6 +502,7 @@ describe("Receive event", function () {
             expect(counter).toBe(1);
             expect(ctx.query).toBe('select 123 as value');
             expect(ctx.params).toBeUndefined();
+            expect(ctx.dc).toBe(testDC);
             expect(data).toEqual([{
                 value: 123
             }]);

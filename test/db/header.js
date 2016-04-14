@@ -19,7 +19,7 @@ var cn = {
 
 pgpLib.suppressErrors = true; // suppress console output for error messages;
 
-function main(options) {
+function main(options, dc) {
     var pgNative = eval(process.env.PG_NATIVE);
     if (pgNative) {
         if (options && typeof options === 'object') {
@@ -38,7 +38,7 @@ function main(options) {
         pgp: pgpLib(options),
         cn: cn
     };
-    result.db = result.pgp(cn);
+    result.db = result.pgp(cn, dc);
     return result;
 }
 main.defPromise = defPromise;
