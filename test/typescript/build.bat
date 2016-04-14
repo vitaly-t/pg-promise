@@ -7,3 +7,4 @@ call tsc events.ts %PARAMS%
 call tsc adapter.ts %PARAMS%
 call tsc queries.ts %PARAMS%
 call tsc formatting.ts %PARAMS%
+call tsc extensions.ts %PARAMS%

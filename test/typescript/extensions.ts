@@ -27,6 +27,9 @@ var pgpExt = lib<Extensions>({
 var dbExt1 = pgp<Extensions>('connection');
 var dbExt2 = pgpExt<Extensions>('connection');
 
+dbExt1.findUser(123).then();
+dbExt2.findUser(123).then();
+
 dbExt1.task(function (t) {
     return t.findUser(123);
 });
