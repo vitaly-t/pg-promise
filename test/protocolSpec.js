@@ -7,7 +7,8 @@ var options = {
     promiseLib: promise,
     noLocking: true
 };
-var dbHeader = header(options);
+var testDC = 'test_DC_123';
+var dbHeader = header(options, testDC);
 var pgpLib = dbHeader.pgpLib;
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
@@ -201,10 +202,11 @@ describe("Database Protocol", function () {
 describe("Protocol Extension", function () {
 
     describe("on database level", function () {
-        var result, THIS, ctx, counter = 0;
+        var result, dcParam, THIS, ctx, counter = 0;
         var pgpTest = header({
             promiseLib: header.defPromise,
-            extend: function (obj) {
+            extend: function (obj, dc) {
+                dcParam = dc;
                 ctx = obj;
                 THIS = this;
                 counter++;
@@ -213,7 +215,7 @@ describe("Protocol Extension", function () {
                 };
                 throw new Error("### Testing error output in 'extend'. Please ignore. ###");
             }
-        });
+        }, testDC);
         beforeEach(function (done) {
             pgpTest.db.getOne("select 'hello' as msg")
                 .then(function (data) {
@@ -227,6 +229,7 @@ describe("Protocol Extension", function () {
             expect(THIS && ctx && THIS === ctx).toBeTruthy();
             expect(counter).toBe(1);
             expect(result.msg).toBe('hello');
+            expect(dcParam).toBe(testDC);
         });
     });
 

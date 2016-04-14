@@ -7,7 +7,7 @@ interface Extensions {
 }
 
 var pgp = lib({
-    extend: function (obj) {
+    extend: function (obj, dc) {
         obj['findUser'] = (userId)=> {
             return obj.one('', userId);
         }

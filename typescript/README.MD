@@ -48,7 +48,7 @@ interface Extensions {
 
 // Initialization with the standard protocol extension:
 var pgp = pgPromise({    
-    extend: function (obj) {
+    extend: function (obj, dc) {
         obj['findUser'] = (userId)=> {
             return obj.one('SELECT * FROM Users WHERE id=$1', userId);
         }
@@ -67,7 +67,7 @@ You can optionally extend the library's initialization object to allow explicit 
 ```ts
 // Extended initialization:
 var pgp = pgPromise<Extensions>({    
-    extend: function (obj) {
+    extend: function (obj, dc) {
         obj.findUser = (userId)=> {
             return obj.one('SELECT * FROM Users WHERE id=$1', userId);
         }

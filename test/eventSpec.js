@@ -12,6 +12,7 @@ var promise = header.defPromise;
 var options = {
     promiseLib: promise // use Bluebird for testing;
 };
+
 var testDC = 'test_DC_123';
 
 var dbHeader = header(options, testDC);
