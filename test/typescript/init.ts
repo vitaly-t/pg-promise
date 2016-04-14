@@ -8,14 +8,20 @@ var pgp = lib({
     pgNative: true
 });
 
-var db = pgp('connection');
+interface Test {
+    hello:string;
+}
+
+var db = pgp<Test>('connection');
 
 var txMode = new lib.txMode.TransactionMode();
 
-function myTransaction() {
-
+function myTransaction(t) {
 }
 
 myTransaction['txMode'] = txMode;
 
-db.tx(myTransaction);
+db.tx(function (t) {
+    var w = t.one('');
+    var q = t.hello;
+});

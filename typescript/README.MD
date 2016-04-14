@@ -31,10 +31,48 @@ tsc myApp.ts --target es6 --module commonjs
 
 And if you want to make full use of a custom promise library, see file [promise.d.ts]. 
 
-#### Limitations
+#### Protocol Extensions
 
-There is only one limitation - event [extend] is not fully supported. It is used for extending the database
-protocol dynamically, which would be very awkward to replicate with TypeScript ambient declarations.
+The library supports protocol extensions via event [extend], which is a special case when it comes to TypeScript,
+because that event dynamically extends the protocol during the event's callback. And dynamic types in TypeScript
+usually require additional casting.
+
+In order to support such dynamic protocol extensions automatically, without any casting, you need to mirror the
+protocol extensions through an interface, and then parametrize initialization calls as shown below. 
+
+```ts
+// Your protocol extensions:
+interface Extensions {
+    findUser(userId:number):Promise<any>;
+}
+
+// Initialization with the standard protocol extension:
+var pgp = lib({    
+    extend: function (obj) {
+        obj['findUser'] = (userId)=> {
+            return obj.one('SELECT * FROM Users WHERE id=$1', userId);
+        }
+    }
+});
+
+// Creating extended database object:
+var db = pgp<Extensions>("postgres://username:password@host:port/database");
+```
+
+In addition, you can optionally extend the library's initialization object to allow
+explicit protocol extension during event `extend`:
+
+```ts
+// Extended initialization:
+var pgp = lib<Extensions>({    
+    extend: function (obj) {
+        obj.findUser = (userId)=> {
+            return obj.one('SELECT * FROM Users WHERE id=$1', userId);
+        }
+    }
+});
+```
+
 
 [extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
 [promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/promise.d.ts
