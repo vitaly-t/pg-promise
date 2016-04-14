@@ -34,8 +34,8 @@ And if you want to make full use of a custom promise library, see file [promise.
 #### Protocol Extensions
 
 The library supports protocol extensions via event [extend], which is a special case when it comes to TypeScript,
-because that event dynamically extends the protocol during the event's callback. And dynamic types in TypeScript
-usually require additional casting.
+as that event dynamically extends the protocol during its callback. And dynamic types in TypeScript usually
+require additional casting.
 
 In order to support such dynamic protocol extensions automatically, without any casting, you need to mirror the
 protocol extensions through an interface, and then parametrize initialization calls as shown below. 
@@ -57,10 +57,12 @@ var pgp = lib({
 
 // Creating extended database object:
 var db = pgp<Extensions>("postgres://username:password@host:port/database");
+
+// Now you can use the extensions:
+db.findUser(123).then(...);
 ```
 
-In addition, you can optionally extend the library's initialization object to allow
-explicit protocol extension during event `extend`:
+You can optionally extend the library's initialization object to allow explicit protocol extension during event `extend`:
 
 ```ts
 // Extended initialization:
