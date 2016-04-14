@@ -41,7 +41,7 @@
 
     
 
-    <h4 class="name" id="Database"><span class="type-signature"></span>new Database<span class="signature">(cn)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Database"><span class="type-signature"></span>new Database<span class="signature">(cn, dc<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -73,6 +73,8 @@ it can only be created via the library's base call.</p>
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -101,10 +103,51 @@ it can only be created via the library's base call.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last"><p>Connection object or string</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dc</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Database Context.</p>
+<p>Any object or value to be propagated through the entire protocol, to allow implementations
+and event handling that depend on the database context.</p>
+<p>This is mainly to facilitate the use of multiple databases which may need separate protocol
+extensions, or different implementations within a single task / transaction callback,
+depending on the database context.</p></td>
         </tr>
 
     
@@ -365,7 +408,7 @@ it can only be created via the library's base call.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line281">line 281</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line291">line 291</a>
     </li></ul></dd>
     
 
@@ -485,7 +528,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line41">line 41</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line51">line 51</a>
     </li></ul></dd>
     
 
@@ -752,7 +795,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line362">line 362</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line372">line 372</a>
     </li></ul></dd>
     
 
@@ -973,7 +1016,7 @@ When the query returns no data, the method rejects.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line203">line 203</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line213">line 213</a>
     </li></ul></dd>
     
 
@@ -1189,7 +1232,7 @@ When the query returns no data, the method rejects.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line256">line 256</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line266">line 266</a>
     </li></ul></dd>
     
 
@@ -1412,7 +1455,7 @@ If the query returns any kind of data, the method rejects.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line148">line 148</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line158">line 158</a>
     </li></ul></dd>
     
 
@@ -1629,7 +1672,7 @@ When 0 or more than 1 rows are returned, the method rejects.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line174">line 174</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line184">line 184</a>
     </li></ul></dd>
     
 
@@ -1848,7 +1891,7 @@ When the query returns more than 1 row, the method rejects.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line229">line 229</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line239">line 239</a>
     </li></ul></dd>
     
 
@@ -2055,7 +2098,7 @@ expecting back 0 or 1 rows.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line393">line 393</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line403">line 403</a>
     </li></ul></dd>
     
 
@@ -2325,7 +2368,7 @@ according to parameter <code>qrm</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line93">line 93</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line103">line 103</a>
     </li></ul></dd>
     
 
@@ -2539,7 +2582,7 @@ to resolve with the original <a href="https://github.com/brianc/node-postgres/bl
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line306">line 306</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line316">line 316</a>
     </li></ul></dd>
     
 
@@ -2724,7 +2767,7 @@ the same <code>this</code> context as the calling method.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line332">line 332</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line342">line 342</a>
     </li></ul></dd>
     
 
@@ -2942,7 +2985,7 @@ for the task.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line417">line 417</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line427">line 427</a>
     </li></ul></dd>
     
 
@@ -3151,7 +3194,7 @@ function for the transaction.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line436">line 436</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line446">line 446</a>
     </li></ul></dd>
     
 

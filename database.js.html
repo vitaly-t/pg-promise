@@ -32,7 +32,7 @@
 var $npm = {
     result: require('./result'),
     special: require('./special'),
-    context: require('./dbContext'),
+    context: require('./cnContext'),
     events: require('./events'),
     utils: require('./utils'),
     connect: require('./connect'),
@@ -49,6 +49,16 @@ var $npm = {
  * @param {String|Object} cn
  * Connection object or string
  *
+ * @param {} [dc]
+ * Database Context.
+ *
+ * Any object or value to be propagated through the entire protocol, to allow implementations
+ * and event handling that depend on the database context.
+ * 
+ * This is mainly to facilitate the use of multiple databases which may need separate protocol
+ * extensions, or different implementations within a single task / transaction callback,
+ * depending on the database context.
+ *
  * @see {@link event:extend extend}
  *
  * @example
@@ -63,7 +73,7 @@ var $npm = {
  * var db = pgp(cn);
  *
  */
-function Database(cn, options, config) {
+function Database(cn, dc, options, config) {
 
     var $p = config.promise;
 
@@ -162,11 +172,11 @@ function Database(cn, options, config) {
                 return $p.reject(error);
             });
     };
-
+    
     extend(createContext(), this); // extending root protocol;
-
+    
     function createContext() {
-        return new $npm.context(cn, options);
+        return new $npm.context(cn, dc, options);
     }
 
     ////////////////////////////////////////////////////
@@ -179,7 +189,7 @@ function Database(cn, options, config) {
          * @description
          * Executes a query that expects no data to be returned.
          * If the query returns any kind of data, the method rejects.
-         * 
+         *
          * @param {String|Object} query -
          * - query string
          * - prepared statement object
@@ -205,7 +215,7 @@ function Database(cn, options, config) {
          * @description
          * Executes a query that expects exactly one row of data.
          * When 0 or more than 1 rows are returned, the method rejects.
-         * 
+         *
          * @param {String|Object} query -
          * - query string
          * - prepared statement object
@@ -234,7 +244,7 @@ function Database(cn, options, config) {
          * @description
          * Executes a query that expects one or more rows.
          * When the query returns no data, the method rejects.
-         * 
+         *
          * @param {String|Object} query -
          * - query string
          * - prepared statement object
@@ -260,7 +270,7 @@ function Database(cn, options, config) {
          * @description
          * Executes a query that expects 0 or 1 rows.
          * When the query returns more than 1 row, the method rejects.
-         * 
+         *
          * @param {String|Object} query -
          * - query string
          * - prepared statement object
@@ -488,14 +498,14 @@ function Database(cn, options, config) {
         // Task method;
         // Resolves with result from the callback function;
         function taskProcessor(p1, p2, isTX) {
-
+            
             var tag, // tag object/value;
                 taskCtx = ctx.clone(); // task context object;
 
             if (isTX) {
                 taskCtx.txLevel = taskCtx.txLevel >= 0 ? (taskCtx.txLevel + 1) : 0;
             }
-
+            
             if (this !== obj) {
                 taskCtx.context = this; // calling context object;
             }
@@ -555,8 +565,8 @@ function Database(cn, options, config) {
         $npm.utils.lock(obj, false, ctx.options);
         
         // extend the protocol;
-        $npm.events.extend(ctx.options, obj);
-        
+        $npm.events.extend(ctx.options, obj, dc);
+
         // freeze the protocol permanently;
         $npm.utils.lock(obj, true, ctx.options);
     }

@@ -765,6 +765,24 @@ i.e. a virtual connection.</p>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>dc</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Database Context that was used when creating the database object (see <a href="Database.html">Database</a>).</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -829,7 +847,7 @@ i.e. a virtual connection.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    connect: function (client) {        var cp = client.connectionParameters;        console.log("Connected to database:", cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    connect: function (client, dc) {        var cp = client.connectionParameters;        console.log("Connected to database:", cp.database);    }};</code></pre>
 
 
 
@@ -903,6 +921,24 @@ i.e. releasing the virtual connection.</p>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>dc</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Database Context that was used when creating the database object (see <a href="Database.html">Database</a>).</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -940,7 +976,7 @@ i.e. releasing the virtual connection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line48">line 48</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line50">line 50</a>
     </li></ul></dd>
     
 
@@ -967,7 +1003,7 @@ i.e. releasing the virtual connection.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    disconnect: function(client){       var cp = client.connectionParameters;       console.log("Disconnecting from database:", cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    disconnect: function(client, dc){       var cp = client.connectionParameters;       console.log("Disconnecting from database:", cp.database);    }};</code></pre>
 
 
 
@@ -1097,7 +1133,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line330">line 330</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line341">line 341</a>
     </li></ul></dd>
     
 
@@ -1124,7 +1160,7 @@ for its complete documentation.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    error: function (err, e) {        if (e.cn) {            // this is a connection-related error            // cn = safe connection details passed into the library:            //      if password is present, it is masked by #        }        if (e.query) {            // query string is available            if (e.params) {                // query parameters are available            }        }        if (e.ctx) {            // occurred inside a task or transaction        }      }};</code></pre>
+    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    error: function (err, e) {        // e.dc = Database Context        if (e.cn) {            // this is a connection-related error            // cn = safe connection details passed into the library:            //      if password is present, it is masked by #        }        if (e.query) {            // query string is available            if (e.params) {                // query parameters are available            }        }        if (e.ctx) {            // occurred inside a task or transaction        }      }};</code></pre>
 
 
 
@@ -1203,7 +1239,25 @@ if you try overriding them.</p>
 
             
 
-            <td class="description last"><p>protocol object to be extended.</p></td>
+            <td class="description last"><p>Protocol object to be extended.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dc</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Database Context that was used when creating the database object.</p></td>
         </tr>
 
     
@@ -1244,7 +1298,7 @@ if you try overriding them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line387">line 387</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line400">line 400</a>
     </li></ul></dd>
     
 
@@ -1271,9 +1325,9 @@ if you try overriding them.</p>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// In the example below we extend the protocol with function `addImage`// that will insert one binary image and resolve with the new record id.var options = {    extend: function (obj) {        // obj = this;        obj.addImage = function (data) {            return obj.one("insert into images(data) values($1) returning id", '\\x' + data);        }    }};</code></pre>
+    <pre class="prettyprint"><code>// In the example below we extend the protocol with function `addImage`// that will insert one binary image and resolve with the new record id.var options = {    extend: function (obj, dc) {        // obj = this;        // dc = database context;        obj.addImage = function (data) {            return obj.one("insert into images(data) values($1) returning id", '\\x' + data);        }    }};</code></pre>
 
-    <pre class="prettyprint"><code>// It is best to extend the protocol by adding whole entity repositories to it// as shown in the following example.// Users repository;function repUsers(obj) {    return {        add: function (name, active) {            return obj.none("insert into users values($1, $2)", [name, active]);        },        delete: function (id) {            return obj.none("delete from users where id = $1", id);        }    }}// Overriding 'extend' event;var options = {    extend: function (obj) {        // obj = this;        this.users = repUsers(this);    }};// Usage example:db.users.add("John", true)    .then(function () {        // user added successfully;    })    .catch(function (error) {        // failed to add the user;    });</code></pre>
+    <pre class="prettyprint"><code>// It is best to extend the protocol by adding whole entity repositories to it// as shown in the following example.// Users repository;function repUsers(obj, dc) {    // NOTE: You can change the implementation based on `dc`;    return {        add: function (name, active) {            return obj.none("insert into users values($1, $2)", [name, active]);        },        delete: function (id) {            return obj.none("delete from users where id = $1", id);        }    }}// Overriding 'extend' event;var options = {    extend: function (obj, dc) {        // obj = this;        // dc = database context;        this.users = repUsers(this, dc);        // You can set different repositories based on `dc`    }};// Usage example:db.users.add("John", true)    .then(function () {        // user added successfully;    })    .catch(function (error) {        // failed to add the user;    });</code></pre>
 
 
 
@@ -1359,8 +1413,6 @@ will be rejected with that error.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -1389,16 +1441,6 @@ will be rejected with that error.</p>
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
 
@@ -1406,6 +1448,24 @@ will be rejected with that error.</p>
 <p>It is a safe copy of the connection string/object that was used when initializing <code>db</code> - the database instance.</p>
 <p>If the original connection contains a password, the safe copy contains it masked with symbol <code>#</code>, so the connection
 can be logged safely, without exposing the password.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dc</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Database Context that was used when creating the database object (see <a href="Database.html">Database</a>). It is set for all events.</p></td>
         </tr>
 
     
@@ -1427,16 +1487,6 @@ can be logged safely, without exposing the password.</p></td>
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
             
 
             
@@ -1462,18 +1512,11 @@ and <a href="global.html#event:receive">receive</a>.</p></td>
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents the connection. It is set always.</p></td>
+            <td class="description last"><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents the connection. It is set for all events, except for event <a href="global.html#event:error">error</a>
+when it is connection-related.</p></td>
         </tr>
 
     
@@ -1487,16 +1530,6 @@ and <a href="global.html#event:receive">receive</a>.</p></td>
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
             
 
             
@@ -1535,16 +1568,6 @@ handles the query formatting.</li>
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
 
@@ -1564,8 +1587,6 @@ while executing a task or transaction.</p>
 
         <th>Type</th>
 
-        
-        <th>Attributes</th>
         
 
         
@@ -1592,14 +1613,6 @@ while executing a task or transaction.</p>
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
@@ -1622,14 +1635,6 @@ while executing a task or transaction.</p>
             
             </td>
 
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
             
 
             
@@ -1654,22 +1659,30 @@ while executing a task or transaction.</p>
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
 
             <td class="description last"><p>Data/Time of when this task or transaction has finished, and the property is set only after this happened.</p>
 <p>Verifying for this property being set is the key condition to determining whether it is a <code>start</code> or <code>finish</code> notification
 during events <a href="global.html#event:task">task</a> and <a href="global.html#event:transact">transact</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dc</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Database Context that was used when creating the database object (see <a href="Database.html">Database</a>). It is the same as <code>e.dc</code>.</p></td>
         </tr>
 
     
@@ -1683,16 +1696,6 @@ during events <a href="global.html#event:task">task</a> and <a href="global.html
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
             
 
             
@@ -1717,16 +1720,6 @@ during events <a href="global.html#event:task">task</a> and <a href="global.html
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
 
@@ -1744,16 +1737,6 @@ during events <a href="global.html#event:task">task</a> and <a href="global.html
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
             
 
             
@@ -1781,16 +1764,6 @@ during events <a href="global.html#event:task">task</a> and <a href="global.html
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
             
 
             
@@ -1851,7 +1824,7 @@ the context object that was passed in.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line84">line 84</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line88">line 88</a>
     </li></ul></dd>
     
 
@@ -2046,7 +2019,7 @@ validation for regular queries, which is executed right after this notification.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line175">line 175</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line186">line 186</a>
     </li></ul></dd>
     
 
@@ -2185,7 +2158,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line244">line 244</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line255">line 255</a>
     </li></ul></dd>
     
 
@@ -2324,7 +2297,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line287">line 287</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line298">line 298</a>
     </li></ul></dd>
     
 

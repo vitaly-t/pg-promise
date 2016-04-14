@@ -197,13 +197,13 @@ function $main(options) {
         config.pg = $npm.pg.native;
         config.native = true;
     }
-
+    
     var Database = require('./database')(config);
-
-    var inst = function (cn) {
+    
+    var inst = function (cn, dc) {
         var t = typeof cn;
         if (cn &amp;&amp; (t === 'string' || t === 'object')) {
-            return new Database(cn, options, config);
+            return new Database(cn, dc, options, config);
         }
         // cannot access a database without connection details;
         throw new TypeError("Invalid connection details.");

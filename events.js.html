@@ -48,23 +48,25 @@ var $events = {
      *
      * @param {external:Client} client - $[pg.Client] object that represents connection with the database.
      *
+     * @param {} dc - Database Context that was used when creating the database object (see {@link Database}).
+     *
      * @example
      *
      * var options = {
      *
      *     // pg-promise initialization options...
      *
-     *     connect: function (client) {
+     *     connect: function (client, dc) {
      *         var cp = client.connectionParameters;
      *         console.log("Connected to database:", cp.database);
      *     }
      *
      * };
      */
-    connect: function (options, client) {
-        if (options &amp;&amp; options.connect instanceof Function) {
+    connect: function (ctx, client) {
+        if (ctx.options &amp;&amp; ctx.options.connect instanceof Function) {
             try {
-                options.connect(client);
+                ctx.options.connect(client, ctx.dc);
             } catch (err) {
                 // have to silence errors here;
                 // cannot allow unhandled errors while connecting to the database,
@@ -73,7 +75,7 @@ var $events = {
             }
         }
     },
-
+    
     /**
      * @event disconnect
      * @description
@@ -84,23 +86,25 @@ var $events = {
      *
      * @param {external:Client} client - $[pg.Client] object that represents connection with the database.
      *
+     * @param {} dc - Database Context that was used when creating the database object (see {@link Database}).
+     *
      * @example
      *
      * var options = {
      *
      *     // pg-promise initialization options...
      *
-     *     disconnect: function(client){
+     *     disconnect: function(client, dc){
      *        var cp = client.connectionParameters;
      *        console.log("Disconnecting from database:", cp.database);
      *     }
      *
      * };
      */
-    disconnect: function (options, client) {
-        if (options &amp;&amp; options.disconnect instanceof Function) {
+    disconnect: function (ctx, client) {
+        if (ctx.options &amp;&amp; ctx.options.disconnect instanceof Function) {
             try {
-                options.disconnect(client);
+                ctx.options.disconnect(client, ctx.dc);
             } catch (err) {
                 // have to silence errors here;
                 // cannot allow unhandled errors while disconnecting from the database,
@@ -124,7 +128,7 @@ var $events = {
      * This is a shared-type object that's passed in with the following events: {@link event:query query},
      * {@link event:receive receive}, {@link event:error error}, {@link event:task task} and {@link event:transact transact}.
      *
-     * @param {String|Object} [e.cn]
+     * @param {String|Object} e.cn
      *
      * Set only for event {@link event:error error}, and only when the error is connection-related.
      *
@@ -133,16 +137,20 @@ var $events = {
      * If the original connection contains a password, the safe copy contains it masked with symbol `#`, so the connection
      * can be logged safely, without exposing the password.
      *
-     * @param {String|Object} [e.query]
+     * @param {} e.dc
+     * Database Context that was used when creating the database object (see {@link Database}). It is set for all events.
+     *
+     * @param {String|Object} e.query
      *
      * Query string/object that was passed into the query method. This property is only set during events {@link event:query query}
      * and {@link event:receive receive}.
      *
      * @param {external:Client} e.client
      *
-     * $[pg.Client] object that represents the connection. It is set always.
+     * $[pg.Client] object that represents the connection. It is set for all events, except for event {@link event:error error}
+     * when it is connection-related.
      *
-     * @param {} [e.params] - Formatting parameters for the query.
+     * @param {} e.params - Formatting parameters for the query.
      *
      * It is set only for events {@link event:query query}, {@link event:receive receive} and {@link event:error error}, and only
      * when it is needed for logging. This library takes an extra step in figuring out when formatting parameters are of any value
@@ -156,7 +164,7 @@ var $events = {
      * - there were no parameters passed into the query method;
      * - property `query` of this object already contains all the formatting values in it, so logging only the query is sufficient.
      *
-     * @param {Object} [e.ctx] - Task/Transaction Context Object.
+     * @param {Object} e.ctx - Task/Transaction Context Object.
      *
      * This property is always set for events {@link event:task task} and {@link event:transact transact}, while for events
      * {@link event:query query}, {@link event:receive receive} and {@link event:error error} it is only set when the event occurred
@@ -168,24 +176,27 @@ var $events = {
      * @param {Date} e.ctx.start
      * Date/Time of when this task or transaction started the execution.
      *
-     * @param {Date} [e.ctx.finish]
+     * @param {Date} e.ctx.finish
      * Data/Time of when this task or transaction has finished, and the property is set only after this happened.
      *
      * Verifying for this property being set is the key condition to determining whether it is a `start` or `finish` notification
      * during events {@link event:task task} and {@link event:transact transact}.
      *
-     * @param {} [e.ctx.tag]
+     * @param {} e.ctx.dc
+     * Database Context that was used when creating the database object (see {@link Database}). It is the same as `e.dc`.
+     *
+     * @param {} e.ctx.tag
      * Tag value as it was passed into the task or transaction.
      *
-     * @param {Boolean} [e.ctx.success]
+     * @param {Boolean} e.ctx.success
      * Once the operation is finished, this property indicates whether it was successful.
      *
-     * @param {} [e.ctx.result]
+     * @param {} e.ctx.result
      * Once the operation has finished, this property contains its result, depending on property `success`:
      * - data resolved by the operation, if `success` = `true`
      * - error / rejection reason, if `success` = `false`
      *
-     * @param {Object} [e.ctx.context]
+     * @param {Object} e.ctx.context
      * If the operation was invoked with an object context - `task.call(obj,...)` or `tx.call(obj,...)`, this property is set with
      * the context object that was passed in.
      */
@@ -379,6 +390,8 @@ var $events = {
      *
      *     error: function (err, e) {
      *
+     *         // e.dc = Database Context
+     *
      *         if (e.cn) {
      *             // this is a connection-related error
      *             // cn = safe connection details passed into the library:
@@ -432,7 +445,9 @@ var $events = {
      *
      * The library will suppress any error thrown by the handler and write it into the console.
      *
-     * @param {Object} obj - protocol object to be extended.
+     * @param {Object} obj - Protocol object to be extended.
+     *
+     * @param {} dc - Database Context that was used when creating the database object.
      *
      * @example
      *
@@ -440,8 +455,9 @@ var $events = {
      * // that will insert one binary image and resolve with the new record id.
      *
      * var options = {
-     *     extend: function (obj) {
+     *     extend: function (obj, dc) {
      *         // obj = this;
+     *         // dc = database context;
      *         obj.addImage = function (data) {
      *             return obj.one("insert into images(data) values($1) returning id", '\\x' + data);
      *         }
@@ -454,7 +470,8 @@ var $events = {
      * // as shown in the following example.
      *
      * // Users repository;
-     * function repUsers(obj) {
+     * function repUsers(obj, dc) {
+     *     // NOTE: You can change the implementation based on `dc`;
      *     return {
      *         add: function (name, active) {
      *             return obj.none("insert into users values($1, $2)", [name, active]);
@@ -467,9 +484,11 @@ var $events = {
      *
      * // Overriding 'extend' event;
      * var options = {
-     *     extend: function (obj) {
+     *     extend: function (obj, dc) {
      *         // obj = this;
-     *         this.users = repUsers(this);
+     *         // dc = database context;
+     *         this.users = repUsers(this, dc);
+     *         // You can set different repositories based on `dc`
      *     }
      * };
      *
@@ -483,10 +502,10 @@ var $events = {
      *     });
      *
      */
-    extend: function (options, obj) {
+    extend: function (options, obj, dc) {
         if (options &amp;&amp; options.extend instanceof Function) {
             try {
-                options.extend.call(obj, obj);
+                options.extend.call(obj, obj, dc);
             } catch (err) {
                 // have to silence errors here;
                 // the result of throwing unhandled errors while
