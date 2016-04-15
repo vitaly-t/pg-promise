@@ -565,7 +565,7 @@ function Database(cn, dc, options, config) {
         $npm.utils.lock(obj, false, ctx.options);
         
         // extend the protocol;
-        $npm.events.extend(ctx.options, obj, dc);
+        $npm.events.extend(ctx.options, obj, ctx.dc);
 
         // freeze the protocol permanently;
         $npm.utils.lock(obj, true, ctx.options);
