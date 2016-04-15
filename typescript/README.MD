@@ -47,8 +47,8 @@ interface Extensions {
 
 // pg-promise initialization options:
 var options = {
-    extend: function (obj, dc) {
-        obj.findUser = (userId)=> {
+    extend: obj=> {
+        obj.findUser = userId=> {
             return obj.one('SELECT * FROM Users WHERE id=$1', userId);
         }
     }
@@ -68,9 +68,9 @@ And if you want strict initialization options, with inline type casting, you can
 
 ```ts
 // extended initialization:
-var pgp = pgPromise<Extensions>({    
-    extend: function (obj, dc) {
-        obj.findUser = (userId)=> {
+var pgp = pgPromise<Extensions>({
+    extend: obj=> {
+        obj.findUser = userId=> {
             return obj.one('SELECT * FROM Users WHERE id=$1', userId);
         }
     }
