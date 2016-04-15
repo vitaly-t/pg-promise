@@ -1,4 +1,4 @@
-/// <reference path="../../typescript/pg-promise.d.ts" />
+/// <reference path="../../typescript/pg-promise" />
 
 import * as lib from "pg-promise";
 

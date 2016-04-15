@@ -2,9 +2,9 @@
 // Requires pg-promise v3.8.0 or later.
 ////////////////////////////////////////
 
-/// <reference path="./pg.d.ts" />
-/// <reference path="./pg-minify.d.ts" />
-/// <reference path="./promise.d.ts" />
+/// <reference path="./pg" />
+/// <reference path="./pg-minify" />
+/// <reference path="./promise" />
 
 declare module "pg-promise" {
 
@@ -43,12 +43,6 @@ declare module "pg-promise" {
 
         tx(cb:(t:Task<Ext>&Ext)=>any):XPromise<any>;
         tx(tag:any, cb:(t:Task<Ext>&Ext)=>any):XPromise<any>;
-    }
-
-    // Database full protocol;
-    // API: http://vitaly-t.github.io/pg-promise/Database.html
-    interface Database<Ext> extends BaseProtocol<Ext> {
-        connect():XPromise<Connected<Ext>>;
     }
 
     // Database protocol in connected state;
@@ -203,7 +197,7 @@ declare module "pg-promise" {
     // Post-initialization interface;
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface pgMain {
-        <Ext>(cn:string|Config, dc?:any):Database<Ext> & Ext,
+        <Ext>(cn:string|Config, dc?:any):pgPromise.Database<Ext> & Ext,
         PromiseAdapter:typeof pgPromise.PromiseAdapter;
         QueryFile:typeof pgPromise.QueryFile;
         queryResult:typeof pgPromise.queryResult;
@@ -250,6 +244,15 @@ declare module "pg-promise" {
         export var errors:Errors;
         export var as:Formatting;
 
+        // Database full protocol;
+        // API: http://vitaly-t.github.io/pg-promise/Database.html
+        //
+        // We export this interface only to be able to help IntelliSense cast extension types correctly,
+        // which doesn't always work, depending on the version of IntelliSense being used. 
+        export interface Database<Ext> extends BaseProtocol<Ext> {
+            connect():XPromise<Connected<Ext>>;
+        }
+
     }
 
     // Empty Extensions
@@ -270,7 +273,7 @@ declare module "pg-promise" {
         task?:(e:EventContext) => void;
         transact?:(e:EventContext) => void;
         error?:(err:any, e:EventContext) => void;
-        extend?:(obj:Database<Ext>&Ext, dc:any) => void;
+        extend?:(obj:pgPromise.Database<Ext>&Ext, dc:any) => void;
         noLocking?:boolean;
         capSQL?:boolean;
     }
