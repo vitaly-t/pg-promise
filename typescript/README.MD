@@ -34,38 +34,40 @@ And if you want to make full use of a custom promise library, see file [promise.
 #### Protocol Extensions
 
 The library supports protocol extensions via event [extend], which is a special case when it comes to TypeScript,
-as that event dynamically extends the protocol during its callback. And dynamic types in TypeScript usually
-require additional casting.
+as it dynamically extends the protocol during its callback, which in TypeScript implies type casting.
 
-In order to support such dynamic protocol extensions automatically, without any casting, you need to mirror the
+In order to support dynamic protocol extensions automatically, without any casting, you need to mirror the
 protocol extensions through an interface, and then parametrize initialization calls as shown below. 
 
 ```ts
-// Your protocol extensions:
+// your protocol extensions:
 interface Extensions {
     findUser(userId:number):Promise<any>;
 }
 
-// Initialization with the standard protocol extension:
-var pgp = pgPromise({    
+// pg-promise initialization options:
+var options = {
     extend: function (obj, dc) {
-        obj['findUser'] = (userId)=> {
+        obj.findUser = (userId)=> {
             return obj.one('SELECT * FROM Users WHERE id=$1', userId);
         }
     }
-});
+};
 
-// Creating extended database object:
+// initializing the library:
+var pgp = pgPromise(options);
+
+// creating an extended database object:
 var db = pgp<Extensions>("postgres://username:password@host:port/database");
 
-// Now you can use the extensions:
+// now you can use the extensions:
 db.findUser(123).then(...);
 ```
 
-You can optionally extend the library's initialization object to allow explicit protocol extension during event `extend`:
+And if you want strict initialization options, with inline type casting, you can do this:
 
 ```ts
-// Extended initialization:
+// extended initialization:
 var pgp = pgPromise<Extensions>({    
     extend: function (obj, dc) {
         obj.findUser = (userId)=> {
@@ -75,7 +77,9 @@ var pgp = pgPromise<Extensions>({
 });
 ```
 
+For a more complete and advanced example of using [pg-promise] with TypeScript, check out [pg-promise-demo]. 
 
+[pg-promise-demo]:https://github.com/vitaly-t/pg-promise-demo
 [extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
 [promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/promise.d.ts
 [pg-promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-promise.d.ts
