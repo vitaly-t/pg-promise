@@ -10,7 +10,7 @@
  $ typings install bluebird --save
 
  2. Add the reference path here, similar to this:
- /// <reference path='../typings/main' />
+ /// <reference path='../../../typings/main' />
 
  3. Replace line `export=Promise` with the following:
  import * as promise from 'bluebird';
