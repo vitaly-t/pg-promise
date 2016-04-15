@@ -1,6 +1,6 @@
-/// <reference path="../../typescript/pg-promise" />
+/// <reference path='../../typescript/pg-promise' />
 
-import * as pgPromise from "pg-promise";
+import * as pgPromise from 'pg-promise';
 
 interface Extensions {
     findUser(userId:number):Promise<any>;

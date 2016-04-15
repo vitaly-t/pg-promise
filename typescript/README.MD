@@ -12,15 +12,15 @@ Complete TypeScript declarations for [pg-promise] version 3.8.0 or later.
 #### Usage
 
 ```ts
-/// <reference path="node_modules/pg-promise/typescript/pg-promise" />
+/// <reference path='node_modules/pg-promise/typescript/pg-promise' />
 
-import * as pgPromise from "pg-promise";
+import * as pgPromise from 'pg-promise';
 
 var pgp = pgPromise({
     // Initialization Options
 });
 
-var cn = "postgres://username:password@host:port/database";
+var cn = 'postgres://username:password@host:port/database';
 
 var db = pgp(cn);
 ```
@@ -42,10 +42,10 @@ In order to support dynamic protocol extensions automatically, you need to mirro
 an interface, and then re-cast the database object with it, as shown below. 
 
 ```ts
-/// <reference path="node_modules/pg-promise/typescript/pg-promise" />
+/// <reference path='node_modules/pg-promise/typescript/pg-promise' />
 
-// importing as 'pgPromise' aids IntelliSense inspection;
-import * as pgPromise from "pg-promise";
+// importing as 'pgPromise' helps IntelliSense inspection;
+import * as pgPromise from 'pg-promise';
 
 // your protocol extensions:
 interface IExtensions {
@@ -61,7 +61,7 @@ var options = {
     }
 };
 
-var cn = "postgres://username:password@host:port/database";
+var cn = 'postgres://username:password@host:port/database';
 
 // initializing the library:
 var pgp = pgPromise(options);

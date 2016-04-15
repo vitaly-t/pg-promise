@@ -6,7 +6,7 @@
 // pg: https://github.com/brianc/node-postgres
 //////////////////////////////////////////////////////////////////////////////
 
-declare module "pg" {
+declare module 'pg' {
 
     namespace pg {
 
@@ -114,7 +114,7 @@ declare module "pg" {
         class Query {
             // not needed within pg-promise;
         }
-        
+
         class Client {
             constructor(config:any);
 
@@ -127,7 +127,7 @@ declare module "pg" {
             host:string;
             ssl:boolean;
         }
-        
+
         var defaults:IDefaults;
         var types:ITypes;
 

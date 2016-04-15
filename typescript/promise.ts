@@ -10,10 +10,10 @@
  $ typings install bluebird --save
 
  2. Add the reference path here, similar to this:
- /// <reference path="../typings/main" />
+ /// <reference path='../typings/main' />
 
  3. Replace line `export=Promise` with the following:
- import * as promise from "bluebird";
+ import * as promise from 'bluebird';
  export=promise;
 
  Unfortunately, for now this is the only way to declare a custom promise interface properly.
@@ -23,6 +23,6 @@
 
  */
 
-declare module "promise" {
+declare module 'promise' {
     export=Promise;
 }

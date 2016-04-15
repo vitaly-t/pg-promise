@@ -6,7 +6,7 @@
 // pg-minify: https://github.com/vitaly-t/pg-minify
 //////////////////////////////////////////////////////////
 
-declare module "pg-minify" {
+declare module 'pg-minify' {
 
     interface IErrorPosition {
         line:number,

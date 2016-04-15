@@ -1,6 +1,6 @@
-/// <reference path="../../typescript/pg-promise" />
+/// <reference path='../../typescript/pg-promise' />
 
-import * as pgPromise from "pg-promise";
+import * as pgPromise from 'pg-promise';
 
 function create(cb) {
     return {};

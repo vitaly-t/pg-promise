@@ -2,15 +2,15 @@
 // Requires pg-promise v3.8.0 or later.
 ////////////////////////////////////////
 
-/// <reference path="./pg" />
-/// <reference path="./pg-minify" />
-/// <reference path="./promise" />
+/// <reference path='./pg' />
+/// <reference path='./pg-minify' />
+/// <reference path='./promise' />
 
-declare module "pg-promise" {
+declare module 'pg-promise' {
 
-    import * as pg from "pg";
-    import * as pgMinify from "pg-minify";
-    import XPromise=require("promise");
+    import * as pg from 'pg';
+    import * as pgMinify from 'pg-minify';
+    import XPromise=require('promise');
 
     // Base database protocol
     // API: http://vitaly-t.github.io/pg-promise/Database.html

@@ -1,6 +1,6 @@
-/// <reference path="../../typescript/pg-promise" />
+/// <reference path='../../typescript/pg-promise' />
 
-import * as pgMinify from "pg-minify";
+import * as pgMinify from 'pg-minify';
 
 var sql = pgMinify('sql--comment');
 

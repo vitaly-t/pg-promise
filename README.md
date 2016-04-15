@@ -109,7 +109,7 @@ var cn = {
 * Connection String:
 
 ```javascript
-var cn = "postgres://username:password@host:port/database";
+var cn = 'postgres://username:password@host:port/database';
 ```
 
 Create a global/shared database object from the connection details:
@@ -286,15 +286,15 @@ var queryResult = {
 
 In the following generic-query example we indicate that the call can return anything:
 ```javascript
-db.query("select * from users");
+db.query('select * from users');
 ```
 which is equivalent to making one of the following calls:
 ```javascript
 var qrm = pgp.queryResult;
-db.query("select * from users", undefined, qrm.many | qrm.none);
-db.query("select * from users", undefined, qrm.any);
-db.manyOrNone("select * from users");
-db.any("select * from users");
+db.query('select * from users', undefined, qrm.many | qrm.none);
+db.query('select * from users', undefined, qrm.any);
+db.manyOrNone('select * from users');
+db.any('select * from users');
 ```
 
 This usage pattern is facilitated through result-specific methods that can be used instead of the generic query:
@@ -335,7 +335,7 @@ The library supports named parameters in query formatting, with the syntax of `$
 pairs: `{}`, `()`, `<>`, `[]`, `//`
 
 ```javascript
-db.query("select * from users where name=${name} and active=$/active/", {
+db.query('select * from users where name=${name} and active=$/active/', {
     name: 'John',
     active: true
 });
@@ -561,11 +561,11 @@ Queries in a detached promise chain maintain connection independently, they each
 execute the query and then release the connection back to the pool.
 
 ```javascript
-db.one("select * from users where id=$1", 123) // find the user from id;
+db.one('select * from users where id=$1', 123) // find the user from id;
     .then(function (data) {
         // find 'login' records for the user found:
-        return db.query("select * from audit where event=$1 and userId=$2",
-            ["login", data.id]);
+        return db.query('select * from audit where event=$1 and userId=$2',
+            ['login', data.id]);
     })
     .then(function (data) {
         console.log(data); // display found audit records;
@@ -592,7 +592,7 @@ db.connect()
     .then(function (obj) {
         sco = obj; // save the connection object;
         // find active users created before today:
-        return sco.query("select * from users where active=$1 and created < $2",
+        return sco.query('select * from users where active=$1 and created < $2',
             [true, new Date()]);
     })
     .then(function (data) {
@@ -656,8 +656,8 @@ Transactions can be executed within both shared and detached promise chains in t
 db.tx(function (t) {
     // t = this;
     // creating a sequence of transaction queries:
-    var q1 = this.none("update users set active=$1 where id=$2", [true, 123]);
-    var q2 = this.one("insert into audit(entity, id) values($1, $2) returning id",
+    var q1 = this.none('update users set active=$1 where id=$2', [true, 123]);
+    var q2 = this.one('insert into audit(entity, id) values($1, $2) returning id',
         ['users', 123]);
 
     // returning a promise that determines a successful transaction:
@@ -684,13 +684,13 @@ var sco; // shared connection object;
 db.connect()
     .then(function (obj) {
         sco = obj;
-        return sco.oneOrNone("select * from users where active=$1 and id=$1", [true, 123]);
+        return sco.oneOrNone('select * from users where active=$1 and id=$1', [true, 123]);
     })
     .then(function (data) {
         return sco.tx(function (t) {
             // t = this;
-            var q1 = this.none("update users set active=$1 where id=$2", [false, data.id]);
-            var q2 = this.one("insert into audit(entity, id) values($1, $2) returning id",
+            var q1 = this.none('update users set active=$1 where id=$2', [false, data.id]);
+            var q2 = this.one('insert into audit(entity, id) values($1, $2) returning id',
                 ['users', 123]);
 
             // returning a promise that determines a successful transaction:
@@ -723,18 +723,18 @@ Example:
 db.tx(function (t) {
     // t = this;
     var queries = [
-        this.none("drop table users;"),
-        this.none("create table users(id serial not null, name text not null)")
+        this.none('drop table users;'),
+        this.none('create table users(id serial not null, name text not null)')
     ];
     for (var i = 1; i <= 100; i++) {
-        queries.push(this.none("insert into users(name) values($1)", "name-" + i));
+        queries.push(this.none('insert into users(name) values($1)', 'name-' + i));
     }
     queries.push(
         this.tx(function (t1) {
             // t1 = this != t;
             return this.tx(function (t2) {
                 // t2 = this != t1 != t;
-                return this.one("select count(*) from users");
+                return this.one('select count(*) from users');
             });
         }));
     return this.batch(queries);
@@ -782,11 +782,11 @@ function source(index, data, delay) {
     // based on the index of the sequence;
     switch (index) {
         case 0:
-            return this.query("select 0");
+            return this.query('select 0');
         case 1:
-            return this.query("select 1");
+            return this.query('select 1');
         case 2:
-            return this.query("select 2");
+            return this.query('select 2');
     }
     // returning or resolving with undefined ends the sequence;
     // throwing an error will result in a reject;
@@ -842,7 +842,7 @@ var tmSRD = new TransactionMode({
 });
 
 function myTransaction() {
-    return this.query("SELECT * FROM table");
+    return this.query('SELECT * FROM table');
 }
 
 myTransaction.txMode = tmSRD; // assign transaction mode;
@@ -871,8 +871,8 @@ you can implement your tasks and transactions as generators.
 ```js
 function * getUser(t) {
     // t = this;
-    let user = yield this.oneOrNone("select * from users where id=$1", 123);
-    return yield user || this.one("insert into users(name) values($1) returning *", "John");
+    let user = yield this.oneOrNone('select * from users where id=$1', 123);
+    return yield user || this.one('insert into users(name) values($1) returning *', 'John');
 }
 
 db.task(getUser)

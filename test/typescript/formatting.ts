@@ -1,6 +1,6 @@
-/// <reference path="../../typescript/pg-promise" />
+/// <reference path='../../typescript/pg-promise' />
 
-import * as pgPromise from "pg-promise";
+import * as pgPromise from 'pg-promise';
 
 var value1 = pgPromise.as.array([]);
 var value2 = pgPromise.as.array(()=>[]);
