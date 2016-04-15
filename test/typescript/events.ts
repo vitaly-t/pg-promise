@@ -1,8 +1,8 @@
 /// <reference path="../../typescript/pg-promise" />
 
-import * as lib from "pg-promise";
+import * as pgPromise from "pg-promise";
 
-var pgp = lib({
+var pgp = pgPromise({
     receive: (data, result, e)=> {
         var dc = e.dc;
         var d = data[0].prop;

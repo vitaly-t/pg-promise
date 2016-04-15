@@ -8,7 +8,7 @@
 
 declare module "pg-minify" {
 
-    interface ErrorPosition {
+    interface IErrorPosition {
         line:number,
         column:number
     }
@@ -28,7 +28,7 @@ declare module "pg-minify" {
             stack:string;
             error:string;
             code:parsingErrorCode;
-            position:ErrorPosition;
+            position:IErrorPosition;
         }
 
     }

@@ -16,11 +16,11 @@ Complete TypeScript declarations for [pg-promise] version 3.8.0 or later.
 
 import * as pgPromise from "pg-promise";
 
-var cn = "postgres://username:password@host:port/database";
-
 var pgp = pgPromise({
     // Initialization Options
 });
+
+var cn = "postgres://username:password@host:port/database";
 
 var db = pgp(cn);
 ```
@@ -42,8 +42,13 @@ In order to support dynamic protocol extensions automatically, you need to mirro
 an interface, and then re-cast the database object with it, as shown below. 
 
 ```ts
+/// <reference path="node_modules/pg-promise/typescript/pg-promise" />
+
+// importing as 'pgPromise' aids IntelliSense inspection;
+import * as pgPromise from "pg-promise";
+
 // your protocol extensions:
-interface Extensions {
+interface IExtensions {
     findUser(userId:number):Promise<any>;
 }
 
@@ -56,11 +61,13 @@ var options = {
     }
 };
 
+var cn = "postgres://username:password@host:port/database";
+
 // initializing the library:
 var pgp = pgPromise(options);
 
 // database object with extensions:
-var db = <pgPromise.Database<Extensions>&Extensions>pgp(cn);
+var db = <pgPromise.IDatabase<IExtensions>&IExtensions>pgp(cn);
 
 // now you can use the extensions everywhere (including tasks and transactions):
 db.findUser(123).then(...);
@@ -70,7 +77,7 @@ And if you want strict initialization options, with inline type casting, you can
 
 ```ts
 // extended initialization:
-var pgp = pgPromise<Extensions>({
+var pgp = pgPromise<IExtensions>({
     extend: obj=> {
         obj.findUser = userId=> {
             return obj.one('SELECT * FROM Users WHERE id=$1', userId);

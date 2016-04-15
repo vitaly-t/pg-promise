@@ -2,9 +2,11 @@
 
 SET PARAMS=--target es6 --module commonjs
 
-call tsc init.ts %PARAMS%
-call tsc events.ts %PARAMS%
-call tsc adapter.ts %PARAMS%
-call tsc queries.ts %PARAMS%
-call tsc formatting.ts %PARAMS%
-call tsc extensions.ts %PARAMS%
+call tsc init %PARAMS%
+call tsc events %PARAMS%
+call tsc adapter %PARAMS%
+call tsc queries %PARAMS%
+call tsc formatting %PARAMS%
+call tsc extensions %PARAMS%
+call tsc minify %PARAMS%
+call tsc pg %PARAMS%

@@ -1,8 +1,8 @@
 /// <reference path="../../typescript/pg-promise" />
 
-import * as lib from "pg-promise";
+import * as pgPromise from "pg-promise";
 
-var pgp = lib({
+var pgp = pgPromise({
     capSQL: true,
     pgFormatting: true,
     pgNative: true
@@ -12,9 +12,9 @@ interface Test {
     hello:string;
 }
 
-var db = pgp<Test>('connection');
+var db = <pgPromise.IDatabase<Test>&Test>pgp('connection');
 
-var txMode = new lib.txMode.TransactionMode();
+var txMode = new pgPromise.txMode.TransactionMode();
 
 function myTransaction(t) {
 }

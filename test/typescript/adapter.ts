@@ -1,15 +1,15 @@
 /// <reference path="../../typescript/pg-promise" />
 
-import * as lib from "pg-promise";
+import * as pgPromise from "pg-promise";
 
 function create(cb) {
     return {};
 }
 
-var adapter = new lib.PromiseAdapter(create, (data)=> {
+var adapter = new pgPromise.PromiseAdapter(create, (data)=> {
 }, (error)=> {
 });
 
-var pgp = lib({
+var pgp = pgPromise({
     promiseLib: adapter
 });

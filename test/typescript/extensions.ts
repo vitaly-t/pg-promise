@@ -1,12 +1,12 @@
 /// <reference path="../../typescript/pg-promise" />
 
-import * as lib from "pg-promise";
+import * as pgPromise from "pg-promise";
 
 interface Extensions {
     findUser(userId:number):Promise<any>;
 }
 
-var pgp = lib({
+var pgp = pgPromise({
     extend: function (obj, dc) {
         obj['findUser'] = (userId)=> {
             return obj.one('', userId);
@@ -16,7 +16,7 @@ var pgp = lib({
 
 var db = pgp('connection');
 
-var pgpExt = lib<Extensions>({
+var pgpExt = pgPromise<Extensions>({
     extend: function (obj) {
         obj.findUser = (userId)=> {
             return obj.one('', userId);
@@ -24,13 +24,21 @@ var pgpExt = lib<Extensions>({
     }
 });
 
-var dbExt1 = pgp<Extensions>('connection');
-var dbExt2 = pgpExt<Extensions>('connection');
+var dbExt1 = <pgPromise.IDatabase<Extensions>&Extensions>pgp('connection');
+var dbExt2 = <pgPromise.IDatabase<Extensions>&Extensions>pgpExt('connection');
 
 dbExt1.findUser(123).then();
 dbExt2.findUser(123).then();
 
 dbExt1.task(function (t) {
+    return t.findUser(123);
+});
+
+dbExt2.task(function (t) {
+    return t.findUser(123);
+});
+
+dbExt1.tx(t=> {
     return t.findUser(123);
 });
 

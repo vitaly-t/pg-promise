@@ -14,7 +14,7 @@ declare module "pg-promise" {
 
     // Base database protocol
     // API: http://vitaly-t.github.io/pg-promise/Database.html
-    interface BaseProtocol<Ext> {
+    interface IBaseProtocol<Ext> {
 
         // generic query method;
         query(query:any, values?:any, qrm?:pgPromise.queryResult):XPromise<any>;
@@ -27,7 +27,7 @@ declare module "pg-promise" {
         manyOrNone(query:any, values?:any):XPromise<Array<any>>;
         any(query:any, values?:any):XPromise<Array<any>>;
 
-        result(query:any, values?:any):XPromise<pg.Result>;
+        result(query:any, values?:any):XPromise<pg.IResult>;
 
         stream(qs:Object, init:(stream:Object)=>void):XPromise<{processed:number, duration:number}>;
 
@@ -38,21 +38,21 @@ declare module "pg-promise" {
 
         // tasks & transactions
 
-        task(cb:(t:Task<Ext>&Ext)=>any):XPromise<any>;
-        task(tag:any, cb:(t:Task<Ext>&Ext)=>any):XPromise<any>;
+        task(cb:(t:ITask<Ext>&Ext)=>any):XPromise<any>;
+        task(tag:any, cb:(t:ITask<Ext>&Ext)=>any):XPromise<any>;
 
-        tx(cb:(t:Task<Ext>&Ext)=>any):XPromise<any>;
-        tx(tag:any, cb:(t:Task<Ext>&Ext)=>any):XPromise<any>;
+        tx(cb:(t:ITask<Ext>&Ext)=>any):XPromise<any>;
+        tx(tag:any, cb:(t:ITask<Ext>&Ext)=>any):XPromise<any>;
     }
 
     // Database protocol in connected state;
-    interface Connected<Ext> extends BaseProtocol<Ext> {
+    interface IConnected<Ext> extends IBaseProtocol<Ext> {
         done():void;
     }
 
     // Task/Transaction interface;
     // API: http://vitaly-t.github.io/pg-promise/Task.html
-    interface Task<Ext> extends BaseProtocol<Ext> {
+    interface ITask<Ext> extends IBaseProtocol<Ext> {
 
         // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md
         batch(values:Array<any>, cb?:(index:number, success:boolean, result:any, delay:number)=>any):XPromise<Array<any>>;
@@ -66,12 +66,12 @@ declare module "pg-promise" {
         sequence(source:(index:number, data:any, delay:number)=>any, dest?:(index:number, data:any, delay:number)=>any, limit?:number, track?:boolean):XPromise<any>;
         sequence(source:(index:number, data:any, delay:number)=>any, options:{dest?:(index:number, data:any, delay:number)=>any, limit?:number, track?:boolean}):XPromise<any>;
 
-        ctx:TaskContext;
+        ctx:ITaskContext;
     }
 
     // Query formatting namespace;
     // API: http://vitaly-t.github.io/pg-promise/formatting.html
-    interface Formatting {
+    interface IFormatting {
 
         array(arr:Array<any>|(()=>Array<any>)):string;
 
@@ -98,20 +98,9 @@ declare module "pg-promise" {
         value(value:any|(()=>any)):string;
     }
 
-    // Generic Event Context interface;
-    // See: http://vitaly-t.github.io/pg-promise/global.html#event:query
-    interface EventContext {
-        client:pg.Client;
-        cn:any;
-        dc:any;
-        query:any;
-        params:any;
-        ctx:TaskContext;
-    }
-
     // Event context extension for tasks/transactions;
     // See: http://vitaly-t.github.io/pg-promise/global.html#event:query
-    interface TaskContext {
+    interface ITaskContext {
         isTX:boolean;
         start:Date;
         finish:Date;
@@ -122,9 +111,20 @@ declare module "pg-promise" {
         context:Object;
     }
 
+    // Generic Event Context interface;
+    // See: http://vitaly-t.github.io/pg-promise/global.html#event:query
+    interface IEventContext {
+        client:pg.Client;
+        cn:any;
+        dc:any;
+        query:any;
+        params:any;
+        ctx:ITaskContext;
+    }
+
     // Database connection configuration interface;
     // See: https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js#L36
-    interface Config {
+    interface IConfig {
         host?:string,
         port?:number,
         database:string,
@@ -163,7 +163,7 @@ declare module "pg-promise" {
         stack:string;
 
         // extended properties:
-        result:pg.Result;
+        result:pg.IResult;
         received:number;
         code:queryResultErrorCode;
         query:string;
@@ -182,41 +182,46 @@ declare module "pg-promise" {
 
     // Errors namespace
     // API: http://vitaly-t.github.io/pg-promise/errors.html
-    interface Errors {
+    interface IErrors {
         QueryResultError:typeof QueryResultError;
         queryResultErrorCode:typeof queryResultErrorCode;
     }
 
     // Transaction Mode namespace;
     // API: http://vitaly-t.github.io/pg-promise/txMode.html
-    interface TXMode {
+    interface ITXMode {
         isolationLevel:typeof isolationLevel,
         TransactionMode:typeof TransactionMode
     }
 
     // Post-initialization interface;
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-    interface pgMain {
-        <Ext>(cn:string|Config, dc?:any):pgPromise.Database<Ext> & Ext,
+    interface IMain {
+        (cn:string|IConfig, dc?:any):pgPromise.IDatabase<IEmptyExt>,
         PromiseAdapter:typeof pgPromise.PromiseAdapter;
         QueryFile:typeof pgPromise.QueryFile;
         queryResult:typeof pgPromise.queryResult;
         minify:typeof pgMinify,
-        errors:Errors;
-        txMode:TXMode;
-        as:Formatting;
+        errors:IErrors;
+        txMode:ITXMode;
+        as:IFormatting;
         end():void,
-        pg:pg.PG
+        pg:typeof pg
+    }
+
+    // Empty Extensions
+    interface IEmptyExt {
+
     }
 
     // Main protocol of the library;
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     namespace pgPromise {
-        export var minify:typeof pgMinify;
+        var minify:typeof pgMinify;
 
         // Query Result Mask;
         // API: http://vitaly-t.github.io/pg-promise/global.html#queryResult
-        export enum queryResult {
+        enum queryResult {
             one = 1,
             many = 2,
             none = 4,
@@ -225,7 +230,7 @@ declare module "pg-promise" {
 
         // Query File class;
         // API: http://vitaly-t.github.io/pg-promise/QueryFile.html
-        export class QueryFile {
+        class QueryFile {
             constructor(file:string, options?:{
                 debug?:boolean,
                 minify?:boolean|'after',
@@ -236,53 +241,47 @@ declare module "pg-promise" {
 
         // Promise Adapter class;
         // API: http://vitaly-t.github.io/pg-promise/PromiseAdapter.html
-        export class PromiseAdapter {
+        class PromiseAdapter {
             constructor(create:(cb)=>Object, resolve:(data:any)=>void, reject:(reason:any)=>void);
         }
 
-        export var txMode:TXMode;
-        export var errors:Errors;
-        export var as:Formatting;
+        var txMode:ITXMode;
+        var errors:IErrors;
+        var as:IFormatting;
 
         // Database full protocol;
         // API: http://vitaly-t.github.io/pg-promise/Database.html
         //
         // We export this interface only to be able to help IntelliSense cast extension types correctly,
         // which doesn't always work, depending on the version of IntelliSense being used. 
-        export interface Database<Ext> extends BaseProtocol<Ext> {
-            connect():XPromise<Connected<Ext>>;
+        interface IDatabase<Ext> extends IBaseProtocol<Ext> {
+            connect():XPromise<IConnected<Ext>>;
         }
-
-    }
-
-    // Empty Extensions
-    interface EmptyExt {
 
     }
 
     // Library's Initialization Options
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-    interface InitializationOptions<Ext> {
+    interface IOptions<Ext> {
         pgFormatting?:boolean;
         pgNative?:boolean,
         promiseLib?:any;
         connect?:(client:pg.Client, dc:any) => void;
         disconnect?:(client:pg.Client, dc:any) => void;
-        query?:(e:EventContext) => void;
-        receive?:(data:Array<any>, result:pg.Result, e:EventContext) => void;
-        task?:(e:EventContext) => void;
-        transact?:(e:EventContext) => void;
-        error?:(err:any, e:EventContext) => void;
-        extend?:(obj:pgPromise.Database<Ext>&Ext, dc:any) => void;
+        query?:(e:IEventContext) => void;
+        receive?:(data:Array<any>, result:pg.IResult, e:IEventContext) => void;
+        task?:(e:IEventContext) => void;
+        transact?:(e:IEventContext) => void;
+        error?:(err:any, e:IEventContext) => void;
+        extend?:(obj:pgPromise.IDatabase<Ext>&Ext, dc:any) => void;
         noLocking?:boolean;
         capSQL?:boolean;
     }
 
     // Default library interface (before initialization)
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-    function pgPromise(options?:InitializationOptions<EmptyExt>):pgMain;
-    function pgPromise<Ext>(options?:InitializationOptions<Ext>):pgMain;
+    function pgPromise(options?:IOptions<IEmptyExt>):IMain;
+    function pgPromise<Ext>(options?:IOptions<Ext>):IMain;
 
     export=pgPromise;
-
 }
