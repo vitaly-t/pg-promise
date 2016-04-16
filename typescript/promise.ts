@@ -6,8 +6,8 @@
 
  Example of enabling declarations for Bluebird:
 
- 1. Install Bluebird TypeScript as you normally would:
- $ typings install bluebird --save
+ 1. Install Bluebird ambient TypeScript as you normally would:
+ $ typings install bluebird --ambient --save
 
  2. Add the reference path here, similar to this:
  /// <reference path='../../../typings/main' />
@@ -24,5 +24,5 @@
  */
 
 declare module 'promise' {
-    export=Promise;
+    export=Promise; // Using ES6 Promise by default
 }
