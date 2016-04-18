@@ -26,9 +26,11 @@ var pgpExt = pgPromise<Extensions>({
 
 var dbExt1 = <pgPromise.IDatabase<Extensions>&Extensions>pgp('connection');
 var dbExt2 = <pgPromise.IDatabase<Extensions>&Extensions>pgpExt('connection');
+var dbExt3 = pgpExt<Extensions>('connection');
 
 dbExt1.findUser(123).then();
 dbExt2.findUser(123).then();
+dbExt3.findUser(123).then();
 
 dbExt1.task(function (t) {
     return t.findUser(123);
@@ -38,10 +40,18 @@ dbExt2.task(function (t) {
     return t.findUser(123);
 });
 
+dbExt3.task(function (t) {
+    return t.findUser(123);
+});
+
 dbExt1.tx(t=> {
     return t.findUser(123);
 });
 
 dbExt2.tx(t=> {
+    return t.findUser(123);
+});
+
+dbExt3.tx(t=> {
     return t.findUser(123);
 });

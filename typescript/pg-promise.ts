@@ -198,6 +198,7 @@ declare module 'pg-promise' {
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface IMain {
         (cn:string|IConfig, dc?:any):pgPromise.IDatabase<IEmptyExt>,
+        <T>(cn:string|IConfig, dc?:any):pgPromise.IDatabase<T>&T,
         PromiseAdapter:typeof pgPromise.PromiseAdapter;
         QueryFile:typeof pgPromise.QueryFile;
         queryResult:typeof pgPromise.queryResult;
