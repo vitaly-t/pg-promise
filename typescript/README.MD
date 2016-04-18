@@ -7,7 +7,7 @@ Complete TypeScript ambient declarations for [pg-promise] version 3.8.0 or later
 |[pg-promise.ts] | Main TypeScript file for [pg-promise]|
 |[pg-subset.ts]  | A subset of [pg] that can be useful with [pg-promise]|
 |[pg-minify.ts]  | Types from [pg-minify] that's used by [pg-promise]|
-|[promise.ts]    | Promise provider module |
+|[ext-promise.ts]    | External Promise Provider |
 
 #### Usage
 
@@ -31,7 +31,7 @@ Example of compiling into JavaScript:
 tsc myApp.ts --target es6 --module commonjs
 ```
 
-And if you want to make full use of a custom promise library, see file [promise.ts]. 
+And if you want to make full use of a custom promise library, see file [ext-promise.ts]. 
 
 #### Protocol Extensions
 
@@ -97,7 +97,7 @@ For a more complete and advanced example of using [pg-promise] with TypeScript, 
 
 [pg-promise-demo]:https://github.com/vitaly-t/pg-promise-demo
 [extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
-[promise.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/promise.ts
+[ext-promise.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/ext-promise.ts
 [pg-promise.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-promise.ts
 [pg-minify.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-minify.ts
 [pg-subset.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-subset.ts

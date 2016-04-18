@@ -4,13 +4,13 @@
 
 /// <reference path='./pg-subset' />
 /// <reference path='./pg-minify' />
-/// <reference path='./promise' />
+/// <reference path='./ext-promise' />
 
 declare module 'pg-promise' {
 
     import * as pg from 'pg-subset';
     import * as pgMinify from 'pg-minify';
-    import XPromise = require('promise');
+    import XPromise = require('ext-promise'); // External Promise Provider
 
     // Base database protocol
     // API: http://vitaly-t.github.io/pg-promise/Database.html

@@ -1,8 +1,10 @@
 /*
 
- This file is here to make it possible to enable declarations of a custom promise library.
- It presumes that you are already initializing pg-promise with a custom promise library,
- using option `promiseLib`. If not, then you cannot use the provisions documented here.
+ External Promise Provider.
+
+ The purpose of this module is to make it possible to enable declarations of a custom promise library
+ by patching this file manually. It presumes that you are already initializing pg-promise with a custom
+ promise library, using option `promiseLib`. If not, then you cannot use the provisions documented here.
 
  Example of enabling declarations for Bluebird:
 
@@ -25,6 +27,6 @@
 
  */
 
-declare module 'promise' {
+declare module 'ext-promise' {
     export=Promise; // Using ES6 Promise by default
 }
