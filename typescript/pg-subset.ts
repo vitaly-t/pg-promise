@@ -1,15 +1,18 @@
 //////////////////////////////////////////////////////////////////////////////
-// Declaring only the part of the 'pg' module that's useful within pg-promise
+// Declaring only a subset of the 'pg' module that's useful within pg-promise.
 //
-// Supported version of pg: 4.5.3 and later.
+// Calling it 'pg-subset' to avoid a conflict in case the application also
+// includes the official 'pg' typings.
+//
+// Supported version of pg: 4.5.0 and later.
 //
 // pg: https://github.com/brianc/node-postgres
 //////////////////////////////////////////////////////////////////////////////
 
-declare module 'pg' {
+declare module 'pg-subset' {
 
     namespace pg {
-
+        
         interface IColumn {
             name:string,
             dataTypeID:number,
@@ -130,7 +133,6 @@ declare module 'pg' {
 
         var defaults:IDefaults;
         var types:ITypes;
-
     }
 
     export=pg;

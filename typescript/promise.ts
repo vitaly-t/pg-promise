@@ -16,10 +16,12 @@
  import * as promise from 'bluebird';
  export=promise;
 
- Unfortunately, for now this is the only way to declare a custom promise interface properly.
- It is possible that this may be improved in the future. In the meantime, if you do not want to
- get these settings overridden during an update or deployment, it may be a good idea to copy
- all of the *.ts files into your own project, and use them from there.
+ Unfortunately, as of today it is impossible to use custom promises as TypeScript generics.
+ And you can find research details on this matter from the following link:  
+ http://stackoverflow.com/questions/36593087/using-a-custom-promise-as-a-generic-type
+
+ In the meantime, if you do not want to get these settings overridden during an update or deployment,
+ it may be a good idea to copy all of the *.ts files into your own project, and use them from there.
 
  */
 

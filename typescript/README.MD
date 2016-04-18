@@ -4,10 +4,10 @@ Complete TypeScript ambient declarations for [pg-promise] version 3.8.0 or later
 
 | File             | Description                      |
 |------------------|----------------------------------|
-|[pg-promise.ts] | Main script file for [pg-promise]|
-|[pg-minify.ts]  | Additional types from [pg-minify]|
-|[pg.ts]         | Additional types from [pg]|
-|[promise.ts]    | Promise provider module|
+|[pg-promise.ts] | Main TypeScript file for [pg-promise]|
+|[pg-subset.ts]  | A subset of [pg] that can be useful with [pg-promise]|
+|[pg-minify.ts]  | Types from [pg-minify] that's used by [pg-promise]|
+|[promise.ts]    | Promise provider module |
 
 #### Usage
 
@@ -73,6 +73,13 @@ var db = <pgPromise.IDatabase<IExtensions>&IExtensions>pgp(cn);
 db.findUser(123).then(...);
 ```
 
+Alternatively, you can create the extended `db` object like this:
+```ts
+var db = pgp<IExtensions>(cn);
+```
+The result is identical, but some IntelliSense implementations may struggle to inspect such type correctly.
+
+
 And if you want strict initialization options, with inline type casting, you can do this:
 
 ```ts
@@ -93,7 +100,7 @@ For a more complete and advanced example of using [pg-promise] with TypeScript, 
 [promise.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/promise.ts
 [pg-promise.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-promise.ts
 [pg-minify.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-minify.ts
-[pg.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg.ts
+[pg-subset.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-subset.ts
 [pg-promise]:https://github.com/vitaly-t/pg-promise
 [pg-minify]:https://github.com/vitaly-t/pg-minify
 [pg]:https://github.com/brianc/node-postgres
