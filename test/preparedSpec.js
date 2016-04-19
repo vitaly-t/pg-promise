@@ -18,7 +18,7 @@ var $errors = {
     query: "Invalid query format.",
     psNameClass: "'name' must be a non-empty text string.",
     psTextClass: "'text' must be a non-empty text string.",
-    psValuesClass: "'values' must be an array.",
+    psValuesClass: "'values' must be an array or null/undefined.",
     psName: "Invalid 'name' in a prepared statement.",
     psText: "Invalid 'text' in a prepared statement.",
     psValues: "Invalid 'values' in a prepared statement."

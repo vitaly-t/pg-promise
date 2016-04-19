@@ -3,7 +3,7 @@ body {
 }
 
 html {
-    font-size: 16px;
+    font-size: 18px;
 }
 
 html, body, section {
@@ -20,14 +20,18 @@ section {
 }
 
 div#main {
-    margin-left: 220px;
+    margin-left: 230px;
     float: none;
-    max-width:1200px;
+    max-width: 1200px;
 }
 
 code {
     background-color: LightYellow;
     color: Maroon !important;
+}
+
+code span {
+    line-height: 26px;
 }
 
 nav {
@@ -39,9 +43,14 @@ nav {
     padding: 10px 20px 20px 20px;
     width: auto;
     position: fixed;
-    font-size: 16px;
+    font-size: 18px;
     margin-top: 15px;
+    line-height: 24px;
     float: none;
+}
+
+nav ul li a {
+    font-size: 18px;
 }
 
 nav h3 {
