@@ -14,6 +14,14 @@ function dummy() {
     // dummy/empty function;
 }
 
+var $errors = {
+    func: "Invalid function name.",
+    query: "Invalid query format.",
+    notEmpty: "No return data was expected.",
+    noData: "No data returned from the query.",
+    multiple: "Multiple rows were not expected."
+};
+
 describe("Database Instantiation", function () {
     it("must throw an error when empty or no connection passed", function () {
         var err = "Invalid connection details.";
@@ -178,7 +186,7 @@ describe("Connection", function () {
         });
     });
 
-    describe("for invalid port", function () {
+    describe("for an invalid port", function () {
         var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
         errCN.port = '12345';
         var dbErr = pgp(errCN), result;
@@ -405,7 +413,7 @@ describe("Method 'none'", function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe("No return data was expected.");
+            expect(error.message).toBe($errors.notEmpty);
         });
     });
 
@@ -448,7 +456,7 @@ describe("Method 'one'", function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe("No data returned from the query.");
+            expect(error.message).toBe($errors.noData);
         });
     });
 
@@ -468,7 +476,7 @@ describe("Method 'one'", function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe("Multiple rows were not expected.");
+            expect(error.message).toBe($errors.multiple);
         });
     });
 });
@@ -529,7 +537,7 @@ describe("Method 'oneOrNone'", function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe("Multiple rows were not expected.");
+            expect(error.message).toBe($errors.multiple);
         });
     });
 
@@ -572,7 +580,7 @@ describe("Method 'many'", function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe("No data returned from the query.");
+            expect(error.message).toBe($errors.noData);
         });
     });
 
@@ -624,7 +632,7 @@ describe("Method 'manyOrNone'", function () {
 describe("Executing method query", function () {
 
     it("with invalid query as parameter must throw an error", function () {
-        var finished, result, error = "Query must be a non-empty text string.";
+        var finished, result;
         promise.any([
                 db.query(),
                 db.query(''),
@@ -642,11 +650,11 @@ describe("Executing method query", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result.length).toBe(5);
-            expect(result[0]).toBe(error);  // reject to an undefined query;
-            expect(result[1]).toBe(error);  // reject to an empty-string query;
-            expect(result[2]).toBe(error);  // reject to a white-space query string;
-            expect(result[3]).toBe(error);  // reject to an invalid-type query;
-            expect(result[4]).toBe(error);  // reject to a null query;
+            expect(result[0]).toBe($errors.query);  // reject to an undefined query;
+            expect(result[1]).toBe($errors.query);  // reject to an empty-string query;
+            expect(result[2]).toBe($errors.query);  // reject to a white-space query string;
+            expect(result[3]).toBe($errors.query);  // reject to an invalid-type query;
+            expect(result[4]).toBe($errors.query);  // reject to a null query;
         });
     });
 
@@ -975,7 +983,7 @@ describe("Return data from a query must match the request type", function () {
         });
         it("method 'none' must return an error", function () {
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe("No return data was expected.");
+            expect(error.message).toBe($errors.notEmpty);
         });
     });
 
@@ -994,7 +1002,7 @@ describe("Return data from a query must match the request type", function () {
         runs(function () {
             expect(result).toBeNull();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe("No data returned from the query.");
+            expect(error.message).toBe($errors.noData);
         });
     });
 
@@ -1013,7 +1021,7 @@ describe("Return data from a query must match the request type", function () {
         runs(function () {
             expect(result).toBeNull();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe("Multiple rows were not expected.");
+            expect(error.message).toBe($errors.multiple);
         });
     });
 
@@ -1241,7 +1249,7 @@ describe("Querying a function", function () {
     });
 
     describe("with invalid parameters", function () {
-        var result, error = "Function name must be a non-empty text string.";
+        var result;
         beforeEach(function (done) {
             promise.any([
                     db.func(),      // undefined function name;
@@ -1271,112 +1279,10 @@ describe("Querying a function", function () {
         it("must reject with the right error", function () {
             expect(result.length).toBe(8);
             for (var i = 0; i < result.length; i++) {
-                expect(result[i]).toBe(error);
+                expect(result[i]).toBe($errors.func);
             }
         });
     });
-});
-
-describe("Prepared Statements", function () {
-
-    describe("valid, without parameters", function () {
-        var result;
-        beforeEach(function (done) {
-            db.many({
-                    name: "get all users",
-                    text: "select * from users"
-                })
-                .then(function (data) {
-                    result = data;
-                })
-                .finally(function () {
-                    done();
-                });
-        });
-        it("must return all users", function () {
-            expect(result instanceof Array).toBe(true);
-            expect(result.length > 0).toBe(true);
-        });
-    });
-
-    describe("valid, with parameters", function () {
-        var result;
-        beforeEach(function (done) {
-            db.one({
-                    name: "find one user",
-                    text: "select * from users where id=$1",
-                    values: [1]
-                })
-                .then(function (data) {
-                    result = data;
-                })
-                .finally(function () {
-                    done();
-                });
-        });
-        it("must return all users", function () {
-            expect(result && typeof(result) === 'object').toBeTruthy();
-        });
-    });
-
-    describe("with invalid query", function () {
-        var result;
-        beforeEach(function (done) {
-            db.many({
-                    name: "break it",
-                    text: "select * from somewhere"
-                })
-                .then(dummy, function (reason) {
-                    result = reason;
-                })
-                .finally(function () {
-                    done();
-                });
-        });
-        it("must return an error", function () {
-            expect(result instanceof Error).toBe(true);
-            expect(result.message).toContain('relation "somewhere" does not exist');
-        });
-    });
-
-    describe("with an empty 'name'", function () {
-        var result;
-        beforeEach(function (done) {
-            db.query({
-                    name: "",
-                    text: "non-empty"
-                })
-                .then(dummy, function (reason) {
-                    result = reason;
-                })
-                .finally(function () {
-                    done();
-                });
-        });
-        it("must return an error", function () {
-            expect(result).toBe("Property 'name' in prepared statement must be a non-empty text string.");
-        });
-    });
-
-    describe("with an empty 'text'", function () {
-        var result;
-        beforeEach(function (done) {
-            db.query({
-                    name: "non-empty",
-                    text: null
-                })
-                .then(dummy, function (reason) {
-                    result = reason;
-                })
-                .finally(function () {
-                    done();
-                });
-        });
-        it("must return an error", function () {
-            expect(result).toBe("Property 'text' in prepared statement must be a non-empty text string.");
-        });
-    });
-
 });
 
 describe("Task", function () {

@@ -262,7 +262,7 @@ describe("Error event", function () {
                 });
         });
         it("must fail correctly", function () {
-            var msg = "Query must be a non-empty text string.";
+            var msg = "Invalid query format.";
             expect(txt).toBe(msg);
             expect(context.params).toBeUndefined();
             if (!options.pgNative) {

@@ -49,6 +49,10 @@ describe("Library instance", function () {
         expect(pgpLib.PromiseAdapter instanceof Function).toBe(true);
     });
 
+    it("must have function 'PreparedStatement'", function () {
+        expect(pgpLib.PreparedStatement instanceof Function).toBe(true);
+    });
+
     it("must have function 'minify'", function () {
         expect(pgpLib.minify instanceof Function).toBe(true);
     });
@@ -86,6 +90,10 @@ describe("Initialized instance", function () {
 
     it("must have function 'PromiseAdapter'", function () {
         expect(pgp.PromiseAdapter instanceof Function).toBe(true);
+    });
+
+    it("must have function 'PreparedStatement'", function () {
+        expect(pgp.PreparedStatement instanceof Function).toBe(true);
     });
 
     it("must have function 'minify'", function () {
@@ -349,9 +357,9 @@ describe("Error protocol", function () {
     };
     it("must return correctly formatted error body", function () {
         var error1 = new pgp.errors.QueryResultError(0, result, '');
-        var error2 = new pgp.errors.QueryResultError(0, result, '', []);
-        expect(typeof error1.inspect()).toBe('string');
-        expect(typeof error2.inspect()).toBe('string');
+        var error2 = new pgp.errors.QueryResultError(0, result, {name: 'name', text: 'text'}, []);
+        expect(error1.inspect()).toBe(error1.toString());
+        expect(error2.inspect()).toBe(error2.toString());
     });
 });
 

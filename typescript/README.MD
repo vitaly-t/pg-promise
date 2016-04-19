@@ -1,13 +1,13 @@
 ### TypeScript for pg-promise
 
-Complete TypeScript ambient declarations for [pg-promise] version 3.8.0 or later.
+Complete TypeScript ambient declarations for [pg-promise] version 3.9.0 or later.
 
 | File             | Description                      |
 |------------------|----------------------------------|
-|[pg-promise.ts] | Main TypeScript file for [pg-promise]|
-|[pg-subset.ts]  | A subset of [pg] that can be useful with [pg-promise]|
-|[pg-minify.ts]  | Types from [pg-minify] that's used by [pg-promise]|
-|[ext-promise.ts]    | External Promise Provider |
+|[pg-promise.d.ts] | Main TypeScript file for [pg-promise]|
+|[pg-subset.d.ts]  | A subset of [pg] that can be useful with [pg-promise]|
+|[pg-minify.d.ts]  | Types from [pg-minify] that's used by [pg-promise]|
+|[ext-promise.d.ts]    | External Promise Provider |
 
 #### Usage
 
@@ -31,7 +31,7 @@ Example of compiling into JavaScript:
 tsc myApp.ts --target es6 --module commonjs
 ```
 
-And if you want to make full use of a custom promise library, see file [ext-promise.ts]. 
+And if you want to make full use of a custom promise library, see file [ext-promise.d.ts]. 
 
 #### Protocol Extensions
 
@@ -79,7 +79,6 @@ var db = pgp<IExtensions>(cn);
 ```
 The result is identical, but some IntelliSense implementations may struggle to inspect such type correctly.
 
-
 And if you want strict initialization options, with inline type casting, you can do this:
 
 ```ts
@@ -97,10 +96,10 @@ For a more complete and advanced example of using [pg-promise] with TypeScript, 
 
 [pg-promise-demo]:https://github.com/vitaly-t/pg-promise-demo
 [extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
-[ext-promise.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/ext-promise.ts
-[pg-promise.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-promise.ts
-[pg-minify.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-minify.ts
-[pg-subset.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-subset.ts
+[ext-promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/ext-promise.d.ts
+[pg-promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-promise.d.ts
+[pg-minify.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-minify.d.ts
+[pg-subset.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-subset.d.ts
 [pg-promise]:https://github.com/vitaly-t/pg-promise
 [pg-minify]:https://github.com/vitaly-t/pg-minify
 [pg]:https://github.com/brianc/node-postgres

@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v3.8.0 or later.
+// Requires pg-promise v3.9.0 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -12,22 +12,26 @@ declare module 'pg-promise' {
     import * as pgMinify from 'pg-minify';
     import XPromise = require('ext-promise'); // External Promise Provider
 
+    type TFormattingOptions = {partial?:boolean};
+    type TPrepared = {name:string, text:string, values?:any};
+    type TQuery = string|pgPromise.QueryFile|TPrepared|pgPromise.PreparedStatement;
+
     // Base database protocol
     // API: http://vitaly-t.github.io/pg-promise/Database.html
     interface IBaseProtocol<Ext> {
 
         // generic query method;
-        query(query:any, values?:any, qrm?:pgPromise.queryResult):XPromise<any>;
+        query(query:TQuery, values?:any, qrm?:pgPromise.queryResult):XPromise<any>;
 
         // result-specific methods;
-        none(query:any, values?:any):XPromise<void>;
-        one(query:any, values?:any):XPromise<any>;
-        oneOrNone(query:any, values?:any):XPromise<any>;
-        many(query:any, values?:any):XPromise<Array<any>>;
-        manyOrNone(query:any, values?:any):XPromise<Array<any>>;
-        any(query:any, values?:any):XPromise<Array<any>>;
+        none(query:TQuery, values?:any):XPromise<void>;
+        one(query:TQuery, values?:any):XPromise<any>;
+        oneOrNone(query:TQuery, values?:any):XPromise<any>;
+        many(query:TQuery, values?:any):XPromise<Array<any>>;
+        manyOrNone(query:TQuery, values?:any):XPromise<Array<any>>;
+        any(query:TQuery, values?:any):XPromise<Array<any>>;
 
-        result(query:any, values?:any):XPromise<pg.IResult>;
+        result(query:TQuery, values?:any):XPromise<pg.IResult>;
 
         stream(qs:Object, init:(stream:Object)=>void):XPromise<{processed:number, duration:number}>;
 
@@ -83,7 +87,7 @@ declare module 'pg-promise' {
 
         date(d:Date|(()=>Date), raw?:boolean):string;
 
-        format(query:string, values?:any, options?:{partial?:boolean}):string;
+        format(query:string, values?:any, options?:TFormattingOptions):string;
 
         func(func:()=>any, raw?:boolean, obj?:Object):string;
 
@@ -200,6 +204,7 @@ declare module 'pg-promise' {
         (cn:string|IConfig, dc?:any):pgPromise.IDatabase<IEmptyExt>,
         <T>(cn:string|IConfig, dc?:any):pgPromise.IDatabase<T>&T,
         PromiseAdapter:typeof pgPromise.PromiseAdapter;
+        PreparedStatement:typeof pgPromise.PreparedStatement;
         QueryFile:typeof pgPromise.QueryFile;
         queryResult:typeof pgPromise.queryResult;
         minify:typeof pgMinify,
@@ -229,6 +234,23 @@ declare module 'pg-promise' {
             any = 6
         }
 
+        class PreparedStatement {
+            constructor(name:string, text:string, values?:any);
+            constructor(obj:TPrepared);
+
+            name:string;
+            text:string;
+            values:Array<any>;
+
+            get():TPrepared;
+
+            create(values?:any):TPrepared;
+
+            format(options?:TFormattingOptions):string;
+
+            toString():string;
+        }
+
         // Query File class;
         // API: http://vitaly-t.github.io/pg-promise/QueryFile.html
         class QueryFile {
@@ -238,6 +260,13 @@ declare module 'pg-promise' {
                 compress?:boolean,
                 params?:any
             });
+
+            error:Error;
+            file:string;
+            options:any;
+            query:string;
+
+            prepare():void;
         }
 
         // Promise Adapter class;
