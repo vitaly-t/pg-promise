@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>pg-promise API</title>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
+    <div class="home-link">
+        <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
+    </div>
+</nav>
+
+<div id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+var $fm = require('./formatting');
+var $utils = require('./utils');
+var EOL = require('os').EOL;
+
+/**
+ * @constructor PreparedStatement
+ * @description
+ * **Alternative Syntax:** `PreparedStatement({name, text, values})`
+ *
+ * Added in version 3.9.0
+ *
+ * Constructs a {@link http://www.postgresql.org/docs/9.5/static/sql-prepare.html Prepared Statement} object that can
+ * be used directly with any query method of the library.
+ *
+ * It is an extension on the basic `{name, text, values}` object (also usable with all query methods):
+ * - Parses all the parameters, and throws an error, if they are invalid
+ * - Reusable with different values, via method {@link PreparedStatement.create create}
+ * - Can be used as a simple object, via method {@link PreparedStatement.get get}
+ * - Provides friendly-formatted output for the console and via method {@link PreparedStatement.toString toString}
+ *
+ * @param {string} name
+ * An arbitrary name given to this particular prepared statement. It must be unique within a single
+ * session and is subsequently used to execute or deallocate a previously prepared statement.
+ *
+ * @param {string} text
+ * A non-empty query string with formatting parameters, such as `$1, $2, etc.`, or without them.
+ *
+ * @param {Array} [values]
+ * An array of values to replace the formatting parameters in the query, provided it has any.
+ *
+ * @property {string} name
+ * Prepared Statement name, as specified in the constructor (or changed later).
+ *
+ * Setting it to anything other than a non-empty text string will throw {@link external:TypeError TypeError}=
+ * `'name' must be a non-empty text string.`
+ *
+ * @property {string} text
+ * Query string, as specified in the constructor (or changed later).
+ *
+ * Setting it to anything other than a non-empty text string will throw {@link external:TypeError TypeError}=
+ * `'text' must be a non-empty text string.`
+ *
+ * @property {Array} values
+ * Query formatting values, as specified in the constructor (or changed later).
+ *
+ * It can be set to an `Array`, `null` or `undefined`, or else it will throw {@link external:TypeError TypeError}=
+ * `'values' must be an array or null/undefined.`
+ *
+ * @returns {PreparedStatement}
+ *
+ * @see {@link http://www.postgresql.org/docs/9.5/static/sql-prepare.html PostgreSQL Prepared Statements}
+ */
+function PreparedStatement(name, text, values) {
+
+    if (!(this instanceof PreparedStatement)) {
+        return new PreparedStatement(name, text, values);
+    }
+
+    var state = {};
+
+    Object.defineProperty(this, 'name', {
+        get: function () {
+            return state.name;
+        },
+        set: function (newValue) {
+            if (!$utils.isText(newValue)) {
+                throw new TypeError("'name' must be a non-empty text string.");
+            }
+            state.name = newValue;
+        }
+    });
+
+    Object.defineProperty(this, 'text', {
+        get: function () {
+            return state.text;
+        },
+        set: function (newValue) {
+            if (!$utils.isText(newValue)) {
+                throw new TypeError("'text' must be a non-empty text string.");
+            }
+            state.text = newValue;
+        }
+    });
+
+    Object.defineProperty(this, 'values', {
+        get: function () {
+            return state.values;
+        },
+        set: function (newValue) {
+            if (!$utils.isNull(newValue) &amp;&amp; !Array.isArray(newValue)) {
+                throw new TypeError("'values' must be an array or null/undefined.");
+            }
+            state.values = newValue;
+        }
+    });
+
+    /**
+     * @method PreparedStatement.get
+     * @returns {{name: *, text: *}}
+     */
+    this.get = function () {
+        var obj = {
+            name: this.name,
+            text: this.text
+        };
+        if (!$utils.isNull(this.values)) {
+            obj.values = this.values;
+        }
+        return obj;
+    };
+
+    /**
+     * @method PreparedStatement.create
+     * @param values
+     * @returns {{name: *, text: *}}
+     */
+    this.create = function (values) {
+        if (!$utils.isNull(values) &amp;&amp; !Array.isArray(values)) {
+            throw new TypeError("'values' must be an array or null/undefined.");
+        }
+        var obj = {
+            name: this.name,
+            text: this.text
+        };
+        if (!$utils.isNull(values)) {
+            obj.values = values;
+        }
+        return obj;
+    };
+
+    if (name &amp;&amp; typeof name === 'object') {
+        this.values = name.values;
+        this.text = name.text;
+        this.name = name.name;
+    } else {
+        this.name = name;
+        this.text = text;
+        this.values = values;
+    }
+
+    this.format = function (options) {
+        return $fm.as.format(this.text, this.values, options);
+    };
+
+    Object.freeze(this);
+}
+
+/**
+ * @method PreparedStatement.toString
+ * @returns {string}
+ */
+PreparedStatement.prototype.toString = function () {
+    var lines = [
+        'PreparedStatement {',
+        '    name: "' + this.name + '"',
+        '    text: "' + this.text + '"'
+    ];
+    if (this.values !== undefined) {
+        lines.push('    values: ' + JSON.stringify(this.values));
+    }
+    lines.push('}');
+    return lines.join(EOL);
+};
+
+PreparedStatement.prototype.inspect = function () {
+    return this.toString();
+};
+
+module.exports = PreparedStatement;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
