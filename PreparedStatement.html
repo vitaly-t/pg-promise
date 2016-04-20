@@ -50,8 +50,8 @@
 <div class="description">
     <p><strong>Alternative Syntax:</strong> <code>PreparedStatement({name, text, values})</code></p>
 <p>Added in version 3.9.0</p>
-<p>Constructs a <a href="http://www.postgresql.org/docs/9.5/static/sql-prepare.html">Prepared Statement</a> object that can
-be used directly with any query method of the library.</p>
+<p>Constructs a strict <a href="http://www.postgresql.org/docs/9.5/static/sql-prepare.html">Prepared Statement</a> object
+that can be used directly with any query method of the library.</p>
 <p>It is an extension on the basic <code>{name, text, values}</code> object (also usable with all query methods):</p>
 <ul>
 <li>Parses all the parameters, and throws an error, if they are invalid</li>
@@ -186,7 +186,7 @@ session and is subsequently used to execute or deallocate a previously prepared 
 
             
 
-            <td class="description last"><p>An array of values to replace the formatting parameters in the query, provided it has any.</p></td>
+            <td class="description last"><p>An optional array of values to replace the formatting parameters in the query, provided it has any.</p></td>
         </tr>
 
     
@@ -381,9 +381,13 @@ session and is subsequently used to execute or deallocate a previously prepared 
     
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>var PS = require('pg-promise').PreparedStatement;var findUser = new PS('find-user', 'SELECT * FROM Users WHERE id = $1', [123]);db.one(findUser)    .then(user=> {        // user found;    })    .catch(error=> {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>var PS = require('pg-promise').PreparedStatement;// Creating a complete Prepared Statement:var findUser = new PS('find-user', 'SELECT * FROM Users WHERE id = $1', [123]);db.one(findUser)    .then(user=> {        // user found;    })    .catch(error=> {        // error;    });</code></pre>
+
+    <pre class="prettyprint"><code>var PS = require('pg-promise').PreparedStatement;// Creating a reusable Prepared Statement:var addUser = new PS('add-user', 'INSERT INTO Users(name, age) VALUES($1, $2)');db.none(addUser.create(['John', 30]))    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });</code></pre>
+
+    <pre class="prettyprint"><code>var PS = require('pg-promise').PreparedStatement;// Creating a reusable Prepared Statement:var addUser = new PS('add-user', 'INSERT INTO Users(name, age) VALUES($1, $2)');addUser.values = ['John', 30];db.none(addUser)    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });</code></pre>
 
 
 
@@ -482,7 +486,7 @@ but with the new <code>values</code>.</p>
 
             
 
-            <td class="description last"><p>Optional property <code>values</code> to be used in the new object. Can be <code>null</code>/<code>undefined</code>.</p></td>
+            <td class="description last"><p>Optional property <code>values</code> to be used in the new object: <code>Array</code>/<code>null</code>/<code>undefined</code>.</p></td>
         </tr>
 
     
@@ -523,7 +527,7 @@ but with the new <code>values</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line135">line 135</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line170">line 170</a>
     </li></ul></dd>
     
 
@@ -576,6 +580,169 @@ but with the new <code>values</code>.</p>
 
     
 
+    <h4 class="name" id=".format"><span class="type-signature">(static) </span>format<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Uses <code>pg-promise</code> formatting engine (method <a href="formatting.html#.format">as.format</a>) to format the query according to its current state.</p>
+<p>This method is primarily for logging and diagnostics, as Prepared Statements are to be formatted by the server.</p>
+<p>ATTENTION: This method can never guarantee the same query as formatted by the server.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Formatting options, as used by method <a href="formatting.html#.format">as.format</a>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line206">line 206</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id=".get"><span class="type-signature">(static) </span>get<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
 
     
@@ -584,6 +751,7 @@ but with the new <code>values</code>.</p>
 
 <div class="description">
     <p>Returns a new Prepared Statement object <code>{name, text, values}</code>, based on the object's state.</p>
+<p>When a <a href="PreparedStatement.html">PreparedStatement</a> object is passed into a query method, <a href="PreparedStatement.html#.get">get</a> is called automatically.</p>
 </div>
 
 
@@ -627,7 +795,7 @@ but with the new <code>values</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line116">line 116</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line149">line 149</a>
     </li></ul></dd>
     
 
@@ -731,7 +899,7 @@ but with the new <code>values</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line178">line 178</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line227">line 227</a>
     </li></ul></dd>
     
 
