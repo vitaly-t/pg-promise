@@ -963,6 +963,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 3.9.0 Prepared Statements support rewritten, adding new type [PreparedStatement]. Released: April 20, 2016
 * 3.8.0 Added Database Context support (see [Database]). Released: April 14, 2016
 * 3.7.1 Adding internal typescript support to the library. Released: April 10, 2016
 * 3.7.0 Modifying the protocol to accommodate changes in `pg` 4.5.3 for isolated [Native Bindings]. Released: April 9, 2016
@@ -1036,6 +1037,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[PreparedStatement]:http://vitaly-t.github.io/pg-promise/PreparedStatement.html
 [Database]:http://vitaly-t.github.io/pg-promise/Database.html
 [QueryResultError]:http://vitaly-t.github.io/pg-promise/QueryResultError.html
 [Native Bindings]:https://github.com/brianc/node-postgres#native-bindings
