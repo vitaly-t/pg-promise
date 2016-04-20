@@ -165,6 +165,13 @@ QueryResultError.prototype = Object.create(Error.prototype, {
     }
 });
 
+/**
+ * @method QueryResultError.toString
+ * @description
+ * Creates a well-formatted multi-line string that represents the error.
+ *
+ * @returns {string}
+ */
 QueryResultError.prototype.toString = function () {
     var lines = [
         'QueryResultError {',

@@ -59,6 +59,7 @@ be used directly with any query method of the library.</p>
 <li>Can be used as a simple object, via method <a href="PreparedStatement.html#.get">get</a></li>
 <li>Provides friendly-formatted output for the console and via method <a href="PreparedStatement.html#.toString">toString</a></li>
 </ul>
+<p>The type is available from the library's root: <code>pgp.PreparedStatement</code>.</p>
 </div>
 
 
@@ -380,6 +381,11 @@ session and is subsequently used to execute or deallocate a previously prepared 
     
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var PS = require('pg-promise').PreparedStatement;var findUser = new PS('find-user', 'SELECT * FROM Users WHERE id = $1', [123]);db.one(findUser)    .then(user=> {        // user found;    })    .catch(error=> {        // error;    });</code></pre>
+
+
 
     
     </div>
@@ -404,11 +410,16 @@ session and is subsequently used to execute or deallocate a previously prepared 
 
     
 
-    <h4 class="name" id=".create"><span class="type-signature">(static) </span>create<span class="signature">(values)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id=".create"><span class="type-signature">(static) </span>create<span class="signature">(values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Object}</span></h4>
 
     
 
 
+
+<div class="description">
+    <p>Returns a new Prepared Statement object <code>{name, text, values}</code>, based on the object's state,
+but with the new <code>values</code>.</p>
+</div>
 
 
 
@@ -431,6 +442,8 @@ session and is subsequently used to execute or deallocate a previously prepared 
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -448,13 +461,28 @@ session and is subsequently used to execute or deallocate a previously prepared 
 
             <td class="type">
             
+                
+<span class="param-type">Array</span>
+
+
+            
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Optional property <code>values</code> to be used in the new object. Can be <code>null</code>/<code>undefined</code>.</p></td>
         </tr>
 
     
@@ -495,7 +523,7 @@ session and is subsequently used to execute or deallocate a previously prepared 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line114">line 114</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line135">line 135</a>
     </li></ul></dd>
     
 
@@ -521,6 +549,10 @@ session and is subsequently used to execute or deallocate a previously prepared 
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>New object <code>{name, text, values}</code>, with <code>values</code> set when it is not <code>null</code>/<code>undefined</code>.</p>
+</div>
+
 
 
 <dl>
@@ -550,6 +582,10 @@ session and is subsequently used to execute or deallocate a previously prepared 
 
 
 
+<div class="description">
+    <p>Returns a new Prepared Statement object <code>{name, text, values}</code>, based on the object's state.</p>
+</div>
+
 
 
 
@@ -591,7 +627,7 @@ session and is subsequently used to execute or deallocate a previously prepared 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line99">line 99</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line116">line 116</a>
     </li></ul></dd>
     
 
@@ -617,6 +653,10 @@ session and is subsequently used to execute or deallocate a previously prepared 
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>New object <code>{name, text, values}</code>, with <code>values</code> set when it is not <code>null</code>/<code>undefined</code>.</p>
+</div>
+
 
 
 <dl>
@@ -646,6 +686,10 @@ session and is subsequently used to execute or deallocate a previously prepared 
 
 
 
+<div class="description">
+    <p>Creates a well-formatted multi-line string that represents the object's state.</p>
+</div>
+
 
 
 
@@ -687,7 +731,7 @@ session and is subsequently used to execute or deallocate a previously prepared 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line150">line 150</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line178">line 178</a>
     </li></ul></dd>
     
 
