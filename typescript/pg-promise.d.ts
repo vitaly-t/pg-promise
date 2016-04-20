@@ -243,8 +243,8 @@ declare module 'pg-promise' {
             values:Array<any>;
 
             get():TPrepared;
-
-            create(values?:any):TPrepared;
+            
+            create(values?:Array<any>):TPrepared;
 
             format(options?:TFormattingOptions):string;
 
