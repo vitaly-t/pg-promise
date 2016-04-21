@@ -234,14 +234,16 @@ declare module 'pg-promise' {
             any = 6
         }
 
+        // Prepared Statement class;
+        // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html
         class PreparedStatement {
             constructor(name:string, text:string, values?:any);
             constructor(obj:TPrepared);
-
+            
             name:string;
             text:string;
             values:Array<any>;
-
+            
             get():TPrepared;
             
             create(values?:Array<any>):TPrepared;
