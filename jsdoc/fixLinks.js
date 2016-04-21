@@ -17,11 +17,13 @@ var links = {
     "PG": "https://github.com/brianc/node-postgres",
     "Native Bindings": "https://github.com/brianc/node-postgres#native-bindings",
     "pg-native": "https://github.com/brianc/node-pg-native",
-    "Named Parameters": "https://github.com/vitaly-t/pg-promise#named-parameters"
+    "Named Parameters": "https://github.com/vitaly-t/pg-promise#named-parameters",
+    "tags": "https://github.com/vitaly-t/pg-promise/wiki/workflows#tags",
+    "ES6 generator": "https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*"
 };
 
 function fixLinks(source) {
-    return source.replace(/\$\[[a-z\s\/\+-\.]+\]/gi, function (name) {
+    return source.replace(/\$\[[a-z0-9\s\/\+-\.]+\]/gi, function (name) {
         var sln = name.replace(/\$\[|\]/g, ''); // stripped link name;
         if (sln in links) {
             return "<a href=\"" + links[sln] + "\">" + sln + "</a>"
