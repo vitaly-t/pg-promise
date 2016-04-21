@@ -170,6 +170,8 @@ QueryResultError.prototype = Object.create(Error.prototype, {
  * @description
  * Creates a well-formatted multi-line string that represents the error.
  *
+ * It is called automatically when writing the object into the console.
+ *
  * @returns {string}
  */
 QueryResultError.prototype.toString = function () {

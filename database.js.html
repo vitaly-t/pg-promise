@@ -54,7 +54,7 @@ var $npm = {
  *
  * Any object or value to be propagated through the entire protocol, to allow implementations
  * and event handling that depend on the database context.
- * 
+ *
  * This is mainly to facilitate the use of multiple databases which may need separate protocol
  * extensions, or different implementations within a single task / transaction callback,
  * depending on the database context.
@@ -138,7 +138,8 @@ function Database(cn, dc, options, config) {
      *
      * @param {String|Object} query
      * - query string
-     * - prepared statement object
+     * - prepared statement: `{name, text, values}`
+     * - {@link PreparedStatement} object
      * - {@link QueryFile} object
      *
      * @param {Array|value} [values]
@@ -172,9 +173,9 @@ function Database(cn, dc, options, config) {
                 return $p.reject(error);
             });
     };
-    
+
     extend(createContext(), this); // extending root protocol;
-    
+
     function createContext() {
         return new $npm.context(cn, dc, options);
     }
@@ -190,9 +191,10 @@ function Database(cn, dc, options, config) {
          * Executes a query that expects no data to be returned.
          * If the query returns any kind of data, the method rejects.
          *
-         * @param {String|Object} query -
+         * @param {String|Object} query
          * - query string
-         * - prepared statement object
+         * - prepared statement: `{name, text, values}`
+         * - {@link PreparedStatement} object
          * - {@link QueryFile} object
          *
          * @param {Array|value} [values]
@@ -216,9 +218,10 @@ function Database(cn, dc, options, config) {
          * Executes a query that expects exactly one row of data.
          * When 0 or more than 1 rows are returned, the method rejects.
          *
-         * @param {String|Object} query -
+         * @param {String|Object} query
          * - query string
-         * - prepared statement object
+         * - prepared statement: `{name, text, values}`
+         * - {@link PreparedStatement} object
          * - {@link QueryFile} object
          *
          * @param {Array|value} [values]
@@ -245,9 +248,10 @@ function Database(cn, dc, options, config) {
          * Executes a query that expects one or more rows.
          * When the query returns no data, the method rejects.
          *
-         * @param {String|Object} query -
+         * @param {String|Object} query
          * - query string
-         * - prepared statement object
+         * - prepared statement: `{name, text, values}`
+         * - {@link PreparedStatement} object
          * - {@link QueryFile} object
          *
          * @param {Array|value} [values]
@@ -271,9 +275,10 @@ function Database(cn, dc, options, config) {
          * Executes a query that expects 0 or 1 rows.
          * When the query returns more than 1 row, the method rejects.
          *
-         * @param {String|Object} query -
+         * @param {String|Object} query
          * - query string
-         * - prepared statement object
+         * - prepared statement: `{name, text, values}`
+         * - {@link PreparedStatement} object
          * - {@link QueryFile} object
          *
          * @param {Array|value} [values]
@@ -297,9 +302,10 @@ function Database(cn, dc, options, config) {
          * @description
          * Executes a query that expects any number of rows.
          *
-         * @param {String|Object} query -
+         * @param {String|Object} query
          * - query string
-         * - prepared statement object
+         * - prepared statement: `{name, text, values}`
+         * - {@link PreparedStatement} object
          * - {@link QueryFile} object
          *
          * @param {Array|value} [values]
@@ -324,9 +330,10 @@ function Database(cn, dc, options, config) {
          *
          * This is simply a shorter alias for method {@link Database.manyOrNone manyOrNone}.
          *
-         * @param {String|Object} query -
+         * @param {String|Object} query
          * - query string
-         * - prepared statement object
+         * - prepared statement: `{name, text, values}`
+         * - {@link PreparedStatement} object
          * - {@link QueryFile} object
          *
          * @param {Array|value} [values]
@@ -348,9 +355,10 @@ function Database(cn, dc, options, config) {
          * Executes a query without any expectation for the return data,
          * to resolve with the original $[Result] object when successful.
          *
-         * @param {String|Object} query -
+         * @param {String|Object} query
          * - query string
-         * - prepared statement object
+         * - prepared statement: `{name, text, values}`
+         * - {@link PreparedStatement} object
          * - {@link QueryFile} object
          *
          * @param {Array|value} [values]
@@ -498,14 +506,14 @@ function Database(cn, dc, options, config) {
         // Task method;
         // Resolves with result from the callback function;
         function taskProcessor(p1, p2, isTX) {
-            
+
             var tag, // tag object/value;
                 taskCtx = ctx.clone(); // task context object;
 
             if (isTX) {
                 taskCtx.txLevel = taskCtx.txLevel >= 0 ? (taskCtx.txLevel + 1) : 0;
             }
-            
+
             if (this !== obj) {
                 taskCtx.context = this; // calling context object;
             }
@@ -559,11 +567,11 @@ function Database(cn, dc, options, config) {
                     return $p.reject(error);
                 });
         }
-        
+
         // lock all default properties to read-only,
         // to prevent override by the client.
         $npm.utils.lock(obj, false, ctx.options);
-        
+
         // extend the protocol;
         $npm.events.extend(ctx.options, obj, ctx.dc);
 
