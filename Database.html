@@ -2848,6 +2848,11 @@ the same <code>this</code> context as the calling method.</p></td>
 
 <div class="description">
     <p>Executes a callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) with an automatically managed connection.</p>
+<p>This method should be used whenever executing more than one query at once, so the allocated connection
+is reused between all queries, and released only after the task has finished.</p>
+<p>The callback function is called with one parameter - database protocol (same as <code>this</code>), extended with methods
+<a href="Task.html#.batch">batch</a>, <a href="Task.html#.page">page</a>, <a href="Task.html#.sequence">sequence</a>, plus property <a href="Task.html#.ctx">ctx</a> -
+the task context object. See <a href="Task.html">Task</a> for more details.</p>
 </div>
 
 
@@ -2991,6 +2996,13 @@ be passed in as the first parameter.</p></td>
     
 
     
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Task.html">Task</a></li>
+        </ul>
+    </dd>
+    
 
     
 </dl>
@@ -3033,7 +3045,7 @@ be passed in as the first parameter.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// creating a task with a string for the tag:db.task('my-task-name', t=> {        // task body, usually returning something    })    .then(data=> {        // success        // data = as returned from the task's callback    })    .catch(error=> {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// creating a task with a string for the tag:db.task('my-task-name', t=> {        // t.ctx = task context object                // task body, usually returning something    })    .then(data=> {        // success        // data = as returned from the task's callback    })    .catch(error=> {        // error    });</code></pre>
 
 
 
@@ -3052,6 +3064,9 @@ be passed in as the first parameter.</p></td>
     <p>Executes a callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) as a transaction.</p>
 <p>The transaction will execute <code>ROLLBACK</code> in the end, if the callback function returns a rejected
 promise or throws an error; and it will execute <code>COMMIT</code> in all other cases.</p>
+<p>The callback function is called with one parameter - database protocol (same as <code>this</code>), extended with methods
+<a href="Task.html#.batch">batch</a>, <a href="Task.html#.page">page</a>, <a href="Task.html#.sequence">sequence</a>, plus property <a href="Task.html#.ctx">ctx</a> -
+the transaction context object. See <a href="Task.html">Task</a> for more details.</p>
 </div>
 
 
@@ -3188,12 +3203,19 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line471">line 471</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line482">line 482</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Task.html">Task</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -3237,7 +3259,7 @@ passed in as the first parameter.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// creating a transaction with a string for the tag:db.tx('my-transaction-name', t=> {        // transaction body, usually returning something    })    .then(data=> {        // success        // data = as returned from the transaction's callback    })    .catch(error=> {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// creating a transaction with a string for the tag:db.tx('my-transaction-name', t=> {        // t.ctx = transaction context object                // transaction body, usually returning something    })    .then(data=> {        // success        // data = as returned from the transaction's callback    })    .catch(error=> {        // error    });</code></pre>
 
 
 
