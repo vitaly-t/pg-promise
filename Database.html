@@ -114,7 +114,7 @@ it can only be created via the library's base call.</p>
 
             
 
-            <td class="description last"><p>Connection object or string</p></td>
+            <td class="description last"><p>Connection object or string.</p></td>
         </tr>
 
     
@@ -2840,14 +2840,14 @@ the same <code>this</code> context as the calling method.</p></td>
 
     
 
-    <h4 class="name" id=".task"><span class="type-signature">(static) </span>task<span class="signature">(p1, p2<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id=".task"><span class="type-signature">(static) </span>task<span class="signature">(tag/cb, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Executes a callback function (or generator) with an automatically managed connection.</p>
+    <p>Executes a callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) with an automatically managed connection.</p>
 </div>
 
 
@@ -2885,21 +2885,10 @@ the same <code>this</code> context as the calling method.</p></td>
 
         <tr>
             
-                <td class="name"><code>p1</code></td>
+                <td class="name"><code>tag/cb</code></td>
             
 
             <td class="type">
-            
-                
-<span class="param-type">Object</span>
-|
-
-<span class="param-type">function</span>
-|
-
-<span class="param-type">generator</span>
-
-
             
             </td>
 
@@ -2915,15 +2904,16 @@ the same <code>this</code> context as the calling method.</p></td>
 
             
 
-            <td class="description last"><p>Tag object for the task, if <code>p2</code> is <code>undefined</code>, or else it is the callback function
-for the task.</p></td>
+            <td class="description last"><p>When the method takes only one parameter, it must be the callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) for the task.
+However, when calling the method with 2 parameters, the first one is always the <code>tag</code> - traceable context for the
+task (see <a href="https://github.com/vitaly-t/pg-promise/wiki/workflows#tags">tags</a>).</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>p2</code></td>
+                <td class="name"><code>cb</code></td>
             
 
             <td class="type">
@@ -2952,7 +2942,8 @@ for the task.</p></td>
 
             
 
-            <td class="description last"><p>Task callback function, if it is not <code>undefined</code>, or else it is ignored.</p></td>
+            <td class="description last"><p>Task callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>), if it is not <code>undefined</code>, or else the callback is expected to
+be passed in as the first parameter.</p></td>
         </tr>
 
     
@@ -3040,23 +3031,27 @@ for the task.</p></td>
     
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// creating a task with a string for the tag:db.task('my-task-name', t=> {        // task body, usually returning something    })    .then(data=> {        // success        // data = as returned from the task's callback    })    .catch(error=> {        // error    });</code></pre>
+
+
 
         
             
 
     
 
-    <h4 class="name" id=".tx"><span class="type-signature">(static) </span>tx<span class="signature">(p1, p2<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id=".tx"><span class="type-signature">(static) </span>tx<span class="signature">(tag/cb, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Executes a callback function (or generator) as a transaction.</p>
-<p>The transaction will execute <code>ROLLBACK</code> in the end, if the callback function
-returns a rejected promise or throws an error; and it will execute <code>COMMIT</code>
-in all other cases.</p>
+    <p>Executes a callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) as a transaction.</p>
+<p>The transaction will execute <code>ROLLBACK</code> in the end, if the callback function returns a rejected
+promise or throws an error; and it will execute <code>COMMIT</code> in all other cases.</p>
 </div>
 
 
@@ -3094,21 +3089,10 @@ in all other cases.</p>
 
         <tr>
             
-                <td class="name"><code>p1</code></td>
+                <td class="name"><code>tag/cb</code></td>
             
 
             <td class="type">
-            
-                
-<span class="param-type">Object</span>
-|
-
-<span class="param-type">function</span>
-|
-
-<span class="param-type">generator</span>
-
-
             
             </td>
 
@@ -3124,15 +3108,16 @@ in all other cases.</p>
 
             
 
-            <td class="description last"><p>Tag for the transaction, if <code>p2</code> is <code>undefined</code>, or else it is the callback
-function for the transaction.</p></td>
+            <td class="description last"><p>When the method takes only one parameter, it must be the callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) for the transaction.
+However, when calling the method with 2 parameters, the first one is always the <code>tag</code> - traceable context for the
+transaction (see <a href="https://github.com/vitaly-t/pg-promise/wiki/workflows#tags">tags</a>).</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>p2</code></td>
+                <td class="name"><code>cb</code></td>
             
 
             <td class="type">
@@ -3161,7 +3146,8 @@ function for the transaction.</p></td>
 
             
 
-            <td class="description last"><p>Transaction callback function, if it is not <code>undefined</code>, or else it is ignored.</p></td>
+            <td class="description last"><p>Transaction callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>), if it is not <code>undefined</code>, or else the callback is expected to be
+passed in as the first parameter.</p></td>
         </tr>
 
     
@@ -3202,7 +3188,7 @@ function for the transaction.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line454">line 454</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line471">line 471</a>
     </li></ul></dd>
     
 
@@ -3247,6 +3233,11 @@ function for the transaction.</p></td>
 </dl>
 
     
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// creating a transaction with a string for the tag:db.tx('my-transaction-name', t=> {        // transaction body, usually returning something    })    .then(data=> {        // success        // data = as returned from the transaction's callback    })    .catch(error=> {        // error    });</code></pre>
 
 
 

@@ -203,8 +203,6 @@ session, during which you can execute multiple queries against the same connecti
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -230,19 +228,30 @@ session, during which you can execute multiple queries against the same connecti
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
 
             
 
             <td class="description last"><p>If the operation was invoked with an object context - <code>task.call(obj,...)</code> or
 <code>tx.call(obj,...)</code>, this property is set with the context object that was passed in.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dc</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Database Context that was used when creating the database object.
+See <a href="Database.html">Database</a>.</p></td>
         </tr>
 
     
@@ -262,12 +271,6 @@ session, during which you can execute multiple queries against the same connecti
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-                </td>
-            
 
             
 
@@ -286,18 +289,10 @@ session, during which you can execute multiple queries against the same connecti
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>Tag value as it was passed into the task.</p></td>
+            <td class="description last"><p>Tag value as it was passed into the task. See methods <a href="Database.html#.task">task</a> and <a href="Database.html#.tx">tx</a>.</p></td>
         </tr>
 
     
@@ -373,13 +368,13 @@ session, during which you can execute multiple queries against the same connecti
     <h4 class="name" id=".batch"><span class="type-signature">(static) </span>batch<span class="signature">(values, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Settles a predefined array of mixed values by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md">spex.batch</a>.</p>
-    
 
 
 
 <div class="description">
-    <p>For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md">spex.batch</a>.</p>
+    <p><strong>Alternative Syntax:</strong> <code>batch(values, {cb})</code> &#8658; <code>Promise</code></p>
+<p>Settles a predefined array of mixed values by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md">spex.batch</a>.</p>
+<p>For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md">spex.batch</a>.</p>
 </div>
 
 
@@ -515,7 +510,7 @@ session, during which you can execute multiple queries against the same connecti
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line87">line 87</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line90">line 90</a>
     </li></ul></dd>
     
 
@@ -567,13 +562,13 @@ session, during which you can execute multiple queries against the same connecti
     <h4 class="name" id=".page"><span class="type-signature">(static) </span>page<span class="signature">(source, dest<span class="signature-attributes">opt</span>, limit<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Resolves a dynamic sequence of arrays/pages with mixed values, by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/page.md">spex.page</a>.</p>
-    
 
 
 
 <div class="description">
-    <p>For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/page.md">spex.page</a>.</p>
+    <p><strong>Alternative Syntax:</strong> <code>page(source, {dest, limit})</code> &#8658; <code>Promise</code></p>
+<p>Resolves a dynamic sequence of arrays/pages with mixed values, by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/page.md">spex.page</a>.</p>
+<p>For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/page.md">spex.page</a>.</p>
 </div>
 
 
@@ -758,7 +753,7 @@ session, during which you can execute multiple queries against the same connecti
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line100">line 100</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line106">line 106</a>
     </li></ul></dd>
     
 
@@ -810,13 +805,13 @@ session, during which you can execute multiple queries against the same connecti
     <h4 class="name" id=".sequence"><span class="type-signature">(static) </span>sequence<span class="signature">(source, dest<span class="signature-attributes">opt</span>, limit<span class="signature-attributes">opt</span>, track<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
-    <p class="summary">Resolves a dynamic sequence of mixed values by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md">spex.sequence</a>.</p>
-    
 
 
 
 <div class="description">
-    <p>For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md">spex.sequence</a>.</p>
+    <p><strong>Alternative Syntax:</strong> <code>sequence(source, {dest, limit, track})</code> &#8658; <code>Promise</code></p>
+<p>Resolves a dynamic sequence of mixed values by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md">spex.sequence</a>.</p>
+<p>For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md">spex.sequence</a>.</p>
 </div>
 
 
@@ -1040,7 +1035,7 @@ session, during which you can execute multiple queries against the same connecti
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line114">line 114</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line123">line 123</a>
     </li></ul></dd>
     
 

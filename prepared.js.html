@@ -36,7 +36,7 @@ var EOL = require('os').EOL;
 /**
  * @constructor PreparedStatement
  * @description
- * **Alternative Syntax:** `PreparedStatement({name, text, values})`
+ * **Alternative Syntax:** `PreparedStatement({name, text, values})` &amp;#8658; {@link PreparedStatement}
  *
  * Added in version 3.9.0
  *
@@ -47,7 +47,7 @@ var EOL = require('os').EOL;
  * - Parses all the parameters, and throws an error, if they are invalid
  * - Reusable with different values, via method {@link PreparedStatement.create create}
  * - Can be used as a simple object, via method {@link PreparedStatement.get get}
- * - Provides friendly-formatted output for the console and via method {@link PreparedStatement.toString toString}
+ * - Provides friendly-formatted output for the console, and via method {@link PreparedStatement.toString toString}
  *
  * The type is available from the library's root: `pgp.PreparedStatement`.
  *

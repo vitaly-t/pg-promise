@@ -82,15 +82,18 @@ function Task(ctx, tag, isTX, config) {
      * @member {Object} Task.ctx
      * @summary Task Context Object
      *
-     * @property {Object} [context]
+     * @property {Object} context
      * If the operation was invoked with an object context - `task.call(obj,...)` or
      * `tx.call(obj,...)`, this property is set with the context object that was passed in.
+     *
+     * @property {} dc - Database Context that was used when creating the database object.
+     * See {@link Database}.
      *
      * @property {Boolean} isTX
      * Indicates whether this task represents a transaction.
      *
-     * @property {} [tag]
-     * Tag value as it was passed into the task.
+     * @property {} tag
+     * Tag value as it was passed into the task. See methods {@link Database.task task} and {@link Database.tx tx}.
      *
      * @see event {@link event:query query}
      */
@@ -115,8 +118,11 @@ function Task(ctx, tag, isTX, config) {
 
     /**
      * @method Task.batch
-     * @summary Settles a predefined array of mixed values by redirecting to method $[spex.batch].
      * @description
+     * **Alternative Syntax:** `batch(values, {cb})` &amp;#8658; `Promise`
+     *
+     * Settles a predefined array of mixed values by redirecting to method $[spex.batch].
+     *
      * For complete method documentation see $[spex.batch].
      * @param {Array} values
      * @param {Function} [cb]
@@ -128,8 +134,11 @@ function Task(ctx, tag, isTX, config) {
 
     /**
      * @method Task.page
-     * @summary Resolves a dynamic sequence of arrays/pages with mixed values, by redirecting to method $[spex.page].
      * @description
+     * **Alternative Syntax:** `page(source, {dest, limit})` &amp;#8658; `Promise`
+     *
+     * Resolves a dynamic sequence of arrays/pages with mixed values, by redirecting to method $[spex.page].
+     *
      * For complete method documentation see $[spex.page].
      * @param {Function} source
      * @param {Function} [dest]
@@ -142,8 +151,11 @@ function Task(ctx, tag, isTX, config) {
 
     /**
      * @method Task.sequence
-     * @summary Resolves a dynamic sequence of mixed values by redirecting to method $[spex.sequence].
      * @description
+     * **Alternative Syntax:** `sequence(source, {dest, limit, track})` &amp;#8658; `Promise`
+     *
+     * Resolves a dynamic sequence of mixed values by redirecting to method $[spex.sequence].
+     *
      * For complete method documentation see $[spex.sequence].
      * @param {Function} source
      * @param {Function} [dest]
