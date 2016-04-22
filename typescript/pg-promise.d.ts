@@ -20,41 +20,58 @@ declare module 'pg-promise' {
     // API: http://vitaly-t.github.io/pg-promise/Database.html
     interface IBaseProtocol<Ext> {
 
-        // generic query method;
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#.query
         query(query:TQuery, values?:any, qrm?:pgPromise.queryResult):XPromise<any>;
 
         // result-specific methods;
+
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#.none
         none(query:TQuery, values?:any):XPromise<void>;
+
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#.one
         one(query:TQuery, values?:any):XPromise<any>;
+
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#.oneOrNone
         oneOrNone(query:TQuery, values?:any):XPromise<any>;
+
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#.many
         many(query:TQuery, values?:any):XPromise<Array<any>>;
+
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#.manyOrNone
         manyOrNone(query:TQuery, values?:any):XPromise<Array<any>>;
+
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#.any
         any(query:TQuery, values?:any):XPromise<Array<any>>;
 
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#.result
         result(query:TQuery, values?:any):XPromise<pg.IResult>;
 
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#.stream
         stream(qs:Object, init:(stream:Object)=>void):XPromise<{processed:number, duration:number}>;
 
-        // functions and procedures
-
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#.func
         func(funcName:string, values?:any, qrm?:pgPromise.queryResult):XPromise<any>;
+
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#.proc
         proc(procName:string, values?:any):XPromise<any>;
 
-        // tasks & transactions
-
+        // Tasks
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#.task
         task(cb:(t:ITask<Ext>&Ext)=>any):XPromise<any>;
         task(tag:any, cb:(t:ITask<Ext>&Ext)=>any):XPromise<any>;
 
+        // Transactions
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#.tx
         tx(cb:(t:ITask<Ext>&Ext)=>any):XPromise<any>;
         tx(tag:any, cb:(t:ITask<Ext>&Ext)=>any):XPromise<any>;
     }
 
-    // Database protocol in connected state;
+    // Database object in connected state;
     interface IConnected<Ext> extends IBaseProtocol<Ext> {
         done():void;
     }
 
-    // Task/Transaction interface;
+    // Additional methods available inside tasks + transactions;
     // API: http://vitaly-t.github.io/pg-promise/Task.html
     interface ITask<Ext> extends IBaseProtocol<Ext> {
 
@@ -70,6 +87,7 @@ declare module 'pg-promise' {
         sequence(source:(index:number, data:any, delay:number)=>any, dest?:(index:number, data:any, delay:number)=>any, limit?:number, track?:boolean):XPromise<any>;
         sequence(source:(index:number, data:any, delay:number)=>any, options:{dest?:(index:number, data:any, delay:number)=>any, limit?:number, track?:boolean}):XPromise<any>;
 
+        // API: http://vitaly-t.github.io/pg-promise/Task.html#.ctx
         ctx:ITaskContext;
     }
 
@@ -77,32 +95,44 @@ declare module 'pg-promise' {
     // API: http://vitaly-t.github.io/pg-promise/formatting.html
     interface IFormatting {
 
+        // API: http://vitaly-t.github.io/pg-promise/formatting.html#.array
         array(arr:Array<any>|(()=>Array<any>)):string;
 
+        // API: http://vitaly-t.github.io/pg-promise/formatting.html#.bool
         bool(value:any|(()=>any)):string;
 
+        // API: http://vitaly-t.github.io/pg-promise/formatting.html#.buffer
         buffer(obj:Object|(()=>Object), raw?:boolean):string;
 
+        // API: http://vitaly-t.github.io/pg-promise/formatting.html#.csv
         csv(values:any|(()=>any)):string;
 
+        // API: http://vitaly-t.github.io/pg-promise/formatting.html#.date
         date(d:Date|(()=>Date), raw?:boolean):string;
 
+        // API: http://vitaly-t.github.io/pg-promise/formatting.html#.format
         format(query:string, values?:any, options?:TFormattingOptions):string;
 
+        // API: http://vitaly-t.github.io/pg-promise/formatting.html#.func
         func(func:()=>any, raw?:boolean, obj?:Object):string;
 
+        // API: http://vitaly-t.github.io/pg-promise/formatting.html#.json
         json(obj:any|(()=>any), raw?:boolean):string;
 
+        // API: http://vitaly-t.github.io/pg-promise/formatting.html#.name
         name(name:string|(()=>string)):string;
 
+        // API: http://vitaly-t.github.io/pg-promise/formatting.html#.number
         number(value:number|(()=>number)):string;
 
+        // API: http://vitaly-t.github.io/pg-promise/formatting.html#.text
         text(value:any|(()=>any), raw?:boolean):string;
 
+        // API: http://vitaly-t.github.io/pg-promise/formatting.html#.value
         value(value:any|(()=>any)):string;
     }
 
-    // Event context extension for tasks/transactions;
+    // Event context extension for tasks + transactions;
     // See: http://vitaly-t.github.io/pg-promise/global.html#event:query
     interface ITaskContext {
         isTX:boolean;
@@ -150,14 +180,14 @@ declare module 'pg-promise' {
         readCommitted = 3
     }
 
-    // Transaction Mode class;
+    // TransactionMode class;
     // API: http://vitaly-t.github.io/pg-promise/TransactionMode.html
     class TransactionMode {
         constructor(tiLevel?:isolationLevel, readOnly?:boolean, deferrable?:boolean);
         constructor(options:{tiLevel?:isolationLevel, readOnly?:boolean, deferrable?:boolean});
     }
 
-    // Query Result Error;
+    // QueryResultError class;
     // API: http://vitaly-t.github.io/pg-promise/QueryResultError.html
     class QueryResultError implements Error {
 
@@ -173,6 +203,7 @@ declare module 'pg-promise' {
         query:string;
         values:any;
 
+        // API: http://vitaly-t.github.io/pg-promise/QueryResultError.html#.toString
         toString():string;
     }
 
@@ -234,28 +265,36 @@ declare module 'pg-promise' {
             any = 6
         }
 
-        // Prepared Statement class;
+        // PreparedStatement class;
         // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html
         class PreparedStatement {
+
+            // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html
             constructor(name:string, text:string, values?:any);
             constructor(obj:TPrepared);
-            
+
             name:string;
             text:string;
             values:Array<any>;
-            
+
+            // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.get
             get():TPrepared;
-            
+
+            // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.create
             create(values?:Array<any>):TPrepared;
 
+            // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.format
             format(options?:TFormattingOptions):string;
 
+            // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.toString
             toString():string;
         }
 
-        // Query File class;
+        // QueryFile class;
         // API: http://vitaly-t.github.io/pg-promise/QueryFile.html
         class QueryFile {
+
+            // API: http://vitaly-t.github.io/pg-promise/QueryFile.html
             constructor(file:string, options?:{
                 debug?:boolean,
                 minify?:boolean|'after',
@@ -263,15 +302,26 @@ declare module 'pg-promise' {
                 params?:any
             });
 
+            // API: http://vitaly-t.github.io/pg-promise/QueryFile.html#error
             error:Error;
+
+            // API: http://vitaly-t.github.io/pg-promise/QueryFile.html#file
             file:string;
+
+            // API: http://vitaly-t.github.io/pg-promise/QueryFile.html#options
             options:any;
+
+            // API: http://vitaly-t.github.io/pg-promise/QueryFile.html#query
             query:string;
 
+            // API: http://vitaly-t.github.io/pg-promise/QueryFile.html#.prepare
             prepare():void;
+
+            // API: http://vitaly-t.github.io/pg-promise/QueryFile.html#.toString
+            toString():string;
         }
 
-        // Promise Adapter class;
+        // PromiseAdapter class;
         // API: http://vitaly-t.github.io/pg-promise/PromiseAdapter.html
         class PromiseAdapter {
             constructor(create:(cb)=>Object, resolve:(data:any)=>void, reject:(reason:any)=>void);
