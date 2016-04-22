@@ -561,7 +561,7 @@ Queries in a detached promise chain maintain connection independently, they each
 execute the query and then release the connection back to the pool.
 
 ```javascript
-db.one('select * from users where id=$1', 123) // find the user from id;
+db.one('select * from users where id = $1', 123) // find the user from id;
     .then(function (data) {
         // find 'login' records for the user found:
         return db.query('select * from audit where event=$1 and userId=$2',
