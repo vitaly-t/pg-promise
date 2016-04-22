@@ -13,7 +13,7 @@ declare module 'pg-promise' {
     import XPromise = require('ext-promise'); // External Promise Provider
 
     type TFormattingOptions = {partial?:boolean};
-    type TPrepared = {name:string, text:string, values?:any};
+    type TPrepared = {name:string, text:string, values?:Array<any>};
     type TQuery = string|pgPromise.QueryFile|TPrepared|pgPromise.PreparedStatement;
 
     // Base database protocol
@@ -270,7 +270,7 @@ declare module 'pg-promise' {
         class PreparedStatement {
 
             // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html
-            constructor(name:string, text:string, values?:any);
+            constructor(name:string, text:string, values?:Array<any>);
             constructor(obj:TPrepared);
 
             name:string;
