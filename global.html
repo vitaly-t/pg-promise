@@ -1003,7 +1003,7 @@ i.e. releasing the virtual connection.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    disconnect: function(client, dc){       var cp = client.connectionParameters;       console.log("Disconnecting from database:", cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    disconnect: function(client, dc) {       var cp = client.connectionParameters;       console.log("Disconnecting from database:", cp.database);    }};</code></pre>
 
 
 
