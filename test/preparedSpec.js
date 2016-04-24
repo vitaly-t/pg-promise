@@ -92,6 +92,29 @@ describe("PreparedStatement", function () {
             expect(ps2.inspect()).toBe(ps2.toString());
         });
     });
+
+    describe("with QueryFile", function () {
+
+        describe("successful", function () {
+            var qf = new pgp.QueryFile('./test/sql/simple.sql', {compress: true});
+            var ps = new pgp.PreparedStatement('test-name', qf);
+            var result = ps.parse();
+            expect(result && typeof result === 'object').toBeTruthy();
+            expect(result.name).toBe('test-name');
+            expect(result.text).toBe('select 1;');
+            expect(ps.toString()).toBe(ps.inspect());
+        });
+
+        describe("with error", function () {
+            var qf = new pgp.QueryFile('./invalid.sql');
+            var ps = new pgp.PreparedStatement('test-name', qf);
+            var result = ps.parse();
+            expect(result instanceof pgp.errors.PreparedStatementError).toBe(true);
+            expect(result.error instanceof pgp.errors.QueryFileError).toBe(true);
+            expect(ps.toString()).toBe(ps.inspect());
+        });
+
+    });
 });
 
 describe("Direct Prepared Statements", function () {
@@ -178,11 +201,9 @@ describe("Direct Prepared Statements", function () {
 
     describe("with an empty 'name'", function () {
         var result;
+        var ps = new pgp.PreparedStatement({name: "", text: "non-empty"});
         beforeEach(function (done) {
-            db.query({
-                    name: "",
-                    text: "non-empty"
-                })
+            db.query(ps)
                 .then(dummy, function (reason) {
                     result = reason;
                 })
@@ -192,6 +213,8 @@ describe("Direct Prepared Statements", function () {
         });
         it("must return an error", function () {
             expect(result instanceof PreparedStatementError).toBe(true);
+            expect(ps.toString(1) != ps.inspect()).toBe(true);
+            expect(result.toString()).toBe(result.inspect());
         });
     });
 

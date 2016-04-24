@@ -963,6 +963,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 4.0.0 Consolidating the entire error-reporting mechanism. Released: April 24, 2016
 * 3.9.0 Prepared Statements support rewritten, adding new type [PreparedStatement]. Released: April 20, 2016
 * 3.8.0 Added Database Context support (see [Database]). Released: April 14, 2016
 * 3.7.1 Adding internal typescript support to the library. Released: April 10, 2016

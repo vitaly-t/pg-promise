@@ -177,9 +177,11 @@ describe("QueryFile / Negative:", function () {
     });
 
     describe("inspect", function () {
-        var qf = new QueryFile(sqlUnknown);
+        var qf = new QueryFile(sqlInvalid, {minify: true});
         it("must return the error", function () {
-            expect(qf.inspect()).toBe(qf.toString());
+            expect(qf.inspect() != qf.toString(1)).toBe(true);
+            expect(qf.error instanceof QueryFileError).toBe(true);
+            expect(qf.error.inspect()).toBe(qf.error.toString());
         });
     });
 

@@ -413,6 +413,7 @@ describe("Method 'none'", function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
+            expect(error.toString(1) != error.inspect()).toBe(true);
             expect(error.message).toBe($errors.notEmpty);
         });
     });
