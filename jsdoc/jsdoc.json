@@ -1,7 +1,8 @@
 {
   "source": {
     "include": [
-      "lib"
+      "lib",
+      "lib/errors"
     ]
   },
   "templates": {
