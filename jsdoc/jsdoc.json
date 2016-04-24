@@ -1,9 +1,12 @@
 {
   "source": {
     "include": [
-      "lib",
-      "lib/errors"
+      "lib"
     ]
+  },
+  "opts": {
+    "recurse": true,
+    "destination": "./API"
   },
   "templates": {
     "default": {
