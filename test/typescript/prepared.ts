@@ -9,6 +9,9 @@ var ps1 = new pgp.PreparedStatement('', '', []);
 var ps2 = new pgp.PreparedStatement({name: '', text: ''});
 var ps3 = new pgp.PreparedStatement(ps1);
 
+var qf = new pgPromise.QueryFile('file');
+var ps4 = new pgp.PreparedStatement({name: '', text: qf});
+
 db.one(ps1.get());
 db.one(ps1);
 
