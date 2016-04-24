@@ -41,17 +41,16 @@ var $npm = {
  * Error types namespace, available as `pgp.errors`, before and after initializing the library.
  *
  * @property {QueryResultError} QueryResultError
- * {@link QueryResultError} class.
+ * Represents all result-specific errors from query methods.
  *
  * @property {queryResultErrorCode} queryResultErrorCode
- * {@link queryResultErrorCode} enumerator.
+ * Error codes `enum` used by class {@link QueryResultError}.
  *
  * @property {PreparedStatementError} PreparedStatementError
- * {@link PreparedStatementError} class.
+ * Represents all errors that can be reported by class {@link PreparedStatement}.
  *
  * @property {QueryFileError} QueryFileError
- * {@link QueryFileError} class.
- *
+ * Represents all errors that can be reported by class {@link QueryFile}.
  */
 module.exports = {
     QueryResultError: $npm.qResult.QueryResultError,

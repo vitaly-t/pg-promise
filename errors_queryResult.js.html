@@ -117,6 +117,8 @@ var errorMessages = [
  * Values passed in as query parameters. Available only when initialization option `pgFormatting` is used.
  * Otherwise, the values are within the pre-formatted `query` string.
  *
+ * @returns {QueryResultError}
+ *
  * @example
  *
  * var QueryResultError = pgp.errors.QueryResultError;
@@ -177,7 +179,7 @@ QueryResultError.prototype = Object.create(Error.prototype, {
  *
  * It is called automatically when writing the object into the console.
  *
- * @param {Number} [level]
+ * @param {Number} [level=0]
  * Nested output level, to provide visual offset.
  *
  * @returns {string}

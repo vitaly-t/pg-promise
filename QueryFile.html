@@ -480,7 +480,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
 
 
 <div class="description">
-    <p>Error, if thrown while preparing the query.</p>
+    <p>When in an error state, it is set to a <a href="QueryFileError.html">QueryFileError</a> object. Otherwise, it is <code>undefined</code>.</p>
 <p>This property is meant primarily for internal use by the library.</p>
 </div>
 
@@ -881,7 +881,7 @@ the constructor.</p>
 
 
 <div class="description">
-    <p>Returns the query when in normal state, and the error message when in error state.</p>
+    <p>Creates a well-formatted multi-line string that represents the object's current state.</p>
 <p>It is called automatically when writing the object into the console.</p>
 </div>
 
@@ -909,6 +909,8 @@ the constructor.</p>
         <th>Attributes</th>
         
 
+        
+        <th>Default</th>
         
 
         <th class="last">Description</th>
@@ -944,6 +946,12 @@ the constructor.</p>
                 </td>
             
 
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
             
 
             <td class="description last"><p>Nested output level, to provide visual offset.</p></td>

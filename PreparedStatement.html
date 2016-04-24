@@ -195,131 +195,6 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
 
 
 
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>An arbitrary name given to this particular prepared statement. It must be unique within a single session and is
-subsequently used to execute or deallocate a previously prepared statement.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>text</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type"><a href="QueryFile.html">QueryFile</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>A non-empty query string or a <a href="QueryFile.html">QueryFile</a> object.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>values</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Query formatting values. It can be either an <code>Array</code> or <code>null</code>/<code>undefined</code>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>error</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="PreparedStatementError.html">PreparedStatementError</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Set to a <a href="PreparedStatementError.html">PreparedStatementError</a> object, but only when in error state.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
 <dl class="details">
 
     
@@ -423,6 +298,303 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="error"><span class="type-signature"></span>error<span class="type-signature"> :<a href="PreparedStatementError.html">PreparedStatementError</a></span></h4>
+
+
+
+
+<div class="description">
+    <p>When in an error state, it is set to a <a href="PreparedStatementError.html">PreparedStatementError</a> object. Otherwise, it is <code>undefined</code>.</p>
+<p>This property is meant primarily for internal use by the library.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="PreparedStatementError.html">PreparedStatementError</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line116">line 116</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="name"><span class="type-signature"></span>name<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    <p>An arbitrary name given to this particular prepared statement. It must be unique within a single session and is
+subsequently used to execute or deallocate a previously prepared statement.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line91">line 91</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="text"><span class="type-signature"></span>text<span class="type-signature"> :string|<a href="QueryFile.html">QueryFile</a></span></h4>
+
+
+
+
+<div class="description">
+    <p>A non-empty query string or a <a href="QueryFile.html">QueryFile</a> object.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+|
+
+<span class="param-type"><a href="QueryFile.html">QueryFile</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line100">line 100</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="values"><span class="type-signature"></span>values<span class="type-signature"> :Array</span></h4>
+
+
+
+
+<div class="description">
+    <p>Query formatting values. It can be either an <code>Array</code> or <code>null</code>/<code>undefined</code>.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line108">line 108</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -485,7 +657,7 @@ if successful, or else returns a <a href="PreparedStatementError.html">PreparedS
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line116">line 116</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line135">line 135</a>
     </li></ul></dd>
     
 
@@ -544,7 +716,7 @@ if successful, or else returns a <a href="PreparedStatementError.html">PreparedS
 
 
 <div class="description">
-    <p>Creates a well-formatted multi-line string that represents the object's state.</p>
+    <p>Creates a well-formatted multi-line string that represents the object's current state.</p>
 <p>It is called automatically when writing the object into the console.</p>
 </div>
 
@@ -572,6 +744,8 @@ if successful, or else returns a <a href="PreparedStatementError.html">PreparedS
         <th>Attributes</th>
         
 
+        
+        <th>Default</th>
         
 
         <th class="last">Description</th>
@@ -607,6 +781,12 @@ if successful, or else returns a <a href="PreparedStatementError.html">PreparedS
                 </td>
             
 
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
             
 
             <td class="description last"><p>Nested output level, to provide visual offset.</p></td>
@@ -650,7 +830,7 @@ if successful, or else returns a <a href="PreparedStatementError.html">PreparedS
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line155">line 155</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line174">line 174</a>
     </li></ul></dd>
     
 

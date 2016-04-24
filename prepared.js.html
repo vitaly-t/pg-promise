@@ -60,19 +60,6 @@ var $npm = {
  * @param {Array} [values]
  * Query formatting values. It can be either an `Array` or `null`/`undefined`.
  *
- * @property {string} name
- * An arbitrary name given to this particular prepared statement. It must be unique within a single session and is
- * subsequently used to execute or deallocate a previously prepared statement.
- *
- * @property {string|QueryFile} text
- * A non-empty query string or a {@link QueryFile} object.
- *
- * @property {Array} values
- * Query formatting values. It can be either an `Array` or `null`/`undefined`.
- *
- * @property {PreparedStatementError} error
- * Set to a {@link PreparedStatementError} object, but only when in error state.
- * 
  * @returns {PreparedStatement}
  *
  * @see {@link http://www.postgresql.org/docs/9.5/static/sql-prepare.html PostgreSQL Prepared Statements}
@@ -129,16 +116,48 @@ function PreparedStatement(name, text, values) {
     if (!(this instanceof PreparedStatement)) {
         return new PreparedStatement(name, text, values);
     }
+
+    /**
+     * @name PreparedStatement#name
+     * @type {string}
+     * @description
+     * An arbitrary name given to this particular prepared statement. It must be unique within a single session and is
+     * subsequently used to execute or deallocate a previously prepared statement.
+     */
+    this.name = name;
+
+    /**
+     * @name PreparedStatement#text
+     * @type {string|QueryFile}
+     * @description
+     * A non-empty query string or a {@link QueryFile} object.
+     */
+    this.text = text;
+    
+    /**
+     * @name PreparedStatement#values
+     * @type {Array}
+     * @description
+     * Query formatting values. It can be either an `Array` or `null`/`undefined`.
+     */
+    this.values = values;
+
+    /**
+     * @name PreparedStatement#error
+     * @type {PreparedStatementError}
+     * @description
+     * When in an error state, it is set to a {@link PreparedStatementError} object. Otherwise, it is `undefined`.
+     * 
+     * This property is meant primarily for internal use by the library.
+     */
+    this.error = undefined;
+
     if ($npm.utils.isObject(name, ['name', 'text'])) {
         this.name = name.name;
         this.text = name.text;
         this.values = name.values;
-    } else {
-        this.name = name;
-        this.text = text;
-        this.values = values;
     }
-    this.error = undefined;
+
     Object.seal(this);
 }
 
@@ -184,11 +203,11 @@ PreparedStatement.prototype.parse = function () {
 /**
  * @method PreparedStatement.toString
  * @description
- * Creates a well-formatted multi-line string that represents the object's state.
+ * Creates a well-formatted multi-line string that represents the object's current state.
  *
  * It is called automatically when writing the object into the console.
  *
- * @param {Number} [level]
+ * @param {Number} [level=0]
  * Nested output level, to provide visual offset.
  *
  * @returns {string}

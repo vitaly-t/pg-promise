@@ -40,7 +40,7 @@ var $npm = {
  * @augments Error
  * @summary Prepared Statement Error class.
  * @description
- * Specified as the rejection reason by query methods when encountering an error related to {@link PreparedStatement},
+ * Specified as the rejection reason by query methods when encountering an error related to a {@link PreparedStatement},
  * whether it is used explicitly or implicitly (via simple `{name, text, values}` object).
  *
  * The type is available from the {@link errors} namespace.
@@ -88,7 +88,7 @@ PreparedStatementError.prototype = Object.create(Error.prototype, {
  *
  * It is called automatically when writing the object into the console.
  *
- * @param {Number} [level]
+ * @param {Number} [level=0]
  * Nested output level, to provide visual offset.
  *
  * @returns {string}
