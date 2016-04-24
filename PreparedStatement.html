@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PreparedStatementError.html">PreparedStatementError</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryFileError.html">QueryFileError</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -49,16 +49,10 @@
 
 <div class="description">
     <p><strong>Alternative Syntax:</strong> <code>PreparedStatement({name, text, values})</code> &#8658; <a href="PreparedStatement.html">PreparedStatement</a></p>
-<p>Added in version 3.9.0</p>
 <p>Constructs a strict <a href="http://www.postgresql.org/docs/9.5/static/sql-prepare.html">Prepared Statement</a> object
 that can be used directly with any query method of the library.</p>
-<p>It is an extension on the basic <code>{name, text, values}</code> object (also usable with all query methods):</p>
-<ul>
-<li>Parses all the parameters, and throws an error, if they are invalid</li>
-<li>Reusable with different values, via method <a href="PreparedStatement.html#.create">create</a></li>
-<li>Can be used as a simple object, via method <a href="PreparedStatement.html#.get">get</a></li>
-<li>Provides friendly-formatted output for the console, and via method <a href="PreparedStatement.html#.toString">toString</a></li>
-</ul>
+<p>This type extends the basic <code>{name, text, values}</code> object by replacing it, i.e. when the basic object is used
+with a query method, a new <a href="PreparedStatement.html">PreparedStatement</a> object is created implicitly in its place.</p>
 <p>The type is available from the library's root: <code>pgp.PreparedStatement</code>.</p>
 </div>
 
@@ -121,8 +115,8 @@ that can be used directly with any query method of the library.</p>
 
             
 
-            <td class="description last"><p>An arbitrary name given to this particular prepared statement. It must be unique within a single
-session and is subsequently used to execute or deallocate a previously prepared statement.</p></td>
+            <td class="description last"><p>An arbitrary name given to this particular prepared statement. It must be unique within a single session and is
+subsequently used to execute or deallocate a previously prepared statement.</p></td>
         </tr>
 
     
@@ -136,6 +130,9 @@ session and is subsequently used to execute or deallocate a previously prepared 
             
                 
 <span class="param-type">string</span>
+|
+
+<span class="param-type"><a href="QueryFile.html">QueryFile</a></span>
 
 
             
@@ -153,7 +150,7 @@ session and is subsequently used to execute or deallocate a previously prepared 
 
             
 
-            <td class="description last"><p>A non-empty query string with formatting parameters, such as <code>$1, $2, etc.</code>, or without them.</p></td>
+            <td class="description last"><p>A non-empty query string or a <a href="QueryFile.html">QueryFile</a> object.</p></td>
         </tr>
 
     
@@ -186,7 +183,7 @@ session and is subsequently used to execute or deallocate a previously prepared 
 
             
 
-            <td class="description last"><p>An optional array of values to replace the formatting parameters in the query, provided it has any.</p></td>
+            <td class="description last"><p>Query formatting values. It can be either an <code>Array</code> or <code>null</code>/<code>undefined</code>.</p></td>
         </tr>
 
     
@@ -240,9 +237,8 @@ session and is subsequently used to execute or deallocate a previously prepared 
 
             
 
-            <td class="description last"><p>Prepared Statement name, as specified in the constructor (or changed later).</p>
-<p>Setting it to anything other than a non-empty text string will throw <a href="external-TypeError.html">TypeError</a>=
-<code>'name' must be a non-empty text string.</code></p></td>
+            <td class="description last"><p>An arbitrary name given to this particular prepared statement. It must be unique within a single session and is
+subsequently used to execute or deallocate a previously prepared statement.</p></td>
         </tr>
 
     
@@ -256,6 +252,9 @@ session and is subsequently used to execute or deallocate a previously prepared 
             
                 
 <span class="param-type">string</span>
+|
+
+<span class="param-type"><a href="QueryFile.html">QueryFile</a></span>
 
 
             
@@ -265,9 +264,7 @@ session and is subsequently used to execute or deallocate a previously prepared 
 
             
 
-            <td class="description last"><p>Query string, as specified in the constructor (or changed later).</p>
-<p>Setting it to anything other than a non-empty text string will throw <a href="external-TypeError.html">TypeError</a>=
-<code>'text' must be a non-empty text string.</code></p></td>
+            <td class="description last"><p>A non-empty query string or a <a href="QueryFile.html">QueryFile</a> object.</p></td>
         </tr>
 
     
@@ -290,9 +287,30 @@ session and is subsequently used to execute or deallocate a previously prepared 
 
             
 
-            <td class="description last"><p>Query formatting values, as specified in the constructor (or changed later).</p>
-<p>It can be set to an <code>Array</code>, <code>null</code> or <code>undefined</code>, or else it will throw <a href="external-TypeError.html">TypeError</a>=
-<code>'values' must be an array or null/undefined.</code></p></td>
+            <td class="description last"><p>Query formatting values. It can be either an <code>Array</code> or <code>null</code>/<code>undefined</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="PreparedStatementError.html">PreparedStatementError</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Set to a <a href="PreparedStatementError.html">PreparedStatementError</a> object, but only when in error state.</p></td>
         </tr>
 
     
@@ -331,7 +349,7 @@ session and is subsequently used to execute or deallocate a previously prepared 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line7">line 7</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -414,344 +432,16 @@ session and is subsequently used to execute or deallocate a previously prepared 
 
     
 
-    <h4 class="name" id=".create"><span class="type-signature">(static) </span>create<span class="signature">(values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id=".parse"><span class="type-signature">(static) </span>parse<span class="signature">()</span><span class="type-signature"> &rarr; {Object|<a href="PreparedStatementError.html">PreparedStatementError</a>}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Returns a new Prepared Statement object <code>{name, text, values}</code>, based on the object's state,
-but with the new <code>values</code>.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>values</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Optional property <code>values</code> to be used in the new object: <code>Array</code>/<code>null</code>/<code>undefined</code>.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line183">line 183</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>New object <code>{name, text, values}</code>, with <code>values</code> set when it is not <code>null</code>/<code>undefined</code>.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".format"><span class="type-signature">(static) </span>format<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Uses <code>pg-promise</code> formatting engine (method <a href="formatting.html#.format">as.format</a>) to format the query according to its current state.</p>
-<p>This method is primarily for logging and diagnostics, as Prepared Statements are to be formatted by the server.</p>
-<p>ATTENTION: This method can never guarantee the same query as formatted by the server.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Formatting options, as used by method <a href="formatting.html#.format">as.format</a>.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line209">line 209</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".get"><span class="type-signature">(static) </span>get<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Returns a new Prepared Statement object <code>{name, text, values}</code>, based on the object's state.</p>
-<p>When a <a href="PreparedStatement.html">PreparedStatement</a> object is passed into a query method, <a href="PreparedStatement.html#.get">get</a> is called automatically.</p>
+    <p>Parses the current object and returns a simple Prepared Statement <code>{name, text, values}</code>,
+if successful, or else returns a <a href="PreparedStatementError.html">PreparedStatementError</a> object.</p>
+<p>This method is meant primarily for internal use by the library.</p>
 </div>
 
 
@@ -795,7 +485,7 @@ but with the new <code>values</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line162">line 162</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line116">line 116</a>
     </li></ul></dd>
     
 
@@ -821,10 +511,6 @@ but with the new <code>values</code>.</p>
 <h5>Returns:</h5>
 
         
-<div class="param-desc">
-    <p>New object <code>{name, text, values}</code>, with <code>values</code> set when it is not <code>null</code>/<code>undefined</code>.</p>
-</div>
-
 
 
 <dl>
@@ -834,6 +520,9 @@ but with the new <code>values</code>.</p>
     <dd>
         
 <span class="param-type">Object</span>
+|
+
+<span class="param-type"><a href="PreparedStatementError.html">PreparedStatementError</a></span>
 
 
     </dd>
@@ -848,7 +537,7 @@ but with the new <code>values</code>.</p>
 
     
 
-    <h4 class="name" id=".toString"><span class="type-signature">(static) </span>toString<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".toString"><span class="type-signature">(static) </span>toString<span class="signature">(level<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
 
@@ -867,6 +556,67 @@ but with the new <code>values</code>.</p>
 
 
 
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Nested output level, to provide visual offset.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
 
 
 
@@ -900,7 +650,7 @@ but with the new <code>values</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line227">line 227</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line155">line 155</a>
     </li></ul></dd>
     
 

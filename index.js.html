@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PreparedStatementError.html">PreparedStatementError</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryFileError.html">QueryFileError</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -245,9 +245,11 @@ var rootNameSpace = {
      * @member {formatting} as
      * @readonly
      * @description
-     * Namespace for the {@link formatting type conversion helpers}.
+     * Namespace for {@link formatting all query-formatting functions}.
      *
      * Available as `pgp.as`, before and after initializing the library.
+     *
+     * @see {@link formatting}.
      */
     as: $npm.formatting.as,
 
@@ -260,7 +262,7 @@ var rootNameSpace = {
      * Available as `pgp.minify`, before and after initializing the library.
      */
     minify: $npm.minify,
-    
+
     /**
      * @member {queryResult} queryResult
      * @readonly
@@ -270,12 +272,12 @@ var rootNameSpace = {
      * Available as `pgp.queryResult`, before and after initializing the library.
      */
     queryResult: $npm.result,
-    
+
     /**
      * @member {PromiseAdapter} PromiseAdapter
      * @readonly
      * @description
-     * {@link PromiseAdapter} type.
+     * {@link PromiseAdapter} class.
      *
      * Available as `pgp.PromiseAdapter`, before and after initializing the library.
      */
@@ -285,7 +287,7 @@ var rootNameSpace = {
      * @member {PreparedStatement} PreparedStatement
      * @readonly
      * @description
-     * {@link PreparedStatement} type.
+     * {@link PreparedStatement} class.
      *
      * Available as `pgp.PreparedStatement`, before and after initializing the library.
      */
@@ -295,7 +297,7 @@ var rootNameSpace = {
      * @member {QueryFile} QueryFile
      * @readonly
      * @description
-     * {@link QueryFile} type.
+     * {@link QueryFile} class.
      *
      * Available as `pgp.QueryFile`, before and after initializing the library.
      */

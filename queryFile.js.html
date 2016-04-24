@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PreparedStatementError.html">PreparedStatementError</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryFileError.html">QueryFileError</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,10 +29,14 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-var fs = require('fs');
-var os = require('os');
-var minify = require('pg-minify');
-var format = require('./formatting').as.format;
+var $npm = {
+    fs: require('fs'),
+    os: require('os'),
+    minify: require('pg-minify'),
+    utils: require('./utils'),
+    format: require('./formatting').as.format,
+    QueryFileError: require('./errors/queryFile')
+};
 
 /**
  * @constructor QueryFile
@@ -193,7 +197,7 @@ function QueryFile(file, options) {
         var lastMod;
         if (opt.debug &amp;&amp; ready) {
             try {
-                lastMod = fs.statSync(file).mtime.getTime();
+                lastMod = $npm.fs.statSync(file).mtime.getTime();
                 if (lastMod !== modTime) {
                     ready = false;
                 }
@@ -206,26 +210,22 @@ function QueryFile(file, options) {
         }
         if (!ready) {
             try {
-                sql = fs.readFileSync(file, 'utf8');
-                modTime = lastMod || fs.statSync(file).mtime.getTime();
+                sql = $npm.fs.readFileSync(file, 'utf8');
+                modTime = lastMod || $npm.fs.statSync(file).mtime.getTime();
                 if (opt.minify &amp;&amp; !after) {
-                    sql = minify(sql, {compress: opt.compress});
+                    sql = $npm.minify(sql, {compress: opt.compress});
                 }
                 if (opt.params !== undefined) {
-                    sql = format(sql, opt.params, {partial: true});
+                    sql = $npm.format(sql, opt.params, {partial: true});
                 }
                 if (opt.minify &amp;&amp; after) {
-                    sql = minify(sql, {compress: opt.compress});
+                    sql = $npm.minify(sql, {compress: opt.compress});
                 }
                 ready = true;
                 error = undefined;
             } catch (e) {
                 sql = undefined;
-                error = e;
-                if (e instanceof minify.SQLParsingError) {
-                    e.file = file;
-                    e.message += os.EOL + "File: " + file;
-                }
+                error = new $npm.QueryFileError(e, this);
             }
         }
     };
@@ -246,10 +246,10 @@ function QueryFile(file, options) {
             return sql;
         }
     });
-
+    
     /**
      * @name QueryFile#error
-     * @type Error
+     * @type {QueryFileError}
      * @default undefined
      * @readonly
      * @description
@@ -302,14 +302,31 @@ function QueryFile(file, options) {
  * Returns the query when in normal state, and the error message when in error state.
  *
  * It is called automatically when writing the object into the console.
- *
+ * 
+ * @param {Number} [level]
+ * Nested output level, to provide visual offset.
+ * 
  * @returns {string}
  */
 // well-formatted output:
 // - output the error message when in error state;
 // - output the sql content when in normal state.
-QueryFile.prototype.toString = function () {
-    return this.error ? this.error.message : this.query;
+QueryFile.prototype.toString = function (level) {
+    level = level > 0 ? parseInt(level) : 0;
+    var gap = $npm.utils.messageGap(level + 1);
+    var lines = [
+        'QueryFile {'
+    ];
+    this.prepare();
+    lines.push(gap + 'file: "' + this.file + '"');
+    lines.push(gap + 'options: ' + JSON.stringify(this.options));
+    if (this.error) {
+        lines.push(gap + 'error: ' + this.error.toString(level + 1));
+    } else {
+        lines.push(gap + 'query: "' + this.query + '"');
+    }
+    lines.push($npm.utils.messageGap(level) + '}');
+    return lines.join($npm.os.EOL);
 };
 
 QueryFile.prototype.inspect = function () {
