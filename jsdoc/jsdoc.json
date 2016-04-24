@@ -4,6 +4,10 @@
       "lib"
     ]
   },
+  "opts": {
+    "recurse": true,
+    "destination": "./API"
+  },
   "templates": {
     "default": {
       "layoutFile": "jsdoc/layout.html",
