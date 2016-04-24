@@ -302,22 +302,22 @@ declare module 'pg-promise' {
             none = 4,
             any = 6
         }
-        
+
         // PreparedStatement class;
         // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html
         class PreparedStatement {
-            
+
             // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html
             constructor(name:string, text:string|QueryFile, values?:Array<any>);
             constructor(obj:TPrepared);
-            
+
             name:string;
             text:string;
             values:Array<any>;
-            
+
             // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.parse
             parse():TPreparedBasic|PreparedStatementError;
-            
+
             // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.toString
             toString(level?:number):string;
         }
