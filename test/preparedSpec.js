@@ -10,19 +10,11 @@ var dbHeader = header(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
+var PreparedStatementError = pgp.errors.PreparedStatementError;
+
 function dummy() {
     // dummy/empty function;
 }
-
-var $errors = {
-    query: "Invalid query format.",
-    psNameClass: "'name' must be a non-empty text string.",
-    psTextClass: "'text' must be a non-empty text string.",
-    psValuesClass: "'values' must be an array or null/undefined.",
-    psName: "Invalid 'name' in a prepared statement.",
-    psText: "Invalid 'text' in a prepared statement.",
-    psValues: "Invalid 'values' in a prepared statement."
-};
 
 describe("PreparedStatement", function () {
 
@@ -36,7 +28,7 @@ describe("PreparedStatement", function () {
     describe("parameter-object initialization", function () {
         it("must initialize correctly", function () {
             var ps = new pgp.PreparedStatement({name: 'test-name', text: 'test-query', values: [123]});
-            expect(ps.get()).toEqual({name: 'test-name', text: 'test-query', values: [123]});
+            expect(ps.parse()).toEqual({name: 'test-name', text: 'test-query', values: [123]});
         });
     });
 
@@ -54,17 +46,6 @@ describe("PreparedStatement", function () {
             expect(ps.name).toBe("new-name");
             expect(ps.text).toBe("new-query");
             expect(ps.values).toEqual([456]);
-        });
-        it("must throw on setting invalid values", function () {
-            expect(function () {
-                ps.name = ' ';
-            }).toThrow(new TypeError($errors.psNameClass));
-            expect(function () {
-                ps.text = ' ';
-            }).toThrow(new TypeError($errors.psTextClass));
-            expect(function () {
-                ps.values = 123;
-            }).toThrow(new TypeError($errors.psValuesClass));
         });
     });
 
@@ -101,30 +82,6 @@ describe("PreparedStatement", function () {
             expect(result && typeof result === 'object').toBeTruthy();
             expect(result.count).toBe('0');
         });
-    });
-
-    describe("create", function () {
-        var ps = new pgp.PreparedStatement('test-name', 'test-query');
-        it("must return correct object", function () {
-            expect(ps.create()).toEqual({name: "test-name", text: "test-query"});
-            expect(ps.create([123])).toEqual({name: "test-name", text: "test-query", values: [123]});
-        });
-        it("must throw on invalid values", function () {
-            expect(function () {
-                ps.create(123);
-            }).toThrow(new TypeError($errors.psValuesClass));
-        })
-    });
-
-    describe("format", function () {
-        it("must return correct query", function () {
-            var ps = new pgp.PreparedStatement('test-name', 'test-query $1', [123]);
-            expect(ps.format()).toEqual('test-query 123');
-        });
-        it("must correctly use options", function () {
-            var ps = new pgp.PreparedStatement('test-name', 'test-query $1, $2', [123]);
-            expect(ps.format({partial: true})).toEqual('test-query 123, $2');
-        })
     });
 
     describe("object inspection", function () {
@@ -215,7 +172,7 @@ describe("Direct Prepared Statements", function () {
                 });
         });
         it("must return an error", function () {
-            expect(result).toBe($errors.psValues);
+            expect(result instanceof PreparedStatementError).toBe(true);
         });
     });
 
@@ -234,7 +191,7 @@ describe("Direct Prepared Statements", function () {
                 });
         });
         it("must return an error", function () {
-            expect(result).toBe($errors.psName);
+            expect(result instanceof PreparedStatementError).toBe(true);
         });
     });
 
@@ -253,7 +210,7 @@ describe("Direct Prepared Statements", function () {
                 });
         });
         it("must return an error", function () {
-            expect(result).toBe($errors.psText);
+            expect(result instanceof PreparedStatementError).toBe(true);
         });
     });
 

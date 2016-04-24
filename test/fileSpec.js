@@ -12,6 +12,7 @@ var dbHeader = header(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
+var QueryFileError = pgp.errors.QueryFileError;
 var QueryFile = pgp.QueryFile;
 
 var sqlSimple = './test/sql/simple.sql';
@@ -135,7 +136,7 @@ describe("QueryFile / Positive:", function () {
     describe("inspect", function () {
         var qf = new QueryFile(sqlSimple);
         it("must return the query", function () {
-            expect(qf.inspect()).toBe(qf.query);
+            expect(qf.inspect()).toBe(qf.toString());
         });
     });
 
@@ -178,7 +179,7 @@ describe("QueryFile / Negative:", function () {
     describe("inspect", function () {
         var qf = new QueryFile(sqlUnknown);
         it("must return the error", function () {
-            expect(qf.inspect()).toBe(qf.error.message);
+            expect(qf.inspect()).toBe(qf.toString());
         });
     });
 
@@ -199,7 +200,7 @@ describe("QueryFile / Negative:", function () {
     describe("invalid sql", function () {
         it("must throw an error", function () {
             var qf = new QueryFile(sqlInvalid, {minify: true});
-            expect(qf.error instanceof minify.SQLParsingError).toBe(true);
+            expect(qf.error instanceof QueryFileError).toBe(true);
             expect(qf.error.file).toBe(sqlInvalid);
         });
     });
