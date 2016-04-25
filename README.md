@@ -215,33 +215,30 @@ For the most current SQL formatting support see method [as.format]
 
 ### Open Values
 
-Open values were added in version 3.4.0, to simplify concatenation of string values within a query,
-primarily for such special cases as `LIKE` filters.
+Open values simplify concatenation of string values within a query, primarily for such special cases as `LIKE` filters.
 
-Names for open-value variables end with either `:value` or symbol `#`, and it means that such a value
-is to be properly formatted and escaped, but not to be wrapped in quotes when it is a text.
+Names for open-value variables end with either `:value` or symbol `#`, and it means that such a value is to be properly
+formatted and escaped, but not to be wrapped in quotes when it is a text.
 
-Similar to raw-text variables, open-value variables are also not allowed to be `null` or `undefined`, and they
-will throw error `Open values cannot be null or undefined.` And the difference is that raw-text variables are not
-escaped, while open-value variables are properly escaped.
+Similar to raw-text variables, open-value variables are also not allowed to be `null` or `undefined`, and they will throw
+error `Open values cannot be null or undefined.` And the difference is that raw-text variables are not escaped, while
+open-value variables are properly escaped.
 
 Below is an example of formatting `LIKE` filter that ends with a value: 
 
 ```js
 // using $1# or $1:value syntax:
-query("...WHERE name LIKE '%$1#'", "berg");
-query("...WHERE name LIKE '%$1:value'", "berg");
+query('...WHERE name LIKE \'%$1#\'', 'berg');
+query('...WHERE name LIKE \'%$1:value\'', 'berg');
 
 // using ${propName#} or ${propName:value} syntax:
-query("...WHERE name LIKE '%${filter#}'", {filter: "berg"});
-query("...WHERE name LIKE '%${filter:value}'", {filter: "berg"});
+query('...WHERE name LIKE \'%${filter#}\'', {filter: 'berg'});
+query('...WHERE name LIKE \'%${filter:value}\'', {filter: 'berg'});
 ```
 
 The formatting protocol has been also extended with method [as.value].
 
 ### SQL Names
-
-Introduced in version 3.1.0, this feature simplifies formatting for SQL names/identifiers.
 
 When a variable ends with `~` (tilde) or `:name`, it represents an SQL name or identifier, which must be a text
 string of at least 1 character long. Such name is then properly escaped and wrapped in double quotes.
@@ -350,13 +347,11 @@ Leading and trailing spaces around property names are ignored.
 It is important to know that while property values `null` and `undefined` are both formatted as `null`,
 an error is thrown when the property doesn't exist at all (except for `partial` replacements - see below).
 
-Version 3.2.0 added support for `partial` replacements within method [as.format], which when used will simply ignore variables that do not
-exist in the formatting object.
+You can also use `partial` replacements within method [as.format], to ignore variables that do not exist in the formatting object.
 
 #### `this` reference
 
-Version 2.3.0 added support for property `this`, as a reference to the formatting object itself,
-so it can be inserted as a JSON-formatted string, alongside its properties.
+Property `this` is a reference to the formatting object itself, so it can be inserted as a JSON-formatted string, alongside its properties.
 
 * `${this}` - inserts the object itself as a JSON-formatted string;
 * `${this^}` - inserts the object itself as a raw-text JSON-formatted string.
@@ -825,12 +820,11 @@ The second approach isn't very usable within a database framework as this one, w
 on a connection pool, so you don't really know when a new connection is created.
 
 The last method is not usable, because transactions in this library are automatic, executing `BEGIN`
-without your control, or so it was until version 2.5.0, which changed that, as explained further.
+without your control, or so it was until [Transaction Mode] type was added (read further).
 
 ---  
 
-Version 2.5.0 added support for [Transaction Mode], which can extend `BEGIN` in your transaction with
-a complete set of configuration parameters.
+[Transaction Mode] extends the `BEGIN` command in your transaction with a complete set of configuration parameters.
 
 ```js
 var TransactionMode = pgp.txMode.TransactionMode;
@@ -867,13 +861,12 @@ This is the most efficient and best-performing way of configuring transactions. 
 
 ## Generators
 
-Version 2.6.0 added support for ES6 generators. If you prefer writing asynchronous code in a synchronous manner,
-you can implement your tasks and transactions as generators. 
+If you prefer writing asynchronous code in a synchronous manner, you can implement your tasks and transactions as generators. 
 
 ```js
 function * getUser(t) {
     // t = this;
-    let user = yield this.oneOrNone('select * from users where id=$1', 123);
+    let user = yield this.oneOrNone('select * from users where id = $1', 123);
     return yield user || this.one('insert into users(name) values($1) returning *', 'John');
 }
 
