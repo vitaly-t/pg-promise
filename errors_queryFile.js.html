@@ -38,11 +38,10 @@ var $npm = {
 /**
  * @constructor QueryFileError
  * @augments Error
- * @summary Query File Error class.
  * @description
- * Specified as the rejection reason by query methods when encountering an error related to {@link QueryFile}.
+ * QueryFileError class, available from the {@link errors} namespace.
  *
- * The type is available from the {@link errors} namespace.
+ * This type represents all errors caused by {@link QueryFile}.
  *
  * @property {string} name
  * Standard {@link external:Error Error} property - error type name = `QueryFileError`.
@@ -65,6 +64,9 @@ var $npm = {
  * It is set only when the error was thrown by $[pg-minify] while parsing the SQL file.
  *
  * @returns {QueryFileError}
+ *
+ * @see QueryFile
+ *
  */
 function QueryFileError(error, qf) {
     var temp = Error.apply(this, arguments);

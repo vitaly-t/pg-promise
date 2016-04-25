@@ -38,12 +38,11 @@ var $npm = {
 /**
  * @constructor PreparedStatementError
  * @augments Error
- * @summary Prepared Statement Error class.
  * @description
- * Specified as the rejection reason by query methods when encountering an error related to a {@link PreparedStatement},
- * whether it is used explicitly or implicitly (via simple `{name, text, values}` object).
+ * PreparedStatementError class, available from the {@link errors} namespace.
  *
- * The type is available from the {@link errors} namespace.
+ * This type represents all errors caused by {@link PreparedStatement}, whether it is used explicitly
+ * or implicitly (via simple `{name, text, values}` object).
  *
  * @property {string} name
  * Standard {@link external:Error Error} property - error type name = `PreparedStatementError`.
@@ -63,6 +62,7 @@ var $npm = {
  * Resulting Prepared Statement object.
  *
  * @returns {PreparedStatementError}
+ * @see PreparedStatement
  */
 function PreparedStatementError(error, ps) {
     var temp = Error.apply(this, arguments);

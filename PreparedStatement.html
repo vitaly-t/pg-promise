@@ -53,6 +53,8 @@
 that can be used directly with any query method of the library.</p>
 <p>This type extends the basic <code>{name, text, values}</code> object by replacing it, i.e. when the basic object is used
 with a query method, a new <a href="PreparedStatement.html">PreparedStatement</a> object is created implicitly in its place.</p>
+<p>The type can be used in place of the <code>query</code> parameter, with any query method directly. And it never throws any error,
+leaving it for query methods to reject with <a href="PreparedStatementError.html">PreparedStatementError</a>.</p>
 <p>The type is available from the library's root: <code>pgp.PreparedStatement</code>.</p>
 </div>
 
@@ -234,7 +236,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="http://www.postgresql.org/docs/9.5/static/sql-prepare.html">PostgreSQL Prepared Statements</a></li>
+            <li><a href="PreparedStatementError.html">PreparedStatementError</a>,<a href="http://www.postgresql.org/docs/9.5/static/sql-prepare.html">PostgreSQL Prepared Statements</a></li>
         </ul>
     </dd>
     
@@ -357,7 +359,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line116">line 116</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line121">line 121</a>
     </li></ul></dd>
     
 
@@ -430,7 +432,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line91">line 91</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line96">line 96</a>
     </li></ul></dd>
     
 
@@ -505,7 +507,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line100">line 100</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -577,7 +579,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line108">line 108</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line113">line 113</a>
     </li></ul></dd>
     
 
@@ -657,7 +659,7 @@ if successful, or else returns a <a href="PreparedStatementError.html">PreparedS
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line135">line 135</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line140">line 140</a>
     </li></ul></dd>
     
 
@@ -830,7 +832,7 @@ if successful, or else returns a <a href="PreparedStatementError.html">PreparedS
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line179">line 179</a>
+        <a href="prepared.js.html">prepared.js</a>, <a href="prepared.js.html#line184">line 184</a>
     </li></ul></dd>
     
 
