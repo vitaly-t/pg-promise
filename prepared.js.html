@@ -133,7 +133,7 @@ function PreparedStatement(name, text, values) {
      * A non-empty query string or a {@link QueryFile} object.
      */
     this.text = text;
-    
+
     /**
      * @name PreparedStatement#values
      * @type {Array}
@@ -147,7 +147,7 @@ function PreparedStatement(name, text, values) {
      * @type {PreparedStatementError}
      * @description
      * When in an error state, it is set to a {@link PreparedStatementError} object. Otherwise, it is `undefined`.
-     * 
+     *
      * This property is meant primarily for internal use by the library.
      */
     this.error = undefined;
@@ -173,29 +173,34 @@ function PreparedStatement(name, text, values) {
  */
 PreparedStatement.prototype.parse = function () {
     this.error = undefined;
-    var ps = {}, PSE = $npm.errors.PreparedStatementError;
-    if (!$npm.utils.isText(this.name)) {
-        return this.error = new PSE("Property 'name' must be a non-empty text string.");
+    var errors = [], ps = {
+        name: this.name,
+        text: this.text,
+        values: this.values
+    };
+    if (!$npm.utils.isText(ps.name)) {
+        errors.push("Property 'name' must be a non-empty text string.");
     }
-    ps.name = this.name;
-    if (!$npm.utils.isNull(this.values)) {
-        if (!Array.isArray(this.values)) {
-            return this.error = new PSE("Property 'values' must be an array or null/undefined.");
+    if (!$npm.utils.isNull(ps.values)) {
+        if (!Array.isArray(ps.values)) {
+            errors.push("Property 'values' must be an array or null/undefined.");
         }
-        ps.values = this.values;
     }
-    if (this.text instanceof $npm.QueryFile) {
-        var qf = this.text;
+    if (ps.text instanceof $npm.QueryFile) {
+        var qf = ps.text;
         qf.prepare();
         if (qf.error) {
-            return this.error = new PSE(qf.error);
+            errors.push(qf.error);
+        } else {
+            ps.text = qf.query;
         }
-        ps.text = qf.query;
-    } else {
-        ps.text = this.text;
     }
     if (!$npm.utils.isText(ps.text)) {
-        return this.error = new PSE("Property 'text' must be a non-empty text string.");
+        errors.push("Property 'text' must be a non-empty text string.");
+    }
+    if (errors.length) {
+        this.error = new $npm.errors.PreparedStatementError(errors[0], ps);
+        return this.error;
     }
     return ps;
 };
