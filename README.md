@@ -502,11 +502,16 @@ setting `_rawDBType` on any level will set the flag for the entire chain.
 
 ## Query Files
   
-Version 2.9.0 introduced support for Query Files to increase productivity of developing SQL queries. 
+Use of external SQL files (via [QueryFile]) has the following advantages:
+
+* Much cleaner JavaScript code, with all SQL kept in external files;
+* Much easier to write large and well-formatted SQL, with comments and whole revisions;
+* Changes in external SQL can be automatically re-loaded, without restarting the app. 
 
 Example:
 
 ```js
+// Helper for linking to external query files: 
 function sql(file) {
     return new pgp.QueryFile(file, {minify: true});
 }
@@ -519,8 +524,8 @@ db.one(sqlFindUser, {id: 123})
         console.log(user);
     })
     .catch(error=> {
-        if (error instanceof pgp.minify.SQLParsingError) {
-            // => failed to parse the SQL file
+        if (error instanceof pgp.errors.QueryFileError) {
+            // => the error is related to our QueryFile
         }
     });
 ```
@@ -535,20 +540,17 @@ FROM Users
 WHERE id = ${id}
 ```
 
-Every query method of the library recognizes type `QueryFile` as a query provider.
+Every query method of the library can accept type [QueryFile] as its `query` parameter.
+The type never throws any error, leaving it for query methods to reject with [QueryFileError].
 
-You should only create a single instance of `QueryFile` per file, and then use that instance throughout the application.
+You should only create a single instance of [QueryFile] per file, and then reuse that instance throughout the application.
 
-Most useful features of class `QueryFile`:
+Notable features of [QueryFile]:
 
 * `debug` mode, to make every query request check if the file has changed since it was last read, and if so - read it afresh.
   This way you can write sql queries and see immediate updates without having to restart your application.
-* Added in v3.2.0: `params` option for static SQL pre-formatting, to inject certain values only once, like a schema name or a
+* Option `params` is for static SQL pre-formatting, to inject certain values only once, like a schema name or a
   configurable table name.
-
-The query provider itself never throws any error, leaving it for query methods to reject with.
-
-For detailed documentation see [QueryFile API].
 
 ## Connections
 
@@ -1038,6 +1040,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
+[QueryFileError]:http://vitaly-t.github.io/pg-promise/QueryFileError.html
 [PreparedStatement]:http://vitaly-t.github.io/pg-promise/PreparedStatement.html
 [Database]:http://vitaly-t.github.io/pg-promise/Database.html
 [QueryResultError]:http://vitaly-t.github.io/pg-promise/QueryResultError.html
@@ -1051,7 +1055,6 @@ DEALINGS IN THE SOFTWARE.
 [sequence]:http://vitaly-t.github.io/pg-promise/Task.html#.sequence
 [API]:http://vitaly-t.github.io/pg-promise
 [API Documentation]:http://vitaly-t.github.io/pg-promise
-[QueryFile API]:http://vitaly-t.github.io/pg-promise/QueryFile.html
 [Transaction Mode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
 [pg-minify]:https://github.com/vitaly-t/pg-minify
 [pg-monitor]:https://github.com/vitaly-t/pg-monitor
