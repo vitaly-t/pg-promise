@@ -2,16 +2,14 @@
 
 import * as pgPromise from 'pg-promise';
 
-var result = new pgPromise.errors.QueryResultError();
-var resultCheck = result instanceof pgPromise.errors.QueryResultError;
+var err1 = <typeof pgPromise.errors.QueryResultError>null;
+var query = err1.query;
 
-var query = new pgPromise.errors.QueryFileError();
-var queryCheck = result instanceof pgPromise.errors.QueryFileError;
-var line = query.error.position.line;
+var err2 = <typeof pgPromise.errors.QueryFileError>null;
+var line = err2.error.position.line;
 
-var ps = new pgPromise.errors.PreparedStatementError();
-var queryCheck = result instanceof pgPromise.errors.PreparedStatementError;
-var file = ps.error.file;
+var err3 = <typeof pgPromise.errors.PreparedStatementError>null;
+var file = err3.error.file;
 
 var qrec = pgPromise.errors.queryResultErrorCode;
 var t = qrec.multiple;

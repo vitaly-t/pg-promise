@@ -191,7 +191,7 @@ declare module 'pg-promise' {
 
     // QueryResultError class;
     // API: http://vitaly-t.github.io/pg-promise/QueryResultError.html
-    class QueryResultError implements Error {
+    interface IQueryResultError extends Error {
 
         // standard error properties:
         name:string;
@@ -211,7 +211,7 @@ declare module 'pg-promise' {
 
     // QueryFileError class;
     // API: http://vitaly-t.github.io/pg-promise/QueryFileError.html
-    class QueryFileError implements Error {
+    interface IQueryFileError extends Error {
 
         // standard error properties:
         name:string;
@@ -229,7 +229,7 @@ declare module 'pg-promise' {
 
     // PreparedStatementError class;
     // API: http://vitaly-t.github.io/pg-promise/PreparedStatementError.html
-    class PreparedStatementError implements Error {
+    interface IPreparedStatementError extends Error {
 
         // standard error properties:
         name:string;
@@ -237,7 +237,7 @@ declare module 'pg-promise' {
         stack:string;
 
         // extended properties:
-        error:QueryFileError;
+        error:IQueryFileError;
 
         // API: http://vitaly-t.github.io/pg-promise/PreparedStatementError.html#.toString
         toString(level?:number):string;
@@ -254,10 +254,10 @@ declare module 'pg-promise' {
     // Errors namespace
     // API: http://vitaly-t.github.io/pg-promise/errors.html
     interface IErrors {
-        QueryResultError:typeof QueryResultError;
+        QueryResultError:IQueryResultError;
         queryResultErrorCode:typeof queryResultErrorCode;
-        QueryFileError:typeof QueryFileError;
-        PreparedStatementError:typeof PreparedStatementError;
+        QueryFileError:IQueryFileError;
+        PreparedStatementError:IPreparedStatementError;
     }
 
     // Transaction Mode namespace;
@@ -316,7 +316,7 @@ declare module 'pg-promise' {
             values:Array<any>;
 
             // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.parse
-            parse():TPreparedBasic|PreparedStatementError;
+            parse():TPreparedBasic|IPreparedStatementError;
 
             // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.toString
             toString(level?:number):string;

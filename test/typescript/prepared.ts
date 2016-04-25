@@ -1,7 +1,6 @@
 /// <reference path='../../typescript/pg-promise' />
 
 import * as pgPromise from 'pg-promise';
-import PreparedStatementError = require("pg-promise");
 
 var pgp = pgPromise();
 var db = pgp('connection');
@@ -25,7 +24,5 @@ db.one({
     text: qf
 });
 
-var w = pgPromise.errors.PreparedStatementError;
-
-// TODO: need to figure out how to export the type namespace;
-//var test1 = <pgPromise.errors.PreparedStatementError>ps1.parse();
+var test1 = <typeof pgPromise.errors.PreparedStatementError>ps1.parse();
+var file = test1.error.file;
