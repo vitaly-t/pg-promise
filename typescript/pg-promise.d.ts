@@ -351,7 +351,7 @@ declare module 'pg-promise' {
         // PromiseAdapter class;
         // API: http://vitaly-t.github.io/pg-promise/PromiseAdapter.html
         class PromiseAdapter {
-            constructor(create:(cb)=>Object, resolve:(data:any)=>void, reject:(reason:any)=>void);
+            constructor(create:(cb:any)=>Object, resolve:(data:any)=>void, reject:(reason:any)=>void);
         }
 
         var txMode:ITXMode;
