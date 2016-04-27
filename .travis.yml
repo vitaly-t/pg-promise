@@ -10,6 +10,8 @@ matrix:
       script: "npm run travis"
     - node_js: "5"
       script: "npm run travis"
+    - node_js: "6"
+      script: "npm run travis"
 addons:
   postgresql: "9.4"
 before_script:
