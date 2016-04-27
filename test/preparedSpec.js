@@ -71,7 +71,7 @@ describe("PreparedStatement", function () {
             db.one(ps)
                 .then(function (data) {
                     result = data;
-                }).catch(error=> {
+                }).catch(function(error) {
                     console.log("ERROR:", error);
                 })
                 .finally(function () {
