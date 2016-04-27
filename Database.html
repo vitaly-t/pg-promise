@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PreparedStatementError.html">PreparedStatementError</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryFileError.html">QueryFileError</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PreparedStatementError.html">PreparedStatementError</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryFileError.html">QueryFileError</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -796,7 +796,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line380">line 380</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line382">line 382</a>
     </li></ul></dd>
     
 
@@ -2104,7 +2104,7 @@ expecting back 0 or 1 rows.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line411">line 411</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line413">line 413</a>
     </li></ul></dd>
     
 
@@ -2647,7 +2647,7 @@ property <code>duration</code> - query duration in milliseconds.</li>
 
     
 
-    <h4 class="name" id=".stream"><span class="type-signature">(static) </span>stream<span class="signature">(qs, init)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id=".stream"><span class="type-signature">(static) </span>stream<span class="signature">(qs, initCB)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -2655,10 +2655,8 @@ property <code>duration</code> - query duration in milliseconds.</li>
 
 <div class="description">
     <p>Custom data streaming, with the help of <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a>.</p>
-<p>This method doesn't work when initialization option <code>pgNative</code> is set,
-because <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a> doesn't support <a href="https://github.com/brianc/node-postgres#native-bindings">Native Bindings</a>.</p>
-<p>And if you call this method while using option <code>pgNative</code>, it will throw <a href="external-Error.html">Error</a> =
-<code>Streaming doesn't work with native bindings.</code></p>
+<p>This method doesn't work with the <a href="https://github.com/brianc/node-postgres#native-bindings">Native Bindings</a>, and if option <code>pgNative</code>
+is set, it will reject with <code>Streaming doesn't work with native bindings.</code></p>
 </div>
 
 
@@ -2710,20 +2708,20 @@ because <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream
 
             
 
-            <td class="description last"><p>stream object of type <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js#L5">QueryStream</a>.</p></td>
+            <td class="description last"><p>Stream object of type <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js#L5">QueryStream</a>.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>init</code></td>
+                <td class="name"><code>initCB</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="global.html#streamInitCB">streamInitCB</a></span>
 
 
             
@@ -2733,8 +2731,8 @@ because <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream
 
             
 
-            <td class="description last"><p>stream initialization callback, with
-the same <code>this</code> context as the calling method.</p></td>
+            <td class="description last"><p>Stream initialization callback.</p>
+<p>It is invoked with the same <code>this</code> context as the calling method.</p></td>
         </tr>
 
     
@@ -2989,7 +2987,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line435">line 435</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line437">line 437</a>
     </li></ul></dd>
     
 
@@ -3203,7 +3201,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line482">line 482</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line484">line 484</a>
     </li></ul></dd>
     
 
