@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PreparedStatementError.html">PreparedStatementError</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryFileError.html">QueryFileError</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PreparedStatementError.html">PreparedStatementError</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryFileError.html">QueryFileError</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -64,7 +64,7 @@ var $events = {
      * };
      */
     connect: function (ctx, client) {
-        if (ctx.options &amp;&amp; ctx.options.connect instanceof Function) {
+        if (ctx.options.connect instanceof Function) {
             try {
                 ctx.options.connect(client, ctx.dc);
             } catch (err) {
@@ -102,7 +102,7 @@ var $events = {
      * };
      */
     disconnect: function (ctx, client) {
-        if (ctx.options &amp;&amp; ctx.options.disconnect instanceof Function) {
+        if (ctx.options.disconnect instanceof Function) {
             try {
                 ctx.options.disconnect(client, ctx.dc);
             } catch (err) {
@@ -201,7 +201,7 @@ var $events = {
      * the context object that was passed in.
      */
     query: function (options, context) {
-        if (options &amp;&amp; options.query instanceof Function) {
+        if (options.query instanceof Function) {
             try {
                 options.query(context);
             } catch (err) {
@@ -270,7 +270,7 @@ var $events = {
      * }
      */
     receive: function (options, data, result, context) {
-        if (options &amp;&amp; options.receive instanceof Function) {
+        if (options.receive instanceof Function) {
             try {
                 options.receive(data, result, context);
             } catch (err) {
@@ -314,7 +314,7 @@ var $events = {
      *
      */
     task: function (options, context) {
-        if (options &amp;&amp; options.task instanceof Function) {
+        if (options.task instanceof Function) {
             try {
                 options.task(context);
             } catch (err) {
@@ -357,7 +357,7 @@ var $events = {
      *
      */
     transact: function (options, context) {
-        if (options &amp;&amp; options.transact instanceof Function) {
+        if (options.transact instanceof Function) {
             try {
                 options.transact(context);
             } catch (err) {
@@ -414,7 +414,7 @@ var $events = {
      *
      */
     error: function (options, err, context) {
-        if (options &amp;&amp; options.error instanceof Function) {
+        if (options.error instanceof Function) {
             try {
                 options.error(err, context);
             } catch (err) {
@@ -503,7 +503,7 @@ var $events = {
      *
      */
     extend: function (options, obj, dc) {
-        if (options &amp;&amp; options.extend instanceof Function) {
+        if (options.extend instanceof Function) {
             try {
                 options.extend.call(obj, obj, dc);
             } catch (err) {

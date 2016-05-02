@@ -29,7 +29,7 @@
 
 <header>
     
-        <h2>Task</h2>
+        <h2>helpers</h2>
         
     
 </header>
@@ -38,23 +38,86 @@
     <div class="container-overview">
     
         
+            <div class="description"><p><strong>NOTE: Due to be introduced with <code>pg-promise</code> v.4.1.0, it is currently under development.</strong></p>
+<p>Namespace for all query-formatting helper functions, available as <code>pgp.helpers</code> after initializing the library.</p></div>
+        
+
+        
+
+
+<dl class="details">
 
     
 
-    <h4 class="name" id="Task"><span class="type-signature"></span>new Task<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers.js.html">helpers.js</a>, <a href="helpers.js.html#line284">line 284</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".insert"><span class="type-signature">(static) </span>insert<span class="signature">(table, obj, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Extends <a href="Database.html">Database</a> for an automatic connection session, with methods for executing multiple database queries.
-The type isn't available directly, it can only be created via methods <a href="Database.html#.task">Database.task</a> and <a href="Database.html#.tx">Database.tx</a>.</p>
-<p>When executing more than one request at a time, one should allocate and release the connection only once,
-while executing all the required queries within the same connection session. More importantly, a transaction
-can only work within a single connection.</p>
-<p>This class provides an interface for tasks/transactions to implement a connection session, during which you can
-execute multiple queries against the same connection that's released automatically when the task/transaction is finished.</p>
+    <p>Generates a complete <code>INSERT</code> query from an object, using its properties as insert values.</p>
 </div>
 
 
@@ -63,6 +126,134 @@ execute multiple queries against the same connection that's released automatical
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>table</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Destination table name.</p>
+<p>Passing in anything other than a non-empty string will throw <a href="external-TypeError.html">TypeError</a> =
+<code>Parameter 'table' must be a non-empty text string.</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Object with properties for insert values.</p>
+<p>Passing in anything other than a non-null object will throw <a href="external-TypeError.html">TypeError</a> =
+<code>Parameter 'obj' must be a non-null object.</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="helpers.html#.propertyOptions">helpers.propertyOptions</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An object with optional parameters.</p>
+<p>Passing in anything other than a non-null object will be ignored.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -98,7 +289,253 @@ execute multiple queries against the same connection that's released automatical
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line12">line 12</a>
+        <a href="helpers.js.html">helpers.js</a>, <a href="helpers.js.html#line9">line 9</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The resulting query string.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// Default usagevar obj = {   one: 123,   two: 'test'};var query = pgp.helpers.insert('myTable', obj);//=> INSERT INTO "myTable"("one","two") VALUES(123,'test')</code></pre>
+
+    <pre class="prettyprint"><code>// Advanced usage, with `exclude` and `defaults`var obj = {    zero: 0,    one: 1,    two: undefined,    // `three` is missing    four: true};var query = pgp.helpers.insert('myTable', obj, {    exclude: 'zero', // exclude property `zero`    defaults: {        one: 123, // use `one` = 123, if missing;        three: 555, // use `three` = 555, if missing;        two: function (value) {            // set `two` = `second`, if it is `undefined`,            // or else keep the current value:            return value === undefined ? 'second' : value;        },        four: function (value) {            // if `one` is equal 1, set `four` to `false`,            // or else keep the current value:            return this.one === 1 ? false : value;        }    }});//=> INSERT INTO "myTable"("one","two","four","three") VALUES(1,'second',false,555)</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".inserts"><span class="type-signature">(static) </span>inserts<span class="signature">(table, arr, options<span class="signature-attributes">opt</span>, capSQL)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>table</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>arr</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="helpers.html#.propertyOptions">helpers.propertyOptions</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>capSQL</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers.js.html">helpers.js</a>, <a href="helpers.js.html#line182">line 182</a>
     </li></ul></dd>
     
 
@@ -123,59 +560,257 @@ execute multiple queries against the same connection that's released automatical
 
 
 
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>db.task(function (t) {      // this = t = task protocol context;      // this.ctx = task config + state context;      return t.one("select * from users where id=$1", 123)          .then(function (user) {              return t.any("select * from events where login=$1", user.name);          });  }).then(function (events) {      // success;  }).catch(function (error) {      // error;  });</code></pre>
-
-
-
-    
-    </div>
-
-    
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li><a href="Database.html">Database</a></li>
-    </ul>
-
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
 
         
             
-<h4 class="name" id=".ctx"><span class="type-signature">(static) </span>ctx<span class="type-signature"> :Object</span></h4>
+
+    
+
+    <h4 class="name" id=".update"><span class="type-signature">(static) </span>update<span class="signature">(table, obj, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
 
 
-<p class="summary">Task Context Object</p>
+
+<div class="description">
+    <p>Generates a complete <code>UPDATE</code> query from an object, using its properties as update values.</p>
+</div>
 
 
 
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
             
+                <td class="name"><code>table</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Name of the table to be updated.</p>
+<p>Passing in anything other than a non-empty string will throw <a href="external-TypeError.html">TypeError</a> =
+<code>Parameter 'table' must be a non-empty text string.</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+
+            <td class="type">
+            
+                
 <span class="param-type">Object</span>
 
 
-        </li>
-    </ul>
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Object with properties for update values.</p>
+<p>Passing in anything other than a non-null object will throw <a href="external-TypeError.html">TypeError</a> =
+<code>Parameter 'obj' must be a non-null object.</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="helpers.html#.propertyOptions">helpers.propertyOptions</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An object with optional parameters.</p>
+<p>Passing in anything other than a non-null object will be ignored.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers.js.html">helpers.js</a>, <a href="helpers.js.html#line194">line 194</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The resulting query string.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id=".propertyOptions">propertyOptions</h4>
+
+
+
+
+<div class="description">
+    <p>Set of rules used when formatting queries.</p>
+</div>
+
+
 
 
 
@@ -195,7 +830,11 @@ execute multiple queries against the same connection that's released automatical
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
+        
+        <th>Default</th>
         
 
         <th class="last">Description</th>
@@ -207,7 +846,89 @@ execute multiple queries against the same connection that's released automatical
 
         <tr>
             
-                <td class="name"><code>context</code></td>
+                <td class="name"><code>include</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Either a single string with a property name, or an array of strings.</p>
+<p>By default, all properties are used as insert values. But if <code>include</code> is set to a string or
+an array, then only the specified properties will be used, ignoring the rest.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>exclude</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Either a single string or an array of strings - names of properties to be excluded.</p>
+<p>Excluding a property name that's present on the <code>include</code> list will throw <a href="external-TypeError.html">TypeError</a> =
+<code>Property 'propName' is included and excluded at the same time.</code></p>
+<p>Excluding a property name that's present within the <code>defaults</code> option will throw <a href="external-TypeError.html">TypeError</a> =
+<code>Cannot exclude property 'propName', as it has a default value.</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>defaults</code></td>
             
 
             <td class="type">
@@ -220,405 +941,12 @@ execute multiple queries against the same connection that's released automatical
             </td>
 
             
-
-            
-
-            <td class="description last"><p>If the operation was invoked with an object context - <code>task.call(obj,...)</code> or
-<code>tx.call(obj,...)</code>, this property is set with the context object that was passed in.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dc</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Database Context that was used when creating the database object.
-See <a href="Database.html">Database</a>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>isTX</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Indicates whether this task represents a transaction.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>tag</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Tag value as it was passed into the task. See methods <a href="Database.html#.task">task</a> and <a href="Database.html#.tx">tx</a>.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line45">line 45</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li>event <a href="global.html#event:query">query</a></li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".batch"><span class="type-signature">(static) </span>batch<span class="signature">(values, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p><strong>Alternative Syntax:</strong> <code>batch(values, {cb})</code> &#8658; <code>Promise</code></p>
-<p>Settles a predefined array of mixed values by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md">spex.batch</a>.</p>
-<p>For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md">spex.batch</a>.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>values</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>cb</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
 
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line83">line 83</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".page"><span class="type-signature">(static) </span>page<span class="signature">(source, dest<span class="signature-attributes">opt</span>, limit<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p><strong>Alternative Syntax:</strong> <code>page(source, {dest, limit})</code> &#8658; <code>Promise</code></p>
-<p>Resolves a dynamic sequence of arrays/pages with mixed values, by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/page.md">spex.page</a>.</p>
-<p>For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/page.md">spex.page</a>.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>source</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
                 </td>
             
 
@@ -628,333 +956,18 @@ See <a href="Database.html">Database</a>.</p></td>
                 </td>
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>An object with required properties set to their default values. Such values will be used whenever the corresponding property
+doesn't exist within <code>obj</code>.</p>
+<p>Setting a property to a function is treated as an override for the value, and the call into <code>defaults.propName(value)</code> is expected
+to return the new value for the property. The function is called with parameter <code>value</code> - the original value within <code>obj</code>, and with
+<code>this</code> context set to <code>obj</code>, i.e. <code>value</code> = <code>this.propName</code>.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>dest</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>limit</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line99">line 99</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".sequence"><span class="type-signature">(static) </span>sequence<span class="signature">(source, dest<span class="signature-attributes">opt</span>, limit<span class="signature-attributes">opt</span>, track<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p><strong>Alternative Syntax:</strong> <code>sequence(source, {dest, limit, track})</code> &#8658; <code>Promise</code></p>
-<p>Resolves a dynamic sequence of mixed values by redirecting to method <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md">spex.sequence</a>.</p>
-<p>For complete method documentation see <a href="https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md">spex.sequence</a>.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>source</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dest</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>limit</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>track</code></td>
+                <td class="name"><code>inherit</code></td>
             
 
             <td class="type">
@@ -970,8 +983,6 @@ See <a href="Database.html">Database</a>.</p></td>
                 <td class="attributes">
                 
                     &lt;optional><br>
-                
-
                 
 
                 
@@ -986,14 +997,13 @@ See <a href="Database.html">Database</a>.</p></td>
                 </td>
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Triggers the use of inherited properties within <code>obj</code> (in addition to its own).</p>
+<p>By default, only the object's own properties are enumerated for insert values.</p></td>
         </tr>
 
     
     </tbody>
 </table>
-
-
 
 
 
@@ -1027,7 +1037,7 @@ See <a href="Database.html">Database</a>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line116">line 116</a>
+        <a href="helpers.js.html">helpers.js</a>, <a href="helpers.js.html#line304">line 304</a>
     </li></ul></dd>
     
 
@@ -1043,37 +1053,7 @@ See <a href="Database.html">Database</a>.</p></td>
 
 
 
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-    
-
+            
     
 
     
