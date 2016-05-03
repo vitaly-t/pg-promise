@@ -43,6 +43,8 @@ describe("Library instance", function () {
         expect(pgp.errors && pgp.errors instanceof Object).toBeTruthy();
         expect(pgpLib.errors.QueryResultError instanceof Function).toBe(true);
         expect(pgpLib.errors.queryResultErrorCode instanceof Object).toBe(true);
+        expect(pgpLib.errors.PreparedStatementError instanceof Function).toBe(true);
+        expect(pgpLib.errors.ParameterizedQueryError instanceof Function).toBe(true);
     });
 
     it("must have function 'PromiseAdapter'", function () {
@@ -51,6 +53,10 @@ describe("Library instance", function () {
 
     it("must have function 'PreparedStatement'", function () {
         expect(pgpLib.PreparedStatement instanceof Function).toBe(true);
+    });
+
+    it("must have function 'ParameterizedQuery'", function () {
+        expect(pgpLib.ParameterizedQuery instanceof Function).toBe(true);
     });
 
     it("must have function 'minify'", function () {
@@ -86,6 +92,8 @@ describe("Initialized instance", function () {
         expect(pgp.errors && pgp.errors instanceof Object).toBeTruthy();
         expect(pgp.errors.QueryResultError instanceof Function).toBe(true);
         expect(pgp.errors.queryResultErrorCode instanceof Object).toBe(true);
+        expect(pgp.errors.PreparedStatementError instanceof Function).toBe(true);
+        expect(pgp.errors.ParameterizedQueryError instanceof Function).toBe(true);
     });
 
     it("must have function 'PromiseAdapter'", function () {
@@ -94,6 +102,10 @@ describe("Initialized instance", function () {
 
     it("must have function 'PreparedStatement'", function () {
         expect(pgp.PreparedStatement instanceof Function).toBe(true);
+    });
+
+    it("must have function 'ParameterizedQuery'", function () {
+        expect(pgp.ParameterizedQuery instanceof Function).toBe(true);
     });
 
     it("must have function 'minify'", function () {
@@ -167,9 +179,9 @@ describe("Database Protocol", function () {
             expect(typeof(protocol.sequence)).toBe('function');
         });
     });
-
+    
     describe("on task level", function () {
-
+        
         var protocol;
         beforeEach(function (done) {
             db.task(function (t) {
