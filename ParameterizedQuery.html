@@ -29,7 +29,7 @@
 
 <header>
     
-        <h2>PreparedStatement</h2>
+        <h2>ParameterizedQuery</h2>
         
     
 </header>
@@ -41,22 +41,22 @@
 
     
 
-    <h4 class="name" id="PreparedStatement"><span class="type-signature"></span>new PreparedStatement<span class="signature">(name, text, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="PreparedStatement.html">PreparedStatement</a>}</span></h4>
+    <h4 class="name" id="ParameterizedQuery"><span class="type-signature"></span>new ParameterizedQuery<span class="signature">(text, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="ParameterizedQuery.html">ParameterizedQuery</a>}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p><strong>Alternative Syntax:</strong> <code>PreparedStatement({name, text, values, ...})</code> &#8658; <a href="PreparedStatement.html">PreparedStatement</a></p>
-<p>Constructs a <a href="http://www.postgresql.org/docs/9.5/static/sql-prepare.html">Prepared Statement</a> object.</p>
-<p>The alternative syntax supports advanced properties - <code>binary</code>, <code>rowMode</code> and <code>rows</code>, which are passed into <a href="https://github.com/brianc/node-postgres">pg</a>,
+    <p><strong>Alternative Syntax:</strong> <code>ParameterizedQuery({text, values, ...})</code> &#8658; <a href="ParameterizedQuery.html">ParameterizedQuery</a></p>
+<p>Constructs a new <a href="ParameterizedQuery.html">ParameterizedQuery</a> object.</p>
+<p>The alternative syntax supports advanced properties - <code>binary</code> and <code>rowMode</code>, which are passed into <a href="https://github.com/brianc/node-postgres">pg</a>,
 but not used by the class. All properties can also be set after the object's construction.</p>
-<p>This type extends the basic <code>{name, text, values}</code> object, by replacing it, i.e. when the basic object is used
-with a query method, a new <a href="PreparedStatement.html">PreparedStatement</a> object is created implicitly in its place.</p>
+<p>This type extends the basic <code>{text, values}</code> object, by replacing it, i.e. when the basic object is used with a query method,
+a new <a href="ParameterizedQuery.html">ParameterizedQuery</a> object is created implicitly in its place.</p>
 <p>The type can be used in place of the <code>query</code> parameter, with any query method directly. And it never throws any error,
-leaving it for query methods to reject with <a href="PreparedStatementError.html">PreparedStatementError</a>.</p>
-<p>The type is available from the library's root: <code>pgp.PreparedStatement</code>.</p>
+leaving it for query methods to reject with <a href="ParameterizedQueryError.html">ParameterizedQueryError</a>.</p>
+<p>The type is available from the library's root: <code>pgp.ParameterizedQuery</code>.</p>
 </div>
 
 
@@ -90,38 +90,6 @@ leaving it for query methods to reject with <a href="PreparedStatementError.html
     </thead>
 
     <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>An arbitrary name given to this particular prepared statement. It must be unique within a single session and is
-subsequently used to execute or deallocate a previously prepared statement.</p></td>
-        </tr>
-
     
 
         <tr>
@@ -227,7 +195,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line12">line 12</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
@@ -237,7 +205,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="PreparedStatementError.html">PreparedStatementError</a>,<a href="http://www.postgresql.org/docs/9.5/static/sql-prepare.html">PostgreSQL Prepared Statements</a></li>
+            <li><a href="ParameterizedQueryError.html">ParameterizedQueryError</a></li>
         </ul>
     </dd>
     
@@ -268,7 +236,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
     </dt>
     <dd>
         
-<span class="param-type"><a href="PreparedStatement.html">PreparedStatement</a></span>
+<span class="param-type"><a href="ParameterizedQuery.html">ParameterizedQuery</a></span>
 
 
     </dd>
@@ -279,9 +247,9 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>var PS = require('pg-promise').PreparedStatement;// Creating a complete Prepared Statement:var findUser = new PS('find-user', 'SELECT * FROM Users WHERE id = $1', [123]);db.one(findUser)    .then(user=> {        // user found;    })    .catch(error=> {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>var PQ = require('pg-promise').ParameterizedQuery;// Creating a complete Parameterized Query:var findUser = new PQ('SELECT * FROM Users WHERE id = $1', [123]);db.one(findUser)    .then(user=> {        // user found;    })    .catch(error=> {        // error;    });</code></pre>
 
-    <pre class="prettyprint"><code>var PS = require('pg-promise').PreparedStatement;// Creating a reusable Prepared Statement:var addUser = new PS('add-user', 'INSERT INTO Users(name, age) VALUES($1, $2)');addUser.values = ['John', 30];db.none(addUser)    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>var PQ = require('pg-promise').ParameterizedQuery;// Creating a reusable Parameterized Query:var addUser = new PQ('INSERT INTO Users(name, age) VALUES($1, $2)');addUser.values = ['John', 30];db.none(addUser)    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });</code></pre>
 
 
 
@@ -303,13 +271,13 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
 
         
             
-<h4 class="name" id="error"><span class="type-signature"></span>error<span class="type-signature"> :<a href="PreparedStatementError.html">PreparedStatementError</a></span></h4>
+<h4 class="name" id="error"><span class="type-signature"></span>error<span class="type-signature"> :<a href="ParameterizedQueryError.html">ParameterizedQueryError</a></span></h4>
 
 
 
 
 <div class="description">
-    <p>When in an error state, it is set to a <a href="PreparedStatementError.html">PreparedStatementError</a> object. Otherwise, it is <code>undefined</code>.</p>
+    <p>When in an error state, it is set to a <a href="ParameterizedQueryError.html">ParameterizedQueryError</a> object. Otherwise, it is <code>undefined</code>.</p>
 <p>This property is meant primarily for internal use by the library.</p>
 </div>
 
@@ -319,7 +287,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
     <ul>
         <li>
             
-<span class="param-type"><a href="PreparedStatementError.html">PreparedStatementError</a></span>
+<span class="param-type"><a href="ParameterizedQueryError.html">ParameterizedQueryError</a></span>
 
 
         </li>
@@ -358,80 +326,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line134">line 134</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="name"><span class="type-signature"></span>name<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
-    <p>An arbitrary name given to this particular prepared statement. It must be unique within a single session and is
-subsequently used to execute or deallocate a previously prepared statement.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line89">line 89</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line95">line 95</a>
     </li></ul></dd>
     
 
@@ -506,7 +401,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line108">line 108</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line79">line 79</a>
     </li></ul></dd>
     
 
@@ -578,7 +473,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line126">line 126</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line87">line 87</a>
     </li></ul></dd>
     
 
@@ -605,15 +500,15 @@ subsequently used to execute or deallocate a previously prepared statement.</p>
 
     
 
-    <h4 class="name" id=".parse"><span class="type-signature">(static) </span>parse<span class="signature">()</span><span class="type-signature"> &rarr; {Object|<a href="PreparedStatementError.html">PreparedStatementError</a>}</span></h4>
+    <h4 class="name" id=".parse"><span class="type-signature">(static) </span>parse<span class="signature">()</span><span class="type-signature"> &rarr; {Object|<a href="ParameterizedQueryError.html">ParameterizedQueryError</a>}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Parses the current object and returns a simple Prepared Statement <code>{name, text, values}</code>,
-if successful, or else returns a <a href="PreparedStatementError.html">PreparedStatementError</a> object.</p>
+    <p>Parses the current object and returns a simple Parameterized Query <code>{text, values}</code>,
+if successful, or else returns a <a href="ParameterizedQueryError.html">ParameterizedQueryError</a> object.</p>
 <p>This method is meant primarily for internal use by the library.</p>
 </div>
 
@@ -658,7 +553,7 @@ if successful, or else returns a <a href="PreparedStatementError.html">PreparedS
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line154">line 154</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line114">line 114</a>
     </li></ul></dd>
     
 
@@ -695,7 +590,7 @@ if successful, or else returns a <a href="PreparedStatementError.html">PreparedS
 <span class="param-type">Object</span>
 |
 
-<span class="param-type"><a href="PreparedStatementError.html">PreparedStatementError</a></span>
+<span class="param-type"><a href="ParameterizedQueryError.html">ParameterizedQueryError</a></span>
 
 
     </dd>
@@ -831,7 +726,7 @@ if successful, or else returns a <a href="PreparedStatementError.html">PreparedS
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line226">line 226</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line169">line 169</a>
     </li></ul></dd>
     
 
