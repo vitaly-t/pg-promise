@@ -3,7 +3,7 @@ body {
 }
 
 html {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 html, body, section {
@@ -12,7 +12,7 @@ html, body, section {
 
 h4.name {
     color: DarkCyan;
-    font-size: 28px;
+    font-size: 26px;
 }
 
 section {
@@ -20,7 +20,7 @@ section {
 }
 
 div#main {
-    margin-left: 270px;
+    margin-left: 250px;
     float: none;
     max-width: 1200px;
 }
@@ -31,7 +31,7 @@ code {
 }
 
 code span {
-    line-height: 26px;
+    line-height: 20px;
 }
 
 nav {
@@ -50,11 +50,15 @@ nav {
 }
 
 nav ul li a {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 nav h3 {
     color: #4d4e53;
+    font-size: 18px;
+}
+
+nav h2 {
     font-size: 20px;
 }
 
