@@ -1,5 +1,6 @@
 'use strict';
 
+var fs = require('fs');
 var pgResult = require('pg/lib/result');
 var header = require('./db/header');
 var promise = header.defPromise;
@@ -32,12 +33,31 @@ describe("PreparedStatement", function () {
         });
     });
 
+    describe("advanced properties", function () {
+        var input = {
+            name: 'test-name',
+            text: 'text-text',
+            values: [123],
+            binary: true,
+            rowMode: 'array',
+            rows: 10
+        };
+        var ps = new pgp.PreparedStatement(input);
+        it("must return the complete set of properties", function () {
+            expect(ps.parse()).toEqual(input);
+            expect(ps.inspect()).toBe(ps.toString());
+        });
+    });
+
     describe("parameters", function () {
         var ps = new pgp.PreparedStatement('test-name', 'test-query', [123]);
         it("must expose the values correctly", function () {
             expect(ps.name).toBe('test-name');
             expect(ps.text).toBe('test-query');
             expect(ps.values).toEqual([123]);
+            // setting to the same values, for coverage:
+            ps.name = ps.name;
+            ps.text = ps.text;
         });
         it("must set the values correctly", function () {
             ps.name = "new-name";
@@ -112,6 +132,36 @@ describe("PreparedStatement", function () {
             expect(result instanceof pgp.errors.PreparedStatementError).toBe(true);
             expect(result.error instanceof pgp.errors.QueryFileError).toBe(true);
             expect(ps.toString()).toBe(ps.inspect());
+        });
+
+        describe("changing query on the fly", function () {
+            var file = './test/sql/simple.sql';
+            var qf = new pgp.QueryFile(file, {debug: true});
+            var ps = new pgp.PreparedStatement('test-name', qf, []);
+            var result1 = ps.parse(123), result2, result3;
+            var query = qf.query;
+
+            ps.parse();
+            
+            beforeEach(function (done) {
+                fs.writeFile(file, 'temporary sql', 'utf8', function () {
+                    var modTime1 = fs.statSync(file).mtime.getTime();
+                    result2 = ps.parse(123);
+                    fs.writeFile(file, query, 'utf8', function () {
+                        var t = new Date();
+                        t.setTime(t.getTime() + 60 * 60 * 1000);
+                        fs.utimesSync(file, t, t);
+                        var modTime2 = fs.statSync(file).mtime.getTime();
+                        result3 = ps.parse(123);
+                        ps.parse(123);
+                        done();
+                    });
+                });
+            });
+
+            it("must be picked up", function () {
+                expect(result1).toEqual(result3);
+            });
         });
 
     });
