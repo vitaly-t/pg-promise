@@ -45,11 +45,11 @@ var advancedProperties = ['binary', 'rowMode'];
  *
  * Constructs a new {@link ParameterizedQuery} object.
  *
- * The alternative syntax supports advanced properties - `binary` and `rowMode`, which are passed into $[pg],
+ * The alternative syntax supports advanced properties `binary` and `rowMode`, which are passed into $[pg],
  * but not used by the class. All properties can also be set after the object's construction.
  *
- * This type extends the basic `{text, values}` object, by replacing it, i.e. when the basic object is used with a query method,
- * a new {@link ParameterizedQuery} object is created implicitly in its place.
+ * This type extends the basic `{text, values}` object, by replacing it, i.e. when the basic object is used
+ * with a query method, a new {@link ParameterizedQuery} object is created implicitly in its place.
  *
  * The type can be used in place of the `query` parameter, with any query method directly. And it never throws any error,
  * leaving it for query methods to reject with {@link ParameterizedQueryError}.
@@ -143,8 +143,8 @@ function ParameterizedQuery(text, values) {
     /**
      * @method ParameterizedQuery.parse
      * @description
-     * Parses the current object and returns a simple Parameterized Query `{text, values}`,
-     * if successful, or else returns a {@link ParameterizedQueryError} object.
+     * Parses the current object and returns a simple `{text, values}`, if successful,
+     * or else it returns a {@link ParameterizedQueryError} object.
      *
      * This method is meant primarily for internal use by the library.
      *
