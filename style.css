@@ -22,7 +22,7 @@ section {
 div#main {
     margin-left: 250px;
     float: none;
-    max-width: 1200px;
+    max-width: 1500px;
 }
 
 code {
@@ -36,17 +36,19 @@ code span {
 
 nav {
     background-color: White;
-    border-width: 1px 1px 1px 0;
+    border-width: 0px 1px 0px 0;
     border-color: #DDD;
     border-style: solid;
-    border-radius: 0px 10px 10px 0px;
     padding: 10px 20px 20px 20px;
     width: auto;
+    top: 0;
+    bottom: 0;
     position: fixed;
     font-size: 18px;
-    margin-top: 15px;
+    margin-top: 0px;
     line-height: 24px;
     float: none;
+    overflow-y: auto;
 }
 
 nav ul li a {
