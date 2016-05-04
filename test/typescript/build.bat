@@ -11,4 +11,5 @@ call tsc extensions %PARAMS%
 call tsc minify %PARAMS%
 call tsc pg %PARAMS%
 call tsc prepared %PARAMS%
+call tsc paramQuery %PARAMS%
 call tsc errors %PARAMS%

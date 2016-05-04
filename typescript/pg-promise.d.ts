@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.0.0 or later.
+// Requires pg-promise v4.0.5 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -14,9 +14,11 @@ declare module 'pg-promise' {
 
     type TQueryFileOptions= {debug?:boolean, minify?:boolean|'after', compress?:boolean, params?:any};
     type TFormattingOptions = {partial?:boolean};
-    type TPreparedBasic = {name:string, text:string, values?:Array<any>};
-    type TPrepared = {name:string, text:string|pgPromise.QueryFile, values?:Array<any>};
-    type TQuery = string|pgPromise.QueryFile|TPrepared|pgPromise.PreparedStatement;
+    type TPreparedBasic = {name:string, text:string, values?:Array<any>, binary?:boolean, rowMode?:string, rows?:number};
+    type TParameterizedBasic = {text:string, values?:Array<any>, binary?:boolean, rowMode?:string};
+    type TPrepared = {name:string, text:string|pgPromise.QueryFile, values?:Array<any>, binary?:boolean, rowMode?:string, rows?:number};
+    type TParameterized = {text:string|pgPromise.QueryFile, values?:Array<any>, binary?:boolean, rowMode?:string};
+    type TQuery = string|pgPromise.QueryFile|TPrepared|TParameterized|pgPromise.PreparedStatement|pgPromise.ParameterizedQuery;
 
     // Base database protocol
     // API: http://vitaly-t.github.io/pg-promise/Database.html
@@ -206,7 +208,7 @@ declare module 'pg-promise' {
         values:any;
 
         // API: http://vitaly-t.github.io/pg-promise/QueryResultError.html#.toString
-        toString(level?:number):string;
+        toString():string;
     }
 
     // QueryFileError class;
@@ -224,7 +226,7 @@ declare module 'pg-promise' {
         error:pgMinify.SQLParsingError;
 
         // API: http://vitaly-t.github.io/pg-promise/QueryFileError.html#.toString
-        toString(level?:number):string;
+        toString():string;
     }
 
     // PreparedStatementError class;
@@ -240,7 +242,23 @@ declare module 'pg-promise' {
         error:IQueryFileError;
 
         // API: http://vitaly-t.github.io/pg-promise/PreparedStatementError.html#.toString
-        toString(level?:number):string;
+        toString():string;
+    }
+
+    // ParameterizedQueryError class;
+    // API: http://vitaly-t.github.io/pg-promise/ParameterizedQueryError.html
+    interface IParameterizedQueryError extends Error {
+
+        // standard error properties:
+        name:string;
+        message:string;
+        stack:string;
+
+        // extended properties:
+        error:IQueryFileError;
+
+        // API: http://vitaly-t.github.io/pg-promise/ParameterizedQueryError.html#.toString
+        toString():string;
     }
 
     // Query Result Error Code;
@@ -258,6 +276,7 @@ declare module 'pg-promise' {
         queryResultErrorCode:typeof queryResultErrorCode;
         QueryFileError:IQueryFileError;
         PreparedStatementError:IPreparedStatementError;
+        ParameterizedQueryError:IParameterizedQueryError;
     }
 
     // Transaction Mode namespace;
@@ -274,6 +293,7 @@ declare module 'pg-promise' {
         <T>(cn:string|IConfig, dc?:any):pgPromise.IDatabase<T>&T,
         PromiseAdapter:typeof pgPromise.PromiseAdapter;
         PreparedStatement:typeof pgPromise.PreparedStatement;
+        ParameterizedQuery:typeof pgPromise.ParameterizedQuery;
         QueryFile:typeof pgPromise.QueryFile;
         queryResult:typeof pgPromise.queryResult;
         minify:typeof pgMinify,
@@ -309,17 +329,55 @@ declare module 'pg-promise' {
 
             // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html
             constructor(name:string, text:string|QueryFile, values?:Array<any>);
+            constructor(obj:PreparedStatement);
             constructor(obj:TPrepared);
 
+            // standard properties:
             name:string;
             text:string;
             values:Array<any>;
+
+            // advanced properties:
+            binary:boolean;
+            portal:string;
+            rowMode:string;
+            rows:any;
+            stream:any;
+            types:any;
 
             // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.parse
             parse():TPreparedBasic|IPreparedStatementError;
 
             // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.toString
-            toString(level?:number):string;
+            toString():string;
+        }
+
+        // ParameterizedQuery class;
+        // API: http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
+        class ParameterizedQuery {
+
+            // API: http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
+            constructor(text:string|QueryFile, values?:Array<any>);
+            constructor(obj:ParameterizedQuery);
+            constructor(obj:TParameterized);
+
+            // standard properties:
+            text:string;
+            values:Array<any>;
+
+            // advanced properties:
+            binary:boolean;
+            portal:string;
+            rowMode:string;
+            rows:any;
+            stream:any;
+            types:any;
+
+            // API: http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html#.parse
+            parse():TParameterizedBasic|IParameterizedQueryError;
+
+            // API: http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html#.toString
+            toString():string;
         }
 
         // QueryFile class;
@@ -345,7 +403,7 @@ declare module 'pg-promise' {
             prepare():void;
 
             // API: http://vitaly-t.github.io/pg-promise/QueryFile.html#.toString
-            toString(level?:number):string;
+            toString():string;
         }
 
         // PromiseAdapter class;
