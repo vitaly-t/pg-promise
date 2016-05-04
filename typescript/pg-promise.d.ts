@@ -14,10 +14,10 @@ declare module 'pg-promise' {
 
     type TQueryFileOptions= {debug?:boolean, minify?:boolean|'after', compress?:boolean, params?:any};
     type TFormattingOptions = {partial?:boolean};
-    type TPreparedBasic = {name:string, text:string, values?:Array<any>, binary?:boolean, portal?:string, rowMode?:string, rows?:any, stream?:any, types?:any};
-    type TParameterizedBasic = {text:string, values?:Array<any>, binary?:boolean, portal?:string, rowMode?:string, rows?:any, stream?:any, types?:any};
-    type TPrepared = {name:string, text:string|pgPromise.QueryFile, values?:Array<any>, binary?:boolean, portal?:string, rowMode?:string, rows?:any, stream?:any, types?:any};
-    type TParameterized = {text:string|pgPromise.QueryFile, values?:Array<any>, binary?:boolean, portal?:string, rowMode?:string, rows?:any, stream?:any, types?:any};
+    type TPreparedBasic = {name:string, text:string, values?:Array<any>, binary?:boolean, rowMode?:string, rows?:number};
+    type TParameterizedBasic = {text:string, values?:Array<any>, binary?:boolean, rowMode?:string};
+    type TPrepared = {name:string, text:string|pgPromise.QueryFile, values?:Array<any>, binary?:boolean, rowMode?:string, rows?:number};
+    type TParameterized = {text:string|pgPromise.QueryFile, values?:Array<any>, binary?:boolean, rowMode?:string};
     type TQuery = string|pgPromise.QueryFile|TPrepared|TParameterized|pgPromise.PreparedStatement|pgPromise.ParameterizedQuery;
 
     // Base database protocol
@@ -329,6 +329,7 @@ declare module 'pg-promise' {
 
             // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html
             constructor(name:string, text:string|QueryFile, values?:Array<any>);
+            constructor(obj:PreparedStatement);
             constructor(obj:TPrepared);
 
             // standard properties:
@@ -357,6 +358,7 @@ declare module 'pg-promise' {
 
             // API: http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
             constructor(text:string|QueryFile, values?:Array<any>);
+            constructor(obj:ParameterizedQuery);
             constructor(obj:TParameterized);
 
             // standard properties:
