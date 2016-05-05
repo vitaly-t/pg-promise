@@ -29,7 +29,8 @@
 
 <header>
     
-        <h2>helpers</h2>
+        <h2>
+            <span class="ancestors"><a href="helpers.html">helpers</a>.</span>ColumnSet</h2>
         
     
 </header>
@@ -38,11 +39,144 @@
     <div class="container-overview">
     
         
-            <div class="description"><p><strong>NOTE: Due to be introduced with <code>pg-promise</code> v.4.1.0, it is currently under development.</strong></p>
-<p>Namespace for all query-formatting helper functions, available as <code>pgp.helpers</code> after initializing the library.</p></div>
+
+    
+
+    <h4 class="name" id="ColumnSet"><span class="type-signature"></span>new ColumnSet<span class="signature">(cols, obj<span class="signature-attributes">opt</span>, table<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="helpers.ColumnSet.html">helpers.ColumnSet</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Information about columns</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
         
 
         
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cols</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>table</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
 
 
 <dl class="details">
@@ -74,7 +208,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_index.js.html">helpers/index.js</a>, <a href="helpers_index.js.html#line10">line 10</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line13">line 13</a>
     </li></ul></dd>
     
 
@@ -86,7 +220,38 @@
 </dl>
 
 
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
         
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="helpers.ColumnSet.html">helpers.ColumnSet</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
     
     </div>
 
@@ -94,16 +259,6 @@
 
     
 
-    
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="helpers.Column.html">Column</a></dt>
-            <dd></dd>
-        
-            <dt><a href="helpers.ColumnSet.html">ColumnSet</a></dt>
-            <dd></dd>
-        </dl>
     
 
      
@@ -120,14 +275,15 @@
 
     
 
-    <h4 class="name" id=".insert"><span class="type-signature">(static) </span>insert<span class="signature">(table, obj, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".toString"><span class="type-signature">(static) </span>toString<span class="signature">(level<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Generates a complete <code>INSERT</code> query from an object, using its properties as insert values.</p>
+    <p>Creates a well-formatted multi-line string that represents the object.</p>
+<p>It is called automatically when writing the object into the console.</p>
 </div>
 
 
@@ -155,6 +311,8 @@
         
 
         
+        <th>Default</th>
+        
 
         <th class="last">Description</th>
     </tr>
@@ -165,79 +323,13 @@
 
         <tr>
             
-                <td class="name"><code>table</code></td>
+                <td class="name"><code>level</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Destination table name.</p>
-<p>Passing in anything other than a non-empty string will throw <a href="external-TypeError.html">TypeError</a> =
-<code>Parameter 'table' must be a non-empty text string.</code></p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>obj</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Object with properties for insert values.</p>
-<p>Passing in anything other than a non-null object will throw <a href="external-TypeError.html">TypeError</a> =
-<code>Parameter 'obj' must be a non-null object.</code></p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">helpers.propertyOptions</span>
+<span class="param-type">Number</span>
 
 
             
@@ -256,9 +348,14 @@
             
 
             
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
 
-            <td class="description last"><p>An object with optional parameters.</p>
-<p>Passing in anything other than a non-null object will be ignored.</p></td>
+            <td class="description last"><p>Nested output level, to provide visual offset.</p></td>
         </tr>
 
     
@@ -299,7 +396,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_methods_insert.js.html">helpers/methods/insert.js</a>, <a href="helpers_methods_insert.js.html#line1">line 1</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line125">line 125</a>
     </li></ul></dd>
     
 
@@ -325,249 +422,6 @@
 <h5>Returns:</h5>
 
         
-<div class="param-desc">
-    <p>The resulting query string.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>// Default usagevar obj = {   one: 123,   two: 'test'};var query = pgp.helpers.insert('myTable', obj);//=> INSERT INTO "myTable"("one","two") VALUES(123,'test')</code></pre>
-
-    <pre class="prettyprint"><code>// Advanced usage, with `exclude` and `defaults`var obj = {    zero: 0,    one: 1,    two: undefined,    // `three` is missing    four: true};var query = pgp.helpers.insert('myTable', obj, {    exclude: 'zero', // exclude property `zero`    defaults: {        one: 123, // use `one` = 123, if missing;        three: 555, // use `three` = 555, if missing;        two: function (value) {            // set `two` = `second`, if it is `undefined`,            // or else keep the current value:            return value === undefined ? 'second' : value;        },        four: function (value) {            // if `one` is equal 1, set `four` to `false`,            // or else keep the current value:            return this.one === 1 ? false : value;        }    }});//=> INSERT INTO "myTable"("one","two","four","three") VALUES(1,'second',false,555)</code></pre>
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".update"><span class="type-signature">(static) </span>update<span class="signature">(table, obj, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Generates a complete <code>UPDATE</code> query from an object, using its properties as update values.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>table</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Name of the table to be updated.</p>
-<p>Passing in anything other than a non-empty string will throw <a href="external-TypeError.html">TypeError</a> =
-<code>Parameter 'table' must be a non-empty text string.</code></p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>obj</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Object with properties for update values.</p>
-<p>Passing in anything other than a non-null object will throw <a href="external-TypeError.html">TypeError</a> =
-<code>Parameter 'obj' must be a non-null object.</code></p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">helpers.propertyOptions</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>An object with optional parameters.</p>
-<p>Passing in anything other than a non-null object will be ignored.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_methods_update.js.html">helpers/methods/update.js</a>, <a href="helpers_methods_update.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>The resulting query string.</p>
-</div>
-
 
 
 <dl>

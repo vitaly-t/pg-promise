@@ -29,7 +29,7 @@
 
 <header>
     
-        <h2>PreparedStatementError</h2>
+        <h2>Column</h2>
         
     
 </header>
@@ -41,16 +41,14 @@
 
     
 
-    <h4 class="name" id="PreparedStatementError"><span class="type-signature"></span>new PreparedStatementError<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="PreparedStatementError.html">PreparedStatementError</a>}</span></h4>
+    <h4 class="name" id="Column"><span class="type-signature"></span>new Column<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    <p>PreparedStatementError class, available from the <a href="errors.html">errors</a> namespace.</p>
-<p>This type represents all errors that can be reported by class <a href="PreparedStatement.html">PreparedStatement</a>, whether it is used
-explicitly or implicitly (via a simple <code>{name, text, values}</code> object).</p>
+    <p>Represents a single column information, plus formatting helpers;</p>
 </div>
 
 
@@ -61,151 +59,6 @@ explicitly or implicitly (via a simple <code>{name, text, values}</code> object)
 
 
 
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Standard <a href="external-Error.html">Error</a> property - error type name = <code>PreparedStatementError</code>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>message</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Standard <a href="external-Error.html">Error</a> property - the error message.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>stack</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Standard <a href="external-Error.html">Error</a> property - the stack trace.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>error</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="QueryFileError.html">QueryFileError</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Internal <a href="QueryFileError.html">QueryFileError</a> object.</p>
-<p>It is set only when the source <a href="PreparedStatement.html">PreparedStatement</a> used a <a href="QueryFile.html">QueryFile</a> which threw the error.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>result</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Resulting Prepared Statement object.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -239,20 +92,13 @@ explicitly or implicitly (via a simple <code>{name, text, values}</code> object)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="errors_prepared.js.html">errors/prepared.js</a>, <a href="errors_prepared.js.html#line9">line 9</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line46">line 46</a>
     </li></ul></dd>
     
 
     
 
     
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="PreparedStatement.html">PreparedStatement</a></li>
-        </ul>
-    </dd>
-    
 
     
 </dl>
@@ -269,40 +115,11 @@ explicitly or implicitly (via a simple <code>{name, text, values}</code> object)
 
 
 
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="PreparedStatementError.html">PreparedStatementError</a></span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
     
     </div>
-
-    
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li>Error</li>
-    </ul>
-
 
     
 
@@ -331,7 +148,7 @@ explicitly or implicitly (via a simple <code>{name, text, values}</code> object)
 
 
 <div class="description">
-    <p>Creates a well-formatted multi-line string that represents the error.</p>
+    <p>Creates a well-formatted multi-line string that represents the object.</p>
 <p>It is called automatically when writing the object into the console.</p>
 </div>
 
@@ -445,7 +262,7 @@ explicitly or implicitly (via a simple <code>{name, text, values}</code> object)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="errors_prepared.js.html">errors/prepared.js</a>, <a href="errors_prepared.js.html#line59">line 59</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line58">line 58</a>
     </li></ul></dd>
     
 

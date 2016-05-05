@@ -24,97 +24,79 @@
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-            <span class="ancestors"><a href="module-pg-promise.html">pg-promise</a>~</span>Client</h2>
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
 
-<article>
-    <div class="container-overview">
-    
-        
+var $npm = {
+    os: require('os'),
+    utils: require('../utils')
+};
 
-        
+/**
+ * @class errors.ColumnError
+ * @private
+ * @augments Error
+ * @description
+ * ColumnError class, available from the {@link errors} namespace.
+ *
+ * Represents an error in parsing a column information by class {@link Columns}.
+ *
+ * @returns {errors.ColumnError}
+ * @see Columns
+ */
+function ColumnError(message, index) {
+    var temp = Error.apply(this, arguments);
+    temp.name = this.name = 'ColumnError';
+    this.stack = temp.stack;
+    this.message = message;
+    this.index = index;
+}
 
+ColumnError.prototype = Object.create(Error.prototype, {
+    constructor: {
+        value: ColumnError,
+        writable: true,
+        configurable: true
+    }
+});
 
-<dl class="details">
+/**
+ * @method errors.ColumnError.toString
+ * @description
+ * Creates a well-formatted multi-line string that represents the error.
+ *
+ * It is called automatically when writing the object into the console.
+ *
+ * @param {Number} [level=0]
+ * Nested output level, to provide visual offset.
+ *
+ * @returns {string}
+ */
+ColumnError.prototype.toString = function (level) {
+    level = level > 0 ? parseInt(level) : 0;
+    var gap0 = $npm.utils.messageGap(level),
+        gap1 = $npm.utils.messageGap(level + 1),
+        lines = [
+            'ColumnError {',
+            gap1 + 'message: "' + this.message + '"'
+        ];
+    if (this.index !== undefined) {
+        lines.push(gap1 + 'index: ' + this.index);
+    }
+    lines.push(gap0 + '}');
+    return lines.join($npm.os.EOL);
+};
 
-    
+ColumnError.prototype.inspect = function () {
+    return this.toString();
+};
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line336">line 336</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="https://github.com/brianc/node-postgres/blob/master/lib/client.js#L12">https://github.com/brianc/node-postgres/blob/master/lib/client.js#L12</a></li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+module.exports = ColumnError;
+</code></pre>
+        </article>
+    </section>
 
 
 

@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PreparedStatementError.html">PreparedStatementError</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="QueryFileError.html">QueryFileError</a></li><li><a href="QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li><li><a href="TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isolationLevel">isolationLevel</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#queryResultErrorCode">queryResultErrorCode</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="txMode.html">txMode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -36,16 +36,16 @@ var $npm = {
 
 /**
  * @enum {Number}
- * @alias queryResultErrorCode
+ * @alias errors.queryResultErrorCode
  * @readonly
  * @description
  * queryResultError code, available from the {@link errors} namespace.
  *
- * Represents an integer code for each type of error supported by type {@link QueryResultError}.
+ * Represents an integer code for each type of error supported by type {@link errors.QueryResultError}.
  *
  * It is to be used when detailed error information is needed.
  *
- * @see {@link QueryResultError}
+ * @see {@link errors.QueryResultError}
  */
 var queryResultErrorCode = {
     /** No data returned from the query. */
@@ -67,9 +67,8 @@ var errorMessages = [
 ];
 
 /**
- * @constructor QueryResultError
+ * @class errors.QueryResultError
  * @augments Error
- * @summary Query Result Error class.
  * @description
  *
  * This error is specified as the rejection reason for all result-specific methods when the result doesn't match
@@ -104,7 +103,7 @@ var errorMessages = [
  * Total number of rows received. It is simply the value of `result.rows.length`.
  *
  * @property {number} code
- * Error code - {@link queryResultErrorCode} value.
+ * Error code - {@link errors.queryResultErrorCode} value.
  *
  * @property {string} query
  * Query that was executed.
@@ -116,7 +115,7 @@ var errorMessages = [
  * Values passed in as query parameters. Available only when initialization option `pgFormatting` is used.
  * Otherwise, the values are within the pre-formatted `query` string.
  *
- * @returns {QueryResultError}
+ * @returns {errors.QueryResultError}
  *
  * @example
  *
@@ -172,7 +171,7 @@ QueryResultError.prototype = Object.create(Error.prototype, {
 });
 
 /**
- * @method QueryResultError.toString
+ * @method errors.QueryResultError.toString
  * @description
  * Creates a well-formatted multi-line string that represents the error.
  *
@@ -185,18 +184,19 @@ QueryResultError.prototype = Object.create(Error.prototype, {
  */
 QueryResultError.prototype.toString = function (level) {
     level = level > 0 ? parseInt(level) : 0;
-    var gap = $npm.utils.messageGap(level + 1);
-    var lines = [
-        'QueryResultError {',
-        gap + 'code: queryResultErrorCode.' + errorMessages[this.code].name,
-        gap + 'message: "' + this.message + '"',
-        gap + 'received: ' + this.received,
-        gap + 'query: ' + (typeof this.query === 'string' ? '"' + this.query + '"' : JSON.stringify(this.query))
-    ];
+    var gap0 = $npm.utils.messageGap(level),
+        gap1 = $npm.utils.messageGap(level + 1),
+        lines = [
+            'QueryResultError {',
+            gap1 + 'code: queryResultErrorCode.' + errorMessages[this.code].name,
+            gap1 + 'message: "' + this.message + '"',
+            gap1 + 'received: ' + this.received,
+            gap1 + 'query: ' + (typeof this.query === 'string' ? '"' + this.query + '"' : JSON.stringify(this.query))
+        ];
     if (this.values !== undefined) {
-        lines.push(gap + 'values: ' + JSON.stringify(this.values));
+        lines.push(gap1 + 'values: ' + JSON.stringify(this.values));
     }
-    lines.push($npm.utils.messageGap(level) + '}');
+    lines.push(gap0 + '}');
     return lines.join($npm.os.EOL);
 };
 

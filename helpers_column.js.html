@@ -24,97 +24,109 @@
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-            <span class="ancestors"><a href="module-pg-promise.html">pg-promise</a>~</span>Client</h2>
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
 
-<article>
-    <div class="container-overview">
-    
-        
+/*
+ var columns = [{
+ name: 'bla', // can be text or number;
+ mod: '^', // must exist;
+ cast: '::date', // must be a text string (automatically remove :: in front);
+ def: 123,
+ init: function (value) { // must be a function
+ }]
+ */
 
-        
+var $npm = {
+    os: require('os'),
+    utils: require('../utils'),
+    formatting: require('../formatting')
+};
 
+var fmModifiers = [
+    '^',        // Raw-Text variable
+    ':raw',     // Raw-Text variable
+    '~',        // SQL Name/Identifier
+    ':name',    // SQL Name/Identifier
+    '#',        // Escaped value
+    ':value',   // Escaped value
+    ':json',    // JSON modifier
+    ':csv'      // CSV modifier
+];
 
-<dl class="details">
+function checkModifier(mod, pos) {
+    if (mod &amp;&amp; fmModifiers.indexOf(mod) === -1) {
+        throw new TypeError("Invalid formatting modifier '" + mod + "' at index " + pos + ".");
+    }
+}
 
-    
+function getColumn(name, pos) {
+    var mod = name.match(/\^|~|#|:raw|:name|:json|:csv|:value/);
+    var res = {
+        name: name.substr(0, mod.index),
+        mod: mod ? mod[0] : null
+    };
+    checkModifier(res.mod, pos);
+    return res;
+}
 
-    
+/**
+ * Represents a single column information, plus formatting helpers;
+ * @class helpers.Column
+ * @private
+ * @returns {helpers.Column}
+ */
+function Column() {
 
-    
+}
 
-    
+Column.prototype.escapedName = function () {
+    return $npm.formatting.as.name(this.name);
+};
 
-    
+/**
+ * @method helpers.Column.toString
+ * @description
+ * Creates a well-formatted multi-line string that represents the object.
+ *
+ * It is called automatically when writing the object into the console.
+ *
+ * @param {Number} [level=0]
+ * Nested output level, to provide visual offset.
+ *
+ * @returns {string}
+ */
+Column.prototype.toString = function (level) {
+    level = level > 0 ? parseInt(level) : 0;
+    var gap0 = $npm.utils.messageGap(level),
+        gap1 = $npm.utils.messageGap(level + 1),
+        lines = [
+            gap0 + 'Column {',
+            gap1 + 'name: ' + JSON.stringify(this.name)
+        ];
+    if ('mod' in this) {
+        lines.push(gap1 + 'mod: ' + JSON.stringify(this.mod));
+    }
+    if ('cast' in this) {
+        lines.push(gap1 + 'cast: ' + JSON.stringify(this.cast));
+    }
+    if ('def' in this) {
+        lines.push(gap1 + 'def: ' + JSON.stringify(this.def));
+    }
+    lines.push(gap0 + '}');
+    return lines.join($npm.os.EOL);
+};
 
-    
+Column.prototype.inspect = function () {
+    return this.toString();
+};
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line336">line 336</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="https://github.com/brianc/node-postgres/blob/master/lib/client.js#L12">https://github.com/brianc/node-postgres/blob/master/lib/client.js#L12</a></li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+module.exports = Column;
+</code></pre>
+        </article>
+    </section>
 
 
 
