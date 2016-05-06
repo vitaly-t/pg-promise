@@ -41,48 +41,68 @@ var $npm = {
  * @private
  * @returns {helpers.Column}
  */
-function Column(e) {
+function Column(col) {
+
     if (!(this instanceof Column)) {
-        return new Column(e);
+        return new Column(col);
     }
 
-    if (typeof e === 'string') {
-        var mod = e.match(/\^|~|#|:raw|:name|:json|:csv|:value/);
+    if (typeof col === 'string') {
+        var mod = col.match(/\^|~|#|:raw|:name|:json|:csv|:value/);
         if (mod) {
-            this.name = e.substr(0, mod.index);
+            this.name = col.substr(0, mod.index);
             this.mod = mod[0];
         } else {
-            this.name = e;
+            this.name = col;
         }
     } else {
-        // e is an object;
-        if ('name' in e) {
-            this.name = e.name;
-        }
-        if (e.mod &amp;&amp; typeof e.mod === 'string') {
-            this.mod = e.mod;
-        }
-        if (e.cast &amp;&amp; typeof e.cast === 'string') {
-            // TODO: Need to remove leading '::'
-            this.cast = e.cast;
-        }
-        if ('def' in e) {
-            this.def = e.def;
-        }
-        if (typeof e.init === 'function') {
-            this.init = e.init;
+        if (col &amp;&amp; typeof col === 'object') {
+            if ('name' in col) {
+                this.name = col.name; // column name + property name (if 'prop' isn't specified)
+            }
+            if ('prop' in col) {
+                this.prop = col.prop; // optional property name (if different from the columns name);
+            }
+            if (col.mod &amp;&amp; typeof col.mod === 'string') {
+                this.mod = col.mod; // optional format modifier;
+            }
+            if ($npm.utils.isText(col.cast)) {
+                this.cast = getCastName(col.cast); // optional SQL type casting
+            }
+            if ('def' in col) {
+                this.def = col.def; // optional default
+            }
+            if (typeof col.init === 'function') {
+                this.init = col.init; // optional value override (overrides 'def' also)
+            }
+        } else {
+            throw new TypeError("A column must be a string or a non-null object.");
         }
     }
 
-    this.variable = '${' + this.name + (this.mod || '') + '}' + (this.cast ? ('::' + this.cast) : '');
+    if (!$npm.utils.isText(this.name)) {
+        throw new TypeError("A column name must be a non-empty text string.");
+    }
+    
+    if ('prop' in this &amp;&amp; !$npm.utils.isText(this.prop)) {
+        throw new TypeError("A property name must be a non-empty text string.");
+    }
+
+    this.variable = '${' + (this.prop || this.name) + (this.mod || '') + '}' + (this.cast ? ('::' + this.cast) : '');
+
+    this.escapedName = $npm.formatting.as.name(this.name);
 
     Object.freeze(this);
 
 }
 
-Column.prototype.escapedName = function () {
-    return $npm.formatting.as.name(this.name);
-};
+function getCastName(name) {
+    var idx = 0;
+    while (idx &lt; name.length &amp;&amp; name[idx] === ':') {
+        idx++;
+    }
+    return idx ? name.substr(idx) : name;
+}
 
 /**
  * @method helpers.Column.toString
@@ -104,6 +124,9 @@ Column.prototype.toString = function (level) {
             gap0 + 'Column {',
             gap1 + 'name: ' + JSON.stringify(this.name)
         ];
+    if ('prop' in this) {
+        lines.push(gap1 + 'prop: ' + JSON.stringify(this.prop));
+    }
     if ('mod' in this) {
         lines.push(gap1 + 'mod: ' + JSON.stringify(this.mod));
     }

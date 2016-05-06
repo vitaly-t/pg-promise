@@ -29,6 +29,8 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
+require('../array');
+
 var $npm = {
     os: require('os'),
     utils: require('../utils'),
@@ -175,7 +177,7 @@ function PreparedStatement(name, text, values) {
         this.text = name.text;
         this.values = name.values;
 
-        advancedProperties.forEach(function (prop) {
+        advancedProperties.$forEach(function (prop) {
             this[prop] = name[prop];
         }, this);
     }
@@ -239,7 +241,7 @@ function PreparedStatement(name, text, values) {
             }
         }
 
-        advancedProperties.forEach(function (prop) {
+        advancedProperties.$forEach(function (prop) {
             if (this[prop] !== undefined) {
                 ps[prop] = this[prop];
             }
@@ -284,7 +286,7 @@ PreparedStatement.prototype.toString = function (level) {
     if (this.values !== undefined) {
         lines.push(gap + 'values: ' + JSON.stringify(this.values));
     }
-    advancedProperties.forEach(function (prop) {
+    advancedProperties.$forEach(function (prop) {
         if (this[prop] !== undefined) {
             lines.push(gap + prop + ': ' + JSON.stringify(this[prop]));
         }

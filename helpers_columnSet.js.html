@@ -29,6 +29,8 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
+require('../array');
+
 var $npm = {
     os: require('os'),
     utils: require('../utils'),
@@ -36,73 +38,73 @@ var $npm = {
     Column: require('./column')
 };
 
-// this will cache all the column details nicely! :)
-// obj is optional;
-// it is to be available via export
-
 /**
  * @class helpers.ColumnSet
  * @private
  * @description
- * Information about columns
+ * Information about all columns.
  *
- * @param cols
- * @param [obj]
- * @param {string} [table]
+ * @param {Object} columns
+ *
+ * @param {Object} [options]
+ *
+ * @param {string} [options.table]
+ *
+ * @param {boolean} [options.inherit]
+ *
  * @returns {helpers.ColumnSet}
  *
  */
-function ColumnSet(cols, obj, table) {
+function ColumnSet(columns, options) {
+
     if (!(this instanceof ColumnSet)) {
-        return new ColumnSet(cols, obj);
+        return new ColumnSet(columns, options);
     }
 
-    this.table = table; // can be re-used by methods insert/update when the table isn't specified ;)
-    this.columns = [];
-    var all = false;
-    if (cols === 'all') {
-        all = true;
-        cols = null;
+    if (!columns || typeof columns !== 'object') {
+        throw new TypeError("Invalid parameter 'columns' specified.");
     }
 
-    if ($npm.utils.isNull(cols)) {
-        if (!obj || typeof obj !== 'object') {
-            throw new TypeError("The object must be specified when columns aren't.");
+    var inherit, names, variables, updates;
+
+    if (!$npm.utils.isNull(options)) {
+        if (typeof options !== 'object') {
+            throw new TypeError("Invalid parameter 'options' specified.");
         }
-        for (var name in obj) {
-            if (all || obj.hasOwnProperty(name)) {
+        if ($npm.utils.isText(options.table)) {
+            this.table = options.table;
+        }
+        inherit = options.inherit;
+    }
+
+    if (Array.isArray(columns)) {
+        this.columns = columns.$map(function (c) {
+            return new $npm.Column(c);
+        });
+    } else {
+        this.columns = [];
+        for (var name in columns) {
+            if (inherit || columns.hasOwnProperty(name)) {
                 this.columns.push(new $npm.Column(name));
             }
         }
-    } else {
-        if (Array.isArray(cols) &amp;&amp; cols.length) {
-            this.columns = cols.map(function (c) {
-                return new $npm.Column(c);
-            });
-        } else {
-            if (!all) {
-                throw new TypeError("Invalid 'columns' parameter.");
-            }
-        }
     }
 
-    var propNames;
     Object.defineProperty(this, 'names', {
         get: function () {
-            if (!propNames) {
-                propNames = this.columns.map(function (c) {
-                    return c.escapedName();
+            if (!names) {
+                names = this.columns.$map(function (c) {
+                    return c.escapedName;
                 }).join(',');
             }
-            return propNames;
+            return names;
         }
     });
 
-    var variables;
     Object.defineProperty(this, 'variables', {
         get: function () {
             if (!variables) {
-                variables = this.columns.map(function (c) {
+                variables = this.columns.$map(function (c) {
                     return c.variable;
                 }).join(',');
             }
@@ -110,12 +112,11 @@ function ColumnSet(cols, obj, table) {
         }
     });
 
-    var updates;
     Object.defineProperty(this, 'updates', {
         get: function () {
             if (!updates) {
-                updates = this.columns.map(function (c) {
-                    return c.escapedName() + '=' + c.variable;
+                updates = this.columns.$map(function (c) {
+                    return c.escapedName + '=' + c.variable;
                 }).join(',');
             }
             return updates;
@@ -124,24 +125,25 @@ function ColumnSet(cols, obj, table) {
 
     this.prepare = function (obj) {
         var target = {};
-        this.columns.forEach(function (c) {
-            if (c.name in obj) {
-                var value = obj[c.name];
-                target[c.name] = c.init ? c.init.call(obj, value) : value;
+        this.columns.$forEach(function (c) {
+            var name = c.prop || c.name;
+            if (name in obj) {
+                var value = obj[name];
+                target[name] = c.init ? c.init.call(obj, value) : value;
             } else {
                 if (c.init) {
-                    target[c.name] = c.init.call(obj);
+                    target[name] = c.init.call(obj);
                 } else {
                     if ('def' in c) {
-                        target[c.name] = c.def;
-                    } else {
-                        throw new Error("Value for property '" + c.name + "' is unknown.");
+                        target[name] = c.def;
                     }
                 }
             }
         }, this);
         return target;
     };
+
+    Object.freeze(this);
 }
 
 /**
@@ -164,11 +166,11 @@ ColumnSet.prototype.toString = function (level) {
             'ColumnSet {'
         ];
     if (this.table) {
-        lines.push(gap1 + 'table: "' + this.table + '"');
+        lines.push(gap1 + 'table: ' + JSON.stringify(this.table));
     }
     if (this.columns.length) {
         lines.push(gap1 + 'columns: [');
-        this.columns.forEach(function (c) {
+        this.columns.$forEach(function (c) {
             lines.push(c.toString(2));
         }, this);
         lines.push(gap1 + ']');
