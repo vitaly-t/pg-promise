@@ -44,9 +44,13 @@ var $npm = {
  *
  * ### Formatting Helpers is a v.4.1.0 feature that's in development.
  *
- * Information about all columns.
+ * Information about all query-formatting columns.
  *
- * @param {Object} columns
+ * @param {Array|Object} columns
+ * Column information object, depending on the type:
+ * - if a simple object, its properties are enumerated to represent both column names and source property names.
+ * - if it is an array, each element is assumed to represent a column details, and passed directly into {@link helpers.Column Column}.
+ *
  *
  * @param {Object} [options]
  *
@@ -85,7 +89,10 @@ function ColumnSet(columns, options) {
      * @name helpers.ColumnSet#table
      * @type String
      * @description
-     * Destination table name.
+     * Destination table name. It can be specified for two purposes:
+     *
+     * - **primary:** to be used as the default table name when it is omitted during a call into methods {@link helpers.insert insert} and {@link helpers.update update}
+     * - **secondary:** to be automatically written into the console (for logging purposes).
      */
 
     /**
@@ -118,7 +125,7 @@ function ColumnSet(columns, options) {
             if (!names) {
                 names = this.columns.$map(function (c) {
                     return c.escapedName;
-                }).join(',');
+                }).join();
             }
             return names;
         }
@@ -134,7 +141,7 @@ function ColumnSet(columns, options) {
             if (!variables) {
                 variables = this.columns.$map(function (c) {
                     return c.variable;
-                }).join(',');
+                }).join();
             }
             return variables;
         }
@@ -150,7 +157,7 @@ function ColumnSet(columns, options) {
             if (!updates) {
                 updates = this.columns.$map(function (c) {
                     return c.escapedName + '=' + c.variable;
-                }).join(',');
+                }).join();
             }
             return updates;
         }
@@ -164,12 +171,12 @@ function ColumnSet(columns, options) {
                 var value = obj[name];
                 target[name] = c.init ? c.init.call(obj, value) : value;
             } else {
+                var value;
+                if ('def' in c) {
+                    target[name] = value = c.def;
+                }
                 if (c.init) {
-                    target[name] = c.init.call(obj);
-                } else {
-                    if ('def' in c) {
-                        target[name] = c.def;
-                    }
+                    target[name] = c.init.call(obj, value);
                 }
             }
         }, this);

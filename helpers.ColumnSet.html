@@ -49,7 +49,7 @@
 
 
 <div class="description">
-    <h3>Formatting Helpers is a v.4.1.0 feature that's in development.</h3><p>Information about all columns.</p>
+    <h3>Formatting Helpers is a v.4.1.0 feature that's in development.</h3><p>Information about all query-formatting columns.</p>
 </div>
 
 
@@ -93,6 +93,9 @@
             <td class="type">
             
                 
+<span class="param-type">Array</span>
+|
+
 <span class="param-type">Object</span>
 
 
@@ -111,7 +114,11 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Column information object, depending on the type:</p>
+<ul>
+<li>if a simple object, its properties are enumerated to represent both column names and source property names.</li>
+<li>if it is an array, each element is assumed to represent a column details, and passed directly into <a href="helpers.Column.html">Column</a>.</li>
+</ul></td>
         </tr>
 
     
@@ -407,7 +414,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line62">line 62</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -475,7 +482,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line82">line 82</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line89">line 89</a>
     </li></ul></dd>
     
 
@@ -499,7 +506,11 @@
 
 
 <div class="description">
-    <p>Destination table name.</p>
+    <p>Destination table name. It can be specified for two purposes:</p>
+<ul>
+<li><strong>primary:</strong> to be used as the default table name when it is omitted during a call into methods <a href="helpers.html#.insert">insert</a> and <a href="helpers.html#.update">update</a></li>
+<li><strong>secondary:</strong> to be automatically written into the console (for logging purposes).</li>
+</ul>
 </div>
 
 
@@ -547,7 +558,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line55">line 55</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line59">line 59</a>
     </li></ul></dd>
     
 
@@ -615,7 +626,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line114">line 114</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line121">line 121</a>
     </li></ul></dd>
     
 
@@ -683,7 +694,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line98">line 98</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -831,7 +842,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line153">line 153</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line160">line 160</a>
     </li></ul></dd>
     
 

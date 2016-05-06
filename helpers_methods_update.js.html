@@ -106,11 +106,11 @@ function update(data, columns, table, options, capSQL) {
         
         var targetCols = columns.columns.$map(function (c) {
             return c.escapedName + '=' + valuesAlias + '.' + c.escapedName;
-        }).join(',');
+        }).join();
         
         var values = data.$map(function (o) {
             return '(' + f(columns.variables, columns.prepare(o)) + ')';
-        }).join(',');
+        }).join();
         
         return f(query, [table, targetAlias, targetCols, values, valuesAlias, columns.names]);
     }

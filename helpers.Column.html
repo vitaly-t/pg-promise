@@ -42,14 +42,15 @@
 
     
 
-    <h4 class="name" id="Column"><span class="type-signature"></span>new Column<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="helpers.Column.html">helpers.Column</a>}</span></h4>
+    <h4 class="name" id="Column"><span class="type-signature"></span>new Column<span class="signature">(col)</span><span class="type-signature"> &rarr; {<a href="helpers.Column.html">helpers.Column</a>}</span></h4>
 
     
 
 
 
 <div class="description">
-    <h3>Formatting Helpers is a v.4.1.0 feature that's in development.</h3><p>Represents a single column information, plus formatting helpers.</p>
+    <p><strong> WARNING: Everything within the <a href="helpers.html">helpers</a> namespace is currently in its Alpha version.</strong></p>
+<p>Represents formatting details for a single column.</p>
 </div>
 
 
@@ -58,6 +59,65 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>col</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type"><a href="helpers.html#~ColumnDescriptor">helpers~ColumnDescriptor</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Column details, depending on the parameter's type:</p>
+<ul>
+<li><code>string</code> - column name, with an optional format modifier</li>
+<li><code>object</code> - <a href="helpers.html#~ColumnDescriptor">ColumnDescriptor</a> object.</li>
+</ul>
+<p>When it is a string, the name adheres to the variable name format as used by method <a href="formatting.html#.format">as.format</a>:
+property name + optional modifier (<code>^</code>, <code>~</code>, <code>#</code>, <code>:csv</code>, <code>:json</code>, <code>name</code>, <code>raw</code>, <code>:value</code>). When a valid modifier is
+specified, it is removed from the name and put into property <code>mod</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -77,6 +137,8 @@
 
         <th>Type</th>
 
+        
+        <th>Attributes</th>
         
 
         
@@ -103,6 +165,12 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                </td>
+            
 
             
 
@@ -126,10 +194,18 @@
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>Name of the source property, if different from the column's name.</p></td>
+            <td class="description last"><p>Source property name, if different from the column's name.</p></td>
         </tr>
 
     
@@ -149,10 +225,49 @@
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>Formatting modifier.</p></td>
+            <td class="description last"><p>Formatting modifier, as supported by method <a href="formatting.html#.format">as.format</a>: <code>^</code>, <code>~</code>, <code>#</code>, <code>:csv</code>, <code>:json</code>, <code>name</code>, <code>raw</code>, <code>:value</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cast</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Server-side type casting, without <code>::</code> in front.</p></td>
         </tr>
 
     
@@ -167,10 +282,18 @@
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>Default value. Used only when the source object doesn't have the property.</p></td>
+            <td class="description last"><p>Default value for the property, to be used only when the source object doesn't have the property.</p></td>
         </tr>
 
     
@@ -183,17 +306,25 @@
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="helpers.html#.InitCB">helpers.InitCB</a></span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>Property value initializer.</p></td>
+            <td class="description last"><p>Value override callback.</p></td>
         </tr>
 
     
@@ -238,6 +369,13 @@
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="helpers.html#~ColumnDescriptor">ColumnDescriptor</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -420,7 +558,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line98">line 98</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line112">line 112</a>
     </li></ul></dd>
     
 
