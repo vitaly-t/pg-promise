@@ -41,9 +41,9 @@ var $npm = {
 /**
  * @class helpers.ColumnSet
  * @description
- * 
+ *
  * ### Formatting Helpers is a v.4.1.0 feature that's in development.
- * 
+ *
  * Information about all columns.
  *
  * @param {Object} columns
@@ -81,6 +81,20 @@ function ColumnSet(columns, options) {
         inherit = options.inherit;
     }
 
+    /**
+     * @name helpers.ColumnSet#table
+     * @type String
+     * @description
+     * Destination table name.
+     */
+
+    /**
+     * @name helpers.ColumnSet#columns
+     * @type Array
+     * @description
+     * Array of {@link helpers.Column Column} objects.
+     */
+
     if (Array.isArray(columns)) {
         this.columns = columns.$map(function (c) {
             return new $npm.Column(c);
@@ -94,6 +108,11 @@ function ColumnSet(columns, options) {
         }
     }
 
+    /**
+     * @name helpers.ColumnSet#names
+     * @type Array
+     * @readonly
+     */
     Object.defineProperty(this, 'names', {
         get: function () {
             if (!names) {
@@ -105,6 +124,11 @@ function ColumnSet(columns, options) {
         }
     });
 
+    /**
+     * @name helpers.ColumnSet#variables
+     * @type Array
+     * @readonly
+     */
     Object.defineProperty(this, 'variables', {
         get: function () {
             if (!variables) {
@@ -116,6 +140,11 @@ function ColumnSet(columns, options) {
         }
     });
 
+    /**
+     * @name helpers.ColumnSet#updates
+     * @type Array
+     * @readonly
+     */
     Object.defineProperty(this, 'updates', {
         get: function () {
             if (!updates) {

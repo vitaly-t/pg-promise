@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><h3>Formatting Helpers is a v.4.1.0 feature that's in development.</h3><p>Namespace for all query-formatting helper functions, available as <code>pgp.helpers</code> after initializing the library.</p></div>
+            <div class="description"><h3>Formatting Helpers is a v.4.1.0 feature that's in development.</h3><p>Namespace for high-level query-formatting functions, available as <code>pgp.helpers</code> after initializing the library.</p></div>
         
 
         
@@ -119,14 +119,14 @@
 
     
 
-    <h4 class="name" id=".insert"><span class="type-signature">(static) </span>insert<span class="signature">(data, columns, table)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    <h4 class="name" id=".insert"><span class="type-signature">(static) </span>insert<span class="signature">(data, columns<span class="signature-attributes">opt</span>, table<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {String}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Generates a complete <code>INSERT</code> query from an object, using its properties as insert values.</p>
+    <p>Generates an <code>INSERT</code> query from an object, using its properties as insert values.</p>
 </div>
 
 
@@ -149,6 +149,8 @@
 
         <th>Type</th>
 
+        
+        <th>Attributes</th>
         
 
         
@@ -178,10 +180,18 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>Object with properties for insert values, or an array of.</p></td>
+            <td class="description last"><p>Object with properties for insert values, or an array of such objects.</p></td>
         </tr>
 
     
@@ -194,6 +204,9 @@
             <td class="type">
             
                 
+<span class="param-type">Array</span>
+|
+
 <span class="param-type"><a href="helpers.ColumnSet.html">helpers.ColumnSet</a></span>
 
 
@@ -201,10 +214,21 @@
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Columns to be inserted.</p>
+<p>It is optional when inserting a single object, but required when inserting multiple objects.</p></td>
         </tr>
 
     
@@ -223,6 +247,16 @@
             
             </td>
 
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -321,14 +355,14 @@
 
     
 
-    <h4 class="name" id=".update"><span class="type-signature">(static) </span>update<span class="signature">(data, columns, table)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".update"><span class="type-signature">(static) </span>update<span class="signature">(data, columns<span class="signature-attributes">opt</span>, table)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Generates a complete <code>UPDATE</code> query from an object, using its properties as update values.</p>
+    <p>Generates an <code>UPDATE</code> query from an object, using its properties as update values.</p>
 </div>
 
 
@@ -351,6 +385,8 @@
 
         <th>Type</th>
 
+        
+        <th>Attributes</th>
         
 
         
@@ -380,10 +416,18 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>Object with properties for update values.</p></td>
+            <td class="description last"><p>Object with properties for update values, or an array of such objects.</p></td>
         </tr>
 
     
@@ -396,6 +440,9 @@
             <td class="type">
             
                 
+<span class="param-type">Array</span>
+|
+
 <span class="param-type"><a href="helpers.ColumnSet.html">helpers.ColumnSet</a></span>
 
 
@@ -403,10 +450,21 @@
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Columns to be updated.</p>
+<p>It is optional when updating a single object, but required when updating multiple objects.</p></td>
         </tr>
 
     
@@ -425,6 +483,14 @@
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
