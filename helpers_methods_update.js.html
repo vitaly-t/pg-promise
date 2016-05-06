@@ -98,20 +98,20 @@ function update(data, columns, table, options, capSQL) {
                 valuesAlias = options.valuesAlias;
             }
         }
-        
+
         var query = "update $1~ as $2^ set $3^ from (values$4^) as $5^($6^)";
         if (capSQL) {
             query = query.toUpperCase();
         }
-        
+
         var targetCols = columns.columns.$map(function (c) {
             return c.escapedName + '=' + valuesAlias + '.' + c.escapedName;
         }).join();
-        
+
         var values = data.$map(function (o) {
             return '(' + f(columns.variables, columns.prepare(o)) + ')';
         }).join();
-        
+
         return f(query, [table, targetAlias, targetCols, values, valuesAlias, columns.names]);
     }
 
