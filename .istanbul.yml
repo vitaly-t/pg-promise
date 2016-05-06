@@ -2,7 +2,7 @@ verbose: false
 instrumentation:
     root: .
     default-excludes: true
-    excludes: ['**/helpers/**', 'column.js']
+    excludes: ['**/helpers/**', 'column.js', 'array.js']
     embed-source: false
     variable: __coverage__
     compact: true
