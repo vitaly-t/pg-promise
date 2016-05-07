@@ -127,7 +127,7 @@
 
 
 <div class="description">
-    <p>Generates an <code>INSERT</code> query from an object, using its properties as insert values.</p>
+    <p>Generates an <code>INSERT</code> query for either one object or an array of objects.</p>
 </div>
 
 
@@ -192,7 +192,8 @@
 
             
 
-            <td class="description last"><p>Object with properties for insert values, or an array of such objects.</p></td>
+            <td class="description last"><p>An object with properties for insert values, or an array of such objects.</p>
+<p>When <code>data</code> is not a non-null object and not an array, it will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'data' specified.</code></p></td>
         </tr>
 
     
@@ -228,8 +229,11 @@
 
             
 
-            <td class="description last"><p>Columns to be inserted.</p>
-<p>It is optional when inserting a single object, but required when inserting multiple objects.</p></td>
+            <td class="description last"><p>Set of columns to be inserted.</p>
+<p>It is optional when <code>data</code> is a single object, and required when <code>data</code> is an array of objects. When not specified for an array
+of objects, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Parameter 'columns' is required when inserting multiple records.</code></p>
+<p>When <code>columns</code> is not a <a href="helpers.ColumnSet.html">ColumnSet</a> object, a temporary <a href="helpers.ColumnSet.html">ColumnSet</a>
+is created - from the value of <code>columns</code> (if it was specified), or from the value of <code>data</code> (if it is not an array).</p></td>
         </tr>
 
     
@@ -262,7 +266,10 @@
 
             
 
-            <td class="description last"><p>Destination table name.</p></td>
+            <td class="description last"><p>Destination table name.</p>
+<p>It is normally a required parameter. But when <code>columns</code> is passed in as a <a href="helpers.ColumnSet.html">ColumnSet</a> object
+with <code>table</code> set in it, that will be used when this parameter isn't specified. When neither is available, the method
+will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown.</code></p></td>
         </tr>
 
     
@@ -310,6 +317,13 @@
     
 
     
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="helpers.ColumnSet.html">ColumnSet</a></li>
+        </ul>
+    </dd>
+    
 
     
 </dl>
@@ -356,14 +370,14 @@
 
     
 
-    <h4 class="name" id=".update"><span class="type-signature">(static) </span>update<span class="signature">(data, columns<span class="signature-attributes">opt</span>, table)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".update"><span class="type-signature">(static) </span>update<span class="signature">(data, columns<span class="signature-attributes">opt</span>, table<span class="signature-attributes">opt</span>, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {String}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Generates an <code>UPDATE</code> query from an object, using its properties as update values.</p>
+    <p>Generates an <code>UPDATE</code> query for either one object or an array of objects.</p>
 </div>
 
 
@@ -428,7 +442,8 @@
 
             
 
-            <td class="description last"><p>Object with properties for update values, or an array of such objects.</p></td>
+            <td class="description last"><p>An object with properties for update values, or an array of such objects.</p>
+<p>When <code>data</code> is not a non-null object and not an array, it will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'data' specified.</code></p></td>
         </tr>
 
     
@@ -464,8 +479,13 @@
 
             
 
-            <td class="description last"><p>Columns to be updated.</p>
-<p>It is optional when updating a single object, but required when updating multiple objects.</p></td>
+            <td class="description last"><p>Set of columns to be updated.</p>
+<p>It is optional when <code>data</code> is a single object, and required when <code>data</code> is an array of objects. When not specified for an array
+of objects, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Parameter 'columns' is required when updating multiple records.</code></p>
+<p>When <code>columns</code> is not a <a href="helpers.ColumnSet.html">ColumnSet</a> object, a temporary <a href="helpers.ColumnSet.html">ColumnSet</a>
+is created - from the value of <code>columns</code> (if it was specified), or from the value of <code>data</code> (if it is not an array).</p>
+<p>When the final <a href="helpers.ColumnSet.html">ColumnSet</a> is empty (no columns in it), it will throw
+<a href="external-Error.html">Error</a> = <code>Cannot generate a valid UPDATE without any columns.</code></p></td>
         </tr>
 
     
@@ -487,6 +507,8 @@
             
                 <td class="attributes">
                 
+                    &lt;optional><br>
+                
 
                 
 
@@ -496,7 +518,152 @@
 
             
 
-            <td class="description last"><p>Name of the table to be updated.</p></td>
+            <td class="description last"><p>Name of the table to be updated.</p>
+<p>It is normally a required parameter. But when <code>columns</code> is passed in as a <a href="helpers.ColumnSet.html">ColumnSet</a> object
+with <code>table</code> set in it, that will be used when this parameter isn't specified. When neither is available, the method
+will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown.</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An object with formatting options for multi-object updates. Passing in a non-null value that's not an object will
+throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'options' specified.</code></p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tableAlias</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    t
+                
+                </td>
+            
+
+            <td class="description last"><p>Name of the SQL variable that represents the destination table. It is used only for multi-object updates.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>valueAlias</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    v
+                
+                </td>
+            
+
+            <td class="description last"><p>Name of the SQL variable that represents the values. It is used only for multi-object updates.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -544,6 +711,13 @@
     
 
     
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="helpers.ColumnSet.html">ColumnSet</a></li>
+        </ul>
+    </dd>
+    
 
     
 </dl>
@@ -575,7 +749,7 @@
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">String</span>
 
 
     </dd>

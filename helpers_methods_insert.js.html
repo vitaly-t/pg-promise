@@ -38,21 +38,33 @@ var $npm = {
 /**
  * @method helpers.insert
  * @description
- * Generates an `INSERT` query from an object, using its properties as insert values.
+ * Generates an `INSERT` query for either one object or an array of objects.
  *
  * @param {Object|Array} data
- * Object with properties for insert values, or an array of such objects.
+ * An object with properties for insert values, or an array of such objects.
+ *
+ * When `data` is not a non-null object and not an array, it will throw {@link external:TypeError TypeError} = `Invalid parameter 'data' specified.`
  *
  * @param {Array|helpers.ColumnSet} [columns]
- * Columns to be inserted.
+ * Set of columns to be inserted.
  *
- * It is optional when inserting a single object, but required when inserting multiple objects.
+ * It is optional when `data` is a single object, and required when `data` is an array of objects. When not specified for an array
+ * of objects, the method will throw {@link external:TypeError TypeError} = `Parameter 'columns' is required when inserting multiple records.`
+ *
+ * When `columns` is not a {@link helpers.ColumnSet ColumnSet} object, a temporary {@link helpers.ColumnSet ColumnSet}
+ * is created - from the value of `columns` (if it was specified), or from the value of `data` (if it is not an array).
  *
  * @param {String} [table]
  * Destination table name.
  *
+ * It is normally a required parameter. But when `columns` is passed in as a {@link helpers.ColumnSet ColumnSet} object
+ * with `table` set in it, that will be used when this parameter isn't specified. When neither is available, the method
+ * will throw {@link external:Error Error} = `Table name is unknown.`
+ *
  * @returns {String}
  * The resulting query string.
+ *
+ * @see {@link helpers.ColumnSet ColumnSet}
  */
 function insert(data, columns, table, capSQL) {
 
@@ -72,7 +84,7 @@ function insert(data, columns, table, capSQL) {
     }
 
     if (!table) {
-        throw new TypeError("Table name is unknown.");
+        throw new Error("Table name is unknown.");
     }
 
     var query = "insert into $1~($2^) values";
