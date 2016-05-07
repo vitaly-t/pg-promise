@@ -32,16 +32,30 @@
 var $npm = {
     insert: require('./methods/insert'),
     update: require('./methods/update'),
-    ColumnSet: require('./columnSet')
+    ColumnSet: require('./columnSet'),
+    Column: require('./column')
 };
 
 /**
  * @namespace helpers
  * @description
- * 
+ *
  * ** WARNING: Everything within the {@link helpers} namespace is currently in its Alpha version.**
  *
- * Namespace for high-level query-formatting functions, available as `pgp.helpers` after initializing the library.
+ * Namespace for automated query formatting helpers, available as `pgp.helpers` after initializing the library.
+ *
+ * @property {Function} ColumnSet
+ * {@link helpers.ColumnSet ColumnSet} class constructor.
+ *
+ * @property {Function} Column
+ * {@link helpers.Column Column} class constructor.
+ *
+ * @property {Function} insert
+ * {@link helpers.insert insert} static method.
+ *
+ * @property {Function} update
+ * {@link helpers.update update} static method.
+ *
  */
 module.exports = function (config) {
     var res = {
@@ -53,7 +67,8 @@ module.exports = function (config) {
             var capSQL = config.options &amp;&amp; config.options.capSQL;
             return $npm.update(data, columns, table, options, capSQL);
         },
-        ColumnSet: $npm.ColumnSet
+        ColumnSet: $npm.ColumnSet,
+        Column: $npm.Column
     };
     Object.freeze(res);
     return res;

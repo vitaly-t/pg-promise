@@ -42,16 +42,16 @@
 var isolationLevel = {
     /** Isolation level not specified. */
     none: 0,
-
+    
     /** ISOLATION LEVEL SERIALIZABLE */
     serializable: 1,
 
     /** ISOLATION LEVEL REPEATABLE READ */
     repeatableRead: 2,
-
+    
     /** ISOLATION LEVEL READ COMMITTED */
     readCommitted: 3
-
+    
     // From the official documentation: http://www.postgresql.org/docs/9.5/static/sql-set-transaction.html
     // The SQL standard defines one additional level, READ UNCOMMITTED. In PostgreSQL READ UNCOMMITTED is treated as READ COMMITTED.
     // => skipping `READ UNCOMMITTED`.
@@ -192,10 +192,10 @@ function TransactionMode(tiLevel, readOnly, deferrable) {
  *  - access mode
  *  - deferrable mode
  *
- * @property {TransactionMode} TransactionMode
- * Automated Transaction Mode class
+ * @property {Function} TransactionMode
+ * {@link txMode.TransactionMode TransactionMode} class constructor.
  *
- * @property {isolationLevel} isolationLevel
+ * @property {txMode.isolationLevel} isolationLevel
  * Transaction Isolation Level enumerator
  *
  * @see $[BEGIN]
@@ -205,7 +205,8 @@ module.exports = {
     TransactionMode: TransactionMode
 };
 
-Object.freeze(module.exports);</code></pre>
+Object.freeze(module.exports);
+</code></pre>
         </article>
     </section>
 

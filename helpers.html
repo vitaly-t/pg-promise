@@ -39,10 +39,131 @@
     
         
             <div class="description"><p><strong> WARNING: Everything within the <a href="helpers.html">helpers</a> namespace is currently in its Alpha version.</strong></p>
-<p>Namespace for high-level query-formatting functions, available as <code>pgp.helpers</code> after initializing the library.</p></div>
+<p>Namespace for automated query formatting helpers, available as <code>pgp.helpers</code> after initializing the library.</p></div>
         
 
         
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ColumnSet</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="helpers.ColumnSet.html">ColumnSet</a> class constructor.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>Column</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="helpers.Column.html">Column</a> class constructor.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>insert</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="helpers.html#.insert">insert</a> static method.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>update</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="helpers.html#.update">update</a> static method.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
 
 
 <dl class="details">
@@ -74,7 +195,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_index.js.html">helpers/index.js</a>, <a href="helpers_index.js.html#line9">line 9</a>
+        <a href="helpers_index.js.html">helpers/index.js</a>, <a href="helpers_index.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -209,6 +330,9 @@
             
                 
 <span class="param-type">Array</span>
+|
+
+<span class="param-type"><a href="helpers.Column.html">helpers.Column</a></span>
 |
 
 <span class="param-type"><a href="helpers.ColumnSet.html">helpers.ColumnSet</a></span>
@@ -461,6 +585,9 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
             
                 
 <span class="param-type">Array</span>
+|
+
+<span class="param-type"><a href="helpers.Column.html">helpers.Column</a></span>
 |
 
 <span class="param-type"><a href="helpers.ColumnSet.html">helpers.ColumnSet</a></span>
@@ -781,7 +908,7 @@ throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 
 
 
 <div class="description">
-    <p>A callback function type used as parameter <code>init</code> within <a href="helpers.html#~ColumnDescriptor">ColumnDescriptor</a>.</p>
+    <p>A callback function type used for parameter <code>init</code> within <a href="helpers.html#~ColumnConfig">ColumnConfig</a>.</p>
 <p>It works as an override for the corresponding property value in the source object.</p>
 <p>The function is called with <code>this</code> set to the source object.</p>
 </div>
@@ -873,7 +1000,7 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line181">line 181</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line183">line 183</a>
     </li></ul></dd>
     
 
@@ -900,7 +1027,7 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
 
         
 <div class="param-desc">
-    <p>The value to be used for the corresponding column.</p>
+    <p>The new value to be used for the corresponding column.</p>
 </div>
 
 
@@ -911,26 +1038,16 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
 
             
                 
-<h4 class="name" id="~ColumnDescriptor">ColumnDescriptor</h4>
+<h4 class="name" id="~ColumnConfig">ColumnConfig</h4>
 
 
 
 
 <div class="description">
-    <p>It is a simple object/structure that can be used when constructing type <a href="helpers.Column.html">Column</a>.</p>
+    <p>A simple structure with column details, to be passed into the <a href="helpers.Column.html">Column</a> constructor for initialization.</p>
 </div>
 
 
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Object</span>
-
-
-        </li>
-    </ul>
 
 
 
@@ -986,8 +1103,8 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
 
             
 
-            <td class="description last"><p>Column name + property name (if <code>prop</code> is skipped). The name must adhere to the syntax
-supported by JavaScript variables.</p></td>
+            <td class="description last"><p>Destination column name + source property name (if <code>prop</code> is skipped). The name must adhere to JavaScript syntax for variables,
+unless <code>prop</code> is specified, in which case <code>name</code> represents only the column name, and therefore can be any string.</p></td>
         </tr>
 
     
@@ -1018,7 +1135,7 @@ supported by JavaScript variables.</p></td>
 
             
 
-            <td class="description last"><p>Source property name, if different from the column's name.</p></td>
+            <td class="description last"><p>Source property name, if different from the column's name. It must adhere to JavaScript syntax for variables.</p></td>
         </tr>
 
     
@@ -1080,8 +1197,7 @@ supported by JavaScript variables.</p></td>
 
             
 
-            <td class="description last"><p>Server-side type casting.</p>
-<p>Leading <code>::</code> is allowed, but not needed (automatically removed when specified).</p></td>
+            <td class="description last"><p>Server-side type casting. Leading <code>::</code> is allowed, but not needed (automatically removed when specified).</p></td>
         </tr>
 
     
@@ -1138,7 +1254,7 @@ supported by JavaScript variables.</p></td>
 
             
 
-            <td class="description last"><p>Value override callback.</p></td>
+            <td class="description last"><p>Override callback for the value.</p></td>
         </tr>
 
     
@@ -1177,7 +1293,7 @@ supported by JavaScript variables.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line152">line 152</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line157">line 157</a>
     </li></ul></dd>
     
 

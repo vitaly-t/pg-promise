@@ -95,7 +95,7 @@
 <span class="param-type">String</span>
 |
 
-<span class="param-type"><a href="helpers.html#~ColumnDescriptor">helpers~ColumnDescriptor</a></span>
+<span class="param-type"><a href="helpers.html#~ColumnConfig">helpers~ColumnConfig</a></span>
 
 
             
@@ -105,14 +105,20 @@
 
             
 
-            <td class="description last"><p>Column details, depending on the parameter's type:</p>
+            <td class="description last"><p>Column details, depending on the type:</p>
 <ul>
-<li><code>string</code> - column name, with an optional format modifier</li>
-<li><code>object</code> - <a href="helpers.html#~ColumnDescriptor">ColumnDescriptor</a> object.</li>
-</ul>
-<p>When it is a string, the name adheres to the variable name format as used by method <a href="formatting.html#.format">as.format</a>:
-property name + optional modifier (<code>^</code>, <code>~</code>, <code>#</code>, <code>:csv</code>, <code>:json</code>, <code>name</code>, <code>raw</code>, <code>:value</code>). When a valid modifier is
-specified, it is removed from the name and put into property <code>mod</code>.</p></td>
+<li><p>When it is a string, it is expected to contain a name for both the column and the source property,
+assuming that the two are the same. The name must adhere to JavaScript syntax for variable names.
+The name can be appended with any format modifier as supported by <a href="formatting.html#.format">as.format</a>
+(<code>^</code>, <code>~</code>, <code>#</code>, <code>:csv</code>, <code>:json</code>, <code>name</code>, <code>raw</code>, <code>:value</code>), which is then removed from the name and put
+into property <code>mod</code>.</p>
+</li>
+<li><p>When it is a simple <a href="helpers.html#~ColumnConfig">ColumnConfig</a>-like object, it is used as an
+input configurator to set all the properties of the class.</p>
+</li>
+<li><p>When it is none of the above, it will throw <a href="external-TypeError.html">TypeError</a> = <code>A column must be a string or a configurator object.</code></p>
+</li>
+</ul></td>
         </tr>
 
     
@@ -373,7 +379,7 @@ specified, it is removed from the name and put into property <code>mod</code>.</
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="helpers.html#~ColumnDescriptor">ColumnDescriptor</a></li>
+            <li><a href="helpers.html#~ColumnConfig">ColumnConfig</a></li>
         </ul>
     </dd>
     
@@ -558,7 +564,7 @@ specified, it is removed from the name and put into property <code>mod</code>.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line112">line 112</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line117">line 117</a>
     </li></ul></dd>
     
 

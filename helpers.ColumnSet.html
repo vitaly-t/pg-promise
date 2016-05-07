@@ -115,10 +115,19 @@
 
             
 
-            <td class="description last"><p>Column information object, depending on the type:</p>
+            <td class="description last"><p>Columns information object, depending on the type:</p>
 <ul>
-<li>if a simple object, its properties are enumerated to represent both column names and source property names.</li>
-<li>if it is an array, each element is assumed to represent a column details, and passed directly into <a href="helpers.Column.html">Column</a>.</li>
+<li><p>When it is a simple object, its properties are enumerated to represent both column names and property names
+within the source objects. See also option <code>inherit</code> that's applicable in this case.</p>
+</li>
+<li><p>When it is a single <a href="helpers.Column.html">Column</a> object, property columns is initialized with
+just a single column. It is not a unique situation when only a single column is required for an update operation.</p>
+</li>
+<li><p>When it is an array, each element is assumed to represent details for a column. If the element is already of type <a href="helpers.Column.html">Column</a>,
+it is used directly; otherwise the element is passed into <a href="helpers.Column.html">Column</a> constructor for initialization.</p>
+</li>
+<li><p>When it is none of the above, it will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'columns' specified.</code></p>
+</li>
 </ul></td>
         </tr>
 
@@ -188,7 +197,7 @@
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">String</span>
 
 
             
@@ -212,7 +221,9 @@
                 </td>
             
 
-            <td class="description last"><p>Table name.</p></td>
+            <td class="description last"><p>Table name.</p>
+<p>It can be used as the default for methods <a href="helpers.html#.insert">insert</a> and <a href="helpers.html#.update">update</a> when their parameter
+<code>table</code> is omitted, and for logging purposes.</p></td>
         </tr>
 
     
@@ -225,7 +236,7 @@
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type">Boolean</span>
 
 
             
@@ -251,7 +262,8 @@
                 </td>
             
 
-            <td class="description last"><p>Use inherited properties when enumerating an object.</p></td>
+            <td class="description last"><p>Use inherited properties in addition to the object's own properties.</p>
+<p>By default, only the object's own properties are enumerated for column names.</p></td>
         </tr>
 
     
@@ -361,7 +373,7 @@
 
         
             
-<h4 class="name" id="columns"><span class="type-signature"></span>columns<span class="type-signature"> :Array</span></h4>
+<h4 class="name" id="columns"><span class="type-signature">(readonly) </span>columns<span class="type-signature"> :Array</span></h4>
 
 
 
@@ -415,7 +427,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line70">line 70</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line84">line 84</a>
     </li></ul></dd>
     
 
@@ -483,7 +495,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line89">line 89</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line108">line 108</a>
     </li></ul></dd>
     
 
@@ -501,7 +513,7 @@
 
         
             
-<h4 class="name" id="table"><span class="type-signature"></span>table<span class="type-signature"> :String</span></h4>
+<h4 class="name" id="table"><span class="type-signature">(readonly) </span>table<span class="type-signature"> :String</span></h4>
 
 
 
@@ -559,7 +571,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line59">line 59</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line72">line 72</a>
     </li></ul></dd>
     
 
@@ -627,7 +639,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line121">line 121</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line140">line 140</a>
     </li></ul></dd>
     
 
@@ -695,7 +707,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line105">line 105</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line124">line 124</a>
     </li></ul></dd>
     
 
@@ -716,6 +728,162 @@
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".prepare"><span class="type-signature">(static) </span>prepare<span class="signature">(obj)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Prepares a source object to be formatted, by cloning it and applying the rules
+as set by the columns configuration.</p>
+<p>This method is meant primarily for internal use.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Source object to be prepared.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line156">line 156</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A clone of the source objects, with all properties and values set according to
+the columns configuration.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
 
         
             
@@ -843,7 +1011,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line160">line 160</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line194">line 194</a>
     </li></ul></dd>
     
 
