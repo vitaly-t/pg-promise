@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.0.8 or later.
+// Requires pg-promise v4.0.9 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -62,6 +62,7 @@ declare module 'pg-promise' {
         prop?:string,
         mod?:string,
         cast?:string,
+        skip?:boolean,
         def?:any,
         init?(value:any):any
     };
@@ -354,6 +355,7 @@ declare module 'pg-promise' {
         prop:string;
         mod:string;
         cast:string;
+        skip:boolean;
         def:any;
 
         init(value:any):any;
