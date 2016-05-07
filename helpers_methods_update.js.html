@@ -38,7 +38,11 @@ var $npm = {
 /**
  * @method helpers.update
  * @description
- * Generates an `UPDATE` query for either one object or an array of objects.
+ * Generates a simplified `UPDATE` query for either one object or an array of objects.
+ *
+ * The generated query is logically incomplete, as it does not include a `WHERE` condition to determine which records
+ * are to be updated. This is why this method supports options `tableAlias` and `valueAlias` for multiple-object updates,
+ * to allow custom aliases when appending to the resulting query.
  *
  * @param {Object|Object[]} data
  * An update object with properties for update values, or an array of such objects.
@@ -72,22 +76,60 @@ var $npm = {
  * throw {@link external:TypeError TypeError} = `Invalid parameter 'options' specified.`
  *
  * @param {String} [options.tableAlias=t]
- * Name of the SQL variable that represents the destination table. It is used only for multi-object updates.
+ * Name of the SQL variable that represents the destination table.
  *
  * @param {String} [options.valueAlias=v]
- * Name of the SQL variable that represents the values. It is used only for multi-object updates.
+ * Name of the SQL variable that represents the values.
  *
  * @returns {String}
  * The resulting query string.
  *
  * @see {@link helpers.ColumnSet ColumnSet}
+ *
+ * @example
+ *
+ * var pgp = require('pg-promise')({
+ *    capSQL: true // if you want all generated SQL capitalized
+ * });
+ *
+ * var update = pgp.helpers.update, ColumnSet = pgp.helpers.ColumnSet;
+ *
+ * var dataSingle = {id: 1, val: 123, msg: 'hello'};
+ * var dataMulti = [{id: 1, val: 123, msg: 'hello'}, {id: 2, val: 456, msg: 'world!'}];
+ *
+ * // Although column details can be taken from the data object, it is not a likely scenario one wants
+ * // for an update, unless updating the whole table:
+ * var query1 = update(dataSingle, null, 'my-table');
+ * //=> UPDATE "my-table" SET "id"=1,"val"=123,"msg"='hello'
+ *
+ * // A typical single-object update:
+ * var query2 = update(dataSingle, ['val', 'msg'], 'my-table') + ' WHERE id = ' + dataSingle.id;
+ * //=> UPDATE "my-table" SET "id"=1,"value"=123,"msg"='hello' WHERE id = 1
+ *
+ * // Column details are required for a multi-object update;
+ * // Adding negation '!' means it is a condition column, not to be updated:
+ * var query3 = update(dataMulti, ['!id', 'val', 'msg'], 'my-table') + ' WHERE v."id" = t."id"';
+ * //=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))
+ * //   AS v("id","val","msg") WHERE v."id" = t."id"
+ *
+ * // Using column details and table name from ColumnSet:
+ * var cs = new ColumnSet(['!id', 'val', 'msg'], {table: 'my-table'});
+ * var query4 = update(dataMulti, cs) + ' WHERE v."id" = t."id"';
+ * //=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))
+ * //   AS v("id","val","msg") WHERE v."id" = t."id"
+ *
+ * // Changing the default aliases:
+ * var query5 = update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y."id" = X."id"';
+ * //=> UPDATE "my-table" AS X SET "val"=Y."val","msg"=Y."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))
+ * //   AS Y("id","val","msg") WHERE Y."id" = X."id"
+ *
  */
 function update(data, columns, table, options, capSQL) {
 
     if (!data || typeof data !== 'object') {
         throw new TypeError("Invalid parameter 'data' specified.");
     }
-    
+
     if (columns instanceof $npm.ColumnSet) {
         if ($npm.utils.isNull(table)) {
             table = columns.table;
@@ -107,9 +149,7 @@ function update(data, columns, table, options, capSQL) {
         throw new Error("Table name is unknown.");
     }
 
-    if (!columns.columns.length) {
-        throw new Error("Cannot generate a valid UPDATE without any columns.");
-    }
+    var errNoColumns = "Cannot generate a valid UPDATE without any columns.";
 
     var format = $npm.formatting.as.format;
 
@@ -132,7 +172,15 @@ function update(data, columns, table, options, capSQL) {
             query = query.toUpperCase();
         }
 
-        var targetCols = columns.columns.$map(function (c) {
+        var actualColumns = columns.columns.$filter(function (c) {
+            return !c.skip;
+        });
+
+        if (!actualColumns.length) {
+            throw new Error(errNoColumns);
+        }
+
+        var targetCols = actualColumns.$map(function (c) {
             return c.escapedName + '=' + valueAlias + '.' + c.escapedName;
         }).join();
 
@@ -146,12 +194,16 @@ function update(data, columns, table, options, capSQL) {
         return format(query, [table, tableAlias, targetCols, values, valueAlias, columns.names]);
     }
 
+    if (!columns.columns.length) {
+        throw new Error(errNoColumns);
+    }
+
     var query = "update $1~ set ";
     if (capSQL) {
         query = query.toUpperCase();
     }
-    return format(query, table) + format(columns.updates, columns.prepare(data));
 
+    return format(query, table) + format(columns.updates, columns.prepare(data));
 }
 
 module.exports = update;

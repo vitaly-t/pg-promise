@@ -111,7 +111,7 @@
 assuming that the two are the same. The name must adhere to JavaScript syntax for variable names.
 The name can be appended with any format modifier as supported by <a href="formatting.html#.format">as.format</a>
 (<code>^</code>, <code>~</code>, <code>#</code>, <code>:csv</code>, <code>:json</code>, <code>name</code>, <code>raw</code>, <code>:value</code>), which is then removed from the name and put
-into property <code>mod</code>.</p>
+into property <code>mod</code>. If the name starts with <code>!</code>, it is removed, while setting flag <code>skip</code>=<code>true</code>.</p>
 </li>
 <li><p>When it is a simple <a href="helpers.html#~ColumnConfig">ColumnConfig</a>-like object, it is used as an
 input configurator to set all the properties of the class.</p>
@@ -280,6 +280,39 @@ input configurator to set all the properties of the class.</p>
 
         <tr>
             
+                <td class="name"><code>skip</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Used by multi-object updates only, it indicates that the value of this column is not to be updated,
+i.e. it is only needed for an update condition.</p>
+<p>When initializing with a string, it is the same as putting <code>!</code> (logical negation) in front of the name.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>def</code></td>
             
 
@@ -417,6 +450,11 @@ input configurator to set all the properties of the class.</p>
 </dl>
 
     
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var pgp = require('pg-promise')({    capSQL: true // if you want all generated SQL capitalized});var Column = pgp.helpers.Column;// creating a column from just a name:var col1 = new Column('colName');console.log(col1);//=>// Column {//    name: "colName"// }// creating a column from a name + modifier:var col2 = new Column('colName:csv');console.log(col2);//=>// Column {//    name: "colName"//    mod: ":csv"// }// creating a column from a configurator:var col3 = new Column({    name: 'colName', // required    prop: 'propName', // optional    mod: '^', // optional    def: 123 // optional});console.log(col3);//=>// Column {//    name: "colName"//    prop: "propName"//    mod: "^"//    def: 123// }</code></pre>
 
 
 
@@ -564,7 +602,7 @@ input configurator to set all the properties of the class.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line117">line 117</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line178">line 178</a>
     </li></ul></dd>
     
 

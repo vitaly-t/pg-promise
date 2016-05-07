@@ -490,6 +490,11 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
     
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});var insert = pgp.helpers.insert, ColumnSet = pgp.helpers.ColumnSet;var dataSingle = {val: 123, msg: 'hello'};var dataMulti = [{val: 123, msg: 'hello'}, {val: 456, msg: 'world!'}];// Column details can be taken from the data object:var query1 = insert(dataSingle, null, 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello')// Column details are required for a multi-object insert:var query2 = insert(dataMulti, ['val', 'msg'], 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')// Using column details and table name from ColumnSet:var cs = new ColumnSet(['val', 'msg'], {table: 'my-table'});var query3 = insert(dataMulti, cs);//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
+
+
 
         
             
@@ -503,7 +508,10 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
 
 
 <div class="description">
-    <p>Generates an <code>UPDATE</code> query for either one object or an array of objects.</p>
+    <p>Generates a simplified <code>UPDATE</code> query for either one object or an array of objects.</p>
+<p>The generated query is logically incomplete, as it does not include a <code>WHERE</code> condition to determine which records
+are to be updated. This is why this method supports options <code>tableAlias</code> and <code>valueAlias</code> for multiple-object updates,
+to allow custom aliases when appending to the resulting query.</p>
 </div>
 
 
@@ -748,7 +756,7 @@ throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 
                 </td>
             
 
-            <td class="description last"><p>Name of the SQL variable that represents the destination table. It is used only for multi-object updates.</p></td>
+            <td class="description last"><p>Name of the SQL variable that represents the destination table.</p></td>
         </tr>
 
     
@@ -787,7 +795,7 @@ throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 
                 </td>
             
 
-            <td class="description last"><p>Name of the SQL variable that represents the values. It is used only for multi-object updates.</p></td>
+            <td class="description last"><p>Name of the SQL variable that represents the values.</p></td>
         </tr>
 
     
@@ -887,6 +895,11 @@ throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 
 </dl>
 
     
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});var update = pgp.helpers.update, ColumnSet = pgp.helpers.ColumnSet;var dataSingle = {id: 1, val: 123, msg: 'hello'};var dataMulti = [{id: 1, val: 123, msg: 'hello'}, {id: 2, val: 456, msg: 'world!'}];// Although column details can be taken from the data object, it is not a likely scenario one wants// for an update, unless updating the whole table:var query1 = update(dataSingle, null, 'my-table');//=> UPDATE "my-table" SET "id"=1,"val"=123,"msg"='hello'// A typical single-object update:var query2 = update(dataSingle, ['val', 'msg'], 'my-table') + ' WHERE id = ' + dataSingle.id;//=> UPDATE "my-table" SET "id"=1,"value"=123,"msg"='hello' WHERE id = 1// Column details are required for a multi-object update;// Adding negation '!' means it is a condition column, not to be updated:var query3 = update(dataMulti, ['!id', 'val', 'msg'], 'my-table') + ' WHERE v."id" = t."id"';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v."id" = t."id"// Using column details and table name from ColumnSet:var cs = new ColumnSet(['!id', 'val', 'msg'], {table: 'my-table'});var query4 = update(dataMulti, cs) + ' WHERE v."id" = t."id"';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v."id" = t."id"// Changing the default aliases:var query5 = update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y."id" = X."id"';//=> UPDATE "my-table" AS X SET "val"=Y."val","msg"=Y."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS Y("id","val","msg") WHERE Y."id" = X."id"</code></pre>
 
 
 
@@ -1000,7 +1013,7 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line183">line 183</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line251">line 251</a>
     </li></ul></dd>
     
 
@@ -1204,6 +1217,38 @@ unless <code>prop</code> is specified, in which case <code>name</code> represent
 
         <tr>
             
+                <td class="name"><code>skip</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Used by multi-object updates only, it indicates that the value of this column is not to be updated,
+i.e. it is only needed for an update condition.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>def</code></td>
             
 
@@ -1293,7 +1338,7 @@ unless <code>prop</code> is specified, in which case <code>name</code> represent
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line157">line 157</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line221">line 221</a>
     </li></ul></dd>
     
 

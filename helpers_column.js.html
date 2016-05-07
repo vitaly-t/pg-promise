@@ -51,7 +51,7 @@ var $npm = {
  *   assuming that the two are the same. The name must adhere to JavaScript syntax for variable names.
  *   The name can be appended with any format modifier as supported by {@link formatting.format as.format}
  *   (`^`, `~`, `#`, `:csv`, `:json`, `name`, `raw`, `:value`), which is then removed from the name and put
- *   into property `mod`.
+ *   into property `mod`. If the name starts with `!`, it is removed, while setting flag `skip`=`true`.
  *
  * - When it is a simple {@link helpers~ColumnConfig ColumnConfig}-like object, it is used as an
  *   input configurator to set all the properties of the class.
@@ -70,6 +70,12 @@ var $npm = {
  * @property {string} [cast]
  * Server-side type casting, without `::` in front.
  *
+ * @property {boolean} [skip]
+ * Used by multi-object updates only, it indicates that the value of this column is not to be updated,
+ * i.e. it is only needed for an update condition.
+ *
+ * When initializing with a string, it is the same as putting `!` (logical negation) in front of the name.
+ *
  * @property {} [def]
  * Default value for the property, to be used only when the source object doesn't have the property.
  *
@@ -79,6 +85,48 @@ var $npm = {
  * @returns {helpers.Column}
  *
  * @see {@link helpers~ColumnConfig ColumnConfig}
+ *
+ * @example
+ *
+ * var pgp = require('pg-promise')({
+ *     capSQL: true // if you want all generated SQL capitalized
+ * });
+ *
+ * var Column = pgp.helpers.Column;
+ *
+ * // creating a column from just a name:
+ * var col1 = new Column('colName');
+ * console.log(col1);
+ * //=>
+ * // Column {
+ * //    name: "colName"
+ * // }
+ *
+ * // creating a column from a name + modifier:
+ * var col2 = new Column('colName:csv');
+ * console.log(col2);
+ * //=>
+ * // Column {
+ * //    name: "colName"
+ * //    mod: ":csv"
+ * // }
+ *
+ * // creating a column from a configurator:
+ * var col3 = new Column({
+ *     name: 'colName', // required
+ *     prop: 'propName', // optional
+ *     mod: '^', // optional
+ *     def: 123 // optional
+ * });
+ * console.log(col3);
+ * //=>
+ * // Column {
+ * //    name: "colName"
+ * //    prop: "propName"
+ * //    mod: "^"
+ * //    def: 123
+ * // }
+ *
  */
 function Column(col) {
 
@@ -87,6 +135,11 @@ function Column(col) {
     }
 
     if (typeof col === 'string') {
+        var tmp = stripNegation(col);
+        if (col !== tmp) {
+            this.skip = true;
+            col = tmp;
+        }
         var mod = col.match(/\^|~|#|:raw|:name|:json|:csv|:value/);
         if (mod) {
             this.name = col.substr(0, mod.index);
@@ -143,6 +196,14 @@ function getCastName(name) {
     return idx ? name.substr(idx) : name;
 }
 
+function stripNegation(name) {
+    var idx = 0;
+    while (idx &lt; name.length &amp;&amp; name[idx] === '!') {
+        idx++;
+    }
+    return idx ? name.substr(idx) : name;
+}
+
 /**
  * @method helpers.Column.toString
  * @description
@@ -172,6 +233,9 @@ Column.prototype.toString = function (level) {
     if ('cast' in this) {
         lines.push(gap1 + 'cast: ' + JSON.stringify(this.cast));
     }
+    if ('skip' in this) {
+        lines.push(gap1 + 'skip: ' + JSON.stringify(this.skip));
+    }
     if ('def' in this) {
         lines.push(gap1 + 'def: ' + JSON.stringify(this.def));
     }
@@ -186,7 +250,7 @@ Column.prototype.inspect = function () {
 /**
  * @typedef helpers~ColumnConfig
  * @description
- * A simple structure with column details, to be passed into the {@link helpers.Column Column} constructor for initialization.    
+ * A simple structure with column details, to be passed into the {@link helpers.Column Column} constructor for initialization.
  *
  * @property {string} name
  * Destination column name + source property name (if `prop` is skipped). The name must adhere to JavaScript syntax for variables,
@@ -200,6 +264,10 @@ Column.prototype.inspect = function () {
  *
  * @property {string} [cast]
  * Server-side type casting. Leading `::` is allowed, but not needed (automatically removed when specified).
+ *
+ * @property {boolean} [skip]
+ * Used by multi-object updates only, it indicates that the value of this column is not to be updated,
+ * i.e. it is only needed for an update condition.
  *
  * @property {} [def]
  * Default value for the property, to be used only when the source object doesn't have the property.
