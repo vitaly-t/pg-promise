@@ -94,10 +94,13 @@
             <td class="type">
             
                 
-<span class="param-type">Array</span>
+<span class="param-type">Object</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type"><a href="helpers.Column.html">helpers.Column</a></span>
+|
+
+<span class="param-type">Array</span>
 
 
             
@@ -120,7 +123,7 @@
 <li><p>When it is a simple object, its properties are enumerated to represent both column names and property names
 within the source objects. See also option <code>inherit</code> that's applicable in this case.</p>
 </li>
-<li><p>When it is a single <a href="helpers.Column.html">Column</a> object, property columns is initialized with
+<li><p>When it is a single <a href="helpers.Column.html">Column</a> object, property <a href="helpers.ColumnSet.html#columns">columns</a> is initialized with
 just a single column. It is not a unique situation when only a single column is required for an update operation.</p>
 </li>
 <li><p>When it is an array, each element is assumed to represent details for a column. If the element is already of type <a href="helpers.Column.html">Column</a>,
@@ -373,7 +376,7 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
 
         
             
-<h4 class="name" id="columns"><span class="type-signature">(readonly) </span>columns<span class="type-signature"> :Array</span></h4>
+<h4 class="name" id="columns"><span class="type-signature">(readonly) </span>columns<span class="type-signature"> :Array.&lt;<a href="helpers.Column.html">helpers.Column</a>></span></h4>
 
 
 
@@ -388,7 +391,7 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
     <ul>
         <li>
             
-<span class="param-type">Array</span>
+<span class="param-type">Array.&lt;<a href="helpers.Column.html">helpers.Column</a>></span>
 
 
         </li>
@@ -445,10 +448,14 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
 
         
             
-<h4 class="name" id="names"><span class="type-signature">(readonly) </span>names<span class="type-signature"> :Array</span></h4>
+<h4 class="name" id="names"><span class="type-signature">(readonly) </span>names<span class="type-signature"> :String</span></h4>
 
 
 
+
+<div class="description">
+    <p>A string that contains a comma-separated list of escaped column names.</p>
+</div>
 
 
 
@@ -456,7 +463,7 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
     <ul>
         <li>
             
-<span class="param-type">Array</span>
+<span class="param-type">String</span>
 
 
         </li>
@@ -589,10 +596,14 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
 
         
             
-<h4 class="name" id="updates"><span class="type-signature">(readonly) </span>updates<span class="type-signature"> :Array</span></h4>
+<h4 class="name" id="updates"><span class="type-signature">(readonly) </span>updates<span class="type-signature"> :String</span></h4>
 
 
 
+
+<div class="description">
+    <p>A string that contains a comma-separated list of update commands for all columns.</p>
+</div>
 
 
 
@@ -600,7 +611,7 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
     <ul>
         <li>
             
-<span class="param-type">Array</span>
+<span class="param-type">String</span>
 
 
         </li>
@@ -639,7 +650,7 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line140">line 140</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line144">line 144</a>
     </li></ul></dd>
     
 
@@ -657,10 +668,14 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
 
         
             
-<h4 class="name" id="variables"><span class="type-signature">(readonly) </span>variables<span class="type-signature"> :Array</span></h4>
+<h4 class="name" id="variables"><span class="type-signature">(readonly) </span>variables<span class="type-signature"> :String</span></h4>
 
 
 
+
+<div class="description">
+    <p>A string that contains a comma-separated list of all variables for the set of columns.</p>
+</div>
 
 
 
@@ -668,7 +683,7 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
     <ul>
         <li>
             
-<span class="param-type">Array</span>
+<span class="param-type">String</span>
 
 
         </li>
@@ -707,7 +722,7 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line124">line 124</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line126">line 126</a>
     </li></ul></dd>
     
 
@@ -836,7 +851,7 @@ as set by the columns configuration.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line156">line 156</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line162">line 162</a>
     </li></ul></dd>
     
 
@@ -1011,7 +1026,7 @@ the columns configuration.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line194">line 194</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line200">line 200</a>
     </li></ul></dd>
     
 
