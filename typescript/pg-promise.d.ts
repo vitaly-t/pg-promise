@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.0.5 or later.
+// Requires pg-promise v4.0.8 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -12,13 +12,71 @@ declare module 'pg-promise' {
     import * as pgMinify from 'pg-minify';
     import XPromise = require('ext-promise'); // External Promise Provider
 
-    type TQueryFileOptions= {debug?:boolean, minify?:boolean|'after', compress?:boolean, params?:any};
-    type TFormattingOptions = {partial?:boolean};
-    type TPreparedBasic = {name:string, text:string, values?:Array<any>, binary?:boolean, rowMode?:string, rows?:number};
-    type TParameterizedBasic = {text:string, values?:Array<any>, binary?:boolean, rowMode?:string};
-    type TPrepared = {name:string, text:string|pgPromise.QueryFile, values?:Array<any>, binary?:boolean, rowMode?:string, rows?:number};
-    type TParameterized = {text:string|pgPromise.QueryFile, values?:Array<any>, binary?:boolean, rowMode?:string};
+    type TQueryFileOptions= {
+        debug?:boolean,
+        minify?:boolean|'after',
+        compress?:boolean,
+        params?:any
+    };
+
+    type TFormattingOptions = {
+        partial?:boolean
+    };
+
+    type TPreparedBasic = {
+        name:string,
+        text:string,
+        values?:Array<any>,
+        binary?:boolean,
+        rowMode?:string,
+        rows?:number
+    };
+
+    type TParameterizedBasic = {
+        text:string,
+        values?:Array<any>,
+        binary?:boolean,
+        rowMode?:string
+    };
+
+    type TPrepared = {
+        name:string,
+        text:string|pgPromise.QueryFile,
+        values?:Array<any>,
+        binary?:boolean,
+        rowMode?:string,
+        rows?:number
+    };
+
+    type TParameterized = {
+        text:string|pgPromise.QueryFile,
+        values?:Array<any>,
+        binary?:boolean,
+        rowMode?:string
+    };
+
     type TQuery = string|pgPromise.QueryFile|TPrepared|TParameterized|pgPromise.PreparedStatement|pgPromise.ParameterizedQuery;
+
+    type TColumnConfig = {
+        name:string,
+        prop?:string,
+        mod?:string,
+        cast?:string,
+        def?:any,
+        init?(value:any):any
+    };
+
+    type TColumnSetOptions = {
+        table?:string,
+        inherit?:boolean
+    };
+
+    type TUpdateOptions = {
+        tableAlias?:string,
+        valueAlias?:string
+    };
+
+    type TQueryColumns = Column|ColumnSet|Array<string|TColumnConfig|Column>;
 
     // Base database protocol
     // API: http://vitaly-t.github.io/pg-promise/Database.html
@@ -286,6 +344,52 @@ declare module 'pg-promise' {
         TransactionMode:typeof TransactionMode
     }
 
+    // helpers.Column class;
+    // API: http://vitaly-t.github.io/pg-promise/helpers.Column.html
+    class Column {
+        constructor(col:string|TColumnConfig);
+
+        // these are all read-only:
+        name:string;
+        prop:string;
+        mod:string;
+        cast:string;
+        def:any;
+
+        init(value:any):any;
+
+        // API: http://vitaly-t.github.io/pg-promise/helpers.Column.html#.toString
+        toString():string;
+    }
+
+    // helpers.Column class;
+    // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html
+    class ColumnSet {
+        constructor(columns:any, options?:TColumnSetOptions);
+
+        // these are all read-only:
+        columns:Array<Column>;
+        names:Array<string>;
+        updates:Array<string>;
+        variables:Array<string>;
+
+        prepare(obj:Object):Object;
+
+        // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#.toString
+        toString():string;
+    }
+
+    // Query Formatting Helpers
+    // API: http://vitaly-t.github.io/pg-promise/helpers.html
+    interface IHelpers {
+
+        insert(data:any, columns?:TQueryColumns, table?:string):string;
+        update(data:any, columns?:TQueryColumns, table?:string, options?:TUpdateOptions):string;
+
+        Column:typeof Column;
+        ColumnSet:typeof ColumnSet;
+    }
+
     // Post-initialization interface;
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface IMain {
@@ -299,6 +403,7 @@ declare module 'pg-promise' {
         minify:typeof pgMinify,
         errors:IErrors;
         txMode:ITXMode;
+        helpers:IHelpers;
         as:IFormatting;
         end():void,
         pg:typeof pg;

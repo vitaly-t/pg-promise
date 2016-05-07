@@ -13,3 +13,4 @@ call tsc pg %PARAMS%
 call tsc prepared %PARAMS%
 call tsc paramQuery %PARAMS%
 call tsc errors %PARAMS%
+call tsc helpers %PARAMS%

@@ -1,10 +1,10 @@
 {
   "name": "pg-promise",
-  "version": "4.0.7",
+  "version": "4.0.8",
   "description": "PostgreSQL via promises",
   "main": "lib/index.js",
   "scripts": {
-    "test": "jasmine-node test",
+    "test": "jasmine-node test --nohelpers",
     "test-native": "jasmine-node test --config PG_NATIVE true",
     "doc": "./node_modules/.bin/jsdoc -c ./jsdoc/jsDoc.json ./jsdoc/README.md",
     "coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test",
