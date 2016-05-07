@@ -95,13 +95,13 @@ function ColumnSet(columns, options) {
      * - **secondary:** to be automatically written into the console (for logging purposes).
      */
 
+
     /**
      * @name helpers.ColumnSet#columns
      * @type Array
      * @description
      * Array of {@link helpers.Column Column} objects.
      */
-
     if (Array.isArray(columns)) {
         this.columns = columns.$map(function (c) {
             return new $npm.Column(c);

@@ -192,8 +192,10 @@
 
             
 
-            <td class="description last"><p>An object with properties for insert values, or an array of such objects.</p>
-<p>When <code>data</code> is not a non-null object and not an array, it will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'data' specified.</code></p></td>
+            <td class="description last"><p>An insert object with properties for insert values, or an array of such objects.</p>
+<p>When <code>data</code> is not a non-null object and not an array, it will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'data' specified.</code></p>
+<p>And if <code>data</code> is an array that contains an invalid insert object, the method will throw <a href="external-Error.html">Error</a> =
+<code>Invalid insert object at index N.</code></p></td>
         </tr>
 
     
@@ -442,8 +444,10 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
 
             
 
-            <td class="description last"><p>An object with properties for update values, or an array of such objects.</p>
-<p>When <code>data</code> is not a non-null object and not an array, it will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'data' specified.</code></p></td>
+            <td class="description last"><p>An update object with properties for update values, or an array of such objects.</p>
+<p>When <code>data</code> is not a non-null object and not an array, it will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'data' specified.</code></p>
+<p>And if <code>data</code> is an array that contains an invalid update object, the method will throw <a href="external-Error.html">Error</a> =
+<code>Invalid update object at index N.</code></p></td>
         </tr>
 
     

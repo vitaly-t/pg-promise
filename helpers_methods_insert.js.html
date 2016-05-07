@@ -41,9 +41,12 @@ var $npm = {
  * Generates an `INSERT` query for either one object or an array of objects.
  *
  * @param {Object|Array} data
- * An object with properties for insert values, or an array of such objects.
+ * An insert object with properties for insert values, or an array of such objects.
  *
  * When `data` is not a non-null object and not an array, it will throw {@link external:TypeError TypeError} = `Invalid parameter 'data' specified.`
+ *
+ * And if `data` is an array that contains an invalid insert object, the method will throw {@link external:Error Error} =
+ * `Invalid insert object at index N.`
  *
  * @param {Array|helpers.ColumnSet} [columns]
  * Set of columns to be inserted.
@@ -92,16 +95,21 @@ function insert(data, columns, table, capSQL) {
     if (capSQL) {
         query = query.toUpperCase();
     }
-
-    var f = $npm.formatting.as.format;
-    query = f(query, [table, columns.names]);
-
+    
+    // TODO: Check if inserting 0 records is possible
+    
+    var format = $npm.formatting.as.format;
+    query = format(query, [table, columns.names]);
+    
     if (Array.isArray(data)) {
-        return query + data.$map(function (o) {
-                return '(' + f(columns.variables, columns.prepare(o)) + ')';
+        return query + data.$map(function (d, index) {
+                if (!d || typeof d !== 'object') {
+                    throw new Error("Invalid insert object at index " + index + ".");
+                }
+                return '(' + format(columns.variables, columns.prepare(d)) + ')';
             }).join();
     }
-    return query + '(' + f(columns.variables, columns.prepare(data)) + ')';
+    return query + '(' + format(columns.variables, columns.prepare(data)) + ')';
 }
 
 module.exports = insert;
