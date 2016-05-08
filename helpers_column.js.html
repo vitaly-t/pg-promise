@@ -42,8 +42,8 @@ var $npm = {
  *
  * ** WARNING: Everything within the {@link helpers} namespace is currently in its Alpha version.**
  *
- * Represents formatting details for a single column.
- *
+ * Read-only structure that represents formatting details for a single column.
+ * 
  * @param {String|helpers~ColumnConfig} col
  * Column details, depending on the type:
  *
@@ -51,7 +51,7 @@ var $npm = {
  *   assuming that the two are the same. The name must adhere to JavaScript syntax for variable names.
  *   The name can be appended with any format modifier as supported by {@link formatting.format as.format}
  *   (`^`, `~`, `#`, `:csv`, `:json`, `name`, `raw`, `:value`), which is then removed from the name and put
- *   into property `mod`. If the name starts with `!`, it is removed, while setting flag `skip`=`true`.
+ *   into property `mod`. If the name starts with `?`, it is removed, while setting flag `cnd`=`true`.
  *
  * - When it is a simple {@link helpers~ColumnConfig ColumnConfig}-like object, it is used as an
  *   input configurator to set all the properties of the class.
@@ -70,11 +70,13 @@ var $npm = {
  * @property {string} [cast]
  * Server-side type casting, without `::` in front.
  *
- * @property {boolean} [skip]
- * Used by multi-object updates only, it indicates that the value of this column is not to be updated,
- * i.e. it is only needed for an update condition.
+ * @property {boolean} [cnd]
+ * Conditional column flag.
  *
- * When initializing with a string, it is the same as putting `!` (logical negation) in front of the name.
+ * Used by multi-object updates only, it indicates that the column's value is not to be updated,
+ * and it is only for use within an update condition.
+ *
+ * When initializing from a string, it is the same as putting `?` in front of the name.
  *
  * @property {} [def]
  * Default value for the property, to be used only when the source object doesn't have the property.
@@ -135,9 +137,9 @@ function Column(col) {
     }
 
     if (typeof col === 'string') {
-        var tmp = stripNegation(col);
+        var tmp = stripCnd(col);
         if (col !== tmp) {
-            this.skip = true;
+            this.cnd = true;
             col = tmp;
         }
         var mod = col.match(/\^|~|#|:raw|:name|:json|:csv|:value/);
@@ -161,6 +163,9 @@ function Column(col) {
             if ($npm.utils.isText(col.cast)) {
                 this.cast = getCastName(col.cast); // optional SQL type casting
             }
+            if ('cnd' in col) {
+                this.cnd = !!col.cnd;
+            }
             if ('def' in col) {
                 this.def = col.def; // optional default
             }
@@ -180,8 +185,10 @@ function Column(col) {
         throw new TypeError("A property name must be a non-empty text string.");
     }
 
-    this.variable = '${' + (this.prop || this.name) + (this.mod || '') + '}' + (this.cast ? ('::' + this.cast) : '');
-
+    this.variable = '${' + (this.prop || this.name) + (this.mod || '') + '}';
+    
+    this.castText = this.cast ? ('::' + this.cast) : '';
+    
     this.escapedName = $npm.formatting.as.name(this.name);
 
     Object.freeze(this);
@@ -196,9 +203,9 @@ function getCastName(name) {
     return idx ? name.substr(idx) : name;
 }
 
-function stripNegation(name) {
+function stripCnd(name) {
     var idx = 0;
-    while (idx &lt; name.length &amp;&amp; name[idx] === '!') {
+    while (idx &lt; name.length &amp;&amp; name[idx] === '?') {
         idx++;
     }
     return idx ? name.substr(idx) : name;
@@ -233,8 +240,8 @@ Column.prototype.toString = function (level) {
     if ('cast' in this) {
         lines.push(gap1 + 'cast: ' + JSON.stringify(this.cast));
     }
-    if ('skip' in this) {
-        lines.push(gap1 + 'skip: ' + JSON.stringify(this.skip));
+    if ('cnd' in this) {
+        lines.push(gap1 + 'cnd: ' + JSON.stringify(this.cnd));
     }
     if ('def' in this) {
         lines.push(gap1 + 'def: ' + JSON.stringify(this.def));
@@ -265,9 +272,9 @@ Column.prototype.inspect = function () {
  * @property {string} [cast]
  * Server-side type casting. Leading `::` is allowed, but not needed (automatically removed when specified).
  *
- * @property {boolean} [skip]
- * Used by multi-object updates only, it indicates that the value of this column is not to be updated,
- * i.e. it is only needed for an update condition.
+ * @property {boolean} [cnd]
+ * Used by multi-object updates only, it indicates that the column's value is not to be updated,
+ * and it is only for use within an update condition.
  *
  * @property {} [def]
  * Default value for the property, to be used only when the source object doesn't have the property.

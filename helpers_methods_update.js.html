@@ -40,9 +40,8 @@ var $npm = {
  * @description
  * Generates a simplified `UPDATE` query for either one object or an array of objects.
  *
- * The generated query is logically incomplete, as it does not include a `WHERE` condition to determine which records
- * are to be updated. This is why this method supports options `tableAlias` and `valueAlias` for multiple-object updates,
- * to allow custom aliases when appending to the resulting query.
+ * The generated query is logically incomplete - it does not append a `WHERE` condition to determine the update logic.
+ * This is to allow for update conditions of any complexity that are easy to append to the query.
  *
  * @param {Object|Object[]} data
  * An update object with properties for update values, or an array of such objects.
@@ -107,13 +106,13 @@ var $npm = {
  * //=> UPDATE "my-table" SET "id"=1,"value"=123,"msg"='hello' WHERE id = 1
  *
  * // Column details are required for a multi-object update;
- * // Adding negation '!' means it is a condition column, not to be updated:
- * var query3 = update(dataMulti, ['!id', 'val', 'msg'], 'my-table') + ' WHERE v."id" = t."id"';
+ * // Adding '?' means the column's value is only for a WHERE condition:
+ * var query3 = update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v."id" = t."id"';
  * //=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))
  * //   AS v("id","val","msg") WHERE v."id" = t."id"
  *
  * // Using column details and table name from ColumnSet:
- * var cs = new ColumnSet(['!id', 'val', 'msg'], {table: 'my-table'});
+ * var cs = new ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});
  * var query4 = update(dataMulti, cs) + ' WHERE v."id" = t."id"';
  * //=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))
  * //   AS v("id","val","msg") WHERE v."id" = t."id"
@@ -156,7 +155,6 @@ function update(data, columns, table, options, capSQL) {
     if (Array.isArray(data)) {
         // Multi-update, as per:
         // http://stackoverflow.com/questions/18797608/update-multiple-rows-in-same-query-using-postgresql
-        // The result is partial, requires a WHEN to be appended.
         var tableAlias = 't', valueAlias = 'v';
         if (options) {
             if (options.tableAlias) {
@@ -173,7 +171,7 @@ function update(data, columns, table, options, capSQL) {
         }
 
         var actualColumns = columns.columns.$filter(function (c) {
-            return !c.skip;
+            return !c.cnd;
         });
 
         if (!actualColumns.length) {
@@ -181,7 +179,7 @@ function update(data, columns, table, options, capSQL) {
         }
 
         var targetCols = actualColumns.$map(function (c) {
-            return c.escapedName + '=' + valueAlias + '.' + c.escapedName;
+            return c.escapedName + '=' + valueAlias + '.' + c.escapedName + c.castText;
         }).join();
 
         var values = data.$map(function (d, index) {
