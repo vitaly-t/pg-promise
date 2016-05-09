@@ -12,7 +12,8 @@ var col1 = new pgp.helpers.Column({
     def: 888,
     cast: '',
     cnd: true,
-    init: ()=> {
+    init: (value)=> {
+        return this.test;
     },
     skip: ()=> {
         return false;

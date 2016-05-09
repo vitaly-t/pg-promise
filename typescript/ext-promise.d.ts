@@ -18,8 +18,9 @@
  import * as promise from 'bluebird';
  export=promise;
 
- Unfortunately, as of today it is impossible to use custom promises as TypeScript generics.
- And you can find research details on this matter from the following link:  
+ Unfortunately, as of today it is impossible to use custom promises as TypeScript generics,
+ and this is why we have this file here, so it can be manually patched.
+ You can find research details on this matter from the following link:  
  http://stackoverflow.com/questions/36593087/using-a-custom-promise-as-a-generic-type
 
  In the meantime, if you do not want to get these settings overridden during an update or deployment,

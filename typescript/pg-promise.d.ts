@@ -400,6 +400,8 @@ declare module 'pg-promise' {
         variables:Array<string>;
         table:TableName;
 
+        canUpdate(data:Object|Array<Object>):boolean;
+
         prepare(obj:Object):Object;
 
         // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#.toString
@@ -410,8 +412,8 @@ declare module 'pg-promise' {
     // API: http://vitaly-t.github.io/pg-promise/helpers.html
     interface IHelpers {
 
-        insert(data:any, columns?:TQueryColumns, table?:string|TTable|TableName):string;
-        update(data:any, columns?:TQueryColumns, table?:string|TTable|TableName, options?:TUpdateOptions):string;
+        insert(data:Object|Array<Object>, columns?:TQueryColumns, table?:string|TTable|TableName):string;
+        update(data:Object|Array<Object>, columns?:TQueryColumns, table?:string|TTable|TableName, options?:TUpdateOptions):string;
 
         Column:typeof Column;
         ColumnSet:typeof ColumnSet;
