@@ -948,17 +948,354 @@ throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 
 
         
                 
+<h4 class="name" id=".ColumnConfig">ColumnConfig</h4>
+
+
+
+
+<div class="description">
+    <p>A simple structure with column details, to be passed into the <a href="helpers.Column.html">Column</a> constructor for initialization.</p>
+</div>
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
 
     
 
-    <h4 class="name" id=".InitCB"><span class="type-signature"></span>InitCB<span class="signature">(value)</span><span class="type-signature"></span></h4>
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Destination column name + source property name (if <code>prop</code> is skipped). The name must adhere to JavaScript syntax for variables,
+unless <code>prop</code> is specified, in which case <code>name</code> represents only the column name, and therefore can be any string.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>prop</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Source property name, if different from the column's name. It must adhere to JavaScript syntax for variables.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>mod</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Formatting modifier, as supported by method <a href="formatting.html#.format">as.format</a>: <code>^</code>, <code>~</code>, <code>#</code>, <code>:csv</code>, <code>:json</code>, <code>name</code>, <code>raw</code>, <code>:value</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cast</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Server-side type casting. Leading <code>::</code> is allowed, but not needed (automatically removed when specified).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cnd</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Used by multi-object updates only, it indicates that the column's value is not to be updated,
+and it is only for use within an update condition.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>def</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Default value for the property, to be used only when the source object doesn't have the property.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>init</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="helpers.html#.initCB">helpers.initCB</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Override callback for the value.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>skip</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="helpers.html#.skipCB">helpers.skipCB</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Used by single-object updates only, to allow skipping columns based on a condition.</p>
+<p>It is ignored for conditional columns (when <code>cnd</code> is set to <code>true</code>).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line242">line 242</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id=".initCB"><span class="type-signature"></span>initCB<span class="signature">(value)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    <p>A callback function type used for parameter <code>init</code> within <a href="helpers.html#~ColumnConfig">ColumnConfig</a>.</p>
+    <p>A callback function type used by parameter <code>init</code> within <a href="helpers.html#.ColumnConfig">ColumnConfig</a>.</p>
 <p>It works as an override for the corresponding property value in the source object.</p>
 <p>The function is called with <code>this</code> set to the source object.</p>
 </div>
@@ -1050,7 +1387,7 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line258">line 258</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line277">line 277</a>
     </li></ul></dd>
     
 
@@ -1088,13 +1425,19 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
 
             
                 
-<h4 class="name" id="~ColumnConfig">ColumnConfig</h4>
 
+    
+
+    <h4 class="name" id=".skipCB"><span class="type-signature"></span>skipCB<span class="signature">(name)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
 
 
 
 <div class="description">
-    <p>A simple structure with column details, to be passed into the <a href="helpers.Column.html">Column</a> constructor for initialization.</p>
+    <p>A callback function type used by parameter <code>skip</code> within <a href="helpers.html#.ColumnConfig">ColumnConfig</a>.</p>
+<p>It is to dynamically determine if the property is to be skipped from the update.</p>
+<p>The function is called with <code>this</code> set to the source object.</p>
 </div>
 
 
@@ -1103,11 +1446,12 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
 
 
 
-    <h5 class="subsection-title">Properties:</h5>
 
+
+    <h5>Parameters:</h5>
     
 
-<table class="props">
+<table class="params">
     <thead>
     <tr>
         
@@ -1116,8 +1460,6 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
 
         <th>Type</th>
 
-        
-        <th>Attributes</th>
         
 
         
@@ -1137,211 +1479,25 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">String</span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>Destination column name + source property name (if <code>prop</code> is skipped). The name must adhere to JavaScript syntax for variables,
-unless <code>prop</code> is specified, in which case <code>name</code> represents only the column name, and therefore can be any string.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>prop</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Source property name, if different from the column's name. It must adhere to JavaScript syntax for variables.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>mod</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Formatting modifier, as supported by method <a href="formatting.html#.format">as.format</a>: <code>^</code>, <code>~</code>, <code>#</code>, <code>:csv</code>, <code>:json</code>, <code>name</code>, <code>raw</code>, <code>:value</code>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>cast</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Server-side type casting. Leading <code>::</code> is allowed, but not needed (automatically removed when specified).</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>cnd</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Used by multi-object updates only, it indicates that the column's value is not to be updated,
-and it is only for use within an update condition.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>def</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Default value for the property, to be used only when the source object doesn't have the property.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>init</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="helpers.html#.InitCB">helpers.InitCB</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Override callback for the value.</p></td>
+            <td class="description last"><p>Name of the property within the source object.</p>
+<p>It can be used when implementing a generic verification callback to skip columns bases on a certain rule.</p></td>
         </tr>
 
     
     </tbody>
 </table>
+
+
 
 
 
@@ -1375,7 +1531,7 @@ and it is only for use within an update condition.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line228">line 228</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line296">line 296</a>
     </li></ul></dd>
     
 
@@ -1388,6 +1544,38 @@ and it is only for use within an update condition.</p></td>
 
 
 
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A truthy value that indicates whether the column is to be skipped.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
