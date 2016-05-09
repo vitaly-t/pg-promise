@@ -14,3 +14,5 @@ call tsc prepared %PARAMS%
 call tsc paramQuery %PARAMS%
 call tsc errors %PARAMS%
 call tsc help %PARAMS%
+call tsc connection %PARAMS%
+call tsc tasks %PARAMS%

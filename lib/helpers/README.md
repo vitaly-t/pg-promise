@@ -1,6 +1,6 @@
 ### Query Formatting Helpers
 
-Everything in this folder is currently in its Alpha version. You can use it at your own risk.
+Everything in this folder is currently in its Alpha version. Use it at your own risk.
 
 See [helpers] namespace.
  

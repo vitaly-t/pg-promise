@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.0.10 or later.
+// Requires pg-promise v4.0.11 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -66,15 +66,20 @@ declare module 'pg-promise' {
         def?:any,
         init?(value:any):any
     };
-
+    
     type TColumnSetOptions = {
-        table?:string,
+        table?:string|TTable|TableName,
         inherit?:boolean
     };
 
     type TUpdateOptions = {
         tableAlias?:string,
         valueAlias?:string
+    };
+
+    type TTable = {
+        table:string,
+        schema?:string
     };
 
     type TQueryColumns = Column|ColumnSet|Array<string|TColumnConfig|Column>;
@@ -345,6 +350,21 @@ declare module 'pg-promise' {
         TransactionMode:typeof TransactionMode
     }
 
+    // helpers.TableName class;
+    // API: http://vitaly-t.github.io/pg-promise/helpers.TableName.html
+    class TableName {
+        constructor(table:string, schema?:string);
+        constructor(table:TTable);
+
+        // these are all read-only:
+        name:string;
+        table:string;
+        schema:string;
+
+        // API: http://vitaly-t.github.io/pg-promise/helpers.TableName.html#.toString
+        toString():string;
+    }
+
     // helpers.Column class;
     // API: http://vitaly-t.github.io/pg-promise/helpers.Column.html
     class Column {
@@ -374,6 +394,7 @@ declare module 'pg-promise' {
         names:Array<string>;
         updates:Array<string>;
         variables:Array<string>;
+        table:TableName;
 
         prepare(obj:Object):Object;
 
@@ -385,11 +406,12 @@ declare module 'pg-promise' {
     // API: http://vitaly-t.github.io/pg-promise/helpers.html
     interface IHelpers {
 
-        insert(data:any, columns?:TQueryColumns, table?:string):string;
-        update(data:any, columns?:TQueryColumns, table?:string, options?:TUpdateOptions):string;
+        insert(data:any, columns?:TQueryColumns, table?:string|TTable|TableName):string;
+        update(data:any, columns?:TQueryColumns, table?:string|TTable|TableName, options?:TUpdateOptions):string;
 
         Column:typeof Column;
         ColumnSet:typeof ColumnSet;
+        TableName:typeof TableName;
     }
 
     // Post-initialization interface;
