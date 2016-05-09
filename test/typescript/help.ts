@@ -6,6 +6,21 @@ var pgp = pgPromise({
     capSQL: true
 });
 
+var col1 = new pgp.helpers.Column({
+    name: 'third-col',
+    prop: 'third',
+    def: 888,
+    cast: '',
+    cnd: true,
+    init: ()=> {
+    },
+    skip: ()=> {
+        return false;
+    }
+});
+
+var col2 = new pgp.helpers.Column('col');
+
 var data = [
     {
         first: 1,
@@ -24,7 +39,13 @@ var cs = new pgp.helpers.ColumnSet([
     'first', 'second', {
         name: 'third-col',
         prop: 'third',
-        def: 888
+        def: 888,
+        cast: '',
+        cnd: true,
+        init: ()=> {
+        },
+        skip: ()=> {
+        }
     }
 ], {table: 'my-table', inherit: true});
 

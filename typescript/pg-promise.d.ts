@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.0.11 or later.
+// Requires pg-promise v4.0.12 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -64,9 +64,10 @@ declare module 'pg-promise' {
         cast?:string,
         cnd?:boolean,
         def?:any,
-        init?(value:any):any
+        init?:(value:any)=>any,
+        skip?:(name:string)=>boolean;
     };
-    
+
     type TColumnSetOptions = {
         table?:string|TTable|TableName,
         inherit?:boolean
@@ -378,7 +379,8 @@ declare module 'pg-promise' {
         cnd:boolean;
         def:any;
 
-        init(value:any):any;
+        init:(value:any)=>any;
+        skip:(name:string)=>boolean;
 
         // API: http://vitaly-t.github.io/pg-promise/helpers.Column.html#.toString
         toString():string;
@@ -387,7 +389,9 @@ declare module 'pg-promise' {
     // helpers.Column class;
     // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html
     class ColumnSet {
-        constructor(columns:any, options?:TColumnSetOptions);
+        constructor(columns:Column, options?:TColumnSetOptions);
+        constructor(columns:Array<string|TColumnConfig|Column>, options?:TColumnSetOptions);
+        constructor(columns:Object, options?:TColumnSetOptions);
 
         // these are all read-only:
         columns:Array<Column>;
