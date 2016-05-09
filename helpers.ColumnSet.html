@@ -686,6 +686,172 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
 
     
 
+    <h4 class="name" id=".canUpdate"><span class="type-signature">(static) </span>canUpdate<span class="signature">(data)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Checks if it is possible to generate an <code>UPDATE</code> query (via method <a href="helpers.html#.update">update</a>) for the specified <code>data</code>
+and the current <a href="helpers.ColumnSet.html">ColumnSet</a> object, without running into errors related to the shortage of effective
+update columns or the lack of data.</p>
+<p>The result and the logic depend on whether <code>data</code> is a single object or an array, and it is consistent with the validation
+logic that's implemented by the <a href="helpers.html#.update">update</a> method.</p>
+<p>This method is mainly valuable for those single-object updates that make use of property <a href="helpers.Column.html">Column.skip</a>, which
+makes the list of effective columns dynamic.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Data intended for an <code>UPDATE</code> query - a single source object or an array of such objects.</p>
+<p>Passing in a non-object value will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'data' specified.</code></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line182">line 182</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li><code>true</code> - it is possible to generate a valid <code>UPDATE</code> query via method <a href="helpers.html#.update">update</a></li>
+<li><code>false</code> - passing such <code>data</code> into method <a href="helpers.html#.update">update</a> will inevitably throw an error</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id=".prepare"><span class="type-signature">(static) </span>prepare<span class="signature">(obj)</span><span class="type-signature"> &rarr; {Object}</span></h4>
 
     
@@ -788,7 +954,7 @@ as set by the columns configuration.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line182">line 182</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line227">line 227</a>
     </li></ul></dd>
     
 
@@ -963,7 +1129,7 @@ the columns configuration.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line220">line 220</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line265">line 265</a>
     </li></ul></dd>
     
 
