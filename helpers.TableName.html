@@ -29,7 +29,8 @@
 
 <header>
     
-        <h2>PromiseAdapter</h2>
+        <h2>
+            <span class="ancestors"><a href="helpers.html">helpers</a>.</span>TableName</h2>
         
     
 </header>
@@ -41,23 +42,16 @@
 
     
 
-    <h4 class="name" id="PromiseAdapter"><span class="type-signature"></span>new PromiseAdapter<span class="signature">(create, resolve, reject)</span><span class="type-signature"> &rarr; {<a href="PromiseAdapter.html">PromiseAdapter</a>}</span></h4>
+    <h4 class="name" id="TableName"><span class="type-signature"></span>new TableName<span class="signature">(table, schema<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="helpers.TableName.html">helpers.TableName</a>}</span></h4>
 
-    
-    <p class="summary">Adapter for the primary promise operations.</p>
     
 
 
 
 <div class="description">
-    <p>Provides compatibility with promise libraries that cannot be recognized automatically,
-via functions that implement the primary operations with promises:</p>
-<ul>
-<li>construct a new promise with a callback function</li>
-<li>resolve a promise with some result data</li>
-<li>reject a promise with a reason</li>
-</ul>
-<p>The type is available from the library's root: <code>pgp.PromiseAdapter</code>.</p>
+    <p><strong>Alternative Syntax:</strong> <code>TableName({table, [schema]})</code> &#8658; <a href="helpers.TableName.html">helpers.TableName</a></p>
+<p>Prepares and escapes a full table name that can be injected into queries directly.</p>
+<p>This is a read-only type that can be used wherever parameter <code>table</code> is supported.</p>
 </div>
 
 
@@ -81,6 +75,8 @@ via functions that implement the primary operations with promises:</p>
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -93,78 +89,295 @@ via functions that implement the primary operations with promises:</p>
 
         <tr>
             
-                <td class="name"><code>create</code></td>
+                <td class="name"><code>table</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Object</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>A function that takes a callback parameter and returns a new promise object.
-The callback parameter is expected to be <code>function(resolve, reject)</code>.</p>
-<p>Passing in anything other than a function will throw <code>Adapter requires a function to create a promise.</code></p></td>
+            <td class="description last"><p>Table name details, depending on the type:</p>
+<ul>
+<li>table name, if <code>table</code> is a string</li>
+<li>object <code>{table, [schema]}</code></li>
+</ul></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>resolve</code></td>
+                <td class="name"><code>schema</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">String</span>
 
 
             
             </td>
 
             
-
-            
-
-            <td class="description last"><p>A function that takes an optional data parameter and resolves a promise with it.</p>
-<p>Passing in anything other than a function will throw <code>Adapter requires a function to resolve a promise.</code></p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>reject</code></td>
-            
-
-            <td class="type">
-            
+                <td class="attributes">
                 
-<span class="param-type">function</span>
+                    &lt;optional><br>
+                
 
+                
+
+                
+                </td>
+            
 
             
-            </td>
 
-            
-
-            
-
-            <td class="description last"><p>A function that takes an optional error parameter and rejects a promise with it.</p>
-<p>Passing in anything other than a function will throw <code>Adapter requires a function to reject a promise.</code></p></td>
+            <td class="description last"><p>Database schema name.</p>
+<p>When <code>table</code> is passed in as <code>{table, [schema]}</code>, this parameter is ignored.</p></td>
         </tr>
 
     
     </tbody>
 </table>
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Formatted/escaped full table name, based on properties <code>schema</code> + <code>table</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>table</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Table name.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>schema</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Database schema name.</p>
+<p>It is <code>undefined</code> when no schema was specified (or if it was an empty string).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_tableName.js.html">helpers/tableName.js</a>, <a href="helpers_tableName.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="helpers.TableName.html">helpers.TableName</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".toString"><span class="type-signature">(static) </span>toString<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Creates a well-formatted multi-line string that represents the object.</p>
+<p>It is called automatically when writing the object into the console.</p>
+</div>
+
+
+
+
+
+
+
 
 
 
@@ -200,7 +413,7 @@ The callback parameter is expected to be <code>function(resolve, reject)</code>.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="adapter.js.html">adapter.js</a>, <a href="adapter.js.html#line3">line 3</a>
+        <a href="helpers_tableName.js.html">helpers/tableName.js</a>, <a href="helpers_tableName.js.html#line76">line 76</a>
     </li></ul></dd>
     
 
@@ -234,7 +447,7 @@ The callback parameter is expected to be <code>function(resolve, reject)</code>.
     </dt>
     <dd>
         
-<span class="param-type"><a href="PromiseAdapter.html">PromiseAdapter</a></span>
+<span class="param-type">string</span>
 
 
     </dd>
@@ -244,21 +457,7 @@ The callback parameter is expected to be <code>function(resolve, reject)</code>.
 
 
 
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
+        
     
 
     

@@ -30,101 +30,96 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 var $npm = {
-    os: require('os'),
     utils: require('../utils'),
-    minify: require('pg-minify')
+    formatting: require('../formatting')
 };
 
 /**
- * @class errors.QueryFileError
- * @augments Error
+ * @class helpers.TableName
  * @description
- * QueryFileError class, available from the {@link errors} namespace.
+ * **Alternative Syntax:** `TableName({table, [schema]})` &amp;#8658; {@link helpers.TableName}
  *
- * This type represents all errors caused by {@link QueryFile}.
+ * Prepares and escapes a full table name that can be injected into queries directly.
  *
- * @property {string} name
- * Standard {@link external:Error Error} property - error type name = `QueryFileError`.
+ * This is a read-only type that can be used wherever parameter `table` is supported.
  *
- * @property {string} message
- * Standard {@link external:Error Error} property - the error message.
+ * @param {String|Object} table
+ * Table name details, depending on the type:
  *
- * @property {object} stack
- * Standard {@link external:Error Error} property - the stack trace.
+ * - table name, if `table` is a string
+ * - object `{table, [schema]}`
  *
- * @property {string} file
- * File path/name that was passed into the {@link QueryFile} constructor.
+ * @param {String} [schema]
+ * Database schema name.
  *
- * @property {Object} options
- * Set of options that was used by the {@link QueryFile} object.
+ * When `table` is passed in as `{table, [schema]}`, this parameter is ignored.
  *
- * @property {SQLParsingError} error
- * Internal $[SQLParsingError] object.
+ * @property {String} name
+ * Formatted/escaped full table name, based on properties `schema` + `table`.
  *
- * It is set only when the error was thrown by $[pg-minify] while parsing the SQL file.
+ * @property {String} table
+ * Table name.
  *
- * @returns {errors.QueryFileError}
+ * @property {String} schema
+ * Database schema name.
  *
- * @see QueryFile
+ * It is `undefined` when no schema was specified (or if it was an empty string).
+ *
+ * @returns {helpers.TableName}
  *
  */
-function QueryFileError(error, qf) {
-    var temp = Error.apply(this, arguments);
-    temp.name = this.name = 'QueryFileError';
-    this.stack = temp.stack;
-    if (error instanceof $npm.minify.SQLParsingError) {
-        this.error = error;
-        this.message = "Failed to parse the SQL.";
-    } else {
-        this.message = error.message;
+function TableName(table, schema) {
+
+    if (!(this instanceof TableName)) {
+        return new TableName(table, schema);
     }
-    this.file = qf.file;
-    this.options = qf.options;
+
+    if (table &amp;&amp; typeof table === 'object' &amp;&amp; 'table' in table) {
+        schema = table.schema;
+        table = table.table;
+    }
+
+    if (!$npm.utils.isText(table)) {
+        throw new TypeError("Table name must be non-empty text string.");
+    }
+
+    if (!$npm.utils.isNull(schema)) {
+        if (typeof schema !== 'string') {
+            throw new TypeError("Invalid schema name.");
+        }
+        if (schema.length > 0) {
+            this.schema = schema;
+        }
+    }
+
+    this.table = table;
+    this.name = $npm.formatting.as.name(table);
+
+    if (this.schema) {
+        this.name = $npm.formatting.as.name(schema) + '.' + this.name;
+    }
+
+    Object.freeze(this);
 }
 
-QueryFileError.prototype = Object.create(Error.prototype, {
-    constructor: {
-        value: QueryFileError,
-        writable: true,
-        configurable: true
-    }
-});
-
 /**
- * @method errors.QueryFileError.toString
+ * @method helpers.TableName.toString
  * @description
- * Creates a well-formatted multi-line string that represents the error.
+ * Creates a well-formatted multi-line string that represents the object.
  *
  * It is called automatically when writing the object into the console.
  *
- * @param {Number} [level=0]
- * Nested output level, to provide visual offset.
- *
  * @returns {string}
  */
-QueryFileError.prototype.toString = function (level) {
-    level = level > 0 ? parseInt(level) : 0;
-    var gap0 = $npm.utils.messageGap(level),
-        gap1 = $npm.utils.messageGap(level + 1),
-        lines = [
-            'QueryFileError {',
-            gap1 + 'message: "' + this.message + '"',
-            gap1 + 'options: ' + JSON.stringify(this.options),
-            gap1 + 'file: "' + this.file + '"'
-        ];
-    if (this.error) {
-        lines.push(gap1 + 'error: ' + this.error.toString(level + 1));
-    }
-    lines.push(gap0 + '}');
-    return lines.join($npm.os.EOL);
+TableName.prototype.toString = function () {
+    return this.name;
 };
 
-QueryFileError.prototype.inspect = function () {
+TableName.prototype.inspect = function () {
     return this.toString();
 };
 
-module.exports = QueryFileError;
-
+module.exports = TableName;
 </code></pre>
         </article>
     </section>
