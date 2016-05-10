@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.0.12 or later.
+// Requires pg-promise v4.0.13 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -395,14 +395,9 @@ declare module 'pg-promise' {
 
         // these are all read-only:
         columns:Array<Column>;
-        names:Array<string>;
-        updates:Array<string>;
-        variables:Array<string>;
         table:TableName;
 
         canUpdate(data:Object|Array<Object>):boolean;
-
-        prepare(obj:Object):Object;
 
         // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#.toString
         toString():string;
