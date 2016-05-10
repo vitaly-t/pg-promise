@@ -146,6 +146,7 @@ function ColumnSet(columns, options) {
 
     /**
      * @name helpers.ColumnSet#names
+     * @private
      * @type String
      * @readonly
      * @description
@@ -167,6 +168,7 @@ function ColumnSet(columns, options) {
 
     /**
      * @name helpers.ColumnSet#variables
+     * @private
      * @type String
      * @readonly
      * @description
@@ -183,6 +185,11 @@ function ColumnSet(columns, options) {
         }
     });
 
+    /**
+     * @method helpers.ColumnSet.getUpdates
+     * @private
+     * @readonly
+     */
     this.getUpdates = function (obj) {
         if (updates) {
             return updates;
@@ -227,7 +234,7 @@ function ColumnSet(columns, options) {
      * Passing in a non-object value will throw {@link external:TypeError TypeError} = `Invalid parameter 'data' specified.`
      *
      * @returns {Boolean}
-     * 
+     *
      * - `true` - it is possible to generate a valid `UPDATE` query via method {@link helpers.update update}
      * - `false` - passing such `data` into method {@link helpers.update update} will inevitably throw an error
      */
@@ -255,6 +262,7 @@ function ColumnSet(columns, options) {
 
     /**
      * @method helpers.ColumnSet.prepare
+     * @private
      * @description
      * Prepares a source object to be formatted, by cloning it and applying the rules
      * as set by the columns configuration.

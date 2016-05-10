@@ -46,7 +46,11 @@ var $npm = {
  *
  * When `data` is not a non-null object and not an array, it will throw {@link external:TypeError TypeError} = `Invalid parameter 'data' specified.`
  *
- * And if `data` is an array that contains an invalid insert object, the method will throw {@link external:Error Error} =
+ * When `data` is an empty array, it will throw {@link external:TypeError TypeError} = `Cannot generate an INSERT from an empty array.`
+ *
+ * When there are no columns to be inserted, it will throw {@link external:Error Error} = `Cannot generate an INSERT without any columns.`
+ *
+ * When `data` is an array that contains a non-object value, the method will throw {@link external:Error Error} =
  * `Invalid insert object at index N.`
  *
  * @param {Array|helpers.Column|helpers.ColumnSet} [columns]
@@ -57,6 +61,9 @@ var $npm = {
  *
  * When `columns` is not a {@link helpers.ColumnSet ColumnSet} object, a temporary {@link helpers.ColumnSet ColumnSet}
  * is created - from the value of `columns` (if it was specified), or from the value of `data` (if it is not an array).
+ *
+ * When the final {@link helpers.ColumnSet ColumnSet} is empty (no columns in it), the method will throw
+ * {@link external:Error Error} = `Cannot generate an INSERT without any columns.`
  *
  * @param {helpers.TableName|String|{table,schema}} [table]
  * Destination table.
@@ -103,6 +110,10 @@ function insert(data, columns, table, capSQL) {
 
     var isArray = Array.isArray(data);
 
+    if (isArray &amp;&amp; !data.length) {
+        throw new TypeError("Cannot generate an INSERT from an empty array.");
+    }
+
     if (columns instanceof $npm.ColumnSet) {
         if ($npm.utils.isNull(table)) {
             table = columns.table;
@@ -114,27 +125,19 @@ function insert(data, columns, table, capSQL) {
         columns = new $npm.ColumnSet(columns || data);
     }
 
-    if (isArray &amp;&amp; !data.length) {
-        throw new TypeError("Cannot generate an INSERT from an empty array.");
-    }
-
     if (!columns.columns.length) {
         throw new Error("Cannot generate an INSERT without any columns.");
     }
-    
+
     if (!table) {
         throw new Error("Table name is unknown.");
     }
-    
+
     if (!(table instanceof $npm.TableName)) {
         table = new $npm.TableName(table);
     }
 
-    var query = "insert into $1^ values";
-
-    if (capSQL) {
-        query = query.toUpperCase();
-    }
+    var query = capSQL ? sql.capCase : sql.lowCase;
 
     var format = $npm.formatting.as.format;
     query = format(query, table.name + columns.names);
@@ -149,6 +152,11 @@ function insert(data, columns, table, capSQL) {
     }
     return query + '(' + format(columns.variables, columns.prepare(data)) + ')';
 }
+
+var sql = {
+    lowCase: "insert into $1^ values",
+    capCase: "INSERT INTO $1^ VALUES"
+};
 
 module.exports = insert;
 </code></pre>

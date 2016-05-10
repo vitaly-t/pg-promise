@@ -341,7 +341,9 @@
 
             <td class="description last"><p>An insert object with properties for insert values, or an array of such objects.</p>
 <p>When <code>data</code> is not a non-null object and not an array, it will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'data' specified.</code></p>
-<p>And if <code>data</code> is an array that contains an invalid insert object, the method will throw <a href="external-Error.html">Error</a> =
+<p>When <code>data</code> is an empty array, it will throw <a href="external-TypeError.html">TypeError</a> = <code>Cannot generate an INSERT from an empty array.</code></p>
+<p>When there are no columns to be inserted, it will throw <a href="external-Error.html">Error</a> = <code>Cannot generate an INSERT without any columns.</code></p>
+<p>When <code>data</code> is an array that contains a non-object value, the method will throw <a href="external-Error.html">Error</a> =
 <code>Invalid insert object at index N.</code></p></td>
         </tr>
 
@@ -385,7 +387,9 @@
 <p>It is optional when <code>data</code> is a single object, and required when <code>data</code> is an array of objects. When not specified for an array
 of objects, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Parameter 'columns' is required when inserting multiple records.</code></p>
 <p>When <code>columns</code> is not a <a href="helpers.ColumnSet.html">ColumnSet</a> object, a temporary <a href="helpers.ColumnSet.html">ColumnSet</a>
-is created - from the value of <code>columns</code> (if it was specified), or from the value of <code>data</code> (if it is not an array).</p></td>
+is created - from the value of <code>columns</code> (if it was specified), or from the value of <code>data</code> (if it is not an array).</p>
+<p>When the final <a href="helpers.ColumnSet.html">ColumnSet</a> is empty (no columns in it), the method will throw
+<a href="external-Error.html">Error</a> = <code>Cannot generate an INSERT without any columns.</code></p></td>
         </tr>
 
     
@@ -609,7 +613,8 @@ This is to allow for update conditions of any complexity that are easy to append
 
             <td class="description last"><p>An update object with properties for update values, or an array of such objects.</p>
 <p>When <code>data</code> is not a non-null object and not an array, it will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'data' specified.</code></p>
-<p>And if <code>data</code> is an array that contains an invalid update object, the method will throw <a href="external-Error.html">Error</a> =
+<p>When <code>data</code> is an empty array, it will throw <a href="external-TypeError.html">TypeError</a> = <code>Cannot generate an UPDATE from an empty array.</code></p>
+<p>When <code>data</code> is an array that contains a non-object value, the method will throw <a href="external-Error.html">Error</a> =
 <code>Invalid update object at index N.</code></p></td>
         </tr>
 
@@ -654,8 +659,8 @@ This is to allow for update conditions of any complexity that are easy to append
 of objects, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Parameter 'columns' is required when updating multiple records.</code></p>
 <p>When <code>columns</code> is not a <a href="helpers.ColumnSet.html">ColumnSet</a> object, a temporary <a href="helpers.ColumnSet.html">ColumnSet</a>
 is created - from the value of <code>columns</code> (if it was specified), or from the value of <code>data</code> (if it is not an array).</p>
-<p>When the final <a href="helpers.ColumnSet.html">ColumnSet</a> is empty (no columns in it), it will throw
-<a href="external-Error.html">Error</a> = <code>Cannot generate a valid UPDATE without any columns.</code></p></td>
+<p>When the final <a href="helpers.ColumnSet.html">ColumnSet</a> is empty (no columns in it), the method will throw
+<a href="external-Error.html">Error</a> = <code>Cannot generate an UPDATE without any columns.</code></p></td>
         </tr>
 
     
