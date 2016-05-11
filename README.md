@@ -247,11 +247,13 @@ string of at least 1 character long. Such name is then properly escaped and wrap
 query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
 // => INSERT INTO "Table Name"("Column Name") VALUES(...)
 
-query('SELECT ${column~} FROM ${table~}', {
-    column: 'Column Name',
+// A mixed example for a dynamic column list:
+var columns = ['id', 'message'];
+query('SELECT ${columns^} FROM ${table~}', {
+    columns: columns.map(pgp.as.name).join(),
     table: 'Table Name'
 });
-// => SELECT "Column Name" FROM "Table Name"
+// => SELECT "id","message" FROM "Table Name"
 ```
 
 Relying on this type of formatting for sql names and identifiers, along with regular variable formatting
