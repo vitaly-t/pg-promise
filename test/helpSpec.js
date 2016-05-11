@@ -364,7 +364,7 @@ describe("ColumnSet", function () {
         });
     });
 
-    describe("method canUpdate", function () {
+    describe("method 'canUpdate'", function () {
         it("must throw on empty data", function () {
             var cs = new helpers.ColumnSet([]);
             var error = new TypeError("Invalid parameter 'data' specified.");
@@ -403,7 +403,41 @@ describe("ColumnSet", function () {
             }]);
             expect(cs.canUpdate({})).toBe(true);
         });
+    });
 
+    describe("method 'prepare'", function () {
+        it("must replicate full objects", function () {
+            var cs = new helpers.ColumnSet(dataSingle);
+            var obj = cs.prepare(dataSingle);
+            expect(obj).toEqual(dataSingle);
+        });
+        it("must set defaults for missing properties", function () {
+            var cs = new helpers.ColumnSet(['val',
+                {
+                    name: 'msg',
+                    init: function (value) {
+                        return value + '-init';
+                    }
+                },
+                {
+                    name: 'test1',
+                    def: 'def-test'
+                },
+                {
+                    name: 'test2',
+                    init: function () {
+                        return 'init-test';
+                    }
+                },
+                'wrong']);
+            var obj = cs.prepare(dataSingle);
+            expect(obj).toEqual({
+                val: dataSingle.val,
+                msg: dataSingle.msg + '-init',
+                test1: 'def-test',
+                test2: 'init-test'
+            });
+        });
     });
 
     describe("Negative", function () {
