@@ -4,6 +4,8 @@ var options = {
     capSQL: false
 };
 
+var os = require('os');
+var utils = require('../lib/utils');
 var header = require('./db/header');
 var helpers = header(options).pgp.helpers;
 
@@ -21,6 +23,7 @@ var dataMulti = [{
     val: 456,
     msg: 'world'
 }];
+
 
 describe("INSERT", function () {
 
@@ -271,6 +274,7 @@ describe("TableName", function () {
     });
 });
 
+
 describe("Column", function () {
 
     describe("Function call", function () {
@@ -301,6 +305,135 @@ describe("ColumnSet", function () {
         it("must return a new object", function () {
             var obj = helpers.ColumnSet(['col']);
             expect(obj instanceof helpers.ColumnSet).toBe(true);
+        });
+    });
+
+    describe("options", function () {
+        it("must ignore empty options", function () {
+            var cs = new helpers.ColumnSet(['name'], {});
+            expect('table' in cs).toBe(false);
+        });
+        it("must set table correctly", function () {
+            var t = new helpers.TableName('table');
+            var cs = new helpers.ColumnSet(['name'], {table: t});
+            expect(cs.table.toString()).toBe('"table"');
+        });
+        it("must support inherited properties", function () {
+            function A() {
+            }
+
+            A.prototype.first = 1;
+
+            function B() {
+                this.second = 2;
+            }
+
+            utils.inherits(B, A);
+
+            var obj = new B();
+
+            var cs1 = new helpers.ColumnSet(obj);
+            var cs2 = new helpers.ColumnSet(obj, {inherit: true});
+            expect(cs1.columns.length).toBe(1);
+            expect(cs1.columns[0].name).toBe('second');
+            expect(cs2.columns.length).toBe(2);
+            expect(cs2.columns[0].name).toBe('second');
+            expect(cs2.columns[1].name).toBe('first');
+
+        });
+    });
+
+    describe("initialization", function () {
+        it("must accept a Column directly", function () {
+            var col = new helpers.Column('name');
+            var cs = new helpers.ColumnSet(col);
+            expect(cs.columns.length).toBe(1);
+            expect(cs.columns[0]).toBe(col);
+        });
+        it("must accept a Column from array directly", function () {
+            var col = new helpers.Column('name');
+            var cs = new helpers.ColumnSet([col]);
+            expect(cs.columns.length).toBe(1);
+            expect(cs.columns[0]).toBe(col);
+        });
+        it("must enumerate an object properties", function () {
+            var cs = new helpers.ColumnSet(dataSingle);
+            expect(cs.columns.length).toBe(2);
+            expect(cs.columns[0].name).toBe('val');
+            expect(cs.columns[1].name).toBe('msg');
+        });
+    });
+
+    describe("method canUpdate", function () {
+        it("must throw on empty data", function () {
+            var cs = new helpers.ColumnSet([]);
+            var error = new TypeError("Invalid parameter 'data' specified.");
+            expect(function () {
+                cs.canUpdate();
+            }).toThrow(error);
+        });
+        it("must reject on an empty set", function () {
+            var cs = new helpers.ColumnSet([]);
+            expect(cs.canUpdate({})).toBe(false);
+        });
+        it("must approve for a non-empty set", function () {
+            var cs = new helpers.ColumnSet(['name']);
+            expect(cs.canUpdate([{}])).toBe(true);
+            expect(cs.canUpdate({})).toBe(true);
+        });
+        it("must reject for conditional columns", function () {
+            var cs = new helpers.ColumnSet(['?name']);
+            expect(cs.canUpdate({})).toBe(false);
+        });
+        it("must reject for skipped columns", function () {
+            var cs = new helpers.ColumnSet([{
+                name: 'name',
+                skip: function () {
+                    return true;
+                }
+            }]);
+            expect(cs.canUpdate({})).toBe(false);
+        });
+        it("must approve for non-skipped columns", function () {
+            var cs = new helpers.ColumnSet([{
+                name: 'name',
+                skip: function () {
+                    return false;
+                }
+            }]);
+            expect(cs.canUpdate({})).toBe(true);
+        });
+
+    });
+
+    describe("Negative", function () {
+        it("must throw on invalid columns", function () {
+            var error = new TypeError("Invalid parameter 'columns' specified.");
+            expect(function () {
+                helpers.ColumnSet();
+            }).toThrow(error);
+            expect(function () {
+                helpers.ColumnSet(123);
+            }).toThrow(error);
+        });
+        it("must throw on invalid options", function () {
+            var error = new TypeError("Invalid parameter 'options' specified.");
+            expect(function () {
+                helpers.ColumnSet({}, 123);
+            }).toThrow(error);
+        });
+    });
+
+    describe("console coverage", function () {
+        var cs1 = new helpers.ColumnSet(['name']);
+        var cs2 = new helpers.ColumnSet(['name'], {table: 'table'});
+        var cs3 = new helpers.ColumnSet([]);
+        var gap = utils.messageGap(1);
+        it("must cover all lines", function () {
+            expect(cs1.toString()).toContain('columns: [');
+            expect(cs2.toString()).toContain('table: "table"');
+            expect(cs3.toString()).toBe("ColumnSet {" + os.EOL + gap + "columns: []" + os.EOL + '}');
+            expect(cs1.toString(1) !== cs1.inspect()).toBe(true);
         });
     });
 
