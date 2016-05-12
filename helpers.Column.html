@@ -49,8 +49,7 @@
 
 
 <div class="description">
-    <p><strong> WARNING: Everything within the <a href="helpers.html">helpers</a> namespace is currently a Beta version.</strong></p>
-<p>Read-only structure that represents formatting details for a single column.</p>
+    <p>Read-only structure that represents formatting details for a single column.</p>
 </div>
 
 
@@ -115,8 +114,6 @@ into property <code>mod</code>. If the name starts with <code>?</code>, it is re
 </li>
 <li><p>When it is a simple <a href="helpers.html#.ColumnConfig">ColumnConfig</a>-like object, it is used as an
 input configurator to set all the properties of the class.</p>
-</li>
-<li><p>When it is none of the above, it will throw <a href="external-TypeError.html">TypeError</a> = <code>A column must be a string or a configurator object.</code></p>
 </li>
 </ul></td>
         </tr>
@@ -305,9 +302,9 @@ input configurator to set all the properties of the class.</p>
             
 
             <td class="description last"><p>Conditional column flag.</p>
-<p>Used by multi-object updates only, it indicates that the column's value is not to be updated,
+<p>Used by update queries only, it indicates that the column's value is not to be updated,
 and it is only for use within an update condition.</p>
-<p>When initializing from a string, it is the same as putting <code>?</code> in front of the name.</p></td>
+<p>When initializing from a string, it is the same as adding <code>?</code> in front of the name.</p></td>
         </tr>
 
     
@@ -635,7 +632,7 @@ and it is only for use within an update condition.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line193">line 193</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line229">line 229</a>
     </li></ul></dd>
     
 

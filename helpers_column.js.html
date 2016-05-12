@@ -40,8 +40,6 @@ var $npm = {
  * @class helpers.Column
  * @description
  *
- * ** WARNING: Everything within the {@link helpers} namespace is currently a Beta version.**
- *
  * Read-only structure that represents formatting details for a single column.
  *
  * @param {String|helpers.ColumnConfig} col
@@ -55,8 +53,6 @@ var $npm = {
  *
  * - When it is a simple {@link helpers.ColumnConfig ColumnConfig}-like object, it is used as an
  *   input configurator to set all the properties of the class.
- *
- * - When it is none of the above, it will throw {@link external:TypeError TypeError} = `A column must be a string or a configurator object.`
  *
  * @property {String} name
  * Column name + property name (if `prop` isn't specified).
@@ -73,10 +69,10 @@ var $npm = {
  * @property {Boolean} [cnd]
  * Conditional column flag.
  *
- * Used by multi-object updates only, it indicates that the column's value is not to be updated,
+ * Used by update queries only, it indicates that the column's value is not to be updated,
  * and it is only for use within an update condition.
  *
- * When initializing from a string, it is the same as putting `?` in front of the name.
+ * When initializing from a string, it is the same as adding `?` in front of the name.
  *
  * @property {} [def]
  * Default value for the property, to be used only when the source object doesn't have the property.
@@ -142,31 +138,38 @@ function Column(col) {
     }
 
     if (typeof col === 'string') {
-        var tmp = stripCnd(col);
-        if (col !== tmp) {
-            this.cnd = true;
-            col = tmp;
+        var info = parseColumn(col);
+        this.name = info.name;
+        if ('mod' in info) {
+            this.mod = info.mod;
         }
-        var mod = col.match(/\^|~|#|:raw|:name|:json|:csv|:value/);
-        if (mod) {
-            this.name = col.substr(0, mod.index);
-            this.mod = mod[0];
-        } else {
-            this.name = col;
+        if ('cnd' in info) {
+            this.cnd = info.cnd;
         }
     } else {
-        if (col &amp;&amp; typeof col === 'object') {
-            if ('name' in col) {
-                this.name = col.name; // column name + property name (if 'prop' isn't specified)
+        if (col &amp;&amp; typeof col === 'object' &amp;&amp; 'name' in col) {
+            if (!$npm.utils.isText(col.name)) {
+                throw new TypeError("Property 'name' must be a non-empty text string.");
             }
-            if ('prop' in col) {
+            if ($npm.utils.isNull(col.prop) &amp;&amp; !isValidVariable(col.name)) {
+                throw new TypeError("Property 'name' must be a valid variable name when 'prop' isn't specified.");
+            }
+            this.name = col.name; // column name + property name (if 'prop' isn't specified)
+
+            if (!$npm.utils.isNull(col.prop)) {
+                if (typeof col.prop !== 'string' || !isValidVariable(col.prop)) {
+                    throw new TypeError("The value of 'prop' must be a valid variable name.");
+                }
                 this.prop = col.prop; // optional property name (if different from the columns name);
             }
-            if (col.mod &amp;&amp; typeof col.mod === 'string') {
+            if (!$npm.utils.isNull(col.mod)) {
+                if (typeof col.mod !== 'string' || !isValidMod(col.mod)) {
+                    throw new TypeError("Invalid property 'mod' specified.");
+                }
                 this.mod = col.mod; // optional format modifier;
             }
-            if ($npm.utils.isText(col.cast)) {
-                this.cast = getCastName(col.cast); // optional SQL type casting
+            if (!$npm.utils.isNull(col.cast)) {
+                this.cast = parseCast(col.cast); // optional SQL type casting
             }
             if ('cnd' in col) {
                 this.cnd = !!col.cnd;
@@ -181,42 +184,75 @@ function Column(col) {
                 this.skip = col.skip;
             }
         } else {
-            throw new TypeError("A column must be a string or a configurator object.");
+            throw new TypeError("Invalid column details.");
         }
     }
 
-    if (!$npm.utils.isText(this.name)) {
-        throw new TypeError("A column name must be a non-empty text string.");
-    }
+    var variable = '${' + (this.prop || this.name) + (this.mod || '') + '}',
+        castText = this.cast ? ('::' + this.cast) : '',
+        escapedName = $npm.formatting.as.name(this.name);
 
-    if ('prop' in this &amp;&amp; !$npm.utils.isText(this.prop)) {
-        throw new TypeError("A property name must be a non-empty text string.");
-    }
+    Object.defineProperty(this, 'variable', {
+        enumerable: false,
+        value: variable
+    });
 
-    this.variable = '${' + (this.prop || this.name) + (this.mod || '') + '}';
+    Object.defineProperty(this, 'castText', {
+        enumerable: false,
+        value: castText
+    });
 
-    this.castText = this.cast ? ('::' + this.cast) : '';
-
-    this.escapedName = $npm.formatting.as.name(this.name);
+    Object.defineProperty(this, 'escapedName', {
+        enumerable: false,
+        value: escapedName
+    });
 
     Object.freeze(this);
 
 }
 
-function getCastName(name) {
-    var idx = 0;
-    while (idx &lt; name.length &amp;&amp; name[idx] === ':') {
-        idx++;
+function parseCast(name) {
+    if (typeof name === 'string') {
+        var idx = 0;
+        while (idx &lt; name.length &amp;&amp; name[idx] === ':') {
+            idx++;
+        }
+        name = idx ? name.substr(idx) : name;
+        if ($npm.utils.isText(name)) {
+            return name;
+        }
     }
-    return idx ? name.substr(idx) : name;
+    throw new TypeError("Invalid property 'cast' specified.");
 }
 
-function stripCnd(name) {
-    var idx = 0;
-    while (idx &lt; name.length &amp;&amp; name[idx] === '?') {
-        idx++;
+function parseColumn(name) {
+    var m = name.match(/\??[a-z0-9\$_]+(\^|~|#|:raw|:name|:json|:csv|:value)?/);
+    if (m &amp;&amp; m[0] === name) {
+        var res = {};
+        if (name[0] === '?') {
+            res.cnd = true;
+            name = name.substr(1);
+        }
+        var mod = name.match(/\^|~|#|:raw|:name|:json|:csv|:value/);
+        if (mod) {
+            res.name = name.substr(0, mod.index);
+            res.mod = mod[0];
+        } else {
+            res.name = name;
+        }
+        return res;
     }
-    return idx ? name.substr(idx) : name;
+    throw new TypeError("Invalid column syntax.");
+}
+
+function isValidMod(mod) {
+    var values = ['^', '~', '#', ':raw', ':name', ':json', ':csv', ':value'];
+    return values.indexOf(mod) !== -1;
+}
+
+function isValidVariable(name) {
+    var m = name.match(/[a-z0-9\$_]+/);
+    return m &amp;&amp; m[0] === name;
 }
 
 /**
