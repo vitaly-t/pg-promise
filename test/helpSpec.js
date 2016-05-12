@@ -283,20 +283,147 @@ describe("Column", function () {
             expect(obj instanceof helpers.Column).toBe(true);
         });
     });
-    /*
-     describe("Negative", function () {
-     var error = new TypeError("A column name must be a non-empty text string.");
-     it("must throw on invalid column", function () {
-     expect(function () {
-     helpers.Column();
-     }).toThrow(error);
-     expect(function () {
-     helpers.Column();
-     }).toThrow(error);
 
-     });
-     });
-     */
+    describe("set all", function () {
+        it("must set all values", function () {
+            var col = new helpers.Column({
+                name: 'name',
+                prop: 'prop',
+                def: 123,
+                cnd: true,
+                cast: 'int',
+                mod: '^',
+                init: function () {
+                },
+                skip: function () {
+                }
+            });
+            expect(col.name).toBe('name');
+            expect(col.prop).toBe('prop');
+            expect(col.def).toBe(123);
+            expect(col.cnd).toBe(true);
+            expect(col.cast).toBe('int');
+            expect(col.mod).toBe('^');
+            expect(typeof col.init).toBe('function');
+            expect(typeof col.skip).toBe('function');
+            expect(col.toString()).toBe(col.inspect());
+        });
+    });
+
+    describe("set defaults", function () {
+        it("must set all values", function () {
+            var col = new helpers.Column({
+                name: 'name',
+                prop: null,
+                cast: null,
+                mod: null
+            });
+            expect(col.name).toBe('name');
+            expect('prop' in col).toBe(false);
+            expect('cast' in col).toBe(false);
+            expect('mod' in col).toBe(false);
+        });
+    });
+
+    describe("cast", function () {
+        var col = new helpers.Column({
+            name: 'name',
+            cast: '::int'
+        });
+        it("must strip the cast", function () {
+            expect(col.cast).toBe('int');
+        });
+    });
+
+    describe("mod", function () {
+        it("must strip the mod", function () {
+            var col = new helpers.Column('name^');
+            expect(col.name).toBe('name');
+            expect(col.mod).toBe('^');
+        });
+        it("must skip invalid mods", function () {
+            var col = new helpers.Column('name:invalid');
+            expect(col.name).toBe('name:invalid');
+            expect('mod' in col).toBe(false);
+        });
+        it("must set the mod", function () {
+            var col = new helpers.Column({
+                name: 'name',
+                mod: '^'
+            });
+            expect(col.mod).toBe('^');
+        });
+    });
+
+    describe("Negative", function () {
+        it("must throw on invalid column", function () {
+            var error = new TypeError("Invalid column details. It must be a string or a configurator object.");
+            expect(function () {
+                helpers.Column();
+            }).toThrow(error);
+            expect(function () {
+                helpers.Column(123);
+            }).toThrow(error);
+        });
+        it("must throw on invalid input name", function () {
+            var error = new TypeError("A column name cannot be empty.");
+            expect(function () {
+                helpers.Column('');
+            }).toThrow(error);
+            expect(function () {
+                helpers.Column('  ');
+            }).toThrow(error);
+        });
+        it("must throw on invalid property 'name'", function () {
+            var error = new TypeError("Property 'name' must be a non-empty text string.");
+            expect(function () {
+                helpers.Column({name: ''});
+            }).toThrow(error);
+            expect(function () {
+                helpers.Column({name: '   '});
+            }).toThrow(error);
+            expect(function () {
+                helpers.Column({name: 123});
+            }).toThrow(error);
+        });
+        it("must throw on invalid property 'prop'", function () {
+            var error = new TypeError("The value of 'prop' must be a non-empty text string.");
+            expect(function () {
+                helpers.Column({name: 'name', prop: 123});
+            }).toThrow(error);
+            expect(function () {
+                helpers.Column({name: 'name', prop: ''});
+            }).toThrow(error);
+            expect(function () {
+                helpers.Column({name: 'name', prop: '   '});
+            }).toThrow(error);
+        });
+        it("must throw on invalid property 'cast'", function () {
+            var error = new TypeError("Property 'cast' must be a non-empty text string.");
+            expect(function () {
+                helpers.Column({name: 'name', cast: 123});
+            }).toThrow(error);
+            expect(function () {
+                helpers.Column({name: 'name', cast: ''});
+            }).toThrow(error);
+            expect(function () {
+                helpers.Column({name: 'name', cast: '   '});
+            }).toThrow(error);
+        });
+        it("must throw on invalid property 'mod'", function () {
+            var error = new TypeError("Property 'mod' must be a non-empty text string.");
+            expect(function () {
+                helpers.Column({name: 'name', mod: 123});
+            }).toThrow(error);
+            expect(function () {
+                helpers.Column({name: 'name', mod: ''});
+            }).toThrow(error);
+            expect(function () {
+                helpers.Column({name: 'name', mod: '   '});
+            }).toThrow(error);
+        });
+    });
+
 });
 
 describe("ColumnSet", function () {
