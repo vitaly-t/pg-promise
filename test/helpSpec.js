@@ -341,11 +341,6 @@ describe("Column", function () {
             expect(col.name).toBe('name');
             expect(col.mod).toBe('^');
         });
-        it("must skip invalid mods", function () {
-            var col = new helpers.Column('name:invalid');
-            expect(col.name).toBe('name:invalid');
-            expect('mod' in col).toBe(false);
-        });
         it("must set the mod", function () {
             var col = new helpers.Column({
                 name: 'name',
@@ -366,7 +361,7 @@ describe("Column", function () {
             }).toThrow(error);
         });
         it("must throw on invalid input name", function () {
-            var error = new TypeError("A column name cannot be empty.");
+            var error = new TypeError("Invalid column/property name specified.");
             expect(function () {
                 helpers.Column('');
             }).toThrow(error);
@@ -387,7 +382,7 @@ describe("Column", function () {
             }).toThrow(error);
         });
         it("must throw on invalid property 'prop'", function () {
-            var error = new TypeError("The value of 'prop' must be a non-empty text string.");
+            var error = new TypeError("The value of 'prop' must be a valid variable name.");
             expect(function () {
                 helpers.Column({name: 'name', prop: 123});
             }).toThrow(error);
@@ -399,7 +394,7 @@ describe("Column", function () {
             }).toThrow(error);
         });
         it("must throw on invalid property 'cast'", function () {
-            var error = new TypeError("Property 'cast' must be a non-empty text string.");
+            var error = new TypeError("Invalid property 'cast' specified.");
             expect(function () {
                 helpers.Column({name: 'name', cast: 123});
             }).toThrow(error);
@@ -411,7 +406,7 @@ describe("Column", function () {
             }).toThrow(error);
         });
         it("must throw on invalid property 'mod'", function () {
-            var error = new TypeError("Property 'mod' must be a non-empty text string.");
+            var error = new TypeError("Invalid property 'mod' specified.");
             expect(function () {
                 helpers.Column({name: 'name', mod: 123});
             }).toThrow(error);
