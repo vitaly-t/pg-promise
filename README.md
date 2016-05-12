@@ -960,6 +960,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
+* 4.1.0 Adding [helpers] namespace with additional query-formatting methods. Released: May 12, 2016
 * 4.0.0 Consolidating the entire error-reporting mechanism. Released: April 24, 2016
 * 3.9.0 Prepared Statements support rewritten, adding new type [PreparedStatement]. Released: April 20, 2016
 * 3.8.0 Added Database Context support (see [Database]). Released: April 14, 2016
@@ -1035,6 +1036,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[helpers]:http://vitaly-t.github.io/pg-promise/helpers.html
 [QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
 [QueryFileError]:http://vitaly-t.github.io/pg-promise/QueryFileError.html
 [PreparedStatement]:http://vitaly-t.github.io/pg-promise/PreparedStatement.html

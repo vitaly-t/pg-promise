@@ -24,7 +24,6 @@ var dataMulti = [{
     msg: 'world'
 }];
 
-
 describe("INSERT", function () {
 
     describe("single:", function () {
@@ -352,7 +351,7 @@ describe("Column", function () {
 
     describe("Negative", function () {
         it("must throw on invalid column", function () {
-            var error = new TypeError("Invalid column details. It must be a string or a configurator object.");
+            var error = new TypeError("Invalid column details.");
             expect(function () {
                 helpers.Column();
             }).toThrow(error);
@@ -361,7 +360,7 @@ describe("Column", function () {
             }).toThrow(error);
         });
         it("must throw on invalid input name", function () {
-            var error = new TypeError("Invalid column/property name specified.");
+            var error = new TypeError("Invalid column syntax.");
             expect(function () {
                 helpers.Column('');
             }).toThrow(error);
@@ -370,16 +369,20 @@ describe("Column", function () {
             }).toThrow(error);
         });
         it("must throw on invalid property 'name'", function () {
-            var error = new TypeError("Property 'name' must be a non-empty text string.");
+            var error1 = new TypeError("Property 'name' must be a non-empty text string.");
+            var error2 = new TypeError("Property 'name' must be a valid variable name when 'prop' isn't specified.");
             expect(function () {
                 helpers.Column({name: ''});
-            }).toThrow(error);
+            }).toThrow(error1);
             expect(function () {
                 helpers.Column({name: '   '});
-            }).toThrow(error);
+            }).toThrow(error1);
             expect(function () {
                 helpers.Column({name: 123});
-            }).toThrow(error);
+            }).toThrow(error1);
+            expect(function () {
+                helpers.Column({name: 'n-a-m-e'});
+            }).toThrow(error2);
         });
         it("must throw on invalid property 'prop'", function () {
             var error = new TypeError("The value of 'prop' must be a valid variable name.");
@@ -525,6 +528,46 @@ describe("ColumnSet", function () {
             }]);
             expect(cs.canUpdate({})).toBe(true);
         });
+    });
+
+    describe("property 'names'", function () {
+        var cs = new helpers.ColumnSet(['name1', 'name2']);
+        var csEmpty = new helpers.ColumnSet([]);
+        it("must return the right string", function () {
+            expect(cs.names).toBe('("name1","name2")');
+            expect(csEmpty.names).toBe('');
+        });
+        it("must reuse the data", function () {
+            expect(cs.names).toBe('("name1","name2")');
+        });
+    });
+
+    describe("method 'getUpdates'", function () {
+        var cs = new helpers.ColumnSet(dataSingle);
+        var csEmpty = new helpers.ColumnSet([]);
+        it("must return the right update string", function () {
+            expect(cs.getUpdates(dataSingle)).toBe('"val"=${val},"msg"=${msg}');
+            expect(csEmpty.getUpdates(dataSingle)).toBe('');
+        });
+        it("must reuse the data", function () {
+            expect(cs.getUpdates(dataSingle)).toBe('"val"=${val},"msg"=${msg}');
+        });
+        it("must handle cnd and skip", function () {
+            var cs1 = new helpers.ColumnSet(['?val', 'msg']);
+            var cs2 = new helpers.ColumnSet(['val', {
+                name: 'msg', skip: function () {
+                }
+            }]);
+            var cs3 = new helpers.ColumnSet(['val', {
+                name: 'msg', skip: function () {
+                    return true;
+                }
+            }]);
+            expect(cs1.getUpdates(dataSingle)).toBe('"msg"=${msg}');
+            expect(cs2.getUpdates(dataSingle)).toBe('"val"=${val},"msg"=${msg}');
+            expect(cs3.getUpdates(dataSingle)).toBe('"val"=${val}');
+        });
+
     });
 
     describe("method 'prepare'", function () {
