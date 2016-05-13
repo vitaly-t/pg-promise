@@ -707,8 +707,9 @@ is created - from the value of <code>columns</code> (if it was specified), or fr
 
             <td class="description last"><p>Table to be updated.</p>
 <p>It is normally a required parameter. But when <code>columns</code> is passed in as a <a href="helpers.ColumnSet.html">ColumnSet</a> object
-with <code>table</code> set in it, that will be used when this parameter isn't specified. When neither is available, the method
-will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown.</code></p></td>
+with <code>table</code> set in it, that will be used when this parameter isn't specified. It is also optional for single-object
+updates, to allow generating updates that are part of an insert (<code>UPSERT</code> queries).</p>
+<p>If it is not available during a multi-object update, the method will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown.</code></p></td>
         </tr>
 
     

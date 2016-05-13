@@ -70,8 +70,10 @@ var $npm = {
  * Table to be updated.
  *
  * It is normally a required parameter. But when `columns` is passed in as a {@link helpers.ColumnSet ColumnSet} object
- * with `table` set in it, that will be used when this parameter isn't specified. When neither is available, the method
- * will throw {@link external:Error Error} = `Table name is unknown.`
+ * with `table` set in it, that will be used when this parameter isn't specified. It is also optional for single-object
+ * updates, to allow generating updates that are part of an insert (`UPSERT` queries).
+ *
+ * If it is not available during a multi-object update, the method will throw {@link external:Error Error} = `Table name is unknown.`
  *
  * @param {Object} [options]
  * An object with formatting options for multi-object updates. Passing in a non-null value that's not an object will
@@ -101,40 +103,40 @@ var $npm = {
  *
  * // Although column details can be taken from the data object, it is not a likely scenario
  * // one wants for an update, unless updating the whole table:
- * 
+ *
  * var query = update(dataSingle, null, 'my-table');
  * //=> UPDATE "my-table" SET "id"=1,"val"=123,"msg"='hello'
  *
  * @example
- * 
+ *
  * // A typical single-object update:
- * 
+ *
  * var query = update(dataSingle, ['val', 'msg'], 'my-table') + ' WHERE id = ' + dataSingle.id;
  * //=> UPDATE "my-table" SET "val"=123,"msg"='hello' WHERE id = 1
  *
  * @example
- * 
+ *
  * // Column details are required for a multi-object update;
  * // Adding '?' in front of a column name means it is only for a WHERE condition:
- * 
+ *
  * var query = update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v.id = t.id';
  * //=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))
  * //   AS v("id","val","msg") WHERE v.id = t.id
  *
  * @example
- * 
+ *
  * // Using all details from a reusable ColumnSet (recommended for performance):
- * 
+ *
  * var cs = new ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});
- * 
+ *
  * var query = update(dataMulti, cs) + ' WHERE v.id = t.id';
  * //=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))
  * //   AS v("id","val","msg") WHERE v.id = t.id
  *
  * @example
- * 
+ *
  * // Using parameter `options` to change the default alias names:
- * 
+ *
  * var query = update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.id = X.id';
  * //=> UPDATE "my-table" AS X SET "val"=Y."val","msg"=Y."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))
  * //   AS Y("id","val","msg") WHERE Y.id = X.id
@@ -208,18 +210,18 @@ function update(data, columns, table, options, capSQL) {
     var updates = columns.getUpdates(data);
 
     checkColumns(updates);
-    checkTable();
+    checkTable(true);
 
     var query = capSQL ? sql.single.capCase : sql.single.lowCase;
 
-    return format(query, table.name) + format(updates, columns.prepare(data));
+    return format(query, table ? (' ' + table.name) : '') + format(updates, columns.prepare(data));
 
-    function checkTable() {
-        if (!table) {
-            throw new Error("Table name is unknown.");
-        }
-        if (!(table instanceof $npm.TableName)) {
+    function checkTable(optional) {
+        if (table &amp;&amp; !(table instanceof $npm.TableName)) {
             table = new $npm.TableName(table);
+        }
+        if (!table &amp;&amp; !optional) {
+            throw new Error("Table name is unknown.");
         }
     }
 
@@ -232,8 +234,8 @@ function update(data, columns, table, options, capSQL) {
 
 var sql = {
     single: {
-        lowCase: "update $1^ set ",
-        capCase: "UPDATE $1^ SET "
+        lowCase: "update$1^ set ",
+        capCase: "UPDATE$1^ SET "
     },
     multi: {
         lowCase: "update $1^ as $2^ set $3^ from (values$4^) as $5^",
