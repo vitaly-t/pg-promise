@@ -196,7 +196,7 @@ describe("UPDATE", function () {
             expect(function () {
                 helpers.update([{}], ['test']);
             }).toThrow(error);
-        });        
+        });
         it("must throw on invalid array data", function () {
             var error = new TypeError("Invalid update object at index 0.");
             expect(function () {
@@ -639,3 +639,105 @@ describe("ColumnSet", function () {
     });
 
 });
+
+describe("method 'sets'", function () {
+
+    describe("with a ColumnSet", function () {
+        it("must reuse the ColumnSet", function () {
+            var cs = new helpers.ColumnSet(dataSingle);
+            expect(helpers.sets(dataSingle, cs)).toBe('"val"=123,"msg"=\'test\'');
+        });
+    });
+
+    describe("without a ColumnSet", function () {
+        it("must create local ColumnSet", function () {
+            expect(helpers.sets(dataSingle)).toBe('"val"=123,"msg"=\'test\'');
+        });
+    });
+
+    describe("Negative", function () {
+        var error = new TypeError("Invalid 'data' specified.");
+        it("must throw when 'data' is not an object", function () {
+            expect(function () {
+                helpers.sets();
+            }).toThrow(error);
+            expect(function () {
+                helpers.sets(null);
+            }).toThrow(error);
+            expect(function () {
+                helpers.sets(123);
+            }).toThrow(error);
+            expect(function () {
+                helpers.sets([]);
+            }).toThrow(error);
+        });
+    });
+});
+
+describe("method 'values'", function () {
+
+    describe("with a ColumnSet", function () {
+        it("must reuse the ColumnSet", function () {
+            var cs = new helpers.ColumnSet(dataSingle);
+            expect(helpers.values(dataSingle, cs)).toBe('(123,\'test\')');
+        });
+    });
+
+    describe("without a ColumnSet", function () {
+        it("must create local ColumnSet", function () {
+            expect(helpers.values(dataSingle)).toBe('(123,\'test\')');
+        });
+    });
+
+    describe("with an array of data", function () {
+        it("must return query for a single object", function () {
+            expect(helpers.values(dataSingle)).toBe('(123,\'test\')');
+        });
+        it("must return query for multiple objects", function () {
+            expect(helpers.values(dataMulti, ['val', 'msg'])).toBe('(123,\'hello\'),(456,\'world\')');
+        });
+    });
+
+    describe("Negative", function () {
+        it("must throw when 'data' is not valid", function () {
+            var error = new TypeError("Invalid 'data' specified.");
+            expect(function () {
+                helpers.values();
+            }).toThrow(error);
+            expect(function () {
+                helpers.values(null);
+            }).toThrow(error);
+            expect(function () {
+                helpers.values(123);
+            }).toThrow(error);
+        });
+        it("must throw for an empty data array", function () {
+            var error = new TypeError("Cannot generate values from an empty array.");
+            expect(function () {
+                helpers.values([]);
+            }).toThrow(error);
+        });
+        it("must throw when there are no columns", function () {
+            var error = new TypeError("Cannot generate values without any columns.");
+            expect(function () {
+                helpers.values(dataSingle, []);
+            }).toThrow(error);
+        });
+        it("must throw when no columns for an array", function () {
+            var error = new TypeError("Parameter 'columns' is required when generating a multi-value string.");
+            expect(function () {
+                helpers.values([{}]);
+            }).toThrow(error);
+        });
+        it("must throw on invalid data object", function () {
+            var error = new TypeError("Invalid object at index 0.");
+            expect(function () {
+                helpers.values([null], ['val']);
+            }).toThrow(error);
+            expect(function () {
+                helpers.values([123], ['val']);
+            }).toThrow(error);
+        });
+    });
+});
+
