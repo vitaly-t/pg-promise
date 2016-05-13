@@ -365,6 +365,11 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
     
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// A complex insert/update object scenario for table 'purchases' in schema 'fiscal'.// For a good performance, you should declare such objects once and then reuse them.// 1. Property 'id' is only to be used for a WHERE condition in updates// 2. Property 'list' needs to be formatted as a csv// 3. Property 'code' is to be used as raw text, and to be defaulted to 0 when the//    property is missing in the source object// 4. Property 'log' is a JSON object with 'log-entry' for the column name// 5. Property 'data' requires SQL type casting '::int[]'// 6. Property 'amount' needs to be set to 100, if it is 0// 7. Property 'total' must be skipped during updates, if 'amount' was 0, plus its//    column name is 'total-val'var cs = new pgp.helpers.ColumnSet(['?id', // ColumnConfig equivalent: {name: 'id', cnd: true}'list:csv', // ColumnConfig equivalent: {name: 'list', mod: ':csv'}{    name: 'code',    mod: '^', // format as raw text    def: 0 // default to 0 when the property doesn't exist},{    name: 'log-entry',    prop: 'log',    mod: ':json' // format as JSON},{    name: 'data',    cast: 'int[]' // use SQL type casting '::int[]'},{    name: 'amount',    init: function (value) {        // set to 100, if the value is 0:        return values === 0 ? 100 : value;    }},{    name: 'total-val',    prop: 'total',    skip: function (name) {        // skip from updates, if 'amount' is 0:        return (this.amount === 0);    }}], {table: {table: 'purchases', schema: 'fiscal'}});// Alternatively, you could take the table declaration out:// var table = new pgp.helpers.TableName('purchases', 'fiscal');</code></pre>
+
+
 
     
     </div>
@@ -438,7 +443,7 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line90">line 90</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line142">line 142</a>
     </li></ul></dd>
     
 
@@ -514,7 +519,7 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line78">line 78</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line130">line 130</a>
     </li></ul></dd>
     
 
@@ -651,7 +656,7 @@ makes the list of effective columns dynamic.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line187">line 187</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line241">line 241</a>
     </li></ul></dd>
     
 
@@ -829,7 +834,7 @@ there are no columns to be updated or there is no data (when <code>data</code> i
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line272">line 272</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line328">line 328</a>
     </li></ul></dd>
     
 
