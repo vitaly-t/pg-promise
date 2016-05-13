@@ -504,6 +504,7 @@ describe("ColumnSet", function () {
         it("must approve for a non-empty set", function () {
             var cs = new helpers.ColumnSet(['name']);
             expect(cs.canUpdate([{}])).toBe(true);
+            expect(cs.canUpdate([{}])).toBe(true); // the second one is to cover 'canUpdateMany'
             expect(cs.canUpdate({})).toBe(true);
         });
         it("must reject for conditional columns", function () {
