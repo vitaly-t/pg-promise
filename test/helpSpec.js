@@ -113,6 +113,7 @@ describe("UPDATE", function () {
         describe("direct data", function () {
             it("must return all data properties as columns", function () {
                 expect(helpers.update(dataSingle, null, 'table')).toBe('update "table" set "val"=123,"msg"=\'test\'');
+                expect(helpers.update(dataSingle)).toBe('update set "val"=123,"msg"=\'test\'');
             });
         });
     });
@@ -190,12 +191,12 @@ describe("UPDATE", function () {
                 helpers.update({}, []);
             }).toThrow(error);
         });
-        it("must throw when table is not specified", function () {
+        it("must throw when table is not specified for an array", function () {
             var error = new TypeError("Table name is unknown.");
             expect(function () {
-                helpers.update({}, ['test']);
+                helpers.update([{}], ['test']);
             }).toThrow(error);
-        });
+        });        
         it("must throw on invalid array data", function () {
             var error = new TypeError("Invalid update object at index 0.");
             expect(function () {
