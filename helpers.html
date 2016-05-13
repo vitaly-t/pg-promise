@@ -949,7 +949,7 @@ throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 
     
     <pre class="prettyprint"><code>var pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});var update = pgp.helpers.update, ColumnSet = pgp.helpers.ColumnSet;var dataSingle = {id: 1, val: 123, msg: 'hello'};var dataMulti = [{id: 1, val: 123, msg: 'hello'}, {id: 2, val: 456, msg: 'world!'}];// Although column details can be taken from the data object, it is not a likely scenario// one wants for an update, unless updating the whole table:var query = update(dataSingle, null, 'my-table');//=> UPDATE "my-table" SET "id"=1,"val"=123,"msg"='hello'</code></pre>
 
-    <pre class="prettyprint"><code>// A typical single-object update:var query = update(dataSingle, ['val', 'msg'], 'my-table') + ' WHERE id = ' + dataSingle.id;//=> UPDATE "my-table" SET "id"=1,"value"=123,"msg"='hello' WHERE id = 1</code></pre>
+    <pre class="prettyprint"><code>// A typical single-object update:var query = update(dataSingle, ['val', 'msg'], 'my-table') + ' WHERE id = ' + dataSingle.id;//=> UPDATE "my-table" SET "val"=123,"msg"='hello' WHERE id = 1</code></pre>
 
     <pre class="prettyprint"><code>// Column details are required for a multi-object update;// Adding '?' in front of a column name means it is only for a WHERE condition:var query = update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
 
