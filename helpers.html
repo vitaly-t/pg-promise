@@ -528,9 +528,13 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
     
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>var pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});var insert = pgp.helpers.insert, ColumnSet = pgp.helpers.ColumnSet;var dataSingle = {val: 123, msg: 'hello'};var dataMulti = [{val: 123, msg: 'hello'}, {val: 456, msg: 'world!'}];// Column details can be taken from the data object:var query1 = insert(dataSingle, null, 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello')// Column details are required for a multi-object insert:var query2 = insert(dataMulti, ['val', 'msg'], 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')// Using column details and table name from ColumnSet:var cs = new ColumnSet(['val', 'msg'], {table: 'my-table'});var query3 = insert(dataMulti, cs);//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
+    <pre class="prettyprint"><code>var pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});var insert = pgp.helpers.insert, ColumnSet = pgp.helpers.ColumnSet;var dataSingle = {val: 123, msg: 'hello'};var dataMulti = [{val: 123, msg: 'hello'}, {val: 456, msg: 'world!'}];// Column details can be taken from the data object:var query = insert(dataSingle, null, 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello')</code></pre>
+
+    <pre class="prettyprint"><code>// Column details are required for a multi-object insert:var query = insert(dataMulti, ['val', 'msg'], 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
+
+    <pre class="prettyprint"><code>// Using column details and table name from ColumnSet:var cs = new ColumnSet(['val', 'msg'], {table: 'my-table'});var query = insert(dataMulti, cs);//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
 
 
 
@@ -921,7 +925,7 @@ throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 
 
         
 <div class="param-desc">
-    <p>The resulting query string.</p>
+    <p>The resulting query string that typically needs a <code>WHERE</code> condition appended.</p>
 </div>
 
 
@@ -941,9 +945,17 @@ throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 
     
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>var pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});var update = pgp.helpers.update, ColumnSet = pgp.helpers.ColumnSet;var dataSingle = {id: 1, val: 123, msg: 'hello'};var dataMulti = [{id: 1, val: 123, msg: 'hello'}, {id: 2, val: 456, msg: 'world!'}];// Although column details can be taken from the data object, it is not a likely scenario one wants// for an update, unless updating the whole table:var query1 = update(dataSingle, null, 'my-table');//=> UPDATE "my-table" SET "id"=1,"val"=123,"msg"='hello'// A typical single-object update:var query2 = update(dataSingle, ['val', 'msg'], 'my-table') + ' WHERE id = ' + dataSingle.id;//=> UPDATE "my-table" SET "id"=1,"value"=123,"msg"='hello' WHERE id = 1// Column details are required for a multi-object update;// Adding '?' means the column's value is only for a WHERE condition:var query3 = update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v."id" = t."id"';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v."id" = t."id"// Using column details and table name from ColumnSet:var cs = new ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});var query4 = update(dataMulti, cs) + ' WHERE v."id" = t."id"';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v."id" = t."id"// Changing the default aliases:var query5 = update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y."id" = X."id"';//=> UPDATE "my-table" AS X SET "val"=Y."val","msg"=Y."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS Y("id","val","msg") WHERE Y."id" = X."id"</code></pre>
+    <pre class="prettyprint"><code>var pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});var update = pgp.helpers.update, ColumnSet = pgp.helpers.ColumnSet;var dataSingle = {id: 1, val: 123, msg: 'hello'};var dataMulti = [{id: 1, val: 123, msg: 'hello'}, {id: 2, val: 456, msg: 'world!'}];// Although column details can be taken from the data object, it is not a likely scenario// one wants for an update, unless updating the whole table:var query = update(dataSingle, null, 'my-table');//=> UPDATE "my-table" SET "id"=1,"val"=123,"msg"='hello'</code></pre>
+
+    <pre class="prettyprint"><code>// A typical single-object update:var query = update(dataSingle, ['val', 'msg'], 'my-table') + ' WHERE id = ' + dataSingle.id;//=> UPDATE "my-table" SET "id"=1,"value"=123,"msg"='hello' WHERE id = 1</code></pre>
+
+    <pre class="prettyprint"><code>// Column details are required for a multi-object update;// Adding '?' in front of a column name means it is only for a WHERE condition:var query = update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
+
+    <pre class="prettyprint"><code>// Using column details and table name from ColumnSet:var cs = new ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});var query = update(dataMulti, cs) + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
+
+    <pre class="prettyprint"><code>// Using parameter `options` to change the default alias names:var query = update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.id = X.id';//=> UPDATE "my-table" AS X SET "val"=Y."val","msg"=Y."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS Y("id","val","msg") WHERE Y.id = X.id</code></pre>
 
 
 

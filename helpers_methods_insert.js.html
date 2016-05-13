@@ -89,16 +89,24 @@ var $npm = {
  * var dataMulti = [{val: 123, msg: 'hello'}, {val: 456, msg: 'world!'}];
  *
  * // Column details can be taken from the data object:
- * var query1 = insert(dataSingle, null, 'my-table');
+ * 
+ * var query = insert(dataSingle, null, 'my-table');
  * //=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello')
  *
+ * @example
+ * 
  * // Column details are required for a multi-object insert:
- * var query2 = insert(dataMulti, ['val', 'msg'], 'my-table');
+ * 
+ * var query = insert(dataMulti, ['val', 'msg'], 'my-table');
  * //=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')
  *
+ * @example
+ * 
  * // Using column details and table name from ColumnSet:
+ * 
  * var cs = new ColumnSet(['val', 'msg'], {table: 'my-table'});
- * var query3 = insert(dataMulti, cs);
+ * 
+ * var query = insert(dataMulti, cs);
  * //=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')
  *
  */

@@ -84,7 +84,7 @@ var $npm = {
  * Name of the SQL variable that represents the values.
  *
  * @returns {String}
- * The resulting query string.
+ * The resulting query string that typically needs a `WHERE` condition appended.
  *
  * @see {@link helpers.ColumnSet ColumnSet}
  *
@@ -99,31 +99,45 @@ var $npm = {
  * var dataSingle = {id: 1, val: 123, msg: 'hello'};
  * var dataMulti = [{id: 1, val: 123, msg: 'hello'}, {id: 2, val: 456, msg: 'world!'}];
  *
- * // Although column details can be taken from the data object, it is not a likely scenario one wants
- * // for an update, unless updating the whole table:
- * var query1 = update(dataSingle, null, 'my-table');
+ * // Although column details can be taken from the data object, it is not a likely scenario
+ * // one wants for an update, unless updating the whole table:
+ * 
+ * var query = update(dataSingle, null, 'my-table');
  * //=> UPDATE "my-table" SET "id"=1,"val"=123,"msg"='hello'
  *
+ * @example
+ * 
  * // A typical single-object update:
- * var query2 = update(dataSingle, ['val', 'msg'], 'my-table') + ' WHERE id = ' + dataSingle.id;
+ * 
+ * var query = update(dataSingle, ['val', 'msg'], 'my-table') + ' WHERE id = ' + dataSingle.id;
  * //=> UPDATE "my-table" SET "id"=1,"value"=123,"msg"='hello' WHERE id = 1
  *
+ * @example
+ * 
  * // Column details are required for a multi-object update;
- * // Adding '?' means the column's value is only for a WHERE condition:
- * var query3 = update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v."id" = t."id"';
+ * // Adding '?' in front of a column name means it is only for a WHERE condition:
+ * 
+ * var query = update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v.id = t.id';
  * //=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))
- * //   AS v("id","val","msg") WHERE v."id" = t."id"
+ * //   AS v("id","val","msg") WHERE v.id = t.id
  *
+ * @example
+ * 
  * // Using column details and table name from ColumnSet:
+ * 
  * var cs = new ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});
- * var query4 = update(dataMulti, cs) + ' WHERE v."id" = t."id"';
+ * 
+ * var query = update(dataMulti, cs) + ' WHERE v.id = t.id';
  * //=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))
- * //   AS v("id","val","msg") WHERE v."id" = t."id"
+ * //   AS v("id","val","msg") WHERE v.id = t.id
  *
- * // Changing the default aliases:
- * var query5 = update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y."id" = X."id"';
+ * @example
+ * 
+ * // Using parameter `options` to change the default alias names:
+ * 
+ * var query = update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.id = X.id';
  * //=> UPDATE "my-table" AS X SET "val"=Y."val","msg"=Y."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))
- * //   AS Y("id","val","msg") WHERE Y."id" = X."id"
+ * //   AS Y("id","val","msg") WHERE Y.id = X.id
  *
  */
 function update(data, columns, table, options, capSQL) {

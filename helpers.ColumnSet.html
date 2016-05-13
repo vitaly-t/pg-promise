@@ -49,7 +49,7 @@
 
 
 <div class="description">
-    <p>Performance-optimized, read-only structure about all query-formatting columns.</p>
+    <p>Performance-optimized, read-only structure with all query-formatting columns.</p>
 <p>For performance-oriented applications this type should be created globally, to be reused by methods
 <a href="helpers.html#.insert">insert</a> and <a href="helpers.html#.update">update</a>.</p>
 </div>
@@ -679,8 +679,9 @@ makes the list of effective columns dynamic.</p>
         
 <div class="param-desc">
     <ul>
-<li><code>true</code> - it is possible to generate a valid <code>UPDATE</code> query via method <a href="helpers.html#.update">update</a></li>
-<li><code>false</code> - passing such <code>data</code> into method <a href="helpers.html#.update">update</a> will inevitably throw an error</li>
+<li><code>true</code> - this <code>ColumnSet</code> can generate a valid <code>UPDATE</code> query via method <a href="helpers.html#.update">update</a> for the <code>data</code> specified</li>
+<li><code>false</code> - passing such <code>data</code> into method <a href="helpers.html#.update">update</a> will inevitably throw an error, either because
+there are no columns to be updated or there is no data (when <code>data</code> is an empty array).</li>
 </ul>
 </div>
 
@@ -828,7 +829,7 @@ makes the list of effective columns dynamic.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line271">line 271</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line272">line 272</a>
     </li></ul></dd>
     
 

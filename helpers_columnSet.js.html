@@ -41,7 +41,7 @@ var $npm = {
  * @class helpers.ColumnSet
  * @description
  *
- * Performance-optimized, read-only structure about all query-formatting columns.
+ * Performance-optimized, read-only structure with all query-formatting columns.
  *
  * For performance-oriented applications this type should be created globally, to be reused by methods
  * {@link helpers.insert insert} and {@link helpers.update update}.
@@ -233,8 +233,9 @@ function ColumnSet(columns, options) {
      *
      * @returns {Boolean}
      *
-     * - `true` - it is possible to generate a valid `UPDATE` query via method {@link helpers.update update}
-     * - `false` - passing such `data` into method {@link helpers.update update} will inevitably throw an error
+     * - `true` - this `ColumnSet` can generate a valid `UPDATE` query via method {@link helpers.update update} for the `data` specified
+     * - `false` - passing such `data` into method {@link helpers.update update} will inevitably throw an error, either because
+     *   there are no columns to be updated or there is no data (when `data` is an empty array).
      */
     this.canUpdate = function (data) {
         if (!data || typeof data !== 'object') {
