@@ -30,66 +30,69 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 var $npm = {
-    insert: require('./methods/insert'),
-    update: require('./methods/update'),
-    values: require('./methods/values'),
-    sets: require('./methods/sets'),
-    TableName: require('./tableName'),
-    ColumnSet: require('./columnSet'),
-    Column: require('./column')
+    ColumnSet: require('../columnSet'),
+    formatting: require('../../formatting'),
+    utils: require('../../utils')
 };
 
 /**
- * @namespace helpers
+ * @method helpers.values
  * @description
+ * Generates a string of comma-separated value groups for either one object or an array of objects.
  *
- * Namespace for automated query formatting helpers, available as `pgp.helpers`, after initializing the library.
+ * Each returned group is wrapped into `()`, in the same way as for an `INSERT` query.
  *
- * Types and methods that are found here are mainly to help with generating multi-insert and multi-update queries in
- * a reliable and flexible/extensible way, as well as single-insert and single-update queries.
+ * @param {Object|Object[]} data
+ * A source object with properties as values, or an array of such objects.
  *
- * To understand their importance, read $[Performance Boost].
+ * If it is anything else, the method will throw {@link external:TypeError TypeError} = `Invalid 'data' specified.`
  *
- * @property {Function} TableName
- * {@link helpers.TableName TableName} class constructor.
+ * @param {Array|helpers.Column|helpers.ColumnSet} [columns]
+ * Columns for which to return values.
  *
- * @property {Function} ColumnSet
- * {@link helpers.ColumnSet ColumnSet} class constructor.
+ * It is optional when `data` is a single object, in which case the object's properties are used.
+ * And it is required when `data` is an array of objects.
  *
- * @property {Function} Column
- * {@link helpers.Column Column} class constructor.
+ * @returns {String}
  *
- * @property {Function} insert
- * {@link helpers.insert insert} static method.
- *
- * @property {Function} update
- * {@link helpers.update update} static method.
- *
- * @property {Function} values
- * {@link helpers.values values} static method.
- *
- * @property {Function} sets
- * {@link helpers.sets sets} static method.
  */
-module.exports = function (config) {
-    var res = {
-        insert: function (data, columns, table) {
-            var capSQL = config.options &amp;&amp; config.options.capSQL;
-            return $npm.insert(data, columns, table, capSQL);
-        },
-        update: function (data, columns, table, options) {
-            var capSQL = config.options &amp;&amp; config.options.capSQL;
-            return $npm.update(data, columns, table, options, capSQL);
-        },
-        values: $npm.values,
-        sets: $npm.sets,
-        TableName: $npm.TableName,
-        ColumnSet: $npm.ColumnSet,
-        Column: $npm.Column
-    };
-    Object.freeze(res);
-    return res;
-};
+function values(data, columns) {
+
+    if (!data || typeof data !== 'object') {
+        throw new TypeError("Invalid 'data' specified.");
+    }
+
+    var isArray = Array.isArray(data);
+
+    if (isArray &amp;&amp; !data.length) {
+        throw new TypeError("Cannot generate values from an empty array.");
+    }
+
+    if (!(columns instanceof $npm.ColumnSet)) {
+        if (isArray &amp;&amp; $npm.utils.isNull(columns)) {
+            throw new TypeError("Parameter 'columns' is required when generating a multi-value string.");
+        }
+        columns = new $npm.ColumnSet(columns || data);
+    }
+
+    if (!columns.columns.length) {
+        throw new Error("Cannot generate values without any columns.");
+    }
+
+    var format = $npm.formatting.as.format;
+
+    if (isArray) {
+        return data.$map(function (d, index) {
+            if (!d || typeof d !== 'object') {
+                throw new Error("Invalid object at index " + index + ".");
+            }
+            return '(' + format(columns.variables, columns.prepare(d)) + ')';
+        }).join();
+    }
+    return '(' + format(columns.variables, columns.prepare(data)) + ')';
+}
+
+module.exports = values;
 </code></pre>
         </article>
     </section>

@@ -185,6 +185,52 @@ a reliable and flexible/extensible way, as well as single-insert and single-upda
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="helpers.html#.values">values</a> static method.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sets</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="helpers.html#.sets">sets</a> static method.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -535,6 +581,207 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
     <pre class="prettyprint"><code>// Column details are required for a multi-object insert:var query = insert(dataMulti, ['val', 'msg'], 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
 
     <pre class="prettyprint"><code>// Using all details from a reusable ColumnSet (recommended for performance):var cs = new ColumnSet(['val', 'msg'], {table: 'my-table'});var query = insert(dataMulti, cs);//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".sets"><span class="type-signature">(static) </span>sets<span class="signature">(data, columns<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Generates a string of comma-separated <code>SET</code> commands for a single object,
+in the same way as values are set with an <code>UPDATE</code> query.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A simple, non-null and non-array source object.</p>
+<p>If it is anything else, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid 'data' specified.</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>columns</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type"><a href="helpers.Column.html">helpers.Column</a></span>
+|
+
+<span class="param-type"><a href="helpers.ColumnSet.html">helpers.ColumnSet</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Columns for which to return <code>SET</code> commands.</p>
+<p>When not specified, properties of the <code>data</code> object are used.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_methods_sets.js.html">helpers/methods/sets.js</a>, <a href="helpers_methods_sets.js.html#line9">line 9</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -957,6 +1204,211 @@ throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 
     <pre class="prettyprint"><code>// Using all details from a reusable ColumnSet (recommended for performance):var cs = new ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});var query = update(dataMulti, cs) + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
 
     <pre class="prettyprint"><code>// Using parameter `options` to change the default alias names:var query = update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.id = X.id';//=> UPDATE "my-table" AS X SET "val"=Y."val","msg"=Y."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS Y("id","val","msg") WHERE Y.id = X.id</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".values"><span class="type-signature">(static) </span>values<span class="signature">(data, columns<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Generates a string of comma-separated value groups for either one object or an array of objects.</p>
+<p>Each returned group is wrapped into <code>()</code>, in the same way as for an <code>INSERT</code> query.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A source object with properties as values, or an array of such objects.</p>
+<p>If it is anything else, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid 'data' specified.</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>columns</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type"><a href="helpers.Column.html">helpers.Column</a></span>
+|
+
+<span class="param-type"><a href="helpers.ColumnSet.html">helpers.ColumnSet</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Columns for which to return values.</p>
+<p>It is optional when <code>data</code> is a single object, in which case the object's properties are used.
+And it is required when <code>data</code> is an array of objects.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_methods_values.js.html">helpers/methods/values.js</a>, <a href="helpers_methods_values.js.html#line9">line 9</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
