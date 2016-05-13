@@ -534,7 +534,7 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
 
     <pre class="prettyprint"><code>// Column details are required for a multi-object insert:var query = insert(dataMulti, ['val', 'msg'], 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
 
-    <pre class="prettyprint"><code>// Using column details and table name from ColumnSet:var cs = new ColumnSet(['val', 'msg'], {table: 'my-table'});var query = insert(dataMulti, cs);//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
+    <pre class="prettyprint"><code>// Using all details from a reusable ColumnSet (recommended for performance):var cs = new ColumnSet(['val', 'msg'], {table: 'my-table'});var query = insert(dataMulti, cs);//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
 
 
 
@@ -953,7 +953,7 @@ throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 
 
     <pre class="prettyprint"><code>// Column details are required for a multi-object update;// Adding '?' in front of a column name means it is only for a WHERE condition:var query = update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
 
-    <pre class="prettyprint"><code>// Using column details and table name from ColumnSet:var cs = new ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});var query = update(dataMulti, cs) + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
+    <pre class="prettyprint"><code>// Using all details from a reusable ColumnSet (recommended for performance):var cs = new ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});var query = update(dataMulti, cs) + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
 
     <pre class="prettyprint"><code>// Using parameter `options` to change the default alias names:var query = update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.id = X.id';//=> UPDATE "my-table" AS X SET "val"=Y."val","msg"=Y."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS Y("id","val","msg") WHERE Y.id = X.id</code></pre>
 
