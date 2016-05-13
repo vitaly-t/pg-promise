@@ -12,4 +12,4 @@ pgpLib.errors; // `errors` namespace
 pgp.errors; // `errors` namespace
 ```
 
-For details see the [`errors` API](https://github.com/vitaly-t/pg-promise/tree/master/lib/errors). 
+For details see the [`errors` API](http://vitaly-t.github.io/pg-promise/errors.html). 

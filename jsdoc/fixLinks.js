@@ -20,7 +20,8 @@ var links = {
     "pg-native": "https://github.com/brianc/node-pg-native",
     "Named Parameters": "https://github.com/vitaly-t/pg-promise#named-parameters",
     "tags": "https://github.com/vitaly-t/pg-promise/wiki/workflows#tags",
-    "ES6 generator": "https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*"
+    "ES6 generator": "https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*",
+    "Performance Boost": "https://github.com/vitaly-t/pg-promise/wiki/Performance-Boost"
 };
 
 function fixLinks(source) {
