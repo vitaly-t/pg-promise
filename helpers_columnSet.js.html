@@ -41,7 +41,7 @@ var $npm = {
  * @class helpers.ColumnSet
  * @description
  *
- * Performance-optimized, read-only structure with all query-formatting columns.
+ * Performance-optimized, read-only structure with query-formatting columns.
  *
  * For performance-oriented applications this type should be created globally, to be reused by methods
  * {@link helpers.insert insert} and {@link helpers.update update}.
@@ -180,7 +180,7 @@ function ColumnSet(columns, options) {
         throw new TypeError("Invalid parameter 'columns' specified.");
     }
 
-    var inherit, names, variables, updates, canUpdateMany;
+    var inherit, names, variables, updates, canSetMany;
 
     if (!$npm.utils.isNull(options)) {
         if (typeof options !== 'object') {
@@ -338,13 +338,13 @@ function ColumnSet(columns, options) {
         }
         var cnd = 0, skip = 0, total = this.columns.length;
         if (Array.isArray(data)) {
-            if (canUpdateMany === undefined) {
+            if (canSetMany === undefined) {
                 cnd = this.columns.$countIf(function (c) {
                     return c.cnd;
                 });
-                canUpdateMany = total > cnd;
+                canSetMany = total > cnd;
             }
-            return canUpdateMany &amp;&amp; data.length > 0;
+            return canSetMany &amp;&amp; data.length > 0;
         }
         this.columns.$forEach(function (c) {
             cnd += c.cnd ? 1 : 0;
