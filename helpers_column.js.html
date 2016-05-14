@@ -43,16 +43,18 @@ var $npm = {
  * Performance-optimized, read-only structure that contains pre-formatted details for a single column.
  *
  * @param {String|helpers.ColumnConfig} col
- * Column details, depending on the type:
+ * Column details, depending on the type.
  *
- * - When it is a string, it is expected to contain a name for both the column and the source property,
- *   assuming that the two are the same. The name must adhere to JavaScript syntax for variable names.
- *   The name can be appended with any format modifier as supported by {@link formatting.format as.format}
- *   (`^`, `~`, `#`, `:csv`, `:json`, `name`, `raw`, `:value`), which is then removed from the name and put
- *   into property `mod`. If the name starts with `?`, it is removed, while setting flag `cnd`=`true`.
+ * When it is a string, it is expected to contain a name for both the column and the source property,
+ * assuming that the two are the same. The name must adhere to JavaScript syntax for variable names.
+ * The name can be appended with any format modifier as supported by {@link formatting.format as.format}
+ * (`^`, `~`, `#`, `:csv`, `:json`, `name`, `raw`, `:value`), which is then removed from the name and put
+ * into property `mod`. If the name starts with `?`, it is removed, while setting flag `cnd`=`true`.
  *
- * - When it is a simple {@link helpers.ColumnConfig ColumnConfig}-like object, it is used as an
- *   input configurator to set all the properties of the class.
+ * If the string doesn't adhere to the above requirements, the method will throw {@link external:TypeError TypeError} = `Invalid column syntax`.
+ *
+ * When `col` is a simple {@link helpers.ColumnConfig ColumnConfig}-like object, it is used as an
+ * input configurator to set all the properties of the class.
  *
  * @property {String} name
  * Column name + property name (if `prop` isn't specified).
@@ -245,7 +247,7 @@ function parseColumn(name) {
         }
         return res;
     }
-    throw new TypeError("Invalid column syntax.");
+    throw new TypeError('Invalid column syntax: "' + name + '".');
 }
 
 function isValidMod(mod) {
