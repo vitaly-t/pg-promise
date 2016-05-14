@@ -61,3 +61,5 @@ var values4 = pgp.helpers.values([], cs);
 var sets1 = pgp.helpers.sets({});
 var sets2 = pgp.helpers.sets([]);
 var sets3 = pgp.helpers.sets({}, cs);
+
+var test:boolean = cs.canUpdate(data);

@@ -659,8 +659,16 @@ describe("method 'sets'", function () {
         });
     });
 
+    describe("without columns", function () {
+        it("must return an empty string", function () {
+            var cs = new helpers.ColumnSet(['?val', '?msg']);
+            expect(helpers.sets(dataSingle, cs)).toBe('');
+            expect(helpers.sets(dataSingle, [])).toBe('');
+        });
+    });
+
     describe("Negative", function () {
-        var error = new TypeError("Invalid 'data' specified.");
+        var error = new TypeError("Invalid parameter 'data' specified.");
         it("must throw when 'data' is not an object", function () {
             expect(function () {
                 helpers.sets();
@@ -702,9 +710,16 @@ describe("method 'values'", function () {
         });
     });
 
+    describe("with an empty data array", function () {
+        it("must return an empty string", function () {
+            var cs = new helpers.ColumnSet(dataSingle);
+            expect(helpers.values([], cs)).toBe('');
+        });
+    });
+
     describe("Negative", function () {
         it("must throw when 'data' is not valid", function () {
-            var error = new TypeError("Invalid 'data' specified.");
+            var error = new TypeError("Invalid parameter 'data' specified.");
             expect(function () {
                 helpers.values();
             }).toThrow(error);
@@ -713,12 +728,6 @@ describe("method 'values'", function () {
             }).toThrow(error);
             expect(function () {
                 helpers.values(123);
-            }).toThrow(error);
-        });
-        it("must throw for an empty data array", function () {
-            var error = new TypeError("Cannot generate values from an empty array.");
-            expect(function () {
-                helpers.values([]);
             }).toThrow(error);
         });
         it("must throw when there are no columns", function () {
