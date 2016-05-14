@@ -70,10 +70,8 @@ var $npm = {
  * Table to be updated.
  *
  * It is normally a required parameter. But when `columns` is passed in as a {@link helpers.ColumnSet ColumnSet} object
- * with `table` set in it, that will be used when this parameter isn't specified. It is optional for single-object
- * updates, to allow generating updates that are part of an insert (`UPSERT` queries).
- *
- * If it is not available for a multi-object update, the method will throw {@link external:Error Error} = `Table name is unknown.`
+ * with `table` set in it, that will be used when this parameter isn't specified. When neither is available, the method
+ * will throw {@link external:Error Error} = `Table name is unknown.`
  *
  * @param {Object} [options]
  * An object with formatting options for multi-object updates. Passing in a non-null value that's not an object will
@@ -211,17 +209,17 @@ function update(data, columns, table, options, capSQL) {
     var updates = columns.getUpdates(data);
 
     checkColumns(updates);
-    checkTable(true);
+    checkTable();
 
     var query = capSQL ? sql.single.capCase : sql.single.lowCase;
 
-    return format(query, table ? (' ' + table.name) : '') + format(updates, columns.prepare(data));
+    return format(query, table.name) + format(updates, columns.prepare(data));
 
-    function checkTable(optional) {
+    function checkTable() {
         if (table &amp;&amp; !(table instanceof $npm.TableName)) {
             table = new $npm.TableName(table);
         }
-        if (!table &amp;&amp; !optional) {
+        if (!table) {
             throw new Error("Table name is unknown.");
         }
     }
@@ -235,8 +233,8 @@ function update(data, columns, table, options, capSQL) {
 
 var sql = {
     single: {
-        lowCase: "update$1^ set ",
-        capCase: "UPDATE$1^ SET "
+        lowCase: "update $1^ set ",
+        capCase: "UPDATE $1^ SET "
     },
     multi: {
         lowCase: "update $1^ as $2^ set $3^ from (values$4^) as $5^",

@@ -974,9 +974,8 @@ is created - from the value of <code>columns</code> (if it was specified), or fr
 
             <td class="description last"><p>Table to be updated.</p>
 <p>It is normally a required parameter. But when <code>columns</code> is passed in as a <a href="helpers.ColumnSet.html">ColumnSet</a> object
-with <code>table</code> set in it, that will be used when this parameter isn't specified. It is optional for single-object
-updates, to allow generating updates that are part of an insert (<code>UPSERT</code> queries).</p>
-<p>If it is not available for a multi-object update, the method will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown.</code></p></td>
+with <code>table</code> set in it, that will be used when this parameter isn't specified. When neither is available, the method
+will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown.</code></p></td>
         </tr>
 
     
@@ -1662,8 +1661,8 @@ unless <code>prop</code> is specified, in which case <code>name</code> represent
 
             
 
-            <td class="description last"><p>Used by updates only, it means the column's value is not to be updated, and it is only for use within an update
-condition (for multi-object updates).</p></td>
+            <td class="description last"><p>Used by methods <a href="helpers.html#.update">update</a> and <a href="helpers.html#.sets">sets</a>, ignored by methods <a href="helpers.html#.insert">insert</a> and
+<a href="helpers.html#.values">values</a>. It indicates that the column is reserved for a <code>WHERE</code> condition, not to be set or updated.</p></td>
         </tr>
 
     
@@ -1751,8 +1750,10 @@ condition (for multi-object updates).</p></td>
 
             
 
-            <td class="description last"><p>Used by single-object updates only, to allow skipping columns based on a condition.</p>
-<p>It is ignored for conditional columns (when <code>cnd</code> is set to <code>true</code>).</p></td>
+            <td class="description last"><p>An override for skipping columns dynamically.</p>
+<p>Used by methods <a href="helpers.html#.update">update</a> (for a single object) and <a href="helpers.html#.sets">sets</a>, ignored by methods
+<a href="helpers.html#.insert">insert</a> and <a href="helpers.html#.values">values</a>.</p>
+<p>It is also ignored when conditional flag <code>cnd</code> is set.</p></td>
         </tr>
 
     
@@ -1791,7 +1792,7 @@ condition (for multi-object updates).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line278">line 278</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line281">line 281</a>
     </li></ul></dd>
     
 
@@ -1911,7 +1912,7 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line313">line 313</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line320">line 320</a>
     </li></ul></dd>
     
 
@@ -2055,7 +2056,7 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line332">line 332</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line339">line 339</a>
     </li></ul></dd>
     
 

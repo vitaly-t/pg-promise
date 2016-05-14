@@ -302,9 +302,9 @@ input configurator to set all the properties of the class.</p>
             
 
             <td class="description last"><p>Conditional column flag.</p>
-<p>Used by update queries only, it indicates that the column's value is not to be updated,
-and it is only for use within an update condition.</p>
-<p>When initializing from a string, it is the same as adding <code>?</code> in front of the name.</p></td>
+<p>Used by methods <a href="helpers.html#.update">update</a> and <a href="helpers.html#.sets">sets</a>, ignored by methods <a href="helpers.html#.insert">insert</a> and
+<a href="helpers.html#.values">values</a>. It indicates that the column is reserved for a <code>WHERE</code> condition, not to be set or updated.</p>
+<p>It can be set from a string initialization, by adding <code>?</code> in front of the name.</p></td>
         </tr>
 
     
@@ -361,7 +361,7 @@ and it is only for use within an update condition.</p>
 
             
 
-            <td class="description last"><p>Value override callback. See property <code>init</code> in <a href="helpers.html#.ColumnConfig">ColumnConfig</a>.</p></td>
+            <td class="description last"><p>Override callback for the value.</p></td>
         </tr>
 
     
@@ -392,8 +392,10 @@ and it is only for use within an update condition.</p>
 
             
 
-            <td class="description last"><p>An override for skipping columns. See property <code>skip</code> in <a href="helpers.html#.ColumnConfig">ColumnConfig</a>.</p>
-<p>It is ignored when conditional flag <code>cnd</code> is set.</p></td>
+            <td class="description last"><p>An override for skipping columns dynamically.</p>
+<p>Used by methods <a href="helpers.html#.update">update</a> (for a single object) and <a href="helpers.html#.sets">sets</a>, ignored by methods
+<a href="helpers.html#.insert">insert</a> and <a href="helpers.html#.values">values</a>.</p>
+<p>It is also ignored when conditional flag <code>cnd</code> is set.</p></td>
         </tr>
 
     
@@ -632,7 +634,7 @@ and it is only for use within an update condition.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line229">line 229</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line232">line 232</a>
     </li></ul></dd>
     
 

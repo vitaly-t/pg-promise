@@ -69,21 +69,24 @@ var $npm = {
  * @property {Boolean} [cnd]
  * Conditional column flag.
  *
- * Used by update queries only, it indicates that the column's value is not to be updated,
- * and it is only for use within an update condition.
+ * Used by methods {@link helpers.update update} and {@link helpers.sets sets}, ignored by methods {@link helpers.insert insert} and
+ * {@link helpers.values values}. It indicates that the column is reserved for a `WHERE` condition, not to be set or updated.
  *
- * When initializing from a string, it is the same as adding `?` in front of the name.
+ * It can be set from a string initialization, by adding `?` in front of the name.
  *
  * @property {} [def]
  * Default value for the property, to be used only when the source object doesn't have the property.
  *
  * @property {helpers.initCB} [init]
- * Value override callback. See property `init` in {@link helpers.ColumnConfig ColumnConfig}.
+ * Override callback for the value.
  *
  * @property {helpers.skipCB} [skip]
- * An override for skipping columns. See property `skip` in {@link helpers.ColumnConfig ColumnConfig}.
+ * An override for skipping columns dynamically.
  *
- * It is ignored when conditional flag `cnd` is set.
+ * Used by methods {@link helpers.update update} (for a single object) and {@link helpers.sets sets}, ignored by methods
+ * {@link helpers.insert insert} and {@link helpers.values values}.
+ *
+ * It is also ignored when conditional flag `cnd` is set.
  *
  * @returns {helpers.Column}
  *
@@ -323,8 +326,9 @@ Column.prototype.inspect = function () {
  * Server-side type casting. Leading `::` is allowed, but not needed (automatically removed when specified).
  *
  * @property {Boolean} [cnd]
- * Used by updates only, it means the column's value is not to be updated, and it is only for use within an update
- * condition (for multi-object updates).
+ *
+ * Used by methods {@link helpers.update update} and {@link helpers.sets sets}, ignored by methods {@link helpers.insert insert} and
+ * {@link helpers.values values}. It indicates that the column is reserved for a `WHERE` condition, not to be set or updated.
  *
  * @property {} [def]
  * Default value for the property, to be used only when the source object doesn't have the property.
@@ -333,9 +337,12 @@ Column.prototype.inspect = function () {
  * Override callback for the value.
  *
  * @property {helpers.skipCB} [skip]
- * Used by single-object updates only, to allow skipping columns based on a condition.
+ * An override for skipping columns dynamically.
  *
- * It is ignored for conditional columns (when `cnd` is set to `true`).
+ * Used by methods {@link helpers.update update} (for a single object) and {@link helpers.sets sets}, ignored by methods
+ * {@link helpers.insert insert} and {@link helpers.values values}.
+ *
+ * It is also ignored when conditional flag `cnd` is set.
  *
  */
 
