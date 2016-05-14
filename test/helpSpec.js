@@ -647,6 +647,10 @@ describe("method 'sets'", function () {
             var cs = new helpers.ColumnSet(dataSingle);
             expect(helpers.sets(dataSingle, cs)).toBe('"val"=123,"msg"=\'test\'');
         });
+        it("must skip conditional columns", function () {
+            var cs = new helpers.ColumnSet(['?val', 'msg']);
+            expect(helpers.sets(dataSingle, cs)).toBe('"msg"=\'test\'');
+        });
     });
 
     describe("without a ColumnSet", function () {

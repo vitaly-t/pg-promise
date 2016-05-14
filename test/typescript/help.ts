@@ -52,3 +52,12 @@ var cs = new pgp.helpers.ColumnSet([
 
 var insert = pgp.helpers.insert(data, cs, 'my-table');
 var update = pgp.helpers.update(data, cs, table1, {tableAlias: 'W'});
+
+var values1 = pgp.helpers.values({});
+var values2 = pgp.helpers.values({}, []);
+var values3 = pgp.helpers.values([{}], []);
+var values4 = pgp.helpers.values([], cs);
+
+var sets1 = pgp.helpers.sets({});
+var sets2 = pgp.helpers.sets([]);
+var sets3 = pgp.helpers.sets({}, cs);
