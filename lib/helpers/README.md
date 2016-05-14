@@ -1,6 +1,6 @@
 ### `helpers` namespace
 
-The namespace for query-formatting helpers.
+The namespace for query-formatting generators.
 
 This folder contains everything that's available via the `helpers` namespace, after initializing the library:
 
