@@ -114,7 +114,7 @@ describe("UPDATE", function () {
             it("must return all properties correctly", function () {
                 var cs = ['?val', {name: 'msg', cast: 'text'}, {name: 'extra', def: 555}];
                 expect(helpers.update(dataSingle, cs, 'table')).toBe('update "table" set "msg"=\'test\'::text,"extra"=555');
-                expect(helpers.update(dataSingle)).toBe('update set "val"=123,"msg"=\'test\'');
+                expect(helpers.update(dataSingle, null, 'table')).toBe('update "table" set "val"=123,"msg"=\'test\'');
             });
         });
     });
@@ -198,6 +198,7 @@ describe("UPDATE", function () {
         it("must throw when table is not specified for an array", function () {
             var error = new TypeError("Table name is unknown.");
             expect(function () {
+                helpers.update({}, ['test']);
                 helpers.update([{}], ['test']);
             }).toThrow(error);
         });
