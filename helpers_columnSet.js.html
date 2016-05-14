@@ -311,8 +311,9 @@ function ColumnSet(columns, options) {
      * @method helpers.ColumnSet.canUpdate
      * @description
      * Checks if it is possible to generate an `UPDATE` query (via method {@link helpers.update update}) for the specified `data`
-     * and the current {@link helpers.ColumnSet ColumnSet} object, without running into errors related to the shortage of effective
-     * update columns or the lack of data.
+     * and the current {@link helpers.ColumnSet ColumnSet}, without running into errors related to the shortage of effective
+     * update columns or the lack of data. It can also be used before calling method {@link helpers.sets sets}, to determine whether
+     * it is going to return an empty string, due to the shortage of effective columns.
      *
      * The result and the logic depend on whether `data` is a single object or an array, and it is consistent with the validation
      * logic that's implemented by the {@link helpers.update update} method.
@@ -353,7 +354,6 @@ function ColumnSet(columns, options) {
         });
         return total > cnd + skip;
     };
-
 
     /**
      * @method helpers.ColumnSet.prepare

@@ -554,8 +554,9 @@ it is used directly; otherwise the element is passed into <a href="helpers.Colum
 
 <div class="description">
     <p>Checks if it is possible to generate an <code>UPDATE</code> query (via method <a href="helpers.html#.update">update</a>) for the specified <code>data</code>
-and the current <a href="helpers.ColumnSet.html">ColumnSet</a> object, without running into errors related to the shortage of effective
-update columns or the lack of data.</p>
+and the current <a href="helpers.ColumnSet.html">ColumnSet</a>, without running into errors related to the shortage of effective
+update columns or the lack of data. It can also be used before calling method <a href="helpers.html#.sets">sets</a>, to determine whether
+it is going to return an empty string, due to the shortage of effective columns.</p>
 <p>The result and the logic depend on whether <code>data</code> is a single object or an array, and it is consistent with the validation
 logic that's implemented by the <a href="helpers.html#.update">update</a> method.</p>
 <p>This method is mainly valuable for those single-object updates that make use of property <a href="helpers.Column.html">Column.skip</a>, which

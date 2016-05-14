@@ -47,15 +47,25 @@ var $npm = {
  * @param {Object|Object[]} data
  * A source object with properties as values, or an array of such objects.
  *
- * If it is anything else, the method will throw {@link external:TypeError TypeError} = `Invalid 'data' specified.`
+ * If it is anything else, the method will throw {@link external:TypeError TypeError} = `Invalid parameter 'data' specified.`
+ *
+ * When `data` is an array that contains a non-object value, the method will throw {@link external:Error Error} =
+ * `Invalid object at index N.`
+ *
+ * When `data` is an empty array, an empty string is returned.
  *
  * @param {Array|helpers.Column|helpers.ColumnSet} [columns]
  * Columns for which to return values.
  *
- * It is optional when `data` is a single object, in which case the object's properties are used.
- * And it is required when `data` is an array of objects.
+ * It is optional when `data` is a single object, and required when `data` is an array of objects. If not specified for an array
+ * of objects, the method will throw {@link external:TypeError TypeError} = `Parameter 'columns' is required when generating a multi-value string.`
+ *
+ * When the final {@link helpers.ColumnSet ColumnSet} is empty (no columns in it), the method will throw
+ * {@link external:Error Error} = `Cannot generate values without any columns.`
  *
  * @returns {String}
+ * - comma-separated value groups, according to `data`
+ * - an empty string, if `data` is an empty array
  *
  * @see
  *  {@link helpers.Column Column},
@@ -93,14 +103,10 @@ var $npm = {
 function values(data, columns) {
 
     if (!data || typeof data !== 'object') {
-        throw new TypeError("Invalid 'data' specified.");
+        throw new TypeError("Invalid parameter 'data' specified.");
     }
 
     var isArray = Array.isArray(data);
-
-    if (isArray &amp;&amp; !data.length) {
-        throw new TypeError("Cannot generate values from an empty array.");
-    }
 
     if (!(columns instanceof $npm.ColumnSet)) {
         if (isArray &amp;&amp; $npm.utils.isNull(columns)) {

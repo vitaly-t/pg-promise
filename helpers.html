@@ -390,7 +390,6 @@ a reliable and flexible/extensible way, as well as single-insert and single-upda
             <td class="description last"><p>An insert object with properties for insert values, or an array of such objects.</p>
 <p>When <code>data</code> is not a non-null object and not an array, it will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'data' specified.</code></p>
 <p>When <code>data</code> is an empty array, it will throw <a href="external-TypeError.html">TypeError</a> = <code>Cannot generate an INSERT from an empty array.</code></p>
-<p>When there are no columns to be inserted, it will throw <a href="external-Error.html">Error</a> = <code>Cannot generate an INSERT without any columns.</code></p>
 <p>When <code>data</code> is an array that contains a non-object value, the method will throw <a href="external-Error.html">Error</a> =
 <code>Invalid insert object at index N.</code></p></td>
         </tr>
@@ -432,7 +431,7 @@ a reliable and flexible/extensible way, as well as single-insert and single-upda
             
 
             <td class="description last"><p>Set of columns to be inserted.</p>
-<p>It is optional when <code>data</code> is a single object, and required when <code>data</code> is an array of objects. When not specified for an array
+<p>It is optional when <code>data</code> is a single object, and required when <code>data</code> is an array of objects. If not specified for an array
 of objects, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Parameter 'columns' is required when inserting multiple records.</code></p>
 <p>When <code>columns</code> is not a <a href="helpers.ColumnSet.html">ColumnSet</a> object, a temporary <a href="helpers.ColumnSet.html">ColumnSet</a>
 is created - from the value of <code>columns</code> (if it was specified), or from the value of <code>data</code> (if it is not an array).</p>
@@ -660,7 +659,7 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
             
 
             <td class="description last"><p>A simple, non-null and non-array source object.</p>
-<p>If it is anything else, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid 'data' specified.</code></p></td>
+<p>If it is anything else, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'data' specified.</code></p></td>
         </tr>
 
     
@@ -700,7 +699,8 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
             
 
             <td class="description last"><p>Columns for which to set values.</p>
-<p>When not specified, properties of the <code>data</code> object are used.</p></td>
+<p>When not specified, properties of the <code>data</code> object are used.</p>
+<p>When no effective columns are found, an empty string is returned.</p></td>
         </tr>
 
     
@@ -774,6 +774,13 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <ul>
+<li>comma-separated value-set statements for the <code>data</code> object</li>
+<li>an empty string, if no effective columns found</li>
+</ul>
+</div>
+
 
 
 <dl>
@@ -922,7 +929,7 @@ This is to allow for update conditions of any complexity that are easy to add.</
             
 
             <td class="description last"><p>Set of columns to be updated.</p>
-<p>It is optional when <code>data</code> is a single object, and required when <code>data</code> is an array of objects. When not specified for an array
+<p>It is optional when <code>data</code> is a single object, and required when <code>data</code> is an array of objects. If not specified for an array
 of objects, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Parameter 'columns' is required when updating multiple records.</code></p>
 <p>When <code>columns</code> is not a <a href="helpers.ColumnSet.html">ColumnSet</a> object, a temporary <a href="helpers.ColumnSet.html">ColumnSet</a>
 is created - from the value of <code>columns</code> (if it was specified), or from the value of <code>data</code> (if it is not an array).</p>
@@ -1304,7 +1311,10 @@ to be used as part of a query:</p>
             
 
             <td class="description last"><p>A source object with properties as values, or an array of such objects.</p>
-<p>If it is anything else, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid 'data' specified.</code></p></td>
+<p>If it is anything else, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'data' specified.</code></p>
+<p>When <code>data</code> is an array that contains a non-object value, the method will throw <a href="external-Error.html">Error</a> =
+<code>Invalid object at index N.</code></p>
+<p>When <code>data</code> is an empty array, an empty string is returned.</p></td>
         </tr>
 
     
@@ -1344,8 +1354,10 @@ to be used as part of a query:</p>
             
 
             <td class="description last"><p>Columns for which to return values.</p>
-<p>It is optional when <code>data</code> is a single object, in which case the object's properties are used.
-And it is required when <code>data</code> is an array of objects.</p></td>
+<p>It is optional when <code>data</code> is a single object, and required when <code>data</code> is an array of objects. If not specified for an array
+of objects, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Parameter 'columns' is required when generating a multi-value string.</code></p>
+<p>When the final <a href="helpers.ColumnSet.html">ColumnSet</a> is empty (no columns in it), the method will throw
+<a href="external-Error.html">Error</a> = <code>Cannot generate values without any columns.</code></p></td>
         </tr>
 
     
@@ -1419,6 +1431,13 @@ And it is required when <code>data</code> is an array of objects.</p></td>
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <ul>
+<li>comma-separated value groups, according to <code>data</code></li>
+<li>an empty string, if <code>data</code> is an empty array</li>
+</ul>
+</div>
+
 
 
 <dl>
