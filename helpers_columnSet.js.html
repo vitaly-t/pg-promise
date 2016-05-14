@@ -180,7 +180,7 @@ function ColumnSet(columns, options) {
         throw new TypeError("Invalid parameter 'columns' specified.");
     }
 
-    var inherit, names, variables, updates, canSetMany;
+    var inherit, names, variables, castVariables, updates, canSetMany;
 
     if (!$npm.utils.isNull(options)) {
         if (typeof options !== 'object') {
@@ -262,7 +262,7 @@ function ColumnSet(columns, options) {
      * @type String
      * @readonly
      * @description
-     * A string that contains a comma-separated list of all variables for the set of columns.
+     * A string that contains a comma-separated list of all variables.
      */
     Object.defineProperty(this, 'variables', {
         get: function () {
@@ -275,6 +275,25 @@ function ColumnSet(columns, options) {
         }
     });
 
+    /**
+     * @name helpers.ColumnSet#castVariables
+     * @private
+     * @type String
+     * @readonly
+     * @description
+     * A string that contains a comma-separated list of all variables with casting.
+     */
+    Object.defineProperty(this, 'castVariables', {
+        get: function () {
+            if (!castVariables) {
+                castVariables = this.columns.$map(function (c) {
+                    return c.variable + c.castText;
+                }).join();
+            }
+            return castVariables;
+        }
+    });
+    
     /**
      * @method helpers.ColumnSet.getUpdates
      * @private
