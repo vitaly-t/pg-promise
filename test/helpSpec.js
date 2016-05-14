@@ -111,8 +111,9 @@ describe("UPDATE", function () {
 
     describe("single:", function () {
         describe("direct data", function () {
-            it("must return all data properties as columns", function () {
-                expect(helpers.update(dataSingle, null, 'table')).toBe('update "table" set "val"=123,"msg"=\'test\'');
+            it("must return all properties correctly", function () {
+                var cs = ['?val', {name: 'msg', cast: 'text'}, {name: 'extra', def: 555}];
+                expect(helpers.update(dataSingle, cs, 'table')).toBe('update "table" set "msg"=\'test\'::text,"extra"=555');
                 expect(helpers.update(dataSingle)).toBe('update set "val"=123,"msg"=\'test\'');
             });
         });
@@ -121,7 +122,10 @@ describe("UPDATE", function () {
     describe("multi:", function () {
         describe("direct data", function () {
             it("must return all data columns", function () {
-                expect(helpers.update(dataMulti, ['?id', 'val', 'msg'], 'table')).toBe('update "table" as t set "val"=v."val","msg"=v."msg" from (values(1,123,\'hello\'),(2,456,\'world\')) as v("id","val","msg")');
+                expect(helpers.update(dataMulti, ['?id', 'val', {
+                    name: 'msg',
+                    cast: 'text'
+                }], 'table')).toBe('update "table" as t set "val"=v."val","msg"=v."msg"::text from (values(1,123,\'hello\'),(2,456,\'world\')) as v("id","val","msg")');
             });
         });
     });
@@ -651,6 +655,10 @@ describe("method 'sets'", function () {
             var cs = new helpers.ColumnSet(['?val', 'msg']);
             expect(helpers.sets(dataSingle, cs)).toBe('"msg"=\'test\'');
         });
+        it("must apply sql casting correctly", function () {
+            var cs = new helpers.ColumnSet([{name: 'msg', cast: 'text'}]);
+            expect(helpers.sets(dataSingle, cs)).toBe('"msg"=\'test\'::text');
+        });
     });
 
     describe("without a ColumnSet", function () {
@@ -693,6 +701,10 @@ describe("method 'values'", function () {
             var cs = new helpers.ColumnSet(dataSingle);
             expect(helpers.values(dataSingle, cs)).toBe('(123,\'test\')');
         });
+        it("must apply sql casting", function () {
+            var cs = new helpers.ColumnSet(['val', {name: 'msg', cast: 'text'}]);
+            expect(helpers.values(dataSingle, cs)).toBe('(123,\'test\'::text)');
+        });
     });
 
     describe("without a ColumnSet", function () {
@@ -707,6 +719,12 @@ describe("method 'values'", function () {
         });
         it("must return query for multiple objects", function () {
             expect(helpers.values(dataMulti, ['val', 'msg'])).toBe('(123,\'hello\'),(456,\'world\')');
+        });
+        it("must apply casting correctly", function () {
+            expect(helpers.values(dataMulti, ['val', {
+                name: 'msg',
+                cast: 'text'
+            }])).toBe('(123,\'hello\'::text),(456,\'world\'::text)');
         });
     });
 
