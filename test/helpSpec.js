@@ -366,13 +366,15 @@ describe("Column", function () {
             }).toThrow(error);
         });
         it("must throw on invalid input name", function () {
-            var error = new TypeError("Invalid column syntax.");
             expect(function () {
                 helpers.Column('');
-            }).toThrow(error);
+            }).toThrow(new TypeError('Invalid column syntax: "".'));
             expect(function () {
                 helpers.Column('  ');
-            }).toThrow(error);
+            }).toThrow(new TypeError('Invalid column syntax: "  ".'));
+            expect(function () {
+                helpers.Column('name:bla');
+            }).toThrow(new TypeError('Invalid column syntax: "name:bla".'));
         });
         it("must throw on invalid property 'name'", function () {
             var error1 = new TypeError("Property 'name' must be a non-empty text string.");
