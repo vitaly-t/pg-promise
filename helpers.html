@@ -530,7 +530,7 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="helpers.ColumnSet.html">ColumnSet</a></li>
+            <li><a href="helpers.Column.html">Column</a>, <a href="helpers.ColumnSet.html">ColumnSet</a>, <a href="helpers.TableName.html">TableName</a></li>
         </ul>
     </dd>
     
@@ -576,11 +576,11 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>var pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});var insert = pgp.helpers.insert, ColumnSet = pgp.helpers.ColumnSet;var dataSingle = {val: 123, msg: 'hello'};var dataMulti = [{val: 123, msg: 'hello'}, {val: 456, msg: 'world!'}];// Column details can be taken from the data object:var query = insert(dataSingle, null, 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello')</code></pre>
+    <pre class="prettyprint"><code>var pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});var dataSingle = {val: 123, msg: 'hello'};var dataMulti = [{val: 123, msg: 'hello'}, {val: 456, msg: 'world!'}];// Column details can be taken from the data object:pgp.helpers.insert(dataSingle, null, 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello')</code></pre>
 
-    <pre class="prettyprint"><code>// Column details are required for a multi-object insert:var query = insert(dataMulti, ['val', 'msg'], 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
+    <pre class="prettyprint"><code>// Column details are required for a multi-object insert:pgp.helpers.insert(dataMulti, ['val', 'msg'], 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
 
-    <pre class="prettyprint"><code>// Using all details from a reusable ColumnSet (recommended for performance):var cs = new ColumnSet(['val', 'msg'], {table: 'my-table'});var query = insert(dataMulti, cs);//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
+    <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance):var cs = new pgp.helpers.ColumnSet(['val', 'msg'], {table: 'my-table'});pgp.helpers.insert(dataMulti, cs);//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
 
 
 
@@ -596,8 +596,8 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
 
 
 <div class="description">
-    <p>Generates a string of comma-separated <code>SET</code> commands for a single object,
-in the same way as values are set with an <code>UPDATE</code> query.</p>
+    <p>Generates a string of comma-separated value-set statements for a single object: <code>col1=val1, col2=val2, ...</code></p>
+<p>Since it is to be used as part of <code>UPDATE</code> queries, <a href="helpers.Column.html">Column</a> properties <code>cnd</code> and <code>skip</code> apply.</p>
 </div>
 
 
@@ -699,7 +699,7 @@ in the same way as values are set with an <code>UPDATE</code> query.</p>
 
             
 
-            <td class="description last"><p>Columns for which to return <code>SET</code> commands.</p>
+            <td class="description last"><p>Columns for which to set values.</p>
 <p>When not specified, properties of the <code>data</code> object are used.</p></td>
         </tr>
 
@@ -748,6 +748,13 @@ in the same way as values are set with an <code>UPDATE</code> query.</p>
     
 
     
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="helpers.Column.html">Column</a>, <a href="helpers.ColumnSet.html">ColumnSet</a></li>
+        </ul>
+    </dd>
+    
 
     
 </dl>
@@ -784,6 +791,13 @@ in the same way as values are set with an <code>UPDATE</code> query.</p>
     
 
 
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>var pgp = require('pg-promise')();var data = {id: 1, val: 123, msg: 'hello'};// Properties can be pulled automatically from the object:pgp.helpers.sets(data);//=> "id"=1,"val"=123,"msg"='hello'</code></pre>
+
+    <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance);// NOTE: Conditional columns (start with '?') are skipped:var cs = new pgp.helpers.ColumnSet(['?id','val', 'msg']);pgp.helpers.sets(data, cs);//=> "val"=123,"msg"='hello'</code></pre>
+
+
 
         
             
@@ -798,8 +812,8 @@ in the same way as values are set with an <code>UPDATE</code> query.</p>
 
 <div class="description">
     <p>Generates a simplified <code>UPDATE</code> query for either one object or an array of objects.</p>
-<p>The generated query is logically incomplete - it does not append a <code>WHERE</code> condition to determine the update logic.
-This is to allow for update conditions of any complexity that are easy to append to the query.</p>
+<p>The resulting query needs a <code>WHERE</code> clause to be appended to it, to determine the update logic.
+This is to allow for update conditions of any complexity that are easy to add.</p>
 </div>
 
 
@@ -1149,7 +1163,7 @@ throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="helpers.ColumnSet.html">ColumnSet</a></li>
+            <li><a href="helpers.Column.html">Column</a>, <a href="helpers.ColumnSet.html">ColumnSet</a>, <a href="helpers.TableName.html">TableName</a></li>
         </ul>
     </dd>
     
@@ -1195,15 +1209,15 @@ throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>var pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});var update = pgp.helpers.update, ColumnSet = pgp.helpers.ColumnSet;var dataSingle = {id: 1, val: 123, msg: 'hello'};var dataMulti = [{id: 1, val: 123, msg: 'hello'}, {id: 2, val: 456, msg: 'world!'}];// Although column details can be taken from the data object, it is not a likely scenario// one wants for an update, unless updating the whole table:var query = update(dataSingle, null, 'my-table');//=> UPDATE "my-table" SET "id"=1,"val"=123,"msg"='hello'</code></pre>
+    <pre class="prettyprint"><code>var pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});var dataSingle = {id: 1, val: 123, msg: 'hello'};var dataMulti = [{id: 1, val: 123, msg: 'hello'}, {id: 2, val: 456, msg: 'world!'}];// Although column details can be taken from the data object, it is not// a likely scenario for an update, unless updating the whole table:pgp.helpers.update(dataSingle, null, 'my-table');//=> UPDATE "my-table" SET "id"=1,"val"=123,"msg"='hello'</code></pre>
 
-    <pre class="prettyprint"><code>// A typical single-object update:var query = update(dataSingle, ['val', 'msg'], 'my-table') + ' WHERE id = ' + dataSingle.id;//=> UPDATE "my-table" SET "val"=123,"msg"='hello' WHERE id = 1</code></pre>
+    <pre class="prettyprint"><code>// A typical single-object update:pgp.helpers.update(dataSingle, ['val', 'msg'], 'my-table') + ' WHERE id = ' + dataSingle.id;//=> UPDATE "my-table" SET "val"=123,"msg"='hello' WHERE id = 1</code></pre>
 
-    <pre class="prettyprint"><code>// Column details are required for a multi-object update;// Adding '?' in front of a column name means it is only for a WHERE condition:var query = update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
+    <pre class="prettyprint"><code>// Column details are required for a multi-object update;// Adding '?' in front of a column name means it is only for a WHERE condition:pgp.helpers.update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
 
-    <pre class="prettyprint"><code>// Using all details from a reusable ColumnSet (recommended for performance):var cs = new ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});var query = update(dataMulti, cs) + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
+    <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance):var cs = new pgp.helpers.ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});pgp.helpers.update(dataMulti, cs) + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
 
-    <pre class="prettyprint"><code>// Using parameter `options` to change the default alias names:var query = update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.id = X.id';//=> UPDATE "my-table" AS X SET "val"=Y."val","msg"=Y."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS Y("id","val","msg") WHERE Y.id = X.id</code></pre>
+    <pre class="prettyprint"><code>// Using parameter `options` to change the default alias names:pgp.helpers.update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.id = X.id';//=> UPDATE "my-table" AS X SET "val"=Y."val","msg"=Y."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS Y("id","val","msg") WHERE Y.id = X.id</code></pre>
 
 
 
@@ -1219,8 +1233,12 @@ throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 
 
 
 <div class="description">
-    <p>Generates a string of comma-separated value groups for either one object or an array of objects.</p>
-<p>Each returned group is wrapped into <code>()</code>, in the same way as for an <code>INSERT</code> query.</p>
+    <p>Generates a string of comma-separated value groups from either one object or an array of objects,
+to be used as part of a query:</p>
+<ul>
+<li>from a single object: <code>(val_1, val_2, ...)</code></li>
+<li>from an array of objects: <code>(val_11, val_12, ...), (val_21, val_22), ...</code></li>
+</ul>
 </div>
 
 
@@ -1375,6 +1393,13 @@ And it is required when <code>data</code> is an array of objects.</p></td>
     
 
     
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="helpers.Column.html">Column</a>, <a href="helpers.ColumnSet.html">ColumnSet</a></li>
+        </ul>
+    </dd>
+    
 
     
 </dl>
@@ -1409,6 +1434,15 @@ And it is required when <code>data</code> is an array of objects.</p></td>
 </dl>
 
     
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>var pgp = require('pg-promise')();var dataSingle = {val: 123, msg: 'hello'};var dataMulti = [{val: 123, msg: 'hello'}, {val: 456, msg: 'world!'}];// Properties can be pulled automatically from a single object:pgp.helpers.values(dataSingle);//=> (123,'hello')</code></pre>
+
+    <pre class="prettyprint"><code>// Column details are required when using an array of objects:pgp.helpers.values(dataMulti, ['val', 'msg']);//=> (123,'hello'),(456,'world!')</code></pre>
+
+    <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance):var cs = new pgp.helpers.ColumnSet(['val', 'msg']);pgp.helpers.values(dataMulti, cs);//=> (123,'hello'),(456,'world!')</code></pre>
 
 
 
