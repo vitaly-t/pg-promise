@@ -377,56 +377,55 @@ describe("Column", function () {
             }).toThrow(new TypeError('Invalid column syntax: "name:bla".'));
         });
         it("must throw on invalid property 'name'", function () {
-            var error1 = new TypeError("Property 'name' must be a non-empty text string.");
-            var error2 = new TypeError("Property 'name' must be a valid variable name when 'prop' isn't specified.");
             expect(function () {
                 helpers.Column({name: ''});
-            }).toThrow(error1);
+            }).toThrow(new TypeError('Invalid \'name\' value: "". A non-empty string was expected.'));
             expect(function () {
-                helpers.Column({name: '   '});
-            }).toThrow(error1);
+                helpers.Column({name: '  '});
+            }).toThrow(new TypeError('Invalid \'name\' value: "  ". A non-empty string was expected.'));
             expect(function () {
                 helpers.Column({name: 123});
-            }).toThrow(error1);
+            }).toThrow(new TypeError('Invalid \'name\' value: 123. A non-empty string was expected.'));
             expect(function () {
                 helpers.Column({name: 'n-a-m-e'});
-            }).toThrow(error2);
+            }).toThrow(new TypeError('Invalid \'name\' syntax: "n-a-m-e". A valid variable name was expected.'));
         });
         it("must throw on invalid property 'prop'", function () {
-            var error = new TypeError("The value of 'prop' must be a valid variable name.");
             expect(function () {
                 helpers.Column({name: 'name', prop: 123});
-            }).toThrow(error);
+            }).toThrow(new TypeError('Invalid \'prop\' value: 123. A non-empty string was expected.'));
             expect(function () {
                 helpers.Column({name: 'name', prop: ''});
-            }).toThrow(error);
+            }).toThrow(new TypeError('Invalid \'prop\' value: "". A non-empty string was expected.'));
             expect(function () {
-                helpers.Column({name: 'name', prop: '   '});
-            }).toThrow(error);
+                helpers.Column({name: 'name', prop: '  '});
+            }).toThrow(new TypeError('Invalid \'prop\' value: "  ". A non-empty string was expected.'));
+            expect(function () {
+                helpers.Column({name: 'name', prop: 'one-two'});
+            }).toThrow(new TypeError('Invalid \'prop\' syntax: "one-two". A valid variable name was expected.'));
+
         });
         it("must throw on invalid property 'cast'", function () {
-            var error = new TypeError("Invalid property 'cast' specified.");
             expect(function () {
                 helpers.Column({name: 'name', cast: 123});
-            }).toThrow(error);
+            }).toThrow(new TypeError("Invalid 'cast' value: 123."));
             expect(function () {
                 helpers.Column({name: 'name', cast: ''});
-            }).toThrow(error);
+            }).toThrow(new TypeError('Invalid \'cast\' value: "".'));
             expect(function () {
-                helpers.Column({name: 'name', cast: '   '});
-            }).toThrow(error);
+                helpers.Column({name: 'name', cast: '  '});
+            }).toThrow(new TypeError('Invalid \'cast\' value: "  ".'));
         });
         it("must throw on invalid property 'mod'", function () {
-            var error = new TypeError("Invalid property 'mod' specified.");
             expect(function () {
                 helpers.Column({name: 'name', mod: 123});
-            }).toThrow(error);
+            }).toThrow(new TypeError('Invalid \'mod\' value: 123.'));
             expect(function () {
                 helpers.Column({name: 'name', mod: ''});
-            }).toThrow(error);
+            }).toThrow(new TypeError('Invalid \'mod\' value: "".'));
             expect(function () {
-                helpers.Column({name: 'name', mod: '   '});
-            }).toThrow(error);
+                helpers.Column({name: 'name', mod: '  '});
+            }).toThrow(new TypeError('Invalid \'mod\' value: "  ".'));
         });
     });
 

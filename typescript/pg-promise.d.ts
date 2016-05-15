@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.1.8 or later.
+// Requires pg-promise v4.1.9 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
