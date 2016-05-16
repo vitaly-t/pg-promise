@@ -56,6 +56,7 @@ var $npm = {
  *
  * - When it is an array, each element is assumed to represent details for a column. If the element is already of type {@link helpers.Column Column},
  *   it is used directly; otherwise the element is passed into {@link helpers.Column Column} constructor for initialization.
+ *   On any duplicate column name (case-sensitive) the method will throw {@link external:Error Error} = `Duplicate column name "name".`
  *
  * - When it is none of the above, it will throw {@link external:TypeError TypeError} = `Invalid parameter 'columns' specified.`
  *
@@ -215,8 +216,14 @@ function ColumnSet(columns, options) {
      * Array of {@link helpers.Column Column} objects.
      */
     if (Array.isArray(columns)) {
+        var colNames = {};
         this.columns = columns.$map(function (c) {
-            return (c instanceof $npm.Column) ? c : new $npm.Column(c);
+            var col = (c instanceof $npm.Column) ? c : new $npm.Column(c);
+            if (col.name in colNames) {
+                throw new Error('Duplicate column name "' + col.name + '".');
+            }
+            colNames[col.name] = true;
+            return col;
         });
     } else {
         if (columns instanceof $npm.Column) {
@@ -292,7 +299,7 @@ function ColumnSet(columns, options) {
             return castVariables;
         }
     });
-    
+
     /**
      * @method helpers.ColumnSet.getUpdates
      * @private
@@ -323,6 +330,71 @@ function ColumnSet(columns, options) {
             updates = list;
         }
         return list;
+    };
+
+    /**
+     * @method helpers.ColumnSet.extend
+     * @description
+     * Creates a new {@link helpers.ColumnSet ColumnSet}, by joining the two sets of columns.
+     *
+     * If the two sets contain a column with the same `name` (case-sensitive), an error is thrown.
+     *
+     * @param {helpers.Column|helpers.ColumnSet|Array} columns
+     * Columns to be appended, of the same type as parameter `columns` during {@link helpers.ColumnSet ColumnSet} construction, except:
+     * - it can also be of type {@link helpers.ColumnSet ColumnSet}
+     * - it cannot be a simple object (properties enumeration is not supported here)
+     *
+     * @returns {helpers.ColumnSet}
+     *
+     * @see
+     * {@link helpers.Column Column},
+     * {@link helpers.ColumnSet.merge merge}
+     *
+     */
+    this.extend = function (columns) {
+        var cs = columns;
+        if (!(cs instanceof ColumnSet)) {
+            cs = new ColumnSet(columns);
+        }
+        // Any any duplicate column will throw Error = 'Duplicate column name "name".',
+        return new ColumnSet(this.columns.concat(cs.columns));
+    };
+
+    /**
+     * @method helpers.ColumnSet.merge
+     * @description
+     * Creates a new {@link helpers.ColumnSet ColumnSet}, by joining the two sets of columns.
+     *
+     * Items in `columns` with the same `name` (case-sensitive) override the original columns.
+     *
+     * @param {helpers.Column|helpers.ColumnSet|Array} columns
+     * Columns to be appended, of the same type as parameter `columns` during {@link helpers.ColumnSet ColumnSet} construction, except:
+     * - it can also be of type {@link helpers.ColumnSet ColumnSet}
+     * - it cannot be a simple object (properties enumeration is not supported here)
+     *
+     * @see
+     * {@link helpers.Column Column},
+     * {@link helpers.ColumnSet.extend extend}
+     *
+     */
+    this.merge = function (columns) {
+        var cs = columns;
+        if (!(cs instanceof ColumnSet)) {
+            cs = new ColumnSet(columns);
+        }
+        var colNames = {}, cols = [];
+        this.columns.$forEach(function (c, idx) {
+            cols.push(c);
+            colNames[c.name] = idx;
+        });
+        cs.columns.$forEach(function (c) {
+            if (c.name in colNames) {
+                cols[colNames[c.name]] = c;
+            } else {
+                cols.push(c);
+            }
+        });
+        return new ColumnSet(cols);
     };
 
     /**
