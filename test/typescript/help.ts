@@ -63,3 +63,6 @@ var sets2 = pgp.helpers.sets([]);
 var sets3 = pgp.helpers.sets({}, cs);
 
 var test:boolean = cs.canUpdate(data);
+
+var cs1 = cs.extend(['']);
+var cs2 = cs1.merge(cs);

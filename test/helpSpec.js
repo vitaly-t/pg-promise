@@ -613,6 +613,36 @@ describe("ColumnSet", function () {
         });
     });
 
+    describe("method 'extend'", function () {
+        it("must extend columns", function () {
+            var first = new helpers.ColumnSet(['one', 'two']);
+            var second = new helpers.ColumnSet(['three', 'four']);
+            var result = new helpers.ColumnSet(['one', 'two', 'three', 'four']);
+            var dest1 = first.extend(second);
+            var dest2 = first.extend(['three', 'four']);
+            expect(dest1.toString()).toBe(result.toString());
+            expect(dest2.toString()).toBe(result.toString());
+        });
+        it("must throw on duplicate columns names", function () {
+            var cs = new helpers.ColumnSet(['one', 'two']);
+            expect(function () {
+                cs.extend(['two']);
+            }).toThrow(new Error('Duplicate column name "two".'));
+        });
+    });
+
+    describe("method 'merge'", function () {
+        it("must merge all columns", function () {
+            var first = new helpers.ColumnSet(['one', 'two']);
+            var second = new helpers.ColumnSet(['two', 'three']);
+            var result = new helpers.ColumnSet(['one', 'two', 'three']);
+            var dest1 = first.merge(second);
+            var dest2 = first.merge(['two', 'three']);
+            expect(dest1.toString()).toBe(result.toString());
+            expect(dest2.toString()).toBe(result.toString());
+        });
+    });
+
     describe("Negative", function () {
         it("must throw on invalid columns", function () {
             var error = new TypeError("Invalid parameter 'columns' specified.");
@@ -623,6 +653,12 @@ describe("ColumnSet", function () {
                 helpers.ColumnSet(123);
             }).toThrow(error);
         });
+        it("must throw on duplicate columns", function () {
+            expect(function () {
+                helpers.ColumnSet(['one', 'one']);
+            }).toThrow(new Error('Duplicate column name "one".'));
+        });
+
         it("must throw on invalid options", function () {
             var error = new TypeError("Invalid parameter 'options' specified.");
             expect(function () {

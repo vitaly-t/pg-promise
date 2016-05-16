@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.1.10 or later.
+// Requires pg-promise v4.2.0 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -396,8 +396,12 @@ declare module 'pg-promise' {
         // these are all read-only:
         columns:Array<Column>;
         table:TableName;
-
+        
         canUpdate(data:Object|Array<Object>):boolean;
+        
+        extend(columns:Column|ColumnSet|Array<string|TColumnConfig|Column>):ColumnSet;
+        
+        merge(columns:Column|ColumnSet|Array<string|TColumnConfig|Column>):ColumnSet;
 
         // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#.toString
         toString():string;
@@ -406,10 +410,10 @@ declare module 'pg-promise' {
     // Query Formatting Helpers
     // API: http://vitaly-t.github.io/pg-promise/helpers.html
     interface IHelpers {
-        
+
         insert(data:Object|Array<Object>, columns?:TQueryColumns, table?:string|TTable|TableName):string;
         update(data:Object|Array<Object>, columns?:TQueryColumns, table?:string|TTable|TableName, options?:TUpdateOptions):string;
-        
+
         values(data:Object|Array<Object>, columns?:TQueryColumns):string;
         sets(data:Object, columns?:TQueryColumns):string;
 
