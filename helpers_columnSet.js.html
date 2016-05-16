@@ -56,7 +56,7 @@ var $npm = {
  *
  * - When it is an array, each element is assumed to represent details for a column. If the element is already of type {@link helpers.Column Column},
  *   it is used directly; otherwise the element is passed into {@link helpers.Column Column} constructor for initialization.
- *   On any duplicate column name (case-sensitive) the method will throw {@link external:Error Error} = `Duplicate column name "name".`
+ *   On any duplicate column name (case-sensitive) it will throw {@link external:Error Error} = `Duplicate column name "name".`
  *
  * - When it is none of the above, it will throw {@link external:TypeError TypeError} = `Invalid parameter 'columns' specified.`
  *
