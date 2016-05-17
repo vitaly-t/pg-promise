@@ -292,8 +292,8 @@ describe("Column", function () {
     describe("set all", function () {
         it("must set all values", function () {
             var col = new helpers.Column({
-                name: 'name',
-                prop: 'prop',
+                name: '_colName',
+                prop: '$propName01',
                 def: 123,
                 cnd: true,
                 cast: 'int',
@@ -303,8 +303,8 @@ describe("Column", function () {
                 skip: function () {
                 }
             });
-            expect(col.name).toBe('name');
-            expect(col.prop).toBe('prop');
+            expect(col.name).toBe('_colName');
+            expect(col.prop).toBe('$propName01');
             expect(col.def).toBe(123);
             expect(col.cnd).toBe(true);
             expect(col.cast).toBe('int');
@@ -435,14 +435,14 @@ describe("ColumnSet", function () {
 
     describe("Function call", function () {
         it("must return a new object", function () {
-            var obj = helpers.ColumnSet(['col']);
+            var obj = helpers.ColumnSet(['colName']);
             expect(obj instanceof helpers.ColumnSet).toBe(true);
         });
     });
 
     describe("options", function () {
         it("must ignore empty options", function () {
-            var cs = new helpers.ColumnSet(['name'], {});
+            var cs = new helpers.ColumnSet(['nameName'], {});
             expect('table' in cs).toBe(false);
         });
         it("must set table correctly", function () {
@@ -477,13 +477,13 @@ describe("ColumnSet", function () {
 
     describe("initialization", function () {
         it("must accept a Column directly", function () {
-            var col = new helpers.Column('name');
+            var col = new helpers.Column('colName');
             var cs = new helpers.ColumnSet(col);
             expect(cs.columns.length).toBe(1);
             expect(cs.columns[0]).toBe(col);
         });
         it("must accept a Column from array directly", function () {
-            var col = new helpers.Column('name');
+            var col = new helpers.Column('colName');
             var cs = new helpers.ColumnSet([col]);
             expect(cs.columns.length).toBe(1);
             expect(cs.columns[0]).toBe(col);
