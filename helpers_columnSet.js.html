@@ -350,14 +350,49 @@ function ColumnSet(columns, options) {
      * {@link helpers.Column Column},
      * {@link helpers.ColumnSet.merge merge}
      *
+     * @example
+     *
+     * var pgp = require('pg-promise')();
+     *
+     * var cs = new pgp.helpers.ColumnSet(['one', 'two'], {table: 'my-table'});
+     * console.log(cs);
+     * //=>
+     * // ColumnSet {
+     * //    table: "my-table"
+     * //    columns: [
+     * //        Column {
+     * //            name: "one"
+     * //        }
+     * //        Column {
+     * //            name: "two"
+     * //        }
+     * //    ]
+     * // }
+     * var csExtended = cs.extend(['three']);
+     * console.log(csExtended);
+     * //=>
+     * // ColumnSet {
+     * //    table: "my-table"
+     * //    columns: [
+     * //        Column {
+     * //            name: "one"
+     * //        }
+     * //        Column {
+     * //            name: "two"
+     * //        }
+     * //        Column {
+     * //            name: "three"
+     * //        }
+     * //    ]
+     * // }
      */
     this.extend = function (columns) {
         var cs = columns;
         if (!(cs instanceof ColumnSet)) {
             cs = new ColumnSet(columns);
         }
-        // Any any duplicate column will throw Error = 'Duplicate column name "name".',
-        return new ColumnSet(this.columns.concat(cs.columns));
+        // Any duplicate column will throw Error = 'Duplicate column name "name".',
+        return new ColumnSet(this.columns.concat(cs.columns), {table: this.table});
     };
 
     /**
@@ -375,6 +410,46 @@ function ColumnSet(columns, options) {
      * @see
      * {@link helpers.Column Column},
      * {@link helpers.ColumnSet.extend extend}
+     *
+     * @example
+     *
+     * var pgp = require('pg-promise')();
+     *
+     * var cs = new pgp.helpers.ColumnSet(['?one', 'two:json'], {table: 'my-table'});
+     * //console.log(cs);
+     * //=>
+     * // ColumnSet {
+     * //    table: "my-table"
+     * //    columns: [
+     * //        Column {
+     * //            name: "one"
+     * //            cnd: true
+     * //        }
+     * //        Column {
+     * //            name: "two"
+     * //            mod: ":json"
+     * //        }
+     * //    ]
+     * // }
+     * var csMerged = cs.merge(['two', 'three^']);
+     * console.log(csMerged);
+     * //=>
+     * // ColumnSet {
+     * //    table: "my-table"
+     * //    columns: [
+     * //        Column {
+     * //            name: "one"
+     * //            cnd: true
+     * //        }
+     * //        Column {
+     * //            name: "two"
+     * //        }
+     * //        Column {
+     * //            name: "three"
+     * //            mod: "^"
+     * //        }
+     * //    ]
+     * // }
      *
      */
     this.merge = function (columns) {
@@ -394,7 +469,7 @@ function ColumnSet(columns, options) {
                 cols.push(c);
             }
         });
-        return new ColumnSet(cols);
+        return new ColumnSet(cols, {table: this.table});
     };
 
     /**
