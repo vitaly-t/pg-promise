@@ -615,11 +615,13 @@ describe("ColumnSet", function () {
 
     describe("method 'extend'", function () {
         it("must extend columns", function () {
-            var first = new helpers.ColumnSet(['one', 'two']);
+            var first = new helpers.ColumnSet(['one', 'two'], {table: 'my-table'});
             var second = new helpers.ColumnSet(['three', 'four']);
-            var result = new helpers.ColumnSet(['one', 'two', 'three', 'four']);
+            var result = new helpers.ColumnSet(['one', 'two', 'three', 'four'], {table: 'my-table'});
             var dest1 = first.extend(second);
             var dest2 = first.extend(['three', 'four']);
+            expect(dest1.table).toBe(first.table);
+            expect(dest2.table).toBe(first.table);
             expect(dest1.toString()).toBe(result.toString());
             expect(dest2.toString()).toBe(result.toString());
         });
@@ -633,11 +635,13 @@ describe("ColumnSet", function () {
 
     describe("method 'merge'", function () {
         it("must merge all columns", function () {
-            var first = new helpers.ColumnSet(['one', 'two']);
+            var first = new helpers.ColumnSet(['one', 'two'], {table: 'my-table'});
             var second = new helpers.ColumnSet(['two', 'three']);
-            var result = new helpers.ColumnSet(['one', 'two', 'three']);
+            var result = new helpers.ColumnSet(['one', 'two', 'three'], {table: 'my-table'});
             var dest1 = first.merge(second);
             var dest2 = first.merge(['two', 'three']);
+            expect(dest1.table).toBe(first.table);
+            expect(dest2.table).toBe(first.table);
             expect(dest1.toString()).toBe(result.toString());
             expect(dest2.toString()).toBe(result.toString());
         });
