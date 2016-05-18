@@ -576,7 +576,7 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
     
     <pre class="prettyprint"><code>var pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});var dataSingle = {val: 123, msg: 'hello'};var dataMulti = [{val: 123, msg: 'hello'}, {val: 456, msg: 'world!'}];// Column details can be taken from the data object:pgp.helpers.insert(dataSingle, null, 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello')</code></pre>
 
-    <pre class="prettyprint"><code>// Column details are required for a multi-object insert:pgp.helpers.insert(dataMulti, ['val', 'msg'], 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
+    <pre class="prettyprint"><code>// Column details are required for a multi-row `INSERT`:pgp.helpers.insert(dataMulti, ['val', 'msg'], 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
 
     <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance):var cs = new pgp.helpers.ColumnSet(['val', 'msg'], {table: 'my-table'});pgp.helpers.insert(dataMulti, cs);//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
 
@@ -1009,7 +1009,7 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
 
             
 
-            <td class="description last"><p>An object with formatting options for multi-object updates. Passing in a non-null value that's not an object will
+            <td class="description last"><p>An object with formatting options for multi-row <code>UPDATE</code> queries. Passing in a non-null value that's not an object will
 throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'options' specified.</code></p>
                 <h6>Properties</h6>
                 
@@ -1219,7 +1219,7 @@ throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 
 
     <pre class="prettyprint"><code>// A typical single-object update:pgp.helpers.update(dataSingle, ['val', 'msg'], 'my-table') + ' WHERE id = ' + dataSingle.id;//=> UPDATE "my-table" SET "val"=123,"msg"='hello' WHERE id = 1</code></pre>
 
-    <pre class="prettyprint"><code>// Column details are required for a multi-object update;// Adding '?' in front of a column name means it is only for a WHERE condition:pgp.helpers.update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
+    <pre class="prettyprint"><code>// Column details are required for a multi-row `UPDATE`;// Adding '?' in front of a column name means it is only for a WHERE condition:pgp.helpers.update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
 
     <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance):var cs = new pgp.helpers.ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});pgp.helpers.update(dataMulti, cs) + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
 
@@ -1354,7 +1354,7 @@ to be used as part of a query:</p>
 
             <td class="description last"><p>Columns for which to return values.</p>
 <p>It is optional when <code>data</code> is a single object, and required when <code>data</code> is an array of objects. If not specified for an array
-of objects, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Parameter 'columns' is required when generating a multi-value string.</code></p>
+of objects, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Parameter 'columns' is required when generating multi-row values.</code></p>
 <p>When the final <a href="helpers.ColumnSet.html">ColumnSet</a> is empty (no columns in it), the method will throw
 <a href="external-Error.html">Error</a> = <code>Cannot generate values without any columns.</code></p></td>
         </tr>
