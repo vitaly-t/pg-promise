@@ -221,7 +221,7 @@ Names for open-value variables end with either `:value` or symbol `#`, and it me
 formatted and escaped, but not to be wrapped in quotes when it is a text.
 
 Similar to raw-text variables, open-value variables are also not allowed to be `null` or `undefined`, or they will throw
-error `Open values cannot be null or undefined.` And the difference is that [Raw Text] variables are not escaped, while
+error `Open values cannot be null or undefined.` And the difference is that [Raw Text](#raw-text) variables are not escaped, while
 open-value variables are properly escaped.
 
 Below is an example of formatting `LIKE` filter that ends with a second name: 
