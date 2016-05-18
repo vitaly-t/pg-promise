@@ -148,7 +148,7 @@ describe("UPDATE", function () {
         it("must return a capitalized query for a single data", function () {
             expect(helpers.update(dataSingle, cs)).toBe('UPDATE "table" SET "val"=123,"msg"=\'test\'');
         });
-        it("must return a capitalized query for multi-data", function () {
+        it("must return a capitalized query for multi-row data", function () {
             expect(helpers.update(dataMulti, cs)).toBe('UPDATE "table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,\'hello\'),(2,456,\'world\')) AS v("id","val","msg")');
         });
         afterEach(function () {
@@ -797,7 +797,7 @@ describe("method 'values'", function () {
             }).toThrow(error);
         });
         it("must throw when no columns for an array", function () {
-            var error = new TypeError("Parameter 'columns' is required when generating a multi-value string.");
+            var error = new TypeError("Parameter 'columns' is required when generating multi-row values.");
             expect(function () {
                 helpers.values([{}]);
             }).toThrow(error);
