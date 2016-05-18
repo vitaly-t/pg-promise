@@ -220,8 +220,8 @@ Open values simplify concatenation of string values within a query, primarily fo
 Names for open-value variables end with either `:value` or symbol `#`, and it means that such a value is to be properly
 formatted and escaped, but not to be wrapped in quotes when it is a text.
 
-Similar to raw-text variables, open-value variables are also not allowed to be `null` or `undefined`, or they will throw
-error `Open values cannot be null or undefined.` And the difference is that [Raw Text](#raw-text) variables are not escaped, while
+Similar to [raw-text](#raw-text) variables, open-value variables are also not allowed to be `null` or `undefined`, or they will throw
+error `Open values cannot be null or undefined.` And the difference is that [raw-text](#raw-text) variables are not escaped, while
 open-value variables are properly escaped.
 
 Below is an example of formatting `LIKE` filter that ends with a second name: 
