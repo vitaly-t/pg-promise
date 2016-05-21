@@ -64,7 +64,7 @@ var $npm = {
  * is created - from the value of `columns` (if it was specified), or from the value of `data` (if it is not an array).
  *
  * When the final {@link helpers.ColumnSet ColumnSet} is empty (no columns in it), the method will throw
- * {@link external:Error Error} = `Cannot generate an UPDATE without any columns.`
+ * {@link external:Error Error} = `Cannot generate an UPDATE without any columns.` (see also {@link helpers.ColumnSet.canUpdate ColumnSet.canUpdate})
  *
  * @param {helpers.TableName|String|{table,schema}} [table]
  * Table to be updated.
