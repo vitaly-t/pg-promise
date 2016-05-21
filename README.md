@@ -1052,8 +1052,8 @@ DEALINGS IN THE SOFTWARE.
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
 [batch]:http://vitaly-t.github.io/pg-promise/Task.html#.batch
 [sequence]:http://vitaly-t.github.io/pg-promise/Task.html#.sequence
-[API]:http://vitaly-t.github.io/pg-promise
-[API Documentation]:http://vitaly-t.github.io/pg-promise
+[API]:http://vitaly-t.github.io/pg-promise/Database.html
+[API Documentation]:http://vitaly-t.github.io/pg-promise/Database.html
 [Transaction Mode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
 [pg-minify]:https://github.com/vitaly-t/pg-minify
 [pg-monitor]:https://github.com/vitaly-t/pg-monitor
