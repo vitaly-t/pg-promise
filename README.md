@@ -94,7 +94,7 @@ var pgp = require('pg-promise')();
 
 Use one of the two ways to specify database connection details:
 
-* Configuration Object:
+* Configuration Object (see [Connection Syntax]):
 
 ```javascript
 var cn = {
@@ -106,7 +106,7 @@ var cn = {
 };
 ```
 
-* Connection String:
+* Connection String (see [Connection Syntax]):
 
 ```javascript
 var cn = 'postgres://username:password@host:port/database';
@@ -1038,6 +1038,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[Connection Syntax]:https://github.com/vitaly-t/pg-promise/wiki/ConnectionSyntax
 [helpers]:http://vitaly-t.github.io/pg-promise/helpers.html
 [QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
 [QueryFileError]:http://vitaly-t.github.io/pg-promise/QueryFileError.html
