@@ -50,8 +50,9 @@
 <div class="description">
     <p><strong>Alternative Syntax:</strong> <code>ParameterizedQuery({text, values, ...})</code> &#8658; <a href="ParameterizedQuery.html">ParameterizedQuery</a></p>
 <p>Constructs a new <a href="ParameterizedQuery.html">ParameterizedQuery</a> object.</p>
-<p>The alternative syntax supports advanced properties <code>binary</code> and <code>rowMode</code>, which are passed into <a href="https://github.com/brianc/node-postgres">pg</a>,
-but not used by the class. All properties can also be set after the object's construction.</p>
+<p>The alternative syntax supports advanced properties <a href="ParameterizedQuery.html#binary">binary</a> and <a href="ParameterizedQuery.html#rowMode">rowMode</a>,
+which are passed into <a href="https://github.com/brianc/node-postgres">pg</a>, but not used by the class.</p>
+<p>All properties can also be set after the object's construction.</p>
 <p>This type extends the basic <code>{text, values}</code> object, by replacing it, i.e. when the basic object is used
 with a query method, a new <a href="ParameterizedQuery.html">ParameterizedQuery</a> object is created implicitly in its place.</p>
 <p>The type can be used in place of the <code>query</code> parameter, with any query method directly. And it never throws any error,
@@ -271,6 +272,85 @@ leaving it for query methods to reject with ParameterizedQueryError.</p>
 
         
             
+<h4 class="name" id="binary"><span class="type-signature"></span>binary<span class="type-signature"> :Boolean</span></h4>
+
+
+
+
+<div class="description">
+    <p>Activates binary result mode. The default is the text mode.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line111">line 111</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="http://www.postgresql.org/docs/devel/static/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY">Extended Query</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
 <h4 class="name" id="error"><span class="type-signature"></span>error<span class="type-signature"> :ParameterizedQueryError</span></h4>
 
 
@@ -326,7 +406,83 @@ leaving it for query methods to reject with ParameterizedQueryError.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line95">line 95</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line97">line 97</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="rowMode"><span class="type-signature"></span>rowMode<span class="type-signature"> :String</span></h4>
+
+
+
+
+<div class="description">
+    <p>Changes the way data arrives to the client, with only one value supported by <a href="https://github.com/brianc/node-postgres">pg</a>:</p>
+<ul>
+<li><code>rowMode = 'array'</code> will make all data rows arrive as arrays of values.
+By default, rows arrive as objects.</li>
+</ul>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">String</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line120">line 120</a>
     </li></ul></dd>
     
 
@@ -401,7 +557,7 @@ leaving it for query methods to reject with ParameterizedQueryError.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line79">line 79</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line81">line 81</a>
     </li></ul></dd>
     
 
@@ -473,7 +629,7 @@ leaving it for query methods to reject with ParameterizedQueryError.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line87">line 87</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line89">line 89</a>
     </li></ul></dd>
     
 
@@ -553,7 +709,7 @@ or else it returns a ParameterizedQueryError object.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line114">line 114</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line136">line 136</a>
     </li></ul></dd>
     
 
@@ -726,7 +882,7 @@ or else it returns a ParameterizedQueryError object.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line169">line 169</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line189">line 189</a>
     </li></ul></dd>
     
 
