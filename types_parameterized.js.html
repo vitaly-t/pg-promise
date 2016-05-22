@@ -36,8 +36,6 @@ var $npm = {
     QueryFile: require('../queryFile')
 };
 
-var advancedProperties = ['binary', 'rowMode'];
-
 /**
  * @constructor ParameterizedQuery
  * @description
@@ -107,13 +105,30 @@ function ParameterizedQuery(text, values) {
         return new ParameterizedQuery(text, values);
     }
 
+    var currentError, PQ = {}, changed = true, state = {
+        text: text,
+        values: values,
+        binary: undefined,
+        rowMode: undefined
+    };
+
     /**
      * @name ParameterizedQuery#text
      * @type {string|QueryFile}
      * @description
      * A non-empty query string or a {@link QueryFile} object.
      */
-    this.text = text;
+    Object.defineProperty(this, 'text', {
+        get: function () {
+            return state.text;
+        },
+        set: function (value) {
+            if (value !== state.text) {
+                state.text = value;
+                changed = true;
+            }
+        }
+    });
 
     /**
      * @name ParameterizedQuery#values
@@ -121,45 +136,78 @@ function ParameterizedQuery(text, values) {
      * @description
      * Query formatting values. It can be either an `Array` or `null`/`undefined`.
      */
-    this.values = values;
+    Object.defineProperty(this, 'values', {
+        get: function () {
+            return state.values;
+        },
+        set: function (value) {
+            if (value !== state.values) {
+                state.values = value;
+                changed = true;
+            }
+        }
+    });
+
+    /**
+     * @name ParameterizedQuery#binary
+     * @type {Boolean}
+     * @description
+     * Activates binary result mode. The default is the text mode.
+     *
+     * @see {@link http://www.postgresql.org/docs/devel/static/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY Extended Query}
+     */
+    Object.defineProperty(this, 'binary', {
+        get: function () {
+            return state.binary;
+        },
+        set: function (value) {
+            if (value !== state.binary) {
+                state.binary = value;
+                changed = true;
+            }
+        }
+    });
+
+    /**
+     * @name ParameterizedQuery#rowMode
+     * @type {String}
+     * @description
+     * Changes the way data arrives to the client, with only one value supported by $[pg]:
+     *  - `rowMode = 'array'` will make all data rows arrive as arrays of values.
+     *    By default, rows arrive as objects.
+     */
+    Object.defineProperty(this, 'rowMode', {
+        get: function () {
+            return state.rowMode;
+        },
+        set: function (value) {
+            if (value !== state.rowMode) {
+                state.rowMode = value;
+                changed = true;
+            }
+        }
+    });
 
     /**
      * @name ParameterizedQuery#error
      * @type {ParameterizedQueryError}
+     * @readonly
      * @description
      * When in an error state, it is set to a {@link ParameterizedQueryError} object. Otherwise, it is `undefined`.
      *
      * This property is meant primarily for internal use by the library.
      */
-    this.error = undefined;
+    Object.defineProperty(this, 'error', {
+        get: function () {
+            return currentError;
+        }
+    });
 
     if ($npm.utils.isObject(text, ['text'])) {
-        this.text = text.text;
-        this.values = text.values;
-
-        /**
-         * @name ParameterizedQuery#binary
-         * @type {Boolean}
-         * @description
-         * Activates binary result mode. The default is the text mode.
-         *
-         * @see {@link http://www.postgresql.org/docs/devel/static/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY Extended Query}
-         */
-
-        /**
-         * @name ParameterizedQuery#rowMode
-         * @type {String}
-         * @description
-         * Changes the way data arrives to the client, with only one value supported by $[pg]:
-         *  - `rowMode = 'array'` will make all data rows arrive as arrays of values.
-         *    By default, rows arrive as objects.
-         */
-
-        advancedProperties.$forEach(function (prop) {
-            if (prop in text) {
-                this[prop] = text[prop];
-            }
-        }, this);
+        state.text = text.text;
+        state.values = text.values;
+        state.binary = text.binary;
+        state.rowMode = text.rowMode;
     }
 
     /**
@@ -173,45 +221,65 @@ function ParameterizedQuery(text, values) {
      * @returns {{text, values}|ParameterizedQueryError}
      */
     this.parse = function () {
-        this.error = undefined;
-        var errors = [], pq = {};
-        if (this.text instanceof $npm.QueryFile) {
-            var qf = this.text;
-            qf.prepare();
+
+        var checked, qf = state.text instanceof $npm.QueryFile ? state.text : null;
+
+        if (!changed) {
+            if (qf) {
+                changed = !!qf.prepare();
+                checked = true;
+            }
+            if (!changed) {
+                return PQ;
+            }
+        }
+
+        changed = true;
+        PQ = {};
+        currentError = undefined;
+        var errors = [];
+        
+        if (qf) {
+            if (!checked) {
+                qf.prepare();
+            }
             if (qf.error) {
-                pq.text = this.text;
+                PQ.text = state.text;
                 errors.push(qf.error);
             } else {
-                pq.text = qf.query;
+                PQ.text = qf.query;
             }
         } else {
-            pq.text = this.text;
+            PQ.text = state.text;
         }
-        if (!$npm.utils.isText(pq.text)) {
+        if (!$npm.utils.isText(PQ.text)) {
             errors.push("Property 'text' must be a non-empty text string.");
         }
-        if (!$npm.utils.isNull(this.values)) {
-            if (Array.isArray(this.values)) {
-                if (this.values.length > 0) {
-                    pq.values = this.values;
+        if (!$npm.utils.isNull(state.values)) {
+            if (Array.isArray(state.values)) {
+                if (state.values.length > 0) {
+                    PQ.values = state.values;
                 }
             } else {
                 errors.push("Property 'values' must be an array or null/undefined.");
             }
         }
 
-        advancedProperties.$forEach(function (prop) {
-            if (prop in this) {
-                pq[prop] = this[prop];
-            }
-        }, this);
-
-        if (errors.length) {
-            this.error = new $npm.errors.ParameterizedQueryError(errors[0], pq);
-            return this.error;
+        if (state.binary !== undefined) {
+            PQ.binary = state.binary;
         }
 
-        return pq;
+        if (state.rowMode !== undefined) {
+            PQ.rowMode = state.rowMode;
+        }
+
+        if (errors.length) {
+            return currentError = new $npm.errors.ParameterizedQueryError(errors[0], PQ);
+        }
+
+        changed = false;
+
+        return PQ;
     };
 }
 
@@ -230,20 +298,23 @@ function ParameterizedQuery(text, values) {
 ParameterizedQuery.prototype.toString = function (level) {
     level = level > 0 ? parseInt(level) : 0;
     var gap = $npm.utils.messageGap(level + 1);
-    var ps = this.parse();
+    var pq = this.parse();
     var lines = [
-        'ParameterizedQuery {',
-        gap + 'text: ' + JSON.stringify(ps.text)
+        'ParameterizedQuery {'
     ];
+    if ($npm.utils.isText(pq.text)) {
+        lines.push(gap + 'text: "' + pq.text + '"');
+    }
     if (this.values !== undefined) {
         lines.push(gap + 'values: ' + JSON.stringify(this.values));
     }
-    advancedProperties.$forEach(function (prop) {
-        if (prop in this) {
-            lines.push(gap + prop + ': ' + JSON.stringify(this[prop]));
-        }
-    }, this);
-    if (this.error) {
+    if (this.binary !== undefined) {
+        lines.push(gap + 'binary: ' + JSON.stringify(this.binary));
+    }
+    if (this.rowMode !== undefined) {
+        lines.push(gap + 'rowMode: ' + JSON.stringify(this.rowMode));
+    }
+    if (this.error !== undefined) {
         lines.push(gap + 'error: ' + this.error.toString(level + 1));
     }
     lines.push($npm.utils.messageGap(level) + '}');
