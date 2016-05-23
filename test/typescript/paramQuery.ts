@@ -12,6 +12,9 @@ var pq3 = new pgp.ParameterizedQuery(pq1);
 var qf = new pgPromise.QueryFile('file');
 var pq4 = new pgp.ParameterizedQuery({text: qf, values: [123], rowMode: 'array'});
 
+pq4.text = 'test';
+pq4.text = qf;
+
 db.one(pq1);
 
 db.one({

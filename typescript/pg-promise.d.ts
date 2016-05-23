@@ -26,17 +26,17 @@ declare module 'pg-promise' {
     type TPreparedBasic = {
         name:string,
         text:string,
-        values?:Array<any>,
-        binary?:boolean,
-        rowMode?:string,
-        rows?:number
+        values:Array<any>,
+        binary:boolean,
+        rowMode:string,
+        rows:number
     };
 
     type TParameterizedBasic = {
         text:string,
-        values?:Array<any>,
-        binary?:boolean,
-        rowMode?:string
+        values:Array<any>,
+        binary:boolean,
+        rowMode:string
     };
 
     type TPrepared = {
@@ -396,11 +396,11 @@ declare module 'pg-promise' {
         // these are all read-only:
         columns:Array<Column>;
         table:TableName;
-        
+
         canUpdate(data:Object|Array<Object>):boolean;
-        
+
         extend(columns:Column|ColumnSet|Array<string|TColumnConfig|Column>):ColumnSet;
-        
+
         merge(columns:Column|ColumnSet|Array<string|TColumnConfig|Column>):ColumnSet;
 
         // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#.toString
@@ -471,16 +471,13 @@ declare module 'pg-promise' {
 
             // standard properties:
             name:string;
-            text:string;
+            text:string|QueryFile;
             values:Array<any>;
 
             // advanced properties:
             binary:boolean;
-            portal:string;
             rowMode:string;
             rows:any;
-            stream:any;
-            types:any;
 
             // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.parse
             parse():TPreparedBasic|IPreparedStatementError;
@@ -499,16 +496,12 @@ declare module 'pg-promise' {
             constructor(obj:TParameterized);
 
             // standard properties:
-            text:string;
+            text:string|QueryFile;
             values:Array<any>;
 
             // advanced properties:
             binary:boolean;
-            portal:string;
             rowMode:string;
-            rows:any;
-            stream:any;
-            types:any;
 
             // API: http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html#.parse
             parse():TParameterizedBasic|IParameterizedQueryError;
