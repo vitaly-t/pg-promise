@@ -203,9 +203,10 @@ function QueryFile(file, options) {
         if (opt.debug &amp;&amp; ready) {
             try {
                 lastMod = $npm.fs.statSync(file).mtime.getTime();
-                if (lastMod !== modTime) {
-                    ready = false;
+                if (lastMod === modTime) {
+                    return true;
                 }
+                ready = false;
             } catch (e) {
                 sql = undefined;
                 ready = false;

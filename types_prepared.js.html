@@ -143,6 +143,9 @@ function PreparedStatement(name, text, values) {
      * @type {string|QueryFile}
      * @description
      * A non-empty query string or a {@link QueryFile} object.
+     *
+     * Changing this property for the same {@link PreparedStatement#name name} will have no effect, because queries
+     * for Prepared Statements are cached, with {@link PreparedStatement#name name} being the cache key.
      */
     Object.defineProperty(this, 'text', {
         get: function () {
@@ -169,7 +172,11 @@ function PreparedStatement(name, text, values) {
         set: function (value) {
             if (value !== state.values) {
                 state.values = value;
-                changed = true;
+                if ($npm.utils.isNull(value) || Array.isArray(value)) {
+                    PS.values = value;
+                } else {
+                    changed = true;
+                }
             }
         }
     });
@@ -268,16 +275,10 @@ function PreparedStatement(name, text, values) {
      */
     this.parse = function () {
 
-        var checked, qf = state.text instanceof $npm.QueryFile ? state.text : null;
+        var qf = state.text instanceof $npm.QueryFile ? state.text : null;
 
-        if (!changed) {
-            if (qf) {
-                changed = !!qf.prepare();
-                checked = true;
-            }
-            if (!changed) {
-                return PS;
-            }
+        if (!changed &amp;&amp; !qf) {
+            return PS;
         }
 
         changed = true;
@@ -292,9 +293,7 @@ function PreparedStatement(name, text, values) {
         }
 
         if (qf) {
-            if (!checked) {
-                qf.prepare();
-            }
+            qf.prepare();
             if (qf.error) {
                 PS.text = state.text;
                 errors.push(qf.error);
