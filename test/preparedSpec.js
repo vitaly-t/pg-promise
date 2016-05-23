@@ -33,18 +33,68 @@ describe("PreparedStatement", function () {
         });
     });
 
-    describe("advanced properties", function () {
-        var input = {
-            name: 'test-name',
-            text: 'text-text',
-            values: [123],
-            binary: true,
-            rowMode: 'array',
-            rows: 10
-        };
-        var ps = new pgp.PreparedStatement(input);
-        it("must return the complete set of properties", function () {
-            expect(ps.parse()).toEqual(input);
+    describe("property values", function () {
+        var values = [1, 2, 3];
+        it("must get correctly", function () {
+            var ps = new pgp.PreparedStatement({
+                name: 'original-name',
+                text: 'original-sql',
+                values: values,
+                binary: true,
+                rowMode: 'array',
+                rows: 1
+            });
+            expect(ps.name).toBe('original-name');
+            expect(ps.text).toBe('original-sql');
+            expect(ps.values).toBe(values);
+            expect(ps.binary).toBe(true);
+            expect(ps.rowMode).toBe('array');
+            expect(ps.rows).toBe(1);
+            expect(ps.inspect()).toBe(ps.toString());
+        });
+        it("must keep original object when set to the same value", function () {
+            var ps = new pgp.PreparedStatement({
+                name: 'original-name',
+                text: 'original-sql',
+                values: values,
+                binary: true,
+                rowMode: 'array',
+                rows: 1
+            });
+            var obj1 = ps.parse();
+            ps.name = 'original-name';
+            ps.text = 'original-sql';
+            ps.values = values;
+            ps.binary = true;
+            ps.rowMode = 'array';
+            ps.rows = 1;
+            var obj2 = ps.parse();
+            expect(obj1 === obj2).toBe(true);
+            expect(ps.inspect()).toBe(ps.toString());
+        });
+        it("must create a new object when changed", function () {
+            var ps = new pgp.PreparedStatement({
+                name: 'original-name',
+                text: 'original-sql',
+                values: values,
+                binary: true,
+                rowMode: 'array',
+                rows: 1
+            });
+            var obj1 = ps.parse();
+            ps.name = 'new value';
+            var obj2 = ps.parse();
+            ps.text = 'new text';
+            var obj3 = ps.parse();
+            ps.values = [1, 2, 3];
+            var obj4 = ps.parse();
+            ps.binary = false;
+            var obj5 = ps.parse();
+            ps.rowMode = 'new';
+            var obj6 = ps.parse();
+            ps.rows = 3;
+            var obj7 = ps.parse();
+            expect(obj1 !== obj2 !== obj3 !== obj4 != obj5 != obj6 != obj7).toBe(true);
             expect(ps.inspect()).toBe(ps.toString());
         });
     });
@@ -92,8 +142,8 @@ describe("PreparedStatement", function () {
                 .then(function (data) {
                     result = data;
                 }).catch(function (error) {
-                    console.log("ERROR:", error);
-                })
+                console.log("ERROR:", error);
+            })
                 .finally(function () {
                     done();
                 });
@@ -133,37 +183,18 @@ describe("PreparedStatement", function () {
             expect(result.error instanceof pgp.errors.QueryFileError).toBe(true);
             expect(ps.toString()).toBe(ps.inspect());
         });
+    });
 
-        describe("changing query on the fly", function () {
-            var file = './test/sql/simple.sql';
-            var qf = new pgp.QueryFile(file, {debug: true});
-            var ps = new pgp.PreparedStatement('test-name', qf, []);
-            var result1 = ps.parse(123), result2, result3;
-            var query = qf.query;
-
-            ps.parse();
-            
-            beforeEach(function (done) {
-                fs.writeFile(file, 'temporary sql', 'utf8', function () {
-                    var modTime1 = fs.statSync(file).mtime.getTime();
-                    result2 = ps.parse(123);
-                    fs.writeFile(file, query, 'utf8', function () {
-                        var t = new Date();
-                        t.setTime(t.getTime() + 60 * 60 * 1000);
-                        fs.utimesSync(file, t, t);
-                        var modTime2 = fs.statSync(file).mtime.getTime();
-                        result3 = ps.parse(123);
-                        ps.parse(123);
-                        done();
-                    });
-                });
-            });
-
-            it("must be picked up", function () {
-                expect(result1).toEqual(result3);
+    describe("Negative", function () {
+        describe("invalid 'values'", function () {
+            var ps = new pgp.PreparedStatement('test-name', 'some sql');
+            ps.values = 'one';
+            var res = ps.parse();
+            it("must return an error", function () {
+                expect(res instanceof PreparedStatementError).toBe(true);
+                expect(res.message).toBe("Property 'values' must be an array or null/undefined.");
             });
         });
-
     });
 });
 
@@ -173,9 +204,10 @@ describe("Direct Prepared Statements", function () {
         var result;
         beforeEach(function (done) {
             db.many({
-                    name: "get all users",
-                    text: "select * from users"
-                })
+                name: "get all users",
+                text: "select * from users",
+                values: []
+            })
                 .then(function (data) {
                     result = data;
                 })
@@ -193,10 +225,10 @@ describe("Direct Prepared Statements", function () {
         var result;
         beforeEach(function (done) {
             db.one({
-                    name: "find one user",
-                    text: "select * from users where id=$1",
-                    values: [1]
-                })
+                name: "find one user",
+                text: "select * from users where id=$1",
+                values: [1]
+            })
                 .then(function (data) {
                     result = data;
                 })
@@ -213,9 +245,9 @@ describe("Direct Prepared Statements", function () {
         var result;
         beforeEach(function (done) {
             db.many({
-                    name: "break it",
-                    text: "select * from somewhere"
-                })
+                name: "break it",
+                text: "select * from somewhere"
+            })
                 .then(dummy, function (reason) {
                     result = reason;
                 })
@@ -233,10 +265,10 @@ describe("Direct Prepared Statements", function () {
         var result;
         beforeEach(function (done) {
             db.many({
-                    name: "invalid",
-                    text: "select 1",
-                    values: 123
-                })
+                name: "invalid",
+                text: "select 1",
+                values: 123
+            })
                 .then(dummy, function (reason) {
                     result = reason;
                 })
@@ -272,9 +304,9 @@ describe("Direct Prepared Statements", function () {
         var result;
         beforeEach(function (done) {
             db.query({
-                    name: "non-empty",
-                    text: null
-                })
+                name: "non-empty",
+                text: null
+            })
                 .then(dummy, function (reason) {
                     result = reason;
                 })

@@ -11,6 +11,8 @@ var dbHeader = header(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
+var ParameterizedQueryError = pgp.errors.ParameterizedQueryError;
+
 function dummy() {
     // dummy/empty function;
 }
@@ -31,21 +33,58 @@ describe("ParameterizedQuery", function () {
         });
     });
 
-    describe("advanced properties", function () {
-        var input = {
-            text: 'text-text',
-            values: [123],
-            binary: true,
-            rowMode: 'array'
-        };
-        var pq = new pgp.ParameterizedQuery(input);
-        it("must return the complete set of properties", function () {
-            expect(pq.parse()).toEqual(input);
+    describe("property values", function () {
+        var values = [1, 2, 3];
+        it("must get correctly", function () {
+            var pq = new pgp.ParameterizedQuery({
+                text: 'original-sql',
+                values: values,
+                binary: true,
+                rowMode: 'array'
+            });
+            expect(pq.text).toBe('original-sql');
+            expect(pq.values).toBe(values);
+            expect(pq.binary).toBe(true);
+            expect(pq.rowMode).toBe('array');
             expect(pq.inspect()).toBe(pq.toString());
-            expect(pq.inspect() != pq.toString(1)).toBe(true);
+        });
+        it("must keep original object when set to the same value", function () {
+            var pq = new pgp.ParameterizedQuery({
+                text: 'original-sql',
+                values: values,
+                binary: true,
+                rowMode: 'array'
+            });
+            var obj1 = pq.parse();
+            pq.text = 'original-sql';
+            pq.values = values;
+            pq.binary = true;
+            pq.rowMode = 'array';
+            var obj2 = pq.parse();
+            expect(obj1 === obj2).toBe(true);
+            expect(pq.inspect()).toBe(pq.toString());
+        });
+        it("must create a new object when changed", function () {
+            var pq = new pgp.ParameterizedQuery({
+                text: 'original-sql',
+                values: values,
+                binary: true,
+                rowMode: 'array'
+            });
+            var obj1 = pq.parse();
+            pq.text = 'new text';
+            var obj2 = pq.parse();
+            pq.values = [1, 2, 3];
+            var obj3 = pq.parse();
+            pq.binary = false;
+            var obj4 = pq.parse();
+            pq.rowMode = 'new';
+            var obj5 = pq.parse();
+            expect(obj1 !== obj2 !== obj3 !== obj4 != obj5).toBe(true);
+            expect(pq.inspect()).toBe(pq.toString());
         });
     });
-
+    
     describe("parameters", function () {
         var pq = new pgp.ParameterizedQuery({text: 'test-query', values: [123], binary: true, rowMode: 'array'});
         it("must expose the values correctly", function () {
@@ -79,8 +118,8 @@ describe("ParameterizedQuery", function () {
                 .then(function (data) {
                     result = data;
                 }).catch(function (error) {
-                    console.log("ERROR:", error);
-                })
+                console.log("ERROR:", error);
+            })
                 .finally(function () {
                     done();
                 });
@@ -115,12 +154,26 @@ describe("ParameterizedQuery", function () {
             var qf = new pgp.QueryFile('./invalid.sql');
             var pq = new pgp.ParameterizedQuery(qf);
             var result = pq.parse();
-            expect(result instanceof pgp.errors.ParameterizedQueryError).toBe(true);
+            expect(result instanceof ParameterizedQueryError).toBe(true);
             expect(result.error instanceof pgp.errors.QueryFileError).toBe(true);
             expect(pq.toString()).toBe(pq.inspect());
+            expect(pq.toString(1) !== pq.inspect()).toBe(true);
         });
-
+        
     });
+
+    describe("Negative", function () {
+        describe("invalid 'values'", function () {
+            var pq = new pgp.ParameterizedQuery('some sql'),
+                errMsg = "Property 'values' must be an array or null/undefined.";
+            pq.values = 'one';
+            var res = pq.parse();
+            it("must return an error", function () {
+                expect(res instanceof ParameterizedQueryError).toBe(true);
+                expect(res.message).toBe(errMsg);
+            });
+        });
+    });    
 });
 
 describe("Direct Parameterized Query", function () {
@@ -129,8 +182,8 @@ describe("Direct Parameterized Query", function () {
         var result;
         beforeEach(function (done) {
             db.many({
-                    text: "select * from users"
-                })
+                text: "select * from users"
+            })
                 .then(function (data) {
                     result = data;
                 })
@@ -148,9 +201,9 @@ describe("Direct Parameterized Query", function () {
         var result;
         beforeEach(function (done) {
             db.one({
-                    text: "select * from users where id=$1",
-                    values: [1]
-                })
+                text: "select * from users where id=$1",
+                values: [1]
+            })
                 .then(function (data) {
                     result = data;
                 })
@@ -167,8 +220,8 @@ describe("Direct Parameterized Query", function () {
         var result;
         beforeEach(function (done) {
             db.many({
-                    text: "select * from somewhere"
-                })
+                text: "select * from somewhere"
+            })
                 .then(dummy, function (reason) {
                     result = reason;
                 })
@@ -186,9 +239,9 @@ describe("Direct Parameterized Query", function () {
         var result;
         beforeEach(function (done) {
             db.many({
-                    text: "select 1",
-                    values: 123
-                })
+                text: "select 1",
+                values: 123
+            })
                 .then(dummy, function (reason) {
                     result = reason;
                 })
@@ -206,8 +259,8 @@ describe("Direct Parameterized Query", function () {
         var result;
         beforeEach(function (done) {
             db.query({
-                    text: null
-                })
+                text: null
+            })
                 .then(dummy, function (reason) {
                     result = reason;
                 })

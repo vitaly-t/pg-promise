@@ -158,6 +158,18 @@ describe("QueryFile / Positive:", function () {
             expect(qf.error).toBeUndefined();
         });
     });
+
+    describe("repeated read", function () {
+        // this is just for code coverage;
+        it("must not read again", function () {
+            var qf = new QueryFile(sqlSimple, {debug: false, minify: true});
+            var res1 = qf.prepare();
+            var res2 = qf.prepare();
+            expect(qf.query).toBe('select 1;');
+            expect(res1).toBe(true);
+            expect(res2).toBe(true);
+        });
+    });
 });
 
 describe("QueryFile / Negative:", function () {
