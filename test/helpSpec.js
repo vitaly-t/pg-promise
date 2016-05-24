@@ -340,6 +340,17 @@ describe("Column", function () {
         });
     });
 
+    describe("prop", function () {
+        var col = new helpers.Column({
+            name: 'testName',
+            prop: 'testName'
+        });
+        it("must not be set if matches 'name'", function () {
+            expect(col.name).toBe("testName");
+            expect('prop' in col).toBe(false);
+        });
+    });
+
     describe("mod", function () {
         it("must strip the mod", function () {
             var col = new helpers.Column('name^');
