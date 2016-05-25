@@ -7,8 +7,9 @@ var data = [1, 2, 3];
 describe("map", function () {
 
     describe("with context", function () {
-        var ctx, indexes = [];
-        var res = data.$map(function (d, idx) {
+        var ctx, arr, indexes = [];
+        var res = data.$map(function (d, idx, a) {
+            arr = a;
             ctx = this;
             indexes.push(idx);
             return d * 2;
@@ -17,12 +18,14 @@ describe("map", function () {
             expect(ctx).toBe(data);
             expect(res).toEqual([2, 4, 6]);
             expect(indexes).toEqual([0, 1, 2]);
+            expect(arr).toBe(data);
         });
     });
 
     describe("without context", function () {
-        var ctx, indexes = [];
-        var res = data.$map(function (d, idx) {
+        var ctx, arr, indexes = [];
+        var res = data.$map(function (d, idx, a) {
+            arr = a;
             ctx = ctx || this;
             indexes.push(idx);
             return d * 2;
@@ -31,6 +34,7 @@ describe("map", function () {
             expect(ctx).toBeUndefined();
             expect(res).toEqual([2, 4, 6]);
             expect(indexes).toEqual([0, 1, 2]);
+            expect(arr).toBe(data);
         });
     });
 
@@ -39,8 +43,9 @@ describe("map", function () {
 describe("filter", function () {
 
     describe("with context", function () {
-        var ctx, indexes = [];
-        var res = data.$filter(function (d, idx) {
+        var ctx, arr, indexes = [];
+        var res = data.$filter(function (d, idx, a) {
+            arr = a;
             ctx = this;
             indexes.push(idx);
             return d != 2;
@@ -49,12 +54,14 @@ describe("filter", function () {
             expect(ctx).toBe(data);
             expect(res).toEqual([1, 3]);
             expect(indexes).toEqual([0, 1, 2]);
+            expect(arr).toBe(data);
         });
     });
 
     describe("without context", function () {
-        var ctx, indexes = [];
-        var res = data.$filter(function (d, idx) {
+        var ctx, arr, indexes = [];
+        var res = data.$filter(function (d, idx, a) {
+            arr = a;
             ctx = ctx || this;
             indexes.push(idx);
             return d != 2;
@@ -63,6 +70,7 @@ describe("filter", function () {
             expect(ctx).toBeUndefined();
             expect(res).toEqual([1, 3]);
             expect(indexes).toEqual([0, 1, 2]);
+            expect(arr).toBe(data);
         });
     });
 
@@ -71,8 +79,9 @@ describe("filter", function () {
 describe("forEach", function () {
 
     describe("with context", function () {
-        var ctx, values = [], indexes = [];
-        data.$forEach(function (d, idx) {
+        var ctx, arr, values = [], indexes = [];
+        data.$forEach(function (d, idx, a) {
+            arr = a;
             ctx = this;
             values.push(d);
             indexes.push(idx);
@@ -81,12 +90,14 @@ describe("forEach", function () {
             expect(ctx).toBe(data);
             expect(values).toEqual([1, 2, 3]);
             expect(indexes).toEqual([0, 1, 2]);
+            expect(arr).toBe(data);
         });
     });
 
     describe("without context", function () {
-        var ctx, values = [], indexes = [];
-        data.$filter(function (d, idx) {
+        var ctx, arr, values = [], indexes = [];
+        data.$filter(function (d, idx, a) {
+            arr = a;
             ctx = ctx || this;
             values.push(d);
             indexes.push(idx);
@@ -96,6 +107,7 @@ describe("forEach", function () {
             expect(ctx).toBeUndefined();
             expect(values).toEqual([1, 2, 3]);
             expect(indexes).toEqual([0, 1, 2]);
+            expect(arr).toBe(data);
         });
     });
 
@@ -104,8 +116,9 @@ describe("forEach", function () {
 describe("countIf", function () {
 
     describe("with context", function () {
-        var ctx, values = [], indexes = [];
-        var res = data.$countIf(function (d, idx) {
+        var ctx, arr, values = [], indexes = [];
+        var res = data.$countIf(function (d, idx, a) {
+            arr = a;
             ctx = this;
             values.push(d);
             indexes.push(idx);
@@ -116,12 +129,14 @@ describe("countIf", function () {
             expect(ctx).toBe(data);
             expect(values).toEqual([1, 2, 3]);
             expect(indexes).toEqual([0, 1, 2]);
+            expect(arr).toBe(data);
         });
     });
 
     describe("without context", function () {
-        var ctx, values = [], indexes = [];
-        var res = data.$countIf(function (d, idx) {
+        var ctx, arr, values = [], indexes = [];
+        var res = data.$countIf(function (d, idx, a) {
+            arr = a;
             ctx = ctx || this;
             values.push(d);
             indexes.push(idx);
@@ -132,6 +147,7 @@ describe("countIf", function () {
             expect(res).toBe(2);
             expect(values).toEqual([1, 2, 3]);
             expect(indexes).toEqual([0, 1, 2]);
+            expect(arr).toBe(data);
         });
     });
 
