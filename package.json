@@ -12,7 +12,8 @@
   },
   "files": [
     "lib",
-    "typescript"
+    "typescript",
+    "typings.json"
   ],
   "homepage": "https://github.com/vitaly-t/pg-promise",
   "repository": {
