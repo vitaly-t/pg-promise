@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.3.0 or later.
+// Requires pg-promise v4.3.1 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -125,10 +125,10 @@ declare module 'pg-promise' {
         proc(procName:string, values?:any):XPromise<any>;
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.map
-        map(query:TQuery, values:any, cb:(row, index, data)=>any, thisArg?:Object);
+        map(query:TQuery, values:any, cb:(row:any, index:number, data:Array<any>)=>any, thisArg?:Object):XPromise<Array<any>>;
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.each
-        each(query:TQuery, values:any, cb:(row, index, data)=>void, thisArg?:Object);
+        each(query:TQuery, values:any, cb:(row:any, index:number, data:Array<any>)=>void, thisArg?:Object):XPromise<Array<any>>;
 
         // Tasks
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.task

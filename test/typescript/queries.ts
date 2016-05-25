@@ -38,6 +38,14 @@ db.result('')
         var value = data.rows[0].name;
     });
 
+db.map('', null, row=>{
+    return row.value;
+}).then();
+
+db.each('', null, row=>{
+    var v = row.value;
+}).then();
+
 db.task(t=> {
         return t.batch([
             t.one('')
