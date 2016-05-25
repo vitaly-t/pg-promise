@@ -36,7 +36,7 @@ var $npm = {
     utils: require('../../utils')
 };
 
-var $a = require('../../array');
+var $arr = require('../../array');
 
 /**
  * @method helpers.update
@@ -185,18 +185,18 @@ function update(data, columns, table, options, capSQL) {
 
         var query = capSQL ? sql.multi.capCase : sql.multi.lowCase;
 
-        var actualColumns = $a.filter(columns.columns, function (c) {
+        var actualColumns = $arr.filter(columns.columns, function (c) {
             return !c.cnd;
         });
 
         checkColumns(actualColumns);
         checkTable();
 
-        var targetCols = $a.map(actualColumns, function (c) {
+        var targetCols = $arr.map(actualColumns, function (c) {
             return c.escapedName + '=' + valueAlias + '.' + c.escapedName + c.castText;
         }).join();
 
-        var values = $a.map(data, function (d, index) {
+        var values = $arr.map(data, function (d, index) {
             if (!d || typeof d !== 'object') {
                 throw new Error("Invalid update object at index " + index + ".");
             }

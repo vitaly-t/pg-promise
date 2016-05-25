@@ -37,7 +37,7 @@ var $npm = {
     Column: require('./column')
 };
 
-var $a = require('../array');
+var $arr = require('../array');
 
 /**
  * @class helpers.ColumnSet
@@ -219,7 +219,7 @@ function ColumnSet(columns, options) {
      */
     if (Array.isArray(columns)) {
         var colNames = {};
-        this.columns = $a.map(columns, function (c) {
+        this.columns = $arr.map(columns, function (c) {
             var col = (c instanceof $npm.Column) ? c : new $npm.Column(c);
             if (col.name in colNames) {
                 throw new Error('Duplicate column name "' + col.name + '".');
@@ -263,7 +263,7 @@ function ColumnSet(columns, options) {
     Object.defineProperty(this, 'names', {
         get: function () {
             if (!names) {
-                names = $a.map(this.columns, function (c) {
+                names = $arr.map(this.columns, function (c) {
                     return c.escapedName;
                 }).join();
                 if (names) {
@@ -285,7 +285,7 @@ function ColumnSet(columns, options) {
     Object.defineProperty(this, 'variables', {
         get: function () {
             if (!variables) {
-                variables = $a.map(this.columns, function (c) {
+                variables = $arr.map(this.columns, function (c) {
                     return c.variable;
                 }).join();
             }
@@ -304,7 +304,7 @@ function ColumnSet(columns, options) {
     Object.defineProperty(this, 'castVariables', {
         get: function () {
             if (!castVariables) {
-                castVariables = $a.map(this.columns, function (c) {
+                castVariables = $arr.map(this.columns, function (c) {
                     return c.variable + c.castText;
                 }).join();
             }
@@ -324,7 +324,7 @@ function ColumnSet(columns, options) {
             return updates;
         }
         var dynamic;
-        var list = $a.filter(this.columns, function (c) {
+        var list = $arr.filter(this.columns, function (c) {
             if (c.cnd) {
                 return false;
             }
@@ -337,7 +337,7 @@ function ColumnSet(columns, options) {
             return true;
         });
 
-        list = $a.map(list, function (c) {
+        list = $arr.map(list, function (c) {
             return c.escapedName + '=' + c.variable + c.castText;
         }).join();
 
@@ -477,11 +477,11 @@ function ColumnSet(columns, options) {
             cs = new ColumnSet(columns);
         }
         var colNames = {}, cols = [];
-        $a.forEach(this.columns, function (c, idx) {
+        $arr.forEach(this.columns, function (c, idx) {
             cols.push(c);
             colNames[c.name] = idx;
         });
-        $a.forEach(cs.columns, function (c) {
+        $arr.forEach(cs.columns, function (c) {
             if (c.name in colNames) {
                 cols[colNames[c.name]] = c;
             } else {
@@ -523,14 +523,14 @@ function ColumnSet(columns, options) {
         var cnd = 0, skip = 0, total = this.columns.length;
         if (Array.isArray(data)) {
             if (canSetMany === undefined) {
-                cnd = $a.countIf(this.columns, function (c) {
+                cnd = $arr.countIf(this.columns, function (c) {
                     return c.cnd;
                 });
                 canSetMany = total > cnd;
             }
             return canSetMany &amp;&amp; data.length > 0;
         }
-        $a.forEach(this.columns, function (c) {
+        $arr.forEach(this.columns, function (c) {
             cnd += c.cnd ? 1 : 0;
             if (c.skip) {
                 skip += c.skip.call(data, c.prop || c.name) ? 1 : 0;
@@ -560,7 +560,7 @@ function ColumnSet(columns, options) {
             return obj; // a simple ColumnSet requires no object preparation;
         }
         var target = {};
-        $a.forEach(this.columns, function (c) {
+        $arr.forEach(this.columns, function (c) {
             var name = c.prop || c.name;
             if (name in obj) {
                 var value = obj[name];
@@ -605,7 +605,7 @@ ColumnSet.prototype.toString = function (level) {
     }
     if (this.columns.length) {
         lines.push(gap1 + 'columns: [');
-        $a.forEach(this.columns, function (c) {
+        $arr.forEach(this.columns, function (c) {
             lines.push(c.toString(2));
         });
         lines.push(gap1 + ']');

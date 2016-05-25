@@ -29,7 +29,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-var $a = require('../lib/array');
+var $arr = require('../lib/array');
 
 // Format Modification Flags;
 var fmFlags = {
@@ -116,7 +116,7 @@ function formatValue(value, fm, obj) {
 // Arrays of any depth/dimension are supported.
 function formatArray(array) {
     function loop(a) {
-        return '[' + $a.map(a, function (v) {
+        return '[' + $arr.map(a, function (v) {
                 return v instanceof Array ? loop(v) : formatValue(v);
             }).join() + ']';
     }
@@ -130,7 +130,7 @@ function formatArray(array) {
 // Both single value and array or values are supported.
 function formatCSV(values) {
     if (values instanceof Array) {
-        return $a.map(values, function (v) {
+        return $arr.map(values, function (v) {
             return formatValue(v);
         }).join();
     }
