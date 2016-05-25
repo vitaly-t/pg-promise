@@ -13,12 +13,12 @@
 * 3.3.0 Adding strict variable requirement to `$1, $2,...` formatting. Released: March 05, 2016
 * 3.2.1 Adding support for formatting overrides: `:raw`, `:name`, `:json` and `:csv`. Released: February 22, 2016
 * 3.2.0 Adding formatting options support, specifically option `partial`, add its use within [Query Files](README.md#query-files). Released: February 20, 2016
-* 3.1.0 Adding support for [SQL Names]. Released: January 27, 2016
+* 3.1.0 Adding support for [SQL Names](#sql-names). Released: January 27, 2016
 * 3.0.3 Complete replacement of the API with GitHub-hosted one. Released: January 21, 2016
 * 2.9.3 Replaced all SQL processing with [pg-minify] dependency. Released: January 20, 2016
 * 2.9.1 added custom SQL parser for external files. Released: January 19, 2016
 * 2.9.0 added support for [Query Files](README.md#query-files). Released: January 18, 2016
-* 2.8.0 added support for [event receive](README.md#receive). Released: December 14, 2015
+* 2.8.0 added support for [event receive](http://vitaly-t.github.io/pg-promise/global.html#event:receive). Released: December 14, 2015
 * 2.6.0 added support for [ES6 Generators](README.md#generators). Released: November 30, 2015
 * 2.5.0 added support for [Configurable Transactions](README.md#configurable-transactions). Released: November 26, 2015
 * 2.4.0 library re-organized for better documentation and easier maintenance. Released: November 24, 2015
