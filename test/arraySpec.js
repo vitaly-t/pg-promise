@@ -1,6 +1,6 @@
 'use strict';
 
-require('../lib/array');
+var $a = require('../lib/array');
 
 var data = [1, 2, 3];
 
@@ -8,7 +8,7 @@ describe("map", function () {
 
     describe("with context", function () {
         var ctx, arr, indexes = [];
-        var res = data.$map(function (d, idx, a) {
+        var res = $a.map(data, function (d, idx, a) {
             arr = a;
             ctx = this;
             indexes.push(idx);
@@ -24,7 +24,7 @@ describe("map", function () {
 
     describe("without context", function () {
         var ctx, arr, indexes = [];
-        var res = data.$map(function (d, idx, a) {
+        var res = $a.map(data, function (d, idx, a) {
             arr = a;
             ctx = ctx || this;
             indexes.push(idx);
@@ -44,7 +44,7 @@ describe("filter", function () {
 
     describe("with context", function () {
         var ctx, arr, indexes = [];
-        var res = data.$filter(function (d, idx, a) {
+        var res = $a.filter(data, function (d, idx, a) {
             arr = a;
             ctx = this;
             indexes.push(idx);
@@ -60,7 +60,7 @@ describe("filter", function () {
 
     describe("without context", function () {
         var ctx, arr, indexes = [];
-        var res = data.$filter(function (d, idx, a) {
+        var res = $a.filter(data, function (d, idx, a) {
             arr = a;
             ctx = ctx || this;
             indexes.push(idx);
@@ -80,7 +80,7 @@ describe("forEach", function () {
 
     describe("with context", function () {
         var ctx, arr, values = [], indexes = [];
-        data.$forEach(function (d, idx, a) {
+        $a.forEach(data, function (d, idx, a) {
             arr = a;
             ctx = this;
             values.push(d);
@@ -96,7 +96,7 @@ describe("forEach", function () {
 
     describe("without context", function () {
         var ctx, arr, values = [], indexes = [];
-        data.$filter(function (d, idx, a) {
+        $a.filter(data, function (d, idx, a) {
             arr = a;
             ctx = ctx || this;
             values.push(d);
@@ -117,7 +117,7 @@ describe("countIf", function () {
 
     describe("with context", function () {
         var ctx, arr, values = [], indexes = [];
-        var res = data.$countIf(function (d, idx, a) {
+        var res = $a.countIf(data, function (d, idx, a) {
             arr = a;
             ctx = this;
             values.push(d);
@@ -135,7 +135,7 @@ describe("countIf", function () {
 
     describe("without context", function () {
         var ctx, arr, values = [], indexes = [];
-        var res = data.$countIf(function (d, idx, a) {
+        var res = $a.countIf(data, function (d, idx, a) {
             arr = a;
             ctx = ctx || this;
             values.push(d);
