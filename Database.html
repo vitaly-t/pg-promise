@@ -414,7 +414,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line343">line 343</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line342">line 342</a>
     </li></ul></dd>
     
 
@@ -591,6 +591,306 @@ be called in the end of the query chain, in order to release the connection back
 </dl>
 
     
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".each"><span class="type-signature">(static) </span>each<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a provided function once per array element, for an array of rows resolved by method <a href="Database.html#.any">any</a>.</p>
+<p>It executes the exact same protocol as the regular <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">Array.forEach</a>,
+while providing the following benefits:</p>
+<ul>
+<li>Shorter form of iteration, avoiding an extra <code>.then</code> block</li>
+<li>Use of a custom iterator offers much better performance than the regular <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">Array.forEach</a></li>
+<li>Automatic <code>this</code> context through the database protocol</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
+<ul>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Function to execute for each row, taking three arguments:</p>
+<ul>
+<li><code>row</code> - the current row being processed in the array</li>
+<li><code>index</code> - the index of the current row being processed in the array</li>
+<li><code>data</code> - the array of rows resolved by method <a href="Database.html#.any">any</a></li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thisArg</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Value to use as <code>this</code> when executing the callback.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line576">line 576</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">Array.forEach</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Resolves with the original array of rows.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>db.each('SELECT id, code, name FROM Events', null, row => {    row.code = parseInt(row.code);})    .then(data => {        // data = array of events, with 'code' converted into integer    })    .catch(error => {        // error    });</code></pre>
 
 
 
@@ -801,7 +1101,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line445">line 445</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line444">line 444</a>
     </li></ul></dd>
     
 
@@ -1028,7 +1328,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line238">line 238</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line237">line 237</a>
     </li></ul></dd>
     
 
@@ -1250,7 +1550,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line309">line 309</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line308">line 308</a>
     </li></ul></dd>
     
 
@@ -1306,6 +1606,307 @@ as an override for its internal <code>values</code>.</p></td>
 </dl>
 
     
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".map"><span class="type-signature">(static) </span>map<span class="signature">(query, values, cb, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Creates a new array with the results of calling a provided function on every element in the array of rows
+resolved by method <a href="Database.html#.any">any</a>.</p>
+<p>It executes the exact same protocol as the standard <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.map</a>
+for the array of rows, while providing the following benefits:</p>
+<ul>
+<li>Shorter form of mapping rows, avoiding an extra <code>.then</code> block</li>
+<li>Use of a custom <code>map</code> implementation offers much better performance than the standard <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.map</a></li>
+<li>Automatic <code>this</code> context through the database protocol</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
+<ul>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Function that produces an element of the new array, taking three arguments:</p>
+<ul>
+<li><code>row</code> - the current row being processed in the array</li>
+<li><code>index</code> - the index of the current row being processed in the array</li>
+<li><code>data</code> - the original array of rows resolved by method <a href="Database.html#.any">any</a></li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thisArg</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Value to use as <code>this</code> when executing the callback.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line499">line 499</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.map</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Resolves with the new array of values returned from the callback.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>db.map('SELECT id FROM Users WHERE status = $1', ['active'], row => row.id)    .then(data => {        // data = array of active user id-s    })    .catch(error => {       // error    });</code></pre>
+
+    <pre class="prettyprint"><code>db.tx(t => {    return t.map('SELECT id FROM Users WHERE status = $1', ['active'], row => {       return t.none('UPDATE Events SET checked = $1 WHERE userId = $2', [true, row.id]);    }).then(t.batch);})    .then(data => {        // success    })    .catch(error => {        // error    });</code></pre>
 
 
 
@@ -1479,7 +2080,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line166">line 166</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line165">line 165</a>
     </li></ul></dd>
     
 
@@ -1702,7 +2303,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line201">line 201</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line200">line 200</a>
     </li></ul></dd>
     
 
@@ -1927,7 +2528,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line273">line 273</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line272">line 272</a>
     </li></ul></dd>
     
 
@@ -2134,7 +2735,7 @@ expecting back 0 or 1 rows.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line476">line 476</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line475">line 475</a>
     </li></ul></dd>
     
 
@@ -2203,8 +2804,7 @@ expecting back 0 or 1 rows.</p>
 
 
 <div class="description">
-    <p>Executes a generic query request that expects return data
-according to parameter <code>qrm</code>.</p>
+    <p>Executes a generic query request that expects the return data according to parameter <code>qrm</code>.</p>
 </div>
 
 
@@ -2632,7 +3232,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line378">line 378</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line377">line 377</a>
     </li></ul></dd>
     
 
@@ -2815,7 +3415,7 @@ is set, it will reject with <code>Streaming doesn't work with native bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line412">line 412</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line411">line 411</a>
     </li></ul></dd>
     
 
@@ -3029,7 +3629,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line548">line 548</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line641">line 641</a>
     </li></ul></dd>
     
 
@@ -3243,7 +3843,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line595">line 595</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line688">line 688</a>
     </li></ul></dd>
     
 
