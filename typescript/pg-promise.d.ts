@@ -125,10 +125,10 @@ declare module 'pg-promise' {
         proc(procName:string, values?:any):XPromise<any>;
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.map
-        map(query:TQuery, values?:any, cb?:(value, index)=>any, thisArgs?:Object);
+        map(query:TQuery, values:any, cb:(row, index, data)=>any, thisArg?:Object);
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.each
-        each(query:TQuery, values?:any, cb?:(value, index)=>any, thisArgs?:Object);
+        each(query:TQuery, values:any, cb:(row, index, data)=>void, thisArg?:Object);
 
         // Tasks
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.task
