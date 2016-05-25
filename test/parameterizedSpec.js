@@ -84,7 +84,7 @@ describe("ParameterizedQuery", function () {
             expect(pq.inspect()).toBe(pq.toString());
         });
     });
-    
+
     describe("parameters", function () {
         var pq = new pgp.ParameterizedQuery({text: 'test-query', values: [123], binary: true, rowMode: 'array'});
         it("must expose the values correctly", function () {
@@ -117,9 +117,10 @@ describe("ParameterizedQuery", function () {
             db.one(pq)
                 .then(function (data) {
                     result = data;
-                }).catch(function (error) {
-                console.log("ERROR:", error);
-            })
+                })
+                .catch(function (error) {
+                    console.log("ERROR:", error);
+                })
                 .finally(function () {
                     done();
                 });
@@ -127,6 +128,24 @@ describe("ParameterizedQuery", function () {
         it("must return the right value", function () {
             expect(result && typeof result === 'object').toBeTruthy();
             expect(result.count).toBe('0');
+        });
+    });
+
+    describe("valid, with parameters override", function () {
+        var result;
+        beforeEach(function (done) {
+            db.one({
+                text: "select * from users where id=$1"
+            }, 1)
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must return one user", function () {
+            expect(result && typeof(result) === 'object').toBeTruthy();
         });
     });
 
@@ -159,21 +178,9 @@ describe("ParameterizedQuery", function () {
             expect(pq.toString()).toBe(pq.inspect());
             expect(pq.toString(1) !== pq.inspect()).toBe(true);
         });
-        
+
     });
 
-    describe("Negative", function () {
-        describe("invalid 'values'", function () {
-            var pq = new pgp.ParameterizedQuery('some sql'),
-                errMsg = "Property 'values' must be an array or null/undefined.";
-            pq.values = 'one';
-            var res = pq.parse();
-            it("must return an error", function () {
-                expect(res instanceof ParameterizedQueryError).toBe(true);
-                expect(res.message).toBe(errMsg);
-            });
-        });
-    });    
 });
 
 describe("Direct Parameterized Query", function () {
@@ -235,26 +242,6 @@ describe("Direct Parameterized Query", function () {
         });
     });
 
-    describe("with invalid values", function () {
-        var result;
-        beforeEach(function (done) {
-            db.many({
-                text: "select 1",
-                values: 123
-            })
-                .then(dummy, function (reason) {
-                    result = reason;
-                })
-                .finally(function () {
-                    done();
-                });
-        });
-        it("must return an error", function () {
-            expect(result instanceof pgp.errors.ParameterizedQueryError).toBe(true);
-            expect(result.inspect()).toBe(result.toString());
-        });
-    });
-
     describe("with an empty 'text'", function () {
         var result;
         beforeEach(function (done) {
@@ -270,6 +257,7 @@ describe("Direct Parameterized Query", function () {
         });
         it("must return an error", function () {
             expect(result instanceof pgp.errors.ParameterizedQueryError).toBe(true);
+            expect(result.toString()).toBe(result.inspect());
         });
     });
 

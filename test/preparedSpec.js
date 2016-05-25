@@ -185,17 +185,6 @@ describe("PreparedStatement", function () {
         });
     });
 
-    describe("Negative", function () {
-        describe("invalid 'values'", function () {
-            var ps = new pgp.PreparedStatement('test-name', 'some sql');
-            ps.values = 'one';
-            var res = ps.parse();
-            it("must return an error", function () {
-                expect(res instanceof PreparedStatementError).toBe(true);
-                expect(res.message).toBe("Property 'values' must be an array or null/undefined.");
-            });
-        });
-    });
 });
 
 describe("Direct Prepared Statements", function () {
@@ -236,11 +225,30 @@ describe("Direct Prepared Statements", function () {
                     done();
                 });
         });
-        it("must return all users", function () {
+        it("must return one user", function () {
             expect(result && typeof(result) === 'object').toBeTruthy();
         });
     });
 
+    describe("valid, with parameters override", function () {
+        var result;
+        beforeEach(function (done) {
+            db.one({
+                name: "find one user",
+                text: "select * from users where id=$1"
+            }, 1)
+                .then(function (data) {
+                    result = data;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must return one user", function () {
+            expect(result && typeof(result) === 'object').toBeTruthy();
+        });
+    });
+    
     describe("with invalid query", function () {
         var result;
         beforeEach(function (done) {
@@ -258,26 +266,6 @@ describe("Direct Prepared Statements", function () {
         it("must return an error", function () {
             expect(result instanceof Error).toBe(true);
             expect(result.message).toContain('relation "somewhere" does not exist');
-        });
-    });
-
-    describe("with invalid values", function () {
-        var result;
-        beforeEach(function (done) {
-            db.many({
-                name: "invalid",
-                text: "select 1",
-                values: 123
-            })
-                .then(dummy, function (reason) {
-                    result = reason;
-                })
-                .finally(function () {
-                    done();
-                });
-        });
-        it("must return an error", function () {
-            expect(result instanceof PreparedStatementError).toBe(true);
         });
     });
 
