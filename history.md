@@ -13,7 +13,7 @@
 * 3.3.0 Adding strict variable requirement to `$1, $2,...` formatting. Released: March 05, 2016
 * 3.2.1 Adding support for formatting overrides: `:raw`, `:name`, `:json` and `:csv`. Released: February 22, 2016
 * 3.2.0 Adding formatting options support, specifically option `partial`, add its use within [Query Files](README.md#query-files). Released: February 20, 2016
-* 3.1.0 Adding support for [SQL Names](#sql-names). Released: January 27, 2016
+* 3.1.0 Adding support for [SQL Names](README.md#sql-names). Released: January 27, 2016
 * 3.0.3 Complete replacement of the API with GitHub-hosted one. Released: January 21, 2016
 * 2.9.3 Replaced all SQL processing with [pg-minify] dependency. Released: January 20, 2016
 * 2.9.1 added custom SQL parser for external files. Released: January 19, 2016
