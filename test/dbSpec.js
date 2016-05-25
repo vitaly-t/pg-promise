@@ -413,7 +413,7 @@ describe("Method 'map'", function () {
             });
             it("must reject with an error", function () {
                 expect(err instanceof TypeError).toBe(true);
-                expect(err.message).toBe("cb is not a function");
+                expect(err.message).toContain("is not a function");
             });
         });
 
@@ -473,7 +473,7 @@ describe("Method 'each'", function () {
             });
             it("must reject with an error", function () {
                 expect(err instanceof TypeError).toBe(true);
-                expect(err.message).toBe("cb is not a function");
+                expect(err.message).toContain("is not a function");
             });
         });
 
