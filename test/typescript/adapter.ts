@@ -2,7 +2,7 @@
 
 import * as pgPromise from 'pg-promise';
 
-function create(cb) {
+function create(cb:any) {
     return {};
 }
 

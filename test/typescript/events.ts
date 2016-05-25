@@ -3,22 +3,22 @@
 import * as pgPromise from 'pg-promise';
 
 var pgp = pgPromise({
-    receive: (data, result, e)=> {
+    receive: (data:any, result:any, e:any)=> {
         var dc = e.dc;
         var d = data[0].prop;
         var r = result.fields[0].name;
         var query = e.query;
     },
-    query: (e)=> {
+    query: (e:any)=> {
         var dc = e.dc;
         var query = e.query;
     },
-    error: (err, e)=> {
+    error: (err:any, e:any)=> {
         var dc = e.dc;
         var query = e.query;
     },
-    extend: (obj, dc)=> {
-        obj['method'] = (val)=> {
+    extend: (obj:any, dc:any)=> {
+        obj['method'] = (val:any)=> {
             return obj.one(null, val);
         }
     }
@@ -27,12 +27,12 @@ var pgp = pgPromise({
 var db = pgp('connection');
 
 db.task(t=> {
-        var dc = t.ctx.dc;
-        return t.batch([
-            t.one('query'),
-            t.none('query')
-        ]);
-    })
+    var dc = t.ctx.dc;
+    return t.batch([
+        t.one('query'),
+        t.none('query')
+    ]);
+})
     .then(data=> {
     })
     .catch(error=> {

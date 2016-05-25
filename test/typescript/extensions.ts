@@ -7,8 +7,8 @@ interface Extensions {
 }
 
 var pgp = pgPromise({
-    extend: function (obj, dc) {
-        obj['findUser'] = (userId)=> {
+    extend: function (obj:any, dc:any) {
+        obj['findUser'] = (userId:number)=> {
             return obj.one('', userId);
         }
     }
@@ -17,8 +17,8 @@ var pgp = pgPromise({
 var db = pgp('connection');
 
 var pgpExt = pgPromise<Extensions>({
-    extend: function (obj) {
-        obj.findUser = (userId)=> {
+    extend: function (obj:pgPromise.IDatabase<Extensions>&Extensions) {
+        obj.findUser = (userId:number)=> {
             return obj.one('', userId);
         }
     }

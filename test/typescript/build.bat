@@ -1,6 +1,6 @@
 @echo off
 
-SET PARAMS=--target es6 --module commonjs
+SET PARAMS=--target es6 --module commonjs --noImplicitAny
 
 call tsc init %PARAMS%
 call tsc events %PARAMS%

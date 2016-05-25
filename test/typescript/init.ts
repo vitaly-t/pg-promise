@@ -18,12 +18,14 @@ db.one('');
 
 db.one(new pgPromise.QueryFile(''));
 
-var txMode = new pgPromise.txMode.TransactionMode();
+var txMode:any = new pgPromise.txMode.TransactionMode();
 
-function myTransaction(t) {
+function myTransaction(t:any) {
 }
 
-myTransaction['txMode'] = txMode;
+var txFunc:any = myTransaction;
+txFunc['txMode'] = txMode;
+txFunc.txMode = txMode;
 
 db.tx(function (t) {
     var w = t.one('');
