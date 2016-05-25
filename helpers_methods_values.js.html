@@ -35,6 +35,8 @@ var $npm = {
     utils: require('../../utils')
 };
 
+var $a = require('../../array');
+
 /**
  * @method helpers.values
  * @description
@@ -122,7 +124,7 @@ function values(data, columns) {
     var format = $npm.formatting.as.format;
 
     if (isArray) {
-        return data.$map(function (d, index) {
+        return $a.map(data, function (d, index) {
             if (!d || typeof d !== 'object') {
                 throw new Error("Invalid object at index " + index + ".");
             }

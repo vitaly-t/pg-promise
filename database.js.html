@@ -40,6 +40,8 @@ var $npm = {
     task: require('./task')
 };
 
+var $a = require('./array');
+
 /**
  * @constructor Database
  * @description
@@ -600,7 +602,7 @@ function Database(cn, dc, config) {
         obj.map = function (query, values, cb, thisArg) {
             return obj.any.call(this, query, values)
                 .then(function (data) {
-                    return data.$map(cb, thisArg);
+                    return $a.map(data, cb, thisArg);
                 });
         };
 
@@ -666,7 +668,7 @@ function Database(cn, dc, config) {
         obj.each = function (query, values, cb, thisArg) {
             return obj.any.call(this, query, values)
                 .then(function (data) {
-                    data.$forEach(cb, thisArg);
+                    $a.forEach(data, cb, thisArg);
                     return data;
                 });
         };
