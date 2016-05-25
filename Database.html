@@ -48,8 +48,8 @@
 
 
 <div class="description">
-    <p>Represents an extensible database protocol. This type is not available directly,
-it can only be created via the library's base call.</p>
+    <p>Represents the database protocol, extensible via event <a href="global.html#event:extend">extend</a>.
+This type is not available directly, it can only be created via the library's base call.</p>
 </div>
 
 
@@ -114,7 +114,7 @@ it can only be created via the library's base call.</p>
 
             
 
-            <td class="description last"><p>Connection object or string.</p></td>
+            <td class="description last"><p>Connection object or string. For details see <a href="https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax">Connection Syntax</a>.</p></td>
         </tr>
 
     
@@ -143,7 +143,7 @@ it can only be created via the library's base call.</p>
             
 
             <td class="description last"><p>Database Context.</p>
-<p>Any object or value to be propagated through the entire protocol, to allow implementations
+<p>Any object or value to be propagated through the protocol, to allow implementations
 and event handling that depend on the database context.</p>
 <p>This is mainly to facilitate the use of multiple databases which may need separate protocol
 extensions, or different implementations within a single task / transaction callback,
@@ -198,7 +198,7 @@ depending on the database context.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="global.html#event:extend">extend</a></li>
+            <li><a href="global.html#event:extend">extend</a>,<a href="Database.html#.connect">connect</a>,<a href="Database.html#.query">query</a>,<a href="Database.html#.none">none</a>,<a href="Database.html#.one">one</a>,<a href="Database.html#.oneOrNone">oneOrNone</a>,<a href="Database.html#.many">many</a>,<a href="Database.html#.manyOrNone">manyOrNone</a>,<a href="Database.html#.any">any</a>,<a href="Database.html#.func">func</a>,<a href="Database.html#.proc">proc</a>,<a href="Database.html#.result">result</a>,<a href="Database.html#.map">map</a>,<a href="Database.html#.each">each</a>,<a href="Database.html#.stream">stream</a>,<a href="Database.html#.task">task</a>,<a href="Database.html#.tx">tx</a></li>
         </ul>
     </dd>
     
@@ -414,7 +414,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line344">line 344</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line362">line 362</a>
     </li></ul></dd>
     
 
@@ -534,7 +534,7 @@ and releases the shared connection automatically.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line53">line 53</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line71">line 71</a>
     </li></ul></dd>
     
 
@@ -607,11 +607,16 @@ be called in the end of the query chain, in order to release the connection back
 
 <div class="description">
     <p>Executes a provided function once per array element, for an array of rows resolved by method <a href="Database.html#.any">any</a>.</p>
-<p>It executes the exact same protocol as the regular <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">Array.forEach</a>,
-while providing the following benefits:</p>
+<p>It is a convenience method that abbreviates the following logic:</p>
+<pre class="prettyprint source lang-js"><code>db.any(query, values)
+    .then(function(data) {
+        data.forEach(function(row, index, data) {
+             // process the row here;
+        });
+        return data;
+    });</code></pre><p>In addition to much shorter code, it offers the following benefits:</p>
 <ul>
-<li>Shorter form of iteration, avoiding an extra <code>.then</code> block</li>
-<li>Use of a custom iterator offers much better performance than the regular <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">Array.forEach</a></li>
+<li>Use of a custom iterator has a much better performance than the regular <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">Array.forEach</a></li>
 <li>Automatic <code>this</code> context through the database protocol</li>
 </ul>
 </div>
@@ -834,7 +839,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line580">line 580</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line607">line 607</a>
     </li></ul></dd>
     
 
@@ -844,7 +849,9 @@ as an override for its internal <code>values</code>.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.any">Database.any</a>,<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">Array.forEach</a></li>
+            <li><a href="Database.html#.any">Database.any</a></li>
+        
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">Array.forEach</a></li>
         </ul>
     </dd>
     
@@ -1101,7 +1108,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line446">line 446</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line464">line 464</a>
     </li></ul></dd>
     
 
@@ -1328,7 +1335,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line239">line 239</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line257">line 257</a>
     </li></ul></dd>
     
 
@@ -1550,7 +1557,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line310">line 310</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line328">line 328</a>
     </li></ul></dd>
     
 
@@ -1623,11 +1630,15 @@ as an override for its internal <code>values</code>.</p></td>
 <div class="description">
     <p>Creates a new array with the results of calling a provided function on every element in the array of rows
 resolved by method <a href="Database.html#.any">any</a>.</p>
-<p>It executes the exact same protocol as the standard <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.map</a>
-for the array of rows, while providing the following benefits:</p>
+<p>It is a convenience method that abbreviates the following logic:</p>
+<pre class="prettyprint source lang-js"><code>db.any(query, values)
+    .then(function(data) {
+        return data.map(function(row, index, data) {
+             // return the new row/element 
+        });
+    });</code></pre><p>In addition to much shorter code, it offers the following benefits:</p>
 <ul>
-<li>Shorter form of mapping rows, avoiding an extra <code>.then</code> block</li>
-<li>Use of a custom <code>map</code> implementation offers much better performance than the standard <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.map</a></li>
+<li>Use of a custom iterator has a much better performance than the standard <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.map</a></li>
 <li>Automatic <code>this</code> context through the database protocol</li>
 </ul>
 </div>
@@ -1848,7 +1859,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line501">line 501</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line519">line 519</a>
     </li></ul></dd>
     
 
@@ -1858,7 +1869,9 @@ as an override for its internal <code>values</code>.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.any">Database.any</a>,<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.map</a></li>
+            <li><a href="Database.html#.any">Database.any</a></li>
+        
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.map</a></li>
         </ul>
     </dd>
     
@@ -2080,7 +2093,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line167">line 167</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line185">line 185</a>
     </li></ul></dd>
     
 
@@ -2303,7 +2316,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line202">line 202</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line220">line 220</a>
     </li></ul></dd>
     
 
@@ -2528,7 +2541,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line274">line 274</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line292">line 292</a>
     </li></ul></dd>
     
 
@@ -2735,7 +2748,7 @@ expecting back 0 or 1 rows.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line477">line 477</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line495">line 495</a>
     </li></ul></dd>
     
 
@@ -3010,7 +3023,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line105">line 105</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line123">line 123</a>
     </li></ul></dd>
     
 
@@ -3232,7 +3245,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line379">line 379</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line397">line 397</a>
     </li></ul></dd>
     
 
@@ -3415,7 +3428,7 @@ is set, it will reject with <code>Streaming doesn't work with native bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line413">line 413</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line431">line 431</a>
     </li></ul></dd>
     
 
@@ -3629,7 +3642,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line647">line 647</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line684">line 684</a>
     </li></ul></dd>
     
 
@@ -3843,7 +3856,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line694">line 694</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line731">line 731</a>
     </li></ul></dd>
     
 
