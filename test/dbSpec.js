@@ -376,6 +376,126 @@ describe("Masked Connection Log", function () {
     });
 });
 
+describe("Method 'map'", function () {
+
+    describe("positive:", function () {
+        var pValue, pIndex, pArr, pData;
+        beforeEach(function (done) {
+            db.map('SELECT 1 as value', null, function (value, index, arr) {
+                pValue = value;
+                pIndex = index;
+                pArr = arr;
+                return {newVal: 2};
+            })
+                .then(function (data) {
+                    pData = data;
+                    done();
+                });
+        });
+        it("must reject with an error", function () {
+            expect(pValue).toEqual({value: 1});
+            expect(pIndex).toBe(0);
+            expect(pArr).toEqual([{value: 1}]);
+            expect(pData).toEqual([{newVal: 2}]);
+        });
+    });
+
+    describe("negative:", function () {
+
+        describe("with invalid parameters", function () {
+            var err;
+            beforeEach(function (done) {
+                db.map('SELECT 1')
+                    .catch(function (error) {
+                        err = error;
+                        done();
+                    });
+            });
+            it("must reject with an error", function () {
+                expect(err instanceof TypeError).toBe(true);
+                expect(err.message).toBe("cb is not a function");
+            });
+        });
+
+        describe("with error thrown inside the callback", function () {
+            var err;
+            beforeEach(function (done) {
+                db.map('SELECT 1', null, function () {
+                    throw new Error("Ops!");
+                })
+                    .catch(function (error) {
+                        err = error;
+                        done();
+                    });
+            });
+            it("must reject with an error", function () {
+                expect(err).toEqual(new Error("Ops!"));
+            });
+        });
+
+    });
+});
+
+describe("Method 'each'", function () {
+
+    describe("positive:", function () {
+        var pValue, pIndex, pArr, pData;
+        beforeEach(function (done) {
+            db.each('SELECT 1 as value', null, function (value, index, arr) {
+                pValue = value;
+                pIndex = index;
+                pArr = arr;
+                value.value = 2;
+            })
+                .then(function (data) {
+                    pData = data;
+                    done();
+                });
+        });
+        it("must reject with an error", function () {
+            expect(pValue).toEqual({value: 2});
+            expect(pIndex).toBe(0);
+            expect(pArr).toEqual([{value: 2}]);
+            expect(pData).toEqual([{value: 2}]);
+        });
+    });
+
+    describe("negative:", function () {
+
+        describe("with invalid parameters", function () {
+            var err;
+            beforeEach(function (done) {
+                db.each('SELECT 1')
+                    .catch(function (error) {
+                        err = error;
+                        done();
+                    });
+            });
+            it("must reject with an error", function () {
+                expect(err instanceof TypeError).toBe(true);
+                expect(err.message).toBe("cb is not a function");
+            });
+        });
+
+        describe("with error thrown inside the callback", function () {
+            var err;
+            beforeEach(function (done) {
+                db.each('SELECT 1', null, function () {
+                    throw new Error("Ops!");
+                })
+                    .catch(function (error) {
+                        err = error;
+                        done();
+                    });
+            });
+            it("must reject with an error", function () {
+                expect(err).toEqual(new Error("Ops!"));
+            });
+        });
+
+    });
+});
+
 describe("Method 'none'", function () {
 
     it("must resolve with 'undefined'", function () {
@@ -635,11 +755,11 @@ describe("Executing method query", function () {
     it("with invalid query as parameter must throw an error", function () {
         var finished, result;
         promise.any([
-                db.query(),
-                db.query(''),
-                db.query('   '),
-                db.query(1),
-                db.query(null)])
+            db.query(),
+            db.query(''),
+            db.query('   '),
+            db.query(1),
+            db.query(null)])
             .then(function () {
                 finished = true;
             }, function (reason) {
@@ -662,15 +782,15 @@ describe("Executing method query", function () {
     it("with invalid qrm as parameter must throw an error", function () {
         var finished, result, error = "Invalid Query Result Mask specified.";
         promise.any([
-                db.query('something', undefined, ''),
-                db.query('something', undefined, '2'),
-                db.query('something', undefined, -1),
-                db.query('something', undefined, 0),
-                db.query('something', undefined, 100),
-                db.query('something', undefined, NaN),
-                db.query('something', undefined, 1 / 0),
-                db.query('something', undefined, -1 / 0),
-                db.query('something', undefined, 2.45)])
+            db.query('something', undefined, ''),
+            db.query('something', undefined, '2'),
+            db.query('something', undefined, -1),
+            db.query('something', undefined, 0),
+            db.query('something', undefined, 100),
+            db.query('something', undefined, NaN),
+            db.query('something', undefined, 1 / 0),
+            db.query('something', undefined, -1 / 0),
+            db.query('something', undefined, 2.45)])
             .then(function () {
                 finished = true;
             }, function (reason) {
@@ -707,19 +827,19 @@ describe("Transactions", function () {
         var result, error, context, THIS, tag;
         beforeEach(function (done) {
             db.tx("complex", function (t) {
-                    tag = t.ctx.tag;
-                    THIS = this;
-                    context = t;
-                    var queries = [
-                        this.none('drop table if exists test'),
-                        this.none('create table test(id serial, name text)')
-                    ];
-                    for (var i = 1; i <= 10000; i++) {
-                        queries.push(this.none('insert into test(name) values($1)', 'name-' + i));
-                    }
-                    queries.push(this.one('select count(*) from test'));
-                    return this.batch(queries);
-                })
+                tag = t.ctx.tag;
+                THIS = this;
+                context = t;
+                var queries = [
+                    this.none('drop table if exists test'),
+                    this.none('create table test(id serial, name text)')
+                ];
+                for (var i = 1; i <= 10000; i++) {
+                    queries.push(this.none('insert into test(name) values($1)', 'name-' + i));
+                }
+                queries.push(this.one('select count(*) from test'));
+                return this.batch(queries);
+            })
                 .then(function (data) {
                     result = data;
                     done();
@@ -743,15 +863,15 @@ describe("Transactions", function () {
         beforeEach(function (done) {
             options.capSQL = true;
             db.tx(function (t) {
-                    THIS = this;
-                    context = t;
-                    return this.batch([
-                        this.none('update users set login=$1 where id=$2', ['TestName', 1]),
-                        this.tx(function () {
-                            throw new Error('Nested TX failure');
-                        })
-                    ]);
-                })
+                THIS = this;
+                context = t;
+                return this.batch([
+                    this.none('update users set login=$1 where id=$2', ['TestName', 1]),
+                    this.tx(function () {
+                        throw new Error('Nested TX failure');
+                    })
+                ]);
+            })
                 .catch(function (reason) {
                     error = reason[1].result;
                     done();
@@ -771,9 +891,9 @@ describe("Transactions", function () {
         var stop, error, tx;
         beforeEach(function (done) {
             db.tx(function () {
-                    tx = this;
-                    return promise.resolve();
-                })
+                tx = this;
+                return promise.resolve();
+            })
                 .then(function () {
                     try {
                         // cannot use transaction context
@@ -801,20 +921,20 @@ describe("Transactions", function () {
         var result, nestError, THIS1, THIS2, context1, context2;
         beforeEach(function (done) {
             db.tx(function (t1) {
-                    THIS1 = this;
-                    context1 = t1;
-                    return this.batch([
-                        this.none('update users set login=$1', 'External'),
-                        this.tx(function (t2) {
-                            THIS2 = this;
-                            context2 = t2;
-                            return this.batch([
-                                this.none('update users set login=$1', 'Internal'),
-                                this.one('select * from unknownTable') // emulating a bad query;
-                            ]);
-                        })
-                    ]);
-                })
+                THIS1 = this;
+                context1 = t1;
+                return this.batch([
+                    this.none('update users set login=$1', 'External'),
+                    this.tx(function (t2) {
+                        THIS2 = this;
+                        context2 = t2;
+                        return this.batch([
+                            this.none('update users set login=$1', 'Internal'),
+                            this.one('select * from unknownTable') // emulating a bad query;
+                        ]);
+                    })
+                ]);
+            })
                 .then(dummy, function (reason) {
                     nestError = reason[1].result[1].result;
                     return promise.all([
@@ -847,16 +967,16 @@ describe("Transactions", function () {
         var result;
         beforeEach(function (done) {
             db.tx(function () {
-                    return this.batch([
-                            this.none('update users set login=$1 where id=1', 'Test'),
-                            this.tx(function () {
-                                return this.none('update person set name=$1 where id=1', 'Test');
-                            })
-                        ])
-                        .then(function () {
-                            return promise.reject();
-                        });
-                })
+                return this.batch([
+                    this.none('update users set login=$1 where id=1', 'Test'),
+                    this.tx(function () {
+                        return this.none('update person set name=$1 where id=1', 'Test');
+                    })
+                ])
+                    .then(function () {
+                        return promise.reject();
+                    });
+            })
                 .then(dummy, function () {
                     return promise.all([
                         db.one('select count(*) from users where login=$1', 'Test'), // 0 is expected;
@@ -915,41 +1035,41 @@ describe("Transactions", function () {
         beforeEach(function (done) {
             options.capSQL = true;
             db.tx(0, function () {
+                ctx.push(this.ctx);
+                return this.tx(1, function () {
                     ctx.push(this.ctx);
-                    return this.tx(1, function () {
+                    return this.tx(2, function () {
                         ctx.push(this.ctx);
-                        return this.tx(2, function () {
+                        return this.tx(3, function () {
                             ctx.push(this.ctx);
-                            return this.tx(3, function () {
+                            return this.tx(4, function () {
                                 ctx.push(this.ctx);
-                                return this.tx(4, function () {
+                                return this.tx(5, function () {
                                     ctx.push(this.ctx);
-                                    return this.tx(5, function () {
-                                        ctx.push(this.ctx);
-                                        return this.batch([
-                                            this.one("select 'Hello' as word"),
-                                            this.tx(6, function () {
+                                    return this.batch([
+                                        this.one("select 'Hello' as word"),
+                                        this.tx(6, function () {
+                                            ctx.push(this.ctx);
+                                            return this.tx(7, function () {
                                                 ctx.push(this.ctx);
-                                                return this.tx(7, function () {
+                                                return this.tx(8, function () {
                                                     ctx.push(this.ctx);
-                                                    return this.tx(8, function () {
+                                                    return this.tx(9, function (t) {
                                                         ctx.push(this.ctx);
-                                                        return this.tx(9, function (t) {
-                                                            ctx.push(this.ctx);
-                                                            THIS = this;
-                                                            context = t;
-                                                            return this.one("select 'World!' as word");
-                                                        });
+                                                        THIS = this;
+                                                        context = t;
+                                                        return this.one("select 'World!' as word");
                                                     });
                                                 });
-                                            })
-                                        ]);
-                                    });
+                                            });
+                                        })
+                                    ]);
                                 });
                             });
                         });
                     });
-                })
+                });
+            })
                 .then(function (data) {
                     result = data;
                     done();
@@ -1206,8 +1326,8 @@ describe("Querying a function", function () {
                 errCtx = e;
             };
             db.proc("findUser", [function () {
-                    throw new Error("format failed");
-                }])
+                throw new Error("format failed");
+            }])
                 .then(function () {
                 }, function (reason) {
                     result = reason;
@@ -1234,8 +1354,8 @@ describe("Querying a function", function () {
                 errCtx = e;
             };
             db.func("findUser", [function () {
-                    throw 1;
-                }])
+                throw 1;
+            }])
                 .catch(function () {
                     done();
                 });
@@ -1253,22 +1373,22 @@ describe("Querying a function", function () {
         var result;
         beforeEach(function (done) {
             promise.any([
-                    db.func(),      // undefined function name;
-                    db.func(''),    // empty-string function name;
-                    db.func('   '), // white-space string for function name;
-                    db.func(1),     // invalid-type function name;
-                    db.func(null),  // null function name;
-                    // query function overrides:
-                    db.query({
-                        funcName: null
-                    }),
-                    db.query({
-                        funcName: ''
-                    }),
-                    db.query({
-                        funcName: '   '
-                    })
-                ])
+                db.func(),      // undefined function name;
+                db.func(''),    // empty-string function name;
+                db.func('   '), // white-space string for function name;
+                db.func(1),     // invalid-type function name;
+                db.func(null),  // null function name;
+                // query function overrides:
+                db.query({
+                    funcName: null
+                }),
+                db.query({
+                    funcName: ''
+                }),
+                db.query({
+                    funcName: '   '
+                })
+            ])
                 .then(function () {
                 }, function (reason) {
                     result = reason;
@@ -1292,9 +1412,9 @@ describe("Task", function () {
         var error, tsk;
         beforeEach(function (done) {
             db.task(function () {
-                    tsk = this;
-                    return promise.resolve();
-                })
+                tsk = this;
+                return promise.resolve();
+            })
                 .then(function () {
                     // try use the task connection context outside of the task callback;
                     return tsk.query("select 'test'");
@@ -1332,8 +1452,8 @@ describe("Task", function () {
         var result;
         beforeEach(function (done) {
             db.task(function () {
-                    return 123;
-                })
+                return 123;
+            })
                 .then(function (data) {
                     result = data;
                 })
@@ -1350,8 +1470,8 @@ describe("Task", function () {
         var result;
         beforeEach(function (done) {
             db.task(function () {
-                    throw new Error("test");
-                })
+                throw new Error("test");
+            })
                 .then(dummy, function (reason) {
                     result = reason;
                 })
@@ -1369,10 +1489,10 @@ describe("Task", function () {
         var result, context, THIS;
         beforeEach(function (done) {
             db.task(function (t) {
-                    THIS = this;
-                    context = t;
-                    return promise.resolve("Ok");
-                })
+                THIS = this;
+                context = t;
+                return promise.resolve("Ok");
+            })
                 .then(function (data) {
                     result = data;
                 })

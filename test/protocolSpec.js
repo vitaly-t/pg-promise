@@ -136,6 +136,8 @@ describe("Database Protocol", function () {
         expect(typeof(db.stream)).toBe('function');
         expect(typeof(db.func)).toBe('function');
         expect(typeof(db.proc)).toBe('function');
+        expect(typeof(db.map)).toBe('function');
+        expect(typeof(db.each)).toBe('function');
 
         // must not have task-level methods:
         expect(db.batch).toBeUndefined();
@@ -148,8 +150,8 @@ describe("Database Protocol", function () {
         var protocol;
         beforeEach(function (done) {
             db.tx(function (t) {
-                    return promise.resolve(t);
-                })
+                return promise.resolve(t);
+            })
                 .then(function (data) {
                     protocol = data;
                 })
@@ -177,16 +179,18 @@ describe("Database Protocol", function () {
             expect(typeof(protocol.batch)).toBe('function');
             expect(typeof(protocol.page)).toBe('function');
             expect(typeof(protocol.sequence)).toBe('function');
+            expect(typeof(db.map)).toBe('function');
+            expect(typeof(db.each)).toBe('function');
         });
     });
-    
+
     describe("on task level", function () {
-        
+
         var protocol;
         beforeEach(function (done) {
             db.task(function (t) {
-                    return promise.resolve(t);
-                })
+                return promise.resolve(t);
+            })
                 .then(function (data) {
                     protocol = data;
                 })
@@ -214,6 +218,8 @@ describe("Database Protocol", function () {
             expect(typeof(protocol.batch)).toBe('function');
             expect(typeof(protocol.page)).toBe('function');
             expect(typeof(protocol.sequence)).toBe('function');
+            expect(typeof(db.map)).toBe('function');
+            expect(typeof(db.each)).toBe('function');
         });
     });
 
@@ -273,8 +279,8 @@ describe("Protocol Extension", function () {
 
         beforeEach(function (done) {
             pgpTest.db.tx(function (t) {
-                    return t.getOne("select 'hello' as msg");
-                })
+                return t.getOne("select 'hello' as msg");
+            })
                 .then(function (data) {
                     result = data;
                 })
@@ -301,8 +307,8 @@ describe("spex", function () {
         var result;
         beforeEach(function (done) {
             db.task(function () {
-                    return this.batch([1, 2]);
-                })
+                return this.batch([1, 2]);
+            })
                 .then(function (data) {
                     result = data;
                 })
@@ -322,8 +328,8 @@ describe("spex", function () {
             }
 
             db.task(function () {
-                    return this.page(source);
-                })
+                return this.page(source);
+            })
                 .then(function (data) {
                     result = data;
                 })
@@ -345,8 +351,8 @@ describe("spex", function () {
             }
 
             db.task(function () {
-                    return this.sequence(source);
-                })
+                return this.sequence(source);
+            })
                 .then(function (data) {
                     result = data;
                 })
