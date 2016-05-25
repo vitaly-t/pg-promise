@@ -322,10 +322,11 @@ depending on the database context.</p></td>
 
             
 
-            <td class="description last"><ul>
-<li>query string</li>
-<li>prepared statement: <code>{name, text, values}</code></li>
-<li><a href="PreparedStatement.html">PreparedStatement</a> object</li>
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
@@ -363,12 +364,16 @@ depending on the database context.</p></td>
 
             
 
-            <td class="description last"><p>Formatting parameters for the query string:</p>
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
 <ul>
-<li>a single value - for variable <code>$1</code></li>
-<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
-<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
-</ul></td>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
         </tr>
 
     
@@ -409,7 +414,7 @@ depending on the database context.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line297">line 297</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line343">line 343</a>
     </li></ul></dd>
     
 
@@ -563,7 +568,7 @@ and releases the shared connection automatically.</p>
 
         
 <div class="param-desc">
-    <p>Connection result:</p>
+    <p>A promise object that represents the connection result:</p>
 <ul>
 <li>resolves with the connection object, if successful. The object has method <code>done()</code> that must
 be called in the end of the query chain, in order to release the connection back to the pool.</li>
@@ -796,7 +801,7 @@ be called in the end of the query chain, in order to release the connection back
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line382">line 382</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line445">line 445</a>
     </li></ul></dd>
     
 
@@ -931,10 +936,11 @@ When the query returns no data, the method rejects.</p>
 
             
 
-            <td class="description last"><ul>
-<li>query string</li>
-<li>prepared statement: <code>{name, text, values}</code></li>
-<li><a href="PreparedStatement.html">PreparedStatement</a> object</li>
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
@@ -972,12 +978,16 @@ When the query returns no data, the method rejects.</p>
 
             
 
-            <td class="description last"><p>Formatting parameters for the query string:</p>
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
 <ul>
-<li>a single value - for variable <code>$1</code></li>
-<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
-<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
-</ul></td>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
         </tr>
 
     
@@ -1018,7 +1028,7 @@ When the query returns no data, the method rejects.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line216">line 216</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line238">line 238</a>
     </li></ul></dd>
     
 
@@ -1045,10 +1055,10 @@ When the query returns no data, the method rejects.</p>
 
         
 <div class="param-desc">
-    <p>Result of the query call:</p>
+    <p>A promise object that represents the query result:</p>
 <ul>
 <li>when 1 or more rows are returned, it resolves with the array of rows</li>
-<li>when no rows are returned, it rejects with QueryResultError
+<li>when no rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>
 = <code>No data returned from the query.</code></li>
 </ul>
 </div>
@@ -1148,10 +1158,11 @@ When the query returns no data, the method rejects.</p>
 
             
 
-            <td class="description last"><ul>
-<li>query string</li>
-<li>prepared statement: <code>{name, text, values}</code></li>
-<li><a href="PreparedStatement.html">PreparedStatement</a> object</li>
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
@@ -1189,12 +1200,16 @@ When the query returns no data, the method rejects.</p>
 
             
 
-            <td class="description last"><p>Formatting parameters for the query string:</p>
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
 <ul>
-<li>a single value - for variable <code>$1</code></li>
-<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
-<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
-</ul></td>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
         </tr>
 
     
@@ -1235,7 +1250,7 @@ When the query returns no data, the method rejects.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line271">line 271</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line309">line 309</a>
     </li></ul></dd>
     
 
@@ -1269,7 +1284,7 @@ When the query returns no data, the method rejects.</p>
 
         
 <div class="param-desc">
-    <p>Result of the query call:</p>
+    <p>A promise object that represents the query result:</p>
 <ul>
 <li>when no rows are returned, it resolves with an empty array</li>
 <li>when 1 or more rows are returned, it resolves with the array of rows.</li>
@@ -1372,10 +1387,11 @@ If the query returns any kind of data, the method rejects.</p>
 
             
 
-            <td class="description last"><ul>
-<li>query string</li>
-<li>prepared statement: <code>{name, text, values}</code></li>
-<li><a href="PreparedStatement.html">PreparedStatement</a> object</li>
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
@@ -1413,12 +1429,16 @@ If the query returns any kind of data, the method rejects.</p>
 
             
 
-            <td class="description last"><p>Formatting parameters for the query string:</p>
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
 <ul>
-<li>a single value - for variable <code>$1</code></li>
-<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
-<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
-</ul></td>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
         </tr>
 
     
@@ -1459,7 +1479,7 @@ If the query returns any kind of data, the method rejects.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line159">line 159</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line166">line 166</a>
     </li></ul></dd>
     
 
@@ -1486,10 +1506,10 @@ If the query returns any kind of data, the method rejects.</p>
 
         
 <div class="param-desc">
-    <p>Result of the query call:</p>
+    <p>A promise object that represents the query result:</p>
 <ul>
 <li>when no records are returned, it resolves with <code>undefined</code></li>
-<li>when any data is returned, it rejects with QueryResultError
+<li>when any data is returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>
 = <code>No return data was expected.</code></li>
 </ul>
 </div>
@@ -1590,10 +1610,11 @@ When 0 or more than 1 rows are returned, the method rejects.</p>
 
             
 
-            <td class="description last"><ul>
-<li>query string</li>
-<li>prepared statement: <code>{name, text, values}</code></li>
-<li><a href="PreparedStatement.html">PreparedStatement</a> object</li>
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
@@ -1631,12 +1652,16 @@ When 0 or more than 1 rows are returned, the method rejects.</p>
 
             
 
-            <td class="description last"><p>Formatting parameters for the query string:</p>
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
 <ul>
-<li>a single value - for variable <code>$1</code></li>
-<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
-<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
-</ul></td>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
         </tr>
 
     
@@ -1677,7 +1702,7 @@ When 0 or more than 1 rows are returned, the method rejects.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line186">line 186</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line201">line 201</a>
     </li></ul></dd>
     
 
@@ -1704,12 +1729,12 @@ When 0 or more than 1 rows are returned, the method rejects.</p>
 
         
 <div class="param-desc">
-    <p>Result of the query call:</p>
+    <p>A promise object that represents the query result:</p>
 <ul>
 <li>when 1 row is returned, it resolves with that row as a single object;</li>
-<li>when no rows are returned, it rejects with QueryResultError
+<li>when no rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>
 = <code>No data returned from the query.</code></li>
-<li>when multiple rows are returned, it rejects with QueryResultError
+<li>when multiple rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>
 = <code>Multiple rows were not expected.</code></li>
 </ul>
 </div>
@@ -1810,10 +1835,11 @@ When the query returns more than 1 row, the method rejects.</p>
 
             
 
-            <td class="description last"><ul>
-<li>query string</li>
-<li>prepared statement: <code>{name, text, values}</code></li>
-<li><a href="PreparedStatement.html">PreparedStatement</a> object</li>
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
@@ -1851,12 +1877,16 @@ When the query returns more than 1 row, the method rejects.</p>
 
             
 
-            <td class="description last"><p>Formatting parameters for the query string:</p>
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
 <ul>
-<li>a single value - for variable <code>$1</code></li>
-<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
-<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
-</ul></td>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
         </tr>
 
     
@@ -1897,7 +1927,7 @@ When the query returns more than 1 row, the method rejects.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line243">line 243</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line273">line 273</a>
     </li></ul></dd>
     
 
@@ -1924,11 +1954,11 @@ When the query returns more than 1 row, the method rejects.</p>
 
         
 <div class="param-desc">
-    <p>Result of the query call:</p>
+    <p>A promise object that represents the query result:</p>
 <ul>
 <li>when no rows are returned, it resolves with <code>null</code></li>
 <li>when 1 row is returned, it resolves with that row as a single object</li>
-<li>when multiple rows are returned, it rejects with QueryResultError
+<li>when multiple rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>
 = <code>Multiple rows were not expected.</code></li>
 </ul>
 </div>
@@ -2104,7 +2134,7 @@ expecting back 0 or 1 rows.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line413">line 413</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line476">line 476</a>
     </li></ul></dd>
     
 
@@ -2245,10 +2275,11 @@ according to parameter <code>qrm</code>.</p>
                 </td>
             
 
-            <td class="description last"><ul>
-<li>query string</li>
-<li>prepared statement: <code>{name, text, values}</code></li>
-<li><a href="PreparedStatement.html">PreparedStatement</a> object</li>
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
@@ -2290,12 +2321,16 @@ according to parameter <code>qrm</code>.</p>
                 </td>
             
 
-            <td class="description last"><p>Formatting parameters for the query string:</p>
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
 <ul>
-<li>a single value - for variable <code>$1</code></li>
-<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
-<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
-</ul></td>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
         </tr>
 
     
@@ -2403,8 +2438,10 @@ according to parameter <code>qrm</code>.</p>
         
 <div class="param-desc">
     <p>A promise object that represents the query result.</p>
-<p>When the query result is an array, it is extended with a hidden
-property <code>duration</code> - query duration in milliseconds.</p>
+<p>When the query result is an array, it is extended with a hidden property <code>duration</code></p>
+<ul>
+<li>query duration in milliseconds.</li>
+</ul>
 </div>
 
 
@@ -2437,8 +2474,8 @@ property <code>duration</code> - query duration in milliseconds.</p>
 
 
 <div class="description">
-    <p>Executes a query without any expectation for the return data,
-to resolve with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object when successful.</p>
+    <p>Executes a query without any expectation for the return data, to resolve with the
+original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object when successful.</p>
 </div>
 
 
@@ -2503,10 +2540,11 @@ to resolve with the original <a href="https://github.com/brianc/node-postgres/bl
 
             
 
-            <td class="description last"><ul>
-<li>query string</li>
-<li>prepared statement: <code>{name, text, values}</code></li>
-<li><a href="PreparedStatement.html">PreparedStatement</a> object</li>
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
@@ -2544,12 +2582,16 @@ to resolve with the original <a href="https://github.com/brianc/node-postgres/bl
 
             
 
-            <td class="description last"><p>Formatting parameters for the query string:</p>
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
 <ul>
-<li>a single value - for variable <code>$1</code></li>
-<li>an array of values - for variables <code>$1</code>, <code>$2</code>, etc.</li>
-<li>an object - for <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a></li>
-</ul></td>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
         </tr>
 
     
@@ -2590,7 +2632,7 @@ to resolve with the original <a href="https://github.com/brianc/node-postgres/bl
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line323">line 323</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line378">line 378</a>
     </li></ul></dd>
     
 
@@ -2617,7 +2659,7 @@ to resolve with the original <a href="https://github.com/brianc/node-postgres/bl
 
         
 <div class="param-desc">
-    <p>Result of the query call:</p>
+    <p>A promise object that represents the query result:</p>
 <ul>
 <li>resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object, extended with
 property <code>duration</code> - query duration in milliseconds.</li>
@@ -2773,7 +2815,7 @@ is set, it will reject with <code>Streaming doesn't work with native bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line350">line 350</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line412">line 412</a>
     </li></ul></dd>
     
 
@@ -2987,7 +3029,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line437">line 437</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line548">line 548</a>
     </li></ul></dd>
     
 
@@ -3201,7 +3243,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line484">line 484</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line595">line 595</a>
     </li></ul></dd>
     
 

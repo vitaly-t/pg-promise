@@ -155,7 +155,7 @@ leaving it for query methods to reject with ParameterizedQueryError.</p>
 
             
 
-            <td class="description last"><p>Query formatting values. It can be either an <code>Array</code> or <code>null</code>/<code>undefined</code>.</p></td>
+            <td class="description last"><p>Query formatting values. When it is not an <code>Array</code> and not <code>null</code>/<code>undefined</code>, it is automatically wrapped into an array.</p></td>
         </tr>
 
     
@@ -326,7 +326,7 @@ leaving it for query methods to reject with ParameterizedQueryError.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line126">line 126</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line141">line 141</a>
     </li></ul></dd>
     
 
@@ -406,7 +406,7 @@ leaving it for query methods to reject with ParameterizedQueryError.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line166">line 166</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line181">line 181</a>
     </li></ul></dd>
     
 
@@ -482,7 +482,7 @@ By default, rows arrive as objects.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line146">line 146</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line161">line 161</a>
     </li></ul></dd>
     
 
@@ -557,7 +557,7 @@ By default, rows arrive as objects.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line86">line 86</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line103">line 103</a>
     </li></ul></dd>
     
 
@@ -581,7 +581,13 @@ By default, rows arrive as objects.</li>
 
 
 <div class="description">
-    <p>Query formatting values. It can be either an <code>Array</code> or <code>null</code>/<code>undefined</code>.</p>
+    <p>Query formatting parameters, depending on the type:</p>
+<ul>
+<li><code>null</code> / <code>undefined</code> means the query has no formatting parameters</li>
+<li><code>Array</code> - it is an array of formatting parameters</li>
+<li>None of the above, means it is a single formatting value, which
+is then automatically wrapped into an array</li>
+</ul>
 </div>
 
 
@@ -629,7 +635,7 @@ By default, rows arrive as objects.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line104">line 104</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line121">line 121</a>
     </li></ul></dd>
     
 
@@ -709,7 +715,7 @@ or else it returns a ParameterizedQueryError object.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line188">line 188</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line203">line 203</a>
     </li></ul></dd>
     
 
@@ -882,7 +888,7 @@ or else it returns a ParameterizedQueryError object.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line253">line 253</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line265">line 265</a>
     </li></ul></dd>
     
 

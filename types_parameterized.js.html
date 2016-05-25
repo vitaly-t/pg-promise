@@ -60,7 +60,7 @@ var $npm = {
  * A non-empty query string or a {@link QueryFile} object.
  *
  * @param {Array} [values]
- * Query formatting values. It can be either an `Array` or `null`/`undefined`.
+ * Query formatting values. When it is not an `Array` and not `null`/`undefined`, it is automatically wrapped into an array.
  *
  * @returns {ParameterizedQuery}
  *
@@ -107,10 +107,27 @@ function ParameterizedQuery(text, values) {
 
     var currentError, PQ = {}, changed = true, state = {
         text: text,
-        values: values,
         binary: undefined,
         rowMode: undefined
     };
+
+    function setValues(v) {
+        if (Array.isArray(v)) {
+            if (v.length) {
+                PQ.values = v;
+            } else {
+                delete PQ.values;
+            }
+        } else {
+            if ($npm.utils.isNull(v)) {
+                delete PQ.values;
+            } else {
+                PQ.values = [v];
+            }
+        }
+    }
+
+    setValues(values);
 
     /**
      * @name ParameterizedQuery#text
@@ -134,21 +151,19 @@ function ParameterizedQuery(text, values) {
      * @name ParameterizedQuery#values
      * @type {Array}
      * @description
-     * Query formatting values. It can be either an `Array` or `null`/`undefined`.
+     * Query formatting parameters, depending on the type:
+     *
+     * - `null` / `undefined` means the query has no formatting parameters
+     * - `Array` - it is an array of formatting parameters
+     * - None of the above, means it is a single formatting value, which
+     *   is then automatically wrapped into an array
      */
     Object.defineProperty(this, 'values', {
         get: function () {
-            return state.values;
+            return PQ.values;
         },
         set: function (value) {
-            if (value !== state.values) {
-                state.values = value;
-                if ($npm.utils.isNull(value) || Array.isArray(value)) {
-                    PQ.values = value;
-                } else {
-                    changed = true;
-                }
-            }
+            setValues(value);
         }
     });
 
@@ -209,9 +224,9 @@ function ParameterizedQuery(text, values) {
 
     if ($npm.utils.isObject(text, ['text'])) {
         state.text = text.text;
-        state.values = text.values;
         state.binary = text.binary;
         state.rowMode = text.rowMode;
+        setValues(text.values);
     }
 
     /**
@@ -232,10 +247,12 @@ function ParameterizedQuery(text, values) {
             return PQ;
         }
 
+        var errors = [], values = PQ.values;
+        PQ = {
+            name: state.name
+        };
         changed = true;
-        PQ = {};
         currentError = undefined;
-        var errors = [];
 
         if (qf) {
             qf.prepare();
@@ -251,14 +268,9 @@ function ParameterizedQuery(text, values) {
         if (!$npm.utils.isText(PQ.text)) {
             errors.push("Property 'text' must be a non-empty text string.");
         }
-        if (!$npm.utils.isNull(state.values)) {
-            if (Array.isArray(state.values)) {
-                if (state.values.length > 0) {
-                    PQ.values = state.values;
-                }
-            } else {
-                errors.push("Property 'values' must be an array or null/undefined.");
-            }
+
+        if (!$npm.utils.isNull(values)) {
+            PQ.values = values;
         }
 
         if (state.binary !== undefined) {
