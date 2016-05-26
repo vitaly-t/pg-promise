@@ -611,7 +611,7 @@ be called in the end of the query chain, in order to release the connection back
 <pre class="prettyprint source lang-js"><code>db.any(query, values)
     .then(function(data) {
         data.forEach(function(row, index, data) {
-             // process the row here;
+             // process the row
         });
         return data;
     });</code></pre><p>In addition to much shorter code, it offers the following benefits:</p>
