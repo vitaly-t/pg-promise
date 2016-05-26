@@ -606,8 +606,9 @@ be called in the end of the query chain, in order to release the connection back
 
 
 <div class="description">
-    <p>Executes a provided function once per array element, for an array of rows resolved by method <a href="Database.html#.any">any</a>.</p>
-<p>It is a convenience method that abbreviates the following logic:</p>
+    <p><strong>Added in v.4.3.0</strong></p>
+<p>Executes a provided function once per array element, for an array of rows resolved by method <a href="Database.html#.any">any</a>.</p>
+<p>It is a convenience method to simplify the following code:</p>
 <pre class="prettyprint source lang-js"><code>db.any(query, values)
     .then(function(data) {
         data.forEach(function(row, index, data) {
@@ -839,7 +840,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line607">line 607</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line609">line 609</a>
     </li></ul></dd>
     
 
@@ -1628,9 +1629,10 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 <div class="description">
-    <p>Creates a new array with the results of calling a provided function on every element in the array of rows
+    <p><strong>Added in v.4.3.0</strong></p>
+<p>Creates a new array with the results of calling a provided function on every element in the array of rows
 resolved by method <a href="Database.html#.any">any</a>.</p>
-<p>It is a convenience method that abbreviates the following logic:</p>
+<p>It is a convenience method to simplify the following code:</p>
 <pre class="prettyprint source lang-js"><code>db.any(query, values)
     .then(function(data) {
         return data.map(function(row, index, data) {
@@ -3642,7 +3644,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line684">line 684</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line688">line 688</a>
     </li></ul></dd>
     
 
@@ -3856,7 +3858,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line731">line 731</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line735">line 735</a>
     </li></ul></dd>
     
 

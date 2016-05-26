@@ -548,10 +548,12 @@ function Database(cn, dc, config) {
         /**
          * @method Database.map
          * @description
+         * **Added in v.4.3.0**
+         *
          * Creates a new array with the results of calling a provided function on every element in the array of rows
          * resolved by method {@link Database.any any}.
          *
-         * It is a convenience method that abbreviates the following logic:
+         * It is a convenience method to simplify the following code:
          *
          *```js
          * db.any(query, values)
@@ -636,9 +638,11 @@ function Database(cn, dc, config) {
         /**
          * @method Database.each
          * @description
+         * **Added in v.4.3.0**
+         *
          * Executes a provided function once per array element, for an array of rows resolved by method {@link Database.any any}.
          *
-         * It is a convenience method that abbreviates the following logic:
+         * It is a convenience method to simplify the following code:
          *
          *```js
          * db.any(query, values)
