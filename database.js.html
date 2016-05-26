@@ -553,11 +553,11 @@ function Database(cn, dc, config) {
          *
          * It is a convenience method to simplify the following code:
          *
-         *```js
+         * ```js
          * db.any(query, values)
          *     .then(function(data) {
          *         return data.map(function(row, index, data) {
-         *              // return the new row/element 
+         *              // return the new element
          *         });
          *     });
          * ```
@@ -644,7 +644,7 @@ function Database(cn, dc, config) {
          *
          * It is a convenience method to simplify the following code:
          *
-         *```js
+         * ```js
          * db.any(query, values)
          *     .then(function(data) {
          *         data.forEach(function(row, index, data) {
