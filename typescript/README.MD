@@ -19,7 +19,7 @@ Since all TypeScript files are distributed with the library, you can reference i
 
 Starting with version 4.3.2, the library includes file [typings.json] for integration with [Typings].
 
-Add it to your _typings.json_ file (commit hash is for 4.3.2 release):
+Add the library to your _typings.json_ file (commit hash example is for 4.3.2 release):
 ```js
 {
   "globalDependencies": {
