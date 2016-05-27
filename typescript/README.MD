@@ -17,15 +17,18 @@ Since all TypeScript files are distributed with the library, you can reference i
 /// <reference path='../node_modules/pg-promise/typescript/pg-promise' />
 ```
 
-Starting with version 4.3.2, the library includes file [typings.json] for integration with [Typings],
-which allows simpler references.
+Starting with version 4.3.2, the library includes file [typings.json] for integration with [Typings].
 
-If you install the definitions globally:
-```
-typings install --global github:vitaly-t/pg-promise
+Add it to your _typings.json_ file (commit hash is for 4.3.2 release):
+```js
+{
+  "globalDependencies": {
+    "pg-promise": "github:vitaly-t/pg-promise#08063e1424b62c9fc39fb5ea1b0a1e3c025b4f2a"
+  }
+}
 ```
 
-Then you can rely on the generic reference:
+After running `typings install` you will be able to rely on the generic reference:
 
 ```ts
 /// <reference path='../typings/index' />
