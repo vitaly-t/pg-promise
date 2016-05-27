@@ -1,6 +1,6 @@
 ### TypeScript for pg-promise
 
-Complete TypeScript ambient declarations for [pg-promise] version 4.3.1 or later.
+Complete TypeScript ambient declarations for [pg-promise] version 4.3.2 or later.
 
 | File             | Description                      |
 |------------------|----------------------------------|
@@ -9,10 +9,32 @@ Complete TypeScript ambient declarations for [pg-promise] version 4.3.1 or later
 |[pg-minify.d.ts]  | Types from [pg-minify] that's used by [pg-promise]|
 |[ext-promise.d.ts]    | External Promise Provider |
 
+#### Inclusion
+
+Since all TypeScript files are distributed with the library, you can reference it like this: 
+
+```ts
+/// <reference path='../node_modules/pg-promise/typescript/pg-promise' />
+```
+
+Starting with version 4.3.2, the library includes file [typings.json] for integration with [Typings],
+which allows simpler references.
+
+If you install the definitions globally:
+```
+typings install --global github:vitaly-t/pg-promise
+```
+
+Then you can rely on the generic reference:
+
+```ts
+/// <reference path='../typings/index' />
+```
+ 
 #### Usage
 
 ```ts
-/// <reference path='node_modules/pg-promise/typescript/pg-promise' />
+/// <reference path='../typings/index' />
 
 import * as pgPromise from 'pg-promise';
 
@@ -42,7 +64,7 @@ In order to support dynamic protocol extensions automatically, you need to mirro
 an interface, and then re-cast the database object with it, as shown below. 
 
 ```ts
-/// <reference path='node_modules/pg-promise/typescript/pg-promise' />
+/// <reference path='../typings/index' />
 
 // importing as 'pgPromise' helps IntelliSense inspection;
 import * as pgPromise from 'pg-promise';
@@ -94,6 +116,8 @@ var pgp = pgPromise<IExtensions>({
 
 For a more complete and advanced example of using [pg-promise] with TypeScript, check out [pg-promise-demo]. 
 
+[typings.json]:https://github.com/vitaly-t/pg-promise/blob/master/typings.json
+[Typings]:https://github.com/typings/typings
 [pg-promise-demo]:https://github.com/vitaly-t/pg-promise-demo
 [extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
 [ext-promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/ext-promise.d.ts
