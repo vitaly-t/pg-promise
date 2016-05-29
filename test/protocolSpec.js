@@ -76,7 +76,11 @@ describe("Library instance", function () {
 describe("Initialized instance", function () {
 
     it("must have valid property 'pg'", function () {
-        expect(pgp.pg).toBe(PG);
+        if (options.pgNative) {
+            expect(typeof pgp.pg).toBe('object');
+        } else {
+            expect(pgp.pg).toBe(PG);
+        }
     });
 
     it("must have function 'end'", function () {
