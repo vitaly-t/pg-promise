@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.3.2 or later.
+// Requires pg-promise v4.3.4 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -143,6 +143,7 @@ declare module 'pg-promise' {
 
     // Database object in connected state;
     interface IConnected<Ext> extends IBaseProtocol<Ext> {
+        client: pg.Client;
         done():void;
     }
 

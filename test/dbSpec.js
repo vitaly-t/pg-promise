@@ -140,7 +140,7 @@ describe("Connection", function () {
                 }
             };
         });
-        describe("with direction connection", function () {
+        describe("using connect()", function () {
             beforeEach(function (done) {
                 dbErr.connect()
                     .then(dummy, function (error) {
@@ -208,6 +208,28 @@ describe("Connection", function () {
             } else {
                 expect(result.message).toContain('connect ECONNREFUSED');
             }
+        });
+    });
+
+    describe("invalid end() call", function () {
+        var sco, error;
+        beforeEach(function (done) {
+            db.connect()
+                .then(function (obj) {
+                    sco = obj;
+                    sco.client.end();
+                })
+                .catch(function (e) {
+                    error = e;
+                })
+                .finally(function () {
+                    sco.done();
+                    done();
+                });
+        });
+        it("must report an error", function () {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe('Cannot invoke client.end() directly.');
         });
     });
 
@@ -324,6 +346,72 @@ describe("Connection", function () {
             expect(error.message).toBe("Cannot execute a query on a disconnected client.");
         });
     });
+});
+
+describe("Direct Connection", function () {
+
+    describe("successful connection", function () {
+        var sco;
+        beforeEach(function (done) {
+            db.connect({direct: true})
+                .then(function (obj) {
+                    sco = obj;
+                    sco.done();
+                    done();
+                });
+        });
+        it("must connect correctly", function () {
+            expect(typeof sco).toBe('object');
+        });
+    });
+
+    describe("invalid end() call", function () {
+        var sco, error;
+        beforeEach(function (done) {
+            db.connect({direct: true})
+                .then(function (obj) {
+                    sco = obj;
+                    sco.client.end();
+                })
+                .catch(function (e) {
+                    error = e;
+                })
+                .finally(function () {
+                    sco.done();
+                    done();
+                });
+        });
+        it("must report an error", function () {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe('Cannot invoke client.end() directly.');
+        });
+    });
+
+    describe("for an invalid port", function () {
+        var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+        errCN.port = '12345';
+        var dbErr = pgp(errCN), result;
+        beforeEach(function (done) {
+            dbErr.connect({direct: true})
+                .then(function () {
+                    result = null;
+                }, function (error) {
+                    result = error;
+                })
+                .finally(function () {
+                    done();
+                });
+        });
+        it("must report the right error", function () {
+            expect(result instanceof Error).toBe(true);
+            if (options.pgNative) {
+                expect(result.message).toContain('could not connect to server');
+            } else {
+                expect(result.message).toContain('connect ECONNREFUSED');
+            }
+        });
+    });
+
 });
 
 describe("Masked Connection Log", function () {

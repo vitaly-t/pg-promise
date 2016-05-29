@@ -7,5 +7,6 @@ var db = pgp('connection');
 
 db.connect()
     .then(ctx=> {
+        var cn = ctx.client.connectionParameters;
         ctx.done();
     });
