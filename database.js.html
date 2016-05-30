@@ -604,7 +604,7 @@ function Database(cn, dc, config) {
          * db.any(query, values)
          *     .then(function(data) {
          *         return data.map(function(row, index, data) {
-         *              // return the new element
+         *              // return a new element
          *         });
          *     });
          * ```
@@ -673,8 +673,6 @@ function Database(cn, dc, config) {
          *     .catch(error => {
          *         // error
          *     });
-         *
-         * // NOTE: pgp.helpers.update() can do a better-performing multi-row UPDATE.
          *
          */
         obj.map = function (query, values, cb, thisArg) {

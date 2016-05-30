@@ -982,7 +982,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line658">line 658</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line656">line 656</a>
     </li></ul></dd>
     
 
@@ -1776,7 +1776,7 @@ resolved by method <a href="Database.html#.any">any</a>.</p>
 <pre class="prettyprint source lang-js"><code>db.any(query, values)
     .then(function(data) {
         return data.map(function(row, index, data) {
-             // return the new element
+             // return a new element
         });
     });</code></pre><p>In addition to much shorter code, it offers the following benefits:</p>
 <ul>
@@ -2059,7 +2059,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <pre class="prettyprint"><code>db.map('SELECT id FROM Users WHERE status = $1', ['active'], row => row.id)    .then(data => {        // data = array of active user id-s    })    .catch(error => {       // error    });</code></pre>
 
-    <pre class="prettyprint"><code>db.tx(t => {    return t.map('SELECT id FROM Users WHERE status = $1', ['active'], row => {       return t.none('UPDATE Events SET checked = $1 WHERE userId = $2', [true, row.id]);    }).then(t.batch);})    .then(data => {        // success    })    .catch(error => {        // error    });// NOTE: pgp.helpers.update() can do a better-performing multi-row UPDATE.</code></pre>
+    <pre class="prettyprint"><code>db.tx(t => {    return t.map('SELECT id FROM Users WHERE status = $1', ['active'], row => {       return t.none('UPDATE Events SET checked = $1 WHERE userId = $2', [true, row.id]);    }).then(t.batch);})    .then(data => {        // success    })    .catch(error => {        // error    });</code></pre>
 
 
 
@@ -3782,7 +3782,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line739">line 739</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line737">line 737</a>
     </li></ul></dd>
     
 
@@ -3996,7 +3996,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line786">line 786</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line784">line 784</a>
     </li></ul></dd>
     
 
