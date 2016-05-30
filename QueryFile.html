@@ -52,7 +52,7 @@
 <p>Reads a file with SQL and prepares it for execution, also parses and minifies it, if required.
 The SQL can be of any complexity, with both single and multi-line comments.</p>
 <p>The type can be used in place of the <code>query</code> parameter, with any query method directly, plus as <code>text</code> in Prepared Statements.
-It never throws any error, leaving it for query methods to reject with QueryFileError.</p>
+It never throws any error, leaving it for query methods to reject with <a href="errors.QueryFileError.html">QueryFileError</a>.</p>
 <p>For any given SQL file you should only create a single instance of this class throughout the
 application.</p>
 </div>
@@ -415,7 +415,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li>QueryFileError</li>
+            <li><a href="errors.QueryFileError.html">QueryFileError</a></li>
         </ul>
     </dd>
     
@@ -481,13 +481,13 @@ apply the second-step dynamic formatting when executing the query.</p></td>
 
         
             
-<h4 class="name" id="error"><span class="type-signature">(readonly) </span>error<span class="type-signature"> :QueryFileError</span></h4>
+<h4 class="name" id="error"><span class="type-signature">(readonly) </span>error<span class="type-signature"> :<a href="errors.QueryFileError.html">errors.QueryFileError</a></span></h4>
 
 
 
 
 <div class="description">
-    <p>When in an error state, it is set to a QueryFileError object. Otherwise, it is <code>undefined</code>.</p>
+    <p>When in an error state, it is set to a <a href="errors.QueryFileError.html">QueryFileError</a> object. Otherwise, it is <code>undefined</code>.</p>
 <p>This property is meant primarily for internal use by the library.</p>
 </div>
 
@@ -497,7 +497,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     <ul>
         <li>
             
-<span class="param-type">QueryFileError</span>
+<span class="param-type"><a href="errors.QueryFileError.html">errors.QueryFileError</a></span>
 
 
         </li>

@@ -48,7 +48,7 @@ var $npm = {
  * The SQL can be of any complexity, with both single and multi-line comments.
  *
  * The type can be used in place of the `query` parameter, with any query method directly, plus as `text` in Prepared Statements.
- * It never throws any error, leaving it for query methods to reject with {@link QueryFileError}.
+ * It never throws any error, leaving it for query methods to reject with {@link errors.QueryFileError QueryFileError}.
  *
  * For any given SQL file you should only create a single instance of this class throughout the
  * application.
@@ -99,7 +99,7 @@ var $npm = {
  *
  * @returns {QueryFile}
  *
- * @see QueryFileError
+ * @see {@link errors.QueryFileError QueryFileError}
  *
  * @example
  * // File sql.js
@@ -257,11 +257,11 @@ function QueryFile(file, options) {
 
     /**
      * @name QueryFile#error
-     * @type {QueryFileError}
+     * @type {errors.QueryFileError}
      * @default undefined
      * @readonly
      * @description
-     * When in an error state, it is set to a {@link QueryFileError} object. Otherwise, it is `undefined`.
+     * When in an error state, it is set to a {@link errors.QueryFileError QueryFileError} object. Otherwise, it is `undefined`.
      *
      * This property is meant primarily for internal use by the library.
      */

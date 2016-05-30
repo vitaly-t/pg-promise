@@ -257,9 +257,9 @@ function PreparedStatement(name, text, values) {
 
     /**
      * @name PreparedStatement#error
-     * @type {PreparedStatementError}
+     * @type {errors.PreparedStatementError}
      * @description
-     * When in an error state, it is set to a {@link PreparedStatementError} object. Otherwise, it is `undefined`.
+     * When in an error state, it is set to a {@link errors.PreparedStatementError PreparedStatementError} object. Otherwise, it is `undefined`.
      *
      * This property is meant primarily for internal use by the library.
      */
@@ -282,11 +282,11 @@ function PreparedStatement(name, text, values) {
      * @method PreparedStatement.parse
      * @description
      * Parses the current object and returns a simple `{name, text, values}`, if successful,
-     * or else it returns a {@link PreparedStatementError} object.
+     * or else it returns a {@link errors.PreparedStatementError PreparedStatementError} object.
      *
      * This method is meant primarily for internal use by the library.
      *
-     * @returns {{name, text, values}|PreparedStatementError}
+     * @returns {{name, text, values}|errors.PreparedStatementError}
      */
     this.parse = function () {
 

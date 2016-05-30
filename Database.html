@@ -414,7 +414,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line407">line 407</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line414">line 414</a>
     </li></ul></dd>
     
 
@@ -424,7 +424,7 @@ as an override for its internal <code>values</code>.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.manyOrNone">Database.manyOrNone</a></li>
+            <li><a href="Database.html#.manyOrNone">manyOrNone</a></li>
         </ul>
     </dd>
     
@@ -448,7 +448,11 @@ as an override for its internal <code>values</code>.</p></td>
 
         
 <div class="param-desc">
-    <p>The same as method <a href="Database.html#.manyOrNone">manyOrNone</a></p>
+    <p>A promise object that represents the query result:</p>
+<ul>
+<li>when no rows are returned, it resolves with an empty array</li>
+<li>when 1 or more rows are returned, it resolves with the array of rows.</li>
+</ul>
 </div>
 
 
@@ -982,7 +986,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line656">line 656</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line662">line 662</a>
     </li></ul></dd>
     
 
@@ -1054,14 +1058,7 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 <div class="description">
-    <p>Executes a query against a database function by its name: <code>SELECT * FROM funcName(values)</code></p>
-<p>It is the same as calling method <a href="Database.html#.query">query</a> in any of the following ways:</p>
-<ul>
-<li><code>query('SELECT * FROM funcName($1^)', pgp.as.csv(values), qrm)</code></li>
-<li><code>query('SELECT * FROM funcName($1:csv)', [values], qrm)</code></li>
-<li><code>query('SELECT * FROM funcName(${params:csv})', {params:values}, qrm)</code></li>
-<li><code>query('SELECT * FROM funcName(${params^})', {params:pgp.as.csv(values)}, qrm)</code></li>
-</ul>
+    <p>Executes a query against a database function by its name: <code>SELECT * FROM funcName(values)</code>.</p>
 </div>
 
 
@@ -1249,7 +1246,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line509">line 509</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line519">line 519</a>
     </li></ul></dd>
     
 
@@ -1259,9 +1256,7 @@ as an override for its internal <code>values</code>.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.query">Database.query</a></li>
-        
-            <li><a href="Database.html#.proc">Database.proc</a></li>
+            <li><a href="Database.html#.query">query</a>,<a href="Database.html#.proc">proc</a></li>
         </ul>
     </dd>
     
@@ -1698,7 +1693,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line373">line 373</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line378">line 378</a>
     </li></ul></dd>
     
 
@@ -1708,7 +1703,7 @@ as an override for its internal <code>values</code>.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.any">Database.any</a></li>
+            <li><a href="Database.html#.any">any</a></li>
         </ul>
     </dd>
     
@@ -2001,7 +1996,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line564">line 564</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line570">line 570</a>
     </li></ul></dd>
     
 
@@ -2688,6 +2683,13 @@ as an override for its internal <code>values</code>.</p></td>
     
 
     
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html#.one">one</a>,<a href="Database.html#.none">none</a></li>
+        </ul>
+    </dd>
+    
 
     
 </dl>
@@ -2888,7 +2890,7 @@ expecting back 0 or 1 rows.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line540">line 540</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line545">line 545</a>
     </li></ul></dd>
     
 
@@ -2898,9 +2900,7 @@ expecting back 0 or 1 rows.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.oneOrNone">Database.oneOrNone</a></li>
-        
-            <li><a href="Database.html#.func">Database.func</a></li>
+            <li><a href="Database.html#.oneOrNone">oneOrNone</a>,<a href="Database.html#.func">func</a></li>
         </ul>
     </dd>
     
@@ -3385,7 +3385,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line442">line 442</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line452">line 452</a>
     </li></ul></dd>
     
 
@@ -3568,7 +3568,7 @@ is set, it will reject with <code>Streaming doesn't work with native bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line476">line 476</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line486">line 486</a>
     </li></ul></dd>
     
 
@@ -3782,7 +3782,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line737">line 737</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line743">line 743</a>
     </li></ul></dd>
     
 
@@ -3792,7 +3792,7 @@ be passed in as the first parameter.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Task.html">Task</a></li>
+            <li><a href="Task.html">Task</a>,<a href="Database.html#.tx">tx</a></li>
         </ul>
     </dd>
     
@@ -3856,7 +3856,7 @@ be passed in as the first parameter.</p></td>
 <div class="description">
     <p>Executes a callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) as a transaction.</p>
 <p>The transaction will execute <code>ROLLBACK</code> in the end, if the callback function returns a rejected
-promise or throws an error; and it will execute <code>COMMIT</code> in all other cases.</p>
+promise or throws an error, and it will execute <code>COMMIT</code> in all other cases.</p>
 <p>The callback function is called with one parameter - database protocol (same as <code>this</code>), extended with methods
 <a href="Task.html#.batch">batch</a>, <a href="Task.html#.page">page</a>, <a href="Task.html#.sequence">sequence</a>, plus property <a href="Task.html#.ctx">ctx</a> -
 the transaction context object. See <a href="Task.html">Task</a> for more details.</p>
@@ -3996,7 +3996,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line784">line 784</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line792">line 792</a>
     </li></ul></dd>
     
 
@@ -4006,7 +4006,7 @@ passed in as the first parameter.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Task.html">Task</a></li>
+            <li><a href="Task.html">Task</a>,<a href="Database.html#.task">task</a></li>
         </ul>
     </dd>
     
