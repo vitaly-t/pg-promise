@@ -12,7 +12,7 @@
 declare module 'pg-subset' {
 
     namespace pg {
-        
+
         interface IColumn {
             name:string,
             dataTypeID:number,
@@ -119,16 +119,28 @@ declare module 'pg-subset' {
         }
 
         class Client {
+
             constructor(config:any);
 
             query:(config:any, values:any, callback:(err:Error, result:IResult)=>void)=>Query;
+
             connectionParameters:IConnectionParameters;
             database:string;
             user:string;
             password:string;
             port:number;
             host:string;
+
+            // these are not available with Native Bindings:
+
+            queryQueue:Array<Query>;
+            binary:boolean;
             ssl:boolean;
+            secretKey:number;
+            processID:number;
+            encoding:string;
+            readyForQuery:boolean;
+            activeQuery:Query;
         }
 
         var defaults:IDefaults;
