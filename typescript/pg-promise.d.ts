@@ -23,6 +23,10 @@ declare module 'pg-promise' {
         partial?:boolean
     };
 
+    type TConnectionOptions = {
+        direct?:boolean;
+    };
+
     type TPreparedBasic = {
         name:string,
         text:string,
@@ -114,7 +118,7 @@ declare module 'pg-promise' {
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.result
         result(query:TQuery, values?:any):XPromise<pg.IResult>;
-        
+
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.stream
         stream(qs:Object, init:(stream:Object)=>void):XPromise<{processed:number, duration:number}>;
 
@@ -123,10 +127,10 @@ declare module 'pg-promise' {
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.proc
         proc(procName:string, values?:any):XPromise<any>;
-        
+
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.map
         map(query:TQuery, values:any, cb:(row:any, index:number, data:Array<any>)=>any, thisArg?:Object):XPromise<Array<any>>;
-        
+
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.each
         each(query:TQuery, values:any, cb:(row:any, index:number, data:Array<any>)=>void, thisArg?:Object):XPromise<Array<any>>;
 
@@ -559,7 +563,7 @@ declare module 'pg-promise' {
         // We export this interface only to be able to help IntelliSense cast extension types correctly,
         // which doesn't always work, depending on the version of IntelliSense being used. 
         interface IDatabase<Ext> extends IBaseProtocol<Ext> {
-            connect():XPromise<IConnected<Ext>>;
+            connect(options?:TConnectionOptions):XPromise<IConnected<Ext>>;
         }
 
     }

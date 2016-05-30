@@ -10,3 +10,8 @@ db.connect()
         var cn = ctx.client.connectionParameters;
         ctx.done();
     });
+
+db.connect({});
+
+db.connect({direct: true});
+
