@@ -132,12 +132,10 @@ API: [Database].
 
 ## Documentation
 
-[Learn by Example] is the quickest way to get started with this library, while the current document details most of the
-basic functionality this library provides.
-
-If you are writing in TypeScript, see [\typescript](https://github.com/vitaly-t/pg-promise/tree/master/typescript). 
-
-For the protocol see the [API Documentation], and for everything else - [Wiki pages](https://github.com/vitaly-t/pg-promise/wiki).
+* [Learn by Example] - the quickest way to get started with this library
+* [API] - all the latest protocol documentation
+* [TypeScript](https://github.com/vitaly-t/pg-promise/tree/master/typescript) declarations for the library
+* [Wiki Pages](https://github.com/vitaly-t/pg-promise/wiki) - all the documentation references
 
 # Testing
 
