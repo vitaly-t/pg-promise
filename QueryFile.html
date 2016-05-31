@@ -51,10 +51,10 @@
     <p>Represents an external SQL file. The type is available from the library's root: <code>pgp.QueryFile</code>.</p>
 <p>Reads a file with SQL and prepares it for execution, also parses and minifies it, if required.
 The SQL can be of any complexity, with both single and multi-line comments.</p>
-<p>The type can be used in place of the <code>query</code> parameter, with any query method directly, plus as <code>text</code> in Prepared Statements.
-It never throws any error, leaving it for query methods to reject with <a href="errors.QueryFileError.html">QueryFileError</a>.</p>
-<p>For any given SQL file you should only create a single instance of this class throughout the
-application.</p>
+<p>The type can be used in place of the <code>query</code> parameter, with any query method directly, plus as <code>text</code> in <a href="PreparedStatement.html">PreparedStatement</a>
+and <a href="ParameterizedQuery.html">ParameterizedQuery</a>.</p>
+<p>It never throws any error, leaving it for query methods to reject with <a href="errors.QueryFileError.html">QueryFileError</a>.</p>
+<p>For any given SQL file you should only create a single instance of this class throughout the application.</p>
 </div>
 
 
@@ -541,7 +541,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line229">line 229</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line230">line 230</a>
     </li></ul></dd>
     
 
@@ -614,7 +614,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line245">line 245</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line246">line 246</a>
     </li></ul></dd>
     
 
@@ -687,7 +687,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line260">line 260</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line261">line 261</a>
     </li></ul></dd>
     
 
@@ -767,7 +767,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line212">line 212</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line213">line 213</a>
     </li></ul></dd>
     
 
@@ -849,7 +849,7 @@ to the parameters passed into the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line158">line 158</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line159">line 159</a>
     </li></ul></dd>
     
 
@@ -1027,7 +1027,7 @@ to the parameters passed into the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line278">line 278</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line279">line 279</a>
     </li></ul></dd>
     
 
