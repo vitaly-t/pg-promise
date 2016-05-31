@@ -504,7 +504,7 @@ Use of external SQL files (via [QueryFile]) offers many advantages:
 * Much cleaner JavaScript code, with all SQL kept in external files;
 * Much easier to write large and well-formatted SQL, with comments and whole revisions;
 * Changes in external SQL can be automatically re-loaded (option `debug`), without restarting the app;
-* Pre-formatting SQL upon loading (option `params`), making two-step SQL formatting very easy;
+* Pre-formatting SQL upon loading (option `params`), making a two-step SQL formatting very easy;
 * Parsing and minifying SQL (options `minify`/`compress`), for early error detection and smaller queries.
 
 Example:
