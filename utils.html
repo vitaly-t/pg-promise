@@ -87,7 +87,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p><a href="utils.html#.camelize">camelize</a> static method.</p></td>
         </tr>
 
     
@@ -110,7 +110,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p><a href="utils.html#.camelizeVar">camelizeVar</a> static method.</p></td>
         </tr>
 
     
@@ -133,7 +133,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p><a href="utils.html#.enumSql">enumSql</a> static method.</p></td>
         </tr>
 
     
@@ -156,7 +156,53 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p><a href="utils.html#.objectToCode">objectToCode</a> static method.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>eachProp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="utils.html#.eachProp">eachProp</a> static method.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>mapProp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="utils.html#.mapProp">mapProp</a> static method.</p></td>
         </tr>
 
     
@@ -533,6 +579,172 @@
 
     
 
+    <h4 class="name" id=".eachProp"><span class="type-signature">(static) </span>eachProp<span class="signature">(obj, cb)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Recursively iterates through all properties of an object.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The object to iterate through.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A callback function that takes three arguments:</p>
+<ul>
+<li><code>value</code> - property value</li>
+<li><code>name</code> - property name</li>
+<li><code>obj</code> - current object (which contains the property)</li>
+</ul></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line213">line 213</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="utils.html#.mapProp">mapProp</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id=".enumSql"><span class="type-signature">(static) </span>enumSql<span class="signature">(dir, options<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
@@ -540,7 +752,7 @@
 
 
 <div class="description">
-    <p>Enumerates all SQL files within a given directory, and into a camelized path tree, to allow named references from JavaScript.</p>
+    <p>Synchronously enumerates all SQL files within a given directory, and into a camelized path tree, to allow named references from JavaScript.</p>
 </div>
 
 
@@ -866,6 +1078,197 @@
 
     
 
+    <h4 class="name" id=".mapProp"><span class="type-signature">(static) </span>mapProp<span class="signature">(obj, cb)</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Recursively iterates through all properties of an object, and creates a new object with property
+values from the callback function.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The object to iterate through.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A callback function to return new property values.</p>
+<p>It takes four arguments:</p>
+<ul>
+<li><code>value</code> - original property value</li>
+<li><code>name</code> - property name</li>
+<li><code>src</code> - current original object</li>
+<li><code>dest</code> - current destination object</li>
+</ul></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line253">line 253</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="utils.html#.eachProp">eachProp</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A new object of the same structure as the original, with values from the callback function.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id=".objectToCode"><span class="type-signature">(static) </span>objectToCode<span class="signature">(obj, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
@@ -968,7 +1371,13 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>A callback function to override property values.</p>
+<p>It takes three arguments:</p>
+<ul>
+<li><code>value</code> - property value</li>
+<li><code>name</code> - property name</li>
+<li><code>obj</code> - current object (which contains the property)</li>
+</ul></td>
         </tr>
 
     

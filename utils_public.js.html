@@ -132,7 +132,7 @@ function _enumSql(dir, options, cb, namePath) {
 /**
  * @method utils.enumSql
  * @description
- * Enumerates all SQL files within a given directory, and into a camelized path tree, to allow named references from JavaScript.
+ * Synchronously enumerates all SQL files within a given directory, and into a camelized path tree, to allow named references from JavaScript.
  *
  * @param {string} dir
  *
@@ -163,6 +163,13 @@ function enumSql(dir, options, cb) {
  * @param {object} obj
  *
  * @param {function} [cb]
+ * A callback function to override property values.
+ *
+ * It takes three arguments:
+ *
+ * - `value` - property value
+ * - `name` - property name
+ * - `obj` - current object (which contains the property)
  *
  * @returns {string}
  *
@@ -207,13 +214,13 @@ function objectToCode(obj, cb) {
         var code = '', gap = prv.messageGap(level);
         var idx = 0;
         for (var prop in obj) {
-            var val = obj[prop];
-            if (val &amp;&amp; typeof val === 'object') {
+            var value = obj[prop];
+            if (value &amp;&amp; typeof value === 'object') {
                 if (idx) {
                     code += ',';
                 }
                 code += EOL + gap + prop + ': {';
-                code += generate(val, level + 1);
+                code += generate(value, level + 1);
                 code += EOL + gap + '}';
             } else {
                 if (idx) {
@@ -221,9 +228,9 @@ function objectToCode(obj, cb) {
                 }
                 code += EOL + gap + prop + ': ';
                 if (cb) {
-                    code += cb(val);
+                    code += cb(value, prop, obj);
                 } else {
-                    code += JSON.stringify(val);
+                    code += JSON.stringify(value);
                 }
             }
             idx++;
@@ -232,22 +239,103 @@ function objectToCode(obj, cb) {
     }
 }
 
+/**
+ * @method utils.eachProp
+ * @description
+ * Recursively iterates through all properties of an object.
+ *
+ * @param {object} obj
+ * The object to iterate through.
+ *
+ * @param {function} cb
+ * A callback function that takes three arguments:
+ * - `value` - property value
+ * - `name` - property name
+ * - `obj` - current object (which contains the property)
+ *
+ * @see {@link utils.mapProp mapProp}
+ *
+ */
 // istanbul ignore next;
-function forEachProp(obj, cb) {
-    for (var prop in obj) {
-        var val = obj[prop];
-        if (val &amp;&amp; typeof val === 'object') {
-            forEachProp(val, cb);
-        } else {
-            cb(val);
+function eachProp(obj, cb) {
+    if (!obj || typeof obj !== 'object') {
+        throw new TypeError("Parameter 'obj' must be a non-null object.");
+    }
+    if (typeof cb !== 'function') {
+        throw new TypeError("Parameter 'cb' must be a function.");
+    }
+
+    loop(obj, cb);
+
+    function loop(obj, cb) {
+        for (var prop in obj) {
+            var val = obj[prop];
+            if (val &amp;&amp; typeof val === 'object') {
+                loop(val, cb);
+            } else {
+                cb(val, prop, obj);
+            }
         }
     }
+}
+
+/**
+ * @method utils.mapProp
+ * @description
+ * Recursively iterates through all properties of an object, and creates a new object with property
+ * values from the callback function.
+ *
+ * @param {object} obj
+ * The object to iterate through.
+ *
+ * @param {function} cb
+ * A callback function to return new property values.
+ *
+ * It takes four arguments:
+ * - `value` - original property value
+ * - `name` - property name
+ * - `src` - current original object
+ * - `dest` - current destination object
+ *
+ * @returns {object}
+ * A new object of the same structure as the original, with values from the callback function.
+ *
+ * @see {@link utils.eachProp eachProp}
+ */
+// istanbul ignore next;
+function mapProp(obj, cb) {
+    if (!obj || typeof obj !== 'object') {
+        throw new TypeError("Parameter 'obj' must be a non-null object.");
+    }
+    if (typeof cb !== 'function') {
+        throw new TypeError("Parameter 'cb' must be a function.");
+    }
+
+    var res = {};
+
+    loop(obj, res, cb);
+
+    function loop(obj, res, cb) {
+        for (var prop in obj) {
+            var val = obj[prop];
+            if (val &amp;&amp; typeof val === 'object') {
+                res[prop] = {};
+                loop(val, res[prop], cb);
+            } else {
+                res[prop] = cb(val, prop, obj, res);
+            }
+        }
+    }
+
+    return res;
 }
 
 module.exports = {
     camelize: camelize,
     camelizeVar: camelizeVar,
     enumSql: enumSql,
+    eachProp: eachProp,
+    mapProp: mapProp,
     objectToCode: objectToCode
 };
 </code></pre>
