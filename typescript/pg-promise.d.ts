@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.3.4 or later.
+// Requires pg-promise v4.3.6 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -362,6 +362,15 @@ declare module 'pg-promise' {
         TransactionMode:typeof TransactionMode
     }
 
+    // General-purpose functions
+    // API: http://vitaly-t.github.io/pg-promise/utils.html
+    interface IUtils {
+        camelize(text:string):string,
+        camelizeVar(text:string):string,
+        objectToCode(obj:any, cb?:(value:any, name:string, obj:any)=>any):string,
+        enumSql(dir:string, options?:{recursive?:boolean,ignoreErrors?:boolean}, cb?:(file:string, name:string, path:string)=>any):any
+    }
+
     // helpers.TableName class;
     // API: http://vitaly-t.github.io/pg-promise/helpers.TableName.html
     class TableName {
@@ -445,6 +454,7 @@ declare module 'pg-promise' {
         queryResult:typeof pgPromise.queryResult;
         minify:typeof pgMinify,
         errors:IErrors;
+        utils:IUtils;
         txMode:ITXMode;
         helpers:IHelpers;
         as:IFormatting;
@@ -555,6 +565,7 @@ declare module 'pg-promise' {
 
         var txMode:ITXMode;
         var errors:IErrors;
+        var utils:IUtils;
         var as:IFormatting;
 
         // Database full protocol;

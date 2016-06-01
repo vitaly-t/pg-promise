@@ -1,0 +1,21 @@
+/// <reference path='../../typescript/pg-promise' />
+
+import * as pgPromise from 'pg-promise';
+
+var utils = pgPromise.utils;
+
+var pgp = pgPromise();
+
+var utilsExtra = pgp.utils;
+
+utils.camelize('');
+
+utils.camelizeVar('');
+
+var tree = utils.enumSql('', {recursive: true, ignoreErrors: true}, (file, name, path)=> {
+
+});
+
+utils.objectToCode(tree, (value, name, obj)=> {
+
+});
