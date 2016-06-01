@@ -13,6 +13,7 @@ describe("camelize", function () {
 
     it("must replace all gaps correctly", function () {
         expect(utils.camelize(' one two - three _ four ')).toBe('oneTwoThreeFour');
+        expect(utils.camelize('one.two-three_four')).toBe('oneTwoThreeFour');
     });
 
 });
