@@ -890,7 +890,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line341">line 341</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line339">line 339</a>
     </li></ul></dd>
     
 
@@ -1055,7 +1055,7 @@ if you try overriding them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line400">line 400</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line398">line 398</a>
     </li></ul></dd>
     
 
@@ -1803,7 +1803,7 @@ validation for regular queries, which is executed right after this notification.
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize column names:var options = {    receive: function (data, result, e) {        camelizeColumns(data);    }};var humps = require('humps');function camelizeColumns(data) {    var template = data[0];    for (var prop in template) {        var camel = humps.camelize(prop);        if (!(camel in template)) {            for (var i = 0; i &lt; data.length; i++) {                var d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
+    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize column names:var options = {    receive: function (data, result, e) {        camelizeColumns(data);    }};function camelizeColumns(data) {    var template = data[0];    for (var prop in template) {        var camel = pgp.utils.camelize(prop);        if (!(camel in template)) {            for (var i = 0; i &lt; data.length; i++) {                var d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
 
 
 
@@ -1915,7 +1915,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line255">line 255</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line253">line 253</a>
     </li></ul></dd>
     
 
@@ -2054,7 +2054,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line298">line 298</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line296">line 296</a>
     </li></ul></dd>
     
 

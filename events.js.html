@@ -75,7 +75,7 @@ var $events = {
             }
         }
     },
-    
+
     /**
      * @event disconnect
      * @description
@@ -253,12 +253,10 @@ var $events = {
      *     }
      * };
      *
-     * var humps = require('humps');
-     *
      * function camelizeColumns(data) {
      *     var template = data[0];
      *     for (var prop in template) {
-     *         var camel = humps.camelize(prop);
+     *         var camel = pgp.utils.camelize(prop);
      *         if (!(camel in template)) {
      *             for (var i = 0; i &lt; data.length; i++) {
      *                 var d = data[i];
