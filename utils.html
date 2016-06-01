@@ -160,52 +160,6 @@
         </tr>
 
     
-
-        <tr>
-            
-                <td class="name"><code>eachProp</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p><a href="utils.html#.eachProp">eachProp</a> static method.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>mapProp</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p><a href="utils.html#.mapProp">mapProp</a> static method.</p></td>
-        </tr>
-
-    
     </tbody>
 </table>
 
@@ -336,7 +290,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Input text string.</p></td>
         </tr>
 
     
@@ -377,7 +331,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line12">line 12</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line8">line 8</a>
     </li></ul></dd>
     
 
@@ -403,6 +357,10 @@
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>Camelized text string.</p>
+</div>
+
 
 
 <dl>
@@ -489,7 +447,8 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Input text string.</p>
+<p>If it doesn't contain any symbols to make up a variable name the result will be an empty string.</p></td>
         </tr>
 
     
@@ -530,7 +489,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line29">line 29</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line28">line 28</a>
     </li></ul></dd>
     
 
@@ -556,6 +515,10 @@
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>Camelized text string that can be used as an open property name.</p>
+</div>
+
 
 
 <dl>
@@ -579,175 +542,6 @@
 
     
 
-    <h4 class="name" id=".eachProp"><span class="type-signature">(static) </span>eachProp<span class="signature">(obj, cb)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Recursively iterates through all properties of an object.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>obj</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The object to iterate through.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>cb</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>A callback function that takes a single argument - an object with the following properties:</p>
-<ul>
-<li><code>value</code> - property value</li>
-<li><code>name</code> - property name</li>
-<li><code>obj</code> - current object (which contains the property)</li>
-<li><code>level</code> - current recursion level</li>
-<li><code>index</code> - property index in the current object</li>
-<li><code>parent</code> - name of the parent property (when <code>level</code> &gt; 0)</li>
-</ul></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line216">line 216</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="utils.html#.mapProp">mapProp</a></li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
     <h4 class="name" id=".enumSql"><span class="type-signature">(static) </span>enumSql<span class="signature">(dir, options<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
@@ -755,7 +549,7 @@
 
 
 <div class="description">
-    <p>Synchronously enumerates all SQL files within a given directory, and into a camelized path tree, to allow named references from JavaScript.</p>
+    <p>Synchronously enumerates all SQL files (within a given directory) into a camelized SQL tree, to allow named references from JavaScript.</p>
 </div>
 
 
@@ -817,7 +611,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Directory name where SQL files are located.</p></td>
         </tr>
 
     
@@ -850,7 +644,7 @@
 
             
 
-            <td class="description last">
+            <td class="description last"><p>Search options.</p>
                 <h6>Properties</h6>
                 
 
@@ -912,7 +706,8 @@
                 </td>
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Search for sql files in sub-directories.</p>
+<p>Sub-directories that do not contain a single SQL file (on any level) are skipped.</p></td>
         </tr>
 
     
@@ -951,7 +746,12 @@
                 </td>
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Ignore the following type of errors:</p>
+<ul>
+<li>access errors, when there is no read access to a file or folder</li>
+<li>empty or duplicate camelized property names</li>
+</ul>
+<p>This flag does not affect errors related to invalid input parameters.</p></td>
         </tr>
 
     
@@ -993,7 +793,7 @@
 
             <td class="description last"><p>A callback function that takes three arguments:</p>
 <ul>
-<li><code>file</code> - full sql file name </li>
+<li><code>file</code> - full sql file name</li>
 <li><code>propName</code> - name of the property that represents the sql file</li>
 <li><code>propPath</code> - property resolution path (full property name)</li>
 </ul></td>
@@ -1037,202 +837,12 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line102">line 102</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line98">line 98</a>
     </li></ul></dd>
     
 
     
 
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".mapProp"><span class="type-signature">(static) </span>mapProp<span class="signature">(obj, cb)</span><span class="type-signature"> &rarr; {object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Recursively iterates through all properties of an object, and creates a new object with property
-values from the callback function.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>obj</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The object to iterate through.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>cb</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>A callback function to return new property values.</p>
-<p>It takes a single argument - an object with the following properties:</p>
-<ul>
-<li><code>value</code> - original property value</li>
-<li><code>name</code> - property name</li>
-<li><code>src</code> - current original object</li>
-<li><code>dest</code> - current destination object</li>
-<li><code>level</code> - current recursion level</li>
-<li><code>index</code> - property index in the current object</li>
-<li><code>parent</code> - name of the parent property (when <code>level</code> &gt; 0)</li>
-</ul></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line269">line 269</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="utils.html#.eachProp">eachProp</a></li>
-        </ul>
-    </dd>
     
 
     
@@ -1254,7 +864,7 @@ values from the callback function.</p>
 
         
 <div class="param-desc">
-    <p>A new object of the same structure as the original, with values from the callback function.</p>
+    <p>Camelized SQL tree object.</p>
 </div>
 
 
@@ -1429,7 +1039,7 @@ values from the callback function.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line131">line 131</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line143">line 143</a>
     </li></ul></dd>
     
 

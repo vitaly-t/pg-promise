@@ -29,10 +29,6 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-/////////////////////////////////////////
-// NOTE: This file is under development!
-/////////////////////////////////////////
-
 var fs = require('fs');
 var path = require('path');
 var prv = require('./private');
@@ -44,11 +40,14 @@ var EOL = require('os').EOL;
  * Camelizes a text string.
  *
  * @param {string} text
+ * Input text string.
  *
  * @returns {string}
+ * Camelized text string.
+ *
  */
 function camelize(text) {
-    text = text.replace(/[\-_\s]+(.)?/g, function (match, chr) {
+    text = text.replace(/[\-_\s\.]+(.)?/g, function (match, chr) {
         return chr ? chr.toUpperCase() : '';
     });
     // Ensure 1st char is always lowercase
@@ -63,20 +62,17 @@ function camelize(text) {
  * - cannot have leading digits
  *
  * @param {string} text
+ * Input text string.
+ *
+ * If it doesn't contain any symbols to make up a variable name the result will be an empty string.
  *
  * @returns {string}
+ * Camelized text string that can be used as an open property name.
+ *
  */
 function camelizeVar(text) {
     text = text.replace(/[^a-zA-Z0-9\$_\-\s]/g, '').replace(/^[0-9_\-\s]+/, '');
     return camelize(text);
-}
-
-function removeExt(fileName) {
-    return fileName.replace(/\.[^/.]+$/, '');
-}
-
-function isSqlFile(file) {
-    return path.extname(file).toLowerCase() === '.sql';
 }
 
 // istanbul ignore next
@@ -101,15 +97,15 @@ function _enumSql(dir, options, cb, namePath) {
                 if (Object.keys(t).length) {
                     if (!dirName.length || dirName in tree) {
                         if (!options.ignoreErrors) {
-                            throw new Error("Empty or duplicate camelized folder name: " + file);
+                            throw new Error("Empty or duplicate camelized folder name: " + p);
                         }
                     }
                     tree[dirName] = t;
                 }
             }
         } else {
-            if (isSqlFile(file)) {
-                var name = camelizeVar(removeExt(file));
+            if (path.extname(file).toLowerCase() === '.sql') {
+                var name = camelizeVar(file.replace(/\.[^/.]+$/, ''));
                 if (!name.length || name in tree) {
                     if (!options.ignoreErrors) {
                         throw new Error("Empty or duplicate camelized file name: " + p);
@@ -131,25 +127,41 @@ function _enumSql(dir, options, cb, namePath) {
 /**
  * @method utils.enumSql
  * @description
- * Synchronously enumerates all SQL files within a given directory, and into a camelized path tree, to allow named references from JavaScript.
+ * Synchronously enumerates all SQL files (within a given directory) into a camelized SQL tree, to allow named references from JavaScript.
  *
  * @param {string} dir
+ * Directory name where SQL files are located.
  *
  * @param {object} [options]
+ * Search options.
  *
  * @param {boolean} [options.recursive=false]
+ * Search for sql files in sub-directories.
+ *
+ * Sub-directories that do not contain a single SQL file (on any level) are skipped.
  *
  * @param {boolean} [options.ignoreErrors=false]
+ * Ignore the following type of errors:
+ * - access errors, when there is no read access to a file or folder
+ * - empty or duplicate camelized property names
+ *
+ * This flag does not affect errors related to invalid input parameters.
  *
  * @param {function} [cb]
  * A callback function that takes three arguments:
- * - `file` - full sql file name 
+ * - `file` - full sql file name
  * - `propName` - name of the property that represents the sql file
  * - `propPath` - property resolution path (full property name)
  *
  * @returns {object}
+ * Camelized SQL tree object.
+ *
  */
+// istanbul ignore next
 function enumSql(dir, options, cb) {
+    if (!dir || typeof dir !== 'string') {
+        throw new TypeError("Parameter 'dir' must be a non-empty text string.");
+    }
     if (!options || typeof options !== 'object') {
         options = {};
     }
@@ -242,130 +254,10 @@ function objectToCode(obj, cb) {
     }
 }
 
-/**
- * @method utils.eachProp
- * @description
- * Recursively iterates through all properties of an object.
- *
- * @param {object} obj
- * The object to iterate through.
- *
- * @param {function} cb
- * A callback function that takes a single argument - an object with the following properties:
- *
- * - `value` - property value
- * - `name` - property name
- * - `obj` - current object (which contains the property)
- * - `level` - current recursion level
- * - `index` - property index in the current object
- * - `parent` - name of the parent property (when `level` > 0)
- *
- * @see {@link utils.mapProp mapProp}
- *
- */
-// istanbul ignore next;
-function eachProp(obj, cb) {
-    if (!obj || typeof obj !== 'object') {
-        throw new TypeError("Parameter 'obj' must be a non-null object.");
-    }
-    if (typeof cb !== 'function') {
-        throw new TypeError("Parameter 'cb' must be a function.");
-    }
-
-    loop(obj, cb, 0);
-
-    function loop(obj, cb, level, parent) {
-        var index = 0;
-        for (var prop in obj) {
-            var val = obj[prop];
-            if (val &amp;&amp; typeof val === 'object') {
-                loop(val, cb, level + 1, prop);
-            } else {
-                cb({
-                    value: val,
-                    name: prop,
-                    obj: obj,
-                    level: level,
-                    index: index,
-                    parent: parent
-                });
-            }
-            index++;
-        }
-    }
-}
-
-/**
- * @method utils.mapProp
- * @description
- * Recursively iterates through all properties of an object, and creates a new object with property
- * values from the callback function.
- *
- * @param {object} obj
- * The object to iterate through.
- *
- * @param {function} cb
- * A callback function to return new property values.
- *
- * It takes a single argument - an object with the following properties:
- *
- * - `value` - original property value
- * - `name` - property name
- * - `src` - current original object
- * - `dest` - current destination object
- * - `level` - current recursion level
- * - `index` - property index in the current object
- * - `parent` - name of the parent property (when `level` > 0)
- *
- * @returns {object}
- * A new object of the same structure as the original, with values from the callback function.
- *
- * @see {@link utils.eachProp eachProp}
- */
-// istanbul ignore next;
-function mapProp(obj, cb) {
-    if (!obj || typeof obj !== 'object') {
-        throw new TypeError("Parameter 'obj' must be a non-null object.");
-    }
-    if (typeof cb !== 'function') {
-        throw new TypeError("Parameter 'cb' must be a function.");
-    }
-
-    var res = {};
-
-    loop(obj, res, cb, 0);
-
-    function loop(obj, dest, cb, level, parent) {
-        var index = 0;
-        for (var prop in obj) {
-            var val = obj[prop];
-            if (val &amp;&amp; typeof val === 'object') {
-                dest[prop] = {};
-                loop(val, dest[prop], cb, level + 1, prop);
-            } else {
-                dest[prop] = cb({
-                    value: val,
-                    name: prop,
-                    src: obj,
-                    dest: dest,
-                    level: level,
-                    index: index,
-                    parent: parent
-                });
-            }
-            index++;
-        }
-    }
-
-    return res;
-}
-
 module.exports = {
     camelize: camelize,
     camelizeVar: camelizeVar,
     enumSql: enumSql,
-    eachProp: eachProp,
-    mapProp: mapProp,
     objectToCode: objectToCode
 };
 </code></pre>
