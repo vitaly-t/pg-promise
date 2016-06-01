@@ -153,7 +153,7 @@ function _enumSql(dir, options, cb, namePath) {
  * - `propName` - name of the property that represents the sql file
  * - `propPath` - property resolution path (full property name)
  *
- * If the function returns anything other than `undefined`, it overrides the corresponding property value in the tree. 
+ * If the function returns anything other than `undefined`, it overrides the corresponding property value in the tree.
  *
  * @returns {object}
  * Camelized SQL tree object.
@@ -165,6 +165,16 @@ function _enumSql(dir, options, cb, namePath) {
  * // generating an SQL tree for dynamic access:
  * var sql = pgp.utils.enumSql('../sql', {recursive: true}, file=> {
  *     return new pgp.QueryFile(file, {minify: true});
+ * });
+ *
+ * @example
+ *
+ * var pgp = require('pg-promise');
+ * var path = require('path');
+ *
+ * // replacing each relative path with a full one:
+ * var sql = pgp.utils.enumSql('../sql', {recursive: true}, file=> {
+ *     return path.join(__dirname, file);
  * });
  *
  */
@@ -229,6 +239,7 @@ function enumSql(dir, options, cb) {
  * module.exports = function(file) {
  *     return new QueryFile(file, {minify: true});
  * };
+ *
  */
 // istanbul ignore next;
 function objectToCode(obj, cb) {

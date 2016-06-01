@@ -885,9 +885,11 @@
     
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
     <pre class="prettyprint"><code>var pgp = require('pg-promise');// generating an SQL tree for dynamic access:var sql = pgp.utils.enumSql('../sql', {recursive: true}, file=> {    return new pgp.QueryFile(file, {minify: true});});</code></pre>
+
+    <pre class="prettyprint"><code>var pgp = require('pg-promise');var path = require('path');// replacing each relative path with a full one:var sql = pgp.utils.enumSql('../sql', {recursive: true}, file=> {    return path.join(__dirname, file);});</code></pre>
 
 
 
@@ -1045,7 +1047,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line154">line 154</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line164">line 164</a>
     </li></ul></dd>
     
 
