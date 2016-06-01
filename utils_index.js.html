@@ -40,12 +40,20 @@ var prv = require('./private');
  *
  * Namespace for general-purpose functions, available as `pgp.utils`, before and after initializing the library.
  *
+ * @property {function} camelize
+ *
+ * @property {function} camelizeVar
+ *
+ * @property {function} enumSql
+ *
+ * @property {function} objectToCode
+ *
  */
 module.exports = {
-
+    
     ///////////////////////////
     // public methods:
-
+    
     camelize: pub.camelize,
     camelizeVar: pub.camelizeVar,
     enumSql: pub.enumSql,

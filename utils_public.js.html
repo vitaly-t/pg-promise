@@ -29,15 +29,24 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-///////////////////////////////////////////////////
-// NOTE: This file is an experimental development!
-///////////////////////////////////////////////////
+/////////////////////////////////////////
+// NOTE: This file is under development!
+/////////////////////////////////////////
 
 var fs = require('fs');
 var path = require('path');
 var prv = require('./private');
 var EOL = require('os').EOL;
 
+/**
+ * @method utils.camelize
+ * @description
+ * Camelizes a text string.
+ *
+ * @param {string} text
+ *
+ * @returns {string}
+ */
 function camelize(text) {
     text = text.replace(/[\-_\s]+(.)?/g, function (match, chr) {
         return chr ? chr.toUpperCase() : '';
@@ -46,6 +55,17 @@ function camelize(text) {
     return text.substr(0, 1).toLowerCase() + text.substr(1);
 }
 
+/**
+ * @method utils.camelizeVar
+ * @description
+ * Camelizes a text string, while making it compliant with JavaScript variable names:
+ * - contains symbols `a-Z`, `A-Z`, `0-9`, `_` and `$`
+ * - cannot have leading digits
+ *
+ * @param {string} text
+ *
+ * @returns {string}
+ */
 function camelizeVar(text) {
     text = text.replace(/[^a-zA-Z0-9\$_\-\s]/g, '').replace(/^[0-9_\-\s]+/, '');
     return camelize(text);
@@ -109,6 +129,23 @@ function _enumSql(dir, options, cb, namePath) {
     return tree;
 }
 
+/**
+ * @method utils.enumSql
+ * @description
+ * Enumerates all SQL files within a given directory, and into a camelized path tree, to allow named references from JavaScript.
+ *
+ * @param {string} dir
+ *
+ * @param {object} [options]
+ *
+ * @param {boolean} [options.recursive=false]
+ *
+ * @param {boolean} [options.ignoreErrors=false]
+ *
+ * @param {function} [cb]
+ *
+ * @returns {object}
+ */
 function enumSql(dir, options, cb) {
     if (!options || typeof options !== 'object') {
         options = {};
@@ -120,14 +157,19 @@ function enumSql(dir, options, cb) {
 /**
  *
  * @method utils.objectToCode
- * @param obj
- * @param cb
+ * @description
+ * Serializes a simple object into a code string as a JSON tree.
+ *
+ * @param {object} obj
+ *
+ * @param {function} [cb]
+ *
  * @returns {string}
  *
  * @example
  *
  * // Generating a JavaScript module with complete SQL tree
- * 
+ *
  * var fs = require('fs');
  * var EOL = require('os').EOL;
  * var utils = require('pg-promise').utils;
@@ -135,20 +177,21 @@ function enumSql(dir, options, cb) {
  * // generating an SQL tree from the folder:
  * var tree = utils.enumSql('./sql', {recursive: true});
  *
- * // generating the code: 
+ * // generating the module's code:
  * var code = "var load = require('./loadSql');" + EOL + "module.exports = " +
  *         utils.objectToCode(tree, function (value) {
  *             return 'load(' + JSON.stringify(value) + ')';
  *         });
  *
- * // saving the module file:
+ * // saving the module:
  * fs.writeFileSync('sql.js', code);
  *
- * ////////////////////////////////////////////////
+ * @example
+ *
  * // loadSql.js module example
- * 
+ *
  * var QueryFile = require('pg-promise').QueryFile;
- * 
+ *
  * module.exports = function(file) {
  *     return new QueryFile(file, {minify: true});
  * };

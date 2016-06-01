@@ -43,19 +43,19 @@ var $npm = {
  *
  * This type represents all errors related to {@link QueryFile}.
  *
- * @property {String} name
+ * @property {string} name
  * Standard {@link external:Error Error} property - error type name = `QueryFileError`.
  *
- * @property {String} message
+ * @property {string} message
  * Standard {@link external:Error Error} property - the error message.
  *
  * @property {object} stack
  * Standard {@link external:Error Error} property - the stack trace.
  *
- * @property {String} file
+ * @property {string} file
  * File path/name that was passed into the {@link QueryFile} constructor.
  *
- * @property {Object} options
+ * @property {object} options
  * Set of options that was used by the {@link QueryFile} object.
  *
  * @property {SQLParsingError} error
@@ -97,10 +97,10 @@ QueryFileError.prototype = Object.create(Error.prototype, {
  *
  * It is called automatically when writing the object into the console.
  *
- * @param {Number} [level=0]
+ * @param {number} [level=0]
  * Nested output level, to provide visual offset.
  *
- * @returns {String}
+ * @returns {string}
  */
 QueryFileError.prototype.toString = function (level) {
     level = level > 0 ? parseInt(level) : 0;

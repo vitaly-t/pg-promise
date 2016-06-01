@@ -303,10 +303,10 @@ var $as = {
      * If the `value` resolves as `null` or `undefined`, while `raw`=`true`,
      * it will throw {@link external:TypeError TypeError} = `Values null/undefined cannot be used as raw text.`
      *
-     * @param {Boolean} [raw=false]
+     * @param {boolean} [raw=false]
      * Indicates when not to escape the resulting text.
      *
-     * @returns {String}
+     * @returns {string}
      *
      * - `null` string, if the `value` resolves as `null` or `undefined`
      * - escaped result of `value.toString()`, if the `value` isn't a string
@@ -341,7 +341,7 @@ var $as = {
      *
      * If `name` doesn't resolve into a non-empty string, it throws {@link external:TypeError TypeError} = `An sql name/identifier must be a non-empty text string.`
      *
-     * @returns {String}
+     * @returns {string}
      * The SQL Name/Identifier properly escaped for compliance with the PostgreSQL standard
      * for SQL names and identifiers.
      */
@@ -366,7 +366,7 @@ var $as = {
      *
      * If `value` resolves as `null` or `undefined`, it will throw {@link external:TypeError TypeError} = `Open values cannot be null or undefined.`
      *
-     * @returns {String}
+     * @returns {string}
      * Formatted and properly escaped string, but without surrounding quotes for text types.
      */
     value: function (value) {
@@ -385,12 +385,12 @@ var $as = {
      * @param {Buffer|Function} obj
      * Object to be converted, or a function that returns one.
      *
-     * @param {Boolean} [raw=false]
+     * @param {boolean} [raw=false]
      * Indicates when not to wrap the resulting string in quotes.
      *
      * The generated hex string doesn't need to be escaped.
      *
-     * @returns {String}
+     * @returns {string}
      */
     buffer: function (obj, raw) {
         obj = resolveFunc(obj);
@@ -413,7 +413,7 @@ var $as = {
      * @param {Boolean|Function} value
      * Value to be converted, or a function that returns the value.
      *
-     * @returns {String}
+     * @returns {string}
      */
     bool: function (value) {
         value = resolveFunc(value);
@@ -432,10 +432,10 @@ var $as = {
      * @param {Date|Function} d
      * Date object to be converted, or a function that returns one.
      *
-     * @param {Boolean} [raw=false]
+     * @param {boolean} [raw=false]
      * Indicates when not to escape the value.
      *
-     * @returns {String}
+     * @returns {string}
      */
     date: function (d, raw) {
         d = resolveFunc(d);
@@ -461,7 +461,7 @@ var $as = {
      * @param {Number|Function} num
      * Number to be converted, or a function that returns one.
      *
-     * @returns {String}
+     * @returns {string}
      */
     number: function (num) {
         num = resolveFunc(num);
@@ -496,7 +496,7 @@ var $as = {
      * @param {Array|Function} arr
      * Array to be converted, or a function that returns one.
      *
-     * @returns {String}
+     * @returns {string}
      */
     array: function (arr) {
         arr = resolveFunc(arr);
@@ -518,7 +518,7 @@ var $as = {
      * @param {Array|value|Function} values
      * Value(s) to be converted, or a function that returns it.
      *
-     * @returns {String}
+     * @returns {string}
      */
     csv: function (values) {
         return formatCSV(resolveFunc(values));
@@ -533,10 +533,10 @@ var $as = {
      * @param {Object|Function} obj
      * Object/Value to be converted, or a function that returns it.
      *
-     * @param {Boolean} [raw=false]
+     * @param {boolean} [raw=false]
      * Indicates when not to escape the result.
      *
-     * @returns {String}
+     * @returns {string}
      */
     json: function (obj, raw) {
         obj = resolveFunc(obj);
@@ -554,16 +554,16 @@ var $as = {
      * Calls the function to get the actual value, and then formats the result
      * according to its type + `raw` flag.
      *
-     * @param {Function} func
+     * @param {function} func
      * Function to be called, with support for nesting.
      *
-     * @param {Boolean} [raw=false]
+     * @param {boolean} [raw=false]
      * Indicates when not to escape the result.
      *
-     * @param {Object} [obj]
+     * @param {object} [obj]
      * `this` context to be passed into the function on all nested levels.
      *
-     * @returns {String}
+     * @returns {string}
      */
     func: function (func, raw, obj) {
         if (isNull(func)) {
@@ -612,20 +612,20 @@ var $as = {
      * - JSON override ends with `:json` to format the value of any type as a JSON string
      * - CSV override ends with `:csv` to format an array as a properly escaped comma-separated list of values.
      *
-     * @param {String} query
+     * @param {string} query
      * Query string with formatting variables in it.
      *
      * @param {Array|Object|value} [values]
      * Formatting parameter(s) / variable value(s).
      *
-     * @param {Object} [options]
+     * @param {object} [options]
      * Formatting Options.
      *
-     * @param {Boolean} [options.partial=false]
+     * @param {boolean} [options.partial=false]
      * Indicates that we intend to do only a partial replacement, i.e. throw no error when encountering a variable or
      * property name that's not valid within the formatting parameter(s).
      *
-     * @returns {String}
+     * @returns {string}
      * Formatted query string.
      */
     format: function (query, values, options) {

@@ -50,18 +50,18 @@ var $npm = {
  * - table name, if `table` is a string
  * - object `{table, [schema]}`
  *
- * @param {String} [schema]
+ * @param {string} [schema]
  * Database schema name.
  *
  * When `table` is passed in as `{table, [schema]}`, this parameter is ignored.
  *
- * @property {String} name
+ * @property {string} name
  * Formatted/escaped full table name, based on properties `schema` + `table`.
  *
- * @property {String} table
+ * @property {string} table
  * Table name.
  *
- * @property {String} schema
+ * @property {string} schema
  * Database schema name.
  *
  * It is `undefined` when no schema was specified (or if it was an empty string).
@@ -116,7 +116,7 @@ function TableName(table, schema) {
  *
  * It is called automatically when writing the object into the console.
  *
- * @returns {String}
+ * @returns {string}
  */
 TableName.prototype.toString = function () {
     return this.name;

@@ -169,7 +169,7 @@ function ParameterizedQuery(text, values) {
 
     /**
      * @name ParameterizedQuery#binary
-     * @type {Boolean}
+     * @type {boolean}
      * @description
      * Activates binary result mode. The default is the text mode.
      *
@@ -189,7 +189,7 @@ function ParameterizedQuery(text, values) {
 
     /**
      * @name ParameterizedQuery#rowMode
-     * @type {String}
+     * @type {string}
      * @description
      * Changes the way data arrives to the client, with only one value supported by $[pg]:
      *  - `rowMode = 'array'` will make all data rows arrive as arrays of values.
@@ -298,10 +298,10 @@ function ParameterizedQuery(text, values) {
  *
  * It is called automatically when writing the object into the console.
  *
- * @param {Number} [level=0]
+ * @param {number} [level=0]
  * Nested output level, to provide visual offset.
  *
- * @returns {String}
+ * @returns {string}
  */
 ParameterizedQuery.prototype.toString = function (level) {
     level = level > 0 ? parseInt(level) : 0;

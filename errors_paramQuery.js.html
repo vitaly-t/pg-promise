@@ -44,10 +44,10 @@ var $npm = {
  * This type represents all errors that can be reported by class {@link ParameterizedQuery}, whether it is used
  * explicitly or implicitly (via a simple `{text, values}` object).
  *
- * @property {String} name
+ * @property {string} name
  * Standard {@link external:Error Error} property - error type name = `ParameterizedQueryError`.
  *
- * @property {String} message
+ * @property {string} message
  * Standard {@link external:Error Error} property - the error message.
  *
  * @property {object} stack
@@ -58,7 +58,7 @@ var $npm = {
  *
  * It is set only when the source {@link ParameterizedQuery} used a {@link QueryFile} which threw the error.
  *
- * @property {Object} result
+ * @property {object} result
  * Resulting Parameterized Query object.
  *
  * @returns {errors.ParameterizedQueryError}
@@ -92,10 +92,10 @@ ParameterizedQueryError.prototype = Object.create(Error.prototype, {
  *
  * It is called automatically when writing the object into the console.
  *
- * @param {Number} [level=0]
+ * @param {number} [level=0]
  * Nested output level, to provide visual offset.
  *
- * @returns {String}
+ * @returns {string}
  */
 ParameterizedQueryError.prototype.toString = function (level) {
     level = level > 0 ? parseInt(level) : 0;

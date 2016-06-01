@@ -56,7 +56,7 @@ var $npm = {
  *
  * The type is available from the library's root: `pgp.PreparedStatement`.
  *
- * @param {String} name
+ * @param {string} name
  * An arbitrary name given to this particular prepared statement. It must be unique within a single session and is
  * subsequently used to execute or deallocate a previously prepared statement.
  *
@@ -138,7 +138,7 @@ function PreparedStatement(name, text, values) {
 
     /**
      * @name PreparedStatement#name
-     * @type {String}
+     * @type {string}
      * @description
      * An arbitrary name given to this particular prepared statement. It must be unique within a single session and is
      * subsequently used to execute or deallocate a previously prepared statement.
@@ -198,7 +198,7 @@ function PreparedStatement(name, text, values) {
 
     /**
      * @name PreparedStatement#binary
-     * @type {Boolean}
+     * @type {boolean}
      * @description
      * Activates binary result mode. The default is the text mode.
      *
@@ -218,7 +218,7 @@ function PreparedStatement(name, text, values) {
 
     /**
      * @name PreparedStatement#rowMode
-     * @type {String}
+     * @type {string}
      * @description
      * Changes the way data arrives to the client, with only one value supported by $[pg]:
      *  - `rowMode = 'array'` will make all data rows arrive as arrays of values.
@@ -238,7 +238,7 @@ function PreparedStatement(name, text, values) {
 
     /**
      * @name PreparedStatement#rows
-     * @type {Number}
+     * @type {number}
      * @description
      * Number of rows to return at a time from a Prepared Statement's portal.
      * The default is 0, which means that all rows must be returned at once.
@@ -355,10 +355,10 @@ function PreparedStatement(name, text, values) {
  *
  * It is called automatically when writing the object into the console.
  *
- * @param {Number} [level=0]
+ * @param {number} [level=0]
  * Nested output level, to provide visual offset.
  *
- * @returns {String}
+ * @returns {string}
  */
 PreparedStatement.prototype.toString = function (level) {
     level = level > 0 ? parseInt(level) : 0;
