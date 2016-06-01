@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p><strong>To be added in v.4.4.0</strong> See <a href="https://github.com/vitaly-t/pg-promise/issues/153">Automatic SQL Trees</a>.</p>
+            <div class="description"><p><strong>Added in v.4.3.6</strong></p>
 <p>Namespace for general-purpose functions, available as <code>pgp.utils</code>, before and after initializing the library.</p></div>
         
 
@@ -239,6 +239,13 @@
 
 <div class="description">
     <p>Camelizes a text string.</p>
+<p>Case-changing characters include:</p>
+<ul>
+<li><code>-</code> - hyphen</li>
+<li><code>_</code> - underscore</li>
+<li><code>.</code> - period</li>
+<li><code> </code> - space</li>
+</ul>
 </div>
 
 
@@ -448,7 +455,7 @@
             
 
             <td class="description last"><p>Input text string.</p>
-<p>If it doesn't contain any symbols to make up a variable name the result will be an empty string.</p></td>
+<p>If it doesn't contain any symbols to make up a valid variable name, the result will be an empty string.</p></td>
         </tr>
 
     
@@ -489,7 +496,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line28">line 28</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line33">line 33</a>
     </li></ul></dd>
     
 
@@ -611,7 +618,7 @@
 
             
 
-            <td class="description last"><p>Directory name where SQL files are located.</p></td>
+            <td class="description last"><p>Directory where SQL files are located.</p></td>
         </tr>
 
     
@@ -706,8 +713,8 @@
                 </td>
             
 
-            <td class="description last"><p>Search for sql files in sub-directories.</p>
-<p>Sub-directories that do not contain a single SQL file (on any level) are skipped.</p></td>
+            <td class="description last"><p>Include sub-directories into the search.</p>
+<p>Sub-directories without SQL files will be skipped from the result.</p></td>
         </tr>
 
     
@@ -794,8 +801,8 @@
             <td class="description last"><p>A callback function that takes three arguments:</p>
 <ul>
 <li><code>file</code> - full sql file name</li>
-<li><code>propName</code> - name of the property that represents the sql file</li>
-<li><code>propPath</code> - property resolution path (full property name)</li>
+<li><code>name</code> - name of the property that represents the sql file</li>
+<li><code>path</code> - property resolution path (full property name)</li>
 </ul>
 <p>If the function returns anything other than <code>undefined</code>, it overrides the corresponding property value in the tree.</p></td>
         </tr>
@@ -838,7 +845,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line98">line 98</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -1047,7 +1054,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line164">line 164</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line170">line 170</a>
     </li></ul></dd>
     
 
