@@ -661,11 +661,13 @@
 
             
 
-            <td class="description last"><p>A callback function that takes three arguments:</p>
+            <td class="description last"><p>A callback function that takes the following arguments:</p>
 <ul>
 <li><code>value</code> - property value</li>
 <li><code>name</code> - property name</li>
 <li><code>obj</code> - current object (which contains the property)</li>
+<li><code>level</code> - current recursion level</li>
+<li><code>index</code> - property index in the current object</li>
 </ul></td>
         </tr>
 
@@ -1162,12 +1164,14 @@ values from the callback function.</p>
             
 
             <td class="description last"><p>A callback function to return new property values.</p>
-<p>It takes four arguments:</p>
+<p>It takes the following arguments:</p>
 <ul>
 <li><code>value</code> - original property value</li>
 <li><code>name</code> - property name</li>
 <li><code>src</code> - current original object</li>
 <li><code>dest</code> - current destination object</li>
+<li><code>level</code> - current recursion level</li>
+<li><code>index</code> - property index in the current object</li>
 </ul></td>
         </tr>
 
@@ -1209,7 +1213,7 @@ values from the callback function.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line253">line 253</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line258">line 258</a>
     </li></ul></dd>
     
 
