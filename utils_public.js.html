@@ -248,13 +248,14 @@ function objectToCode(obj, cb) {
  * The object to iterate through.
  *
  * @param {function} cb
- * A callback function that takes the following arguments:
+ * A callback function that takes a single argument - an object with the following properties:
  *
  * - `value` - property value
  * - `name` - property name
  * - `obj` - current object (which contains the property)
  * - `level` - current recursion level
  * - `index` - property index in the current object
+ * - `parent` - name of the parent property (when `level` > 0)
  *
  * @see {@link utils.mapProp mapProp}
  *
@@ -270,14 +271,14 @@ function eachProp(obj, cb) {
 
     loop(obj, cb, 0);
 
-    function loop(obj, cb, level) {
+    function loop(obj, cb, level, parent) {
         var index = 0;
         for (var prop in obj) {
             var val = obj[prop];
             if (val &amp;&amp; typeof val === 'object') {
-                loop(val, cb, level + 1);
+                loop(val, cb, level + 1, prop);
             } else {
-                cb(val, prop, obj, level, index);
+                cb({value: val, name: prop, obj: obj, level: level, index: index, parent: parent});
             }
             index++;
         }
@@ -296,7 +297,7 @@ function eachProp(obj, cb) {
  * @param {function} cb
  * A callback function to return new property values.
  *
- * It takes the following arguments:
+ * It takes a single argument - an object with the following properties:
  *
  * - `value` - original property value
  * - `name` - property name
@@ -304,6 +305,7 @@ function eachProp(obj, cb) {
  * - `dest` - current destination object
  * - `level` - current recursion level
  * - `index` - property index in the current object
+ * - `parent` - name of the parent property (when `level` > 0)
  *
  * @returns {object}
  * A new object of the same structure as the original, with values from the callback function.
@@ -323,15 +325,23 @@ function mapProp(obj, cb) {
 
     loop(obj, res, cb, 0);
 
-    function loop(obj, dest, cb, level) {
+    function loop(obj, dest, cb, level, parent) {
         var index = 0;
         for (var prop in obj) {
             var val = obj[prop];
             if (val &amp;&amp; typeof val === 'object') {
                 dest[prop] = {};
-                loop(val, dest[prop], cb, level + 1);
+                loop(val, dest[prop], cb, level + 1, prop);
             } else {
-                dest[prop] = cb(val, prop, obj, dest, level, index);
+                dest[prop] = cb({
+                    value: val,
+                    name: prop,
+                    src: obj,
+                    dest: dest,
+                    level: level,
+                    index: index,
+                    parent: parent
+                });
             }
             index++;
         }
