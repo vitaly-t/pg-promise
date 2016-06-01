@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>pg-promise API</title>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <div class="home-link">
+        <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
+    </div>
+</nav>
+
+<div id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+///////////////////////////////////////////////////
+// NOTE: This file is an experimental development!
+///////////////////////////////////////////////////
+
+var fs = require('fs');
+var path = require('path');
+var prv = require('./private');
+var EOL = require('os').EOL;
+
+function camelize(text) {
+    text = text.replace(/[\-_\s]+(.)?/g, function (match, chr) {
+        return chr ? chr.toUpperCase() : '';
+    });
+    // Ensure 1st char is always lowercase
+    return text.substr(0, 1).toLowerCase() + text.substr(1);
+}
+
+function camelizeVar(text) {
+    text = text.replace(/[^a-zA-Z0-9\$_\-\s]/g, '').replace(/^[0-9_\-\s]+/, '');
+    return camelize(text);
+}
+
+function removeExt(fileName) {
+    return fileName.replace(/\.[^/.]+$/, '');
+}
+
+function isSqlFile(file) {
+    return path.extname(file).toLowerCase() === '.sql';
+}
+
+// istanbul ignore next
+function _enumSql(dir, options, cb, namePath) {
+    var tree = {};
+    fs.readdirSync(dir).forEach(function (file) {
+        var stat, p = path.join(dir, file);
+        try {
+            stat = fs.statSync(p);
+        } catch (e) {
+            if (options.ignoreErrors) {
+                return;
+            } else {
+                throw e;
+            }
+        }
+        if (stat.isDirectory()) {
+            if (options.recursive) {
+                var dirName = camelizeVar(file);
+                var np = namePath ? (namePath + '.' + dirName) : dirName;
+                var t = _enumSql(p, options, cb, np);
+                if (Object.keys(t).length) {
+                    if (!dirName.length || dirName in tree) {
+                        if (!options.ignoreErrors) {
+                            throw new Error("Empty or duplicate camelized folder name: " + file);
+                        }
+                    }
+                    tree[dirName] = t;
+                }
+            }
+        } else {
+            if (isSqlFile(file)) {
+                var name = camelizeVar(removeExt(file));
+                if (!name.length || name in tree) {
+                    if (!options.ignoreErrors) {
+                        throw new Error("Empty or duplicate camelized file name: " + p);
+                    }
+                }
+                tree[name] = p;
+                if (cb) {
+                    // file, name, namePath
+                    var result = cb(p, name, namePath ? (namePath + '.' + name) : name);
+                    if (result !== undefined) {
+                        tree[name] = result;
+                    }
+                }
+            }
+        }
+    });
+    return tree;
+}
+
+function enumSql(dir, options, cb) {
+    if (!options || typeof options !== 'object') {
+        options = {};
+    }
+    cb = (typeof cb === 'function') ? cb : null;
+    return _enumSql(dir, options, cb, '');
+}
+
+/**
+ *
+ * @method utils.objectToCode
+ * @param obj
+ * @param cb
+ * @returns {string}
+ *
+ * @example
+ *
+ * // Generating a JavaScript module with complete SQL tree
+ * 
+ * var fs = require('fs');
+ * var EOL = require('os').EOL;
+ * var utils = require('pg-promise').utils;
+ *
+ * // generating an SQL tree from the folder:
+ * var tree = utils.enumSql('./sql', {recursive: true});
+ *
+ * // generating the code: 
+ * var code = "var load = require('./loadSql');" + EOL + "module.exports = " +
+ *         utils.objectToCode(tree, function (value) {
+ *             return 'load(' + JSON.stringify(value) + ')';
+ *         });
+ *
+ * // saving the module file:
+ * fs.writeFileSync('sql.js', code);
+ *
+ * ////////////////////////////////////////////////
+ * // loadSql.js module example
+ * 
+ * var QueryFile = require('pg-promise').QueryFile;
+ * 
+ * module.exports = function(file) {
+ *     return new QueryFile(file, {minify: true});
+ * };
+ */
+// istanbul ignore next;
+function objectToCode(obj, cb) {
+
+    cb = (typeof cb === 'function') ? cb : null;
+
+    return '{' + generate(obj, 1) + EOL + '}';
+
+    function generate(obj, level) {
+        var code = '', gap = prv.messageGap(level);
+        var idx = 0;
+        for (var prop in obj) {
+            var val = obj[prop];
+            if (val &amp;&amp; typeof val === 'object') {
+                if (idx) {
+                    code += ',';
+                }
+                code += EOL + gap + prop + ': {';
+                code += generate(val, level + 1);
+                code += EOL + gap + '}';
+            } else {
+                if (idx) {
+                    code += ',';
+                }
+                code += EOL + gap + prop + ': ';
+                if (cb) {
+                    code += cb(val);
+                } else {
+                    code += JSON.stringify(val);
+                }
+            }
+            idx++;
+        }
+        return code;
+    }
+}
+
+// istanbul ignore next;
+function forEachProp(obj, cb) {
+    for (var prop in obj) {
+        var val = obj[prop];
+        if (val &amp;&amp; typeof val === 'object') {
+            forEachProp(val, cb);
+        } else {
+            cb(val);
+        }
+    }
+}
+
+module.exports = {
+    camelize: camelize,
+    camelizeVar: camelizeVar,
+    enumSql: enumSql,
+    objectToCode: objectToCode
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

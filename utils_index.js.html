@@ -29,52 +29,43 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-var $npm = {
-    qResult: require('./queryResult'),
-    qFile: require('./queryFile'),
-    prepared: require('./prepared'),
-    paramQuery: require('./paramQuery')
-};
+var pub = require('./public');
+var prv = require('./private');
 
 /**
- * @namespace errors
+ * @namespace utils
+ *
  * @description
- * Error types namespace, available as `pgp.errors`, before and after initializing the library.
+ * **To be added in v.4.4.0**
  *
- * @property {Function} PreparedStatementError
- * {@link errors.PreparedStatementError PreparedStatementError} class constructor.
- *
- * Represents all errors that can be reported by class {@link PreparedStatement}.
- *
- * @property {Function} ParameterizedQueryError
- * {@link errors.ParameterizedQueryError ParameterizedQueryError} class constructor.
- *
- * Represents all errors that can be reported by class {@link ParameterizedQuery}.
- *
- * @property {Function} QueryFileError
- * {@link errors.QueryFileError QueryFileError} class constructor.
- *
- * Represents all errors that can be reported by class {@link QueryFile}.
- *
- * @property {Function} QueryResultError
- * {@link errors.QueryResultError QueryResultError} class constructor.
- *
- * Represents all result-specific errors from query methods.
- *
- * @property {errors.queryResultErrorCode} queryResultErrorCode
- * Error codes `enum` used by class {@link errors.QueryResultError QueryResultError}.
+ * Namespace for general-purpose functions, available as `pgp.utils`, before and after initializing the library.
  *
  */
-
 module.exports = {
-    QueryResultError: $npm.qResult.QueryResultError,
-    queryResultErrorCode: $npm.qResult.queryResultErrorCode,
-    PreparedStatementError: $npm.prepared,
-    ParameterizedQueryError: $npm.paramQuery,
-    QueryFileError: $npm.qFile
-};
 
-Object.freeze(module.exports);
+    ///////////////////////////
+    // public methods:
+
+    camelize: pub.camelize,
+    camelizeVar: pub.camelizeVar,
+    enumSql: pub.enumSql,
+    objectToCode: pub.objectToCode,
+
+    ///////////////////////////
+    // private methods:
+
+    lock: prv.lock,
+    isText: prv.isText,
+    isNull: prv.isNull,
+    isObject: prv.isObject,
+    addReadProp: prv.addReadProp,
+    addReadProperties: prv.addReadProperties,
+    getSafeConnection: prv.getSafeConnection,
+    InternalError: prv.InternalError,
+    messageGap: prv.messageGap,
+    inherits: prv.inherits
+
+};
 </code></pre>
         </article>
     </section>
