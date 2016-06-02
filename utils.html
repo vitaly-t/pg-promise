@@ -162,6 +162,29 @@
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>buildSqlModule</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="utils.html#.buildSqlModule">buildSqlModule</a> - generates a complete Node.js module.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -197,7 +220,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line430">line 430</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line434">line 434</a>
     </li></ul></dd>
     
 
@@ -227,6 +250,209 @@
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".buildSqlModule"><span class="type-signature">(static) </span>buildSqlModule<span class="signature">(config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p><strong>Added in v.4.3.8</strong></p>
+<p>Synchronously generates a Node.js module with an SQL tree, based on a configuration object, which has the following format:</p>
+<pre class="prettyprint source lang-js"><code>{
+   // REQUIRED
+
+   &quot;dir&quot; // {string}: relative or absolute directory where SQL files are located;
+         // see API for method enumSql, parameter `dir`.
+
+   // OPTIONAL
+
+   &quot;recursive&quot; // {boolean}: search for sql files recursively;
+               // see API for method enumSql, option `recursive`.
+
+   &quot;ignoreErrors&quot; // {boolean}: ignore common errors;
+                  // see API for method enumSql, option `ignoreErrors`.
+
+   &quot;output&quot; // {string}: relative or absolute destination file path
+
+   &quot;module&quot;: {
+       &quot;path&quot; // {string}: relative path to a module exporting a function which takes a file
+              // path and returns a proper value (typically, a new QueryFile object);
+              // by default, it uses `./loadSql`.
+
+       &quot;name&quot; // {string}: local variable name for the SQL-loading module;
+              // by default, it uses `load`.
+   }
+}</code></pre><p>This method is normally used on a watch that triggers when files change in your SQL directory,
+or it can be used manually.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Configuration parameter for generating the code.</p>
+<ul>
+<li>When it is a non-null object, it is assumed to be a configuration object.</li>
+<li>When it is a text string - it is the relative path to a JSON file that contains the configuration object.</li>
+<li>When <code>config</code> isn't specified, the method will try to locate the default <code>sql.json</code> file in the same folder as
+your module's start-up file, and if not found - throw <a href="external-Error.html">Error</a> = <code>Default SQL configuration file not found</code>.</li>
+</ul></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line313">line 313</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>generated code.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
 
         
             

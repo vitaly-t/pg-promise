@@ -341,8 +341,9 @@ function objectToCode(obj, cb) {
 
 /**
  * @method utils.buildSqlModule
- * @private
  * @description
+ * **Added in v.4.3.8**
+ *
  * Synchronously generates a Node.js module with an SQL tree, based on a configuration object, which has the following format:
  *
  * ```js
@@ -387,7 +388,6 @@ function objectToCode(obj, cb) {
  * @returns {string} - generated code.
  *
  */
-// istanbul ignore next;
 function buildSqlModule(config) {
 
     // root = folder with the file executed by Node.js
@@ -403,9 +403,13 @@ function buildSqlModule(config) {
         }
     } else {
         var defConfig = path.join(root, 'sql.json');
+        // istanbul ignore else;
         if (!fs.existsSync(defConfig)) {
             throw new Error("Default SQL configuration file not found: " + defConfig);
         }
+        // cannot test this automatically, because it requires that file 'sql.json'
+        // resides within the jasmine folder, since it is the client during the test.
+        // istanbul ignore next;
         config = require(defConfig);
     }
 
@@ -478,6 +482,9 @@ function buildSqlModule(config) {
  *
  * @property {function} objectToCode
  * {@link utils.objectToCode objectToCode} - generates code from an object.
+ *
+ * @property {function} buildSqlModule
+ * {@link utils.buildSqlModule buildSqlModule} - generates a complete Node.js module.
  *
  */
 module.exports = {
