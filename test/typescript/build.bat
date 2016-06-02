@@ -16,3 +16,4 @@ call tsc errors %PARAMS%
 call tsc help %PARAMS%
 call tsc connection %PARAMS%
 call tsc tasks %PARAMS%
+call tsc utils %PARAMS%

@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.3.7 or later.
+// Requires pg-promise v4.3.8 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -88,6 +88,17 @@ declare module 'pg-promise' {
     };
 
     type TQueryColumns = Column|ColumnSet|Array<string|TColumnConfig|Column>;
+
+    type TSqlBuildConfig = {
+        dir:string,
+        recursive?:boolean,
+        ignoreErrors?:boolean,
+        output?:string,
+        module?:{
+            path?:string,
+            name?:string
+        }
+    };
 
     // Base database protocol
     // API: http://vitaly-t.github.io/pg-promise/Database.html
@@ -358,17 +369,18 @@ declare module 'pg-promise' {
     // Transaction Mode namespace;
     // API: http://vitaly-t.github.io/pg-promise/txMode.html
     interface ITXMode {
-        isolationLevel:typeof isolationLevel,
-        TransactionMode:typeof TransactionMode
+        isolationLevel:typeof isolationLevel;
+        TransactionMode:typeof TransactionMode;
     }
 
     // General-purpose functions
     // API: http://vitaly-t.github.io/pg-promise/utils.html
     interface IUtils {
-        camelize(text:string):string,
-        camelizeVar(text:string):string,
-        objectToCode(obj:any, cb?:(value:any, name:string, obj:any)=>any):string,
-        enumSql(dir:string, options?:{recursive?:boolean,ignoreErrors?:boolean}, cb?:(file:string, name:string, path:string)=>any):any
+        camelize(text:string):string;
+        camelizeVar(text:string):string;
+        objectToCode(obj:any, cb?:(value:any, name:string, obj:any)=>any):string;
+        enumSql(dir:string, options?:{recursive?:boolean,ignoreErrors?:boolean}, cb?:(file:string, name:string, path:string)=>any):any;
+        buildSqlModule(config?:string|TSqlBuildConfig):string;
     }
 
     // helpers.TableName class;

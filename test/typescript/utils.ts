@@ -19,3 +19,22 @@ var tree = utils.enumSql('', {recursive: true, ignoreErrors: true}, (file, name,
 utils.objectToCode(tree, (value, name, obj)=> {
 
 });
+
+var a:string = utils.buildSqlModule();
+
+utils.buildSqlModule('');
+
+utils.buildSqlModule({
+    dir: ''
+});
+
+utils.buildSqlModule({
+    dir: '',
+    recursive: true,
+    ignoreErrors: true,
+    output: '',
+    module: {
+        name: '',
+        path: ''
+    }
+});
