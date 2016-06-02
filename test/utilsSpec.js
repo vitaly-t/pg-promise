@@ -178,7 +178,7 @@ describe("buildSqlModule", function () {
     // For some reasons these tests have a problem on Travis CI under Node.js 0.12,
     // while locally they all work just fine. It is a Travis CI issue.
 
-    if (process.version.indexOf("v0.12.") === 0) {
+    if (process.version.indexOf("v0.12.") === -1) {
 
         it("must succeed for a valid configurator", function () {
             var code = utils.buildSqlModule({dir: './test/sql'});
