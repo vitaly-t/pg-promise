@@ -41,6 +41,7 @@ var $npm = {
     queryFile: require('./queryFile'),
     errors: require('./errors'),
     utils: require('./utils'),
+    pubUtils: require('./utils/public'),
     mode: require('./txMode'),
     types: require('./types')
 };
@@ -346,7 +347,7 @@ var rootNameSpace = {
      *
      * Available as `pgp.utils`, before and after initializing the library.
      */
-    utils: $npm.utils,
+    utils: $npm.pubUtils,
 
     /**
      * @member {txMode} txMode
