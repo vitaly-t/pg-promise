@@ -385,12 +385,13 @@ function objectToCode(obj, cb) {
  * - When `config` isn't specified, the method will try to locate the default `sql.json` file in the same folder as
  *   your module's start-up file, and if not found - throw {@link external:Error Error} = `Default SQL configuration file not found`.
  *
- * @returns {string} - generated code.
- *
+ * @returns {string}
+ * Generated code.
+ * 
  * @example
  *
  * // generate SQL module automatically,
- * // based sql.json in the module's root:
+ * // from sql.json in the module's root:
  *
  * utils.buildSqlModule();
  *
