@@ -39,7 +39,9 @@
     
         
             <div class="description"><p><strong>Added in v.4.3.6</strong></p>
-<p>Namespace for general-purpose functions, available as <code>pgp.utils</code>, before and after initializing the library.</p></div>
+<p>Namespace for general-purpose static functions, available as <code>pgp.utils</code>, before and after initializing the library.</p>
+<p>Its main purpose however is to simplify developing projects with large number of SQL files
+(see <a href="https://github.com/vitaly-t/pg-promise/issues/153">Automatic SQL Trees</a>).</p></div>
         
 
         
@@ -87,7 +89,7 @@
 
             
 
-            <td class="description last"><p><a href="utils.html#.camelize">camelize</a> static method.</p></td>
+            <td class="description last"><p><a href="utils.html#.camelize">camelize</a> - camelizes a text string.</p></td>
         </tr>
 
     
@@ -110,7 +112,7 @@
 
             
 
-            <td class="description last"><p><a href="utils.html#.camelizeVar">camelizeVar</a> static method.</p></td>
+            <td class="description last"><p><a href="utils.html#.camelizeVar">camelizeVar</a> - camelizes a text string as a variable.</p></td>
         </tr>
 
     
@@ -133,7 +135,7 @@
 
             
 
-            <td class="description last"><p><a href="utils.html#.enumSql">enumSql</a> static method.</p></td>
+            <td class="description last"><p><a href="utils.html#.enumSql">enumSql</a> - enumerates SQL files in a directory.</p></td>
         </tr>
 
     
@@ -156,7 +158,7 @@
 
             
 
-            <td class="description last"><p><a href="utils.html#.objectToCode">objectToCode</a> static method.</p></td>
+            <td class="description last"><p><a href="utils.html#.objectToCode">objectToCode</a> - generates code from an object.</p></td>
         </tr>
 
     
@@ -556,7 +558,9 @@
 
 
 <div class="description">
-    <p>Synchronously enumerates all SQL files (within a given directory) into a camelized SQL tree, to allow named references from JavaScript.</p>
+    <p>Synchronously enumerates all SQL files (for a given directory) into an SQL tree.</p>
+<p>All property names within the tree are camelized via <a href="utils.html#.camelizeVar">camelizeVar</a>,
+so they can be used in the code directly - as open property names.</p>
 </div>
 
 
@@ -753,7 +757,7 @@
                 </td>
             
 
-            <td class="description last"><p>Ignore the following type of errors:</p>
+            <td class="description last"><p>Ignore the following types of errors:</p>
 <ul>
 <li>access errors, when there is no read access to a file or folder</li>
 <li>empty or duplicate camelized property names</li>
@@ -872,7 +876,7 @@
 
         
 <div class="param-desc">
-    <p>Camelized SQL tree object.</p>
+    <p>Camelized SQL tree object, with each value being an SQL file path.</p>
 </div>
 
 
@@ -894,9 +898,11 @@
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>var pgp = require('pg-promise');// generating an SQL tree for dynamic access:var sql = pgp.utils.enumSql('../sql', {recursive: true}, file=> {    return new pgp.QueryFile(file, {minify: true});});</code></pre>
+    <pre class="prettyprint"><code>// simple SQL tree generation for further processing:var tree = pgp.utils.enumSql('../sql', {recursive: true});</code></pre>
 
-    <pre class="prettyprint"><code>var pgp = require('pg-promise');var path = require('path');// replacing each relative path with a full one:var sql = pgp.utils.enumSql('../sql', {recursive: true}, file=> {    return path.join(__dirname, file);});</code></pre>
+    <pre class="prettyprint"><code>// generating an SQL tree for dynamic-names queries:var sql = pgp.utils.enumSql('../sql', {recursive: true}, file=> {    return new pgp.QueryFile(file, {minify: true});});</code></pre>
+
+    <pre class="prettyprint"><code>var path = require('path');// replacing each relative path in the tree with a full one:var tree = pgp.utils.enumSql('../sql', {recursive: true}, file=> {    return path.join(__dirname, file);});</code></pre>
 
 
 
@@ -912,7 +918,7 @@
 
 
 <div class="description">
-    <p>Translates an object tree into a JSON code string.</p>
+    <p>Translates an object tree into a well-formatted JSON code string.</p>
 </div>
 
 
@@ -1007,13 +1013,14 @@
 
             
 
-            <td class="description last"><p>A callback function to override property values.</p>
+            <td class="description last"><p>A callback function to override property values for the code.</p>
 <p>It takes three arguments:</p>
 <ul>
 <li><code>value</code> - property value</li>
 <li><code>name</code> - property name</li>
 <li><code>obj</code> - current object (which contains the property)</li>
-</ul></td>
+</ul>
+<p>The returned value is used as is for the property value in the generated code.</p></td>
         </tr>
 
     
@@ -1054,7 +1061,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line170">line 170</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line175">line 175</a>
     </li></ul></dd>
     
 
@@ -1099,7 +1106,11 @@
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// Generating a JavaScript module with complete SQL treevar fs = require('fs');var EOL = require('os').EOL;var utils = require('pg-promise').utils;// generating an SQL tree from the folder:var tree = utils.enumSql('./sql', {recursive: true});// generating the module's code:var code = "var load = require('./loadSql');" + EOL + "module.exports = " +        utils.objectToCode(tree, function (value) {            return 'load(' + JSON.stringify(value) + ')';        });// saving the module:fs.writeFileSync('sql.js', code);</code></pre>
+    <pre class="prettyprint"><code>// Generating code for a simple objectvar tree = {one: 1, two: {item: 'abc'}};var code = pgp.utils.objectToCode(tree);console.log(code);//=>// {//     one: 1,//     two: {//         item: "abc"//     }// }</code></pre>
+
+    <pre class="prettyprint"><code>// Generating a Node.js module with an SQL treevar fs = require('fs');var EOL = require('os').EOL;// generating an SQL tree from the folder:var tree = pgp.utils.enumSql('./sql', {recursive: true});// generating the module's code:var code = "var load = require('./loadSql');" + EOL + "module.exports = " +        pgp.utils.objectToCode(tree, function (value) {            return 'load(' + JSON.stringify(value) + ')';        });// saving the module:fs.writeFileSync('sql.js', code);// see the output example below:</code></pre>
+
+    <pre class="prettyprint"><code>// generated code example (file sql.js)var load = require('./loadSql');module.exports = {    events: {        add: load("../sql/events/add.sql"),        delete: load("../sql/events/delete.sql"),        find: load("../sql/events/find.sql"),        update: load("../sql/events/update.sql")    },    products: {        add: load("../sql/products/add.sql"),        delete: load("../sql/products/delete.sql"),        find: load("../sql/products/find.sql"),        update: load("../sql/products/update.sql")    },    users: {        add: load("../sql/users/add.sql"),        delete: load("../sql/users/delete.sql"),        find: load("../sql/users/find.sql"),        update: load("../sql/users/update.sql")    },    create: load("../sql/create.sql"),    init: load("../sql/init.sql"),    drop: load("../sql/drop.sql")};</code></pre>
 
     <pre class="prettyprint"><code>// loadSql.js module examplevar QueryFile = require('pg-promise').QueryFile;module.exports = function(file) {    return new QueryFile(file, {minify: true});};</code></pre>
 
