@@ -1,7 +1,9 @@
 'use strict';
 
 var EOL = require('os').EOL;
-var utils = require('../lib/utils');
+
+var $u = require('../lib/utils');
+var utils = require('../lib/utils/public');
 
 function dummy() {
 }
@@ -131,7 +133,7 @@ describe("objectToCode", function () {
     });
 
     it("must format correctly", function () {
-        var gap = utils.messageGap(1);
+        var gap = $u.messageGap(1);
         expect(utils.objectToCode({one: 1})).toBe('{' + EOL + gap + 'one: 1' + EOL + '}');
     });
 
@@ -146,7 +148,7 @@ describe("objectToCode", function () {
     });
 
     it("must cover folders first", function () {
-        var gap = utils.messageGap(1);
+        var gap = $u.messageGap(1);
         var tree = utils.enumSql('./test/sql-special/folders-only', {recursive: true}, function (file, name, path) {
             return path;
         });
