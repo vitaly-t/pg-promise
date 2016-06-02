@@ -452,7 +452,6 @@ function buildSqlModule(config) {
         }) + ';';
 
     if (utils.isText(config.output)) {
-        // saving the module:
         fs.writeFileSync(config.output, code);
     }
 
