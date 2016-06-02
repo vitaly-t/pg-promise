@@ -251,14 +251,13 @@ function enumSql(dir, options, cb) {
  * var tree = pgp.utils.enumSql('./sql', {recursive: true});
  *
  * // generating the module's code:
- * var code = "var load = require('./loadSql');" + EOL + "module.exports = " +
+ * var code = "var load = require('./loadSql');" + EOL + EOL + "module.exports = " +
  *         pgp.utils.objectToCode(tree, function (value) {
  *             return 'load(' + JSON.stringify(value) + ')';
- *         });
+ *         }) + ';';
  *
  * // saving the module:
  * fs.writeFileSync('sql.js', code);
- * // see the output example below:
  *
  * @example
  *
