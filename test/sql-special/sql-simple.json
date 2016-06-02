@@ -1,0 +1,6 @@
+{
+  "dir": "./test/sql",
+  "output": "generated.js",
+  "module": {
+  }
+}
