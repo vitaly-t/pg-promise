@@ -23,6 +23,9 @@ describe("camelizeVar", function () {
     it("must remove leading digits and white spaces", function () {
         expect(utils.camelizeVar(' 123 name 456')).toBe('name456');
     });
+    it("must handle all special symbols", function () {
+        expect(utils.camelizeVar('-123_ 456.78.one.two . three.8')).toBe('oneTwoThree8');
+    });
 });
 
 describe("enumSql", function () {
@@ -57,6 +60,7 @@ describe("enumSql", function () {
         expect(sql.simple).toBe('simple');
         expect(sql.sub.one).toContain('sub.one');
         expect(sql.sub.two).toContain('sub.two');
+        expect(sql.sub.oneTwoThree).toContain('sub.oneTwoThree');
     });
 
     it("must be able to ignore duplicate folders", function () {
