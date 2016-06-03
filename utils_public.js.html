@@ -348,7 +348,7 @@ function objectToCode(obj, cb) {
  *
  * This method is normally to be used on a grunt/gulp watch that triggers when the file structure changes in your SQL directory,
  * although it can be invoked manually as well.
- * 
+ *
  * ```js
  * {
  *    // Required Properties:
@@ -432,7 +432,7 @@ function objectToCode(obj, cb) {
  */
 function buildSqlModule(config) {
 
-    // root = folder with the file executed by Node.js
+    // root = folder where the start-up js file is located
     var root = path.dirname(process.argv[1]);
 
     if (config) {
