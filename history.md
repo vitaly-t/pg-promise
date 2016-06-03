@@ -1,5 +1,6 @@
 ### History of Changes
 
+* 4.4.0 Added namespace [utils] for automatic SQL tree generation. Released: June 3, 2016
 * 4.3.0 Improving [PreparedStatement] and [ParameterizedQuery], adding methods [map] and [each] to the database protocol. Released: May 25, 2016
 * 4.1.0 Adding [helpers] namespace with additional query-formatting methods. Released: May 12, 2016
 * 4.0.0 Consolidating the entire error-reporting mechanism. Released: April 24, 2016
@@ -63,7 +64,7 @@
 * 0.1.4 first release. March 5th, 2015.
 * 0.0.1 initial draft. March 3rd, 2015.
 
-
+[utils]:http://vitaly-t.github.io/pg-promise/utils.html
 [each]:http://vitaly-t.github.io/pg-promise/Database.html#.each
 [map]:http://vitaly-t.github.io/pg-promise/Database.html#.map
 [Connection Syntax]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax

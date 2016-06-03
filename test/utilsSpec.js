@@ -187,7 +187,7 @@ describe("buildSqlModule", function () {
         });
 
         it("must succeed for valid configuration files", function () {
-            var code1 = utils.buildSqlModule('../../../test/sql-special/sql.json');
+            var code1 = utils.buildSqlModule('../../../test/sql-special/sql-config.json');
             var code2 = utils.buildSqlModule('../../../test/sql-special/sql-simple.json');
             expect(typeof code1).toBe('string');
             expect(typeof code2).toBe('string');
