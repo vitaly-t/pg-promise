@@ -137,7 +137,7 @@ function _enumSql(dir, options, cb, namePath) {
  * Synchronously enumerates all SQL files (for a given directory) into an SQL tree.
  *
  * All property names within the tree are camelized via {@link utils.camelizeVar camelizeVar},
- * so they can be used in the code directly - as open property names.
+ * so they can be used in the code directly, as open property names.
  *
  * @param {string} dir
  * Directory where SQL files are located.
@@ -344,56 +344,51 @@ function objectToCode(obj, cb) {
  * @description
  * **Added in v.4.3.8**
  *
- * Synchronously generates a Node.js module with an SQL tree, based on a configuration object, which has the following format:
+ * Synchronously generates a Node.js module with an SQL tree, based on a configuration object that has the format shown below.
  *
+ * This method is normally to be used on a grunt/gulp watch that triggers when the file structure changes in your SQL directory,
+ * although it can be invoked manually as well.
+ * 
  * ```js
  * {
- *    // REQUIRED
+ *    // Required Properties:
  *    
- *    "dir" // {string}: relative or absolute directory where SQL files are located;
- *          // see API for method enumSql, parameter `dir`.
+ *    "dir" // {string}: relative or absolute directory where SQL files are located (see API for method enumSql, parameter `dir`)
  *
- *    // OPTIONAL
+ *    // Optional Properties:
  *    
- *    "recursive" // {boolean}: search for sql files recursively;
- *                // see API for method enumSql, option `recursive`.
+ *    "recursive" // {boolean}: search for sql files recursively (see API for method enumSql, option `recursive`)
  *
- *    "ignoreErrors" // {boolean}: ignore common errors;
- *                   // see API for method enumSql, option `ignoreErrors`.
+ *    "ignoreErrors" // {boolean}: ignore common errors (see API for method enumSql, option `ignoreErrors`)
  *
- *    "output" // {string}: relative or absolute destination file path
+ *    "output" // {string}: relative or absolute destination file path; when not specified, no file is created,
+ *             // but you still can use the code string that's always returned by the method.
  *     
  *    "module": {
- *        "path" // {string}: relative path to a module exporting a function which takes a file
- *               // path and returns a proper value (typically, a new QueryFile object);
- *               // by default, it uses `./loadSql`.
+ *        "path" // {string}: relative path to a module exporting a function which takes a file path
+ *               // and returns a proper value (typically, a new QueryFile object); by default, it uses `./loadSql`.
  *
- *        "name" // {string}: local variable name for the SQL-loading module;
- *               // by default, it uses `load`.
+ *        "name" // {string}: local variable name for the SQL-loading module; by default, it uses `load`.
  *    }
  * }
  * ```
  *
- * This method is normally used on a watch that triggers when files change in your SQL directory,
- * or it can be used manually.
- *
  * @param {object|string} [config]
  * Configuration parameter for generating the code.
  *
- * - When it is a non-null object, it is assumed to be a configuration object.
+ * - When it is a non-null object, it is assumed to be a configuration object (see the format above).
  * - When it is a text string - it is the relative path to a JSON file that contains the configuration object.
  * - When `config` isn't specified, the method will try to locate the default `sql.json` file in the same folder as
  *   your module's start-up file, and if not found - throw {@link external:Error Error} = `Default SQL configuration file not found`.
  *
  * @returns {string}
  * Generated code.
- * 
+ *
  * @example
  *
- * // generate SQL module automatically,
- * // from sql.json in the module's root:
+ * // generate SQL module automatically, from sql.json in the module's start-up folder:
  *
- * utils.buildSqlModule();
+ * pgp.utils.buildSqlModule();
  *
  * // see generated file below:
  *
