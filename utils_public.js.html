@@ -378,7 +378,7 @@ function objectToCode(obj, cb) {
  *
  * - When it is a non-null object, it is assumed to be a configuration object (see the format above).
  * - When it is a text string - it is the relative path to a JSON file that contains the configuration object.
- * - When `config` isn't specified, the method will try to locate the default `sql.json` file in the same folder as
+ * - When `config` isn't specified, the method will try to locate the default `sql-config.json` file in the same folder as
  *   your module's start-up file, and if not found - throw {@link external:Error Error} = `Default SQL configuration file not found`.
  *
  * @returns {string}
@@ -386,7 +386,7 @@ function objectToCode(obj, cb) {
  *
  * @example
  *
- * // generate SQL module automatically, from sql.json in the module's start-up folder:
+ * // generate SQL module automatically, from sql-config.json in the module's start-up folder:
  *
  * pgp.utils.buildSqlModule();
  *
@@ -444,12 +444,12 @@ function buildSqlModule(config) {
             }
         }
     } else {
-        var defConfig = path.join(root, 'sql.json');
+        var defConfig = path.join(root, 'sql-config.json');
         // istanbul ignore else;
         if (!fs.existsSync(defConfig)) {
             throw new Error("Default SQL configuration file not found: " + defConfig);
         }
-        // cannot test this automatically, because it requires that file 'sql.json'
+        // cannot test this automatically, because it requires that file 'sql-config.json'
         // resides within the jasmine folder, since it is the client during the test.
         // istanbul ignore next;
         config = require(defConfig);
