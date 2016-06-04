@@ -214,10 +214,19 @@ describe("buildSqlModule", function () {
                 }).toThrow(err);
             });
 
-            it("must throw on invalid parameters", function () {
+            it("must throw on invalid 'config' parameter", function () {
                 var err = new TypeError("Invalid parameter 'config' specified.");
                 expect(function () {
                     utils.buildSqlModule(123);
+                }).toThrow(err);
+                expect(function () {
+                    utils.buildSqlModule(0);
+                }).toThrow(err);
+                expect(function () {
+                    utils.buildSqlModule('');
+                }).toThrow(err);
+                expect(function () {
+                    utils.buildSqlModule('    ');
                 }).toThrow(err);
             });
 
