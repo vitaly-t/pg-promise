@@ -83,15 +83,15 @@ function camelizeVar(text) {
 function _enumSql(dir, options, cb, namePath) {
     var tree = {};
     fs.readdirSync(dir).forEach(function (file) {
-        var stat, p = path.join(dir, file);
+        var stat, fullPath = path.join(dir, file);
         try {
-            stat = fs.statSync(p);
+            stat = fs.statSync(fullPath);
         } catch (e) {
             // while it is very easy to test manually, it is very difficult to test for
             // access-denied errors automatically; therefore excluding from the coverage:
             // istanbul ignore next
             if (options.ignoreErrors) {
-                return;
+                return; // on to the next file/folder;
             } else {
                 throw e;
             }
@@ -100,11 +100,11 @@ function _enumSql(dir, options, cb, namePath) {
             if (options.recursive) {
                 var dirName = camelizeVar(file);
                 var np = namePath ? (namePath + '.' + dirName) : dirName;
-                var t = _enumSql(p, options, cb, np);
+                var t = _enumSql(fullPath, options, cb, np);
                 if (Object.keys(t).length) {
                     if (!dirName.length || dirName in tree) {
                         if (!options.ignoreErrors) {
-                            throw new Error("Empty or duplicate camelized folder name: " + p);
+                            throw new Error("Empty or duplicate camelized folder name: " + fullPath);
                         }
                     }
                     tree[dirName] = t;
@@ -115,12 +115,12 @@ function _enumSql(dir, options, cb, namePath) {
                 var name = camelizeVar(file.replace(/\.[^/.]+$/, ''));
                 if (!name.length || name in tree) {
                     if (!options.ignoreErrors) {
-                        throw new Error("Empty or duplicate camelized file name: " + p);
+                        throw new Error("Empty or duplicate camelized file name: " + fullPath);
                     }
                 }
-                tree[name] = p;
+                tree[name] = fullPath;
                 if (cb) {
-                    var result = cb(p, name, namePath ? (namePath + '.' + name) : name);
+                    var result = cb(fullPath, name, namePath ? (namePath + '.' + name) : name);
                     if (result !== undefined) {
                         tree[name] = result;
                     }
@@ -191,7 +191,7 @@ function _enumSql(dir, options, cb, namePath) {
  *
  */
 function enumSql(dir, options, cb) {
-    if (!dir || typeof dir !== 'string') {
+    if (!utils.isText(dir)) {
         throw new TypeError("Parameter 'dir' must be a non-empty text string.");
     }
     if (!options || typeof options !== 'object') {
@@ -315,17 +315,14 @@ function objectToCode(obj, cb) {
         var idx = 0;
         for (var prop in obj) {
             var value = obj[prop];
+            if (idx) {
+                code += ',';
+            }
             if (value &amp;&amp; typeof value === 'object') {
-                if (idx) {
-                    code += ',';
-                }
                 code += EOL + gap + prop + ': {';
                 code += generate(value, level + 1);
                 code += EOL + gap + '}';
             } else {
-                if (idx) {
-                    code += ',';
-                }
                 code += EOL + gap + prop + ': ';
                 if (cb) {
                     code += cb(value, prop, obj);
@@ -435,24 +432,24 @@ function buildSqlModule(config) {
     // root = folder where the start-up js file is located
     var root = path.dirname(process.argv[1]);
 
-    if (config) {
-        if (typeof config === 'string') {
-            config = require(path.join(root, config));
+    if (utils.isText(config)) {
+        config = require(path.join(root, config));
+    } else {
+        if (utils.isNull(config)) {
+            var defConfig = path.join(root, 'sql-config.json');
+            // istanbul ignore else;
+            if (!fs.existsSync(defConfig)) {
+                throw new Error("Default SQL configuration file not found: " + defConfig);
+            }
+            // cannot test this automatically, because it requires that file 'sql-config.json'
+            // resides within the Jasmine folder, since it is the client during the test.
+            // istanbul ignore next;
+            config = require(defConfig);
         } else {
-            if (typeof config !== 'object') {
+            if (!config || typeof config !== 'object') {
                 throw new TypeError("Invalid parameter 'config' specified.");
             }
         }
-    } else {
-        var defConfig = path.join(root, 'sql-config.json');
-        // istanbul ignore else;
-        if (!fs.existsSync(defConfig)) {
-            throw new Error("Default SQL configuration file not found: " + defConfig);
-        }
-        // cannot test this automatically, because it requires that file 'sql-config.json'
-        // resides within the jasmine folder, since it is the client during the test.
-        // istanbul ignore next;
-        config = require(defConfig);
     }
 
     if (!utils.isText(config.dir)) {
@@ -509,8 +506,11 @@ function buildSqlModule(config) {
  *
  * Namespace for general-purpose static functions, available as `pgp.utils`, before and after initializing the library.
  *
- * Its main purpose is to simplify developing projects with large number of SQL files
- * (see [Automatic SQL Trees](https://github.com/vitaly-t/pg-promise/issues/153)).
+ * Its main purpose is to simplify developing projects with large number of SQL files.
+ *
+ * See also:
+ * - [Automatic SQL Trees](https://github.com/vitaly-t/pg-promise/issues/153))
+ * - [SQL Files](https://github.com/vitaly-t/pg-promise/wiki/SQL-Files)
  *
  * @property {function} camelize
  * {@link utils.camelize camelize} - camelizes a text string
