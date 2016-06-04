@@ -166,7 +166,7 @@ function _enumSql(dir, options, cb, namePath) {
  * If the function returns anything other than `undefined`, it overrides the corresponding property value in the tree.
  *
  * @returns {object}
- * Camelized SQL tree object, with each value being an SQL file path.
+ * Camelized SQL tree object, with each value being an SQL file path (unless changed via the callback).
  *
  * @example
  *
@@ -175,7 +175,7 @@ function _enumSql(dir, options, cb, namePath) {
  *
  * @example
  *
- * // generating an SQL tree for dynamic-names queries:
+ * // generating an SQL tree for dynamic use of names:
  * var sql = pgp.utils.enumSql('../sql', {recursive: true}, file=> {
  *     return new pgp.QueryFile(file, {minify: true});
  * });
