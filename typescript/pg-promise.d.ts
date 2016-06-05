@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.4.0 or later.
+// Requires pg-promise v4.4.4 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -597,7 +597,7 @@ declare module 'pg-promise' {
         pgFormatting?:boolean;
         pgNative?:boolean,
         promiseLib?:any;
-        connect?:(client:pg.Client, dc:any) => void;
+        connect?:(client:pg.Client, dc:any, fresh:boolean) => void;
         disconnect?:(client:pg.Client, dc:any) => void;
         query?:(e:IEventContext) => void;
         receive?:(data:Array<any>, result:pg.IResult, e:IEventContext) => void;

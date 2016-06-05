@@ -152,3 +152,39 @@ describe("countIf", function () {
     });
 
 });
+
+describe("removeIf", function () {
+
+    describe("with context", function () {
+        var ctx, arr, indexes = [], values = [1, 2, 3, 4, 5];
+        $arr.removeIf(values, function (d, idx, a) {
+            arr = a;
+            ctx = this;
+            indexes.push(idx);
+            return d === 2 || d === 4;
+        }, values);
+        it("must remove correctly", function () {
+            expect(ctx).toBe(values);
+            expect(arr).toBe(values);
+            expect(values).toEqual([1, 3, 5]);
+            expect(indexes).toEqual([4, 3, 2, 1, 0]);
+        });
+    });
+
+    describe("without context", function () {
+        var ctx, arr, indexes = [], values = [1, 2, 3, 4, 5];
+        $arr.removeIf(values, function (d, idx, a) {
+            arr = a;
+            ctx = this;
+            indexes.push(idx);
+            return d === 2 || d === 4;
+        });
+        it("must remove correctly", function () {
+            expect(ctx).toBeUndefined();
+            expect(arr).toBe(values);
+            expect(values).toEqual([1, 3, 5]);
+            expect(indexes).toEqual([4, 3, 2, 1, 0]);
+        });
+    });
+
+});
