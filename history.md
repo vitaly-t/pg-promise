@@ -1,5 +1,6 @@
 ### History of Changes
 
+* 4.4.2 Added support for [Configuration Path]. Released: June 5, 2016
 * 4.4.0 Added namespace [utils] for automatic SQL tree generation. Released: June 3, 2016
 * 4.3.0 Improving [PreparedStatement] and [ParameterizedQuery], adding methods [map] and [each] to the database protocol. Released: May 25, 2016
 * 4.1.0 Adding [helpers] namespace with additional query-formatting methods. Released: May 12, 2016

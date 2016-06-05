@@ -1,5 +1,6 @@
 'use strict';
 
+var path = require('path');
 var fs = require('fs');
 var pgResult = require('pg/lib/result');
 var header = require('./db/header');
@@ -166,7 +167,8 @@ describe("PreparedStatement", function () {
     describe("with QueryFile", function () {
 
         describe("successful", function () {
-            var qf = new pgp.QueryFile('./test/sql/simple.sql', {compress: true});
+            var f = path.join(__dirname, './sql/simple.sql');
+            var qf = new pgp.QueryFile(f, {compress: true});
             var ps = new pgp.PreparedStatement('test-name', qf);
             var result = ps.parse();
             expect(result && typeof result === 'object').toBeTruthy();
@@ -248,7 +250,7 @@ describe("Direct Prepared Statements", function () {
             expect(result && typeof(result) === 'object').toBeTruthy();
         });
     });
-    
+
     describe("with invalid query", function () {
         var result;
         beforeEach(function (done) {

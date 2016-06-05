@@ -4,6 +4,7 @@ var EOL = require('os').EOL;
 
 var $u = require('../lib/utils');
 var utils = require('../lib/utils/public');
+var path = require('path');
 
 function dummy() {
 }
@@ -181,14 +182,17 @@ describe("buildSqlModule", function () {
     if (process.version.indexOf("v0.12.") === -1) {
 
         it("must succeed for a valid configurator", function () {
-            var code = utils.buildSqlModule({dir: './test/sql'});
-            expect(typeof code).toBe('string');
-            expect(code.length > 100).toBe(true);
+            var code1 = utils.buildSqlModule({dir: './test/sql'});
+            var code2 = utils.buildSqlModule({dir: './test/sql', output: path.join(__dirname, '../generated.js')});
+            expect(typeof code1).toBe('string');
+            expect(typeof code2).toBe('string');
+            expect(code1.length > 100).toBe(true);
+            expect(code2.length > 100).toBe(true);
         });
 
         it("must succeed for valid configuration files", function () {
             var code1 = utils.buildSqlModule('../../../test/sql-special/sql-config.json');
-            var code2 = utils.buildSqlModule('../../../test/sql-special/sql-simple.json');
+            var code2 = utils.buildSqlModule(path.join(__dirname, './sql-special/sql-simple.json'));
             expect(typeof code1).toBe('string');
             expect(typeof code2).toBe('string');
             expect(code1.length > 100).toBe(true);

@@ -1,5 +1,6 @@
 'use strict';
 
+var path = require('path');
 var fs = require('fs');
 var LB = require('os').EOL;
 var minify = require('pg-minify');
@@ -15,12 +16,16 @@ var db = dbHeader.db;
 var QueryFileError = pgp.errors.QueryFileError;
 var QueryFile = pgp.QueryFile;
 
-var sqlSimple = './test/sql/simple.sql';
-var sqlUsers = './test/sql/allUsers.sql';
-var sqlUnknown = './test/sql/unknown.sql';
-var sqlInvalid = './test/sql/invalid.sql';
-var sqlParams = './test/sql/params.sql';
-var sqlTemp = './test/sql/temp.sql';
+var sqlSimple = getPath('./sql/simple.sql');
+var sqlUsers = getPath('./sql/allUsers.sql');
+var sqlUnknown = getPath('./sql/unknown.sql');
+var sqlInvalid = getPath('./sql/invalid.sql');
+var sqlParams = getPath('./sql/params.sql');
+var sqlTemp = getPath('./sql/temp.sql');
+
+function getPath(file) {
+    return path.join(__dirname, file);
+}
 
 describe("QueryFile / Positive:", function () {
 

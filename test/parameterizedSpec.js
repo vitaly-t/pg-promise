@@ -1,5 +1,6 @@
 'use strict';
 
+var path = require('path');
 var fs = require('fs');
 var pgResult = require('pg/lib/result');
 var header = require('./db/header');
@@ -161,7 +162,8 @@ describe("ParameterizedQuery", function () {
     describe("with QueryFile", function () {
 
         describe("successful", function () {
-            var qf = new pgp.QueryFile('./test/sql/simple.sql', {compress: true});
+            var f = path.join(__dirname, './sql/simple.sql');
+            var qf = new pgp.QueryFile(f, {compress: true});
             var pq = new pgp.ParameterizedQuery(qf);
             var result = pq.parse();
             expect(result && typeof result === 'object').toBeTruthy();
