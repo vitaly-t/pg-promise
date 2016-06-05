@@ -633,7 +633,7 @@ i.e. a virtual connection.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    connect: function (client, dc) {        var cp = client.connectionParameters;        console.log("Connected to database:", cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    connect: function (client, dc, fresh) {        var cp = client.connectionParameters;        console.log("Connected to database:", cp.database);    }};</code></pre>
 
 
 
