@@ -46,9 +46,19 @@ var $events = {
      *
      * The library will suppress any error thrown by the handler and write it into the console.
      *
-     * @param {external:Client} client - $[pg.Client] object that represents connection with the database.
+     * @param {external:Client} client
+     * $[pg.Client] object that represents the connection.
      *
-     * @param {} dc - Database Context that was used when creating the database object (see {@link Database}).
+     * @param {} dc
+     * Database Context that was used when creating the database object (see {@link Database}).
+     *
+     * @param {boolean} fresh
+     * **Added in v.4.4.3**
+     *
+     * It indicates whether it is a fresh/new connection:
+     * - `true` - the connection has been freshly allocated
+     * - `false` - the connection has been used previously
+     * - `undefined` - unsupported with the Native Bindings
      *
      * @example
      *
@@ -63,10 +73,10 @@ var $events = {
      *
      * };
      */
-    connect: function (ctx, client) {
+    connect: function (ctx, client, fresh) {
         if (ctx.options.connect instanceof Function) {
             try {
-                ctx.options.connect(client, ctx.dc);
+                ctx.options.connect(client, ctx.dc, fresh);
             } catch (err) {
                 // have to silence errors here;
                 // cannot allow unhandled errors while connecting to the database,

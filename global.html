@@ -518,7 +518,7 @@ i.e. a virtual connection.</p>
 
             
 
-            <td class="description last"><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents connection with the database.</p></td>
+            <td class="description last"><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents the connection.</p></td>
         </tr>
 
     
@@ -537,6 +537,35 @@ i.e. a virtual connection.</p>
             
 
             <td class="description last"><p>Database Context that was used when creating the database object (see <a href="Database.html">Database</a>).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fresh</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><strong>Added in v.4.4.3</strong></p>
+<p>It indicates whether it is a fresh/new connection:</p>
+<ul>
+<li><code>true</code> - the connection has been freshly allocated</li>
+<li><code>false</code> - the connection has been used previously</li>
+<li><code>undefined</code> - unsupported with the Native Bindings</li>
+</ul></td>
         </tr>
 
     
@@ -733,7 +762,7 @@ i.e. releasing the virtual connection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line50">line 50</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line60">line 60</a>
     </li></ul></dd>
     
 
@@ -890,7 +919,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line339">line 339</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line349">line 349</a>
     </li></ul></dd>
     
 
@@ -1055,7 +1084,7 @@ if you try overriding them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line398">line 398</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line408">line 408</a>
     </li></ul></dd>
     
 
@@ -1581,7 +1610,7 @@ the context object that was passed in.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line88">line 88</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line98">line 98</a>
     </li></ul></dd>
     
 
@@ -1776,7 +1805,7 @@ validation for regular queries, which is executed right after this notification.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line186">line 186</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line196">line 196</a>
     </li></ul></dd>
     
 
@@ -1915,7 +1944,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line253">line 253</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line263">line 263</a>
     </li></ul></dd>
     
 
@@ -2054,7 +2083,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line296">line 296</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line306">line 306</a>
     </li></ul></dd>
     
 
