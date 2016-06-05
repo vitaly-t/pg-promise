@@ -50,7 +50,13 @@ var $arr = require('./array');
  * This type is not available directly, it can only be created via the library's base call.
  *
  * @param {String|Object} cn
- * Connection object or string. For details see {@link https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax Connection Syntax}.
+ * Database connection details, which can be any of the following:
+ * 
+ * - a configuration object
+ * - a configuration path
+ * - a connection string
+ * 
+ * For details see {@link https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax Connection Syntax}.
  *
  * @param {} [dc]
  * Database Context.

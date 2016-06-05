@@ -30,6 +30,7 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 var $npm = {
+    path: require('path'),
     pg: require('pg'),
     minify: require('pg-minify'),
     array: require('./array'),
@@ -205,12 +206,7 @@ function $main(options) {
     var Database = require('./database')(config);
 
     var inst = function (cn, dc) {
-        var t = typeof cn;
-        if (cn &amp;&amp; (t === 'string' || t === 'object')) {
-            return new Database(cn, dc, config);
-        }
-        // cannot access a database without connection details;
-        throw new TypeError("Invalid connection details.");
+        return new Database(parseConnection(cn), dc, config);
     };
 
     $npm.utils.addReadProperties(inst, rootNameSpace);
@@ -252,6 +248,21 @@ function $main(options) {
     $npm.utils.addReadProp(inst, 'helpers', $npm.helpers(config));
 
     return inst;
+}
+
+function parseConnection(cn) {
+    if (cn) {
+        if ($npm.utils.isText(cn)) {
+            if (cn.indexOf('://') !== -1) {
+                return cn;
+            }
+            cn = require($npm.path.join($npm.utils.startDir, cn));
+        }
+        if (typeof cn === 'object') {
+            return cn;
+        }
+    }
+    throw new TypeError("Invalid connection details.");
 }
 
 var rootNameSpace = {
