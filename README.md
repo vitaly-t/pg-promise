@@ -111,8 +111,8 @@ and release the connection. Therefore, you should create only one global/shared 
 
 * [Learn by Example] - the quickest way to get started with this library
 * [Protocol API] - all the latest protocol documentation
-* [TypeScript](https://github.com/vitaly-t/pg-promise/tree/master/typescript) declarations for the library
 * [Wiki Pages](https://github.com/vitaly-t/pg-promise/wiki) - all the documentation references
+* [TypeScript](https://github.com/vitaly-t/pg-promise/tree/master/typescript) declarations for the library
 
 # Testing
 
