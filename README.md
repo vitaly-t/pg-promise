@@ -78,7 +78,7 @@ $ npm install pg-promise
 
 Loading and initializing the library with [Initialization Options]:
 
-```javascript
+```js
 var pgp = require('pg-promise')({
     // Initialization Options
 });
@@ -86,49 +86,26 @@ var pgp = require('pg-promise')({
 
 &#8722; or without [Initialization Options]:
 
-```javascript
+```js
 var pgp = require('pg-promise')();
 ```
  
-## Connection
+## Database
 
-Use one of the two ways to specify database connection details:
+Create your [Database] object from the connection details:
 
-* Configuration Object (see [Connection Syntax])
-
-```javascript
-var cn = {
-    host: 'localhost', // server name or IP address;
-    port: 5432,
-    database: 'my_db_name',
-    user: 'user_name',
-    password: 'user_password'
-};
+```js
+var db = pgp(connection);
 ```
 
-* Connection String (see [Connection Syntax])
+The `connection` parameter can be any of the following:
 
-```javascript
-var cn = 'postgres://username:password@host:port/database';
-```
+* [Configuration Object]
+* [Configuration Path]
+* [Connection String]
 
-Create a global/shared database object from the connection details:
-
-```javascript
-var db = pgp(cn);
-```
-
-Object `db` represents the database protocol, with lazy database connection, i.e. only the actual query methods acquire
+Object `db` represents the [Database] protocol with lazy connection, i.e. only the actual query methods acquire
 and release the connection. Therefore, you should create only one global/shared `db` object per connection details.
-
-Use of a configuration object has the benefit of being changeable: it is used by the library directly, and changing
-properties of the original object will reconnect with the next query.
-
-This library does not use any of the connection's details, it simply passes them on to [PG] when opening a connection.
-For more details see pg connection parameters in [WiKi](https://github.com/brianc/node-postgres/wiki/pg#parameters) and
-[implementation](https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js).
-
-API: [Database].
 
 ## Documentation
 
@@ -977,6 +954,10 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
+
+[Configuration Object]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object
+[Configuration Path]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-path
+[Connection String]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#connection-string
 
 [each]:http://vitaly-t.github.io/pg-promise/Database.html#.each
 [map]:http://vitaly-t.github.io/pg-promise/Database.html#.map

@@ -23,7 +23,7 @@ var $errors = {
 };
 
 describe("Database Instantiation", function () {
-    it("must throw an error when empty or no connection passed", function () {
+    it("must throw an invalid connection passed", function () {
         var err = "Invalid connection details.";
         expect(pgp).toThrow(err);
         expect(function () {
@@ -32,10 +32,19 @@ describe("Database Instantiation", function () {
         expect(function () {
             pgp("");
         }).toThrow(err);
+        expect(function () {
+            pgp(123);
+        }).toThrow(err);
     });
-    var testDB = pgp("invalid connection details");
-    it("must return a valid, though non-connectible object", function () {
-        expect(typeof(testDB)).toBe('object');
+    it("must throw on invalid file path", function () {
+        var err;
+        try {
+            pgp("invalid connection details");
+        } catch (e) {
+            err = e;
+        }
+        expect(err instanceof Error).toBe(true);
+        expect(err.message).toContain("Cannot find module");
     });
 });
 
