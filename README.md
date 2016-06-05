@@ -110,7 +110,7 @@ and release the connection. Therefore, you should create only one global/shared 
 ## Documentation
 
 * [Learn by Example] - the quickest way to get started with this library
-* [API] - all the latest protocol documentation
+* [Protocol API] - all the latest protocol documentation
 * [TypeScript](https://github.com/vitaly-t/pg-promise/tree/master/typescript) declarations for the library
 * [Wiki Pages](https://github.com/vitaly-t/pg-promise/wiki) - all the documentation references
 
@@ -958,7 +958,6 @@ DEALINGS IN THE SOFTWARE.
 [Configuration Object]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object
 [Configuration Path]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-path
 [Connection String]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#connection-string
-
 [each]:http://vitaly-t.github.io/pg-promise/Database.html#.each
 [map]:http://vitaly-t.github.io/pg-promise/Database.html#.map
 [Connection Syntax]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax
@@ -977,8 +976,9 @@ DEALINGS IN THE SOFTWARE.
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
 [batch]:http://vitaly-t.github.io/pg-promise/Task.html#.batch
 [sequence]:http://vitaly-t.github.io/pg-promise/Task.html#.sequence
-[API]:http://vitaly-t.github.io/pg-promise/Database.html
-[API Documentation]:http://vitaly-t.github.io/pg-promise/Database.html
+[Protocol API]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html
+[API]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html
+[API Documentation]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html
 [Transaction Mode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
 [pg-minify]:https://github.com/vitaly-t/pg-minify
 [pg-monitor]:https://github.com/vitaly-t/pg-monitor
