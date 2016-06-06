@@ -20,7 +20,7 @@ Since all TypeScript files are distributed with the library, you can reference i
 Version 4.3.2 and later supports [Typings], and can be added to your project with this command:
 
 ```
- typings install --save --global  github:vitaly-t/pg-promise
+ typings install --save --global github:vitaly-t/pg-promise
 ```
 
 Then you can use the generic reference:
