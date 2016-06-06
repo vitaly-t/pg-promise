@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "4.4.5",
+  "version": "4.4.6",
   "description": "PostgreSQL via promises",
   "main": "lib/index.js",
   "scripts": {
@@ -40,8 +40,8 @@
     "npm": ">=1.4"
   },
   "dependencies": {
-    "pg": "^4.5.5",
-    "spex": "^0.4.4",
+    "pg": "^4.5.6",
+    "spex": "^0.4.5",
     "pg-minify": "^0.3.3"
   },
   "devDependencies": {
