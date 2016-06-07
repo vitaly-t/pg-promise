@@ -482,7 +482,7 @@ declare module 'pg-promise' {
 
     // API: http://vitaly-t.github.io/pg-promise/Database.html#$config
     interface ILibConfig<Ext> {
-        version:string,
+        version:string;
         promiseLib:any;
         promise:IGenericPromise;
         options:IOptions<Ext>;
