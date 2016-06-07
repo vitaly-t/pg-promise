@@ -126,22 +126,22 @@ describe("Initialized instance", function () {
 describe("Database Protocol", function () {
 
     it("must have all the root-level methods", function () {
-        expect(typeof(db.connect)).toBe('function');
-        expect(typeof(db.task)).toBe('function');
-        expect(typeof(db.query)).toBe('function');
-        expect(typeof(db.result)).toBe('function');
-        expect(typeof(db.tx)).toBe('function');
-        expect(typeof(db.one)).toBe('function');
-        expect(typeof(db.many)).toBe('function');
-        expect(typeof(db.any)).toBe('function');
-        expect(typeof(db.none)).toBe('function');
-        expect(typeof(db.oneOrNone)).toBe('function');
-        expect(typeof(db.manyOrNone)).toBe('function');
-        expect(typeof(db.stream)).toBe('function');
-        expect(typeof(db.func)).toBe('function');
-        expect(typeof(db.proc)).toBe('function');
-        expect(typeof(db.map)).toBe('function');
-        expect(typeof(db.each)).toBe('function');
+        expect(typeof db.connect).toBe('function');
+        expect(typeof db.task).toBe('function');
+        expect(typeof db.query).toBe('function');
+        expect(typeof db.result).toBe('function');
+        expect(typeof db.tx).toBe('function');
+        expect(typeof db.one).toBe('function');
+        expect(typeof db.many).toBe('function');
+        expect(typeof db.any).toBe('function');
+        expect(typeof db.none).toBe('function');
+        expect(typeof db.oneOrNone).toBe('function');
+        expect(typeof db.manyOrNone).toBe('function');
+        expect(typeof db.stream).toBe('function');
+        expect(typeof db.func).toBe('function');
+        expect(typeof db.proc).toBe('function');
+        expect(typeof db.map).toBe('function');
+        expect(typeof db.each).toBe('function');
 
         // must not have task-level methods:
         expect(db.batch).toBeUndefined();
@@ -151,6 +151,14 @@ describe("Database Protocol", function () {
         // must not have connection-level methods:
         expect(db.done).toBeUndefined();
         expect(db.client).toBeUndefined();
+
+        // must have a hidden configurator;
+        expect(db.$config && typeof db.$config === 'object').toBeTruthy();
+        expect(typeof db.$config.promise).toBeTruthy();
+        expect(typeof db.$config.promiseLib).toBeTruthy();
+        expect(typeof db.$config.options).toBeTruthy();
+        expect(typeof db.$config.pgp).toBeTruthy();
+
     });
 
     describe("on connection level", function () {
@@ -172,24 +180,25 @@ describe("Database Protocol", function () {
         it("must have all the required methods", function () {
             expect(connection && typeof(connection) === 'object').toBe(true);
             expect(connection.connect).toBeUndefined();
-            expect(typeof(connection.query)).toBe('function');
-            expect(typeof(connection.result)).toBe('function');
-            expect(typeof(connection.tx)).toBe('function');
-            expect(typeof(connection.tx)).toBe('function');
-            expect(typeof(connection.one)).toBe('function');
-            expect(typeof(connection.many)).toBe('function');
-            expect(typeof(connection.any)).toBe('function');
-            expect(typeof(connection.none)).toBe('function');
-            expect(typeof(connection.oneOrNone)).toBe('function');
-            expect(typeof(connection.manyOrNone)).toBe('function');
-            expect(typeof(connection.stream)).toBe('function');
-            expect(typeof(connection.func)).toBe('function');
-            expect(typeof(connection.proc)).toBe('function');
-            expect(typeof(connection.map)).toBe('function');
-            expect(typeof(connection.each)).toBe('function');
+            expect(typeof connection.query).toBe('function');
+            expect(typeof connection.result).toBe('function');
+            expect(typeof connection.tx).toBe('function');
+            expect(typeof connection.tx).toBe('function');
+            expect(typeof connection.one).toBe('function');
+            expect(typeof connection.many).toBe('function');
+            expect(typeof connection.any).toBe('function');
+            expect(typeof connection.none).toBe('function');
+            expect(typeof connection.oneOrNone).toBe('function');
+            expect(typeof connection.manyOrNone).toBe('function');
+            expect(typeof connection.stream).toBe('function');
+            expect(typeof connection.func).toBe('function');
+            expect(typeof connection.proc).toBe('function');
+            expect(typeof connection.map).toBe('function');
+            expect(typeof connection.each).toBe('function');
 
-            expect(typeof(connection.done)).toBe('function');
-            expect(typeof(connection.client)).toBe('object');
+            expect(typeof connection.done).toBe('function');
+            expect(typeof connection.client).toBe('object');
+            expect(connection.$config).toBeUndefined();
         });
     });
 
@@ -212,24 +221,25 @@ describe("Database Protocol", function () {
             expect(protocol && typeof(protocol) === 'object').toBe(true);
             expect(protocol.connect).toBeUndefined();
             expect(protocol.client).toBeUndefined();
-            expect(typeof(protocol.query)).toBe('function');
-            expect(typeof(protocol.result)).toBe('function');
-            expect(typeof(protocol.task)).toBe('function');
-            expect(typeof(protocol.tx)).toBe('function');
-            expect(typeof(protocol.one)).toBe('function');
-            expect(typeof(protocol.many)).toBe('function');
-            expect(typeof(protocol.any)).toBe('function');
-            expect(typeof(protocol.none)).toBe('function');
-            expect(typeof(protocol.oneOrNone)).toBe('function');
-            expect(typeof(protocol.manyOrNone)).toBe('function');
-            expect(typeof(protocol.stream)).toBe('function');
-            expect(typeof(protocol.func)).toBe('function');
-            expect(typeof(protocol.proc)).toBe('function');
-            expect(typeof(protocol.batch)).toBe('function');
-            expect(typeof(protocol.page)).toBe('function');
-            expect(typeof(protocol.sequence)).toBe('function');
-            expect(typeof(protocol.map)).toBe('function');
-            expect(typeof(protocol.each)).toBe('function');
+            expect(protocol.$config).toBeUndefined();
+            expect(typeof protocol.query).toBe('function');
+            expect(typeof protocol.result).toBe('function');
+            expect(typeof protocol.task).toBe('function');
+            expect(typeof protocol.tx).toBe('function');
+            expect(typeof protocol.one).toBe('function');
+            expect(typeof protocol.many).toBe('function');
+            expect(typeof protocol.any).toBe('function');
+            expect(typeof protocol.none).toBe('function');
+            expect(typeof protocol.oneOrNone).toBe('function');
+            expect(typeof protocol.manyOrNone).toBe('function');
+            expect(typeof protocol.stream).toBe('function');
+            expect(typeof protocol.func).toBe('function');
+            expect(typeof protocol.proc).toBe('function');
+            expect(typeof protocol.batch).toBe('function');
+            expect(typeof protocol.page).toBe('function');
+            expect(typeof protocol.sequence).toBe('function');
+            expect(typeof protocol.map).toBe('function');
+            expect(typeof protocol.each).toBe('function');
         });
     });
 
@@ -252,6 +262,7 @@ describe("Database Protocol", function () {
             expect(protocol && typeof(protocol) === 'object').toBe(true);
             expect(protocol.connect).toBeUndefined();
             expect(protocol.client).toBeUndefined();
+            expect(protocol.$config).toBeUndefined();
             expect(typeof(protocol.query)).toBe('function');
             expect(typeof(protocol.result)).toBe('function');
             expect(typeof(protocol.tx)).toBe('function');

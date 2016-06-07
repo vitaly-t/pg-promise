@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.4.4 or later.
+// Requires pg-promise v4.4.7 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -457,8 +457,8 @@ declare module 'pg-promise' {
     // Post-initialization interface;
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface IMain {
-        (cn:string|IConfig, dc?:any):pgPromise.IDatabase<IEmptyExt>,
-        <T>(cn:string|IConfig, dc?:any):pgPromise.IDatabase<T>&T,
+        (cn:string|IConfig, dc?:any):pgPromise.IDatabase<IEmptyExt>;
+        <T>(cn:string|IConfig, dc?:any):pgPromise.IDatabase<T>&T;
         PromiseAdapter:typeof pgPromise.PromiseAdapter;
         PreparedStatement:typeof pgPromise.PreparedStatement;
         ParameterizedQuery:typeof pgPromise.ParameterizedQuery;
@@ -470,8 +470,21 @@ declare module 'pg-promise' {
         txMode:ITXMode;
         helpers:IHelpers;
         as:IFormatting;
-        end():void,
+        end():void;
         pg:typeof pg;
+    }
+
+    interface IGenericPromise {
+        (cb:(resolve:(value?:any)=>void, reject:(value?:any)=>void)=>void):XPromise<any>;
+        resolve(value?:any):void;
+        reject(value?:any):void;
+    }
+
+    interface ILibConfig<Ext> {
+        promiseLib:any;
+        promise:IGenericPromise;
+        options:IOptions<Ext>;
+        pgp:IMain;
     }
 
     // Empty Extensions
@@ -587,6 +600,10 @@ declare module 'pg-promise' {
         // which doesn't always work, depending on the version of IntelliSense being used. 
         interface IDatabase<Ext> extends IBaseProtocol<Ext> {
             connect(options?:TConnectionOptions):XPromise<IConnected<Ext>>;
+
+            // A hidden property, for integrating with third-party libraries.
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#$config
+            $config:ILibConfig<Ext>;
         }
 
     }
