@@ -44,7 +44,8 @@ var $npm = {
     utils: require('./utils'),
     pubUtils: require('./utils/public'),
     mode: require('./txMode'),
-    types: require('./types')
+    types: require('./types'),
+    package: require('../package.json')
 };
 
 /**
@@ -182,26 +183,27 @@ function $main(options) {
     }
 
     var pg = $npm.pg, p = $npm.promise(options.promiseLib);
-    
+
     var config = {
+        version: $npm.package.version,
         promiseLib: p.promiseLib,
-        promise: p.promise
+        promise: p.promise,
     };
-    
+
     $npm.utils.addReadProp(config, 'npm', {}, true);
-    
+
     // Locking properties that cannot be changed later:
     $npm.utils.addReadProp(options, 'promiseLib', options.promiseLib);
     $npm.utils.addReadProp(options, 'pgNative', !!options.pgNative);
 
     config.options = options;
-    
+
     // istanbul ignore next:
     // we do not cover code specific to Native Bindings
     if (options.pgNative) {
         pg = $npm.pg.native;
     }
-    
+
     var Database = require('./database')(config);
 
     var inst = function (cn, dc) {
@@ -233,7 +235,7 @@ function $main(options) {
     $npm.utils.addReadProp(inst, 'end', function () {
         pg.end();
     });
-    
+
     /**
      * @member {helpers} helpers
      * @readonly
@@ -248,7 +250,7 @@ function $main(options) {
 
     config.pgp = inst;
     Object.freeze(config);
-    
+
     return inst;
 }
 
