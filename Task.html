@@ -354,6 +354,96 @@ See <a href="Database.html">Database</a>.</p></td>
 
 
         
+            
+<h4 class="name" id="$config"><span class="type-signature">(readonly) </span>$config<span class="type-signature"> :object</span></h4>
+
+
+
+
+<div class="description">
+    <p><strong>Added in v.4.4.7</strong></p>
+<p>This is a hidden property, to help integrating type <a href="Database.html">Database</a> directly with third-party libraries.</p>
+<p>Properties available in the object:</p>
+<ul>
+<li><code>pgp</code> - instance of the entire library after initialization</li>
+<li><code>options</code> - the library's <a href="module-pg-promise.html">Initialization Options</a> object</li>
+<li><code>promiseLib</code> - instance of the promise library that's used</li>
+<li><code>promise</code> - generic promise interface that uses <code>promiseLib</code> via 3 basic methods:<ul>
+<li><code>promise(resolve, reject)</code> - to construct a new promise</li>
+<li><code>promise.resolve(value)</code> - to resolve a value</li>
+<li><code>promise.reject(value)</code> - to reject with a value</li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#$config">Database#$config</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line225">line 225</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
     
 
     
@@ -417,7 +507,7 @@ See <a href="Database.html">Database</a>.</p></td>
             <td class="type">
             
                 
-<span class="param-type">Array</span>
+<span class="param-type">array</span>
 
 
             

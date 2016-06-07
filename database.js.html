@@ -51,11 +51,11 @@ var $arr = require('./array');
  *
  * @param {String|Object} cn
  * Database connection details, which can be any of the following:
- * 
+ *
  * - a configuration object
  * - a configuration path
  * - a connection string
- * 
+ *
  * For details see {@link https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax Connection Syntax}.
  *
  * @param {} [dc]
@@ -213,7 +213,7 @@ function Database(cn, dc, config) {
      * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
      * - {@link QueryFile} object
      *
-     * @param {Array|value} [values]
+     * @param {array|value} [values]
      * Query formatting parameters.
      *
      * When `query` is of type `string` or a {@link QueryFile} object, the `values` can be:
@@ -250,6 +250,26 @@ function Database(cn, dc, config) {
                 return $p.reject(error);
             });
     };
+    
+    /**
+     * @name Database#$config
+     * @type {object}
+     * @readonly
+     * @description
+     * **Added in v.4.4.7**
+     *
+     * This is a hidden property, to help integrating type {@link Database} directly with third-party libraries.
+     *
+     * Properties available in the object:
+     * - `pgp` - instance of the entire library after initialization
+     * - `options` - the library's {@link module:pg-promise Initialization Options} object
+     * - `promiseLib` - instance of the promise library that's used
+     * - `promise` - generic promise interface that uses `promiseLib` via 3 basic methods:
+     *   - `promise(resolve, reject)` - to construct a new promise
+     *   - `promise.resolve(value)` - to resolve a value
+     *   - `promise.reject(value)` - to reject with a value
+     */
+    $npm.utils.addReadProp(this, '$config', config, true);
 
     extend(createContext(), this); // extending root protocol;
 
@@ -275,7 +295,7 @@ function Database(cn, dc, config) {
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
          *
-         * @param {Array|value} [values]
+         * @param {array|value} [values]
          * Query formatting parameters.
          *
          * When `query` is of type `string` or a {@link QueryFile} object, the `values` can be:
@@ -310,7 +330,7 @@ function Database(cn, dc, config) {
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
          *
-         * @param {Array|value} [values]
+         * @param {array|value} [values]
          * Query formatting parameters.
          *
          * When `query` is of type `string` or a {@link QueryFile} object, the `values` can be:
@@ -347,7 +367,7 @@ function Database(cn, dc, config) {
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
          *
-         * @param {Array|value} [values]
+         * @param {array|value} [values]
          * Query formatting parameters.
          *
          * When `query` is of type `string` or a {@link QueryFile} object, the `values` can be:
@@ -382,7 +402,7 @@ function Database(cn, dc, config) {
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
          *
-         * @param {Array|value} [values]
+         * @param {array|value} [values]
          * Query formatting parameters.
          *
          * When `query` is of type `string` or a {@link QueryFile} object, the `values` can be:
@@ -400,11 +420,11 @@ function Database(cn, dc, config) {
          * - when 1 row is returned, it resolves with that row as a single object
          * - when multiple rows are returned, it rejects with {@link errors.QueryResultError QueryResultError}
          * = `Multiple rows were not expected.`
-         * 
+         *
          * @see
          * {@link Database.one one},
          * {@link Database.none none}
-         * 
+         *
          */
         obj.oneOrNone = function (query, values) {
             return obj.query.call(this, query, values, $npm.result.one | $npm.result.none);
@@ -422,7 +442,7 @@ function Database(cn, dc, config) {
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
          *
-         * @param {Array|value} [values]
+         * @param {array|value} [values]
          * Query formatting parameters.
          *
          * When `query` is of type `string` or a {@link QueryFile} object, the `values` can be:
@@ -438,9 +458,9 @@ function Database(cn, dc, config) {
          * A promise object that represents the query result:
          * - when no rows are returned, it resolves with an empty array
          * - when 1 or more rows are returned, it resolves with the array of rows.
-         * 
+         *
          * @see {@link Database.any any}
-         * 
+         *
          */
         obj.manyOrNone = function (query, values) {
             return obj.query.call(this, query, values, $npm.result.many | $npm.result.none);
@@ -460,7 +480,7 @@ function Database(cn, dc, config) {
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
          *
-         * @param {Array|value} [values]
+         * @param {array|value} [values]
          * Query formatting parameters.
          *
          * When `query` is of type `string` or a {@link QueryFile} object, the `values` can be:
@@ -478,7 +498,7 @@ function Database(cn, dc, config) {
          * - when 1 or more rows are returned, it resolves with the array of rows.
          *
          * @see {@link Database.manyOrNone manyOrNone}
-         * 
+         *
          */
         obj.any = function (query, values) {
             return obj.query.call(this, query, values, $npm.result.any);
@@ -497,7 +517,7 @@ function Database(cn, dc, config) {
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
          *
-         * @param {Array|value} [values]
+         * @param {array|value} [values]
          * Query formatting parameters.
          *
          * When `query` is of type `string` or a {@link QueryFile} object, the `values` can be:
@@ -559,7 +579,7 @@ function Database(cn, dc, config) {
          * @param {string} funcName
          * Name of the function to be executed.
          *
-         * @param {Array|value} [values]
+         * @param {array|value} [values]
          * Parameters for the function - one value or an array of values.
          *
          * @param {queryResult} [qrm=queryResult.any] - {@link queryResult Query Result Mask}.
@@ -588,7 +608,7 @@ function Database(cn, dc, config) {
          * @param {string} procName
          * Name of the stored procedure to be executed.
          *
-         * @param {Array|value} [values]
+         * @param {array|value} [values]
          * Parameters for the procedure - one value or an array of values.
          *
          * @returns {external:Promise}
@@ -633,7 +653,7 @@ function Database(cn, dc, config) {
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
          *
-         * @param {Array|value} values
+         * @param {array|value} values
          * Query formatting parameters.
          *
          * When `query` is of type `string` or a {@link QueryFile} object, the `values` can be:
@@ -725,7 +745,7 @@ function Database(cn, dc, config) {
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
          *
-         * @param {Array|value} [values]
+         * @param {array|value} [values]
          * Query formatting parameters.
          *
          * When `query` is of type `string` or a {@link QueryFile} object, the `values` can be:
@@ -792,7 +812,7 @@ function Database(cn, dc, config) {
          * However, when calling the method with 2 parameters, the first one is always the `tag` - traceable context for the
          * task (see $[tags]).
          *
-         * @param {Function|generator} [cb]
+         * @param {function|generator} [cb]
          * Task callback function (or $[ES6 generator]), if it is not `undefined`, or else the callback is expected to
          * be passed in as the first parameter.
          *
@@ -841,7 +861,7 @@ function Database(cn, dc, config) {
          * However, when calling the method with 2 parameters, the first one is always the `tag` - traceable context for the
          * transaction (see $[tags]).
          *
-         * @param {Function|generator} [cb]
+         * @param {function|generator} [cb]
          * Transaction callback function (or $[ES6 generator]), if it is not `undefined`, or else the callback is expected to be
          * passed in as the first parameter.
          *

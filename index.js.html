@@ -69,7 +69,7 @@ var $npm = {
  *
  * This is a static property (can only be set prior to initialization).
  *
- * @param {Object|Function} [options.promiseLib=Promise]
+ * @param {object|function} [options.promiseLib=Promise]
  * Override for the default promise library.
  *
  * This is a static property (can only be set prior to initialization).
@@ -151,8 +151,8 @@ function $main(options) {
     } else {
         if (typeof options === 'string') {
             // Check for invalid initialization: it must not be a connection string.
-            var pg = require.cache[require.resolve('pg')];
-            var pgCS = pg.require('pg-connection-string');
+            var pgModule = require.cache[require.resolve('pg')];
+            var pgCS = pgModule.require('pg-connection-string');
             var cn = pgCS.parse(options);
             invalidInit = cn &amp;&amp; cn.database !== options;
         }
@@ -181,28 +181,27 @@ function $main(options) {
         throw new TypeError("Invalid library initialization: must initialize the library before creating a database object.");
     }
 
-    var p = $npm.promise(options.promiseLib);
-
+    var pg = $npm.pg, p = $npm.promise(options.promiseLib);
+    
     var config = {
         promiseLib: p.promiseLib,
-        promise: p.promise,
-        pg: $npm.pg,
-        npm: {}
+        promise: p.promise
     };
-
+    
+    $npm.utils.addReadProp(config, 'npm', {}, true);
+    
     // Locking properties that cannot be changed later:
     $npm.utils.addReadProp(options, 'promiseLib', options.promiseLib);
-    $npm.utils.addReadProp(options, 'pgNative', options.pgNative);
+    $npm.utils.addReadProp(options, 'pgNative', !!options.pgNative);
 
     config.options = options;
-
+    
     // istanbul ignore next:
-    // we do not cover code specific to native bindings
+    // we do not cover code specific to Native Bindings
     if (options.pgNative) {
-        config.pg = $npm.pg.native;
-        config.native = true;
+        pg = $npm.pg.native;
     }
-
+    
     var Database = require('./database')(config);
 
     var inst = function (cn, dc) {
@@ -221,7 +220,7 @@ function $main(options) {
      *
      * Available as `pgp.pg`, after initializing the library.
      */
-    $npm.utils.addReadProp(inst, 'pg', config.pg);
+    $npm.utils.addReadProp(inst, 'pg', pg);
 
     /**
      * @member {function} end
@@ -232,9 +231,9 @@ function $main(options) {
      * Available as `pgp.end`, after initializing the library.
      */
     $npm.utils.addReadProp(inst, 'end', function () {
-        config.pg.end();
+        pg.end();
     });
-
+    
     /**
      * @member {helpers} helpers
      * @readonly
@@ -247,6 +246,9 @@ function $main(options) {
      */
     $npm.utils.addReadProp(inst, 'helpers', $npm.helpers(config));
 
+    config.pgp = inst;
+    Object.freeze(config);
+    
     return inst;
 }
 
