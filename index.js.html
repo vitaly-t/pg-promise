@@ -66,7 +66,7 @@ var $npm = {
  * This property can be set dynamically (before or after initialization).
  *
  * @param {boolean} [options.pgNative=false]
- * Use $[Native Bindings] (library $[pg-native] must be installed).
+ * Use $[Native Bindings]. Library $[pg-native] must be installed, or else it will throw an error.
  *
  * This is a static property (can only be set prior to initialization).
  *
@@ -202,12 +202,19 @@ function $main(options) {
     // we do not cover code specific to Native Bindings
     if (options.pgNative) {
         pg = $npm.pg.native;
+        if ($npm.utils.isNull(pg)) {
+            throw new Error("Failed to initialize Native Bindings.");
+        }
     }
 
     var Database = require('./database')(config);
 
     var inst = function (cn, dc) {
-        return new Database(parseConnection(cn), dc, config);
+        var t = typeof cn;
+        if (cn &amp;&amp; (t === 'string' || t === 'object')) {
+            return new Database(cn, dc, config);
+        }
+        throw new TypeError("Invalid connection details.");
     };
 
     $npm.utils.addReadProperties(inst, rootNameSpace);
@@ -252,21 +259,6 @@ function $main(options) {
     Object.freeze(config);
 
     return inst;
-}
-
-function parseConnection(cn) {
-    if (cn) {
-        if ($npm.utils.isText(cn)) {
-            if (cn.indexOf('://') !== -1) {
-                return cn;
-            }
-            cn = require($npm.path.join($npm.utils.startDir, cn));
-        }
-        if (typeof cn === 'object') {
-            return cn;
-        }
-    }
-    throw new TypeError("Invalid connection details.");
 }
 
 var rootNameSpace = {
