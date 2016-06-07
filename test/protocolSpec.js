@@ -154,11 +154,11 @@ describe("Database Protocol", function () {
 
         // must have a hidden configurator;
         expect(db.$config && typeof db.$config === 'object').toBeTruthy();
-        expect(typeof db.$config.promise).toBeTruthy();
-        expect(typeof db.$config.promiseLib).toBeTruthy();
-        expect(typeof db.$config.options).toBeTruthy();
-        expect(typeof db.$config.pgp).toBeTruthy();
-
+        expect(db.$config.promise).toBeTruthy();
+        expect(db.$config.promiseLib).toBeTruthy();
+        expect(typeof db.$config.options).toBe('object');
+        expect(typeof db.$config.pgp).toBe('function');
+        expect(typeof db.$config.version).toBe('string');
     });
 
     describe("on connection level", function () {

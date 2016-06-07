@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.4.7 or later.
+// Requires pg-promise v4.4.8 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -480,7 +480,9 @@ declare module 'pg-promise' {
         reject(value?:any):void;
     }
 
+    // API: http://vitaly-t.github.io/pg-promise/Database.html#$config
     interface ILibConfig<Ext> {
+        version:string,
         promiseLib:any;
         promise:IGenericPromise;
         options:IOptions<Ext>;

@@ -20,3 +20,6 @@ cfg.options.capSQL = true;
 
 cfg.pgp.as.format('');
 
+var version:string = cfg.version;
+
+
