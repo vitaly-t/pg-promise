@@ -101,7 +101,6 @@ var db = pgp(connection);
 The `connection` parameter can be any of the following:
 
 * [Configuration Object]
-* [Configuration File]
 * [Connection String]
 
 Object `db` represents the [Database] protocol with lazy connection, i.e. only the actual query methods acquire
@@ -956,7 +955,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OU
 DEALINGS IN THE SOFTWARE.
 
 [Configuration Object]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object
-[Configuration File]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-file
 [Connection String]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#connection-string
 [each]:http://vitaly-t.github.io/pg-promise/Database.html#.each
 [map]:http://vitaly-t.github.io/pg-promise/Database.html#.map

@@ -36,16 +36,6 @@ describe("Database Instantiation", function () {
             pgp(123);
         }).toThrow(err);
     });
-    it("must throw on invalid file path", function () {
-        var err;
-        try {
-            pgp("invalid connection details");
-        } catch (e) {
-            err = e;
-        }
-        expect(err instanceof Error).toBe(true);
-        expect(err.message).toContain("Cannot find module");
-    });
 });
 
 describe("Connection", function () {
