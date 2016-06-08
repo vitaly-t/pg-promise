@@ -1,5 +1,6 @@
 ### History of Changes
 
+* 4.5.0 Removed support for Configuration Files, set pg dependency to 5.x. Released: June 8, 2016  
 * 4.4.2 Added support for [Configuration Path]. Released: June 5, 2016
 * 4.4.0 Added namespace [utils] for automatic SQL tree generation. Released: June 3, 2016
 * 4.3.0 Improving [PreparedStatement] and [ParameterizedQuery], adding methods [map] and [each] to the database protocol. Released: May 25, 2016
