@@ -203,7 +203,7 @@ depending on the database context.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="global.html#event:extend">extend</a>,<a href="Database.html#.connect">connect</a>,<a href="Database.html#.query">query</a>,<a href="Database.html#.none">none</a>,<a href="Database.html#.one">one</a>,<a href="Database.html#.oneOrNone">oneOrNone</a>,<a href="Database.html#.many">many</a>,<a href="Database.html#.manyOrNone">manyOrNone</a>,<a href="Database.html#.any">any</a>,<a href="Database.html#.func">func</a>,<a href="Database.html#.proc">proc</a>,<a href="Database.html#.result">result</a>,<a href="Database.html#.map">map</a>,<a href="Database.html#.each">each</a>,<a href="Database.html#.stream">stream</a>,<a href="Database.html#.task">task</a>,<a href="Database.html#.tx">tx</a></li>
+            <li><a href="Database.html#.query">query</a>,<a href="Database.html#.none">none</a>,<a href="Database.html#.one">one</a>,<a href="Database.html#.oneOrNone">oneOrNone</a>,<a href="Database.html#.many">many</a>,<a href="Database.html#.manyOrNone">manyOrNone</a>,<a href="Database.html#.any">any</a>,<a href="Database.html#.func">func</a>,<a href="Database.html#.proc">proc</a>,<a href="Database.html#.result">result</a>,<a href="Database.html#.map">map</a>,<a href="Database.html#.each">each</a>,<a href="Database.html#.stream">stream</a>,<a href="Database.html#.task">task</a>,<a href="Database.html#.tx">tx</a>,<a href="Database.html#.connect">connect</a>,<a href="Database.html#$config">$config</a>,<a href="global.html#event:extend">extend</a></li>
         </ul>
     </dd>
     
@@ -264,7 +264,7 @@ depending on the database context.</p></td>
 <li><code>promiseLib</code> - instance of the promise library that's used</li>
 <li><code>promise</code> - generic promise interface that uses <code>promiseLib</code> via 3 basic methods:<ul>
 <li><code>promise((resolve, reject)=&gt;{})</code> - to create a new promise</li>
-<li><code>promise.resolve(value)</code> - to resolve a value</li>
+<li><code>promise.resolve(value)</code> - to resolve with a value</li>
 <li><code>promise.reject(value)</code> - to reject with a value</li>
 </ul>
 </li>
@@ -317,7 +317,7 @@ depending on the database context.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line224">line 224</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line226">line 226</a>
     </li></ul></dd>
     
 
@@ -509,7 +509,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line440">line 440</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line442">line 442</a>
     </li></ul></dd>
     
 
@@ -767,7 +767,7 @@ and therefore cannot scale. This option is only suitable for a global connection
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line76">line 76</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line78">line 78</a>
     </li></ul></dd>
     
 
@@ -1081,7 +1081,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line688">line 688</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line709">line 709</a>
     </li></ul></dd>
     
 
@@ -1341,7 +1341,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line545">line 545</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line547">line 547</a>
     </li></ul></dd>
     
 
@@ -1566,7 +1566,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line328">line 328</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line330">line 330</a>
     </li></ul></dd>
     
 
@@ -1788,7 +1788,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line404">line 404</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line406">line 406</a>
     </li></ul></dd>
     
 
@@ -2091,7 +2091,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line596">line 596</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line598">line 598</a>
     </li></ul></dd>
     
 
@@ -2150,6 +2150,8 @@ as an override for its internal <code>values</code>.</p></td>
     <pre class="prettyprint"><code>db.map('SELECT id FROM Users WHERE status = $1', ['active'], row => row.id)    .then(data => {        // data = array of active user id-s    })    .catch(error => {       // error    });</code></pre>
 
     <pre class="prettyprint"><code>db.tx(t => {    return t.map('SELECT id FROM Users WHERE status = $1', ['active'], row => {       return t.none('UPDATE Events SET checked = $1 WHERE userId = $2', [true, row.id]);    }).then(t.batch);})    .then(data => {        // success    })    .catch(error => {        // error    });</code></pre>
+
+    <pre class="prettyprint"><code>// Build a list of active users, each with the list of user events:db.task(t => {    return t.map('SELECT id FROM Users WHERE status = $1', ['active'], user => {        return t.any('SELECT * FROM Events WHERE userId = $1', user.id)            .then(events=> {                user.events = events;                return user;            });    }).then(t.batch);})    .then(data => {        // success    })    .catch(error => {        // error    });</code></pre>
 
 
 
@@ -2323,7 +2325,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line256">line 256</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line258">line 258</a>
     </li></ul></dd>
     
 
@@ -2546,7 +2548,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line291">line 291</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line293">line 293</a>
     </li></ul></dd>
     
 
@@ -2771,7 +2773,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line363">line 363</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line365">line 365</a>
     </li></ul></dd>
     
 
@@ -2985,7 +2987,7 @@ expecting back 0 or 1 rows.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line571">line 571</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line573">line 573</a>
     </li></ul></dd>
     
 
@@ -3258,7 +3260,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line173">line 173</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line175">line 175</a>
     </li></ul></dd>
     
 
@@ -3480,7 +3482,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line478">line 478</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line480">line 480</a>
     </li></ul></dd>
     
 
@@ -3663,7 +3665,7 @@ is set, it will reject with <code>Streaming doesn't work with native bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line512">line 512</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line514">line 514</a>
     </li></ul></dd>
     
 
@@ -3877,7 +3879,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line769">line 769</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line790">line 790</a>
     </li></ul></dd>
     
 
@@ -4091,7 +4093,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line818">line 818</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line839">line 839</a>
     </li></ul></dd>
     
 
