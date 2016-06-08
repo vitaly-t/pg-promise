@@ -264,7 +264,7 @@ function Database(cn, dc, config) {
      * - `options` - the library's {@link module:pg-promise Initialization Options} object
      * - `promiseLib` - instance of the promise library that's used
      * - `promise` - generic promise interface that uses `promiseLib` via 3 basic methods:
-     *   - `promise(resolve, reject)` - to construct a new promise
+     *   - `promise((resolve, reject)=>{})` - to construct a new promise
      *   - `promise.resolve(value)` - to resolve a value
      *   - `promise.reject(value)` - to reject with a value
      * - `version` - this library's version

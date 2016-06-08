@@ -369,7 +369,7 @@ See <a href="Database.html">Database</a>.</p></td>
 <li><code>options</code> - the library's <a href="module-pg-promise.html">Initialization Options</a> object</li>
 <li><code>promiseLib</code> - instance of the promise library that's used</li>
 <li><code>promise</code> - generic promise interface that uses <code>promiseLib</code> via 3 basic methods:<ul>
-<li><code>promise(resolve, reject)</code> - to construct a new promise</li>
+<li><code>promise((resolve, reject)=&gt;{})</code> - to construct a new promise</li>
 <li><code>promise.resolve(value)</code> - to resolve a value</li>
 <li><code>promise.reject(value)</code> - to reject with a value</li>
 </ul>
