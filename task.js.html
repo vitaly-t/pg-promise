@@ -108,7 +108,7 @@ function Task(ctx, tag, isTX, config) {
         if (!ctx.db) {
             throw new Error("Unexpected call outside of " + (isTX ? "transaction." : "task."));
         }
-        return config.npm.query.call(this, ctx, query, values, qrm);
+        return config.$npm.query.call(this, ctx, query, values, qrm);
     };
 
     /**
@@ -124,7 +124,7 @@ function Task(ctx, tag, isTX, config) {
      * @returns {external:Promise}
      */
     this.batch = function (values, cb) {
-        return config.npm.spex.batch.call(this, values, cb);
+        return config.$npm.spex.batch.call(this, values, cb);
     };
 
     /**
@@ -141,7 +141,7 @@ function Task(ctx, tag, isTX, config) {
      * @returns {external:Promise}
      */
     this.page = function (source, dest, limit) {
-        return config.npm.spex.page.call(this, source, dest, limit);
+        return config.$npm.spex.page.call(this, source, dest, limit);
     };
 
     /**
@@ -159,7 +159,7 @@ function Task(ctx, tag, isTX, config) {
      * @returns {external:Promise}
      */
     this.sequence = function (source, dest, limit, track) {
-        return config.npm.spex.sequence.call(this, source, dest, limit, track);
+        return config.$npm.spex.sequence.call(this, source, dest, limit, track);
     };
 
 }
@@ -174,7 +174,7 @@ Task.exec = function (ctx, obj, isTX, config) {
     function callback() {
         var result, cb = ctx.cb;
         if (cb.constructor.name === 'GeneratorFunction') {
-            cb = config.npm.async(cb);
+            cb = config.$npm.async(cb);
         }
         try {
             result = cb.call(obj, obj); // invoking the callback function;
@@ -290,7 +290,7 @@ Task.exec = function (ctx, obj, isTX, config) {
 };
 
 module.exports = function (config) {
-    var npm = config.npm;
+    var npm = config.$npm;
 
     // istanbul ignore next:
     // we keep 'npm.query' initialization here, even though it is always

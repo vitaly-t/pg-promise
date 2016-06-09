@@ -181,7 +181,7 @@ function Database(cn, dc, config) {
                 if (!ctx.db) {
                     throw new Error("Cannot execute a query on a disconnected client.");
                 }
-                return config.npm.query.call(this, ctx, query, values, qrm);
+                return config.$npm.query.call(this, ctx, query, values, qrm);
             },
             // Connection release method;
             done: function () {
@@ -192,7 +192,7 @@ function Database(cn, dc, config) {
             }
         };
         var method = (options &amp;&amp; options.direct) ? 'direct' : 'pool';
-        return config.npm.connect[method](ctx)
+        return config.$npm.connect[method](ctx)
             .then(function (db) {
                 ctx.connect(db);
                 self.client = db.client;
@@ -237,10 +237,10 @@ function Database(cn, dc, config) {
      */
     this.query = function (query, values, qrm) {
         var self = this, ctx = createContext();
-        return config.npm.connect.pool(ctx)
+        return config.$npm.connect.pool(ctx)
             .then(function (db) {
                 ctx.connect(db);
-                return config.npm.query.call(self, ctx, query, values, qrm);
+                return config.$npm.query.call(self, ctx, query, values, qrm);
             })
             .then(function (data) {
                 ctx.disconnect();
@@ -269,7 +269,8 @@ function Database(cn, dc, config) {
      *   - `promise((resolve, reject)=>{})` - to create a new promise
      *   - `promise.resolve(value)` - to resolve with a value
      *   - `promise.reject(value)` - to reject with a value
-     * - `version` - this library's version
+     * - `version` - this library's version _(added in 4.4.8)_
+     * - `$npm` _(hidden property)_ - internal module cache _(added in 4.5.1)_
      */
     $npm.utils.addReadProp(this, '$config', config, true);
 
@@ -955,19 +956,19 @@ function Database(cn, dc, config) {
                 }
             }
 
-            var tsk = new config.npm.task(taskCtx, tag, isTX, config);
+            var tsk = new config.$npm.task(taskCtx, tag, isTX, config);
             extend(taskCtx, tsk);
 
             if (taskCtx.db) {
                 // reuse existing connection;
-                return config.npm.task.exec(taskCtx, tsk, isTX, config);
+                return config.$npm.task.exec(taskCtx, tsk, isTX, config);
             }
 
             // connection required;
-            return config.npm.connect.pool(taskCtx)
+            return config.$npm.connect.pool(taskCtx)
                 .then(function (db) {
                     taskCtx.connect(db);
-                    return config.npm.task.exec(taskCtx, tsk, isTX, config);
+                    return config.$npm.task.exec(taskCtx, tsk, isTX, config);
                 })
                 .then(function (data) {
                     taskCtx.disconnect();
@@ -992,7 +993,7 @@ function Database(cn, dc, config) {
 }
 
 module.exports = function (config) {
-    var npm = config.npm;
+    var npm = config.$npm;
     npm.connect = npm.connect || $npm.connect(config);
     npm.query = npm.query || $npm.query(config);
     npm.task = npm.task || $npm.task(config);
