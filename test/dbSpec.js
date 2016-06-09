@@ -748,6 +748,25 @@ describe("Method 'oneOrNone'", function () {
         });
     });
 
+    describe("value transformation", function () {
+        var result, context;
+        beforeEach(function (done) {
+            db.oneOrNone('select count(*) from users', null, function (value) {
+                context = this;
+                return parseInt(value.count);
+            }, 123)
+                .then(function (data) {
+                    result = data;
+                    done();
+                });
+        });
+        it("must resolve with the new value", function () {
+            expect(typeof result).toBe('number');
+            expect(result > 0).toBe(true);
+            expect(context).toBe(123);
+        });
+    });
+
     it("must reject when multiple rows are found", function () {
         var result, error, finished;
         db.oneOrNone('select * from users')
@@ -1423,6 +1442,25 @@ describe("Querying a function", function () {
             expect(typeof(result)).toBe('object');
             expect('id' in result && 'login' in result && 'active' in result).toBe(true);
         })
+    });
+
+    describe("value transformation", function () {
+        var result, context;
+        beforeEach(function (done) {
+            db.proc('findUser', 1, function (value) {
+                context = this;
+                return value.id;
+            }, 123)
+                .then(function (data) {
+                    result = data;
+                    done();
+                });
+        });
+        it("must resolve with the new value", function () {
+            expect(typeof result).toBe('number');
+            expect(result > 0).toBe(true);
+            expect(context).toBe(123);
+        });
     });
 
     describe("with function-parameter that throws an error", function () {
