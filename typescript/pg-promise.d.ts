@@ -1,15 +1,17 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.4.8 or later.
+// Requires pg-promise v4.6.0 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
 /// <reference path='./pg-minify' />
 /// <reference path='./ext-promise' />
+/// <reference path='./spex' />
 
 declare module 'pg-promise' {
 
     import * as pg from 'pg-subset';
     import * as pgMinify from 'pg-minify';
+    import {ISpex} from 'spex';
     import XPromise = require('ext-promise'); // External Promise Provider
 
     type TQueryFileOptions= {
@@ -113,10 +115,10 @@ declare module 'pg-promise' {
         none(query:TQuery, values?:any):XPromise<void>;
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.one
-        one(query:TQuery, values?:any):XPromise<any>;
+        one(query:TQuery, values?:any, cb?:(value:any)=>any, thisArg?:any):XPromise<any>;
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.oneOrNone
-        oneOrNone(query:TQuery, values?:any):XPromise<any>;
+        oneOrNone(query:TQuery, values?:any, cb?:(value:any)=>any, thisArg?:any):XPromise<any>;
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.many
         many(query:TQuery, values?:any):XPromise<Array<any>>;
@@ -137,13 +139,13 @@ declare module 'pg-promise' {
         func(funcName:string, values?:any, qrm?:pgPromise.queryResult):XPromise<any>;
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.proc
-        proc(procName:string, values?:any):XPromise<any>;
+        proc(procName:string, values?:any, cb?:(value:any)=>any, thisArg?:any):XPromise<any>;
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.map
-        map(query:TQuery, values:any, cb:(row:any, index:number, data:Array<any>)=>any, thisArg?:Object):XPromise<Array<any>>;
+        map(query:TQuery, values:any, cb:(row:any, index:number, data:Array<any>)=>any, thisArg?:any):XPromise<Array<any>>;
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.each
-        each(query:TQuery, values:any, cb:(row:any, index:number, data:Array<any>)=>void, thisArg?:Object):XPromise<Array<any>>;
+        each(query:TQuery, values:any, cb:(row:any, index:number, data:Array<any>)=>void, thisArg?:any):XPromise<Array<any>>;
 
         // Tasks
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.task
@@ -164,20 +166,7 @@ declare module 'pg-promise' {
 
     // Additional methods available inside tasks + transactions;
     // API: http://vitaly-t.github.io/pg-promise/Task.html
-    interface ITask<Ext> extends IBaseProtocol<Ext> {
-
-        // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md
-        batch(values:Array<any>, cb?:(index:number, success:boolean, result:any, delay:number)=>any):XPromise<Array<any>>;
-        batch(values:Array<any>, options:{cb?:(index:number, success:boolean, result:any, delay:number)=>any}):XPromise<Array<any>>;
-
-        // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/page.md
-        page(source:(index:number, data:any, delay:number)=>any, dest?:(index:number, data:any, delay:number)=>any, limit?:number):XPromise<{pages:number, total:number, duration:number}>;
-        page(source:(index:number, data:any, delay:number)=>any, options:{dest?:(index:number, data:any, delay:number)=>any, limit?:number}):XPromise<{pages:number, total:number, duration:number}>;
-
-        // SPEX API: https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
-        sequence(source:(index:number, data:any, delay:number)=>any, dest?:(index:number, data:any, delay:number)=>any, limit?:number, track?:boolean):XPromise<any>;
-        sequence(source:(index:number, data:any, delay:number)=>any, options:{dest?:(index:number, data:any, delay:number)=>any, limit?:number, track?:boolean}):XPromise<any>;
-
+    interface ITask<Ext> extends IBaseProtocol<Ext>, ISpex {
         // API: http://vitaly-t.github.io/pg-promise/Task.html#.ctx
         ctx:ITaskContext;
     }
@@ -464,7 +453,8 @@ declare module 'pg-promise' {
         ParameterizedQuery:typeof pgPromise.ParameterizedQuery;
         QueryFile:typeof pgPromise.QueryFile;
         queryResult:typeof pgPromise.queryResult;
-        minify:typeof pgMinify,
+        minify:typeof pgMinify;
+        spex: ISpex;
         errors:IErrors;
         utils:IUtils;
         txMode:ITXMode;
@@ -487,6 +477,7 @@ declare module 'pg-promise' {
         promise:IGenericPromise;
         options:IOptions<Ext>;
         pgp:IMain;
+        $npm:any;
     }
 
     // Empty Extensions

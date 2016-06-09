@@ -648,6 +648,25 @@ describe("Method 'one'", function () {
         });
     });
 
+    describe("value transformation", function () {
+        var result, context;
+        beforeEach(function (done) {
+            db.one('select count(*) from users', null, function (value) {
+                context = this;
+                return parseInt(value.count);
+            }, 123)
+                .then(function (data) {
+                    result = data;
+                    done();
+                });
+        });
+        it("must resolve with the new value", function () {
+            expect(typeof result).toBe('number');
+            expect(result > 0).toBe(true);
+            expect(context).toBe(123);
+        });
+    });
+
     it("must reject when no data found", function () {
         var result, error, finished;
         db.one('select * from users where id=$1', 12345678)

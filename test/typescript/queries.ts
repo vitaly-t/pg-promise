@@ -18,7 +18,7 @@ db.none('')
     .then(data=> {
     });
 
-db.one('')
+db.one('', [], value=>{}, 'this')
     .then(data=> {
         var value = data.value;
     });

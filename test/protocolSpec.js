@@ -159,6 +159,7 @@ describe("Database Protocol", function () {
         expect(typeof db.$config.options).toBe('object');
         expect(typeof db.$config.pgp).toBe('function');
         expect(typeof db.$config.version).toBe('string');
+        expect(typeof db.$config.$npm).toBe('object');
     });
 
     describe("on connection level", function () {

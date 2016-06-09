@@ -7,14 +7,20 @@ var db = pgp('connection');
 
 db.task(t=> {
     var d:Date = t.ctx.start;
+
+    return t.batch([]);
 });
 
 db.task('with a name', t=> {
     var d:Date = t.ctx.start;
+    t.sequence(()=> {
+    });
 });
 
 db.tx(t=> {
     var d:Date = t.ctx.start;
+    t.page(()=> {
+    });
 });
 
 db.tx('with a name', t=> {

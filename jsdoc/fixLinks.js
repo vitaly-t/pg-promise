@@ -3,6 +3,7 @@
 // Automatic links:
 var links = {
     "Promises/A+": "https://promisesaplus.com",
+    "spex": "https://github.com/vitaly-t/spex",
     "spex.batch": "https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md",
     "spex.page": "https://github.com/vitaly-t/spex/blob/master/docs/code/page.md",
     "spex.sequence": "https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md",

@@ -8,6 +8,10 @@ var pgp = pgPromise({
     pgNative: true
 });
 
+var spex = pgp.spex;
+
+var b = spex.batch([1, 2, 3]);
+
 interface Test {
     hello:string;
 }
