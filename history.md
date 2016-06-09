@@ -1,5 +1,6 @@
 ### History of Changes
 
+* 4.6.0 Extending all single-result query methods, plus exposing the [spex] instance. Released: June 10, 2016
 * 4.5.0 Removed support for Configuration Files, set pg dependency to 5.x. Released: June 8, 2016  
 * 4.4.2 Added support for [Configuration Path]. Released: June 5, 2016
 * 4.4.0 Added namespace [utils] for automatic SQL tree generation. Released: June 3, 2016
@@ -66,6 +67,8 @@
 * 0.1.4 first release. March 5th, 2015.
 * 0.0.1 initial draft. March 3rd, 2015.
 
+
+[spex]:https://github.com/vitaly-t/spex
 [utils]:http://vitaly-t.github.io/pg-promise/utils.html
 [each]:http://vitaly-t.github.io/pg-promise/Database.html#.each
 [map]:http://vitaly-t.github.io/pg-promise/Database.html#.map

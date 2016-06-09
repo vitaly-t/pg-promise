@@ -930,6 +930,7 @@ When exiting your application, you can make the following call:
 ```javascript
 pgp.end();
 ```
+
 This will release [pg] connection pool globally and make sure that the process terminates without any delay.
 If you do not call it, your process may be waiting for 30 seconds (default for [poolIdleTimeout](https://github.com/brianc/node-postgres/blob/master/lib/defaults.js#L31)),
 waiting for the connection to expire in the pool.
