@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="Task.html">Task</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -68,7 +68,7 @@ var $arr = require('./array');
  * depending on the database context.
  *
  * @see
- * 
+ *
  * {@link Database.query query},
  * {@link Database.none none},
  * {@link Database.one one},
@@ -251,7 +251,7 @@ function Database(cn, dc, config) {
                 return $p.reject(error);
             });
     };
-    
+
     /**
      * @name Database#$config
      * @type {object}
@@ -278,6 +278,15 @@ function Database(cn, dc, config) {
 
     function createContext() {
         return new $npm.context(cn, dc, config.options);
+    }
+
+    function singleValue(value, cb, thisArg) {
+        if (typeof cb === 'function') {
+            value = value.then(function (data) {
+                return cb.call(thisArg, data);
+            });
+        }
+        return value;
     }
 
     ////////////////////////////////////////////////////
@@ -345,6 +354,19 @@ function Database(cn, dc, config) {
          * and `values` is not `null` or `undefined`, it is automatically set within such object,
          * as an override for its internal `values`.
          *
+         * @param {function} [cb]
+         * **Added in 4.6.0**
+         *
+         * Value transformation callback, to allow in-line value change.
+         * When specified, the return value replaces the original resolved value.
+         * 
+         * The function takes only one parameter - value resolved from the query.
+         *
+         * @param {} [thisArg]
+         * **Added in 4.6.0**
+         *
+         * Value to use as `this` when executing the transformation callback.
+         *
          * @returns {external:Promise}
          * A promise object that represents the query result:
          * - when 1 row is returned, it resolves with that row as a single object;
@@ -352,9 +374,27 @@ function Database(cn, dc, config) {
          * = `No data returned from the query.`
          * - when multiple rows are returned, it rejects with {@link errors.QueryResultError QueryResultError}
          * = `Multiple rows were not expected.`
+         *
+         * @example
+         *
+         * // in-line value transformation:
+         * db.one('INSERT INTO Events VALUES($1) RETURNING id', [123], event=>event.id)
+         *     .then(data=> {
+         *         // data = a new event id, rather than an object with it
+         *     });
+         *
+         * @example
+         *
+         * // in-line value transformation + conversion:
+         * db.one('SELECT count(*) FROM Users', null, value=>parseInt(value.count))
+         *     .then(data=> {
+         *         // data = a proper integer, rather than an object with a string
+         *     });
+         *
          */
-        obj.one = function (query, values) {
-            return obj.query.call(this, query, values, $npm.result.one);
+        obj.one = function (query, values, cb, thisArg) {
+            var v = obj.query.call(this, query, values, $npm.result.one);
+            return singleValue(v, cb, thisArg);
         };
 
         /**
@@ -417,6 +457,19 @@ function Database(cn, dc, config) {
          * and `values` is not `null` or `undefined`, it is automatically set within such object,
          * as an override for its internal `values`.
          *
+         * @param {function} [cb]
+         * **Added in 4.6.0**
+         *
+         * Value transformation callback, to allow in-line value change.
+         * When specified, the return value replaces the original resolved value.
+         *
+         * The function takes only one parameter - value resolved from the query.
+         * 
+         * @param {} [thisArg]
+         * **Added in 4.6.0**
+         *
+         * Value to use as `this` when executing the transformation callback.
+         *
          * @returns {external:Promise}
          * A promise object that represents the query result:
          * - when no rows are returned, it resolves with `null`
@@ -429,8 +482,9 @@ function Database(cn, dc, config) {
          * {@link Database.none none}
          *
          */
-        obj.oneOrNone = function (query, values) {
-            return obj.query.call(this, query, values, $npm.result.one | $npm.result.none);
+        obj.oneOrNone = function (query, values, cb, thisArg) {
+            var v = obj.query.call(this, query, values, $npm.result.one | $npm.result.none);
+            return singleValue(v, cb, thisArg);
         };
 
         /**
@@ -614,6 +668,19 @@ function Database(cn, dc, config) {
          * @param {array|value} [values]
          * Parameters for the procedure - one value or an array of values.
          *
+         * @param {function} [cb]
+         * **Added in 4.6.0**
+         *
+         * Value transformation callback, to allow in-line value change.
+         * When specified, the return value replaces the original resolved value.
+         *
+         * The function takes only one parameter - value resolved from the query.
+         * 
+         * @param {} [thisArg]
+         * **Added in 4.6.0**
+         *
+         * Value to use as `this` when executing the transformation callback.
+         *
          * @returns {external:Promise}
          * The same result as method {@link Database.oneOrNone oneOrNone}.
          *
@@ -621,8 +688,9 @@ function Database(cn, dc, config) {
          * {@link Database.oneOrNone oneOrNone},
          * {@link Database.func func}
          */
-        obj.proc = function (procName, values) {
-            return obj.func.call(this, procName, values, $npm.result.one | $npm.result.none);
+        obj.proc = function (procName, values, cb, thisArg) {
+            var v = obj.func.call(this, procName, values, $npm.result.one | $npm.result.none);
+            return singleValue(v, cb, thisArg);
         };
 
         /**
@@ -710,7 +778,7 @@ function Database(cn, dc, config) {
          *     });
          *
          * @example
-         * 
+         *
          * // Build a list of active users, each with the list of user events:
          * db.task(t => {
          *     return t.map('SELECT id FROM Users WHERE status = $1', ['active'], user => {
