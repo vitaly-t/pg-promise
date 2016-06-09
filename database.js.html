@@ -128,12 +128,12 @@ function Database(cn, dc, config) {
      * Creates the connection directly, through the {@link external:Client Client}, bypassing the connection pool.
      *
      * By default, all connections are acquired from the connection pool. If you set this option, the library will instead
-     * create a new {@link external:Client Client} object, and call its `connect` method.
+     * create a new {@link external:Client Client} object directly (separately from the pool), and then call its `connect` method.
      *
      * **WARNING:**
      *
      * Do not use this option for regular query execution, because it exclusively occupies one physical connection,
-     * and therefore cannot scale. This option is only suitable for a global connection usage, such as database event listeners.
+     * and therefore cannot scale. This option is only suitable for global connection usage, such as database event listeners.
      *
      * @returns {external:Promise}
      * A promise object that represents the connection result:
@@ -377,7 +377,7 @@ function Database(cn, dc, config) {
          *
          * @example
          *
-         * // in-line value transformation:
+         * // a query with in-line value transformation:
          * db.one('INSERT INTO Events VALUES($1) RETURNING id', [123], event=>event.id)
          *     .then(data=> {
          *         // data = a new event id, rather than an object with it
@@ -385,7 +385,7 @@ function Database(cn, dc, config) {
          *
          * @example
          *
-         * // in-line value transformation + conversion:
+         * // a query with in-line value transformation + conversion:
          * db.one('SELECT count(*) FROM Users', null, value=>parseInt(value.count))
          *     .then(data=> {
          *         // data = a proper integer, rather than an object with a string
@@ -483,7 +483,7 @@ function Database(cn, dc, config) {
          *
          * @example
          *
-         * // in-line value transformation:
+         * // a query with in-line value transformation:
          * db.oneOrNone('SELECT id FROM Events WHERE type = $1', ['entry'], e => e ? e.id : null)
          *     .then(data=> {
          *         // data = the event id or null (rather than object or null)
@@ -562,7 +562,10 @@ function Database(cn, dc, config) {
          * - when no rows are returned, it resolves with an empty array
          * - when 1 or more rows are returned, it resolves with the array of rows.
          *
-         * @see {@link Database.manyOrNone manyOrNone}
+         * @see
+         * {@link Database.manyOrNone manyOrNone},
+         * {@link Database.map map},
+         * {@link Database.each each}
          *
          */
         obj.any = function (query, values) {
