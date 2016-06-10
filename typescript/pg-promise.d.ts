@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.6.1 or later.
+// Requires pg-promise v4.6.2 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -128,10 +128,10 @@ declare module 'pg-promise' {
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.any
         any(query:TQuery, values?:any):XPromise<Array<any>>;
-
+        
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.result
-        result(query:TQuery, values?:any):XPromise<pg.IResult>;
-
+        result(query:TQuery, values?:any, cb?:(value:any)=>any, thisArg?:any):XPromise<pg.IResult>;
+        
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.stream
         stream(qs:Object, init:(stream:Object)=>void):XPromise<{processed:number, duration:number}>;
 
@@ -454,7 +454,7 @@ declare module 'pg-promise' {
         QueryFile:typeof pgPromise.QueryFile;
         queryResult:typeof pgPromise.queryResult;
         minify:typeof pgMinify;
-        spex: ISpex;
+        spex:ISpex;
         errors:IErrors;
         utils:IUtils;
         txMode:ITXMode;

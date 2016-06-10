@@ -33,7 +33,7 @@ db.many('')
         var value = data[0].ops;
     });
 
-db.result('')
+db.result('', [], ()=>{}, 123)
     .then(data=> {
         var value = data.rows[0].name;
     });
