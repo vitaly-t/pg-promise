@@ -597,13 +597,46 @@ function Database(cn, dc, config) {
          * and `values` is not `null` or `undefined`, it is automatically set within such object,
          * as an override for its internal `values`.
          *
+         * @param {function} [cb]
+         * **Added in 4.6.2**
+         *
+         * Value transformation callback, to allow in-line value change.
+         * When specified, the return value replaces the original resolved value.
+         *
+         * The function takes only one parameter - value resolved from the query.
+         *
+         * @param {} [thisArg]
+         * **Added in 4.6.2**
+         *
+         * Value to use as `this` when executing the transformation callback.
+         *
          * @returns {external:Promise}
          * A promise object that represents the query result:
          * - resolves with the original $[Result] object, extended with
          *   property `duration` - query duration in milliseconds.
+         *
+         * @example
+         *
+         * // use of value transformation:
+         * // deleting rows and returning the number of rows deleted
+         * db.result('DELETE FROM Events WHERE id = $1', [123], r=>r.rowCount)
+         *     .then(data=> {
+         *         // data = number of rows that were deleted
+         *     });
+         *
+         * @example
+         *
+         * // use of value transformation:
+         * // getting only column details from a table
+         * db.result('SELECT * FROM Users LIMIT 0', null, r=>r.fields)
+         *     .then(data=> {
+         *         // data = array of column descriptors
+         *     });
+         *
          */
-        obj.result = function (query, values) {
-            return obj.query.call(this, query, values, $npm.special.cache.resultQuery);
+        obj.result = function (query, values, cb, thisArg) {
+            var v = obj.query.call(this, query, values, $npm.special.cache.resultQuery);
+            return singleValue(v, cb, thisArg);
         };
 
         /**

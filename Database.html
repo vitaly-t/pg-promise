@@ -1082,7 +1082,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line789">line 789</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line822">line 822</a>
     </li></ul></dd>
     
 
@@ -1342,7 +1342,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line613">line 613</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line646">line 646</a>
     </li></ul></dd>
     
 
@@ -2092,7 +2092,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line678">line 678</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line711">line 711</a>
     </li></ul></dd>
     
 
@@ -3195,7 +3195,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line639">line 639</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line672">line 672</a>
     </li></ul></dd>
     
 
@@ -3525,7 +3525,7 @@ as an override for its internal <code>values</code>.</p></td>
 
     
 
-    <h4 class="name" id=".result"><span class="type-signature">(static) </span>result<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id=".result"><span class="type-signature">(static) </span>result<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -3653,6 +3653,71 @@ as an override for its internal <code>values</code>.</p></td>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p><strong>Added in 4.6.2</strong></p>
+<p>Value transformation callback, to allow in-line value change.
+When specified, the return value replaces the original resolved value.</p>
+<p>The function takes only one parameter - value resolved from the query.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thisArg</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p><strong>Added in 4.6.2</strong></p>
+<p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -3739,6 +3804,13 @@ property <code>duration</code> - query duration in milliseconds.</li>
 </dl>
 
     
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// use of value transformation:// deleting rows and returning the number of rows deleteddb.result('DELETE FROM Events WHERE id = $1', [123], r=>r.rowCount)    .then(data=> {        // data = number of rows that were deleted    });</code></pre>
+
+    <pre class="prettyprint"><code>// use of value transformation:// getting only column details from a tabledb.result('SELECT * FROM Users LIMIT 0', null, r=>r.fields)    .then(data=> {        // data = array of column descriptors    });</code></pre>
 
 
 
@@ -3873,7 +3945,7 @@ is set, it will reject with <code>Streaming doesn't work with native bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line580">line 580</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line613">line 613</a>
     </li></ul></dd>
     
 
@@ -4087,7 +4159,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line870">line 870</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line903">line 903</a>
     </li></ul></dd>
     
 
@@ -4301,7 +4373,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line919">line 919</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line952">line 952</a>
     </li></ul></dd>
     
 
