@@ -1,6 +1,6 @@
 ### TypeScript for pg-promise
 
-Complete TypeScript ambient declarations for [pg-promise] version 4.6.0 or later.
+Complete TypeScript ambient declarations for [pg-promise] version 4.6.1 or later.
 
 | File             | Description                      |
 |------------------|----------------------------------|
