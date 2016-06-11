@@ -179,7 +179,7 @@ function _enumSql(dir, options, cb, namePath) {
  * @example
  *
  * // generating an SQL tree for dynamic use of names:
- * var sql = pgp.utils.enumSql('../sql', {recursive: true}, file=> {
+ * var sql = pgp.utils.enumSql(__dirname, {recursive: true}, file=> {
  *     return new pgp.QueryFile(file, {minify: true});
  * });
  *

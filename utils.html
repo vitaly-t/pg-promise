@@ -1133,7 +1133,7 @@ so they can be used in the code directly, as open property names.</p>
     
     <pre class="prettyprint"><code>// simple SQL tree generation for further processing:var tree = pgp.utils.enumSql('../sql', {recursive: true});</code></pre>
 
-    <pre class="prettyprint"><code>// generating an SQL tree for dynamic use of names:var sql = pgp.utils.enumSql('../sql', {recursive: true}, file=> {    return new pgp.QueryFile(file, {minify: true});});</code></pre>
+    <pre class="prettyprint"><code>// generating an SQL tree for dynamic use of names:var sql = pgp.utils.enumSql(__dirname, {recursive: true}, file=> {    return new pgp.QueryFile(file, {minify: true});});</code></pre>
 
     <pre class="prettyprint"><code>var path = require('path');// replacing each relative path in the tree with a full one:var tree = pgp.utils.enumSql('../sql', {recursive: true}, file=> {    return path.join(__dirname, file);});</code></pre>
 
