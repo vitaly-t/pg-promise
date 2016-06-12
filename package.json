@@ -1,7 +1,7 @@
 {
   "name": "pg-promise",
   "version": "4.6.2",
-  "description": "PostgreSQL via promises",
+  "description": "Promises interface for PostgreSQL",
   "main": "lib/index.js",
   "scripts": {
     "test": "jasmine-node test",
