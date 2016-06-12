@@ -38,10 +38,223 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Namespace for all query-formatting functions.</p></div>
+            <div class="description"><p>Namespace for all query-formatting functions, available from <code>pgp.as</code>, before and after initializing the library.</p></div>
         
 
         
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="formatting.html#.name">name</a> - formats an SQL name.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="formatting.html#.text">text</a> - formats a text string.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>number</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="formatting.html#.number">number</a> - formats a number.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="formatting.html#.buffer">buffer</a> - formats a <code>Buffer</code> object.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="formatting.html#.value">value</a> - formats text as an open value.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>json</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="formatting.html#.json">json</a> - formats any value as JSON.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>func</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="formatting.html#.func">func</a> - formats the value returned from a function.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="formatting.html#.format">format</a> - formats a query according to parameters.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
 
 
 <dl class="details">
@@ -213,7 +426,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line461">line 461</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line486">line 486</a>
     </li></ul></dd>
     
 
@@ -365,7 +578,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line379">line 379</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line404">line 404</a>
     </li></ul></dd>
     
 
@@ -573,7 +786,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line351">line 351</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line376">line 376</a>
     </li></ul></dd>
     
 
@@ -729,7 +942,7 @@ according to their type.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line483">line 483</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line508">line 508</a>
     </li></ul></dd>
     
 
@@ -937,7 +1150,7 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line397">line 397</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line422">line 422</a>
     </li></ul></dd>
     
 
@@ -1270,7 +1483,7 @@ property name that's not valid within the formatting parameter(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line557">line 557</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line582">line 582</a>
     </li></ul></dd>
     
 
@@ -1516,7 +1729,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line522">line 522</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line547">line 547</a>
     </li></ul></dd>
     
 
@@ -1724,7 +1937,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line498">line 498</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line523">line 523</a>
     </li></ul></dd>
     
 
@@ -1880,7 +2093,7 @@ and wrapping the result in double quotes.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line300">line 300</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line325">line 325</a>
     </li></ul></dd>
     
 
@@ -2038,7 +2251,7 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line426">line 426</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line451">line 451</a>
     </li></ul></dd>
     
 
@@ -2252,7 +2465,7 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line262">line 262</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line287">line 287</a>
     </li></ul></dd>
     
 
@@ -2416,7 +2629,7 @@ but without surrounding quotes for text types.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line329">line 329</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line354">line 354</a>
     </li></ul></dd>
     
 

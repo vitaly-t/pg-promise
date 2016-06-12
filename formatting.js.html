@@ -284,7 +284,32 @@ function $formatFunction(funcName, values, capSQL) {
 /**
  * @namespace formatting
  * @description
- * Namespace for all query-formatting functions.
+ * Namespace for all query-formatting functions, available from `pgp.as`, before and after initializing the library.
+ *
+ * @property {function} name
+ * {@link formatting.name name} - formats an SQL name.
+ *
+ * @property {function} text
+ * {@link formatting.text text} - formats a text string.
+ *
+ * @property {function} number
+ * {@link formatting.number number} - formats a number.
+ *
+ * @property {function} buffer
+ * {@link formatting.buffer buffer} - formats a `Buffer` object.
+ *
+ * @property {function} value
+ * {@link formatting.value value} - formats text as an open value.
+ *
+ * @property {function} json
+ * {@link formatting.json json} - formats any value as JSON.
+ *
+ * @property {function} func
+ * {@link formatting.func func} - formats the value returned from a function.
+ *
+ * @property {function} format
+ * {@link formatting.format format} - formats a query according to parameters.
+ *
  */
 var $as = {
 
