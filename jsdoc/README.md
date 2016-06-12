@@ -8,10 +8,9 @@ For additional information see the project's [main page] and [WiKi pages].
 ### Main Types
  
 * [Database] - database-level methods and properties
-* [Task] - task-level methods and properties
+* [Task](http://vitaly-t.github.io/pg-promise/Task.html) - task-level methods and properties
 
 [Database]:http://vitaly-t.github.io/pg-promise/Database.html
-[Task]:http://vitaly-t.github.io/pg-promise/Task.html
 
 ### Special Types
 
@@ -60,4 +59,3 @@ For additional information see the project's [main page] and [WiKi pages].
 [receive]:http://vitaly-t.github.io/pg-promise/global.html#event:receive
 [error]:http://vitaly-t.github.io/pg-promise/global.html#event:error
 [extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
- 
