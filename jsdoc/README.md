@@ -32,7 +32,7 @@ For additional information see the project's [main page] and [WiKi pages].
 
 * [formatting] - the library's query formatting engine
 * [helpers] - to automatically generate `INSERT` and `UPDATE` queries
-* [utils] - to improve support for applications that use many SQL files
+* [utils] - to simplify the use of external SQL files
 * [errors] - custom error types supported by the library
 
 [formatting]:http://vitaly-t.github.io/pg-promise/formatting.html
