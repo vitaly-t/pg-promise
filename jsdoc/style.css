@@ -35,9 +35,9 @@ code span {
 }
 
 nav {
-    background-color: White;
+    background-color: SteelBlue;
     border-width: 0px 1px 0px 0;
-    border-color: #DDD;
+    border-color: SteelBlue;
     border-style: solid;
     padding: 10px 20px 20px 20px;
     width: auto;
@@ -51,12 +51,21 @@ nav {
     overflow-y: auto;
 }
 
-nav ul li a {
+nav h2 a,
+nav h2 a:visited,
+nav div.home-link a,
+nav div.home-link a:visited {
+    color: #FFFFA0;
+}
+
+nav ul li a,
+nav ul li a:visited {
+    color: LightYellow;
     font-size: 16px;
 }
 
 nav h3 {
-    color: #4d4e53;
+    color: LightGreen;
     font-size: 18px;
 }
 
@@ -65,7 +74,7 @@ nav h2 {
 }
 
 .nav li a {
-    color: #707070 !important;
+    color: white !important;
 }
 
 .home-link {
@@ -76,3 +85,6 @@ nav h2 {
     font-size: 16px;
     font-weight: bold;
 }
+
+/* Code Styles */
+
