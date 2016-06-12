@@ -52,7 +52,7 @@ var $npm = {
  * with a query method, a new {@link ParameterizedQuery} object is created implicitly in its place.
  *
  * The type can be used in place of the `query` parameter, with any query method directly. And it never throws any error,
- * leaving it for query methods to reject with {@link ParameterizedQueryError}.
+ * leaving it for query methods to reject with {@link errors.ParameterizedQueryError ParameterizedQueryError}.
  *
  * The type is available from the library's root: `pgp.ParameterizedQuery`.
  *
@@ -65,7 +65,7 @@ var $npm = {
  * @returns {ParameterizedQuery}
  *
  * @see
- * {@link ParameterizedQueryError}
+ * {@link errors.ParameterizedQueryError ParameterizedQueryError}
  *
  * @example
  *
