@@ -4237,6 +4237,8 @@ promise or throws an error, and it will execute <code>COMMIT</code> in all other
 <p>The callback function is called with one parameter - database protocol (same as <code>this</code>), extended with methods
 <a href="Task.html#.batch">batch</a>, <a href="Task.html#.page">page</a>, <a href="Task.html#.sequence">sequence</a>, plus property <a href="Task.html#.ctx">ctx</a> -
 the transaction context object. See <a href="Task.html">Task</a> for more details.</p>
+<p>Note that transactions are to be chosen over tasks only where they are a necessity, because unlike regular tasks,
+transactions are blocking operations, and must be used with caution.</p>
 </div>
 
 

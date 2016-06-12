@@ -989,6 +989,9 @@ function Database(cn, dc, config) {
          * {@link Task.batch batch}, {@link Task.page page}, {@link Task.sequence sequence}, plus property {@link Task.ctx ctx} -
          * the transaction context object. See {@link Task} for more details.
          *
+         * Note that transactions are to be chosen over tasks only where they are a necessity, because unlike regular tasks,
+         * transactions are blocking operations, and must be used with caution.
+         *
          * @param {} tag/cb
          * When the method takes only one parameter, it must be the callback function (or $[ES6 generator]) for the transaction.
          * However, when calling the method with 2 parameters, the first one is always the `tag` - traceable context for the
