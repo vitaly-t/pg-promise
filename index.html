@@ -44,7 +44,34 @@
 
 
     <section>
-        <article><h1>pg-promise API</h1></article>
+        <article><h1>API</h1><p>For additional information see the project's <a href="https://github.com/vitaly-t/pg-promise">main page</a> and <a href="https://github.com/vitaly-t/pg-promise/wiki">WiKi pages</a>.</p>
+<h3>Main Types</h3><ul>
+<li><a href="http://vitaly-t.github.io/pg-promise/Database.html">Database</a> - database-level methods and properties</li>
+<li><a href="http://vitaly-t.github.io/pg-promise/global.html#event:task">Task</a> - task-level methods and properties</li>
+</ul>
+<h3>Special Types</h3><ul>
+<li><a href="http://vitaly-t.github.io/pg-promise/QueryFile.html">QueryFile</a> - type for working with external SQL files</li>
+<li><a href="http://vitaly-t.github.io/pg-promise/PreparedStatement.html">PreparedStatement</a> - type for working with <a href="https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#prepared-statements">Prepared Statements</a></li>
+<li><a href="http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html">ParameterizedQuery</a> - type for working with <a href="https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#parameterized-queries">Parameterized Queries</a></li>
+<li><a href="http://vitaly-t.github.io/pg-promise/TransactionMode.html">TransactionMode</a> - transaction configuration type</li>
+<li><a href="http://vitaly-t.github.io/pg-promise/PromiseAdapter.html">PromiseAdapter</a> - adapter for using non-standard promise libraries</li>
+</ul>
+<h3>Namespaces</h3><ul>
+<li><a href="http://vitaly-t.github.io/pg-promise/formatting.html">formatting</a> - the library's query formatting engine</li>
+<li><a href="http://vitaly-t.github.io/pg-promise/helpers.html">helpers</a> - to automatically generate <code>INSERT</code> and <code>UPDATE</code> queries</li>
+<li><a href="http://vitaly-t.github.io/pg-promise/utils.html">utils</a> - to improve support for applications that use many SQL files</li>
+<li><a href="http://vitaly-t.github.io/pg-promise/errors.html">errors</a> - custom error types supported by the library</li>
+</ul>
+<h3>Events</h3><ul>
+<li><a href="http://vitaly-t.github.io/pg-promise/global.html#event:connect">connect</a> - connecting to the database</li>
+<li><a href="http://vitaly-t.github.io/pg-promise/global.html#event:disconnect">disconnect</a> - disconnecting from the database</li>
+<li><a href="http://vitaly-t.github.io/pg-promise/global.html#event:query">query</a> - executing a query</li>
+<li><a href="http://vitaly-t.github.io/pg-promise/global.html#event:task">task</a> - task start/end events</li>
+<li><a href="http://vitaly-t.github.io/pg-promise/global.html#event:transact">transact</a> - transaction start/end events</li>
+<li><a href="http://vitaly-t.github.io/pg-promise/global.html#event:receive">receive</a> - receiving data from a query</li>
+<li><a href="http://vitaly-t.github.io/pg-promise/global.html#event:error">error</a> - global error handler</li>
+<li><a href="http://vitaly-t.github.io/pg-promise/global.html#event:extend">extend</a> - interface extension event</li>
+</ul></article>
     </section>
 
 
