@@ -224,7 +224,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line500">line 500</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line503">line 503</a>
     </li></ul></dd>
     
 
@@ -406,7 +406,7 @@ application's entry point file, and if not found - throw <a href="external-Error
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line330">line 330</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line333">line 333</a>
     </li></ul></dd>
     
 
@@ -814,7 +814,7 @@ and then it forwards into <a href="utils.html#.camelize">camelize</a>.</p>
 
 
 <div class="description">
-    <p>Synchronously enumerates all SQL files (for a given directory) into an SQL tree.</p>
+    <p>Synchronously enumerates all SQL files (within a given directory) into a camelized SQL tree.</p>
 <p>All property names within the tree are camelized via <a href="utils.html#.camelizeVar">camelizeVar</a>,
 so they can be used in the code directly, as open property names.</p>
 </div>
@@ -878,7 +878,8 @@ so they can be used in the code directly, as open property names.</p>
 
             
 
-            <td class="description last"><p>Directory path where SQL files are located, either absolute or relative to the current directory.</p></td>
+            <td class="description last"><p>Directory path where SQL files are located, either absolute or relative to the current directory.</p>
+<p>SQL files are identified by using <code>.sql</code> extension (case-insensitive).</p></td>
         </tr>
 
     
@@ -1018,7 +1019,8 @@ so they can be used in the code directly, as open property names.</p>
 <li>access errors, when there is no read access to a file or folder</li>
 <li>empty or duplicate camelized property names</li>
 </ul>
-<p>This flag does not affect errors related to invalid input parameters.</p></td>
+<p>This flag does not affect errors related to invalid input parameters, or if you pass in a
+non-existing directory.</p></td>
         </tr>
 
     
@@ -1060,8 +1062,8 @@ so they can be used in the code directly, as open property names.</p>
 
             <td class="description last"><p>A callback function that takes three arguments:</p>
 <ul>
-<li><code>file</code> - full sql file name</li>
-<li><code>name</code> - name of the property that represents the sql file</li>
+<li><code>file</code> - SQL file path, relative or absolute, according to how you specified the search directory</li>
+<li><code>name</code> - name of the property that represents the SQL file</li>
 <li><code>path</code> - property resolution path (full property name)</li>
 </ul>
 <p>If the function returns anything other than <code>undefined</code>, it overrides the corresponding property value in the tree.</p></td>
@@ -1324,7 +1326,7 @@ so they can be used in the code directly, as open property names.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line191">line 191</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line194">line 194</a>
     </li></ul></dd>
     
 
