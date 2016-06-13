@@ -73,7 +73,7 @@ var $npm = {
  *
  * var PQ = require('pg-promise').ParameterizedQuery;
  *
- * // Creating a complete Parameterized Query:
+ * // Creating a complete Parameterized Query with parameters:
  * var findUser = new PQ('SELECT * FROM Users WHERE id = $1', [123]);
  *
  * db.one(findUser)
@@ -88,9 +88,10 @@ var $npm = {
  *
  * var PQ = require('pg-promise').ParameterizedQuery;
  *
- * // Creating a reusable Parameterized Query:
+ * // Creating a reusable Parameterized Query without values:
  * var addUser = new PQ('INSERT INTO Users(name, age) VALUES($1, $2)');
  *
+ * // setting values explicitly:
  * addUser.values = ['John', 30];
  *
  * db.none(addUser)
@@ -101,6 +102,15 @@ var $npm = {
  *         // error;
  *     });
  *
+ * // setting values implicitly, by passing them into the query method:
+ * db.none(addUser, ['Mike', 25])
+ *     .then(()=> {
+ *         // user added;
+ *     })
+ *     .catch(error=> {
+ *         // error;
+ *     });
+ *     
  */
 function ParameterizedQuery(text, values) {
     if (!(this instanceof ParameterizedQuery)) {

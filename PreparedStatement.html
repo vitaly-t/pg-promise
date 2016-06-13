@@ -281,9 +281,9 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>var PS = require('pg-promise').PreparedStatement;// Creating a complete Prepared Statement:var findUser = new PS('find-user', 'SELECT * FROM Users WHERE id = $1', [123]);db.one(findUser)    .then(user=> {        // user found;    })    .catch(error=> {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>var PS = require('pg-promise').PreparedStatement;// Creating a complete Prepared Statement with parameters:var findUser = new PS('find-user', 'SELECT * FROM Users WHERE id = $1', [123]);db.one(findUser)    .then(user=> {        // user found;    })    .catch(error=> {        // error;    });</code></pre>
 
-    <pre class="prettyprint"><code>var PS = require('pg-promise').PreparedStatement;// Creating a reusable Prepared Statement:var addUser = new PS('add-user', 'INSERT INTO Users(name, age) VALUES($1, $2)');addUser.values = ['John', 30];db.none(addUser)    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>var PS = require('pg-promise').PreparedStatement;// Creating a reusable Prepared Statement without values:var addUser = new PS('add-user', 'INSERT INTO Users(name, age) VALUES($1, $2)');// setting values explicitly:addUser.values = ['John', 30];db.none(addUser)    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });// setting values implicitly, by passing them into the query method:db.none(addUser, ['Mike', 25])    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });</code></pre>
 
 
 
@@ -359,7 +359,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line172">line 172</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line181">line 181</a>
     </li></ul></dd>
     
 
@@ -439,7 +439,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line231">line 231</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line240">line 240</a>
     </li></ul></dd>
     
 
@@ -512,7 +512,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line112">line 112</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line121">line 121</a>
     </li></ul></dd>
     
 
@@ -588,7 +588,7 @@ By default, rows arrive as objects.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line192">line 192</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line201">line 201</a>
     </li></ul></dd>
     
 
@@ -661,7 +661,7 @@ The default is 0, which means that all rows must be returned at once.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line212">line 212</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line221">line 221</a>
     </li></ul></dd>
     
 
@@ -738,7 +738,7 @@ for Prepared Statements are cached, with <a href="PreparedStatement.html#name">n
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line131">line 131</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line140">line 140</a>
     </li></ul></dd>
     
 
@@ -816,7 +816,7 @@ is then automatically wrapped into an array</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line152">line 152</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line161">line 161</a>
     </li></ul></dd>
     
 
@@ -896,7 +896,7 @@ or else it returns a <a href="errors.PreparedStatementError.html">PreparedStatem
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line254">line 254</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line263">line 263</a>
     </li></ul></dd>
     
 
@@ -1069,7 +1069,7 @@ or else it returns a <a href="errors.PreparedStatementError.html">PreparedStatem
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line324">line 324</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line333">line 333</a>
     </li></ul></dd>
     
 

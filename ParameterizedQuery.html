@@ -249,9 +249,9 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>var PQ = require('pg-promise').ParameterizedQuery;// Creating a complete Parameterized Query:var findUser = new PQ('SELECT * FROM Users WHERE id = $1', [123]);db.one(findUser)    .then(user=> {        // user found;    })    .catch(error=> {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>var PQ = require('pg-promise').ParameterizedQuery;// Creating a complete Parameterized Query with parameters:var findUser = new PQ('SELECT * FROM Users WHERE id = $1', [123]);db.one(findUser)    .then(user=> {        // user found;    })    .catch(error=> {        // error;    });</code></pre>
 
-    <pre class="prettyprint"><code>var PQ = require('pg-promise').ParameterizedQuery;// Creating a reusable Parameterized Query:var addUser = new PQ('INSERT INTO Users(name, age) VALUES($1, $2)');addUser.values = ['John', 30];db.none(addUser)    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>var PQ = require('pg-promise').ParameterizedQuery;// Creating a reusable Parameterized Query without values:var addUser = new PQ('INSERT INTO Users(name, age) VALUES($1, $2)');// setting values explicitly:addUser.values = ['John', 30];db.none(addUser)    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });// setting values implicitly, by passing them into the query method:db.none(addUser, ['Mike', 25])    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });    </code></pre>
 
 
 
@@ -327,7 +327,7 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line143">line 143</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line153">line 153</a>
     </li></ul></dd>
     
 
@@ -407,7 +407,7 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line183">line 183</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line193">line 193</a>
     </li></ul></dd>
     
 
@@ -483,7 +483,7 @@ By default, rows arrive as objects.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line163">line 163</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line173">line 173</a>
     </li></ul></dd>
     
 
@@ -558,7 +558,7 @@ By default, rows arrive as objects.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line105">line 105</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line115">line 115</a>
     </li></ul></dd>
     
 
@@ -636,7 +636,7 @@ is then automatically wrapped into an array</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line123">line 123</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line133">line 133</a>
     </li></ul></dd>
     
 
@@ -716,7 +716,7 @@ or else it returns a <a href="errors.ParameterizedQueryError.html">Parameterized
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line205">line 205</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line215">line 215</a>
     </li></ul></dd>
     
 
@@ -889,7 +889,7 @@ or else it returns a <a href="errors.ParameterizedQueryError.html">Parameterized
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line267">line 267</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line277">line 277</a>
     </li></ul></dd>
     
 
