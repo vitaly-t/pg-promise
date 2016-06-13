@@ -2,13 +2,6 @@
 
 Complete TypeScript ambient declarations for [pg-promise] version 4.6.2 or later.
 
-| File             | Description                      |
-|------------------|----------------------------------|
-|[pg-promise.d.ts] | Main TypeScript file for [pg-promise]|
-|[pg-subset.d.ts]  | A subset of [pg] that can be useful with [pg-promise]|
-|[pg-minify.d.ts]  | Types from [pg-minify] that's used by [pg-promise]|
-|[ext-promise.d.ts]    | External Promise Provider |
-
 #### Inclusion
 
 Since all TypeScript files are distributed with the library, you can reference it like this: 
@@ -114,14 +107,8 @@ var pgp = pgPromise<IExtensions>({
 
 For a more complete and advanced example of using [pg-promise] with TypeScript, check out [pg-promise-demo]. 
 
-[typings.json]:https://github.com/vitaly-t/pg-promise/blob/master/typings.json
 [Typings]:https://github.com/typings/typings
 [pg-promise-demo]:https://github.com/vitaly-t/pg-promise-demo
 [extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
 [ext-promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/ext-promise.d.ts
-[pg-promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-promise.d.ts
-[pg-minify.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-minify.d.ts
-[pg-subset.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/pg-subset.d.ts
 [pg-promise]:https://github.com/vitaly-t/pg-promise
-[pg-minify]:https://github.com/vitaly-t/pg-minify
-[pg]:https://github.com/brianc/node-postgres

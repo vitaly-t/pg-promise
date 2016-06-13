@@ -1,4 +1,4 @@
-### History of Changes
+### Release History
 
 * 4.6.0 Extending all single-result query methods, plus exposing the [spex] instance. Released: June 10, 2016
 * 4.5.0 Removed support for Configuration Files, set pg dependency to 5.x. Released: June 8, 2016  

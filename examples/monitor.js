@@ -14,9 +14,11 @@
 ////////////////////////////////////////////////////
 
 var promise = require('bluebird'); // or any other Promise/A+ compatible library;
+
 var options = {
     promiseLib: promise // overriding the default (ES6 Promise);
 };
+
 var pgp = require('pg-promise')(options);
 // See all options: https://github.com/vitaly-t/pg-promise#initialization-options
 
@@ -47,7 +49,7 @@ var db = pgp(cn); // database instance;
 // NOTE: The default ES6 Promise doesn't have method `.finally`, but it is
 // available within Bluebird library used here as an example.
 
-db.query("select * from users where active=$1", true)
+db.any("select * from users where active=$1", [true])
     .then(function (data) {
         console.log("DATA:", data);
     })
