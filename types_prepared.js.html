@@ -41,7 +41,7 @@ var $npm = {
  * @description
  * **Alternative Syntax:** `PreparedStatement({name, text, values, ...})` &amp;#8658; {@link PreparedStatement}
  *
- * Constructs a new {@link http://www.postgresql.org/docs/9.5/static/sql-prepare.html Prepared Statement} object.
+ * Constructs a new $[Prepared Statement] object.
  *
  * The alternative syntax supports advanced properties {@link PreparedStatement#binary binary}, {@link PreparedStatement#rowMode rowMode}
  * and {@link PreparedStatement#rows rows}, which are passed into $[pg], but not used by the class.
@@ -62,6 +62,9 @@ var $npm = {
  *
  * @param {string|QueryFile} text
  * A non-empty query string or a {@link QueryFile} object.
+ *
+ * When `values` are present, the query string may only contain the basic variables - `$1`, `$2`, etc, because the query is
+ * formatted on the server, which is one of the key features of $[Prepared Statements].
  *
  * @param {array} [values]
  * Query formatting values. When it is not an `Array` and not `null`/`undefined`, it is automatically wrapped into an array.
@@ -391,6 +394,7 @@ PreparedStatement.prototype.toString = function (level) {
 };
 
 module.exports = PreparedStatement;
+
 </code></pre>
         </article>
     </section>

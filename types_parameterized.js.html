@@ -59,6 +59,9 @@ var $npm = {
  * @param {string|QueryFile} text
  * A non-empty query string or a {@link QueryFile} object.
  *
+ * When `values` are present, the query string may only contain the basic variables - `$1`, `$2`, etc, because the query is
+ * formatted on the server, which is one of the key features of _Parameterized Queries_.
+ *
  * @param {array} [values]
  * Query formatting values. When it is not an `Array` and not `null`/`undefined`, it is automatically wrapped into an array.
  *

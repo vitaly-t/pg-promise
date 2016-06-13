@@ -154,7 +154,9 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
 
             
 
-            <td class="description last"><p>A non-empty query string or a <a href="QueryFile.html">QueryFile</a> object.</p></td>
+            <td class="description last"><p>A non-empty query string or a <a href="QueryFile.html">QueryFile</a> object.</p>
+<p>When <code>values</code> are present, the query string may only contain the basic variables - <code>$1</code>, <code>$2</code>, etc, because the query is
+formatted on the server, which is one of the key features of <a href="http://www.postgresql.org/docs/9.5/static/sql-prepare.html">Prepared Statements</a>.</p></td>
         </tr>
 
     
@@ -358,7 +360,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line170">line 170</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line173">line 173</a>
     </li></ul></dd>
     
 
@@ -438,7 +440,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line229">line 229</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line232">line 232</a>
     </li></ul></dd>
     
 
@@ -511,7 +513,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line110">line 110</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line113">line 113</a>
     </li></ul></dd>
     
 
@@ -587,7 +589,7 @@ By default, rows arrive as objects.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line190">line 190</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line193">line 193</a>
     </li></ul></dd>
     
 
@@ -660,7 +662,7 @@ The default is 0, which means that all rows must be returned at once.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line210">line 210</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line213">line 213</a>
     </li></ul></dd>
     
 
@@ -737,7 +739,7 @@ for Prepared Statements are cached, with <a href="PreparedStatement.html#name">n
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line129">line 129</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line132">line 132</a>
     </li></ul></dd>
     
 
@@ -815,7 +817,7 @@ is then automatically wrapped into an array</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line150">line 150</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line153">line 153</a>
     </li></ul></dd>
     
 
@@ -895,7 +897,7 @@ or else it returns a <a href="errors.PreparedStatementError.html">PreparedStatem
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line252">line 252</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line255">line 255</a>
     </li></ul></dd>
     
 
@@ -1068,7 +1070,7 @@ or else it returns a <a href="errors.PreparedStatementError.html">PreparedStatem
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line322">line 322</a>
+        <a href="types_prepared.js.html">types/prepared.js</a>, <a href="types_prepared.js.html#line325">line 325</a>
     </li></ul></dd>
     
 
