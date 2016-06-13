@@ -466,6 +466,8 @@ as well as method <a href="Database.html#.func">func</a>.</p>
 <div class="description">
     <p>Global notification of acquiring a new database connection from the connection pool,
 i.e. a virtual connection.</p>
+<p>However, for direct calls to method <a href="Database.html#.connect">Database.connect</a> with parameter <code>{direct: true}</code>,
+this event represents a physical connection.</p>
 <p>The library will suppress any error thrown by the handler and write it into the console.</p>
 </div>
 
@@ -560,11 +562,14 @@ i.e. a virtual connection.</p>
             
 
             <td class="description last"><p><strong>Added in v.4.4.4</strong></p>
-<p>It indicates when it is a fresh connection:</p>
+<p>It indicates when it is a fresh physical connection:</p>
 <ul>
 <li><code>true</code> - the connection just has been allocated</li>
 <li><code>false</code> - the connection has been used previously</li>
-</ul></td>
+</ul>
+<p><strong>NOTE:</strong></p>
+<p>This parameter is always <code>true</code> for direct connections (created by calling <a href="Database.html#.connect">Database.connect</a>
+with parameter <code>{direct: true}</code>).</p></td>
         </tr>
 
     
@@ -650,6 +655,8 @@ i.e. a virtual connection.</p>
 <div class="description">
     <p>Global notification of releasing a database connection back to the connection pool,
 i.e. releasing the virtual connection.</p>
+<p>However, when releasing a direct connection (created by calling <a href="Database.html#.connect">Database.connect</a> with parameter
+<code>{direct: true}</code>), this event represents a physical disconnection.</p>
 <p>The library will suppress any error thrown by the handler and write it into the console.</p>
 </div>
 
@@ -761,7 +768,7 @@ i.e. releasing the virtual connection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line59">line 59</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line67">line 67</a>
     </li></ul></dd>
     
 
@@ -918,7 +925,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line348">line 348</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line359">line 359</a>
     </li></ul></dd>
     
 
@@ -1083,7 +1090,7 @@ if you try overriding them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line407">line 407</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line418">line 418</a>
     </li></ul></dd>
     
 
@@ -1609,7 +1616,7 @@ the context object that was passed in.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line97">line 97</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line108">line 108</a>
     </li></ul></dd>
     
 
@@ -1804,7 +1811,7 @@ validation for regular queries, which is executed right after this notification.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line195">line 195</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line206">line 206</a>
     </li></ul></dd>
     
 
@@ -1943,7 +1950,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line262">line 262</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line273">line 273</a>
     </li></ul></dd>
     
 
@@ -2082,7 +2089,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line305">line 305</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line316">line 316</a>
     </li></ul></dd>
     
 
