@@ -308,146 +308,6 @@ as well as method <a href="Database.html#.func">func</a>.</p>
     
 
     
-        <h3 class="subsection-title">Type Definitions</h3>
-
-        
-                
-
-    
-
-    <h4 class="name" id="streamInitCB"><span class="type-signature"></span>streamInitCB<span class="signature">(stream)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Stream initialization callback, used by <a href="Database.html#.stream">Database.stream</a>.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>stream</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="external-Stream.html">external:Stream</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Stream object to initialize streaming.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1179">line 1179</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>var QueryStream = require('pg-query-stream');var JSONStream = require('JSONStream');// you can also use pgp.as.format(query, values, options)// to format queries properly, via pg-promise;var qs = new QueryStream('select * from users');db.stream(qs, function (stream) {        // initiate streaming into the console:        stream.pipe(JSONStream.stringify()).pipe(process.stdout);    })    .then(function (data) {        console.log("Total rows processed:", data.processed,          "Duration in milliseconds:", data.duration);    })    .catch(function (error) {        // error;    });</code></pre>
-
-
-
-            
-    
 
     
         <h3 class="subsection-title">Events</h3>

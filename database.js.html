@@ -649,7 +649,7 @@ function Database(cn, dc, config) {
          * @param {QueryStream} qs
          * Stream object of type $[QueryStream].
          *
-         * @param {streamInitCB} initCB
+         * @param {Database.streamInitCB} initCB
          * Stream initialization callback.
          *
          * It is invoked with the same `this` context as the calling method.
@@ -956,7 +956,8 @@ function Database(cn, dc, config) {
          *
          * @see
          * {@link Task},
-         * {@link Database.tx tx}
+         * {@link Database.tx tx},
+         * $[tags]
          *
          * @example
          *
@@ -1053,7 +1054,8 @@ function Database(cn, dc, config) {
          *
          * @see
          * {@link Task},
-         * {@link Database.task task}
+         * {@link Database.task},
+         * $[tags]
          *
          * @example
          *
@@ -1206,7 +1208,7 @@ module.exports = function (config) {
 };
 
 /**
- * @callback streamInitCB
+ * @callback Database.streamInitCB
  * @description
  * Stream initialization callback, used by {@link Database.stream}.
  *
