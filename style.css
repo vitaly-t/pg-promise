@@ -7,7 +7,7 @@ html {
 }
 
 html, body, section {
-    background-color: #FBFBFB;
+    background-color: #F5F5F5
 }
 
 h4.name {
@@ -35,10 +35,7 @@ code span {
 }
 
 nav {
-    background-color: SteelBlue;
-    border-width: 0px 1px 0px 0;
-    border-color: SteelBlue;
-    border-style: solid;
+    background-color: #404040;
     padding: 10px 20px 20px 20px;
     width: auto;
     top: 0;
