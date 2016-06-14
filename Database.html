@@ -4022,7 +4022,8 @@ is set, it will reject with <code>Streaming doesn't work with native bindings.</
 is reused between all queries, and released only after the task has finished.</p>
 <p>The callback function is called with one parameter - database protocol (same as <code>this</code>), extended with methods
 <a href="Task.html#.batch">batch</a>, <a href="Task.html#.page">page</a>, <a href="Task.html#.sequence">sequence</a>, plus property <a href="Task.html#.ctx">ctx</a> -
-the task context object. See <a href="Task.html">Task</a> for more details.</p>
+the task context object.</p>
+<p>See class <a href="Task.html">Task</a> for more details.</p>
 </div>
 
 
@@ -4081,7 +4082,7 @@ the task context object. See <a href="Task.html">Task</a> for more details.</p>
 
             <td class="description last"><p>When the method takes only one parameter, it must be the callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) for the task.
 However, when calling the method with 2 parameters, the first one is always the <code>tag</code> - traceable context for the
-task (see <a href="https://github.com/vitaly-t/pg-promise/wiki/workflows#tags">tags</a>).</p></td>
+task (see <a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>).</p></td>
         </tr>
 
     
@@ -4213,9 +4214,13 @@ be passed in as the first parameter.</p></td>
     
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// creating a task with a string for the tag:db.task('my-task-name', t=> {        // t.ctx = task context object                // task body, usually returning something    })    .then(data=> {        // success        // data = as returned from the task's callback    })    .catch(error=> {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using the regular callback syntax:db.task(function(t) {        // t = this        // t.ctx = task context object        return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user=> {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(function(data) {        // success        // data = as returned from the task's callback    })    .catch(function(error) {        // error    });</code></pre>
+
+    <pre class="prettyprint"><code>// using the ES6 arrow syntax:db.task(t=> {        // t.ctx = task context object                return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user=> {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data=> {        // success        // data = as returned from the task's callback    })    .catch(error=> {        // error    });</code></pre>
+
+    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.task(function*(t) {        // t = this        // t.ctx = task context object        let user = yield t.one('SELECT id FROM Users WHERE name = $1', 'John');        return yield t.any('SELECT * FROM Events WHERE userId = $1', user.id);    })    .then(function(data) {        // success        // data = as returned from the task's callback    })    .catch(function(error) {        // error    });</code></pre>
 
 
 
@@ -4232,11 +4237,16 @@ be passed in as the first parameter.</p></td>
 
 <div class="description">
     <p>Executes a callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) as a transaction.</p>
-<p>The transaction will execute <code>ROLLBACK</code> in the end, if the callback function returns a rejected
-promise or throws an error, and it will execute <code>COMMIT</code> in all other cases.</p>
+<p>A transaction simply wraps a regular <a href="Database.html#.task">task</a> in automatic queries:</p>
+<ul>
+<li>it executes <code>BEGIN</code> just before invoking the callback function</li>
+<li>it executes <code>COMMIT</code>, if the callback didn't throw any error or return a rejected promise</li>
+<li>it executes <code>ROLLBACK</code>, if the callback did throw an error or return a rejected promise</li>
+</ul>
 <p>The callback function is called with one parameter - database protocol (same as <code>this</code>), extended with methods
 <a href="Task.html#.batch">batch</a>, <a href="Task.html#.page">page</a>, <a href="Task.html#.sequence">sequence</a>, plus property <a href="Task.html#.ctx">ctx</a> -
-the transaction context object. See <a href="Task.html">Task</a> for more details.</p>
+the transaction context object.</p>
+<p>See class <a href="Task.html">Task</a> for more details.</p>
 <p>Note that transactions should be chosen over tasks only where they are necessary, because unlike regular tasks,
 transactions are blocking operations, and must be used with caution.</p>
 </div>
@@ -4297,7 +4307,7 @@ transactions are blocking operations, and must be used with caution.</p>
 
             <td class="description last"><p>When the method takes only one parameter, it must be the callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) for the transaction.
 However, when calling the method with 2 parameters, the first one is always the <code>tag</code> - traceable context for the
-transaction (see <a href="https://github.com/vitaly-t/pg-promise/wiki/workflows#tags">tags</a>).</p></td>
+transaction (see <a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>).</p></td>
         </tr>
 
     
@@ -4375,7 +4385,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line951">line 951</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line994">line 994</a>
     </li></ul></dd>
     
 
@@ -4429,9 +4439,13 @@ passed in as the first parameter.</p></td>
     
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// creating a transaction with a string for the tag:db.tx('my-transaction-name', t=> {        // t.ctx = transaction context object                // transaction body, usually returning something    })    .then(data=> {        // success        // data = as returned from the transaction's callback    })    .catch(error=> {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using the regular callback syntax:db.tx(function(t) {        // t = this        // t.ctx = transaction context object        return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user=> {                return t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);            });    })    .then(function(data) {        // success        // data = as returned from the transaction's callback    })    .catch(function(error) {        // error    });</code></pre>
+
+    <pre class="prettyprint"><code>// using the ES6 arrow syntax:db.tx(t=> {        // t.ctx = transaction context object                return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user=> {                return t.batch([                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']),                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'login'])                ]);            });    })    .then(data=> {        // success        // data = as returned from the transaction's callback    })    .catch(error=> {        // error    });</code></pre>
+
+    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.tx(function*(t) {        // t = this        // t.ctx = transaction context object        let user = yield t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);        return yield t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);    })    .then(function(data) {        // success        // data = as returned from the transaction's callback    })    .catch(function(error) {        // error    });    </code></pre>
 
 
 
