@@ -389,6 +389,7 @@ describe("Error event", function () {
                 .then(function (obj) {
                     sco = obj;
                     query = sco.query("select * from users where($1)", false);
+                    return null;
                 })
                 .finally(function () {
                     sco.done();
@@ -428,6 +429,7 @@ describe("Error event", function () {
                         query = sco.stream(qs, function (s) {
                             s.pipe(JSONStream.stringify());
                         });
+                        return null;
                     })
                     .finally(function () {
                         sco.done();
