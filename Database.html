@@ -4445,7 +4445,7 @@ passed in as the first parameter.</p></td>
 
     <pre class="prettyprint"><code>// using the ES6 arrow syntax:db.tx(t=> {        // t.ctx = transaction context object                return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user=> {                return t.batch([                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']),                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'login'])                ]);            });    })    .then(data=> {        // success        // data = as returned from the transaction's callback    })    .catch(error=> {        // error    });</code></pre>
 
-    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.tx(function*(t) {        // t = this        // t.ctx = transaction context object        let user = yield t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);        return yield t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);    })    .then(function(data) {        // success        // data = as returned from the transaction's callback    })    .catch(function(error) {        // error    });    </code></pre>
+    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.tx(function*(t) {        // t = this        // t.ctx = transaction context object        let user = yield t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);        return yield t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);    })    .then(function(data) {        // success        // data = as returned from the transaction's callback    })    .catch(function(error) {        // error    });</code></pre>
 
 
 
@@ -4560,7 +4560,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1181">line 1181</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1185">line 1185</a>
     </li></ul></dd>
     
 

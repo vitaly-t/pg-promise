@@ -249,8 +249,7 @@ execute multiple queries against the same connection that's released automatical
 
             
 
-            <td class="description last"><p>Database Context that was used when creating the database object.
-See <a href="Database.html">Database</a>.</p></td>
+            <td class="description last"><p>Database Context that was used when creating the database object. See <a href="Database.html">Database</a>.</p></td>
         </tr>
 
     
@@ -292,6 +291,121 @@ See <a href="Database.html">Database</a>.</p></td>
             
 
             <td class="description last"><p>Tag value as it was passed into the task. See methods <a href="Database.html#.task">task</a> and <a href="Database.html#.tx">tx</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Date/Time of when this task or transaction started the execution.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isFresh</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><strong>Added in v.4.6.5</strong></p>
+<p>Indicates when a fresh physical connection is being used.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>finish</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Data/Time of when the operation has finished.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>success</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Once the operation has finished, this property indicates whether it was successful.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>result</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Once the operation has finished, this property contains the result, depending on property <code>success</code>:</p>
+<ul>
+<li>data resolved by the operation, if <code>success</code> = <code>true</code></li>
+<li>error / rejection reason, if <code>success</code> = <code>false</code></li>
+</ul></td>
         </tr>
 
     
@@ -509,7 +623,7 @@ See <a href="Database.html">Database</a>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line85">line 85</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line104">line 104</a>
     </li></ul></dd>
     
 
@@ -752,7 +866,7 @@ See <a href="Database.html">Database</a>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line101">line 101</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line120">line 120</a>
     </li></ul></dd>
     
 
@@ -1034,7 +1148,7 @@ See <a href="Database.html">Database</a>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line118">line 118</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line137">line 137</a>
     </li></ul></dd>
     
 

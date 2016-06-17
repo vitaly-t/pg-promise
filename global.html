@@ -405,7 +405,7 @@ this event represents a physical connection.</p>
 
         <tr>
             
-                <td class="name"><code>fresh</code></td>
+                <td class="name"><code>isFresh</code></td>
             
 
             <td class="type">
@@ -424,7 +424,7 @@ this event represents a physical connection.</p>
             <td class="description last"><p><strong>Added in v.4.4.4</strong></p>
 <p>It indicates when it is a fresh physical connection:</p>
 <ul>
-<li><code>true</code> - the connection just has been allocated</li>
+<li><code>true</code> - the physical connection just has been allocated</li>
 <li><code>false</code> - the connection has been used previously</li>
 </ul>
 <p><strong>NOTE:</strong></p>
@@ -497,7 +497,7 @@ with parameter <code>{direct: true}</code>).</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    connect: function (client, dc, fresh) {        var cp = client.connectionParameters;        console.log("Connected to database:", cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    connect: function (client, dc, isFresh) {        var cp = client.connectionParameters;        console.log("Connected to database:", cp.database);    }};</code></pre>
 
 
 
@@ -785,7 +785,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line359">line 359</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line331">line 331</a>
     </li></ul></dd>
     
 
@@ -950,7 +950,7 @@ if you try overriding them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line418">line 418</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line390">line 390</a>
     </li></ul></dd>
     
 
@@ -1223,212 +1223,10 @@ handles the query formatting.</li>
 
             
 
-            <td class="description last"><p>Task/Transaction Context Object.</p>
+            <td class="description last"><p><em>Task/Transaction Context</em> object. See <a href="Task.html#.ctx">Task.ctx</a> for details.</p>
 <p>This property is always set for events <a href="global.html#event:task">task</a> and <a href="global.html#event:transact">transact</a>, while for events
 <a href="global.html#event:query">query</a>, <a href="global.html#event:receive">receive</a> and <a href="global.html#event:error">error</a> it is only set when the event occurred
-while executing a task or transaction.</p>
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>isTX</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Indicates whether <code>ctx</code> represents a transaction. When <code>false</code>, object <code>ctx</code> represents a task.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>start</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">date</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Date/Time of when this task or transaction started the execution.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>finish</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">date</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Data/Time of when this task or transaction has finished, and the property is set only after this happened.</p>
-<p>Verifying for this property being set is the key condition to determining whether it is a <code>start</code> or <code>finish</code> notification
-during events <a href="global.html#event:task">task</a> and <a href="global.html#event:transact">transact</a>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dc</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Database Context that was used when creating the database object (see <a href="Database.html">Database</a>). It is the same as <code>e.dc</code>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>tag</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Tag value as it was passed into the task or transaction.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>success</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Once the operation is finished, this property indicates whether it was successful.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>result</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Once the operation has finished, this property contains its result, depending on property <code>success</code>:</p>
-<ul>
-<li>data resolved by the operation, if <code>success</code> = <code>true</code></li>
-<li>error / rejection reason, if <code>success</code> = <code>false</code></li>
-</ul></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>context</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>If the operation was invoked with an object context - <code>task.call(obj,...)</code> or <code>tx.call(obj,...)</code>, this property is set with
-the context object that was passed in.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+while executing a task or transaction.</p></td>
         </tr>
 
     
@@ -1671,7 +1469,7 @@ validation for regular queries, which is executed right after this notification.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line206">line 206</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line178">line 178</a>
     </li></ul></dd>
     
 
@@ -1810,7 +1608,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line273">line 273</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line245">line 245</a>
     </li></ul></dd>
     
 
@@ -1949,7 +1747,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line316">line 316</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line288">line 288</a>
     </li></ul></dd>
     
 

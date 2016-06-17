@@ -1116,7 +1116,7 @@ function Database(cn, dc, config) {
          *     .catch(function(error) {
          *         // error
          *     });
-         *     
+         *
          */
         obj.tx = function (p1, p2) {
             return taskProcessor.call(this, p1, p2, true);
@@ -1164,10 +1164,12 @@ function Database(cn, dc, config) {
             }
 
             var tsk = new config.$npm.task(taskCtx, tag, isTX, config);
+
             extend(taskCtx, tsk);
 
             if (taskCtx.db) {
                 // reuse existing connection;
+                $npm.utils.addReadProp(tsk.ctx, 'isFresh', taskCtx.db.isFresh);
                 return config.$npm.task.exec(taskCtx, tsk, isTX, config);
             }
 
@@ -1175,6 +1177,7 @@ function Database(cn, dc, config) {
             return config.$npm.connect.pool(taskCtx)
                 .then(function (db) {
                     taskCtx.connect(db);
+                    $npm.utils.addReadProp(tsk.ctx, 'isFresh', db.isFresh);
                     return config.$npm.task.exec(taskCtx, tsk, isTX, config);
                 })
                 .then(function (data) {
@@ -1197,6 +1200,7 @@ function Database(cn, dc, config) {
         // freeze the protocol permanently;
         $npm.utils.lock(obj, true, ctx.options);
     }
+
 }
 
 module.exports = function (config) {
