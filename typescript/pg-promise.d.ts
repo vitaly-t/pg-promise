@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.6.2 or later.
+// Requires pg-promise v4.6.5 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -128,10 +128,10 @@ declare module 'pg-promise' {
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.any
         any(query:TQuery, values?:any):XPromise<Array<any>>;
-        
+
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.result
         result(query:TQuery, values?:any, cb?:(value:any)=>any, thisArg?:any):XPromise<pg.IResult>;
-        
+
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.stream
         stream(qs:Object, init:(stream:Object)=>void):XPromise<{processed:number, duration:number}>;
 
@@ -213,16 +213,21 @@ declare module 'pg-promise' {
     }
 
     // Event context extension for tasks + transactions;
-    // See: http://vitaly-t.github.io/pg-promise/global.html#event:query
+    // See: http://vitaly-t.github.io/pg-promise/Task.html#.ctx
     interface ITaskContext {
+
+        // these are set in the beginning of each task/transaction:
+        context:any;
+        isFresh:boolean;
         isTX:boolean;
         start:Date;
-        finish:Date;
         tag:any;
         dc:any;
+
+        // these are set at the end of each task/transaction:
+        finish:Date;
         success:boolean;
         result:any;
-        context:Object;
     }
 
     // Generic Event Context interface;

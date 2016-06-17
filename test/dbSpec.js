@@ -222,7 +222,9 @@ describe("Connection", function () {
                     error = e;
                 })
                 .finally(function () {
-                    sco.done();
+                    if (sco) {
+                        sco.done();
+                    }
                     done();
                 });
         });
