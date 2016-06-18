@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.6.5 or later.
+// Requires pg-promise v4.7.0 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -605,10 +605,11 @@ declare module 'pg-promise' {
         }
 
     }
-
+    
     // Library's Initialization Options
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface IOptions<Ext> {
+        noWarnings?:boolean;
         pgFormatting?:boolean;
         pgNative?:boolean,
         promiseLib?:any;

@@ -81,7 +81,7 @@ describe("Library entry function", function () {
         describe("without any options", function () {
             var result;
             beforeEach(function (done) {
-                var db = header().db;
+                var db = header({noWarnings: true}).db;
                 db.query("select * from users")
                     .then(function (data) {
                         result = data;
