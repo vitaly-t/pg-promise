@@ -1057,7 +1057,7 @@ there are no columns to be updated or there is no data (when <code>data</code> i
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var pgp = require('pg-promise')();var cs = new pgp.helpers.ColumnSet(['?one', 'two:json'], {table: 'my-table'});//console.log(cs);//=>// ColumnSet {//    table: "my-table"//    columns: [//        Column {//            name: "one"//            cnd: true//        }//        Column {//            name: "two"//            mod: ":json"//        }//    ]// }var csMerged = cs.merge(['two', 'three^']);console.log(csMerged);//=>// ColumnSet {//    table: "my-table"//    columns: [//        Column {//            name: "one"//            cnd: true//        }//        Column {//            name: "two"//        }//        Column {//            name: "three"//            mod: "^"//        }//    ]// }</code></pre>
+    <pre class="prettyprint"><code>var pgp = require('pg-promise')();var cs = new pgp.helpers.ColumnSet(['?one', 'two:json'], {table: 'my-table'});console.log(cs);//=>// ColumnSet {//    table: "my-table"//    columns: [//        Column {//            name: "one"//            cnd: true//        }//        Column {//            name: "two"//            mod: ":json"//        }//    ]// }var csMerged = cs.merge(['two', 'three^']);console.log(csMerged);//=>// ColumnSet {//    table: "my-table"//    columns: [//        Column {//            name: "one"//            cnd: true//        }//        Column {//            name: "two"//        }//        Column {//            name: "three"//            mod: "^"//        }//    ]// }</code></pre>
 
 
 
