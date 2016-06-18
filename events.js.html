@@ -520,9 +520,9 @@ var $events = {
 
         /* istanbul ignore if */
         if (!$npm.main.suppressErrors) {
-            console.error("Unexpected error in '" + event + "' event handler.");
+            $npm.utils.printError("Unexpected error in '" + event + "' event handler.");
             if (!$npm.utils.isNull(err)) {
-                console.error(err.stack || err.message || err);
+                $npm.utils.printError(err.stack || err.message || err);
             }
         }
     }

@@ -49,6 +49,19 @@ var $arr = require('./array');
  * Represents the database protocol, extensible via event {@link event:extend extend}.
  * This type is not available directly, it can only be created via the library's base call.
  *
+ * **IMPORTANT:**
+ *
+ * For any given connection, you should only create a single database object in a separate module,
+ * to be shared in your application. If instead you keep creating the database object dynamically,
+ * your application will suffer from loss in performance and memory leaks because of event handlers
+ * that each database object needs to set up.
+ *
+ * Starting with version 4.7.0, if you create more than one database object for the same connection,
+ * you will see the following warning in a development environment (`NODE_ENV` = `development`):
+ * `WARNING: Creating a duplicate database object for the same connection.`
+ *
+ * See also property `noWarnings` in {@link module:pg-promise Initialization Options}.
+ *
  * @param {String|Object} cn
  * Database connection details, which can be:
  *
@@ -89,18 +102,26 @@ var $arr = require('./array');
  * {@link event:extend extend}
  *
  * @example
+ * 'use strict';
+ *
  * // Loading and initializing the library:
  * var pgp = require('pg-promise')({
  *     // Initialization Options
  * });
  *
+ * // Preparing the connection details:
  * var cn = "postgres://username:password@host:port/database";
  *
  * // Creating a new database instance from the connection details:
  * var db = pgp(cn);
  *
+ * // Exporting the database object:
+ * module.exports = db;
  */
 function Database(cn, dc, config) {
+
+    checkForDuplicates(cn, config);
+    setErrorHandler(cn, dc, config);
 
     var $p = config.promise;
 
@@ -1201,6 +1222,33 @@ function Database(cn, dc, config) {
         $npm.utils.lock(obj, true, ctx.options);
     }
 
+}
+
+var dbObjects = {};
+
+function checkForDuplicates(cn, config) {
+    var cnKey = JSON.stringify(cn);
+    if (cnKey in dbObjects) {
+        if (!config.options.noWarnings) {
+            var msg = "WARNING: Creating a duplicate database object for the same connection.\n" +
+                new Error().stack.split('\n').slice(4, 9).join('\n') + '\n';
+            $npm.utils.printWarning(msg);
+        }
+    } else {
+        dbObjects[cnKey] = true;
+    }
+}
+
+function setErrorHandler(cn, dc, config) {
+    // this event only happens when the connection is lost physically,
+    // which cannot be tested automatically; removing from coverage:
+    // istanbul ignore next
+    config.pgp.pg.on('error', function (err) {
+        $npm.events.error(config.options, err, {
+            cn: $npm.utils.getSafeConnection(cn),
+            dc: dc
+        });
+    });
 }
 
 module.exports = function (config) {

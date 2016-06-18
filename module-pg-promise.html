@@ -349,6 +349,50 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
 
         <tr>
             
+                <td class="name"><code>noWarnings</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p><strong>Added in v.4.7.0</strong></p>
+<p>Disables all diagnostic warnings in the library.</p>
+<p>If it is not set (missing or <code>undefined</code>), it will default to the following:</p>
+<ul>
+<li><code>true</code>, if <code>NODE_ENV</code> != <code>development</code></li>
+<li><code>false</code>, if <code>NODE_ENV</code> = <code>development</code></li>
+</ul>
+<p>This property can be set dynamically (before or after initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>connect</code></td>
             
 
@@ -805,7 +849,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line252">line 252</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line267">line 267</a>
     </li></ul></dd>
     
 
@@ -885,7 +929,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line205">line 205</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line220">line 220</a>
     </li></ul></dd>
     
 
@@ -958,7 +1002,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line325">line 325</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line340">line 340</a>
     </li></ul></dd>
     
 
@@ -1031,7 +1075,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line217">line 217</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line232">line 232</a>
     </li></ul></dd>
     
 
@@ -1111,7 +1155,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line264">line 264</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line279">line 279</a>
     </li></ul></dd>
     
 
@@ -1184,7 +1228,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line294">line 294</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line309">line 309</a>
     </li></ul></dd>
     
 
@@ -1261,7 +1305,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line193">line 193</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line208">line 208</a>
     </li></ul></dd>
     
 
@@ -1334,7 +1378,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line304">line 304</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line319">line 319</a>
     </li></ul></dd>
     
 
@@ -1407,7 +1451,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line284">line 284</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line299">line 299</a>
     </li></ul></dd>
     
 
@@ -1480,7 +1524,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line314">line 314</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line329">line 329</a>
     </li></ul></dd>
     
 
@@ -1553,7 +1597,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line274">line 274</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line289">line 289</a>
     </li></ul></dd>
     
 
@@ -1626,7 +1670,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line229">line 229</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line244">line 244</a>
     </li></ul></dd>
     
 
@@ -1706,7 +1750,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line345">line 345</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line360">line 360</a>
     </li></ul></dd>
     
 
@@ -1779,7 +1823,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line335">line 335</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line350">line 350</a>
     </li></ul></dd>
     
 
