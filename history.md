@@ -1,5 +1,6 @@
 ### Release History
 
+* 4.7.0 Added diagnostics for invalid use of the library. Released: June 18, 2016
 * 4.6.0 Extending all single-result query methods, plus exposing the [spex] instance. Released: June 10, 2016
 * 4.5.0 Removed support for Configuration Files, set pg dependency to 5.x. Released: June 8, 2016  
 * 4.4.2 Added support for [Configuration Path]. Released: June 5, 2016

@@ -104,7 +104,7 @@ The `connection` parameter can be any of the following:
 * [Connection String]
 
 Object `db` represents the [Database] protocol with lazy connection, i.e. only the actual query methods acquire
-and release the connection. Therefore, you should create only one global/shared `db` object per connection details.
+and release the connection. You should create only one global/shared `db` object per connection details.
 
 ## Documentation
 
