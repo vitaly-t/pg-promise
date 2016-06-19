@@ -58,17 +58,17 @@ var $arr = require('./array'),
  * handlers that each {@link Database} object needs to set up.
  *
  * **Starting with v.4.7.0:**
- * 
+ *
  * If you create more than one {@link Database} object for the same connection, you will see the following warning
  * in a development environment (when `NODE_ENV` = `development`):
- * 
+ *
  * `WARNING: Creating a duplicate database object for the same connection`.
- * 
+ *
  * And since every {@link Database} object needs to set up its own event listeners, you are likely to see the following
  * warning in the console also:
- * 
+ *
  * `Warning: Possible EventEmitter memory leak detected. 11 error listeners added. Use emitter.setMaxListeners() to increase limit`.
- * 
+ *
  * If you ever see any of those warnings, do not try increasing the limit, this won't help you.
  * Instead, rectify your {@link Database} object initialization, so there is only one object per connection details.
  * See the example provided below.
@@ -1243,8 +1243,11 @@ function checkForDuplicates(cn, config) {
     var cnKey = JSON.stringify(cn);
     if (cnKey in dbObjects) {
         if (!config.options.noWarnings) {
+            // from the call stack, we take only lines starting with the client's
+            // source code, and only those that contain a full path inside brackets,
+            // indicating a reference to the client's source code:
             var stack = new Error().stack.split('\n').slice(4).filter(function (line) {
-                return line.match(/\(.*(\\+|\/+).*\)/);
+                return line.match(/\(.*(\\+|\/+).*\)/); // contains \ or / inside ()
             }).join('\n');
             var msg = "WARNING: Creating a duplicate database object for the same connection." +
                 EOL + stack + EOL;
