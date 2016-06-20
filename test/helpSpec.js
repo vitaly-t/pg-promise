@@ -277,6 +277,13 @@ describe("TableName", function () {
             expect(t.toString()).toBe(t.inspect());
         });
     });
+
+    describe("custom-type formatting", function () {
+        var t = new helpers.TableName({table: 'table', schema: 'schema'});
+        it("must return the full name", function () {
+            expect(t.formatDBType()).toBe(t.name);
+        });
+    });
 });
 
 
