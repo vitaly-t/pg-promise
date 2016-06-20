@@ -30,6 +30,7 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 var $npm = {
+    manakin: require('manakin'),
     result: require('./result'),
     special: require('./special'),
     context: require('./cnContext'),
@@ -1251,7 +1252,7 @@ function checkForDuplicates(cn, config) {
             }).join('\n');
             var msg = "WARNING: Creating a duplicate database object for the same connection." +
                 EOL + stack + EOL;
-            console.warn(msg);
+            $npm.manakin.warn(msg);
         }
     } else {
         dbObjects[cnKey] = true;
