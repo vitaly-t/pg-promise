@@ -610,6 +610,14 @@ describe("Method as.name", function () {
             expect(pgp.as.name(getName)).toBe('"name"');
         });
     });
+
+    describe("with *", function () {
+        it("must return the original string", function () {
+            expect(pgp.as.name('*')).toBe('*');
+            expect(pgp.as.name(' \t *\t ')).toBe(' \t *\t ');
+        });
+    });
+
 });
 
 describe("Method as.format", function () {

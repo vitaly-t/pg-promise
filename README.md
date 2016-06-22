@@ -237,6 +237,10 @@ makes your application impervious to sql injection.
 
 See methods: [as.name], [as.format]
 
+**Added in v.4.7.7:**
+
+If the variable contains only a single `*` (trailing spaces are ignored), then it is used directly (unescaped).
+
 ## Query Result Mask
 
 In order to eliminate the chances of unexpected query results and thus make the code more robust,
