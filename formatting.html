@@ -1993,9 +1993,10 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
 
 
 <div class="description">
-    <p>Properly escapes an sql name or identifier, fixing double-quote symbols
-and wrapping the result in double quotes.</p>
+    <p>Properly escapes an sql name or identifier, fixing double-quote symbols and wrapping the result in double quotes.</p>
 <p>Implements a safe way to format SQL Names that neutralizes SQL Injection.</p>
+<p><strong>Added in v.4.7.7:</strong></p>
+<p>If the <code>name</code> contains only a single <code>*</code> (trailing spaces are ignored), then <code>name</code> is returned exactly as is.</p>
 </div>
 
 
@@ -2120,8 +2121,7 @@ and wrapping the result in double quotes.</p>
 
         
 <div class="param-desc">
-    <p>The SQL Name/Identifier properly escaped for compliance with the PostgreSQL standard
-for SQL names and identifiers.</p>
+    <p>The SQL Name/Identifier properly escaped for compliance with the PostgreSQL standard for SQL names and identifiers.</p>
 </div>
 
 
