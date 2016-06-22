@@ -1,5 +1,6 @@
 'use strict';
 
+var capture = require('./db/capture');
 var pgResult = require('pg/lib/result');
 var header = require('./db/header');
 var promise = header.defPromise;
@@ -210,27 +211,19 @@ describe("Connection", function () {
         });
     });
 
-    describe("invalid end() call", function () {
-        var sco, error;
+    describe("direct end() call", function () {
+        var txt;
         beforeEach(function (done) {
             db.connect()
                 .then(function (obj) {
-                    sco = obj;
-                    sco.client.end();
-                })
-                .catch(function (e) {
-                    error = e;
-                })
-                .finally(function () {
-                    if (sco) {
-                        sco.done();
-                    }
+                    var c = capture();
+                    obj.client.end();
+                    txt = c();
                     done();
                 });
         });
-        it("must report an error", function () {
-            expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Cannot invoke client.end() directly.');
+        it("must be reported into the console", function () {
+            expect(txt).toContain('Abnormal client.end() call, due to invalid code or failed server connection.');
         });
     });
 
@@ -366,25 +359,19 @@ describe("Direct Connection", function () {
         });
     });
 
-    describe("invalid end() call", function () {
-        var sco, error;
+    describe("direct end() call", function () {
+        var txt;
         beforeEach(function (done) {
             db.connect({direct: true})
                 .then(function (obj) {
-                    sco = obj;
-                    sco.client.end();
-                })
-                .catch(function (e) {
-                    error = e;
-                })
-                .finally(function () {
-                    sco.done();
+                    var c = capture();
+                    obj.client.end();
+                    txt = c();
                     done();
                 });
         });
-        it("must report an error", function () {
-            expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Cannot invoke client.end() directly.');
+        it("must be reported into the console", function () {
+            expect(txt).toContain('Abnormal client.end() call, due to invalid code or failed server connection.');
         });
     });
 
