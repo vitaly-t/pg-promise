@@ -209,7 +209,7 @@ depending on the database context.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line18">line 18</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line17">line 17</a>
     </li></ul></dd>
     
 
@@ -603,9 +603,10 @@ The connection must be released in the end of the chain by calling method <code>
 <p>This is an older, low-level approach to chaining queries on the same connection.
 A newer and safer approach is via methods <a href="Database.html#.task">task</a> and <a href="Database.html#.tx">tx</a> (for transactions),
 which allocate and release the shared connection automatically.</p>
-<p><strong>NOTE:</strong> Even though this method exposes a <a href="external-Client.html">Client</a> object via property <code>client</code>, you cannot call
-<code>client.end()</code> directly, or it will throw <a href="external-Error.html">Error</a> = <code>Cannot invoke client.end() directly.</code>
-You can only call method <code>done()</code> to release the connection.</p>
+<p><strong>NOTE:</strong> Even though this method exposes a <a href="external-Client.html">Client</a> object via property <code>client</code>,
+you cannot call <code>client.end()</code> directly, or it will print an error into the console:
+<code>Abnormal client.end() call, due to invalid code or failed server connection.</code>
+You should only call method <code>done()</code> to release the connection.</p>
 </div>
 
 
@@ -784,7 +785,7 @@ and therefore cannot scale. This option is only suitable for global connection u
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line113">line 113</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line112">line 112</a>
     </li></ul></dd>
     
 
@@ -4576,7 +4577,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1253">line 1253</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1246">line 1246</a>
     </li></ul></dd>
     
 
