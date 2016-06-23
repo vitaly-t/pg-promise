@@ -1118,7 +1118,8 @@ describe("Transactions", function () {
                     });
             });
             it("must reject", function () {
-                expect(error).toBe("Callback function is required for the transaction.");
+                expect(error instanceof TypeError).toBe(true);
+                expect(error.message).toBe("Callback function is required for the transaction.");
             });
         });
         describe("for a task", function () {
@@ -1133,7 +1134,8 @@ describe("Transactions", function () {
                     });
             });
             it("must reject", function () {
-                expect(error).toBe("Callback function is required for the task.");
+                expect(error instanceof TypeError).toBe(true);
+                expect(error.message).toBe("Callback function is required for the task.");
             });
         });
 
