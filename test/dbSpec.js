@@ -1681,6 +1681,91 @@ describe("Task", function () {
 
 });
 
+describe("negative query formatting", function () {
+
+    describe("with invalid property name", function () {
+        var error;
+        beforeEach(function (done) {
+            db.one('select ${invalid}', {})
+                .catch(function (e) {
+                    error = e;
+                    done();
+                });
+        });
+        it("must reject with correct error", function () {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe("Property 'invalid' doesn't exist.");
+        });
+    });
+
+    describe("with invalid variable index", function () {
+        var error;
+        beforeEach(function (done) {
+            db.one('select $1', [])
+                .catch(function (e) {
+                    error = e;
+                    done();
+                });
+        });
+        it("must reject with correct error", function () {
+            expect(error instanceof RangeError).toBe(true);
+            expect(error.message).toBe("Variable $1 out of range. Parameters array length: 0");
+        });
+    });
+
+    describe("with formatting parameter throwing error", function () {
+        var error;
+        beforeEach(function (done) {
+            db.one('select $1', [function () {
+                throw new Error("ops!");
+            }])
+                .catch(function (e) {
+                    error = e;
+                    done();
+                });
+        });
+        it("must reject with correct error", function () {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe("ops!");
+        });
+    });
+
+    describe("with formatting parameter throwing value", function () {
+        var error;
+        beforeEach(function (done) {
+            db.one('select $1', [function () {
+                throw 123;
+            }])
+                .catch(function (e) {
+                    error = e;
+                    done();
+                });
+        });
+        it("must reject with correct error", function () {
+            expect(error).toBe(123);
+        });
+    });
+
+    describe("with formatting parameter throwing undefined", function () {
+        var error, handled;
+        beforeEach(function (done) {
+            db.one('select $1', [function () {
+                throw undefined;
+            }])
+                .catch(function (e) {
+                    handled = true;
+                    error = e;
+                    done();
+                });
+        });
+        it("must reject with correct error", function () {
+            expect(handled).toBe(true);
+            expect(error).toBeUndefined();
+        });
+    });
+
+});
+
 if (jasmine.Runner) {
     var _finishCallback = jasmine.Runner.prototype.finishCallback;
     jasmine.Runner.prototype.finishCallback = function () {

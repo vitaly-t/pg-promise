@@ -160,8 +160,7 @@ describe("Query event", function () {
         });
         it("must reject with undefined", function () {
             expect(handled).toBe(true);
-            expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe('');
+            expect(result).toBeUndefined();
         });
     });
 
@@ -417,11 +416,11 @@ describe("Error event", function () {
 
     if (!options.pgNative) {
         describe("for loose stream requests", function () {
-            var errTxt, r, context, counter = 0, msg = "Loose request outside an expired connection.";
+            var error, r, context, counter = 0, msg = "Loose request outside an expired connection.";
             beforeEach(function (done) {
                 options.error = function (err, e) {
                     counter++;
-                    errTxt = err;
+                    error = err;
                     context = e;
                 };
                 var query, sco;
@@ -446,8 +445,10 @@ describe("Error event", function () {
                     });
             });
             it("must notify with correct error", function () {
-                expect(errTxt).toBe(msg);
-                expect(r).toBe(msg);
+                expect(error instanceof Error).toBe(true);
+                expect(r instanceof Error).toBe(true);
+                expect(error.message).toBe(msg);
+                expect(r.message).toBe(msg);
                 expect(context.query).toBe("select $1::int");
                 expect(context.client).toBeUndefined();
                 expect(context.params).toEqual(['123']);
@@ -519,20 +520,19 @@ describe("Receive event", function () {
     });
 
     describe("query negative", function () {
-        var result;
+        var result, error = new Error("ops!");
         beforeEach(function (done) {
             options.receive = function () {
-                throw "ops!";
+                throw error;
             };
             db.one("select $1 as value", [123])
-                .catch(function (error) {
-                    result = error;
+                .catch(function (reason) {
+                    result = reason;
                     done();
                 });
         });
         it("must reject with the right error", function () {
-            expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe("ops!");
+            expect(result).toBe(error);
         });
     });
 
@@ -551,8 +551,7 @@ describe("Receive event", function () {
         });
         it("must reject with undefined", function () {
             expect(handled).toBe(true);
-            expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe('');
+            expect(result).toBeUndefined();
         });
     });
 
