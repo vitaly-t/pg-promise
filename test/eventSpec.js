@@ -287,7 +287,7 @@ describe("Error event", function () {
                 });
         });
         it("must reject with correct error", function () {
-            expect(error instanceof Error).toBe(true);
+            expect(error instanceof TypeError).toBe(true);
             expect(error.message).toBe("Invalid Query Result Mask specified.");
             expect(context.query).toBe("Bla-Bla");
             expect(context.params).toBeUndefined();

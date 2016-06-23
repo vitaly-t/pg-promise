@@ -916,15 +916,10 @@ describe("Executing method query", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result.length).toBe(9);
-            expect(result[0].message).toBe(error);  // reject for an empty string;
-            expect(result[1].message).toBe(error);  // reject for number as a string;
-            expect(result[2].message).toBe(error);  // reject for a negative integer;
-            expect(result[3].message).toBe(error);  // reject for a 0;
-            expect(result[4].message).toBe(error);  // reject for a large number;
-            expect(result[5].message).toBe(error);  // reject for a NaN;
-            expect(result[7].message).toBe(error);  // reject for Infinity;
-            expect(result[7].message).toBe(error);  // reject for -Infinity;
-            expect(result[8].message).toBe(error);  // reject for a float;
+            for (var i = 0; i < 9; i++) {
+                expect(result[i] instanceof TypeError).toBe(true);
+                expect(result[i].message).toBe(error);
+            }
         });
     });
 
@@ -1314,7 +1309,7 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeNull();
-            expect(error instanceof Error).toBe(true);
+            expect(error instanceof TypeError).toBe(true);
             expect(error.message).toBe("Invalid Query Result Mask specified.");
         });
     });
@@ -1332,7 +1327,7 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeNull();
-            expect(error instanceof Error).toBe(true);
+            expect(error instanceof TypeError).toBe(true);
             expect(error.message).toBe("Invalid Query Result Mask specified.");
         });
     });
@@ -1350,7 +1345,7 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeNull();
-            expect(error instanceof Error).toBe(true);
+            expect(error instanceof TypeError).toBe(true);
             expect(error.message).toBe("Invalid Query Result Mask specified.");
         });
     });
@@ -1369,7 +1364,7 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeNull();
-            expect(error instanceof Error).toBe(true);
+            expect(error instanceof TypeError).toBe(true);
             expect(error.message).toBe("Invalid Query Result Mask specified.");
         });
     });
