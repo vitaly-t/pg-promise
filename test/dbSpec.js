@@ -885,11 +885,11 @@ describe("Executing method query", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result.length).toBe(5);
-            expect(result[0]).toBe($errors.query);  // reject to an undefined query;
-            expect(result[1]).toBe($errors.query);  // reject to an empty-string query;
-            expect(result[2]).toBe($errors.query);  // reject to a white-space query string;
-            expect(result[3]).toBe($errors.query);  // reject to an invalid-type query;
-            expect(result[4]).toBe($errors.query);  // reject to a null query;
+            expect(result[0].message).toBe($errors.query);  // reject to an undefined query;
+            expect(result[1].message).toBe($errors.query);  // reject to an empty-string query;
+            expect(result[2].message).toBe($errors.query);  // reject to a white-space query string;
+            expect(result[3].message).toBe($errors.query);  // reject to an invalid-type query;
+            expect(result[4].message).toBe($errors.query);  // reject to a null query;
         });
     });
 
@@ -916,15 +916,15 @@ describe("Executing method query", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(result.length).toBe(9);
-            expect(result[0]).toBe(error);  // reject for an empty string;
-            expect(result[1]).toBe(error);  // reject for number as a string;
-            expect(result[2]).toBe(error);  // reject for a negative integer;
-            expect(result[3]).toBe(error);  // reject for a 0;
-            expect(result[4]).toBe(error);  // reject for a large number;
-            expect(result[5]).toBe(error);  // reject for a NaN;
-            expect(result[7]).toBe(error);  // reject for Infinity;
-            expect(result[7]).toBe(error);  // reject for -Infinity;
-            expect(result[8]).toBe(error);  // reject for a float;
+            expect(result[0].message).toBe(error);  // reject for an empty string;
+            expect(result[1].message).toBe(error);  // reject for number as a string;
+            expect(result[2].message).toBe(error);  // reject for a negative integer;
+            expect(result[3].message).toBe(error);  // reject for a 0;
+            expect(result[4].message).toBe(error);  // reject for a large number;
+            expect(result[5].message).toBe(error);  // reject for a NaN;
+            expect(result[7].message).toBe(error);  // reject for Infinity;
+            expect(result[7].message).toBe(error);  // reject for -Infinity;
+            expect(result[8].message).toBe(error);  // reject for a float;
         });
     });
 
@@ -1314,7 +1314,8 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeNull();
-            expect(error).toBe("Invalid Query Result Mask specified.");
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe("Invalid Query Result Mask specified.");
         });
     });
     it("method 'query' must throw an error when QRM is > 6", function () {
@@ -1331,7 +1332,8 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeNull();
-            expect(error).toBe("Invalid Query Result Mask specified.");
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe("Invalid Query Result Mask specified.");
         });
     });
     it("method 'query' must throw an error when QRM is < 1", function () {
@@ -1348,7 +1350,8 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeNull();
-            expect(error).toBe("Invalid Query Result Mask specified.");
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe("Invalid Query Result Mask specified.");
         });
     });
 
@@ -1366,7 +1369,8 @@ describe("Queries must not allow invalid QRM (Query Request Mask) combinations",
         }, "Query timed out", 5000);
         runs(function () {
             expect(result).toBeNull();
-            expect(error).toBe("Invalid Query Result Mask specified.");
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe("Invalid Query Result Mask specified.");
         });
     });
 
@@ -1533,7 +1537,8 @@ describe("Querying a function", function () {
         it("must reject with the right error", function () {
             expect(result.length).toBe(8);
             for (var i = 0; i < result.length; i++) {
-                expect(result[i]).toBe($errors.func);
+                expect(result[i] instanceof Error).toBe(true);
+                expect(result[i].message).toBe($errors.func);
             }
         });
     });

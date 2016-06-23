@@ -26,11 +26,11 @@ describe("Method stream", function () {
         var result;
         beforeEach(function (done) {
             promise.any([
-                    db.stream(),
-                    db.stream(null),
-                    db.stream('test'),
-                    db.stream({})
-                ])
+                db.stream(),
+                db.stream(null),
+                db.stream('test'),
+                db.stream({})
+            ])
                 .then(dummy, function (reason) {
                     result = reason;
                     done();
@@ -39,7 +39,8 @@ describe("Method stream", function () {
         it("must throw an error", function () {
             expect(result.length).toBe(4);
             for (var i = 0; i < result.length; i++) {
-                expect(result[i]).toBe("Invalid or missing stream object.");
+                expect(result[i] instanceof TypeError).toBe(true);
+                expect(result[i].message).toBe("Invalid or missing stream object.");
             }
         });
     });
@@ -47,15 +48,15 @@ describe("Method stream", function () {
         var result;
         beforeEach(function (done) {
             promise.any([
-                    db.stream({
-                        _reading: true,
-                        state: undefined
-                    }),
-                    db.stream({
-                        _reading: false,
-                        state: 'unknown'
-                    })
-                ])
+                db.stream({
+                    _reading: true,
+                    state: undefined
+                }),
+                db.stream({
+                    _reading: false,
+                    state: 'unknown'
+                })
+            ])
                 .then(dummy, function (reason) {
                     result = reason;
                     done();
@@ -64,7 +65,8 @@ describe("Method stream", function () {
         it("must throw an error", function () {
             expect(result.length).toBe(2);
             for (var i = 0; i < result.length; i++) {
-                expect(result[i]).toBe("Invalid stream state.");
+                expect(result[i] instanceof Error).toBe(true);
+                expect(result[i].message).toBe("Invalid stream state.");
             }
         });
         describe("with invalid initialization callback", function () {
@@ -75,11 +77,11 @@ describe("Method stream", function () {
                     state: 'initialized'
                 };
                 promise.any([
-                        db.stream(stream),
-                        db.stream(stream, null),
-                        db.stream(stream, 123),
-                        db.stream(stream, {})
-                    ])
+                    db.stream(stream),
+                    db.stream(stream, null),
+                    db.stream(stream, 123),
+                    db.stream(stream, {})
+                ])
                     .then(dummy, function (reason) {
                         result = reason;
                         done();
@@ -88,7 +90,8 @@ describe("Method stream", function () {
             it("must throw an error", function () {
                 expect(result.length).toBe(4);
                 for (var i = 0; i < result.length; i++) {
-                    expect(result[i]).toBe("Invalid or missing stream initialization callback.");
+                    expect(result[i] instanceof TypeError).toBe(true);
+                    expect(result[i].message).toBe("Invalid or missing stream initialization callback.");
                 }
             });
         });
@@ -100,8 +103,8 @@ describe("Method stream", function () {
                     state: 'initialized'
                 };
                 db.stream(stream, function () {
-                        throw new Error("initialization error");
-                    })
+                    throw new Error("initialization error");
+                })
                     .then(dummy, function (reason) {
                         result = reason;
                         done();
@@ -120,9 +123,9 @@ describe("Method stream", function () {
                     throw new Error("query notification error");
                 };
                 db.stream({
-                        _reading: false,
-                        state: 'initialized'
-                    }, dummy)
+                    _reading: false,
+                    state: 'initialized'
+                }, dummy)
                     .then(dummy, function (reason) {
                         result = reason;
                         done();
@@ -146,9 +149,9 @@ describe("Method stream", function () {
                     count++;
                 };
                 db.stream.call(qs, qs, function (stream) {
-                        initCtx = this;
-                        stream.pipe(JSONStream.stringify());
-                    })
+                    initCtx = this;
+                    stream.pipe(JSONStream.stringify());
+                })
                     .then(function (data) {
                         result = data;
                     }, dummy)
@@ -180,8 +183,8 @@ describe("Method stream", function () {
                 };
                 var qs = new QueryStream('select * from unknown where id=$1', [1]);
                 db.stream(qs, function (stream) {
-                        stream.pipe(JSONStream.stringify());
-                    })
+                    stream.pipe(JSONStream.stringify());
+                })
                     .then(dummy, function (reason) {
                         result = reason;
                     })

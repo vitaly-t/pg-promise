@@ -160,7 +160,8 @@ describe("Query event", function () {
         });
         it("must reject with undefined", function () {
             expect(handled).toBe(true);
-            expect(result).toBeUndefined();
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe('');
         });
     });
 
@@ -404,7 +405,8 @@ describe("Error event", function () {
         });
         it("must notify with correct error", function () {
             expect(errTxt).toBe(msg);
-            expect(r).toBe(msg);
+            expect(r instanceof Error).toBe(true);
+            expect(r.message).toBe(msg);
             expect(context.query).toBe("select * from users where(false)");
             expect(context.client).toBeUndefined();
             expect(context.params).toBeUndefined();
@@ -528,7 +530,8 @@ describe("Receive event", function () {
                 });
         });
         it("must reject with the right error", function () {
-            expect(result).toBe("ops!");
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe("ops!");
         });
     });
 
@@ -547,7 +550,8 @@ describe("Receive event", function () {
         });
         it("must reject with undefined", function () {
             expect(handled).toBe(true);
-            expect(result).toBeUndefined();
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe('');
         });
     });
 
