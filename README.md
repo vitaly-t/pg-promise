@@ -294,7 +294,7 @@ You can also add your own methods and properties to this protocol via the [exten
 
 Each query function resolves its **data** according to the `qrm` that was used:
 
-* `none` - **data** is `undefined`. If the query returns any kind of data, it is rejected.
+* `none` - **data** is `null`. If the query returns any kind of data, it is rejected.
 * `one` - **data** is a single object. If the query returns no data or more than one row of data, it is rejected.
 * `many` - **data** is an array of objects. If the query returns no rows, it is rejected.
 * `one`|`none` - **data** is `null`, if no data was returned; or a single object, if one row was returned.

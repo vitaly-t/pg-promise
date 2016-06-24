@@ -589,7 +589,7 @@ describe("Method 'none'", function () {
         }, "Query timed out", 5000);
         runs(function () {
             expect(error).toBeUndefined();
-            expect(result).toBeUndefined();
+            expect(result).toBe(null);
         });
     });
 
