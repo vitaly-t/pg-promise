@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "pg": "5.1",
-    "spex": "0.4",
+    "spex": "file:../spex-errors",
     "pg-minify": "0.3",
     "manakin": "0.3"
   },

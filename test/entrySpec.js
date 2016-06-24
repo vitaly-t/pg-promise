@@ -12,6 +12,8 @@ var dbHeader = header(options);
 var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
+var BatchError = pgp.spex.errors.BatchError;
+
 function dummy() {
 }
 
@@ -215,7 +217,8 @@ describe("Library entry function", function () {
         });
 
         it("must be supported", function () {
-            expect(result).toEqual([
+            expect(result instanceof BatchError).toBe(true);
+            expect(result.data).toEqual([
                 {
                     success: false,
                     result: 'reject-one'

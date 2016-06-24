@@ -15,6 +15,8 @@ function dummy() {
     // dummy/empty function;
 }
 
+var BatchError = pgp.spex.errors.BatchError;
+
 var $errors = {
     func: "Invalid function name.",
     query: "Invalid query format.",
@@ -982,7 +984,7 @@ describe("Transactions", function () {
                 ]);
             })
                 .catch(function (reason) {
-                    error = reason[1].result;
+                    error = reason.data[1].result;
                     done();
                 });
         });
@@ -1045,7 +1047,7 @@ describe("Transactions", function () {
                 ]);
             })
                 .then(dummy, function (reason) {
-                    nestError = reason[1].result[1].result;
+                    nestError = reason.data[1].result.data[1].result;
                     return promise.all([
                         db.one('select count(*) from users where login=$1', 'External'), // 0 is expected;
                         db.one('select count(*) from users where login=$1', 'Internal') // 0 is expected;
