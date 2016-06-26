@@ -1,5 +1,6 @@
 ### Release History
 
+* 5.0.0 Change over to the new version of [spex] 1.0, with new rejection protocol. Released: June 26, 2016.
 * 4.8.0 Major refactoring for the entire rejection mechanism to adhere to better promise standards. Released: June 23, 2016.
 * 4.7.0 Added diagnostics for invalid use of the library. Released: June 18, 2016
 * 4.6.0 Extending all single-result query methods, plus exposing the [spex] instance. Released: June 10, 2016

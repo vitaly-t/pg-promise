@@ -47,6 +47,7 @@ function main(options, dc) {
     result.db = result.pgp(cn, dc);
     return result;
 }
+
 main.defPromise = defPromise;
 
 module.exports = main;
