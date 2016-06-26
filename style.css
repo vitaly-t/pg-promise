@@ -58,7 +58,7 @@ nav div.home-link a:visited {
 nav ul li a,
 nav ul li a:visited {
     color: LightYellow;
-    font-size: 16px;
+    font-size: 17px;
 }
 
 nav h3 {
@@ -83,5 +83,4 @@ nav h2 {
     font-weight: bold;
 }
 
-/* Code Styles */
 
