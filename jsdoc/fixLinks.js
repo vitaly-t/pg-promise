@@ -4,9 +4,9 @@
 var links = {
     "Promises/A+": "https://promisesaplus.com",
     "spex": "https://github.com/vitaly-t/spex",
-    "spex.batch": "https://github.com/vitaly-t/spex/blob/master/docs/code/batch.md",
-    "spex.page": "https://github.com/vitaly-t/spex/blob/master/docs/code/page.md",
-    "spex.sequence": "https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md",
+    "spex.batch": "http://vitaly-t.github.io/spex/global.html#batch",
+    "spex.page": "http://vitaly-t.github.io/spex/global.html#page",
+    "spex.sequence": "http://vitaly-t.github.io/spex/global.html#sequence",
     "Result": "https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6",
     "pg-query-stream": "https://github.com/brianc/node-pg-query-stream",
     "QueryStream": "https://github.com/brianc/node-pg-query-stream/blob/master/index.js#L5",
