@@ -262,8 +262,8 @@ describe("Error event", function () {
                 });
         });
         it("must fail correctly", function () {
-            expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe("Invalid query format.");
+            expect(error instanceof TypeError).toBe(true);
+            expect(error.message).toBe("Empty or undefined query.");
             expect(context.params).toBeUndefined();
             if (!options.pgNative) {
                 expect(context.client instanceof pgClient).toBe(true);
@@ -677,12 +677,14 @@ describe("pgFormatting", function () {
         });
     });
 
-    describe("null query", function () {
+    describe("empty / null query", function () {
         var err;
         beforeEach(function (done) {
             promise.any([
                 db.query(),
-                db.query(null)
+                db.query(''),
+                db.query(null),
+                db.query(0)
             ])
                 .then(function (data) {
                 }, function (reason) {
@@ -694,34 +696,12 @@ describe("pgFormatting", function () {
         });
         it("must provide the original pg response", function () {
             if (!options.pgNative) {
-                expect(err.length).toBe(2);
-                expect(err[0] instanceof Error && err[1] instanceof Error).toBe(true);
-                expect(err[0].message).toBe("Cannot read property 'submit' of undefined");
-                expect(err[1].message).toBe("Cannot read property 'submit' of null");
+                expect(err.length).toBe(4);
+                for (var i = 0; i < 4; i++) {
+                    expect(err[i] instanceof TypeError).toBe(true);
+                    expect(err[i].message).toBe("Empty or undefined query.");
+                }
             }
-        })
-    });
-    describe("empty query", function () {
-        beforeEach(function (done) {
-            promise.all([
-                db.query({}),
-                db.query(""),
-                db.query("   ")
-            ])
-                .then(function (data) {
-                    result = data;
-                }, function (reason) {
-                })
-                .finally(function () {
-                    done();
-                });
-        });
-        it("must provide the original pg response", function () {
-            expect(result instanceof Array).toBe(true);
-            expect(result.length).toBe(3);
-            expect(result[0].length).toBe(0);
-            expect(result[1].length).toBe(0);
-            expect(result[2].length).toBe(0);
         })
     });
 });

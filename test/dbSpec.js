@@ -20,6 +20,7 @@ var BatchError = pgp.spex.errors.BatchError;
 var $errors = {
     func: "Invalid function name.",
     query: "Invalid query format.",
+    emptyQuery: "Empty or undefined query.",
     notEmpty: "No return data was expected.",
     noData: "No data returned from the query.",
     multiple: "Multiple rows were not expected."
@@ -874,6 +875,7 @@ describe("Executing method query", function () {
             db.query(),
             db.query(''),
             db.query('   '),
+            db.query({}),
             db.query(1),
             db.query(null)])
             .then(function () {
@@ -886,12 +888,13 @@ describe("Executing method query", function () {
             return finished;
         }, "Query timed out", 5000);
         runs(function () {
-            expect(result.length).toBe(5);
-            expect(result[0].message).toBe($errors.query);  // reject to an undefined query;
-            expect(result[1].message).toBe($errors.query);  // reject to an empty-string query;
+            expect(result.length).toBe(6);
+            expect(result[0].message).toBe($errors.emptyQuery);  // reject to an undefined query;
+            expect(result[1].message).toBe($errors.emptyQuery);  // reject to an empty-string query;
             expect(result[2].message).toBe($errors.query);  // reject to a white-space query string;
-            expect(result[3].message).toBe($errors.query);  // reject to an invalid-type query;
-            expect(result[4].message).toBe($errors.query);  // reject to a null query;
+            expect(result[3].message).toBe($errors.query);  // reject for an empty object;
+            expect(result[4].message).toBe($errors.query);  // reject to an invalid-type query;
+            expect(result[5].message).toBe($errors.emptyQuery);  // reject to a null query;
         });
     });
 
