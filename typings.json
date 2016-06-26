@@ -5,7 +5,9 @@
     "typescript/pg-promise.d.ts",
     "typescript/ext-promise.d.ts",
     "typescript/pg-minify.d.ts",
-    "typescript/pg-subset.d.ts",
-    "typescript/spex.d.ts"
-  ]
+    "typescript/pg-subset.d.ts"
+  ],
+  "globalDependencies": {
+    "spex": "github:vitaly-t/spex"
+  }
 }

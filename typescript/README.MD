@@ -1,6 +1,6 @@
 ### TypeScript for pg-promise
 
-Complete TypeScript ambient declarations for [pg-promise] version 4.7.0 or later.
+Complete TypeScript ambient declarations for [pg-promise] version 5.0.1 or later.
 
 #### Inclusion
 
@@ -13,7 +13,7 @@ Since all TypeScript files are distributed with the library, you can reference i
 Version 4.3.2 and later supports [Typings], and can be added to your project with this command:
 
 ```
- typings install --save --global github:vitaly-t/pg-promise
+$ typings install --save --global github:vitaly-t/pg-promise
 ```
 
 Then you can use the generic reference:
@@ -41,7 +41,7 @@ var db = pgp(cn);
 Example of compiling into JavaScript:
 
 ```
-tsc myApp.ts --target es6 --module commonjs
+$ tsc myApp.ts --target es6 --module commonjs
 ```
 
 And if you want to make full use of a custom promise library, see file [ext-promise.d.ts]. 

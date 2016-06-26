@@ -1,18 +1,19 @@
 ////////////////////////////////////////
-// Requires pg-promise v4.7.0 or later.
+// Requires pg-promise v5.0.1 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
 /// <reference path='./pg-minify' />
 /// <reference path='./ext-promise' />
-/// <reference path='./spex' />
+/// <reference path='../typings/index' />
 
 declare module 'pg-promise' {
 
+    import XPromise = require('ext-promise'); // External Promise Provider
+
     import * as pg from 'pg-subset';
     import * as pgMinify from 'pg-minify';
-    import {ISpex} from 'spex';
-    import XPromise = require('ext-promise'); // External Promise Provider
+    import * as spexLib from 'spex';
 
     type TQueryFileOptions= {
         debug?:boolean,
@@ -166,7 +167,7 @@ declare module 'pg-promise' {
 
     // Additional methods available inside tasks + transactions;
     // API: http://vitaly-t.github.io/pg-promise/Task.html
-    interface ITask<Ext> extends IBaseProtocol<Ext>, ISpex {
+    interface ITask<Ext> extends IBaseProtocol<Ext>, spexLib.ISpexBase {
         // API: http://vitaly-t.github.io/pg-promise/Task.html#.ctx
         ctx:ITaskContext;
     }
@@ -272,7 +273,7 @@ declare module 'pg-promise' {
         constructor(options:{tiLevel?:isolationLevel, readOnly?:boolean, deferrable?:boolean});
     }
 
-    // QueryResultError class;
+    // QueryResultError interface;
     // API: http://vitaly-t.github.io/pg-promise/QueryResultError.html
     interface IQueryResultError extends Error {
 
@@ -292,7 +293,7 @@ declare module 'pg-promise' {
         toString():string;
     }
 
-    // QueryFileError class;
+    // QueryFileError interface;
     // API: http://vitaly-t.github.io/pg-promise/QueryFileError.html
     interface IQueryFileError extends Error {
 
@@ -310,7 +311,7 @@ declare module 'pg-promise' {
         toString():string;
     }
 
-    // PreparedStatementError class;
+    // PreparedStatementError interface;
     // API: http://vitaly-t.github.io/pg-promise/PreparedStatementError.html
     interface IPreparedStatementError extends Error {
 
@@ -326,7 +327,7 @@ declare module 'pg-promise' {
         toString():string;
     }
 
-    // ParameterizedQueryError class;
+    // ParameterizedQueryError interface;
     // API: http://vitaly-t.github.io/pg-promise/ParameterizedQueryError.html
     interface IParameterizedQueryError extends Error {
 
@@ -459,7 +460,7 @@ declare module 'pg-promise' {
         QueryFile:typeof pgPromise.QueryFile;
         queryResult:typeof pgPromise.queryResult;
         minify:typeof pgMinify;
-        spex:ISpex;
+        spex:spexLib.ISpex;
         errors:IErrors;
         utils:IUtils;
         txMode:ITXMode;
@@ -605,7 +606,7 @@ declare module 'pg-promise' {
         }
 
     }
-    
+
     // Library's Initialization Options
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface IOptions<Ext> {
