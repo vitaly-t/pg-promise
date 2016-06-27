@@ -2,8 +2,8 @@
 
 import * as pgPromise from 'pg-promise';
 
-var pgp = pgPromise();
-var db = pgp('connection');
+var pgp:pgPromise.IMain = pgPromise();
+var db:pgPromise.IDatabase<any> = pgp('connection');
 
 var pq1 = new pgp.ParameterizedQuery('', []);
 var pq2 = new pgp.ParameterizedQuery({text: ''});

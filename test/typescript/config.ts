@@ -2,7 +2,7 @@
 
 import * as pgPromise from 'pg-promise';
 
-var pgp = pgPromise();
+var pgp:pgPromise.IMain = pgPromise();
 var db = pgp('connection');
 
 var cfg = db.$config;
@@ -21,5 +21,3 @@ cfg.options.capSQL = true;
 cfg.pgp.as.format('');
 
 var version:string = cfg.version;
-
-

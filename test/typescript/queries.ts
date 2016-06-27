@@ -2,9 +2,9 @@
 
 import * as pgPromise from 'pg-promise';
 
-var pgp = pgPromise();
+var pgp:pgPromise.IMain = pgPromise();
 
-var db = pgp('connection');
+var db:pgPromise.IDatabase<any> = pgp('connection');
 
 var qrm = pgPromise.queryResult;
 

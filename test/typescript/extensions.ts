@@ -6,7 +6,7 @@ interface Extensions {
     findUser(userId:number):Promise<any>;
 }
 
-var pgp = pgPromise({
+var pgp:pgPromise.IMain = pgPromise({
     extend: function (obj:any, dc:any) {
         obj['findUser'] = (userId:number)=> {
             return obj.one('', userId);

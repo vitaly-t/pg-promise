@@ -2,7 +2,7 @@
 
 import * as pgPromise from 'pg-promise';
 
-var pgp = pgPromise({
+var pgp:pgPromise.IMain = pgPromise({
     connect: (bla1:any, dc:any, fresh:boolean)=> {
     },
     receive: (data:any, result:any, e:any)=> {

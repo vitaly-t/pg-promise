@@ -2,7 +2,7 @@
 
 import * as pgPromise from 'pg-promise';
 
-var pgp = pgPromise({
+var pgp:pgPromise.IMain = pgPromise({
     capSQL: true,
     pgFormatting: true,
     pgNative: true

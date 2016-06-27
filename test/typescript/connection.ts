@@ -2,7 +2,7 @@
 
 import * as pgPromise from 'pg-promise';
 
-var pgp = pgPromise();
+var pgp:pgPromise.IMain = pgPromise();
 var db = pgp('connection');
 
 db.connect()

@@ -3,7 +3,7 @@
 import * as pgPromise from 'pg-promise';
 import * as pgSubset from 'pg-subset';
 
-var pgp = pgPromise();
+var pgp:pgPromise.IMain = pgPromise();
 
 var pg = pgp.pg;
 

@@ -2,8 +2,8 @@
 
 import * as pgPromise from 'pg-promise';
 
-var pgp = pgPromise();
-var db = pgp('connection');
+var pgp:pgPromise.IMain = pgPromise();
+var db:pgPromise.IDatabase<any> = pgp('connection');
 
 db.task(t=> {
     var d:Date = t.ctx.start;

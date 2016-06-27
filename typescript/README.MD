@@ -1,6 +1,6 @@
 ### TypeScript for pg-promise
 
-Complete TypeScript ambient declarations for [pg-promise] version 5.0.1 or later.
+Complete TypeScript ambient declarations for [pg-promise] version 5.0.3 or later.
 
 #### Inclusion
 
@@ -77,7 +77,7 @@ var options = {
 var cn = 'postgres://username:password@host:port/database';
 
 // initializing the library:
-var pgp = pgPromise(options);
+var pgp:pgPromise.IMain = pgPromise(options);
 
 // database object with extensions:
 var db = <pgPromise.IDatabase<IExtensions>&IExtensions>pgp(cn);

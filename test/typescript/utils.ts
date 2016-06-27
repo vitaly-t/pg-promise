@@ -4,7 +4,7 @@ import * as pgPromise from 'pg-promise';
 
 var utils = pgPromise.utils;
 
-var pgp = pgPromise();
+var pgp:pgPromise.IMain = pgPromise();
 
 var utilsExtra = pgp.utils;
 

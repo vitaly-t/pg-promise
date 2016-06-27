@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.0.1 or later.
+// Requires pg-promise v5.0.3 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -449,27 +449,6 @@ declare module 'pg-promise' {
         TableName:typeof TableName;
     }
 
-    // Post-initialization interface;
-    // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-    interface IMain {
-        (cn:string|IConfig, dc?:any):pgPromise.IDatabase<IEmptyExt>;
-        <T>(cn:string|IConfig, dc?:any):pgPromise.IDatabase<T>&T;
-        PromiseAdapter:typeof pgPromise.PromiseAdapter;
-        PreparedStatement:typeof pgPromise.PreparedStatement;
-        ParameterizedQuery:typeof pgPromise.ParameterizedQuery;
-        QueryFile:typeof pgPromise.QueryFile;
-        queryResult:typeof pgPromise.queryResult;
-        minify:typeof pgMinify;
-        spex:spexLib.ISpex;
-        errors:IErrors;
-        utils:IUtils;
-        txMode:ITXMode;
-        helpers:IHelpers;
-        as:IFormatting;
-        end():void;
-        pg:typeof pg;
-    }
-
     interface IGenericPromise {
         (cb:(resolve:(value?:any)=>void, reject:(value?:any)=>void)=>void):XPromise<any>;
         resolve(value?:any):void;
@@ -482,7 +461,7 @@ declare module 'pg-promise' {
         promiseLib:any;
         promise:IGenericPromise;
         options:IOptions<Ext>;
-        pgp:IMain;
+        pgp:pgPromise.IMain;
         $npm:any;
     }
 
@@ -605,6 +584,27 @@ declare module 'pg-promise' {
             $config:ILibConfig<Ext>;
         }
 
+        // Post-initialization interface;
+        // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
+        interface IMain {
+            (cn:string|IConfig, dc?:any):pgPromise.IDatabase<IEmptyExt>;
+            <T>(cn:string|IConfig, dc?:any):pgPromise.IDatabase<T>&T;
+            PromiseAdapter:typeof pgPromise.PromiseAdapter;
+            PreparedStatement:typeof pgPromise.PreparedStatement;
+            ParameterizedQuery:typeof pgPromise.ParameterizedQuery;
+            QueryFile:typeof pgPromise.QueryFile;
+            queryResult:typeof pgPromise.queryResult;
+            minify:typeof pgMinify;
+            spex:spexLib.ISpex;
+            errors:IErrors;
+            utils:IUtils;
+            txMode:ITXMode;
+            helpers:IHelpers;
+            as:IFormatting;
+            end():void;
+            pg:typeof pg;
+        }
+
     }
 
     // Library's Initialization Options
@@ -628,8 +628,8 @@ declare module 'pg-promise' {
 
     // Default library interface (before initialization)
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-    function pgPromise(options?:IOptions<IEmptyExt>):IMain;
-    function pgPromise<Ext>(options?:IOptions<Ext>):IMain;
+    function pgPromise(options?:IOptions<IEmptyExt>):pgPromise.IMain;
+    function pgPromise<Ext>(options?:IOptions<Ext>):pgPromise.IMain;
 
     export=pgPromise;
 }
