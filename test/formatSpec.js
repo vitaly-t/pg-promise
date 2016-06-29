@@ -626,12 +626,6 @@ describe("Method as.format", function () {
 
         expect(pgp.as.format("", [])).toBe("");
 
-        expect(pgp.as.format("$1", [], {partial: true})).toBe("$1");
-
-        expect(pgp.as.format("$1^", [], {partial: true})).toBe("$1^");
-
-        expect(pgp.as.format("$1:raw", [], {partial: true})).toBe("$1:raw");
-
         expect(pgp.as.format("$1")).toBe("$1");
         expect(pgp.as.format("$1", null)).toBe("null");
 
@@ -773,6 +767,28 @@ describe("Method as.format", function () {
         }).toThrow(new RangeError(errors.range("$3", 2)));
 
     });
+
+    describe("formatting options", function () {
+
+        describe("partial", function () {
+            it("must skip missing variables", function () {
+                expect(pgp.as.format("$1", [], {partial: true})).toBe("$1");
+                expect(pgp.as.format("$1^", [], {partial: true})).toBe("$1^");
+                expect(pgp.as.format("$1:raw", [], {partial: true})).toBe("$1:raw");
+
+            });
+        });
+
+        describe("default", function () {
+            it("must replace missing variables", function () {
+                expect(pgp.as.format("$1, $2", [1], {default: undefined})).toBe("1, null");
+                expect(pgp.as.format("$1, $2", [1], {default: null})).toBe("1, null");
+                expect(pgp.as.format("${present}, ${missing}", {present: 1}, {default: 2})).toBe("1, 2");
+            });
+        });
+
+    });
+
 
 });
 
