@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.0.3 or later.
+// Requires pg-promise v5.0.4 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -23,7 +23,8 @@ declare module 'pg-promise' {
     };
 
     type TFormattingOptions = {
-        partial?:boolean
+        partial?:boolean,
+        default?:any
     };
 
     type TConnectionOptions = {
