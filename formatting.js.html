@@ -142,8 +142,8 @@ function formatCSV(values) {
 var formatAs = {
 
     object: function (query, obj, raw, options) {
+        options = options &amp;&amp; typeof options === 'object' ? options : {};
         var pattern = /\$(?:({)|(\()|(&lt;)|(\[)|(\/))\s*[a-zA-Z0-9\$_]+(\^|~|#|:raw|:name|:json|:csv|:value)?\s*(?:(?=\2)(?=\3)(?=\4)(?=\5)}|(?=\1)(?=\3)(?=\4)(?=\5)\)|(?=\1)(?=\2)(?=\4)(?=\5)>|(?=\1)(?=\2)(?=\3)(?=\5)]|(?=\1)(?=\2)(?=\3)(?=\4)\/)/g;
-        var partial = options &amp;&amp; options.partial;
         return query.replace(pattern, function (name) {
             var v = formatAs.stripName(name.replace(/^\$[{(&lt;[/]|[\s})>\]/]/g, ''), raw);
             if (v.name in obj) {
@@ -152,7 +152,10 @@ var formatAs = {
             if (v.name === 'this') {
                 return formatValue(obj, v.fm);
             }
-            if (partial) {
+            if ('default' in options) {
+                return formatValue(options.default, v.fm, obj);
+            }
+            if (options.partial) {
                 return name;
             }
             // property must exist as the object's own or inherited;
@@ -161,14 +164,17 @@ var formatAs = {
     },
 
     array: function (query, array, raw, options) {
-        var partial = options &amp;&amp; options.partial;
+        options = options &amp;&amp; typeof options === 'object' ? options : {};
         return query.replace(/\$([1-9][0-9]{0,3}(?![0-9])(\^|~|#|:raw|:name|:json|:csv|:value)?)/g, function (name) {
             var v = formatAs.stripName(name.substr(1), raw);
             var idx = v.name - 1;
             if (idx &lt; array.length) {
                 return formatValue(array[idx], v.fm);
             }
-            if (partial) {
+            if ('default' in options) {
+                return formatValue(options.default, v.fm);
+            }
+            if (options.partial) {
                 return name;
             }
             throw new RangeError("Variable $" + v.name + " out of range. Parameters array length: " + array.length);
@@ -648,10 +654,19 @@ var $as = {
      *
      * @param {boolean} [options.partial=false]
      * Indicates that we intend to do only a partial replacement, i.e. throw no error when encountering a variable or
-     * property name that's not valid within the formatting parameter(s).
+     * property name that's missing within the formatting parameters.
+     *
+     * This option has no meaning when option `default` is present.
+     *
+     * @param {} [options.default]
+     * **Added in v.5.0.4**
+     *
+     * Sets a default value for every variable that's missing, consequently preventing errors when encountering a variable
+     * or property name that's missing within the formatting parameters.
      *
      * @returns {string}
      * Formatted query string.
+     *
      */
     format: function (query, values, options) {
         return $formatQuery(query, values, false, options);
