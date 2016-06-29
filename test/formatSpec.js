@@ -785,6 +785,29 @@ describe("Method as.format", function () {
                 expect(pgp.as.format("$1, $2", [1], {default: null})).toBe("1, null");
                 expect(pgp.as.format("${present}, ${missing}", {present: 1}, {default: 2})).toBe("1, 2");
             });
+            it("must invoke a callback correctly", function () {
+                var value, context, param;
+
+                function cb(v, p) {
+                    context = this;
+                    value = v;
+                    param = p;
+                    return 123;
+                }
+
+                var arr = ['hi'];
+                expect(pgp.as.format("$1, $2", arr, {default: cb})).toBe("'hi', 123");
+                expect(context === arr).toBe(true);
+                expect(param === arr).toBe(true);
+                expect(value).toBe(1);
+
+                var obj = {first: 'f'};
+                expect(pgp.as.format("${first}, ${  second^ \t}", obj, {default: cb})).toBe("'f', 123");
+                expect(context === obj).toBe(true);
+                expect(param === obj).toBe(true);
+                expect(value).toBe('second');
+
+            });
         });
 
     });
