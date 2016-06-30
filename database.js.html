@@ -727,7 +727,7 @@ function Database(cn, dc, config) {
          * Executes a query against a stored procedure via its name: `select * from procName(values)`,
          * expecting back 0 or 1 rows.
          *
-         * The method simply forwards into `func(funcName, values, queryResult.one|queryResult.none)`.
+         * The method simply forwards into {@link Database.func func}`(procName, values, queryResult.one|queryResult.none)`.
          *
          * @param {string} procName
          * Name of the stored procedure to be executed.
