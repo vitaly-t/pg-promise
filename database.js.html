@@ -54,24 +54,13 @@ var $arr = require('./array');
  *
  * For any given connection, you should only create a single {@link Database} object in a separate module,
  * to be shared in your application (see the code example below). If instead you keep creating the {@link Database}
- * object dynamically, your application will suffer from loss in performance and memory leaks because of event
- * handlers that each {@link Database} object needs to set up.
+ * object dynamically, your application will suffer from loss in performance, and will be getting a warning in a
+ * development environment (when `NODE_ENV` = `development`):
  *
- * **Starting with v.4.7.0:**
+ * `WARNING: Creating a duplicate database object for the same connection.`
  *
- * If you create more than one {@link Database} object for the same connection, you will see the following warning
- * in a development environment (when `NODE_ENV` = `development`):
- *
- * `WARNING: Creating a duplicate database object for the same connection`.
- *
- * And since every {@link Database} object needs to set up its own event listeners, you are likely to see the following
- * warning in the console also:
- *
- * `Warning: Possible EventEmitter memory leak detected. 11 error listeners added. Use emitter.setMaxListeners() to increase limit`.
- *
- * If you ever see any of those warnings, do not try increasing the limit, this won't help you.
- * Instead, rectify your {@link Database} object initialization, so there is only one object per connection details.
- * See the example provided below.
+ * If you ever see this warning, rectify your {@link Database} object initialization, so there is only one object
+ * per connection details. See the example provided below.
  *
  * See also: property `noWarnings` in {@link module:pg-promise Initialization Options}.
  *
@@ -134,7 +123,7 @@ var $arr = require('./array');
 function Database(cn, dc, config) {
 
     checkForDuplicates(cn, config);
-    setErrorHandler(cn, dc, config);
+    setErrorHandler(config);
 
     var $p = config.promise;
 
@@ -1238,7 +1227,7 @@ function Database(cn, dc, config) {
 
 }
 
-var dbObjects = {};
+var jsHandled, nativeHandled, dbObjects = {};
 
 function checkForDuplicates(cn, config) {
     var cnKey = JSON.stringify(cn);
@@ -1252,15 +1241,30 @@ function checkForDuplicates(cn, config) {
     }
 }
 
-function setErrorHandler(cn, dc, config) {
-    // this event only happens when the connection is lost physically,
-    // which cannot be tested automatically; removing from coverage:
-    // istanbul ignore next
-    config.pgp.pg.on('error', function (err) {
-        $npm.events.error(config.options, err, {
-            cn: $npm.utils.getSafeConnection(cn),
-            dc: dc
-        });
+function setErrorHandler(config) {
+    // we do not do code coverage specific to Native Bindings:
+    // istanbul ignore if
+    if (config.options.pgNative) {
+        if (!nativeHandled) {
+            config.pgp.pg.on('error', onError);
+            nativeHandled = true;
+        }
+    } else {
+        if (!jsHandled) {
+            config.pgp.pg.on('error', onError);
+            jsHandled = true;
+        }
+    }
+}
+
+// this event only happens when the connection is lost physically,
+// which cannot be tested automatically; removing from coverage:
+// istanbul ignore next
+function onError(err, client) {
+    var ctx = client.$ctx;
+    $npm.events.error(ctx.options, err, {
+        cn: $npm.utils.getSafeConnection(ctx.cn),
+        dc: ctx.dc
     });
 }
 
