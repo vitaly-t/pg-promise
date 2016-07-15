@@ -7,7 +7,7 @@ var links = {
     "spex.batch": "http://vitaly-t.github.io/spex/global.html#batch",
     "spex.page": "http://vitaly-t.github.io/spex/global.html#page",
     "spex.sequence": "http://vitaly-t.github.io/spex/global.html#sequence",
-    "Result": "https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6",
+    "Result": "https://github.com/brianc/node-postgres/blob/master/lib/result.js#L14",
     "pg-query-stream": "https://github.com/brianc/node-pg-query-stream",
     "QueryStream": "https://github.com/brianc/node-pg-query-stream/blob/master/index.js#L5",
     "pg.Client": "https://github.com/brianc/node-postgres/wiki/Client",
