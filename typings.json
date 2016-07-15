@@ -8,6 +8,7 @@
     "typescript/pg-subset.d.ts"
   ],
   "globalDependencies": {
-    "spex": "github:vitaly-t/spex"
+    "node": "registry:env/node#4.0.0+20160622202520",
+    "spex": "github:vitaly-t/spex#dab68c4589973c1a9da828b90d40490054c64b80"
   }
 }

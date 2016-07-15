@@ -9,7 +9,11 @@
 // pg: https://github.com/brianc/node-postgres
 //////////////////////////////////////////////////////////////////////////////
 
+/// <reference path='../typings/index' />
+
 declare module 'pg-subset' {
+
+    import { EventEmitter } from 'events';
 
     namespace pg {
 
@@ -118,11 +122,17 @@ declare module 'pg-subset' {
             // not needed within pg-promise;
         }
 
-        class Client {
+        class Client extends EventEmitter {
 
             constructor(config:any);
 
             query:(config:any, values:any, callback:(err:Error, result:IResult)=>void)=>Query;
+
+            on(event: 'drain', listener: () => void): this;
+            on(event: 'error', listener: (err: Error) => void): this;
+            on(event: 'notification', listener: (message: any) => void): this;
+            on(event: 'notice', listener: (message: any) => void): this;
+            on(event: string, listener: Function): this;
 
             connectionParameters:IConnectionParameters;
             database:string;
