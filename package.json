@@ -28,9 +28,8 @@
   },
   "keywords": [
     "pg",
-    "pg-promise",
-    "postgres",
-    "transaction"
+    "promise",
+    "postgres"
   ],
   "author": {
     "name": "Vitaly Tomilov",
