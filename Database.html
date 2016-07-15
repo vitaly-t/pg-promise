@@ -379,8 +379,8 @@ depending on the database context.</p></td>
 
 
 <div class="description">
-    <p>Executes a query that expects any number of rows.</p>
-<p>This is simply a shorter alias for method <a href="Database.html#.manyOrNone">manyOrNone</a>.</p>
+    <p>Executes a query that expects any number of rows.
+This is simply a shorter alias for method <a href="Database.html#.manyOrNone">manyOrNone</a>.</p>
 </div>
 
 
@@ -609,7 +609,7 @@ as an override for its internal <code>values</code>.</p></td>
 
 <div class="description">
     <p>Acquires a new or existing connection, based on the current connection parameters.</p>
-<p>This method initiates a shared connection for executing a chain of queries against it.
+<p>This method creates a shared connection for executing a chain of queries against it.
 The connection must be released in the end of the chain by calling method <code>done()</code> on the connection object.</p>
 <p>This is an older, low-level approach to chaining queries on the same connection.
 A newer and safer approach is via methods <a href="Database.html#.task">task</a> and <a href="Database.html#.tx">tx</a> (for transactions),
@@ -837,7 +837,7 @@ and therefore cannot scale. This option is only suitable for global connection u
 <li>method <code>done()</code> that must be called in the end, in order to release the connection</li>
 </ul>
 </li>
-<li>rejects with the connection error when fails.</li>
+<li>rejects with a connection-related error when it fails to connect.</li>
 </ul>
 </div>
 
@@ -878,7 +878,7 @@ and therefore cannot scale. This option is only suitable for global connection u
 <div class="description">
     <p><strong>Added in v.4.3.0</strong></p>
 <p>Executes a provided function once per array element, for an array of rows resolved by method <a href="Database.html#.any">any</a>.</p>
-<p>It is a convenience method to simplify the following code:</p>
+<p>It is a convenience method to reduce the following code:</p>
 <pre class="prettyprint source lang-js"><code>db.any(query, values)
     .then(function(data) {
         data.forEach(function(row, index, data) {
@@ -1110,7 +1110,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line847">line 847</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line846">line 846</a>
     </li></ul></dd>
     
 
@@ -1370,7 +1370,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line671">line 671</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line670">line 670</a>
     </li></ul></dd>
     
 
@@ -1891,7 +1891,7 @@ as an override for its internal <code>values</code>.</p></td>
     <p><strong>Added in v.4.3.0</strong></p>
 <p>Creates a new array with the results of calling a provided function on every element in the array of rows
 resolved by method <a href="Database.html#.any">any</a>.</p>
-<p>It is a convenience method to simplify the following code:</p>
+<p>It is a convenience method to reduce the following code:</p>
 <pre class="prettyprint source lang-js"><code>db.any(query, values)
     .then(function(data) {
         return data.map(function(row, index, data) {
@@ -2120,7 +2120,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line736">line 736</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line735">line 735</a>
     </li></ul></dd>
     
 
@@ -3223,7 +3223,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line697">line 697</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line696">line 696</a>
     </li></ul></dd>
     
 
@@ -3561,7 +3561,7 @@ as an override for its internal <code>values</code>.</p></td>
 
 <div class="description">
     <p>Executes a query without any expectation for the return data, to resolve with the
-original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object when successful.</p>
+original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L14">Result</a> object when successful.</p>
 </div>
 
 
@@ -3783,7 +3783,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line571">line 571</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line570">line 570</a>
     </li></ul></dd>
     
 
@@ -3812,7 +3812,7 @@ When specified, the return value replaces the original resolved value.</p>
 <div class="param-desc">
     <p>A promise object that represents the query result:</p>
 <ul>
-<li>resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6">Result</a> object, extended with
+<li>resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L14">Result</a> object, extended with
 property <code>duration</code> - query duration in milliseconds.</li>
 </ul>
 </div>
@@ -3973,7 +3973,7 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line638">line 638</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line637">line 637</a>
     </li></ul></dd>
     
 
@@ -4188,7 +4188,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line928">line 928</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line927">line 927</a>
     </li></ul></dd>
     
 
@@ -4413,7 +4413,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1021">line 1021</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1020">line 1020</a>
     </li></ul></dd>
     
 
@@ -4588,7 +4588,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1252">line 1252</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1251">line 1251</a>
     </li></ul></dd>
     
 
