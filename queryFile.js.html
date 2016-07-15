@@ -202,29 +202,31 @@ function QueryFile(file, options) {
      *
      * This method is meant primarily for internal use by the library.
      *
-     * @returns {boolean}
-     * The indication of a successful unchanged result:
-     * - `true` - successful and unchanged result
-     * - `false` - either changed or unsuccessful result
+     * @param {boolean} [throwErrors=false]
+     * Throw any error encountered.
+     *
      */
-    this.prepare = function () {
+    this.prepare = function (throwErrors) {
         var lastMod;
         if (opt.debug &amp;&amp; ready) {
             try {
                 lastMod = $npm.fs.statSync(filePath).mtime.getTime();
                 if (lastMod === modTime) {
-                    return true;
+                    return;
                 }
                 ready = false;
             } catch (e) {
                 sql = undefined;
                 ready = false;
                 error = e;
-                return false;
+                if (throwErrors) {
+                    throw error;
+                }
+                return;
             }
         }
         if (ready) {
-            return true;
+            return;
         }
         try {
             sql = $npm.fs.readFileSync(filePath, 'utf8');
@@ -243,8 +245,10 @@ function QueryFile(file, options) {
         } catch (e) {
             sql = undefined;
             error = new $npm.QueryFileError(e, this);
+            if (throwErrors) {
+                throw error;
+            }
         }
-        return false;
     };
 
     /**

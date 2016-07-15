@@ -106,6 +106,10 @@ function formatValue(value, fm, obj) {
             if (value instanceof Buffer) {
                 return $as.buffer(value, isRaw);
             }
+            if (value.constructor.name === 'QueryFile') {
+                value.prepare(true);
+                return $as.text(value.query, isRaw);
+            }
             return $as.json(value, isRaw);
     }
 }
@@ -645,8 +649,10 @@ var $as = {
      * - JSON override ends with `:json` to format the value of any type as a JSON string
      * - CSV override ends with `:csv` to format an array as a properly escaped comma-separated list of values.
      *
-     * @param {string} query
-     * Query string with formatting variables in it.
+     * @param {string|QueryFile} query
+     * A query string or a {@link QueryFile} object, to be formatted according to `values`.
+     *
+     * **NOTE:** Support for type {@link QueryFile} was added in v5.2.0.
      *
      * @param {array|object|value} [values]
      * Formatting parameter(s) / variable value(s).
@@ -680,8 +686,14 @@ var $as = {
      * @returns {string}
      * Formatted query string.
      *
+     * The function will throw an error, if any occurs during formatting. And if the error is caused
+     * when `query` is a {@link QueryFile} object, the error thrown is usually of type {@link errors.QueryFileError QueryFileError}.
      */
     format: function (query, values, options) {
+        if (query &amp;&amp; typeof query === 'object' &amp;&amp; query.constructor.name === 'QueryFile') {
+            query.prepare(true);
+            query = query.query;
+        }
         return $formatQuery(query, values, false, options);
     }
 };
