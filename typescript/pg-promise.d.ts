@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.0.5 or later.
+// Requires pg-promise v5.2.0 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -193,7 +193,7 @@ declare module 'pg-promise' {
         date(d:Date|(()=>Date), raw?:boolean):string;
 
         // API: http://vitaly-t.github.io/pg-promise/formatting.html#.format
-        format(query:string, values?:any, options?:TFormattingOptions):string;
+        format(query:string|pgPromise.QueryFile, values?:any, options?:TFormattingOptions):string;
 
         // API: http://vitaly-t.github.io/pg-promise/formatting.html#.func
         func(func:()=>any, raw?:boolean, obj?:Object):string;

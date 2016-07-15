@@ -1,5 +1,6 @@
 'use strict';
 
+var path = require('path');
 var pgp = require('../lib/index');
 
 var dateSample = new Date();
@@ -16,6 +17,13 @@ var errors = {
         return "'" + value + "' is not a Buffer object."
     }
 };
+
+var sqlSimple = getPath('./sql/simple.sql');
+var sqlParams = getPath('./sql/params.sql');
+
+function getPath(file) {
+    return path.join(__dirname, file);
+}
 
 var dummy = function () {
 };
@@ -812,6 +820,42 @@ describe("Method as.format", function () {
 
     });
 
+    describe("QueryFile - positive", function () {
+        it("must format the object", function () {
+            var qf = new pgp.QueryFile(sqlParams, {debug: false, minify: true});
+            expect(pgp.as.format(qf, {
+                column: 'col',
+                schema: 'sc',
+                table: 'tab'
+            })).toBe('SELECT "col" FROM "sc"."tab"');
+        });
+
+        it("must format the type as a parameter", function () {
+            var qf = new pgp.QueryFile(sqlSimple, {debug: false, minify: true});
+            expect(pgp.as.format('$1', [qf])).toBe("'select 1;'");
+            expect(pgp.as.format('$1^', [qf])).toBe("select 1;");
+            expect(pgp.as.format('$1#', [qf])).toBe("select 1;");
+        });
+
+    });
+
+    describe("QueryFile - negative", function () {
+        it("must throw QueryFileError", function () {
+            var error1, error2, qf = new pgp.QueryFile('bla-bla');
+            try {
+                pgp.as.format(qf);
+            } catch (e) {
+                error1 = e;
+            }
+            try {
+                pgp.as.format('$1', [qf]);
+            } catch (e) {
+                error2 = e;
+            }
+            expect(error1 instanceof pgp.errors.QueryFileError).toBe(true);
+            expect(error2 instanceof pgp.errors.QueryFileError).toBe(true);
+        });
+    });
 
 });
 

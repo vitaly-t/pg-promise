@@ -155,7 +155,7 @@ defined as shown below:
 function query(query, values, qrm);
 ```
 * `query` (required) - a string with support for three types of formatting, depending on the `values` passed:
-   - format `$1` (single variable), if `values` is of type `string`, `boolean`, `number`, `Date`, `function` or `null`;
+   - format `$1` (single variable), if `values` is of type `string`, `boolean`, `number`, `Date`, `function`, `null` or [QueryFile];
    - format `$1, $2, etc..`, if `values` is an array;
    - format `$*propName*`, if `values` is an object (not `null` and not `Date`), where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`;
 * `values` (optional) - value/array/object to replace the variables in the query;
@@ -531,6 +531,8 @@ Notable features of [QueryFile]:
 * Option `params` is for static SQL pre-formatting, to inject certain values only once, like a schema name or a
   configurable table name.
 
+In version 5.2.0, support for type [QueryFile] was also integrated into the query formatting engine. See method [as.format].
+
 ## Connections
 
 The library supports promise-chained queries on shared and detached connections. Choosing which one to use depends on the
@@ -884,7 +886,8 @@ to be `true` when initializing the library, and every query formatting will redi
 Although this has a huge implication to the library's functionality, it is not within the scope of this project to detail.
 For any further reference you should use documentation of the [PG] library.
 
-Note the following formatting features implemented by [pg-promise] that are not in [node-postgres]:
+Below is just some of the query-formatting features implemented by [pg-promise] that are not in [node-postgres]:
+
 * [Custom Type Formatting](#custom-type-formatting)
 * Single-value formatting: [pg-promise] doesn't require use of an array when passing a single value;
 * [Raw-Text](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#raw-text) support: injecting raw/pre-formatted text values into the query;
@@ -893,6 +896,7 @@ Note the following formatting features implemented by [pg-promise] that are not 
 not the old string syntax;
 * Automatic conversion of numeric `NaN`, `+Infinity` and `-Infinity` into their string presentation;
 * Support for [this reference](#this-reference);
+* Automatic [QueryFile] support
 
 **NOTE:** Formatting parameters for calling functions (methods `func` and `proc`) is not affected by this override.
 When needed, use the generic `query` instead to invoke functions with redirected query formatting.

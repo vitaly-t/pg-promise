@@ -9,3 +9,5 @@ var pgp:pgPromise.IMain = pgPromise();
 
 var value3 = pgp.as.array([]);
 var value4 = pgp.as.array(()=>[]);
+var value5 = pgp.as.format('hello', []);
+var value6 = pgp.as.format(new pgPromise.QueryFile(''));
