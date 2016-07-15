@@ -243,24 +243,9 @@ declare module 'pg-promise' {
         ctx:ITaskContext;
     }
 
-    // Database connection configuration interface;
-    // See: https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js#L36
-    interface IConfig {
-        host?:string,
-        port?:number,
-        database:string,
-        user?:string,
-        password?:string,
-        ssl?:boolean,
-        binary?:boolean,
-        client_encoding?:string,
-        application_name?:string,
-        fallback_application_name?:string
-    }
-
     // Transaction Isolation Level;
     // API: http://vitaly-t.github.io/pg-promise/global.html#isolationLevel
-    enum isolationLevel{
+    enum isolationLevel {
         none = 0,
         serializable = 1,
         repeatableRead = 2,
@@ -583,6 +568,21 @@ declare module 'pg-promise' {
             // A hidden property, for integrating with third-party libraries.
             // API: http://vitaly-t.github.io/pg-promise/Database.html#$config
             $config:ILibConfig<Ext>;
+        }
+
+        // Database connection configuration interface;
+        // See: https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js#L36
+        interface IConfig {
+            host?:string,
+            port?:number,
+            database:string,
+            user?:string,
+            password?:string,
+            ssl?:boolean,
+            binary?:boolean,
+            client_encoding?:string,
+            application_name?:string,
+            fallback_application_name?:string
         }
 
         // Post-initialization interface;

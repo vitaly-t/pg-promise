@@ -8,6 +8,9 @@ var pgp:pgPromise.IMain = pgPromise({
     pgNative: true
 });
 
+var c:pgPromise.IConfig;
+c.binary = true;
+
 var spex = pgp.spex;
 
 var b = spex.batch([1, 2, 3]);
