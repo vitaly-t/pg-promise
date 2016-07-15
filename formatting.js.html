@@ -277,7 +277,7 @@ function $formatQuery(query, values, raw, options) {
             // $1, $2,... formatting to be applied;
             return formatAs.array(query, values, raw, options);
         }
-        if (!(values instanceof Date || values instanceof Buffer)) {
+        if (!(values instanceof Date || values instanceof Buffer || values.constructor.name === 'QueryFile')) {
             // $*propName* formatting to be applied;
             return formatAs.object(query, values, raw, options);
         }
@@ -626,11 +626,13 @@ var $as = {
      * Replaces variables in a string according to the type of `values`:
      *
      * - Replaces `$1` occurrences when `values` is of type `string`, `boolean`, `number`, `Date`, `Buffer` or when it is `null`.
+     *   Version 5.2.0 added support for type {@link QueryFile}, to treat it as a query string when in normal state,
+     *   and when in an error state - throw that error.
      * - Replaces variables `$1`, `$2`, ...`$9999` when `values` is an array of parameters. When a variable is out of range,
      *   it throws {@link external:RangeError RangeError} = `Variable $n out of range. Parameters array length: x`, unless
      *   option `partial` is used.
-     * - Replaces `$*propName*`, where `*` is any of `{}`, `()`, `[]`, `&lt;>`, `//`, when `values` is an object
-     *   that's not a `Date`, `Buffer` or `null`. Special property name `this` refers to the formatting object itself,
+     * - Replaces `$*propName*`, where `*` is any of `{}`, `()`, `[]`, `&lt;>`, `//`, when `values` is an object that's not a
+     * `Date`, `Buffer`, {@link QueryFile} or `null`. Special property name `this` refers to the formatting object itself,
      *   to be injected as a JSON string. When referencing a property that doesn't exist in the formatting object, it throws
      *   {@link external:Error Error} = `Property 'PropName' doesn't exist`, unless option `partial` is used.
      *
