@@ -1,31 +1,31 @@
 ### TypeScript for pg-promise
 
-Complete TypeScript ambient declarations for [pg-promise] version 5.2.0 or later.
+Complete TypeScript ambient declarations for [pg-promise] version 5.2.1 or later.
 
 #### Inclusion
 
-Since all TypeScript files are distributed with the library, you can reference it like this: 
+Since all TypeScript files are distributed with the library, the simplest way to reference it is like this: 
 
 ```ts
 /// <reference path='../node_modules/pg-promise/typescript/pg-promise' />
 ```
 
-Version 4.3.2 and later supports [Typings], and can be added to your project with this command:
+Version 4.3.2 and later supports [Typings], so it can be added to your project with this command:
 
 ```
 $ typings install --save --global github:vitaly-t/pg-promise
 ```
 
-Then you can use the generic reference:
+Then you can also use a generic reference:
 
 ```ts
 /// <reference path='../typings/index' />
 ```
- 
+
 #### Usage
 
 ```ts
-/// <reference path='../typings/index' />
+/// <reference path='../node_modules/pg-promise/typescript/pg-promise' />
 
 import * as pgPromise from 'pg-promise';
 
@@ -55,7 +55,7 @@ In order to support dynamic protocol extensions automatically, you need to mirro
 an interface, and then re-cast the database object with it, as shown below. 
 
 ```ts
-/// <reference path='../typings/index' />
+/// <reference path='../node_modules/pg-promise/typescript/pg-promise' />
 
 // importing as 'pgPromise' helps IntelliSense inspection;
 import * as pgPromise from 'pg-promise';

@@ -582,20 +582,19 @@ describe("Method as.func", function () {
 describe("Method as.name", function () {
 
     describe("with an empty or non-string", function () {
-        var error = new TypeError("An sql name/identifier must be a non-empty text string.");
         it("must throw na error", function () {
             expect(function () {
                 pgp.as.name();
-            }).toThrow(error);
+            }).toThrow(new TypeError('Invalid sql name: undefined'));
             expect(function () {
                 pgp.as.name(null);
-            }).toThrow(error);
+            }).toThrow(new TypeError('Invalid sql name: null'));
             expect(function () {
                 pgp.as.name(123);
-            }).toThrow(error);
+            }).toThrow(new TypeError('Invalid sql name: 123'));
             expect(function () {
                 pgp.as.name('');
-            }).toThrow(error);
+            }).toThrow(new TypeError('Invalid sql name: ""'));
         });
     });
 
@@ -1222,12 +1221,65 @@ describe("SQL Names", function () {
         });
     });
 
-    describe("with a wrong object type", function () {
-        it("must reject the object with an error", function () {
-            expect(function () {
-                pgp.as.format('$1~', [{}]);
-            }).toThrow(new TypeError("An sql name/identifier must be a non-empty text string."));
+    describe("with an object", function () {
+        it("must enumerate properties", function () {
+            expect(pgp.as.format('$1~', [{one: 1, two: 2}])).toBe('"one","two"');
         });
     });
 
+    describe("with an array", function () {
+        it("must enumerate properties", function () {
+            expect(pgp.as.format('$1~', [['one', 'two']])).toBe('"one","two"');
+        });
+    });
+
+    describe("Negative", function () {
+
+        describe("with the wrong object type", function () {
+            it("must reject the object with an error", function () {
+                expect(function () {
+                    pgp.as.format('$1~', [123]);
+                }).toThrow(new TypeError('Invalid sql name: 123'));
+                expect(function () {
+                    pgp.as.format('$1~', [true]);
+                }).toThrow(new TypeError('Invalid sql name: true'));
+                expect(function () {
+                    pgp.as.format('$1~', ['']);
+                }).toThrow(new TypeError('Invalid sql name: ""'));
+            });
+        });
+
+        describe("with an empty object", function () {
+            it("must reject the object with an error", function () {
+                expect(function () {
+                    pgp.as.format('$1~', [{}]);
+                }).toThrow(new TypeError("Cannot retrieve sql names from an empty array/object."));
+            });
+        });
+
+        describe("with an empty array", function () {
+            it("must reject the array with an error", function () {
+                expect(function () {
+                    pgp.as.format('$1~', [[]]);
+                }).toThrow(new TypeError("Cannot retrieve sql names from an empty array/object."));
+            });
+        });
+
+        describe("with invalid property", function () {
+            it("must reject the property", function () {
+                expect(function () {
+                    pgp.as.format('$1~', [{'': 1}]);
+                }).toThrow(new TypeError('Invalid sql name: ""'));
+            });
+        });
+
+        describe("with invalid array value", function () {
+            it("must reject the value", function () {
+                expect(function () {
+                    pgp.as.format('$1~', [[1]]);
+                }).toThrow(new TypeError('Invalid sql name: 1'));
+            });
+        });
+
+    });
 });

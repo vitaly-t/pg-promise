@@ -235,11 +235,7 @@ query('SELECT ${columns^} FROM ${table~}', {
 Relying on this type of formatting for sql names and identifiers, along with regular variable formatting
 makes your application impervious to sql injection.
 
-See methods: [as.name], [as.format]
-
-**Added in v.4.7.7:**
-
-If the variable contains only a single `*` (trailing spaces are ignored), then it is used directly (unescaped).
+See method [as.name] for the latest API.
 
 ## Query Result Mask
 

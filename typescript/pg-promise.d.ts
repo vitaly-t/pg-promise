@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.2.0 or later.
+// Requires pg-promise v5.2.1 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -202,7 +202,7 @@ declare module 'pg-promise' {
         json(obj:any|(()=>any), raw?:boolean):string;
 
         // API: http://vitaly-t.github.io/pg-promise/formatting.html#.name
-        name(name:string|(()=>string)):string;
+        name(name:any):string;
 
         // API: http://vitaly-t.github.io/pg-promise/formatting.html#.number
         number(value:number|(()=>number)):string;
