@@ -426,7 +426,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line498">line 498</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line536">line 536</a>
     </li></ul></dd>
     
 
@@ -578,7 +578,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line416">line 416</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line454">line 454</a>
     </li></ul></dd>
     
 
@@ -786,7 +786,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line388">line 388</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line426">line 426</a>
     </li></ul></dd>
     
 
@@ -942,7 +942,7 @@ according to their type.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line520">line 520</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line558">line 558</a>
     </li></ul></dd>
     
 
@@ -1150,7 +1150,7 @@ as a UTC string, wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line434">line 434</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line472">line 472</a>
     </li></ul></dd>
     
 
@@ -1540,7 +1540,7 @@ and to return the actual default value:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line594">line 594</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line632">line 632</a>
     </li></ul></dd>
     
 
@@ -1788,7 +1788,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line559">line 559</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line597">line 597</a>
     </li></ul></dd>
     
 
@@ -1996,7 +1996,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line535">line 535</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line573">line 573</a>
     </li></ul></dd>
     
 
@@ -2054,8 +2054,6 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
 <div class="description">
     <p>Properly escapes an sql name or identifier, fixing double-quote symbols and wrapping the result in double quotes.</p>
 <p>Implements a safe way to format SQL Names that neutralizes SQL Injection.</p>
-<p><strong>Added in v.4.7.7:</strong></p>
-<p>If the <code>name</code> contains only a single <code>*</code> (trailing spaces are ignored), then <code>name</code> is returned exactly as is.</p>
 </div>
 
 
@@ -2097,10 +2095,16 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 |
 
 <span class="param-type">function</span>
+|
+
+<span class="param-type">array</span>
+|
+
+<span class="param-type">object</span>
 
 
             
@@ -2112,7 +2116,15 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
 
             <td class="description last"><p>SQL name or identifier, or a function that returns it.</p>
 <p>The name must be at least 1 character long.</p>
-<p>If <code>name</code> doesn't resolve into a non-empty string, it throws <a href="external-TypeError.html">TypeError</a> = <code>An sql name/identifier must be a non-empty text string.</code></p></td>
+<p>If <code>name</code> doesn't resolve into a non-empty string, it throws <a href="external-TypeError.html">TypeError</a> = <code>Invalid sql name: ...</code></p>
+<p><strong>Added in v.4.7.7:</strong></p>
+<p>If the <code>name</code> contains only a single <code>*</code> (trailing spaces are ignored), then <code>name</code> is returned exactly as is (unescaped).</p>
+<p><strong>Added in v.5.2.1:</strong></p>
+<ul>
+<li>If <code>name</code> is an Array, it is formatted as a comma-separated list of SQL names</li>
+<li>If <code>name</code> is a non-Array object, its keys are formatted as a comma-separated list of SQL names</li>
+</ul>
+<p>Passing in an empty array/object will throw <a href="external-Error.html">Error</a> = <code>Cannot retrieve sql names from an empty array/object.</code></p></td>
         </tr>
 
     
@@ -2198,6 +2210,11 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
 </dl>
 
     
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// example of using v5.2.1 feature:// automatically list object properties as sql names:format('INSERT INTO table(${this~}) VALUES(${one}, ${two})', {    one: 1,    two: 2});//=> INSERT INTO table("one","two") VALUES(1, 2)</code></pre>
 
 
 
@@ -2310,7 +2327,7 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line463">line 463</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line501">line 501</a>
     </li></ul></dd>
     
 
@@ -2688,7 +2705,7 @@ but without surrounding quotes for text types.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line366">line 366</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line404">line 404</a>
     </li></ul></dd>
     
 
