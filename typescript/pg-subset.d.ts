@@ -50,7 +50,7 @@ declare module 'pg-subset' {
             ca?:string|string[]|Buffer|Buffer[];
             pfx?:string|Buffer;
             cert?:string|string[]|Buffer|Buffer[];
-            key?:string|string[]|Buffer|Buffer[];
+            key?:string|string[]|Buffer|Object[];
             passphrase?:string;
             rejectUnauthorized?:boolean;
             NPNProtocols?:string[]|Buffer;
