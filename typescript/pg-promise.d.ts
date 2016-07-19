@@ -570,20 +570,7 @@ declare module 'pg-promise' {
             $config:ILibConfig<Ext>;
         }
 
-        // Database connection configuration interface;
-        // See: https://github.com/brianc/node-postgres/blob/master/lib/connection-parameters.js#L36
-        interface IConfig {
-            host?:string,
-            port?:number,
-            database:string,
-            user?:string,
-            password?:string,
-            ssl?:boolean,
-            binary?:boolean,
-            client_encoding?:string,
-            application_name?:string,
-            fallback_application_name?:string
-        }
+        type IConfig = pg.IConnectionParameters;
 
         // Post-initialization interface;
         // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html

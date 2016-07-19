@@ -8,7 +8,11 @@ var db = pgp('connection');
 
 var pg = pgp.pg;
 
-var client = new pg.Client({});
+var client = new pg.Client({
+    ssl: {
+        rejectUnauthorized:true
+    }
+});
 
 db.connect()
     .then(t=> {

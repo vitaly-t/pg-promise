@@ -13,7 +13,7 @@
 
 declare module 'pg-subset' {
 
-    import { EventEmitter } from 'events';
+    import {EventEmitter} from 'events';
 
     namespace pg {
 
@@ -21,7 +21,7 @@ declare module 'pg-subset' {
             name:string,
             dataTypeID:number,
 
-            // the ones below are not available with the Native Bindings;
+            // properties below are not available within Native Bindings:
 
             tableID:number,
             columnID:number,
@@ -38,23 +38,36 @@ declare module 'pg-subset' {
 
             duration:number, // pg-promise extension
 
-            // the ones below are not available with the Native Bindings;
+            // properties below are not available within Native Bindings:
 
             rowAsArray:boolean
         }
 
+        // SSL configuration;
+        // For property types and documentation see:
+        // http://nodejs.org/api/tls.html#tls_tls_connect_options_callback
+        interface ISSLConfig {
+            ca?:string|string[]|Buffer|Buffer[];
+            pfx?:string|Buffer;
+            cert?:string|string[]|Buffer|Buffer[];
+            key?:string|string[]|Buffer|Buffer[];
+            passphrase?:string;
+            rejectUnauthorized?:boolean;
+            NPNProtocols?:string[]|Buffer;
+        }
+
         interface IConnectionParameters {
-            database:string;
-            user:string;
-            password:string;
-            port:number;
-            host:string;
-            ssl:boolean;
-            binary:boolean;
-            client_encoding:string;
-            application_name:string;
-            fallback_application_name:string;
-            isDomainSocket:boolean;
+            database?:string;
+            user?:string;
+            password?:string;
+            port?:number;
+            host?:string;
+            ssl?:boolean|ISSLConfig;
+            binary?:boolean;
+            client_encoding?:string;
+            application_name?:string;
+            fallback_application_name?:string;
+            isDomainSocket?:boolean;
         }
 
         // Interface of 'pg-types' module;
@@ -105,7 +118,7 @@ declare module 'pg-subset' {
 
             client_encoding:string,
 
-            ssl:boolean,
+            ssl:boolean|ISSLConfig,
 
             application_name?:string,
 
@@ -124,15 +137,15 @@ declare module 'pg-subset' {
 
         class Client extends EventEmitter {
 
-            constructor(config:any);
+            constructor(cn:string | IConnectionParameters);
 
             query:(config:any, values:any, callback:(err:Error, result:IResult)=>void)=>Query;
 
-            on(event: 'drain', listener: () => void): this;
-            on(event: 'error', listener: (err: Error) => void): this;
-            on(event: 'notification', listener: (message: any) => void): this;
-            on(event: 'notice', listener: (message: any) => void): this;
-            on(event: string, listener: Function): this;
+            on(event:'drain', listener:() => void):this;
+            on(event:'error', listener:(err:Error) => void):this;
+            on(event:'notification', listener:(message:any) => void):this;
+            on(event:'notice', listener:(message:any) => void):this;
+            on(event:string, listener:Function):this;
 
             connectionParameters:IConnectionParameters;
             database:string;
@@ -141,11 +154,11 @@ declare module 'pg-subset' {
             port:number;
             host:string;
 
-            // these are not available with Native Bindings:
+            // properties below are not available within Native Bindings:
 
             queryQueue:Array<Query>;
             binary:boolean;
-            ssl:boolean;
+            ssl:boolean|ISSLConfig;
             secretKey:number;
             processID:number;
             encoding:string;
