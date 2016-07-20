@@ -135,7 +135,7 @@ declare module 'pg-promise' {
         result(query:TQuery, values?:any, cb?:(value:any)=>any, thisArg?:any):XPromise<pg.IResult>;
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.stream
-        stream(qs:Object, init:(stream:Object)=>void):XPromise<{processed:number, duration:number}>;
+        stream(qs:Object, init:(stream:NodeJS.ReadableStream)=>void):XPromise<{processed:number, duration:number}>;
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.func
         func(funcName:string, values?:any, qrm?:pgPromise.queryResult):XPromise<any>;
