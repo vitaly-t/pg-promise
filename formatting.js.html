@@ -56,13 +56,13 @@ var fmMap = {
 // Converts a single value into its Postgres format.
 function formatValue(value, fm, obj) {
 
-    if (value instanceof Function) {
+    if (typeof value === 'function') {
         return formatValue(resolveFunc(value, obj), fm, obj);
     }
 
     if (value &amp;&amp; typeof value === 'object') {
         var ctf = value['formatDBType']; // custom type formatting;
-        if (ctf instanceof Function) {
+        if (typeof ctf === 'function') {
             fm |= value._rawDBType ? fmFlags.raw : 0;
             return formatValue(resolveFunc(ctf, value), fm, obj);
         }
@@ -106,7 +106,7 @@ function formatValue(value, fm, obj) {
             if (value instanceof Buffer) {
                 return $as.buffer(value, isRaw);
             }
-            if (value.constructor.name === 'QueryFile') {
+            if (isQueryFile(value)) {
                 value.prepare(true);
                 return $as.text(value.query, isRaw);
             }
@@ -157,7 +157,7 @@ var formatAs = {
                 return formatValue(obj, v.fm);
             }
             if ('default' in options) {
-                var d = options.default, value = d instanceof Function ? d.call(obj, v.name, obj) : d;
+                var d = options.default, value = typeof d === 'function' ? d.call(obj, v.name, obj) : d;
                 return formatValue(value, v.fm, obj);
             }
             if (options.partial) {
@@ -177,7 +177,7 @@ var formatAs = {
                 return formatValue(array[idx], v.fm);
             }
             if ('default' in options) {
-                var d = options.default, value = d instanceof Function ? d.call(array, idx, array) : d;
+                var d = options.default, value = typeof d === 'function' ? d.call(array, idx, array) : d;
                 return formatValue(value, v.fm);
             }
             if (options.partial) {
@@ -216,6 +216,12 @@ function isNull(value) {
     return value === undefined || value === null;
 }
 
+////////////////////////////////////////////
+// Checks if the value is a QueryFile object
+function isQueryFile(value) {
+    return value &amp;&amp; value.constructor &amp;&amp; value.constructor.name === 'QueryFile';
+}
+
 /////////////////////////////////////////
 // Wraps a text string in single quotes;
 function TEXT(text) {
@@ -241,7 +247,7 @@ function throwIfRaw(raw) {
 // Recursively resolves parameter-function,
 // with the optional calling context.
 function resolveFunc(value, obj) {
-    while (value instanceof Function) {
+    while (typeof value === 'function') {
         value = obj ? value.call(obj) : value();
     }
     return value;
@@ -270,14 +276,14 @@ function $formatQuery(query, values, raw, options) {
     }
     if (values &amp;&amp; typeof values === 'object') {
         var ctf = values['formatDBType']; // custom type formatting;
-        if (ctf instanceof Function) {
+        if (typeof ctf === 'function') {
             return $formatQuery(query, resolveFunc(ctf, values), raw || values._rawDBType, options);
         }
         if (values instanceof Array) {
             // $1, $2,... formatting to be applied;
             return formatAs.array(query, values, raw, options);
         }
-        if (!(values instanceof Date || values instanceof Buffer || values.constructor.name === 'QueryFile')) {
+        if (!(values instanceof Date || values instanceof Buffer || isQueryFile(values))) {
             // $*propName* formatting to be applied;
             return formatAs.object(query, values, raw, options);
         }
@@ -730,7 +736,7 @@ var $as = {
      * when `query` is a {@link QueryFile} object, the error thrown is usually of type {@link errors.QueryFileError QueryFileError}.
      */
     format: function (query, values, options) {
-        if (query &amp;&amp; typeof query === 'object' &amp;&amp; query.constructor.name === 'QueryFile') {
+        if (isQueryFile(query)) {
             query.prepare(true);
             query = query.query;
         }

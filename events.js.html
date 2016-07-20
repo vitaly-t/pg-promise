@@ -82,7 +82,7 @@ var $events = {
      * };
      */
     connect: function (ctx, client, isFresh) {
-        if (ctx.options.connect instanceof Function) {
+        if (typeof ctx.options.connect === 'function') {
             try {
                 ctx.options.connect(client, ctx.dc, isFresh);
             } catch (e) {
@@ -123,7 +123,7 @@ var $events = {
      * };
      */
     disconnect: function (ctx, client) {
-        if (ctx.options.disconnect instanceof Function) {
+        if (typeof ctx.options.disconnect === 'function') {
             try {
                 ctx.options.disconnect(client, ctx.dc);
             } catch (e) {
@@ -194,7 +194,7 @@ var $events = {
      *
      */
     query: function (options, context) {
-        if (options.query instanceof Function) {
+        if (typeof options.query === 'function') {
             try {
                 options.query(context);
             } catch (e) {
@@ -261,7 +261,7 @@ var $events = {
      * }
      */
     receive: function (options, data, result, context) {
-        if (options.receive instanceof Function) {
+        if (typeof options.receive === 'function') {
             try {
                 options.receive(data, result, context);
             } catch (e) {
@@ -305,7 +305,7 @@ var $events = {
      *
      */
     task: function (options, context) {
-        if (options.task instanceof Function) {
+        if (typeof options.task === 'function') {
             try {
                 options.task(context);
             } catch (e) {
@@ -348,7 +348,7 @@ var $events = {
      *
      */
     transact: function (options, context) {
-        if (options.transact instanceof Function) {
+        if (typeof options.transact === 'function') {
             try {
                 options.transact(context);
             } catch (e) {
@@ -405,7 +405,7 @@ var $events = {
      *
      */
     error: function (options, err, context) {
-        if (options.error instanceof Function) {
+        if (typeof options.error === 'function') {
             try {
                 options.error(err, context);
             } catch (e) {
@@ -494,7 +494,7 @@ var $events = {
      *
      */
     extend: function (options, obj, dc) {
-        if (options.extend instanceof Function) {
+        if (typeof options.extend === 'function') {
             try {
                 options.extend.call(obj, obj, dc);
             } catch (e) {
