@@ -116,11 +116,12 @@ var $npm = {
  * // - have your sql provider module as ./sql/index.js
  *
  * var QueryFile = require('pg-promise').QueryFile;
+ * var path = require('path');
  *
  * // Helper for linking to external query files:
  * function sql(file) {
- *     var relativePath = './db/sql/';
- *     return new QueryFile(relativePath + file, {minify: true});
+ *     var fullPath = path.join(__dirname, file); // generating full path;
+ *     return new QueryFile(fullPath, {minify: true});
  * }
  *
  * var sqlProvider = {
