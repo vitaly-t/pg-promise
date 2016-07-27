@@ -4,16 +4,26 @@ var util = require('util');
 
 function hookConsole(callback) {
 
-    var std = process.stdout, old_write = std.write;
+    var stdout = process.stdout,
+        stderr = process.stderr,
+        oldOutWrite = stdout.write,
+        oldErrWrite = stderr.write;
 
-    std.write = (function () {
+    stdout.write = (function () {
         return function (string) {
             callback(string);
         }
-    })(std.write);
+    })(stdout.write);
+
+    stderr.write = (function () {
+        return function (string) {
+            callback(string);
+        }
+    })(stderr.write);
 
     return function () {
-        std.write = old_write;
+        stdout.write = oldOutWrite;
+        stderr.write = oldErrWrite;
     }
 }
 
