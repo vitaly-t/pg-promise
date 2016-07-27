@@ -488,6 +488,7 @@ Example:
 ```js
 // Helper for linking to external query files: 
 function sql(file) {
+    // consider using here: path.join(__dirname, file)
     return new pgp.QueryFile(file, {minify: true});
 }
 
@@ -504,7 +505,7 @@ db.one(sqlFindUser, {id: 123})
         }
     });
 ```
-  
+
 File `findUser.sql`:
 ```sql
 /*
