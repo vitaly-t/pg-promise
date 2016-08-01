@@ -403,7 +403,7 @@ When we pass `values` as a single parameter or inside an array, it is verified t
 that supports function `formatDBType`, as either its own or inherited. And if the function exists,
 its return result overrides both the actual value and the formatting syntax for parameter `query`.
 
-This allows use of your own custom types as formatting parameters for the queries, as well as
+This allows usage of your own custom types as formatting parameters for the queries, as well as
 overriding formatting for standard object types, such as `Date` and `Array`.
 
 **Example: your own type formatting**
