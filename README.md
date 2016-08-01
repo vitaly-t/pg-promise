@@ -931,9 +931,10 @@ mostly needed by smaller and simplified [Conformant Implementations](https://pro
 
 ## Library de-initialization
 
-When exiting your application, you can make the following call:
-```javascript
-pgp.end();
+When exiting your application, you can optionally call [pgp.end]:
+
+```js
+pgp.end(); // terminate the database connection pool
 ```
 
 This will release [pg] connection pool globally and make sure that the process terminates without any delay.
@@ -974,6 +975,7 @@ DEALINGS IN THE SOFTWARE.
 [QueryResultError]:http://vitaly-t.github.io/pg-promise/QueryResultError.html
 [Native Bindings]:https://github.com/brianc/node-postgres#native-bindings
 [Initialization Options]:#advanced
+[pgp.end]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
 [pgp.as]:http://vitaly-t.github.io/pg-promise/formatting.html
 [as.value]:http://vitaly-t.github.io/pg-promise/formatting.html#.value
 [as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
