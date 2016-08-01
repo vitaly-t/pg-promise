@@ -194,6 +194,12 @@ function QueryFile(file, options) {
         filePath = $npm.path.join($npm.utils.startDir, filePath);
     }
 
+    // Custom Type Formatting support:
+    this.formatDBType = function () {
+        this.prepare(true);
+        return this.query;
+    };
+
     /**
      * @method QueryFile.prepare
      * @summary Prepares the query for execution.
