@@ -22,7 +22,7 @@ pg-promise
 * [Installing](#installing)
 * [Getting Started](#getting-started)
   - [Initialization](#initialization)
-  - [Connection](#connection)
+  - [Database](#database)
   - [Documentation](#documentation)  
 * [Testing](#testing)    
 * [Usage](#usage)
