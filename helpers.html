@@ -493,7 +493,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var pgp = require('pg-promise')();pgp.helpers.concat([    {query: 'INSERT INTO Users(name, age) VALUES($1, $2)', values: ['John', 23]}, // QueryFormat-like object    {query: 'DELETE FROM Log WHERE userName = $1', values: 'John'}, // QueryFormat-like object    'SELECT count(*) FROM Users' // A simple-string query]);//=>INSERT INTO Users(name, age) VALUES('John', 23);DELETE FROM Log WHERE userName = 'John';SELECT count(*) FROM Users</code></pre>
+    <pre class="prettyprint"><code>var pgp = require('pg-promise')();var qf1 = new pgp.QueryFile('./query1.sql', {minify: true});var qf2 = new pgp.QueryFile('./query2.sql', {minify: true});var query = pgp.helpers.concat([    {query: 'INSERT INTO Users(name, age) VALUES($1, $2)', values: ['John', 23]}, // QueryFormat-like object    {query: 'DELETE FROM Log WHERE userName = $1', values: 'John'}, // QueryFormat-like object    {query: qf1, values: [1, 'Name']}, // QueryFile with formatting parameters    'SELECT count(*) FROM Users', // a simple-string query,    qf2 // direct QueryFile object]);// query = concatenated string of all queries</code></pre>
 
 
 
@@ -2317,7 +2317,7 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_methods_concat.js.html">helpers/methods/concat.js</a>, <a href="helpers_methods_concat.js.html#line70">line 70</a>
+        <a href="helpers_methods_concat.js.html">helpers/methods/concat.js</a>, <a href="helpers_methods_concat.js.html#line75">line 75</a>
     </li></ul></dd>
     
 
