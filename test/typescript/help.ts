@@ -2,7 +2,7 @@
 
 import * as pgPromise from 'pg-promise';
 
-var pgp:pgPromise.IMain = pgPromise({
+var pgp: pgPromise.IMain = pgPromise({
     capSQL: true
 });
 
@@ -62,7 +62,10 @@ var sets1 = pgp.helpers.sets({});
 var sets2 = pgp.helpers.sets([]);
 var sets3 = pgp.helpers.sets({}, cs);
 
-var test:boolean = cs.canUpdate(data);
+var test: boolean = cs.canUpdate(data);
 
 var cs1 = cs.extend(['']);
 var cs2 = cs1.merge(cs);
+
+pgp.helpers.concat(['first', {query: 'second'}]);
+pgp.helpers.concat(['first', new pgp.QueryFile(''), {query: '', values: 123, options: {partial: true}}]);
