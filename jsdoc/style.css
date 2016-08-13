@@ -22,7 +22,7 @@ section {
 div#main {
     margin-left: 260px;
     float: none;
-    max-width: 1500px;
+    /*    max-width: 1650px;*/
 }
 
 code {
@@ -82,5 +82,3 @@ nav h2 {
     font-size: 16px;
     font-weight: bold;
 }
-
-
