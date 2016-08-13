@@ -10,7 +10,7 @@ html, body, section {
     background-color: #F5F5F5
 }
 
-pre .prettyprint {
+.prettyprint {
     width: auto;
 }
 
