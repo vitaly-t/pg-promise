@@ -10,6 +10,10 @@ html, body, section {
     background-color: #F5F5F5
 }
 
+.prettyprint {
+    width: auto;
+}
+
 h4.name {
     color: DarkCyan;
     font-size: 26px;
