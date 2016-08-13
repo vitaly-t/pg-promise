@@ -5,9 +5,12 @@ var options = {
 };
 
 var os = require('os');
+var path = require('path');
 var utils = require('../lib/utils');
 var header = require('./db/header');
-var helpers = header(options).pgp.helpers;
+var pgp = header(options).pgp;
+var helpers = pgp.helpers;
+var QueryFile = pgp.QueryFile;
 
 var dataSingle = {
     val: 123,
@@ -832,3 +835,42 @@ describe("method 'values'", function () {
     });
 });
 
+describe("method 'concat'", function () {
+    describe("Negative", function () {
+        it("must throw on a non-array input", function () {
+            var error = new TypeError("Parameter 'queries' must be an array.");
+            expect(function () {
+                helpers.concat();
+            }).toThrow(error);
+            expect(function () {
+                helpers.concat(123);
+            }).toThrow(error);
+        });
+        it("must throw on invalid elements inside array", function () {
+            var error = new Error("Invalid query element at index 0.");
+            expect(function () {
+                helpers.concat([1]);
+            }).toThrow(error);
+            expect(function () {
+                helpers.concat([{}]);
+            }).toThrow(error);
+        });
+    });
+
+    describe("Positive", function () {
+        describe("with simple strings", function () {
+            it("must allow an empty array", function () {
+                expect(helpers.concat([])).toBe('');
+            });
+            it("must remove symbols correctly", function () {
+                expect(helpers.concat(['one', 'two'])).toBe('one;two'); // normal
+                expect(helpers.concat(['\t;;one;\t;', '  two ;;\t\t'])).toBe('one;two');
+                expect(helpers.concat(['\t;;one;\t;here ', '  two ;;\t\t'])).toBe('one;\t;here;two');
+            });
+            it("must support mixed types correctly", function () {
+                var qf = new QueryFile(path.join(__dirname, './sql/allUsers.sql'), {minify: true});
+                expect(helpers.concat(['one', {query: 'two'}, qf])).toBe('one;two;select * from users');
+            });
+        });
+    });
+});
