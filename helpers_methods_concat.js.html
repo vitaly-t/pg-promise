@@ -30,69 +30,80 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 var $npm = {
-    concat: require('./methods/concat'),
-    insert: require('./methods/insert'),
-    update: require('./methods/update'),
-    values: require('./methods/values'),
-    sets: require('./methods/sets'),
-    TableName: require('./tableName'),
-    ColumnSet: require('./columnSet'),
-    Column: require('./column')
+    format: require('../../formatting').as.format,
+    QueryFile: require('../../queryFile')
 };
 
+var $arr = require('../../array');
+
 /**
- * @namespace helpers
+ * @method helpers.concat
  * @description
- * Namespace for query-formatting generators, available as `pgp.helpers`, after initializing the library.
+ * **Added in v.5.3.0**
  *
- * It is a set of types and methods for generating queries in a fast, flexible and reliable way.
+ * Concatenates multiple queries into a single query string.
  *
- * See also: $[Performance Boost].
+ * Before joining any query, the method removes from it all leading and trailing spaces, tabs and semi-colons.
  *
- * @property {function} TableName
- * {@link helpers.TableName TableName} class constructor.
+ * @param {array&lt;string|helpers.QueryFormat|QueryFile>} queries
+ * Array of mixed-type elements:
+ * - a simple query string, to be used as is
+ * - a simple {@link helpers.QueryFormat QueryFormat}-like object = `{query, [values], [options]}`
+ * - a {@link QueryFile} object
  *
- * @property {function} ColumnSet
- * {@link helpers.ColumnSet ColumnSet} class constructor.
+ * @returns {string}
+ * Resulting query string.
  *
- * @property {function} Column
- * {@link helpers.Column Column} class constructor.
- *
- * @property {function} insert
- * {@link helpers.insert insert} static method.
- *
- * @property {function} update
- * {@link helpers.update update} static method.
- *
- * @property {function} values
- * {@link helpers.values values} static method.
- *
- * @property {function} sets
- * {@link helpers.sets sets} static method.
- *
- * @property {function} concat
- * {@link helpers.concat concat} static method.
  */
-module.exports = function (config) {
-    var res = {
-        insert: function (data, columns, table) {
-            var capSQL = config.options &amp;&amp; config.options.capSQL;
-            return $npm.insert(data, columns, table, capSQL);
-        },
-        update: function (data, columns, table, options) {
-            var capSQL = config.options &amp;&amp; config.options.capSQL;
-            return $npm.update(data, columns, table, options, capSQL);
-        },
-        concat: $npm.concat,
-        values: $npm.values,
-        sets: $npm.sets,
-        TableName: $npm.TableName,
-        ColumnSet: $npm.ColumnSet,
-        Column: $npm.Column
-    };
-    Object.freeze(res);
-    return res;
-};
+// istanbul ignore next;
+function concat(queries) {
+    if (!Array.isArray(queries)) {
+        throw new TypeError("Parameter 'queries' must be an array.");
+    }
+    return $arr.map(queries, function (q, index) {
+        if (typeof q === 'string') {
+            // a simple query string without parameters:
+            return clean(q);
+        }
+        if (q &amp;&amp; typeof q === 'object') {
+            if (q instanceof $npm.QueryFile) {
+                // QueryFile object:
+                return clean(q.formatDBType());
+            }
+            if ('query' in q) {
+                // object {query, values} (values is optional):
+                return clean($npm.format(q.query, q.values));
+            }
+        }
+        throw new Error('Invalid query element at index ' + index + '.');
+    }).join(';');
+}
+
+// istanbul ignore next;
+function clean(q) {
+    // removes from the query all leading and trailing symbols ' ', '\t' and ';'
+    return q.replace(/^[\s;]*|[\s;]*$/g, '');
+}
+
+module.exports = concat;
+
+/**
+ * @typedef helpers.QueryFormat
+ * @description
+ * A simple structure of parameters to be passed into method {@link formatting.format as.format} exactly as they are.
+ *
+ * @property {string|value|object} query
+ * A query string or a value/object that implements $[Custom Type Formatting], to be formatted according to `values`.
+ *
+ * @property {array|object|value} [values]
+ * Optional formatting parameters for the query.
+ *
+ * @property {object} [options]
+ * Query formatting options, as supported by method {@link formatting.format as.format}.
+ *
+ * @see
+ * {@link formatting.format as.format}
+ */
 </code></pre>
         </article>
     </section>

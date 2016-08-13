@@ -38,8 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p><strong>Added in v.4.1.0</strong></p>
-<p>Namespace for query-formatting generators, available as <code>pgp.helpers</code>, after initializing the library.</p>
+            <div class="description"><p>Namespace for query-formatting generators, available as <code>pgp.helpers</code>, after initializing the library.</p>
 <p>It is a set of types and methods for generating queries in a fast, flexible and reliable way.</p>
 <p>See also: <a href="https://github.com/vitaly-t/pg-promise/wiki/Performance-Boost">Performance Boost</a>.</p></div>
         
@@ -231,6 +230,29 @@
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>concat</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="helpers.html#.concat">concat</a> static method.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -266,7 +288,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_index.js.html">helpers/index.js</a>, <a href="helpers_index.js.html#line13">line 13</a>
+        <a href="helpers_index.js.html">helpers/index.js</a>, <a href="helpers_index.js.html#line14">line 14</a>
     </li></ul></dd>
     
 
@@ -309,6 +331,166 @@
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".concat"><span class="type-signature">(static) </span>concat<span class="signature">(queries)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p><strong>Added in v.5.3.0</strong></p>
+<p>Concatenates multiple queries into a single query string.</p>
+<p>Before joining any query, the method removes from it all leading and trailing spaces, tabs and semi-colons.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>queries</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array.&lt;(string|<a href="helpers.html#.QueryFormat">helpers.QueryFormat</a>|<a href="QueryFile.html">QueryFile</a>)></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array of mixed-type elements:</p>
+<ul>
+<li>a simple query string, to be used as is</li>
+<li>a simple <a href="helpers.html#.QueryFormat">QueryFormat</a>-like object = <code>{query, [values], [options]}</code></li>
+<li>a <a href="QueryFile.html">QueryFile</a> object</li>
+</ul></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_methods_concat.js.html">helpers/methods/concat.js</a>, <a href="helpers_methods_concat.js.html#line10">line 10</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Resulting query string.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
 
         
             
@@ -1947,6 +2129,209 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
 
 
     
+
+
+
+            
+                
+<h4 class="name" id=".QueryFormat">QueryFormat</h4>
+
+
+
+
+<div class="description">
+    <p>A simple structure of parameters to be passed into method <a href="formatting.html#.format">as.format</a> exactly as they are.</p>
+</div>
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">value</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A query string or a value/object that implements <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, to be formatted according to <code>values</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">object</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Optional formatting parameters for the query.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query formatting options, as supported by method <a href="formatting.html#.format">as.format</a>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_methods_concat.js.html">helpers/methods/concat.js</a>, <a href="helpers_methods_concat.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="formatting.html#.format">as.format</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
 
 
 
