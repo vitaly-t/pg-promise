@@ -234,6 +234,12 @@ describe("buildSqlModule", function () {
                 }).toThrow(err);
             });
 
+            it("must throw in invalid config file path", function () {
+                // this one is mainly for coverage:
+                expect(function () {
+                    utils.buildSqlModule('./sql-special/non-existent.json');
+                }).toThrow();
+            });
         });
     }
 });

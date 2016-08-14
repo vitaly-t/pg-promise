@@ -211,13 +211,6 @@ describe("UPDATE", function () {
                 helpers.update([null], ['test'], 'table');
             }).toThrow(error);
         });
-        it("must throw on invalid options", function () {
-            var error = new TypeError("Invalid parameter 'options' specified.");
-            expect(function () {
-                helpers.update(dataMulti, ['test'], 'table', 123);
-            }).toThrow(error);
-        });
-
     });
 
 });
@@ -883,6 +876,15 @@ describe("method 'concat'", function () {
                         partial: true
                     }
                 }])).toBe('a, b, $3^');
+            });
+        });
+        describe("with empty queries", function () {
+            it("must skip them", function () {
+                expect(helpers.concat(['', '', ''])).toBe('');
+
+                expect(helpers.concat([';\t\t;;;', {
+                    query: '; $1^ ; $2^ ;;;\t', values: ['  ', '\t\t\t']
+                }])).toBe('');
             });
         });
     });
