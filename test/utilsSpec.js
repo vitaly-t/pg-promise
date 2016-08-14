@@ -191,7 +191,7 @@ describe("buildSqlModule", function () {
         });
 
         it("must succeed for valid configuration files", function () {
-            var code1 = utils.buildSqlModule('../../../test/sql-special/sql-config.json');
+            var code1 = utils.buildSqlModule(path.join(__dirname, './sql-special/sql-config.json'));
             var code2 = utils.buildSqlModule(path.join(__dirname, './sql-special/sql-simple.json'));
             expect(typeof code1).toBe('string');
             expect(typeof code2).toBe('string');
@@ -214,7 +214,7 @@ describe("buildSqlModule", function () {
             it("must throw on missing 'dir'", function () {
                 var err = new Error("Property 'dir' must be a non-empty string.");
                 expect(function () {
-                    utils.buildSqlModule('../../../test/sql-special/sql-invalid.json');
+                    utils.buildSqlModule(path.join(__dirname, './sql-special/sql-invalid.json'));
                 }).toThrow(err);
             });
 
