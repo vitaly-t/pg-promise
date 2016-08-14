@@ -83,7 +83,7 @@ var $arr = require('./array');
  * depending on the database context.
  *
  * @returns {Database}
- * 
+ *
  * @see
  *
  * {@link Database.query query},
@@ -148,8 +148,6 @@ function Database(cn, dc, config) {
      * You should only call method `done()` to release the connection.
      *
      * @param {object} [options]
-     * Connection options. **Added in v.4.3.4**
-     *
      * @param {boolean} [options.direct=false]
      * Creates the connection directly, through the {@link external:Client Client}, bypassing the connection pool.
      *
@@ -282,8 +280,6 @@ function Database(cn, dc, config) {
      * @member {object} Database.$config
      * @readonly
      * @description
-     * **Added in v.4.4.7**
-     *
      * This is a hidden property, to help integrating type {@link Database} directly with third-party libraries.
      *
      * Properties available in the object:
@@ -294,8 +290,21 @@ function Database(cn, dc, config) {
      *   - `promise((resolve, reject)=>{})` - to create a new promise
      *   - `promise.resolve(value)` - to resolve with a value
      *   - `promise.reject(value)` - to reject with a value
-     * - `version` - this library's version _(added in 4.4.8)_
-     * - `$npm` _(hidden property)_ - internal module cache _(added in 4.5.1)_
+     * - `version` - this library's version
+     * - `$npm` _(hidden property)_ - internal module cache
+     *
+     * @example
+     *
+     * // Using the promise protocol as configured by pg-promise:
+     *
+     * var $p = db.$config.promise;
+     *
+     * var resolvedPromise = $p.resolve('some data');
+     * var rejectedPromise = $p.reject('some reason');
+     *
+     * var newPromise = $p(function(resolve, reject) {
+     *     // call either resolve(data) or reject(reason) here
+     * });
      */
     $npm.utils.addReadProp(this, '$config', config, true);
 
@@ -380,16 +389,12 @@ function Database(cn, dc, config) {
          * as an override for its internal `values`.
          *
          * @param {function} [cb]
-         * **Added in 4.6.0**
-         *
          * Value transformation callback, to allow in-line value change.
          * When specified, the return value replaces the original resolved value.
          *
          * The function takes only one parameter - value resolved from the query.
          *
          * @param {} [thisArg]
-         * **Added in 4.6.0**
-         *
          * Value to use as `this` when executing the transformation callback.
          *
          * @returns {external:Promise}
@@ -483,16 +488,12 @@ function Database(cn, dc, config) {
          * as an override for its internal `values`.
          *
          * @param {function} [cb]
-         * **Added in 4.6.0**
-         *
          * Value transformation callback, to allow in-line value change.
          * When specified, the return value replaces the original resolved value.
          *
          * The function takes only one parameter - value resolved from the query.
          *
          * @param {} [thisArg]
-         * **Added in 4.6.0**
-         *
          * Value to use as `this` when executing the transformation callback.
          *
          * @returns {external:Promise}
@@ -622,16 +623,12 @@ function Database(cn, dc, config) {
          * as an override for its internal `values`.
          *
          * @param {function} [cb]
-         * **Added in 4.6.2**
-         *
          * Value transformation callback, to allow in-line value change.
          * When specified, the return value replaces the original resolved value.
          *
          * The function takes only one parameter - value resolved from the query.
          *
          * @param {} [thisArg]
-         * **Added in 4.6.2**
-         *
          * Value to use as `this` when executing the transformation callback.
          *
          * @returns {external:Promise}
@@ -737,16 +734,12 @@ function Database(cn, dc, config) {
          * Parameters for the procedure - one value or an array of values.
          *
          * @param {function} [cb]
-         * **Added in 4.6.0**
-         *
          * Value transformation callback, to allow in-line value change.
          * When specified, the return value replaces the original resolved value.
          *
          * The function takes only one parameter - value resolved from the query.
          *
          * @param {} [thisArg]
-         * **Added in 4.6.0**
-         *
          * Value to use as `this` when executing the transformation callback.
          *
          * @returns {external:Promise}
@@ -764,8 +757,6 @@ function Database(cn, dc, config) {
         /**
          * @method Database.map
          * @description
-         * **Added in v.4.3.0**
-         *
          * Creates a new array with the results of calling a provided function on every element in the array of rows
          * resolved by method {@link Database.any any}.
          *
@@ -875,8 +866,6 @@ function Database(cn, dc, config) {
         /**
          * @method Database.each
          * @description
-         * **Added in v.4.3.0**
-         *
          * Executes a provided function once per array element, for an array of rows resolved by method {@link Database.any any}.
          *
          * It is a convenience method to reduce the following code:

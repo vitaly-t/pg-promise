@@ -52,9 +52,8 @@
     <p><strong>Alternative Syntax:</strong> <code>TableName({table, [schema]})</code> &#8658; <a href="helpers.TableName.html">helpers.TableName</a></p>
 <p>Prepares and escapes a full table name that can be injected into queries directly.</p>
 <p>This is a read-only type that can be used wherever parameter <code>table</code> is supported.</p>
-<p><strong>Added in v.4.7.4:</strong></p>
-<p>Support for <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, i.e. you can use the type directly as a formatting parameter,
-without specifying any escaping.</p>
+<p>It supports <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, which means you can use the type directly as a formatting
+parameter, without specifying any escaping.</p>
 </div>
 
 
@@ -342,7 +341,7 @@ without specifying any escaping.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var table = new pgp.helpers.TableName('my-table', 'my-schema');console.log(table);//=> "my-schema"."my-table"// From v.4.7.4 we use the type directly:pgp.as.format("SELECT $1", table);//=> SELECT "my-schema"."my-table"</code></pre>
+    <pre class="prettyprint"><code>var table = new pgp.helpers.TableName('my-table', 'my-schema');console.log(table);//=> "my-schema"."my-table"// Formatting the type directly:pgp.as.format("SELECT * FROM $1", table);//=> SELECT * FROM "my-schema"."my-table"</code></pre>
 
 
 
@@ -421,7 +420,7 @@ without specifying any escaping.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_tableName.js.html">helpers/tableName.js</a>, <a href="helpers_tableName.js.html#line98">line 98</a>
+        <a href="helpers_tableName.js.html">helpers/tableName.js</a>, <a href="helpers_tableName.js.html#line96">line 96</a>
     </li></ul></dd>
     
 

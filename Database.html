@@ -282,8 +282,7 @@ depending on the database context.</p></td>
 
 
 <div class="description">
-    <p><strong>Added in v.4.4.7</strong></p>
-<p>This is a hidden property, to help integrating type <a href="Database.html">Database</a> directly with third-party libraries.</p>
+    <p>This is a hidden property, to help integrating type <a href="Database.html">Database</a> directly with third-party libraries.</p>
 <p>Properties available in the object:</p>
 <ul>
 <li><code>pgp</code> - instance of the entire library after initialization</li>
@@ -295,8 +294,8 @@ depending on the database context.</p></td>
 <li><code>promise.reject(value)</code> - to reject with a value</li>
 </ul>
 </li>
-<li><code>version</code> - this library's version <em>(added in 4.4.8)</em></li>
-<li><code>$npm</code> <em>(hidden property)</em> - internal module cache <em>(added in 4.5.1)</em></li>
+<li><code>version</code> - this library's version</li>
+<li><code>$npm</code> <em>(hidden property)</em> - internal module cache</li>
 </ul>
 </div>
 
@@ -345,7 +344,7 @@ depending on the database context.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line252">line 252</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line250">line 250</a>
     </li></ul></dd>
     
 
@@ -358,6 +357,11 @@ depending on the database context.</p></td>
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Using the promise protocol as configured by pg-promise:var $p = db.$config.promise;var resolvedPromise = $p.resolve('some data');var rejectedPromise = $p.reject('some reason');var newPromise = $p(function(resolve, reject) {    // call either resolve(data) or reject(reason) here});</code></pre>
 
 
 
@@ -537,7 +541,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line530">line 530</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line531">line 531</a>
     </li></ul></dd>
     
 
@@ -681,7 +685,7 @@ You should only call method <code>done()</code> to release the connection.</p>
 
             
 
-            <td class="description last"><p>Connection options. <strong>Added in v.4.3.4</strong></p>
+            <td class="description last">
                 <h6>Properties</h6>
                 
 
@@ -876,8 +880,7 @@ and therefore cannot scale. This option is only suitable for global connection u
 
 
 <div class="description">
-    <p><strong>Added in v.4.3.0</strong></p>
-<p>Executes a provided function once per array element, for an array of rows resolved by method <a href="Database.html#.any">any</a>.</p>
+    <p>Executes a provided function once per array element, for an array of rows resolved by method <a href="Database.html#.any">any</a>.</p>
 <p>It is a convenience method to reduce the following code:</p>
 <pre class="prettyprint source lang-js"><code>db.any(query, values)
     .then(function(data) {
@@ -1110,7 +1113,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line846">line 846</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line837">line 837</a>
     </li></ul></dd>
     
 
@@ -1370,7 +1373,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line670">line 670</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line667">line 667</a>
     </li></ul></dd>
     
 
@@ -1595,7 +1598,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line396">line 396</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line401">line 401</a>
     </li></ul></dd>
     
 
@@ -1817,7 +1820,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line494">line 494</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line495">line 495</a>
     </li></ul></dd>
     
 
@@ -1888,8 +1891,7 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 <div class="description">
-    <p><strong>Added in v.4.3.0</strong></p>
-<p>Creates a new array with the results of calling a provided function on every element in the array of rows
+    <p>Creates a new array with the results of calling a provided function on every element in the array of rows
 resolved by method <a href="Database.html#.any">any</a>.</p>
 <p>It is a convenience method to reduce the following code:</p>
 <pre class="prettyprint source lang-js"><code>db.any(query, values)
@@ -2120,7 +2122,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line735">line 735</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line728">line 728</a>
     </li></ul></dd>
     
 
@@ -2354,7 +2356,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line293">line 293</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line302">line 302</a>
     </li></ul></dd>
     
 
@@ -2569,8 +2571,7 @@ as an override for its internal <code>values</code>.</p></td>
 
             
 
-            <td class="description last"><p><strong>Added in 4.6.0</strong></p>
-<p>Value transformation callback, to allow in-line value change.
+            <td class="description last"><p>Value transformation callback, to allow in-line value change.
 When specified, the return value replaces the original resolved value.</p>
 <p>The function takes only one parameter - value resolved from the query.</p></td>
         </tr>
@@ -2600,8 +2601,7 @@ When specified, the return value replaces the original resolved value.</p>
 
             
 
-            <td class="description last"><p><strong>Added in 4.6.0</strong></p>
-<p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
+            <td class="description last"><p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
         </tr>
 
     
@@ -2642,7 +2642,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line328">line 328</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line337">line 337</a>
     </li></ul></dd>
     
 
@@ -2866,8 +2866,7 @@ as an override for its internal <code>values</code>.</p></td>
 
             
 
-            <td class="description last"><p><strong>Added in 4.6.0</strong></p>
-<p>Value transformation callback, to allow in-line value change.
+            <td class="description last"><p>Value transformation callback, to allow in-line value change.
 When specified, the return value replaces the original resolved value.</p>
 <p>The function takes only one parameter - value resolved from the query.</p></td>
         </tr>
@@ -2897,8 +2896,7 @@ When specified, the return value replaces the original resolved value.</p>
 
             
 
-            <td class="description last"><p><strong>Added in 4.6.0</strong></p>
-<p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
+            <td class="description last"><p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
         </tr>
 
     
@@ -2939,7 +2937,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line431">line 431</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line436">line 436</a>
     </li></ul></dd>
     
 
@@ -3150,8 +3148,7 @@ expecting back 0 or 1 rows.</p>
 
             
 
-            <td class="description last"><p><strong>Added in 4.6.0</strong></p>
-<p>Value transformation callback, to allow in-line value change.
+            <td class="description last"><p>Value transformation callback, to allow in-line value change.
 When specified, the return value replaces the original resolved value.</p>
 <p>The function takes only one parameter - value resolved from the query.</p></td>
         </tr>
@@ -3181,8 +3178,7 @@ When specified, the return value replaces the original resolved value.</p>
 
             
 
-            <td class="description last"><p><strong>Added in 4.6.0</strong></p>
-<p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
+            <td class="description last"><p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
         </tr>
 
     
@@ -3223,7 +3219,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line696">line 696</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line693">line 693</a>
     </li></ul></dd>
     
 
@@ -3496,7 +3492,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line201">line 201</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line199">line 199</a>
     </li></ul></dd>
     
 
@@ -3710,8 +3706,7 @@ as an override for its internal <code>values</code>.</p></td>
 
             
 
-            <td class="description last"><p><strong>Added in 4.6.2</strong></p>
-<p>Value transformation callback, to allow in-line value change.
+            <td class="description last"><p>Value transformation callback, to allow in-line value change.
 When specified, the return value replaces the original resolved value.</p>
 <p>The function takes only one parameter - value resolved from the query.</p></td>
         </tr>
@@ -3741,8 +3736,7 @@ When specified, the return value replaces the original resolved value.</p>
 
             
 
-            <td class="description last"><p><strong>Added in 4.6.2</strong></p>
-<p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
+            <td class="description last"><p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
         </tr>
 
     
@@ -3783,7 +3777,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line570">line 570</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line571">line 571</a>
     </li></ul></dd>
     
 
@@ -3973,7 +3967,7 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line637">line 637</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line634">line 634</a>
     </li></ul></dd>
     
 
@@ -4188,7 +4182,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line927">line 927</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line916">line 916</a>
     </li></ul></dd>
     
 
@@ -4413,7 +4407,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1020">line 1020</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1009">line 1009</a>
     </li></ul></dd>
     
 
@@ -4588,7 +4582,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1251">line 1251</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1240">line 1240</a>
     </li></ul></dd>
     
 

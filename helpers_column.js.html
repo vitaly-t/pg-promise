@@ -58,7 +58,8 @@ var $npm = {
  * of the class.
  *
  * @property {string} name
- * Column name + property name (if `prop` isn't specified).
+ * Destination column name + source property name (if `prop` is skipped). The name must adhere to JavaScript syntax for variables,
+ * unless `prop` is specified, in which case `name` represents only the column name, and therefore can be any string.
  *
  * @property {string} [prop]
  * Source property name, if different from the column's name. It must adhere to JavaScript syntax for variables.
@@ -329,6 +330,8 @@ Column.prototype.inspect = function () {
  * @property {string} [prop]
  * Source property name, if different from the column's name. It must adhere to JavaScript syntax for variables.
  *
+ * It is ignored when it is the same as `name`.
+ *
  * @property {string} [mod]
  * Formatting modifier, as supported by method {@link formatting.format as.format}: `^`, `~`, `#`, `:csv`, `:json`, `name`, `raw`, `:value`.
  *
@@ -336,9 +339,12 @@ Column.prototype.inspect = function () {
  * Server-side type casting. Leading `::` is allowed, but not needed (automatically removed when specified).
  *
  * @property {boolean} [cnd]
+ * Conditional column flag.
  *
  * Used by methods {@link helpers.update update} and {@link helpers.sets sets}, ignored by methods {@link helpers.insert insert} and
  * {@link helpers.values values}. It indicates that the column is reserved for a `WHERE` condition, not to be set or updated.
+ *
+ * It can be set from a string initialization, by adding `?` in front of the name.
  *
  * @property {} [def]
  * Default value for the property, to be used only when the source object doesn't have the property.

@@ -493,7 +493,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var pgp = require('pg-promise')();var qf1 = new pgp.QueryFile('./query1.sql', {minify: true});var qf2 = new pgp.QueryFile('./query2.sql', {minify: true});var query = pgp.helpers.concat([    {query: 'INSERT INTO Users(name, age) VALUES($1, $2)', values: ['John', 23]}, // QueryFormat-like object    {query: 'DELETE FROM Log WHERE userName = $1', values: 'John'}, // QueryFormat-like object    {query: qf1, values: [1, 'Name']}, // QueryFile with formatting parameters    'SELECT count(*) FROM Users', // a simple-string query,    qf2 // direct QueryFile object]);// query = concatenated string of all queries</code></pre>
+    <pre class="prettyprint"><code>var pgp = require('pg-promise')();var qf1 = new pgp.QueryFile('./query1.sql', {minify: true});var qf2 = new pgp.QueryFile('./query2.sql', {minify: true});var query = pgp.helpers.concat([    {query: 'INSERT INTO Users(name, age) VALUES($1, $2)', values: ['John', 23]}, // QueryFormat-like object    {query: 'DELETE FROM Log WHERE userName = $1', values: 'John'}, // QueryFormat-like object    {query: qf1, values: [1, 'Name']}, // QueryFile with formatting parameters    'SELECT count(*) FROM Users', // a simple-string query,    qf2 // direct QueryFile object]);// query = concatenated string with all the queries</code></pre>
 
 
 
@@ -1757,7 +1757,8 @@ unless <code>prop</code> is specified, in which case <code>name</code> represent
 
             
 
-            <td class="description last"><p>Source property name, if different from the column's name. It must adhere to JavaScript syntax for variables.</p></td>
+            <td class="description last"><p>Source property name, if different from the column's name. It must adhere to JavaScript syntax for variables.</p>
+<p>It is ignored when it is the same as <code>name</code>.</p></td>
         </tr>
 
     
@@ -1850,8 +1851,10 @@ unless <code>prop</code> is specified, in which case <code>name</code> represent
 
             
 
-            <td class="description last"><p>Used by methods <a href="helpers.html#.update">update</a> and <a href="helpers.html#.sets">sets</a>, ignored by methods <a href="helpers.html#.insert">insert</a> and
-<a href="helpers.html#.values">values</a>. It indicates that the column is reserved for a <code>WHERE</code> condition, not to be set or updated.</p></td>
+            <td class="description last"><p>Conditional column flag.</p>
+<p>Used by methods <a href="helpers.html#.update">update</a> and <a href="helpers.html#.sets">sets</a>, ignored by methods <a href="helpers.html#.insert">insert</a> and
+<a href="helpers.html#.values">values</a>. It indicates that the column is reserved for a <code>WHERE</code> condition, not to be set or updated.</p>
+<p>It can be set from a string initialization, by adding <code>?</code> in front of the name.</p></td>
         </tr>
 
     
@@ -1981,7 +1984,7 @@ unless <code>prop</code> is specified, in which case <code>name</code> represent
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line291">line 291</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line292">line 292</a>
     </li></ul></dd>
     
 
@@ -2101,7 +2104,7 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line330">line 330</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line336">line 336</a>
     </li></ul></dd>
     
 
@@ -2448,7 +2451,7 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line349">line 349</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line355">line 355</a>
     </li></ul></dd>
     
 

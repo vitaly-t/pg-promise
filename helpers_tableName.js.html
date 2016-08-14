@@ -44,10 +44,8 @@ var $npm = {
  *
  * This is a read-only type that can be used wherever parameter `table` is supported.
  *
- * **Added in v.4.7.4:**
- *
- * Support for $[Custom Type Formatting], i.e. you can use the type directly as a formatting parameter,
- * without specifying any escaping.
+ * It supports $[Custom Type Formatting], which means you can use the type directly as a formatting
+ * parameter, without specifying any escaping.
  *
  * @param {String|Object} table
  * Table name details, depending on the type:
@@ -79,9 +77,9 @@ var $npm = {
  * console.log(table);
  * //=> "my-schema"."my-table"
  *
- * // From v.4.7.4 we use the type directly:
- * pgp.as.format("SELECT $1", table);
- * //=> SELECT "my-schema"."my-table"
+ * // Formatting the type directly:
+ * pgp.as.format("SELECT * FROM $1", table);
+ * //=> SELECT * FROM "my-schema"."my-table"
  *
  */
 function TableName(table, schema) {
