@@ -11,7 +11,7 @@ matrix:
     - node_js: "6"
       script: "npm run travis"
 addons:
-  postgresql: "9.5"
+  postgresql: "9.4"
 before_script:
   - psql -c 'create database pg_promise_test;' -U postgres
   - node test/db/init.js
