@@ -43,7 +43,8 @@ var $arr = require('../../array');
  *
  * Concatenates multiple queries into a single query string.
  *
- * Before joining any query, the method removes from it all leading and trailing spaces, tabs and semi-colons.
+ * - Before joining any query, the method removes from it all leading and trailing spaces, tabs and semi-colons.
+ * - Empty queries are skipped automatically.
  *
  * @param {array&lt;string|helpers.QueryFormat|QueryFile>} queries
  * Array of mixed-type elements:
@@ -75,7 +76,7 @@ function concat(queries) {
     if (!Array.isArray(queries)) {
         throw new TypeError("Parameter 'queries' must be an array.");
     }
-    return $arr.map(queries, function (q, index) {
+    var all = $arr.map(queries, function (q, index) {
         if (typeof q === 'string') {
             // a simple query string without parameters:
             return clean(q);
@@ -91,6 +92,10 @@ function concat(queries) {
             }
         }
         throw new Error('Invalid query element at index ' + index + '.');
+    });
+
+    return $arr.filter(all, function (q) {
+        return q;
     }).join(';');
 }
 
