@@ -867,9 +867,22 @@ describe("method 'concat'", function () {
                 expect(helpers.concat(['\t;;one;\t;', '  two ;;\t\t'])).toBe('one;two');
                 expect(helpers.concat(['\t;;one;\t;here ', '  two ;;\t\t'])).toBe('one;\t;here;two');
             });
+        });
+        describe("with QueryFile", function () {
             it("must support mixed types correctly", function () {
                 var qf = new QueryFile(path.join(__dirname, './sql/allUsers.sql'), {minify: true});
                 expect(helpers.concat(['one', {query: 'two'}, qf])).toBe('one;two;select * from users');
+            });
+        });
+        describe("with formatting options", function () {
+            it("must format parameters correctly", function () {
+                expect(helpers.concat([{
+                    query: '$1^, $2^, $3^',
+                    values: ['a', 'b'],
+                    options: {
+                        partial: true
+                    }
+                }])).toBe('a, b, $3^');
             });
         });
     });
