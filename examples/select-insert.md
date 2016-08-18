@@ -18,14 +18,11 @@ a new or existing `id` of the record.
  
 ```js
 function getInsertUserId(name) {
-    return db.task(function (t) {
-            return t.oneOrNone('SELECT id FROM Users WHERE name = $1', name)
-                .then(function (user) {
-                    return user || t.one('INSERT INTO Users(name) VALUES($1) RETURNING id', name);
+    return db.task(t => {
+            return t.oneOrNone('SELECT id FROM Users WHERE name = $1', name, u => u.id)
+                .then(user => {
+                    return user || t.one('INSERT INTO Users(name) VALUES($1) RETURNING id', name, u => u.id);
                 });
-        })
-        .then(function (user) {
-            return user.id;
         });
 }
 ```
@@ -34,10 +31,10 @@ Example of calling the function:
 
 ```js 
 getInsertUserId('name')
-    .then(function (userId) {
+    .then(userId => {
         // use the id;
     })
-    .catch(function (error) {
+    .catch(error => {
         // something went wrong;
     });
 ```
@@ -46,9 +43,8 @@ The same function `getInsertUserId`, simplified for the ES6 syntax:
 
 ```js
 function getInsertUserId(name) {
-    return db.task(t=>t.oneOrNone('SELECT id FROM Users WHERE name = $1', name)
-        .then(user=>user || t.one('INSERT INTO Users(name) VALUES($1) RETURNING id', name)))
-        .then(user=>user.id);
+    return db.task(t=>t.oneOrNone('SELECT id FROM Users WHERE name = $1', name, u => u.id)
+        .then(user=>user || t.one('INSERT INTO Users(name) VALUES($1) RETURNING id', name, u => u.id)));
 }
 ```
 
@@ -57,9 +53,8 @@ The same function `getInsertUserId`, using ES6 generators:
 ```js
 function getInsertUserId(name) {
     return db.task(function *(t) {
-        let user = yield t.oneOrNone('SELECT id FROM Users WHERE name = $1', name);
-        user = yield user || t.one('INSERT INTO Users(name) VALUES($1) RETURNING id', name);
-        return user.id;
+        let userId = yield t.oneOrNone('SELECT id FROM Users WHERE name = $1', name, u => u.id);
+        return yield userId || t.one('INSERT INTO Users(name) VALUES($1) RETURNING id', name, u => u.id);
     });
 }
 ```
