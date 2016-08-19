@@ -223,7 +223,7 @@ string of at least 1 character long. Such name is then properly escaped and wrap
 
 ```js
 query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
-// => INSERT INTO "Table Name"("Column Name") VALUES(...)
+//=> INSERT INTO "Table Name"("Column Name") VALUES(...)
 
 // A mixed example for a dynamic column list:
 var columns = ['id', 'message'];
@@ -231,7 +231,19 @@ query('SELECT ${columns^} FROM ${table~}', {
     columns: columns.map(pgp.as.name).join(),
     table: 'Table Name'
 });
-// => SELECT "id","message" FROM "Table Name"
+//=> SELECT "id","message" FROM "Table Name"
+```
+
+Version 5.2.1 and later supports extended syntax for `${this~}` and for method [as.name]:
+
+```js
+var obj = {
+    one: 1,
+    two: 2
+};
+
+format("INSERT INTO table(${this~}) VALUES(${one}, ${two})", obj);
+//=>INSERT INTO table("one","two") VALUES(1, 2)
 ```
 
 Relying on this type of formatting for sql names and identifiers, along with regular variable formatting
