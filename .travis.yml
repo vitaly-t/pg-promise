@@ -1,5 +1,6 @@
 language: node_js
-sudo: false
+sudo: required
+dist: true
 matrix:
   include:
     - node_js: "0.10"
@@ -11,7 +12,7 @@ matrix:
     - node_js: "6"
       script: "npm run travis"
 addons:
-  postgresql: "9.4"
+  postgresql: "9.5"
 before_script:
   - psql -c 'create database pg_promise_test;' -U postgres
   - node test/db/init.js
