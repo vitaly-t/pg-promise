@@ -1169,7 +1169,7 @@ as an override for its internal <code>values</code>.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>db.each('SELECT id, code, name FROM Events', null, row => {    row.code = parseInt(row.code);})    .then(data => {        // data = array of events, with 'code' converted into integer    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>db.each('SELECT id, code, name FROM Events', [], row => {    row.code = parseInt(row.code);})    .then(data => {        // data = array of events, with 'code' converted into integer    })    .catch(error => {        // error    });</code></pre>
 
 
 

@@ -923,7 +923,7 @@ function Database(cn, dc, config) {
          *
          * @example
          *
-         * db.each('SELECT id, code, name FROM Events', null, row => {
+         * db.each('SELECT id, code, name FROM Events', [], row => {
          *     row.code = parseInt(row.code);
          * })
          *     .then(data => {
