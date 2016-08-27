@@ -797,7 +797,7 @@ function Database(cn, dc, config) {
          *
          * @param {function} cb
          * Function that produces an element of the new array, taking three arguments:
-         * - `row` - the current row being processed in the array
+         * - `row` - the current row object being processed in the array
          * - `index` - the index of the current row being processed in the array
          * - `data` - the original array of rows resolved by method {@link Database.any any}
          *
@@ -906,7 +906,7 @@ function Database(cn, dc, config) {
          *
          * @param {function} cb
          * Function to execute for each row, taking three arguments:
-         * - `row` - the current row being processed in the array
+         * - `row` - the current row object being processed in the array
          * - `index` - the index of the current row being processed in the array
          * - `data` - the array of rows resolved by method {@link Database.any any}
          *
