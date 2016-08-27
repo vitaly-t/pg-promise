@@ -924,7 +924,7 @@ function Database(cn, dc, config) {
          * @example
          *
          * db.each('SELECT id, code, name FROM Events', [], row => {
-         *     row.code = +row.code; // leading `+` is the same as parseInt()
+         *     row.code = +row.code; // leading `+` is short for parseInt()
          * })
          *     .then(data => {
          *         // data = array of events, with 'code' converted into integer
