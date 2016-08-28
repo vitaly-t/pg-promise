@@ -408,7 +408,7 @@ function Database(cn, dc, config) {
          * @example
          *
          * // a query with in-line value transformation:
-         * db.one('INSERT INTO Events VALUES($1) RETURNING id', [123], event=>event.id)
+         * db.one('INSERT INTO Events VALUES($1) RETURNING id', [123], event => event.id)
          *     .then(data=> {
          *         // data = a new event id, rather than an object with it
          *     });
@@ -510,7 +510,7 @@ function Database(cn, dc, config) {
          * @example
          *
          * // a query with in-line value transformation:
-         * db.oneOrNone('SELECT id FROM Events WHERE type = $1', ['entry'], e => e ? e.id : null)
+         * db.oneOrNone('SELECT id FROM Events WHERE type = $1', ['entry'], e => e &amp;&amp; e.id)
          *     .then(data=> {
          *         // data = the event id or null (rather than object or null)
          *     });

@@ -2698,7 +2698,7 @@ When specified, the return value replaces the original resolved value.</p>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// a query with in-line value transformation:db.one('INSERT INTO Events VALUES($1) RETURNING id', [123], event=>event.id)    .then(data=> {        // data = a new event id, rather than an object with it    });</code></pre>
+    <pre class="prettyprint"><code>// a query with in-line value transformation:db.one('INSERT INTO Events VALUES($1) RETURNING id', [123], event => event.id)    .then(data=> {        // data = a new event id, rather than an object with it    });</code></pre>
 
     <pre class="prettyprint"><code>// a query with in-line value transformation + conversion:db.one('SELECT count(*) FROM Users', null, c => +c.count)    .then(count=> {        // count = a proper integer value, rather than an object with a string    });</code></pre>
 
@@ -2999,7 +2999,7 @@ When specified, the return value replaces the original resolved value.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// a query with in-line value transformation:db.oneOrNone('SELECT id FROM Events WHERE type = $1', ['entry'], e => e ? e.id : null)    .then(data=> {        // data = the event id or null (rather than object or null)    });</code></pre>
+    <pre class="prettyprint"><code>// a query with in-line value transformation:db.oneOrNone('SELECT id FROM Events WHERE type = $1', ['entry'], e => e &amp;&amp; e.id)    .then(data=> {        // data = the event id or null (rather than object or null)    });</code></pre>
 
 
 
