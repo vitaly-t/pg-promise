@@ -1169,7 +1169,7 @@ as an override for its internal <code>values</code>.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>db.each('SELECT id, code, name FROM Events', [], row => {    row.code = +row.code; // leading `+` is short for parseInt()})    .then(data => {        // data = array of events, with 'code' converted into integer    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>db.each('SELECT id, code, name FROM Events', [], row => {    row.code = +row.code; // leading `+` is short for `parseInt()`})    .then(data => {        // data = array of events, with 'code' converted into integer    })    .catch(error => {        // error    });</code></pre>
 
 
 
@@ -2700,7 +2700,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <pre class="prettyprint"><code>// a query with in-line value transformation:db.one('INSERT INTO Events VALUES($1) RETURNING id', [123], event=>event.id)    .then(data=> {        // data = a new event id, rather than an object with it    });</code></pre>
 
-    <pre class="prettyprint"><code>// a query with in-line value transformation + conversion:db.one('SELECT count(*) FROM Users', null, value=>parseInt(value.count))    .then(data=> {        // data = a proper integer, rather than an object with a string    });</code></pre>
+    <pre class="prettyprint"><code>// a query with in-line value transformation + conversion:db.one('SELECT count(*) FROM Users', null, c => +c.count)    .then(count=> {        // count = a proper integer value, rather than an object with a string    });</code></pre>
 
 
 

@@ -416,9 +416,9 @@ function Database(cn, dc, config) {
          * @example
          *
          * // a query with in-line value transformation + conversion:
-         * db.one('SELECT count(*) FROM Users', null, value=>parseInt(value.count))
-         *     .then(data=> {
-         *         // data = a proper integer, rather than an object with a string
+         * db.one('SELECT count(*) FROM Users', null, c => +c.count)
+         *     .then(count=> {
+         *         // count = a proper integer value, rather than an object with a string
          *     });
          *
          */
@@ -924,7 +924,7 @@ function Database(cn, dc, config) {
          * @example
          *
          * db.each('SELECT id, code, name FROM Events', [], row => {
-         *     row.code = +row.code; // leading `+` is short for parseInt()
+         *     row.code = +row.code; // leading `+` is short for `parseInt()`
          * })
          *     .then(data => {
          *         // data = array of events, with 'code' converted into integer
