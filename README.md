@@ -227,7 +227,7 @@ query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
 
 // A mixed example for a dynamic column list:
 var columns = ['id', 'message'];
-query('SELECT ${columns^} FROM ${table~}', {
+query('SELECT ${columns~} FROM ${table~}', {
     columns: columns.map(pgp.as.name).join(),
     table: 'Table Name'
 });
