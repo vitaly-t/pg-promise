@@ -29,9 +29,9 @@ pg-promise
 * [Testing](#testing)    
 * [Usage](#usage)
   - [Queries and Parameters](#queries-and-parameters)
+    - [SQL Names](#sql-names)  
     - [Raw Text](#raw-text)  
-    - [Open Values](#open-values)    
-    - [SQL Names](#sql-names)    
+    - [Open Values](#open-values)        
   - [Query Result Mask](#query-result-mask)    
   - [Named Parameters](#named-parameters)
   - [Conversion Helpers](#conversion-helpers)
@@ -166,6 +166,41 @@ serialized into JSON, the same as calling method `pgp.as.json()`, except the lat
 
 For the latest SQL formatting support see method [as.format]
 
+### SQL Names
+
+When a variable ends with `~` (tilde) or `:name`, it represents an SQL name or identifier, which must be a text
+string of at least 1 character long. Such name is then properly escaped and wrapped in double quotes.
+
+```js
+query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
+//=> INSERT INTO "Table Name"("Column Name") VALUES(...)
+
+// A mixed example for a dynamic column list:
+var columns = ['id', 'message'];
+query('SELECT ${columns^} FROM ${table~}', {
+    columns: columns.map(pgp.as.name).join(),
+    table: 'Table Name'
+});
+//=> SELECT "id","message" FROM "Table Name"
+```
+
+Version 5.2.1 and later supports extended syntax for `${this~}` and for method [as.name]:
+
+```js
+var obj = {
+    one: 1,
+    two: 2
+};
+
+format("INSERT INTO table(${this~}) VALUES(${one}, ${two})", obj);
+//=>INSERT INTO table("one","two") VALUES(1, 2)
+```
+
+Relying on this type of formatting for sql names and identifiers, along with regular variable formatting
+makes your application impervious to sql injection.
+
+See method [as.name] for the latest API.
+
 ### Raw Text
 
 Raw-text values can be injected by ending the variable name with `^` or `:raw`:
@@ -210,41 +245,6 @@ query("...WHERE name LIKE '%${filter:value}'", {filter: "O'Connor"});
 ```
 
 See also: method [as.value].
-
-### SQL Names
-
-When a variable ends with `~` (tilde) or `:name`, it represents an SQL name or identifier, which must be a text
-string of at least 1 character long. Such name is then properly escaped and wrapped in double quotes.
-
-```js
-query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
-//=> INSERT INTO "Table Name"("Column Name") VALUES(...)
-
-// A mixed example for a dynamic column list:
-var columns = ['id', 'message'];
-query('SELECT ${columns^} FROM ${table~}', {
-    columns: columns.map(pgp.as.name).join(),
-    table: 'Table Name'
-});
-//=> SELECT "id","message" FROM "Table Name"
-```
-
-Version 5.2.1 and later supports extended syntax for `${this~}` and for method [as.name]:
-
-```js
-var obj = {
-    one: 1,
-    two: 2
-};
-
-format("INSERT INTO table(${this~}) VALUES(${one}, ${two})", obj);
-//=>INSERT INTO table("one","two") VALUES(1, 2)
-```
-
-Relying on this type of formatting for sql names and identifiers, along with regular variable formatting
-makes your application impervious to sql injection.
-
-See method [as.name] for the latest API.
 
 ## Query Result Mask
 
