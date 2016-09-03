@@ -321,7 +321,7 @@ leaving the burden of all extra checks to the library.
 The library supports named parameters in query formatting, with the syntax of `$*propName*`, where `*` is any of the following open-close
 pairs: `{}`, `()`, `<>`, `[]`, `//`
 
-```javascript
+```js
 db.query('select * from users where name=${name} and active=$/active/', {
     name: 'John',
     active: true
@@ -380,7 +380,7 @@ In PostgreSQL stored procedures are just functions that usually do not return an
 Suppose we want to call function **findAudit** to find audit records by `user_id` and maximum timestamp.
 We can make such call as shown below:
 
-```javascript
+```js
 db.func('findAudit', [123, new Date()])
     .then(function (data) {
         console.log(data); // printing the data returned
@@ -419,7 +419,8 @@ This allows usage of your own custom types as formatting parameters for the quer
 overriding formatting for standard object types, such as `Date` and `Array`.
 
 **Example: your own type formatting**
-```javascript
+
+```js
 function Money(m) {
     this.amount = m;
     this.formatDBType = function () {
@@ -430,7 +431,8 @@ function Money(m) {
 ```
 
 **Example: overriding standard types**
-```javascript
+
+```js
 Date.prototype.formatDBType = function () {
     // format Date as a local timestamp;
     return this.getTime();
@@ -469,7 +471,7 @@ with `::uuid[]` appended at the end of the variable.
   
 You can implement your own presentation for UUID that does not require extra casting:
 
-```javascript  
+```js  
 function UUID(value) {
     this.uuid = value;
     this._rawDBType = true; // force raw format on output;
@@ -519,6 +521,7 @@ db.one(sqlFindUser, {id: 123})
 ```
 
 File `findUser.sql`:
+
 ```sql
 /*
     multi-line comment
@@ -548,7 +551,7 @@ A task represents a shared connection to be used within a callback function. The
 
 A transaction, for example, is just a special type of task, wrapped in `CONNECT->COMMIT/ROLLBACK`. 
 
-```javascript
+```js
 db.task(function (t) {
     // `t` and `this` here are the same;
     // execute a chain of queries;
@@ -678,7 +681,7 @@ function source(index, data, delay) {
 }
 
 db.tx(function (t) {
-    // t = this;
+    // `t` and `this` here are the same;
     return this.sequence(source);
 })
     .then(function (data) {
@@ -753,7 +756,7 @@ If you prefer writing asynchronous code in a synchronous manner, you can impleme
 
 ```js
 function * getUser(t) {
-    // t = this;
+    // `t` and `this` here are the same;
     let user = yield this.oneOrNone('select * from users where id = $1', 123);
     return yield user || this.one('insert into users(name) values($1) returning *', 'John');
 }
@@ -810,7 +813,8 @@ By default, **pg-promise** uses ES6 Promise. If your version of NodeJS doesn't s
 or you want a different promise library to be used, set this property to the library's instance.
 
 Example of switching over to [Bluebird]:
-```javascript
+
+```js
 var promise = require('bluebird');
 var options = {
     promiseLib: promise
