@@ -110,75 +110,6 @@ declare module 'pg-promise' {
         options?: TFormattingOptions
     };
 
-    // Base database protocol
-    // API: http://vitaly-t.github.io/pg-promise/Database.html
-    interface IBaseProtocol<Ext> {
-
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.query
-        query(query: TQuery, values?: any, qrm?: pgPromise.queryResult): XPromise<any>;
-
-        // result-specific methods;
-
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.none
-        none(query: TQuery, values?: any): XPromise<void>;
-
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.one
-        one(query: TQuery, values?: any, cb?: (value: any)=>any, thisArg?: any): XPromise<any>;
-
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.oneOrNone
-        oneOrNone(query: TQuery, values?: any, cb?: (value: any)=>any, thisArg?: any): XPromise<any>;
-
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.many
-        many(query: TQuery, values?: any): XPromise<Array<any>>;
-
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.manyOrNone
-        manyOrNone(query: TQuery, values?: any): XPromise<Array<any>>;
-
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.any
-        any(query: TQuery, values?: any): XPromise<Array<any>>;
-
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.result
-        result(query: TQuery, values?: any, cb?: (value: any)=>any, thisArg?: any): XPromise<pg.IResult>;
-
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.stream
-        stream(qs: Object, init: (stream: NodeJS.ReadableStream)=>void): XPromise<{processed: number, duration: number}>;
-
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.func
-        func(funcName: string, values?: any, qrm?: pgPromise.queryResult): XPromise<any>;
-
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.proc
-        proc(procName: string, values?: any, cb?: (value: any)=>any, thisArg?: any): XPromise<any>;
-
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.map
-        map(query: TQuery, values: any, cb: (row: any, index: number, data: Array<any>)=>any, thisArg?: any): XPromise<Array<any>>;
-
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.each
-        each(query: TQuery, values: any, cb: (row: any, index: number, data: Array<any>)=>void, thisArg?: any): XPromise<Array<any>>;
-
-        // Tasks
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.task
-        task(cb: (t: ITask<Ext>&Ext)=>any): XPromise<any>;
-        task(tag: any, cb: (t: ITask<Ext>&Ext)=>any): XPromise<any>;
-
-        // Transactions
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#.tx
-        tx(cb: (t: ITask<Ext>&Ext)=>any): XPromise<any>;
-        tx(tag: any, cb: (t: ITask<Ext>&Ext)=>any): XPromise<any>;
-    }
-
-    // Database object in connected state;
-    interface IConnected<Ext> extends IBaseProtocol<Ext> {
-        client: pg.Client;
-        done(): void;
-    }
-
-    // Additional methods available inside tasks + transactions;
-    // API: http://vitaly-t.github.io/pg-promise/Task.html
-    interface ITask<Ext> extends IBaseProtocol<Ext>, spexLib.ISpexBase {
-        // API: http://vitaly-t.github.io/pg-promise/Task.html#.ctx
-        ctx: ITaskContext;
-    }
-
     // Query formatting namespace;
     // API: http://vitaly-t.github.io/pg-promise/formatting.html
     interface IFormatting {
@@ -599,6 +530,75 @@ declare module 'pg-promise' {
             as: IFormatting;
             end(): void;
             pg: typeof pg;
+        }
+
+        // Additional methods available inside tasks + transactions;
+        // API: http://vitaly-t.github.io/pg-promise/Task.html
+        interface ITask<Ext> extends IBaseProtocol<Ext>, spexLib.ISpexBase {
+            // API: http://vitaly-t.github.io/pg-promise/Task.html#.ctx
+            ctx: ITaskContext;
+        }
+
+        // Base database protocol
+        // API: http://vitaly-t.github.io/pg-promise/Database.html
+        interface IBaseProtocol<Ext> {
+
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.query
+            query(query: TQuery, values?: any, qrm?: pgPromise.queryResult): XPromise<any>;
+
+            // result-specific methods;
+
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.none
+            none(query: TQuery, values?: any): XPromise<void>;
+
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.one
+            one(query: TQuery, values?: any, cb?: (value: any)=>any, thisArg?: any): XPromise<any>;
+
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.oneOrNone
+            oneOrNone(query: TQuery, values?: any, cb?: (value: any)=>any, thisArg?: any): XPromise<any>;
+
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.many
+            many(query: TQuery, values?: any): XPromise<Array<any>>;
+
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.manyOrNone
+            manyOrNone(query: TQuery, values?: any): XPromise<Array<any>>;
+
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.any
+            any(query: TQuery, values?: any): XPromise<Array<any>>;
+
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.result
+            result(query: TQuery, values?: any, cb?: (value: any)=>any, thisArg?: any): XPromise<pg.IResult>;
+
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.stream
+            stream(qs: Object, init: (stream: NodeJS.ReadableStream)=>void): XPromise<{processed: number, duration: number}>;
+
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.func
+            func(funcName: string, values?: any, qrm?: pgPromise.queryResult): XPromise<any>;
+
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.proc
+            proc(procName: string, values?: any, cb?: (value: any)=>any, thisArg?: any): XPromise<any>;
+
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.map
+            map(query: TQuery, values: any, cb: (row: any, index: number, data: Array<any>)=>any, thisArg?: any): XPromise<Array<any>>;
+
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.each
+            each(query: TQuery, values: any, cb: (row: any, index: number, data: Array<any>)=>void, thisArg?: any): XPromise<Array<any>>;
+
+            // Tasks
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.task
+            task(cb: (t: ITask<Ext>&Ext)=>any): XPromise<any>;
+            task(tag: any, cb: (t: ITask<Ext>&Ext)=>any): XPromise<any>;
+
+            // Transactions
+            // API: http://vitaly-t.github.io/pg-promise/Database.html#.tx
+            tx(cb: (t: ITask<Ext>&Ext)=>any): XPromise<any>;
+            tx(tag: any, cb: (t: ITask<Ext>&Ext)=>any): XPromise<any>;
+        }
+
+        // Database object in connected state;
+        interface IConnected<Ext> extends IBaseProtocol<Ext> {
+            client: pg.Client;
+            done(): void;
         }
 
     }
