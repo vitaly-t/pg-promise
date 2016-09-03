@@ -43,8 +43,6 @@ pg-promise
     - [Shared Connections](#shared-connections)
     - [Tasks](#tasks)    
   - [Transactions](#transactions)
-    - [Detached Transactions](#detached-transactions)
-    - [Shared-connection Transactions](#shared-connection-transactions)
     - [Nested Transactions](#nested-transactions)
     - [Synchronous Transactions](#synchronous-transactions)    
     - [Configurable Transactions](#configurable-transactions)
@@ -169,7 +167,7 @@ converted into the array constructor format of `array[]`, the same as calling me
 When a value/property inside array/object is of type `object` (except for `null`, `Date` or `Buffer`), it is automatically
 serialized into JSON, the same as calling method `pgp.as.json()`, except the latter would convert anything to JSON.
 
-For the most current SQL formatting support see method [as.format]
+For the latest SQL formatting support see method [as.format]
 
 ### Raw Text
 
@@ -187,7 +185,7 @@ in this case. If such values are passed in, the formatter will throw error `Valu
 Special syntax `this^` within the [Named Parameters](#named-parameters) refers to the formatting object itself, to be injected
 as a raw-text JSON-formatted string.
 
-For the most current SQL formatting support see method [as.format]
+For the latest SQL formatting support see method [as.format]
 
 ### Open Values
 
@@ -544,70 +542,7 @@ Notable features of [QueryFile]:
 
 In version 5.2.0, support for type [QueryFile] was also integrated into the query formatting engine. See method [as.format].
 
-## Connections
-
-The library supports promise-chained queries on shared and detached connections. Choosing which one to use depends on the
-situation and personal preferences.
-
-### Detached Connections
-
-Queries in a detached promise chain maintain connection independently, they each acquire a connection from the pool,
-execute the query and then release the connection back to the pool.
-
-```javascript
-db.one('select * from users where id = $1', 123) // find the user from id;
-    .then(function (data) {
-        // find 'login' records for the user found:
-        return db.query('select * from audit where event=$1 and userId=$2',
-            ['login', data.id]);
-    })
-    .then(function (data) {
-        console.log(data); // display found audit records;
-    })
-    .catch(function (error) {
-        console.log(error); // display the error;
-    });
-```
-In a situation where a single request is to be made against the database, a detached chain is the only one that makes sense.
-And even if you intend to execute multiple queries in a chain, keep in mind that even though each will use its own connection,
-such will be used from a connection pool, so effectively you end up with the same connection, without any performance penalty.
-
-### Shared Connections
-
-**NOTE:** With the addition of [Tasks](#tasks), use of shared connections directly is considered obsolete.
-It is recommended that you use [Tasks](#tasks) instead, as they are much easier and safer to use.
-
-A promise chain with a shared connection starts with `connect()`, which acquires a connection from the pool to be shared
-with all the queries down the promise chain. The connection must be released back to the pool when no longer needed.
-
-```javascript
-var sco; // shared connection object;
-db.connect()
-    .then(function (obj) {
-        sco = obj; // save the connection object;
-        // find active users created before today:
-        return sco.query('select * from users where active=$1 and created < $2',
-            [true, new Date()]);
-    })
-    .then(function (data) {
-        console.log(data); // display all the user details;
-    })
-    .catch(function (error) {
-        console.log(error); // display the error;
-    })
-    .finally(function () {
-        if (sco) {
-            sco.done(); // release the connection, if it was successful;
-        }
-    });
-```
-
-Shared-connection chaining is when you want absolute control over the connection, either because you want to execute lots of queries in one go,
-or because you like squeezing every bit of performance out of your code. Other than that, the author hasn't seen any performance difference
-from the detached-connection chaining. And besides, any long sequence of queries normally resides inside a task or transaction, which always
-uses shared-connection chaining automatically.
-
-### Tasks
+## Tasks
 
 A task represents a shared connection to be used within a callback function. The callback can be either a regular function or an ES6 generator.
 
@@ -615,7 +550,7 @@ A transaction, for example, is just a special type of task, wrapped in `CONNECT-
 
 ```javascript
 db.task(function (t) {
-    // t = this;
+    // `t` and `this` here are the same;
     // execute a chain of queries;
 })
     .then(function (data) {
@@ -629,26 +564,20 @@ db.task(function (t) {
 The purpose of tasks is simply to provide a shared connection context within the callback function to execute and return
 a promise chain, and then automatically release the connection.
 
-In other words, it is to simplify the use of [shared connections](#shared-connections), so instead of calling `connect` in the beginning
-and `done` in the end (if it was connected successfully), one can call `db.task` instead, execute all queries within
-the callback and return the result.
-
 ## Transactions
 
-Transactions can be executed within both shared and detached promise chains in the same way, performing the following actions:
+A transaction is a special type of task that automatically executes `BEGIN` + `COMMIT`/`ROLLBACK`:
 
-1. Acquires a new connection (detached chains only);
+1. Acquires a new connection;
 2. Executes `BEGIN` command;
 3. Invokes your callback function (or generator) with the connection object;
-4. Executes `COMMIT`, if the callback resolves, or `ROLLBACK`, if the callback rejects;
+4. Executes `COMMIT`, if the callback resolves, or `ROLLBACK`, if the callback rejects or throws an error;
 5. Releases the connection (detached chains only);
-6. Resolves with the callback result, if success; rejects with the reason, if failed.
+6. Resolves with the callback result, if successful; rejects with the reason when fails.
 
-### Detached Transactions
-
-```javascript
+```js
 db.tx(function (t) {
-    // t = this;
+    // `t` and `this` here are the same;
     // creating a sequence of transaction queries:
     var q1 = this.none('update users set active=$1 where id=$2', [true, 123]);
     var q2 = this.one('insert into audit(entity, id) values($1, $2) returning id',
@@ -668,54 +597,16 @@ db.tx(function (t) {
 A detached transaction acquires a connection and exposes object `t`=`this` to let all containing queries
 execute on the same connection.
 
-### Shared-connection Transactions
-
-**NOTE:** Use of shared-connection transactions is no longer necessary. When a transaction needs
-to use the connection from its container, you should execute it inside a task instead.  
-
-```js
-var sco; // shared connection object;
-db.connect()
-    .then(function (obj) {
-        sco = obj;
-        return sco.oneOrNone('select * from users where active=$1 and id=$1', [true, 123]);
-    })
-    .then(function (data) {
-        return sco.tx(function (t) {
-            // t = this;
-            var q1 = this.none('update users set active=$1 where id=$2', [false, data.id]);
-            var q2 = this.one('insert into audit(entity, id) values($1, $2) returning id',
-                ['users', 123]);
-
-            // returning a promise that determines a successful transaction:
-            return this.batch([q1, q2]); // all of the queries are to be resolved;
-        });
-    })
-    .catch(function (error) {
-        console.log(error); // printing the error;
-    })
-    .finally(function () {
-        if (sco) {
-            sco.done(); // release the connection, if it was successful;
-        }
-    });
-```
-
-If you need to execute just one transaction, the detached transaction pattern is all you need.
-But even if you need to combine it with other queries in a detached chain, it will work the same.
-As stated earlier, choosing a shared chain over a detached one is mostly a matter of special requirements
-and/or personal preference.
-
 ### Nested Transactions
 
-Similar to the shared-connection transactions, nested transactions automatically share the connection between all levels.
+Nested transactions automatically share the connection between all levels.
 This library sets no limitation as to the depth (nesting levels) of transactions supported.
 
 Example:
 
 ```javascript
 db.tx(function (t) {
-    // t = this;
+    // `t` and `this` here are the same;
     var queries = [
         this.none('drop table users;'),
         this.none('create table users(id serial not null, name text not null)')
@@ -741,7 +632,7 @@ db.tx(function (t) {
     });
 ```
 
-#### Limitations
+### Limitations
 
 It is important to know that PostgreSQL doesn't have proper support for nested transactions, it only
 supports *partial rollbacks* via [savepoints](http://www.postgresql.org/docs/9.4/static/sql-savepoint.html) inside transactions.
