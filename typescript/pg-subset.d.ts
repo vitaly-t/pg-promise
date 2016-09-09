@@ -73,7 +73,7 @@ declare module 'pg-subset' {
         // Interface of 'pg-types' module;
         // See: https://github.com/brianc/node-pg-types
         interface ITypes {
-            setTypeParser:(oid:number, format:string|((value:any)=>string))=>void;
+            setTypeParser:(oid:number, format:string|((value:string)=>any))=>void;
             getTypeParser:(oid:number, format?:string)=>any;
             arrayParser:(source:string, transform:(entry:any)=>any)=>Array<any>;
         }
