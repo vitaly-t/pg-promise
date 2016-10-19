@@ -4,6 +4,7 @@ var capture = require('./db/capture');
 var pgResult = require('pg/lib/result');
 var header = require('./db/header');
 var promise = header.defPromise;
+promise.config({ cancellation: true }); // Enable bluebird 3.x cancellation. It must be enabled before any promises are made.
 var options = {
     promiseLib: promise
 };
@@ -928,6 +929,68 @@ describe("Executing method query", function () {
         });
     });
 
+});
+
+describe("Cancellation", function () {
+    it("cancelled query must not result in data or error", function () {
+        var result;
+        var p = db.query('SELECT pg_sleep(3)').then(function () {
+            result = 'success';
+        }).catch(function () {
+            result = 'error';
+        }).finally(function () {
+            if (!result) {
+                result = 'cancelled';
+            }
+        });
+        setTimeout(function () {
+            p.cancel();
+        }, 1000);
+        waitsFor(function () {
+            return result;
+        }, "Query timed out", 5000);
+        runs(function () {
+            expect(result).toEqual('cancelled');
+            expect(p.isCancelled()).toBe(true);
+        });
+    });
+
+    it("should finish the query, if only one of the promise branches was cancelled", function () {
+        var result1, result2, p = db.query('SELECT pg_sleep(3)');
+        
+        var p1 = p.then(function () {
+            result1 = 'success';
+        }).catch(function () {
+            results1 = 'error';
+        }).finally(function () {
+            if (p1.isCancelled()) {
+                result1 = 'cancelled';
+            }
+        });
+
+        var p2 = p.then(function () {
+            result2 = 'success';
+        }).catch(function () {
+            result2 = 'error';
+        }).finally(function () {
+            if (p2.isCancelled()) {
+                result2 = 'cancelled';
+            }
+        });
+
+        setTimeout(function () {
+            p1.cancel();
+        }, 1000);
+
+        waitsFor(function () {
+            return result1 && result2
+        }, "Query timed out", 5000);
+
+        runs(function () {
+            expect(result1).toEqual('cancelled');
+            expect(result2).toEqual('success');
+        });
+    });
 });
 
 describe("Transactions", function () {
