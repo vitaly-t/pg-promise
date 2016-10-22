@@ -227,7 +227,7 @@ describe("TableName", function () {
     describe("Negative", function () {
 
         describe("invalid 'table' parameter", function () {
-            var error = new TypeError("Table name must be non-empty text string.");
+            var error = new TypeError("Table name must be a non-empty text string.");
             it("must throw an error", function () {
                 expect(function () {
                     helpers.TableName();
