@@ -5,6 +5,7 @@ var fs = require('fs');
 var LB = require('os').EOL;
 var minify = require('pg-minify');
 var header = require('./db/header');
+var utils = require('../lib/utils');
 var promise = header.defPromise;
 var options = {
     promiseLib: promise
@@ -119,7 +120,7 @@ describe("QueryFile / Positive:", function () {
 
     describe("property options", function () {
         var options1 = {
-            debug: process.env.NODE_ENV === 'development',
+            debug: utils.isDev(),
             minify: false,
             compress: false
         }, options2 = {

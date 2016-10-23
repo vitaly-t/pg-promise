@@ -4,6 +4,7 @@ var EOL = require('os').EOL;
 
 var $u = require('../lib/utils');
 var utils = require('../lib/utils/public');
+var internal = require('../lib/utils');
 var path = require('path');
 
 function dummy() {
@@ -242,4 +243,33 @@ describe("buildSqlModule", function () {
             });
         });
     }
+});
+
+describe('isDev', function () {
+    var env = process.env.NODE_ENV;
+
+    it('must detect the default environment', function () {
+        delete process.env.NODE_ENV;
+        expect(internal.isDev()).toBe(false);
+    });
+
+    it('must detect a dev environment', function () {
+        process.env.NODE_ENV = 'development';
+        expect(internal.isDev()).toBe(true);
+
+        process.env.NODE_ENV = 'dev';
+        expect(internal.isDev()).toBe(true);
+
+        process.env.NODE_ENV = 'something-dev';
+        expect(internal.isDev()).toBe(true);
+    });
+
+    it('must detect a non-dev environment', function () {
+        process.env.NODE_ENV = 'production';
+        expect(internal.isDev()).toBe(false);
+    });
+
+    afterEach(function () {
+        process.env.NODE_ENV = env;
+    });
 });
