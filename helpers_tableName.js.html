@@ -94,7 +94,7 @@ function TableName(table, schema) {
     }
 
     if (!$npm.utils.isText(table)) {
-        throw new TypeError("Table name must be non-empty text string.");
+        throw new TypeError("Table name must be a non-empty text string.");
     }
 
     if (!$npm.utils.isNull(schema)) {

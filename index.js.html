@@ -217,7 +217,7 @@ function $main(options) {
     }
 
     if (!('noWarnings' in options) || options.noWarnings === undefined) {
-        options.noWarnings = process.env.NODE_ENV !== 'development';
+        options.noWarnings = !$npm.utils.isDev();
     }
 
     var Database = require('./database')(config);
