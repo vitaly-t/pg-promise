@@ -1,4 +1,5 @@
 declare module 'pg-promise' {
+    import 'pg-promise-extlib';
     import * as spexLib from 'spex';
     import * as pg from 'pg-subset';
     import * as XPromise from 'ext-promise';
