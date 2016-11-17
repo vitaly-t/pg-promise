@@ -28,6 +28,4 @@
 
  */
 
-declare module 'ext-promise' {
-    export=Promise; // Using ES6 Promise by default
-}
+export=Promise; // Using ES6 Promise by default

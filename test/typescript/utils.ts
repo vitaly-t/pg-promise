@@ -1,6 +1,4 @@
-/// <reference path='../../typescript/pg-promise' />
-
-import * as pgPromise from 'pg-promise';
+import * as pgPromise from '../../typescript/pg-promise';
 
 var utils = pgPromise.utils;
 

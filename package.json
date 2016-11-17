@@ -43,11 +43,12 @@
   },
   "dependencies": {
     "pg": "5.1",
-    "spex": "1.x",
+    "spex": "1.1",
     "pg-minify": "0.3",
     "manakin": "^0.4.6"
   },
   "devDependencies": {
+    "@types/node": "^6.0.45",
     "JSONStream": "1.x",
     "bluebird": "3.x",
     "coveralls": "2.x",
