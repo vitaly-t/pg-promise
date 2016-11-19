@@ -510,27 +510,30 @@ describe("ColumnSet", function () {
         });
     });
 
-    describe("method 'canUpdate'", function () {
+    describe("method 'canGenerate'", function () {
         it("must throw on empty data", function () {
             var cs = new helpers.ColumnSet([]);
             var error = new TypeError("Invalid parameter 'data' specified.");
             expect(function () {
-                cs.canUpdate();
+                cs.canGenerate();
             }).toThrow(error);
         });
         it("must reject on an empty set", function () {
             var cs = new helpers.ColumnSet([]);
-            expect(cs.canUpdate({})).toBe(false);
+            expect(cs.canGenerate({})).toBe(false);
+        });
+        it("must reject on an empty data array", function () {
+            var cs = new helpers.ColumnSet(['one', 'two']);
+            expect(cs.canGenerate([])).toBe(false);
         });
         it("must approve for a non-empty set", function () {
             var cs = new helpers.ColumnSet(['name']);
-            expect(cs.canUpdate([{}])).toBe(true);
-            expect(cs.canUpdate([{}])).toBe(true); // the second one is to cover 'canUpdateMany'
-            expect(cs.canUpdate({})).toBe(true);
+            expect(cs.canGenerate([{}])).toBe(true);
+            expect(cs.canGenerate({})).toBe(true);
         });
         it("must reject for conditional columns", function () {
             var cs = new helpers.ColumnSet(['?name']);
-            expect(cs.canUpdate({})).toBe(false);
+            expect(cs.canGenerate({})).toBe(false);
         });
         it("must reject for skipped columns", function () {
             var cs = new helpers.ColumnSet([{
@@ -539,7 +542,7 @@ describe("ColumnSet", function () {
                     return true;
                 }
             }]);
-            expect(cs.canUpdate({})).toBe(false);
+            expect(cs.canGenerate({})).toBe(false);
         });
         it("must approve for non-skipped columns", function () {
             var cs = new helpers.ColumnSet([{
@@ -548,7 +551,16 @@ describe("ColumnSet", function () {
                     return false;
                 }
             }]);
-            expect(cs.canUpdate({})).toBe(true);
+            expect(cs.canGenerate({})).toBe(true);
+        });
+    });
+
+    describe("property 'cndCount'", function () {
+        var cs1 = new helpers.ColumnSet(['name1', {name: 'hi', cnd: true}, {name: 'there', cnd: true}]);
+        var cs2 = new helpers.ColumnSet(['hi']);
+        it("must return the right number", function () {
+            expect(cs1.cndCount).toBe(2);
+            expect(cs2.cndCount).toBe(0);
         });
     });
 

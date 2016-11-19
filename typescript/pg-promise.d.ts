@@ -347,7 +347,7 @@ declare module 'pg-promise' {
         columns: Array<Column>;
         table: TableName;
 
-        canUpdate(data: Object|Array<Object>): boolean;
+        canGenerate(data: Object|Array<Object>): boolean;
 
         extend(columns: Column|ColumnSet|Array<string|TColumnConfig|Column>): ColumnSet;
 
