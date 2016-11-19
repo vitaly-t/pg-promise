@@ -457,7 +457,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// File sql.js// Proper way to organize an sql provider://// - have all sql files for Users in ./sql/users// - have all sql files for Products in ./sql/products// - have your sql provider module as ./sql/index.jsvar QueryFile = require('pg-promise').QueryFile;var path = require('path');// Helper for linking to external query files:function sql(file) {    var fullPath = path.join(__dirname, file); // generating full path;    return new QueryFile(fullPath, {minify: true});}var sqlProvider = {    // external queries for Users:    users: {        add: sql('users/create.sql'),        search: sql('users/search.sql'),        report: sql('users/report.sql'),    },    // external queries for Products:    products: {        add: sql('products/add.sql'),        quote: sql('products/quote.sql'),        search: sql('products/search.sql'),    }};module.exports = sqlProvider;</code></pre>
+    <pre class="prettyprint"><code>// File sql.js// Proper way to organize an sql provider://// - have all sql files for Users in ./sql/users// - have all sql files for Products in ./sql/products// - have your sql provider module as ./sql/index.jsvar QueryFile = require('pg-promise').QueryFile;var path = require('path');// Helper for linking to external query files:function sql(file) {    var fullPath = path.join(__dirname, file); // generating full path;    return new QueryFile(fullPath, {minify: true});}module.exports = {    // external queries for Users:    users: {        add: sql('users/create.sql'),        search: sql('users/search.sql'),        report: sql('users/report.sql'),    },    // external queries for Products:    products: {        add: sql('products/add.sql'),        quote: sql('products/quote.sql'),        search: sql('products/search.sql'),    }};</code></pre>
 
     <pre class="prettyprint"><code>// Testing our SQL providervar db = require('./db'); // our database module;var sql = require('./sql').users; // our sql for users;module.exports = {    addUser: function (name, age) {        return db.none(sql.add, [name, age]);    },    findUser: function (name) {        return db.any(sql.search, name);    }};</code></pre>
 
@@ -541,7 +541,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line249">line 249</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line247">line 247</a>
     </li></ul></dd>
     
 
@@ -614,7 +614,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line265">line 265</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line263">line 263</a>
     </li></ul></dd>
     
 
@@ -687,7 +687,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line280">line 280</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line278">line 278</a>
     </li></ul></dd>
     
 
@@ -767,7 +767,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line232">line 232</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line230">line 230</a>
     </li></ul></dd>
     
 
@@ -918,7 +918,7 @@ to the parameters passed into the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line174">line 174</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line172">line 172</a>
     </li></ul></dd>
     
 
@@ -1070,7 +1070,7 @@ to the parameters passed into the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line298">line 298</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line296">line 296</a>
     </li></ul></dd>
     
 

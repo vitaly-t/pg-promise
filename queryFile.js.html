@@ -124,7 +124,7 @@ var $npm = {
  *     return new QueryFile(fullPath, {minify: true});
  * }
  *
- * var sqlProvider = {
+ * module.exports = {
  *     // external queries for Users:
  *     users: {
  *         add: sql('users/create.sql'),
@@ -138,8 +138,6 @@ var $npm = {
  *         search: sql('products/search.sql'),
  *     }
  * };
- *
- * module.exports = sqlProvider;
  *
  * @example
  * // Testing our SQL provider
