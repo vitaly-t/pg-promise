@@ -546,21 +546,19 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
 
     
 
-    <h4 class="name" id=".canUpdate"><span class="type-signature">(static) </span>canUpdate<span class="signature">(data)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id=".canGenerate"><span class="type-signature">(static) </span>canGenerate<span class="signature">(data)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Checks if it is possible to generate an <code>UPDATE</code> query (via method <a href="helpers.html#.update">update</a>) for the specified <code>data</code>
-and the current <a href="helpers.ColumnSet.html">ColumnSet</a>, without running into errors related to the shortage of effective
-update columns or the lack of data. It can also be used before calling method <a href="helpers.html#.sets">sets</a>, to determine whether
-it is going to return an empty string, due to the shortage of effective columns.</p>
+    <p>Checks if it is possible to generate a query for the specified <code>data</code> and the current <a href="helpers.ColumnSet.html">ColumnSet</a>,
+without running into errors related to the shortage of effective columns and/or lack of data.</p>
 <p>The result and the logic depend on whether <code>data</code> is a single object or an array, and it is consistent with the validation
-logic that's implemented by the <a href="helpers.html#.update">update</a> method.</p>
-<p>This method is mainly valuable for those single-object updates that make use of property <a href="helpers.Column.html">Column.skip</a>, which
-makes the list of effective columns dynamic.</p>
+logic that's implemented by all the query-generating methods.</p>
+<p>This method is mainly valuable for those single-object queries that make use of property <a href="helpers.Column.html">Column.skip</a>,
+which makes the list of effective columns dynamic.</p>
 </div>
 
 
@@ -615,7 +613,7 @@ makes the list of effective columns dynamic.</p>
 
             
 
-            <td class="description last"><p>Data intended for an <code>UPDATE</code> query - a single source object or an array of such objects.</p>
+            <td class="description last"><p>Data intended for the query - a single source object or an array of such objects.</p>
 <p>Passing in a non-object value will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid parameter 'data' specified.</code></p></td>
         </tr>
 
@@ -657,7 +655,7 @@ makes the list of effective columns dynamic.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line465">line 465</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line481">line 481</a>
     </li></ul></dd>
     
 
@@ -685,9 +683,9 @@ makes the list of effective columns dynamic.</p>
         
 <div class="param-desc">
     <ul>
-<li><code>true</code> - this <code>ColumnSet</code> can generate a valid <code>UPDATE</code> query via method <a href="helpers.html#.update">update</a> for the <code>data</code> specified</li>
-<li><code>false</code> - passing such <code>data</code> into method <a href="helpers.html#.update">update</a> will inevitably throw an error, either because
-there are no columns to be updated or there is no data (when <code>data</code> is an empty array).</li>
+<li><code>true</code> - this <code>ColumnSet</code> can generate a valid query for the <code>data</code> specified</li>
+<li><code>false</code> - trying to generate a query will inevitably throw an error, either because
+there are no effective columns or there is no data (when <code>data</code> is an empty array).</li>
 </ul>
 </div>
 
@@ -825,7 +823,7 @@ there are no columns to be updated or there is no data (when <code>data</code> i
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line321">line 321</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line337">line 337</a>
     </li></ul></dd>
     
 
@@ -1001,7 +999,7 @@ there are no columns to be updated or there is no data (when <code>data</code> i
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line385">line 385</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line401">line 401</a>
     </li></ul></dd>
     
 
@@ -1187,7 +1185,7 @@ there are no columns to be updated or there is no data (when <code>data</code> i
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line555">line 555</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line577">line 577</a>
     </li></ul></dd>
     
 
