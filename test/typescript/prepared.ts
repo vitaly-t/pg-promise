@@ -1,6 +1,4 @@
-/// <reference path='../../typescript/pg-promise' />
-
-import * as pgPromise from 'pg-promise';
+import * as pgPromise from '../../typescript/pg-promise';
 
 var pgp:pgPromise.IMain = pgPromise();
 var db:pgPromise.IDatabase<any> = pgp('connection');

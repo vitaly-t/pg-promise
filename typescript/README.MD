@@ -1,32 +1,14 @@
 ### TypeScript for pg-promise
 
-Complete TypeScript ambient declarations for [pg-promise] version 5.4.0 or later.
+Complete TypeScript module declarations for [pg-promise] version 5.4.0 or later.
 
 #### Inclusion
 
-Since all TypeScript files are distributed with the library, the simplest way to reference it is like this: 
-
-```ts
-/// <reference path='../node_modules/pg-promise/typescript/pg-promise' />
-```
-
-Version 4.3.2 and later supports [Typings], so it can be added to your project with this command:
-
-```
-$ typings install --save --global github:vitaly-t/pg-promise
-```
-
-Then you can also use a generic reference:
-
-```ts
-/// <reference path='../typings/index' />
-```
+Typescript should be able to pick up type definition for [pg-promise] without any manual configuration. 
 
 #### Usage
 
 ```ts
-/// <reference path='../node_modules/pg-promise/typescript/pg-promise' />
-
 import * as pgPromise from 'pg-promise';
 
 var pgp = pgPromise({
@@ -107,7 +89,6 @@ var pgp = pgPromise<IExtensions>({
 
 For a more complete and advanced example of using [pg-promise] with TypeScript, check out [pg-promise-demo]. 
 
-[Typings]:https://github.com/typings/typings
 [pg-promise-demo]:https://github.com/vitaly-t/pg-promise-demo
 [extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
 [ext-promise.d.ts]:https://github.com/vitaly-t/pg-promise/blob/master/typescript/ext-promise.d.ts
