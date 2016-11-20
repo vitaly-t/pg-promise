@@ -907,5 +907,5 @@ DEALINGS IN THE SOFTWARE.
 [Lie]:https://github.com/calvinmetcalf/lie
 [Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
 [Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
-[spex.sequence]:https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
+[spex.sequence]:http://vitaly-t.github.io/spex/global.html#sequence
 [Result]:https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6
