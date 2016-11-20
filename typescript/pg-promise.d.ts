@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.3.0 or later.
+// Requires pg-promise v5.4.0 or later.
 ////////////////////////////////////////
 
 /// <reference path='./pg-subset' />
@@ -65,6 +65,13 @@ declare module 'pg-promise' {
 
     type TQuery = string|pgPromise.QueryFile|TPrepared|TParameterized|pgPromise.PreparedStatement|pgPromise.ParameterizedQuery;
 
+    type TColumnDescriptor = {
+        source: any,
+        name: string,
+        value: any,
+        exists: boolean
+    };
+
     type TColumnConfig = {
         name: string,
         prop?: string,
@@ -72,8 +79,8 @@ declare module 'pg-promise' {
         cast?: string,
         cnd?: boolean,
         def?: any,
-        init?: (value: any)=>any,
-        skip?: (name: string)=>boolean;
+        init?: (col: TColumnDescriptor)=>any,
+        skip?: (col: TColumnDescriptor)=>boolean;
     };
 
     type TColumnSetOptions = {

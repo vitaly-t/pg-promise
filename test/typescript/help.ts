@@ -12,10 +12,12 @@ var col1 = new pgp.helpers.Column({
     def: 888,
     cast: '',
     cnd: true,
-    init: (value)=> {
+    init: (col) => {
+        var e = col.exists;
         return this.test;
     },
-    skip: ()=> {
+    skip: (col) => {
+        var e = col.exists;
         return false;
     }
 });
@@ -43,9 +45,9 @@ var cs = new pgp.helpers.ColumnSet([
         def: 888,
         cast: '',
         cnd: true,
-        init: ()=> {
+        init: () => {
         },
-        skip: ()=> {
+        skip: () => {
         }
     }
 ], {table: 'my-table', inherit: true});
