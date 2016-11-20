@@ -115,17 +115,17 @@ var $arr = require('../array');
  *     },
  *     {
  *         name: 'amount',
- *         init: function (value) {
+ *         init: function (col) {
  *             // set to 100, if the value is 0:
- *             return values === 0 ? 100 : value;
+ *             return col.value === 0 ? 100 : col.value;
  *         }
  *     },
  *     {
  *         name: 'total-val',
  *         prop: 'total',
- *         skip: function (name) {
+ *         skip: function (col) {
  *             // skip from updates, if 'amount' is 0:
- *             return (this.amount === 0);
+ *             return this.amount === 0; // = col.source.amount
  *         }
  *     }
  * ], {table: {table: 'purchases', schema: 'fiscal'}});
@@ -277,20 +277,6 @@ function ColumnSet(columns, options) {
     });
 
     /**
-     * @name helpers.ColumnSet#cndCount
-     * @private
-     * @type Number
-     * @readonly
-     * @description
-     * Number of conditional columns.
-     */
-    Object.defineProperty(this, 'cndCount', {
-        get: function () {
-            return cndCount;
-        }
-    });
-
-    /**
      * @name helpers.ColumnSet#variables
      * @private
      * @type String
@@ -346,7 +332,8 @@ function ColumnSet(columns, options) {
             }
             if (c.skip) {
                 dynamic = true;
-                if (c.skip.call(obj, c.prop || c.name)) {
+                var a = colDesc(c, obj);
+                if (c.skip.call(obj, a)) {
                     return false;
                 }
             }
@@ -508,60 +495,6 @@ function ColumnSet(columns, options) {
     };
 
     /**
-     * @method helpers.ColumnSet.canGenerate
-     * @description
-     * Checks if it is possible to generate a query for the specified `data` and the current {@link helpers.ColumnSet ColumnSet},
-     * without running into errors related to the shortage of effective columns and/or lack of data.
-     *
-     * The result and the logic depend on whether `data` is a single object or an array, and it is consistent with the validation
-     * logic that's implemented by all the query-generating methods.
-     *
-     * This method is mainly valuable for those single-object queries that make use of property {@link helpers.Column Column.skip},
-     * which makes the list of effective columns dynamic.
-     *
-     * @param {object|array} data
-     * Data intended for the query - a single source object or an array of such objects.
-     *
-     * Passing in a non-object value will throw {@link external:TypeError TypeError} = `Invalid parameter 'data' specified.`
-     *
-     * @returns {boolean}
-     *
-     * - `true` - this `ColumnSet` can generate a valid query for the `data` specified
-     * - `false` - trying to generate a query will inevitably throw an error, either because
-     *   there are no effective columns or there is no data (when `data` is an empty array).
-     */
-    this.canGenerate = function (data) {
-        if (!data || typeof data !== 'object') {
-            throw new TypeError("Invalid parameter 'data' specified.");
-        }
-
-        var total = this.columns.length;
-
-        if (cndCount === total) {
-            return false;
-        }
-
-        if (Array.isArray(data)) {
-            if (!data.length) {
-                return false;
-            }
-        } else {
-            data = [data];
-        }
-
-        for (var i = 0; i &lt; data.length; i++) {
-            var skip = $arr.countIf(this.columns, function (c) {
-                return c.cnd || (c.skip &amp;&amp; c.skip.call(data[i], c.prop || c.name));
-            });
-            if (skip === total) {
-                return false;
-            }
-        }
-
-        return true;
-    };
-
-    /**
      * @method helpers.ColumnSet.prepare
      * @private
      * @description
@@ -583,17 +516,12 @@ function ColumnSet(columns, options) {
         }
         var target = {};
         $arr.forEach(this.columns, function (c) {
-            var name = c.prop || c.name;
-            if (name in obj) {
-                var value = obj[name];
-                target[name] = c.init ? c.init.call(obj, value) : value;
+            var a = colDesc(c, obj);
+            if (c.init) {
+                target[a.name] = c.init.call(obj, a);
             } else {
-                var value;
-                if ('def' in c) {
-                    target[name] = value = c.def;
-                }
-                if (c.init) {
-                    target[name] = c.init.call(obj, value);
+                if (a.exists || 'def' in c) {
+                    target[a.name] = a.value;
                 }
             }
         });
@@ -601,6 +529,20 @@ function ColumnSet(columns, options) {
     };
 
     Object.freeze(this);
+
+    function colDesc(column, source) {
+        var a = {
+            source: source,
+            name: column.prop || column.name
+        };
+        a.exists = a.name in source;
+        if (a.exists) {
+            a.value = source[a.name];
+        } else {
+            a.value = 'def' in column ? column.def : undefined;
+        }
+        return a;
+    }
 }
 
 /**

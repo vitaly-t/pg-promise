@@ -1125,7 +1125,7 @@ of objects, the method will throw <a href="external-TypeError.html">TypeError</a
 <p>When <code>columns</code> is not a <a href="helpers.ColumnSet.html">ColumnSet</a> object, a temporary <a href="helpers.ColumnSet.html">ColumnSet</a>
 is created - from the value of <code>columns</code> (if it was specified), or from the value of <code>data</code> (if it is not an array).</p>
 <p>When the final <a href="helpers.ColumnSet.html">ColumnSet</a> is empty (no columns in it), the method will throw
-<a href="external-Error.html">Error</a> = <code>Cannot generate an UPDATE without any columns.</code> (see also <a href="helpers.ColumnSet.html#.canGenerate">ColumnSet.canGenerate</a>)</p></td>
+<a href="external-Error.html">Error</a> = <code>Cannot generate an UPDATE without any columns.</code> (see also ColumnSet.canGenerate)</p></td>
         </tr>
 
     
@@ -2007,7 +2007,7 @@ unless <code>prop</code> is specified, in which case <code>name</code> represent
 
     
 
-    <h4 class="name" id=".initCB"><span class="type-signature"></span>initCB<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".initCB"><span class="type-signature"></span>initCB<span class="signature">(col)</span><span class="type-signature"></span></h4>
 
     
 
@@ -2015,8 +2015,8 @@ unless <code>prop</code> is specified, in which case <code>name</code> represent
 
 <div class="description">
     <p>A callback function type used by parameter <code>init</code> within <a href="helpers.html#.ColumnConfig">ColumnConfig</a>.</p>
-<p>It works as an override for the corresponding property value in the source object.</p>
-<p>The function is called with <code>this</code> set to the source object.</p>
+<p>It works as an override for the corresponding property value in the <code>source</code> object.</p>
+<p>The function is called with <code>this</code> set to the <code>source</code> object.</p>
 </div>
 
 
@@ -2052,6 +2052,89 @@ unless <code>prop</code> is specified, in which case <code>name</code> represent
 
         <tr>
             
+                <td class="name"><code>col</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Column-to-property descriptor.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The source object, equals to <code>this</code> that's passed into the function.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Name of the property within the <code>source</code> object.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>value</code></td>
             
 
@@ -2063,9 +2146,42 @@ unless <code>prop</code> is specified, in which case <code>name</code> represent
 
             
 
-            <td class="description last"><p>Value of the property within the source object.</p>
-<p>If the source object doesn't have the property, and <code>def</code> option was specified,
-then the <code>value</code> is set to the <code>def</code> value.</p></td>
+            <td class="description last"><p>Property value, set to one of the following:</p>
+<ul>
+<li>Value of the property within the <code>source</code> object (<code>value</code> = <code>source[name]</code>), if the property exists</li>
+<li>If the property doesn't exist and <code>def</code> is set in the column, then <code>value</code> is set to the value of <code>def</code></li>
+<li>If the property doesn't exist and <code>def</code> is not set in the column, then <code>value</code> is set to <code>undefined</code></li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>exists</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Indicates whether the property exists in the <code>source</code> object (<code>exists = name in source</code>).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -2350,7 +2466,7 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
 
     
 
-    <h4 class="name" id=".skipCB"><span class="type-signature"></span>skipCB<span class="signature">(name)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id=".skipCB"><span class="type-signature"></span>skipCB<span class="signature">(col)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
 
     
 
@@ -2358,8 +2474,8 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
 
 <div class="description">
     <p>A callback function type used by parameter <code>skip</code> within <a href="helpers.html#.ColumnConfig">ColumnConfig</a>.</p>
-<p>It is to dynamically determine if the property is to be skipped from the update.</p>
-<p>The function is called with <code>this</code> set to the source object.</p>
+<p>It is to dynamically determine when the property with specified <code>name</code> in the <code>source</code> object is to be skipped.</p>
+<p>The function is called with <code>this</code> set to the <code>source</code> object.</p>
 </div>
 
 
@@ -2395,6 +2511,66 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
 
         <tr>
             
+                <td class="name"><code>col</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Column-to-property descriptor.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The source object, equals to <code>this</code> that's passed into the function.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>name</code></td>
             
 
@@ -2411,8 +2587,60 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
 
             
 
-            <td class="description last"><p>Name of the property within the source object.</p>
-<p>It can be used when implementing a generic verification callback to skip columns bases on a certain rule.</p></td>
+            <td class="description last"><p>Name of the property within the <code>source</code> object.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Property value, set to one of the following:</p>
+<ul>
+<li>Value of the property within the <code>source</code> object (<code>value</code> = <code>source[name]</code>), if the property exists</li>
+<li>If the property doesn't exist and <code>def</code> is set in the column, then <code>value</code> is set to the value of <code>def</code></li>
+<li>If the property doesn't exist and <code>def</code> is not set in the column, then <code>value</code> is set to <code>undefined</code></li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>exists</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Indicates whether the property exists in the <code>source</code> object (<code>exists = name in source</code>).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -2453,7 +2681,7 @@ then the <code>value</code> is set to the <code>def</code> value.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line355">line 355</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line369">line 369</a>
     </li></ul></dd>
     
 
