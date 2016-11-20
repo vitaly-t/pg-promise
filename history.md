@@ -1,5 +1,6 @@
 ### Release History
 
+* 5.4.1 Now forwarding `Date` formatting into the `node-postgres` driver. Released: Nov 20, 2016.
 * 5.4.0 Breaking changes: improvements in the [helpers] namespace for the event handlers. Released: Nov 20, 2016.
 * 5.2.0 Integrating type [QueryFile] directly into the query-formatting engine. Released: July 15, 2016.
 * 5.0.0 Change over to the new version of [spex] 1.0, with new rejection protocol. Released: June 26, 2016.
