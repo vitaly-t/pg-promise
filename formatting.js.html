@@ -29,6 +29,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
+var $pgUtils = require('pg/lib/utils');
 var $arr = require('../lib/array');
 
 // Format Modification Flags;
@@ -496,7 +497,7 @@ var $as = {
      * @method formatting.date
      * @description
      * Converts a `Date`-type value into PostgreSQL date/time presentation,
-     * as a UTC string, wrapped in quotes (unless flag `raw` is set).
+     * wrapped in quotes (unless flag `raw` is set).
      *
      * @param {date|function} d
      * Date object to be converted, or a function that returns one.
@@ -513,8 +514,7 @@ var $as = {
             return 'null';
         }
         if (d instanceof Date) {
-            // UTC date string is what PostgreSQL understands automatically;
-            var s = d.toUTCString();
+            var s = $pgUtils.prepareValue(d);
             // NOTE: Many languages use apostrophes in month names;
             return raw ? s : TEXT(safeText(s));
         }
