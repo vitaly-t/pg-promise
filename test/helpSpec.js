@@ -510,48 +510,6 @@ describe("ColumnSet", function () {
         });
     });
 
-    describe("method 'canUpdate'", function () {
-        it("must throw on empty data", function () {
-            var cs = new helpers.ColumnSet([]);
-            var error = new TypeError("Invalid parameter 'data' specified.");
-            expect(function () {
-                cs.canUpdate();
-            }).toThrow(error);
-        });
-        it("must reject on an empty set", function () {
-            var cs = new helpers.ColumnSet([]);
-            expect(cs.canUpdate({})).toBe(false);
-        });
-        it("must approve for a non-empty set", function () {
-            var cs = new helpers.ColumnSet(['name']);
-            expect(cs.canUpdate([{}])).toBe(true);
-            expect(cs.canUpdate([{}])).toBe(true); // the second one is to cover 'canUpdateMany'
-            expect(cs.canUpdate({})).toBe(true);
-        });
-        it("must reject for conditional columns", function () {
-            var cs = new helpers.ColumnSet(['?name']);
-            expect(cs.canUpdate({})).toBe(false);
-        });
-        it("must reject for skipped columns", function () {
-            var cs = new helpers.ColumnSet([{
-                name: 'name',
-                skip: function () {
-                    return true;
-                }
-            }]);
-            expect(cs.canUpdate({})).toBe(false);
-        });
-        it("must approve for non-skipped columns", function () {
-            var cs = new helpers.ColumnSet([{
-                name: 'name',
-                skip: function () {
-                    return false;
-                }
-            }]);
-            expect(cs.canUpdate({})).toBe(true);
-        });
-    });
-
     describe("property 'names'", function () {
         var cs = new helpers.ColumnSet(['name1', 'name2']);
         var csEmpty = new helpers.ColumnSet([]);
@@ -602,8 +560,8 @@ describe("ColumnSet", function () {
             var cs = new helpers.ColumnSet(['val',
                 {
                     name: 'msg',
-                    init: function (value) {
-                        return value + '-init';
+                    init: function (col) {
+                        return col.value + '-init';
                     }
                 },
                 {

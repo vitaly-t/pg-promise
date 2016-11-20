@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "5.3.5",
+  "version": "5.4.2",
   "description": "Promises interface for PostgreSQL",
   "main": "lib/index.js",
   "scripts": {
@@ -45,7 +45,7 @@
     "pg": "5.1",
     "spex": "1.1",
     "pg-minify": "0.3",
-    "manakin": "^0.4.6"
+    "manakin": "0.4"
   },
   "devDependencies": {
     "@types/node": "^6.0.45",

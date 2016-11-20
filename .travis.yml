@@ -11,6 +11,8 @@ matrix:
       script: "npm test"
     - node_js: "6"
       script: "npm run travis"
+    - node_js: "7"
+      script: "npm run travis"
 addons:
   postgresql: "9.5"
 before_script:

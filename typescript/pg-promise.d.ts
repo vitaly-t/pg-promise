@@ -1,9 +1,9 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.3.0 or later.
+// Requires pg-promise v5.4.0 or later.
 ////////////////////////////////////////
 
-//import XPromise = require('ext-promise'); // External Promise Provider
-import * as XPromise from './ext-promise';
+import * as XPromise from './ext-promise'; // External Promise Provider
+
 import * as pg from './pg-subset';
 import * as pgMinify from './pg-minify';
 import * as spexLib from 'spex';
@@ -58,6 +58,13 @@ type TParameterized = {
 
 type TQuery = string|pgPromise.QueryFile|TPrepared|TParameterized|pgPromise.PreparedStatement|pgPromise.ParameterizedQuery;
 
+type TColumnDescriptor = {
+    source: any,
+    name: string,
+    value: any,
+    exists: boolean
+};
+
 type TColumnConfig = {
     name: string,
     prop?: string,
@@ -65,8 +72,8 @@ type TColumnConfig = {
     cast?: string,
     cnd?: boolean,
     def?: any,
-    init?: (value: any)=>any,
-    skip?: (name: string)=>boolean;
+    init?: (col: TColumnDescriptor)=>any,
+    skip?: (col: TColumnDescriptor)=>boolean;
 };
 
 type TColumnSetOptions = {
@@ -340,7 +347,7 @@ declare class ColumnSet {
     columns: Array<Column>;
     table: TableName;
 
-    canUpdate(data: Object|Array<Object>): boolean;
+    canGenerate(data: Object|Array<Object>): boolean;
 
     extend(columns: Column|ColumnSet|Array<string|TColumnConfig|Column>): ColumnSet;
 

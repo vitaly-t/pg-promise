@@ -3,6 +3,8 @@
 var path = require('path');
 var pgp = require('../lib/index');
 
+var $pgUtils = require('pg/lib/utils');
+
 var dateSample = new Date();
 
 // common error messages;
@@ -286,8 +288,8 @@ describe("Method as.date", function () {
     it("must correctly convert any date", function () {
         expect(pgp.as.date()).toBe("null");
         expect(pgp.as.date(null)).toBe("null");
-        expect(pgp.as.date(dateSample)).toBe("'" + dateSample.toUTCString() + "'");
-        expect(pgp.as.date(dateSample, true)).toBe(dateSample.toUTCString());
+        expect(pgp.as.date(dateSample)).toBe("'" + $pgUtils.prepareValue(dateSample) + "'");
+        expect(pgp.as.date(dateSample, true)).toBe($pgUtils.prepareValue(dateSample));
     });
 
     it("must correctly resolve functions", function () {
@@ -297,7 +299,7 @@ describe("Method as.date", function () {
         })).toBe("null");
         expect(pgp.as.date(function () {
             return dateSample;
-        }, true)).toBe(dateSample.toUTCString());
+        }, true)).toBe($pgUtils.prepareValue(dateSample));
     });
 
     it("must correctly reject invalid requests", function () {
@@ -366,14 +368,14 @@ describe("Method as.csv", function () {
         expect(pgp.as.csv("don't break")).toBe("'don''t break'"); // text with one single-quote symbol;
         expect(pgp.as.csv("test ''")).toBe("'test '''''"); // text with two single-quote symbols;
 
-        expect(pgp.as.csv(dateSample)).toBe("'" + dateSample.toUTCString() + "'"); // test date;
-        expect(pgp.as.csv([dateSample])).toBe("'" + dateSample.toUTCString() + "'"); // test date in array;
+        expect(pgp.as.csv(dateSample)).toBe("'" + $pgUtils.prepareValue(dateSample) + "'"); // test date;
+        expect(pgp.as.csv([dateSample])).toBe("'" + $pgUtils.prepareValue(dateSample) + "'"); // test date in array;
 
         expect(pgp.as.csv([userObj])).toBe(pgp.as.text(JSON.stringify(userObj)));
 
         // test a combination of all possible types;
         expect(pgp.as.csv([12.34, true, "don't break", null, undefined, userObj, dateSample, [1, 2]]))
-            .toBe("12.34,true,'don''t break',null,null," + pgp.as.text(JSON.stringify(userObj)) + ",'" + dateSample.toUTCString() + "',array[1,2]");
+            .toBe("12.34,true,'don''t break',null,null," + pgp.as.text(JSON.stringify(userObj)) + ",'" + $pgUtils.prepareValue(dateSample) + "',array[1,2]");
 
         // test array-type as a parameter;
         expect(pgp.as.csv([1, [2, 3], 4])).toBe("1,array[2,3],4");
@@ -654,7 +656,7 @@ describe("Method as.format", function () {
         expect(pgp.as.format("$1", [userObj])).toBe(pgp.as.text(JSON.stringify(userObj)));
         expect(pgp.as.format("$1^", [userObj])).toBe(JSON.stringify(userObj));
 
-        expect(pgp.as.format("$1, $2, $3, $4", [true, -12.34, "text", dateSample])).toBe("true, -12.34, 'text', '" + dateSample.toUTCString() + "'");
+        expect(pgp.as.format("$1, $2, $3, $4", [true, -12.34, "text", dateSample])).toBe("true, -12.34, 'text', '" + $pgUtils.prepareValue(dateSample) + "'");
 
         expect(pgp.as.format("$1 $1, $2 $2, $1", [1, "two"])).toBe("1 1, 'two' 'two', 1"); // test for repeated variables;
 
@@ -723,7 +725,7 @@ describe("Method as.format", function () {
             .toBe("Don't break this 'Don''t break'");
 
         expect(pgp.as.format("$1^,$1", dateSample))
-            .toBe(dateSample.toUTCString() + ",'" + dateSample.toUTCString() + "'");
+            .toBe($pgUtils.prepareValue(dateSample) + ",'" + $pgUtils.prepareValue(dateSample) + "'");
 
     });
 
@@ -963,7 +965,7 @@ describe("Named Parameters", function () {
             five: function () {
                 return "text";
             }
-        })).toBe("null,true,-123.45,'" + dateSample.toUTCString() + "','text'");
+        })).toBe("null,true,-123.45,'" + $pgUtils.prepareValue(dateSample) + "','text'");
     });
 
     it("must treat null and undefined values equally", function () {

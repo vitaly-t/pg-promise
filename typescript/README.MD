@@ -1,6 +1,6 @@
 ### TypeScript for pg-promise
 
-Complete TypeScript module declarations for [pg-promise] version 5.3.0 or later.
+Complete TypeScript module declarations for [pg-promise] version 5.4.0 or later.
 
 #### Inclusion
 

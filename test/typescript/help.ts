@@ -10,10 +10,12 @@ var col1 = new pgp.helpers.Column({
     def: 888,
     cast: '',
     cnd: true,
-    init: (value)=> {
+    init: (col) => {
+        var e = col.exists;
         return this.test;
     },
-    skip: ()=> {
+    skip: (col) => {
+        var e = col.exists;
         return false;
     }
 });
@@ -41,9 +43,9 @@ var cs = new pgp.helpers.ColumnSet([
         def: 888,
         cast: '',
         cnd: true,
-        init: ()=> {
+        init: () => {
         },
-        skip: ()=> {
+        skip: () => {
         }
     }
 ], {table: 'my-table', inherit: true});
@@ -60,7 +62,7 @@ var sets1 = pgp.helpers.sets({});
 var sets2 = pgp.helpers.sets([]);
 var sets3 = pgp.helpers.sets({}, cs);
 
-var test: boolean = cs.canUpdate(data);
+var test: boolean = cs.canGenerate(data);
 
 var cs1 = cs.extend(['']);
 var cs2 = cs1.merge(cs);
