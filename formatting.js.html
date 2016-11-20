@@ -161,7 +161,7 @@ var formatAs = {
                 return name;
             }
             // property must exist as the object's own or inherited;
-            throw new Error("Property '" + v.name + "' doesn't exist.");
+            throw new Error('Property \'' + v.name + '\' doesn\'t exist.');
         });
     },
 
@@ -180,7 +180,7 @@ var formatAs = {
             if (options.partial) {
                 return name;
             }
-            throw new RangeError("Variable $" + v.name + " out of range. Parameters array length: " + array.length);
+            throw new RangeError('Variable $' + v.name + ' out of range. Parameters array length: ' + array.length);
         });
     },
 
@@ -223,14 +223,14 @@ function TEXT(text) {
 // Replaces each single-quote symbol ' with two,
 // for compliance with PostgreSQL strings.
 function safeText(text) {
-    return text.replace(/'/g, "''");
+    return text.replace(/'/g, '\'\'');
 }
 
 /////////////////////////////////////////////
 // Throws an exception, if flag 'raw' is set.
 function throwIfRaw(raw) {
     if (raw) {
-        throw new TypeError("Values null/undefined cannot be used as raw text.");
+        throw new TypeError('Values null/undefined cannot be used as raw text.');
     }
 }
 
@@ -263,7 +263,7 @@ function resolveFunc(value, obj) {
 // When formatting fails, the function throws an error.
 function $formatQuery(query, values, raw, options) {
     if (typeof query !== 'string') {
-        throw new TypeError("Parameter 'query' must be a text string.");
+        throw new TypeError('Parameter \'query\' must be a text string.');
     }
     if (values &amp;&amp; typeof values === 'object') {
         var ctf = values['formatDBType']; // custom type formatting;
@@ -406,11 +406,11 @@ var $as = {
                 if (typeof name === 'object') {
                     var keys = Array.isArray(name) ? name : Object.keys(name);
                     if (!keys.length) {
-                        throw new Error("Cannot retrieve sql names from an empty array/object.");
+                        throw new Error('Cannot retrieve sql names from an empty array/object.');
                     }
                     return $arr.map(keys, function (value) {
                         if (!value || typeof value !== 'string') {
-                            throw new Error("Invalid sql name: " + JSON.stringify(value));
+                            throw new Error('Invalid sql name: ' + JSON.stringify(value));
                         }
                         return formatName(value);
                     }).join();
@@ -418,7 +418,7 @@ var $as = {
             }
         }
 
-        throw new TypeError("Invalid sql name: " + JSON.stringify(name));
+        throw new TypeError('Invalid sql name: ' + JSON.stringify(name));
 
         function formatName(name) {
             return '"' + name.replace(/"/g, '""') + '"';
@@ -442,7 +442,7 @@ var $as = {
     value: function (value) {
         value = resolveFunc(value);
         if (isNull(value)) {
-            throw new TypeError("Open values cannot be null or undefined.");
+            throw new TypeError('Open values cannot be null or undefined.');
         }
         return safeText(formatValue(value, fmFlags.raw));
     },
@@ -469,10 +469,10 @@ var $as = {
             return 'null';
         }
         if (obj instanceof Buffer) {
-            var s = "\\x" + obj.toString("hex");
+            var s = '\\x' + obj.toString('hex');
             return raw ? s : TEXT(s);
         }
-        throw new TypeError(TEXT(obj) + " is not a Buffer object.");
+        throw new TypeError(TEXT(obj) + ' is not a Buffer object.');
     },
 
     /**
@@ -515,10 +515,9 @@ var $as = {
         }
         if (d instanceof Date) {
             var s = $pgUtils.prepareValue(d);
-            // NOTE: Many languages use apostrophes in month names;
-            return raw ? s : TEXT(safeText(s));
+            return raw ? s : TEXT(s);
         }
-        throw new TypeError(TEXT(d) + " is not a Date object.");
+        throw new TypeError(TEXT(d) + ' is not a Date object.');
     },
 
     /**
@@ -538,7 +537,7 @@ var $as = {
             return 'null';
         }
         if (typeof num !== 'number') {
-            throw new TypeError(TEXT(num) + " is not a number.");
+            throw new TypeError(TEXT(num) + ' is not a number.');
         }
         if (isFinite(num)) {
             return num.toString();
@@ -548,12 +547,12 @@ var $as = {
         //
         // NOTE: strings for 'NaN'/'+Infinity'/'-Infinity' are not case-sensitive.
         if (num === Number.POSITIVE_INFINITY) {
-            return TEXT("+Infinity");
+            return TEXT('+Infinity');
         }
         if (num === Number.NEGATIVE_INFINITY) {
-            return TEXT("-Infinity");
+            return TEXT('-Infinity');
         }
-        return TEXT("NaN");
+        return TEXT('NaN');
     },
 
     /**
@@ -575,7 +574,7 @@ var $as = {
         if (arr instanceof Array) {
             return formatArray(arr);
         }
-        throw new TypeError(TEXT(arr) + " is not an Array object.");
+        throw new TypeError(TEXT(arr) + ' is not an Array object.');
     },
 
     /**
@@ -640,7 +639,7 @@ var $as = {
             return 'null';
         }
         if (typeof func !== 'function') {
-            throw new TypeError(TEXT(func) + " is not a function.");
+            throw new TypeError(TEXT(func) + ' is not a function.');
         }
         var fm = raw ? fmFlags.raw : null;
         if (isNull(obj)) {
@@ -649,7 +648,7 @@ var $as = {
         if (typeof obj === 'object') {
             return formatValue(resolveFunc(func, obj), fm, obj);
         }
-        throw new TypeError(TEXT(obj) + " is not an object.");
+        throw new TypeError(TEXT(obj) + ' is not an object.');
     },
 
     /**
