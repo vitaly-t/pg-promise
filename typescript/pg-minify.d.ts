@@ -7,8 +7,8 @@
 //////////////////////////////////////////////////////////
 
 interface IErrorPosition {
-    line:number,
-    column:number
+    line: number,
+    column: number
 }
 
 declare namespace pgMinify {
@@ -21,16 +21,16 @@ declare namespace pgMinify {
     }
 
     export class SQLParsingError implements Error {
-        name:string;
-        message:string;
-        stack:string;
-        error:string;
-        code:parsingErrorCode;
-        position:IErrorPosition;
+        name: string;
+        message: string;
+        stack: string;
+        error: string;
+        code: parsingErrorCode;
+        position: IErrorPosition;
     }
 
 }
 
-declare function pgMinify(sql:string, options?:{compress?:boolean}):string;
+declare function pgMinify(sql: string, options?: {compress?: boolean}): string;
 
 export = pgMinify;
