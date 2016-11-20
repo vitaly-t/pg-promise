@@ -55,6 +55,7 @@
     "istanbul": "0.4",
     "jasmine-node": "1.x",
     "jsdoc": "3.x",
-    "pg-query-stream": "1.x"
+    "pg-query-stream": "1.x",
+    "typescript": "2.0.x"
   }
 }
