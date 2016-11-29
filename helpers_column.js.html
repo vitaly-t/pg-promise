@@ -227,13 +227,9 @@ function Column(col) {
 
 function parseCast(name) {
     if (typeof name === 'string') {
-        var idx = 0;
-        while (idx &lt; name.length &amp;&amp; name[idx] === ':') {
-            idx++;
-        }
-        name = idx ? name.substr(idx) : name;
-        if ($npm.utils.isText(name)) {
-            return name;
+        var s = name.replace(/^[:\s]*|\s*$/g, '');
+        if (s) {
+            return s;
         }
     }
     throw new TypeError("Invalid 'cast' value: " + JSON.stringify(name) + ".");
@@ -265,8 +261,8 @@ function isValidMod(mod) {
 }
 
 function isValidVariable(name) {
-    var m = name.match(/[a-zA-Z0-9\$_]+/);
-    return m &amp;&amp; m[0] === name;
+    var m = name.match(/^[0-9]+|[a-zA-Z0-9\$_]+/);
+    return !!m &amp;&amp; m[0] === name;
 }
 
 /**
