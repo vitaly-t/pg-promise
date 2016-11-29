@@ -334,12 +334,29 @@ describe("Column", function () {
     });
 
     describe("cast", function () {
-        var col = new helpers.Column({
-            name: 'name',
-            cast: '::int'
-        });
+        var cols = [
+            new helpers.Column({
+                name: 'name',
+                cast: '::int'
+            }),
+            new helpers.Column({
+                name: 'name',
+                cast: '  :  : \t  : int'
+            }),
+            new helpers.Column({
+                name: 'name',
+                cast: ': : int: \t: '
+            }),
+            new helpers.Column({
+                name: 'name',
+                cast: ':a:'
+            })
+        ];
         it("must strip the cast", function () {
-            expect(col.cast).toBe('int');
+            expect(cols[0].cast).toBe('int');
+            expect(cols[1].cast).toBe('int');
+            expect(cols[2].cast).toBe('int: \t:');
+            expect(cols[3].cast).toBe('a:');
         });
     });
 
@@ -351,6 +368,14 @@ describe("Column", function () {
         it("must not be set if matches 'name'", function () {
             expect(col.name).toBe("testName");
             expect('prop' in col).toBe(false);
+        });
+        it("must throw on invalid property names", function () {
+            expect(function () {
+                new helpers.Column({
+                    name: 'name',
+                    prop: '1test'
+                });
+            }).toThrow(new TypeError("Invalid 'prop' syntax: \"1test\". A valid variable name was expected."));
         });
     });
 
