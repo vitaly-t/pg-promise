@@ -1,8 +1,9 @@
 {
   "name": "pg-promise",
-  "version": "5.4.6",
+  "version": "5.4.7",
   "description": "Promises interface for PostgreSQL",
   "main": "lib/index.js",
+  "typings": "typescript/pg-promise.d.ts",
   "scripts": {
     "test": "jasmine-node test",
     "test-native": "jasmine-node test --config PG_NATIVE true",
@@ -37,7 +38,6 @@
     "node": ">=0.10",
     "npm": ">=1.4"
   },
-  "typings": "typescript/pg-promise.d.ts",
   "dependencies": {
     "pg": "5.1",
     "spex": "1.1",

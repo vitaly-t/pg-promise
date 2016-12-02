@@ -1,5 +1,7 @@
 /*
 
+ // TODO: Support for promises hasn't been updated for TypeScript 2.0 yet!
+
  External Promise Provider.
 
  The purpose of this module is to make it possible to enable declarations of a custom promise library
@@ -17,6 +19,8 @@
  3. Replace line `export=Promise` with the following:
  import * as promise from 'bluebird';
  export=promise;
+
+ // TODO: The following considerations need to be updated for TypeScript 2.0:
 
  Unfortunately, as of today it is impossible to use custom promises as TypeScript generics,
  and this is why we have this file here, so it can be manually patched.

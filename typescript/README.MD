@@ -9,15 +9,16 @@ Typescript should be able to pick up the definitions without any manual configur
 ### Usage
 
 ```ts
+import {IMain, IDatabase} from 'pg-promise';
 import * as pgPromise from 'pg-promise';
 
-var pgp = pgPromise({
+var pgp:IMain = pgPromise({
     // Initialization Options
 });
 
-var cn = 'postgres://username:password@host:port/database';
+var cn:string = 'postgres://username:password@host:port/database';
 
-var db = pgp(cn);
+var db:IDatabase<any> = pgp(cn);
 ```
 
 Example of compiling into JavaScript:
@@ -37,20 +38,18 @@ In order to support dynamic protocol extensions automatically, you need to mirro
 an interface, and then re-cast the database object with it, as shown below. 
 
 ```ts
-/// <reference path='../node_modules/pg-promise/typescript/pg-promise' />
-
-// importing as 'pgPromise' helps IntelliSense inspection;
+import {IMain, IDatabase} from 'pg-promise';
 import * as pgPromise from 'pg-promise';
 
 // your protocol extensions:
 interface IExtensions {
-    findUser(userId:number):Promise<any>;
+    findUser(userId: number): Promise<any>;
 }
 
 // pg-promise initialization options:
 var options = {
-    extend: obj=> {
-        obj.findUser = userId=> {
+    extend: obj => {
+        obj.findUser = userId => {
             return obj.one('SELECT * FROM Users WHERE id=$1', userId);
         }
     }
@@ -59,10 +58,10 @@ var options = {
 var cn = 'postgres://username:password@host:port/database';
 
 // initializing the library:
-var pgp:pgPromise.IMain = pgPromise(options);
+var pgp: IMain = pgPromise(options);
 
 // database object with extensions:
-var db = <pgPromise.IDatabase<IExtensions>&IExtensions>pgp(cn);
+var db = <IDatabase<IExtensions>&IExtensions>pgp(cn);
 
 // now you can use the extensions everywhere (including tasks and transactions):
 db.findUser(123).then(...);

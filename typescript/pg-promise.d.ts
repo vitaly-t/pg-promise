@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.4.0 or later.
+// Requires pg-promise v5.4.7 or later.
 ////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -346,8 +346,6 @@ declare class ColumnSet {
     // these are all read-only:
     columns: Array<Column>;
     table: TableName;
-
-    canGenerate(data: Object|Array<Object>): boolean;
 
     extend(columns: Column|ColumnSet|Array<string|TColumnConfig|Column>): ColumnSet;
 
