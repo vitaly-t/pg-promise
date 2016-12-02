@@ -1,12 +1,12 @@
-### TypeScript for pg-promise
+## TypeScript for pg-promise
 
 Complete TypeScript 2.0 declarations for the [pg-promise] module.
 
-#### Inclusion
+### Inclusion
 
 Typescript should be able to pick up the definitions without any manual configuration.
 
-#### Usage
+### Usage
 
 ```ts
 import * as pgPromise from 'pg-promise';
