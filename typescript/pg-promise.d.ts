@@ -5,7 +5,7 @@
 import * as XPromise from './ext-promise'; // External Promise Provider
 
 import * as pg from './pg-subset';
-import * as pgMinify from './pg-minify';
+import * as pgMinify from 'pg-minify';
 import * as spexLib from 'spex';
 
 type TQueryFileOptions= {
