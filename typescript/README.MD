@@ -1,10 +1,10 @@
 ### TypeScript for pg-promise
 
-Complete TypeScript module declarations for [pg-promise] version 5.4.0 or later.
+Complete TypeScript 2.0 declarations for the [pg-promise] module.
 
 #### Inclusion
 
-Typescript should be able to pick up type definition for [pg-promise] without any manual configuration. 
+Typescript should be able to pick up the definitions without any manual configuration.
 
 #### Usage
 
