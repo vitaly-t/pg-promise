@@ -30,6 +30,7 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 var $npm = {
+    con: require('manakin').local,
     path: require('path'),
     pg: require('pg'),
     minify: require('pg-minify'),
@@ -97,12 +98,8 @@ var $npm = {
  *
  * This property can be set dynamically (before or after initialization).
  *
- * @param {boolean} [options.noWarnings]
+ * @param {boolean} [options.noWarnings=false]
  * Disables all diagnostic warnings in the library (which is ill-advised).
- *
- * If it is not set (missing or `undefined`), it will default to the following:
- * - `true`, if `NODE_ENV` != `development`
- * - `false`, if `NODE_ENV` = `development`
  *
  * This property can be set dynamically (before or after initialization).
  *
@@ -155,40 +152,25 @@ var $npm = {
  */
 function $main(options) {
 
-    var invalidInit;
     if ($npm.utils.isNull(options)) {
         options = {};
     } else {
-        if (typeof options === 'string') {
-            // Check for invalid initialization: it must not be a connection string.
-            var pgModule = require.cache[require.resolve('pg')];
-            var pgCS = pgModule.require('pg-connection-string');
-            var cn = pgCS.parse(options);
-            invalidInit = cn &amp;&amp; cn.database !== options;
+        if (typeof options !== 'object') {
+            throw new TypeError("Invalid initialization options.");
         }
-        if (typeof options === 'object') {
-            // Check for invalid initialization: it must not be a connection object.
-            invalidInit = 'host' in options || 'database' in options;
-        } else {
-            if (!invalidInit) {
-                throw new TypeError("Invalid initialization options.");
+
+        // list of supported initialization options:
+        var validOptions = ['pgFormatting', 'pgNative', 'promiseLib', 'noLocking', 'capSQL', 'noWarnings',
+            'connect', 'disconnect', 'query', 'receive', 'task', 'transact', 'error', 'extend'];
+
+        if (!options.noWarnings) {
+            for (var prop in options) {
+                if (validOptions.indexOf(prop) === -1) {
+                    $npm.con.warn("WARNING: Invalid property '%s' in initialization options.\n%s\n", prop, $npm.utils.getLocalStack(3));
+                    break;
+                }
             }
         }
-    }
-
-    if (invalidInit) {
-        // The most common mistake in using the library - trying to pass in a database
-        // connection object or string as the library's initialization object.
-        //
-        // Steps for using the library:
-        //
-        // 1. Initialize the library:
-        //     var pgp = require('pg-promise')(/*initialization options*/);
-        // 2. Create a database object:
-        //     var db = pgp(connection);
-        //
-        // If you skip the first step, you will get this error.
-        throw new TypeError("Invalid library initialization: must initialize the library before creating a database object.");
     }
 
     var pg = $npm.pg, p = $npm.promise(options.promiseLib);
@@ -214,10 +196,6 @@ function $main(options) {
         if ($npm.utils.isNull(pg)) {
             throw new Error("Failed to initialize Native Bindings.");
         }
-    }
-
-    if (!('noWarnings' in options) || options.noWarnings === undefined) {
-        options.noWarnings = !$npm.utils.isDev();
     }
 
     var Database = require('./database')(config);
