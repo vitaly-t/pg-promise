@@ -33,8 +33,10 @@ function removeColors(text) {
 }
 
 function capture() {
-    var text, hook = hookConsole(function (s) {
-        text = s;
+    var text = '', hook = hookConsole(function (s) {
+        if (!text) {
+            text = s;
+        }
     });
     return function () {
         hook();

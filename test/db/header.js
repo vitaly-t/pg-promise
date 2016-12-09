@@ -33,11 +33,6 @@ function main(options, dc) {
             }
         }
     }
-
-    if (options && typeof options === 'object') {
-        options.noWarnings = true;
-    }
-
     var result = {
         pgpLib: pgpLib,
         pgp: pgpLib(options),

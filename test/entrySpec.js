@@ -1,5 +1,6 @@
 'use strict';
 
+var capture = require('./db/capture');
 var PromiseAdapter = require('../lib/index').PromiseAdapter;
 var supportsPromise = typeof(Promise) !== 'undefined';
 
@@ -153,22 +154,17 @@ describe("Library entry function", function () {
         });
     });
 
-    describe("with a connection instead of options", function () {
-        var error = "Invalid library initialization: must initialize the library before creating a database object.";
+    describe("with invalid options", function () {
+        var txt;
+        beforeEach(function (done) {
+            var c = capture();
+            header({test: 123});
+            txt = c();
+            done();
+        });
+
         it("must throw an error", function () {
-            expect(function () {
-                header('postgres://ops');
-            }).toThrow(error);
-            expect(function () {
-                header({
-                    host: 'localhost'
-                });
-            }).toThrow(error);
-            expect(function () {
-                header({
-                    database: 'myDB'
-                });
-            }).toThrow(error);
+            expect(txt).toContain("WARNING: Invalid property 'test' in initialization options.");
         });
     });
 
@@ -206,10 +202,10 @@ describe("Library entry function", function () {
             var pg1 = header({promiseLib: one}), db1 = pg1.db;
             var pg2 = header({promiseLib: two}), db2 = pg2.db;
             db.task(function (t) {
-                    return t.batch([
-                        db1.query('select $1', []), db2.query('select $1', [])
-                    ])
-                })
+                return t.batch([
+                    db1.query('select $1', []), db2.query('select $1', [])
+                ])
+            })
                 .catch(function (error) {
                     result = error;
                     done();
