@@ -30,9 +30,9 @@ monitor.attach(options); // attach to all query events;
 monitor.setTheme('matrix'); // change the default theme;
 // Other themes: https://github.com/vitaly-t/pg-monitor/wiki/Color-Themes
 
-monitor.log = function (msg, info) {
+monitor.setLog(function (msg, info) {
     // save the screen messages into your own log file;
-};
+});
 // See API: https://github.com/vitaly-t/pg-monitor#log
 
 // Database connection details;
