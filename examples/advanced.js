@@ -4,4 +4,4 @@
 
  https://github.com/vitaly-t/pg-promise-demo
 
-*/
+ */

@@ -1,20 +1,20 @@
 import * as pgPromise from '../../typescript/pg-promise';
 import * as pgSubset from '../../typescript/pg-subset';
 
-var pgp:pgPromise.IMain = pgPromise();
+var pgp: pgPromise.IMain = pgPromise();
 var db = pgp('connection');
 
 var pg = pgp.pg;
 
 var client = new pg.Client({
     ssl: {
-        rejectUnauthorized:true
+        rejectUnauthorized: true
     }
 });
 
 db.connect()
-    .then(t=> {
-        t.client.on('notification', (message)=> {
+    .then(t => {
+        t.client.on('notification', (message) => {
             var s = message.anything;
         });
         t.client.removeAllListeners();
@@ -25,5 +25,5 @@ var connection = new pg.Connection();
 
 var database = pg.defaults.database;
 
-var col:pgSubset.IColumn;
-var res:pgSubset.IResult;
+var col: pgSubset.IColumn;
+var res: pgSubset.IResult;

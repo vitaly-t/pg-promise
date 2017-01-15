@@ -2,7 +2,7 @@ import * as pgPromise from '../../typescript/pg-promise';
 
 var utils = pgPromise.utils;
 
-var pgp:pgPromise.IMain = pgPromise();
+var pgp: pgPromise.IMain = pgPromise();
 
 var utilsExtra = pgp.utils;
 
@@ -10,15 +10,15 @@ utils.camelize('');
 
 utils.camelizeVar('');
 
-var tree = utils.enumSql('', {recursive: true, ignoreErrors: true}, (file, name, path)=> {
+var tree = utils.enumSql('', {recursive: true, ignoreErrors: true}, (file, name, path) => {
 
 });
 
-utils.objectToCode(tree, (value, name, obj)=> {
+utils.objectToCode(tree, (value, name, obj) => {
 
 });
 
-var a:string = utils.buildSqlModule();
+var a: string = utils.buildSqlModule();
 
 utils.buildSqlModule('');
 

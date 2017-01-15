@@ -70,9 +70,9 @@ declare namespace pg {
     // Interface of 'pg-types' module;
     // See: https://github.com/brianc/node-pg-types
     interface ITypes {
-        setTypeParser: (oid: number, format: string|((value: string)=>any))=>void;
-        getTypeParser: (oid: number, format?: string)=>any;
-        arrayParser: (source: string, transform: (entry: any)=>any)=>Array<any>;
+        setTypeParser: (oid: number, format: string|((value: string) => any)) => void;
+        getTypeParser: (oid: number, format?: string) => any;
+        arrayParser: (source: string, transform: (entry: any) => any) => Array<any>;
     }
 
     interface IDefaults {
@@ -136,7 +136,7 @@ declare namespace pg {
 
         constructor(cn: string | IConnectionParameters);
 
-        query: (config: any, values: any, callback: (err: Error, result: IResult)=>void)=>Query;
+        query: (config: any, values: any, callback: (err: Error, result: IResult) => void) => Query;
 
         on(event: 'drain', listener: () => void): this;
         on(event: 'error', listener: (err: Error) => void): this;

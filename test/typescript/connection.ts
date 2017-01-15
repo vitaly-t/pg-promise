@@ -1,10 +1,10 @@
 import * as pgPromise from '../../typescript/pg-promise';
 
-var pgp:pgPromise.IMain = pgPromise();
+var pgp: pgPromise.IMain = pgPromise();
 var db = pgp('connection');
 
 type t = pgPromise.IConfig;
-var r:t;
+var r: t;
 r.application_name = 'hello';
 r.ssl = {
     ca: ''
@@ -15,7 +15,7 @@ var db2 = pgp({
 });
 
 db.connect()
-    .then(ctx=> {
+    .then(ctx => {
         var cn = ctx.client.connectionParameters;
         ctx.done();
     });

@@ -1,12 +1,12 @@
 import * as pgPromise from '../../typescript/pg-promise';
 
-var pgp:pgPromise.IMain = pgPromise({
+var pgp: pgPromise.IMain = pgPromise({
     capSQL: true,
     pgFormatting: true,
     pgNative: true
 });
 
-var c:pgPromise.IConfig;
+var c: pgPromise.IConfig;
 c.binary = true;
 
 var spex = pgp.spex;
@@ -14,7 +14,7 @@ var spex = pgp.spex;
 var b = spex.batch([1, 2, 3]);
 
 interface Test {
-    hello:string;
+    hello: string;
 }
 
 var db = <pgPromise.IDatabase<Test>&Test>pgp('connection');
@@ -23,12 +23,12 @@ db.one('');
 
 db.one(new pgPromise.QueryFile(''));
 
-var txMode:any = new pgPromise.txMode.TransactionMode();
+var txMode: any = new pgPromise.txMode.TransactionMode();
 
-function myTransaction(t:any) {
+function myTransaction(t: any) {
 }
 
-var txFunc:any = myTransaction;
+var txFunc: any = myTransaction;
 txFunc['txMode'] = txMode;
 txFunc.txMode = txMode;
 

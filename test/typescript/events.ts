@@ -1,24 +1,24 @@
 import * as pgPromise from '../../typescript/pg-promise';
 
-var pgp:pgPromise.IMain = pgPromise({
-    connect: (bla1:any, dc:any, fresh:boolean)=> {
+var pgp: pgPromise.IMain = pgPromise({
+    connect: (bla1: any, dc: any, fresh: boolean) => {
     },
-    receive: (data:any, result:any, e:any)=> {
+    receive: (data: any, result: any, e: any) => {
         var dc = e.dc;
         var d = data[0].prop;
         var r = result.fields[0].name;
         var query = e.query;
     },
-    query: (e:any)=> {
+    query: (e: any) => {
         var dc = e.dc;
         var query = e.query;
     },
-    error: (err:any, e:any)=> {
+    error: (err: any, e: any) => {
         var dc = e.dc;
         var query = e.query;
     },
-    extend: (obj:any, dc:any)=> {
-        obj['method'] = (val:any)=> {
+    extend: (obj: any, dc: any) => {
+        obj['method'] = (val: any) => {
             return obj.one(null, val);
         }
     }
@@ -26,15 +26,15 @@ var pgp:pgPromise.IMain = pgPromise({
 
 var db = pgp('connection');
 
-db.task(t=> {
+db.task(t => {
     var dc = t.ctx.dc;
     return t.batch([
         t.one('query'),
         t.none('query')
     ]);
 })
-    .then(data=> {
+    .then(data => {
     })
-    .catch(error=> {
+    .catch(error => {
 
     });

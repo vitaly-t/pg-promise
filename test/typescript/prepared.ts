@@ -1,7 +1,7 @@
 import * as pgPromise from '../../typescript/pg-promise';
 
-var pgp:pgPromise.IMain = pgPromise();
-var db:pgPromise.IDatabase<any> = pgp('connection');
+var pgp: pgPromise.IMain = pgPromise();
+var db: pgPromise.IDatabase<any> = pgp('connection');
 
 var ps1 = new pgp.PreparedStatement('', '', []);
 var ps2 = new pgp.PreparedStatement({name: '', text: ''});
