@@ -60,10 +60,11 @@ while extending the protocol to a higher level, with automated connections and t
 
 In addition, the library provides:
 
-* its own, more flexible query formatting;
-* event reporting for connectivity, errors, queries and transactions;
-* support for all popular promise libraries + ES6 generators;
-* declarative approach to controlling query results.
+* its own, more flexible query formatting
+* events reporting for connectivity, errors, queries, etc.
+* support for all popular promise libraries + ES6 generators
+* declarative approach to controlling query results
+* extensive support for external SQL files
 
 # Installing
 ```
@@ -109,7 +110,7 @@ and release the connection. You should create only one global/shared `db` object
 * [Learn by Example] - the quickest way to get started with this library
 * [Protocol API] - all the latest protocol documentation
 * [Wiki Pages](https://github.com/vitaly-t/pg-promise/wiki) - all the documentation references
-* [TypeScript](https://github.com/vitaly-t/pg-promise/tree/master/typescript) declarations for the library
+* [TypeScript 2.x](https://github.com/vitaly-t/pg-promise/tree/master/typescript) declarations for the library
 
 # Testing
 
@@ -146,12 +147,13 @@ $ npm run coverage
 
 ## Queries and Parameters
 
-Every connection context of the library shares the same query protocol, starting with generic method `query`,
+Every connection context of the library shares the same query protocol, starting with generic method [query],
 defined as shown below:
 
-```javascript
+```js
 function query(query, values, qrm);
 ```
+
 * `query` (required) - a string with support for three types of formatting, depending on the `values` passed:
    - format `$1` (single variable), if `values` is of type `string`, `boolean`, `number`, `Date`, `function`, `null` or [QueryFile];
    - format `$1, $2, etc..`, if `values` is an array;
@@ -165,7 +167,7 @@ converted into the array constructor format of `array[]`, the same as calling me
 When a value/property inside array/object is of type `object` (except for `null`, `Date` or `Buffer`), it is automatically
 serialized into JSON, the same as calling method `pgp.as.json()`, except the latter would convert anything to JSON.
 
-For the latest SQL formatting support see method [as.format]
+For the latest SQL formatting support see the API: methods [query] and [as.format].
 
 ### SQL Names
 
@@ -250,7 +252,7 @@ See also: method [as.value].
 ## Query Result Mask
 
 In order to eliminate the chances of unexpected query results and thus make the code more robust,
-method `query` uses parameter `qrm` (Query Result Mask):
+method [query] uses parameter `qrm` (Query Result Mask):
 
 ```js
 ///////////////////////////////////////////////////////
@@ -270,21 +272,24 @@ var queryResult = {
 ```
 
 In the following generic-query example we indicate that the call can return anything:
-```javascript
+
+```js
 db.query('select * from users');
 ```
+
 which is equivalent to making one of the following calls:
-```javascript
+
+```js
 var qrm = pgp.queryResult;
-db.query('select * from users', undefined, qrm.many | qrm.none);
-db.query('select * from users', undefined, qrm.any);
-db.manyOrNone('select * from users');
-db.any('select * from users');
+db.query('SELECT * FROM users', undefined, qrm.many | qrm.none);
+db.query('SELECT * FROM users', undefined, qrm.any);
+db.manyOrNone('SELECT * FROM users');
+db.any('SELECT * FROM users');
 ```
 
 This usage pattern is facilitated through result-specific methods that can be used instead of the generic query:
 
-```javascript
+```js
 db.many(query, values); // expects one or more rows
 db.one(query, values); // expects a single row
 db.none(query, values); // expects no rows
@@ -309,7 +314,7 @@ Each query function resolves its **data** according to the `qrm` that was used:
 
 If you try to specify `one`|`many` in the same query, such query will be rejected without executing it, telling you that such mask is invalid.
 
-If `qrm` is not specified when calling generic `query` method, it is assumed to be `many`|`none` = `any`, i.e. any kind of data expected.
+If `qrm` is not specified when calling generic [query] method, it is assumed to be `many`|`none` = `any`, i.e. any kind of data expected.
 
 > This is all about writing robust code, when the client specifies what kind of data it is ready to handle on the declarative level,
 leaving the burden of all extra checks to the library.
@@ -320,7 +325,7 @@ The library supports named parameters in query formatting, with the syntax of `$
 pairs: `{}`, `()`, `<>`, `[]`, `//`
 
 ```js
-db.query('select * from users where name=${name} and active=$/active/', {
+db.query('SELECT * FROM users WHERE name=${name} AND active=$/active/', {
     name: 'John',
     active: true
 });
@@ -362,11 +367,11 @@ db.none("INSERT INTO documents(id, doc) VALUES(${id}, ${this})", doc)
 ```    
 
 which will execute:
-```
+```sql
 INSERT INTO documents(id, doc) VALUES(123, '{"id":123,"body":"some text"}')
 ```
 
-Version 3.2.1 and later allows syntax `:json` as an alternative to formatting the value as a JSON string.
+Modifier `:json` is an alternative to formatting the value as a JSON string.
 
 **NOTE:** Technically, it is possible in javascript, though not recommended, for an object to contain a property
 with name `this`. And in such cases the property's value will be used instead.
@@ -391,7 +396,7 @@ db.func('findAudit', [123, new Date()])
 We passed it `user_id = 123`, plus current Date/Time as the timestamp. We assume that the function signature matches
 the parameters that we passed. All values passed are serialized automatically to comply with PostgreSQL type formats.
 
-Method `func` accepts optional third parameter - `qrm` (Query Result Mask), the same as method `query`.
+Method `func` accepts optional third parameter - `qrm` (Query Result Mask), the same as method [query].
 
 And when you are not expecting any return results, call `db.proc` instead. Both methods return a [Promise] object,
 but `db.proc` doesn't take a `qrm` parameter, always assuming it is `one`|`none`.
@@ -580,12 +585,12 @@ A transaction is a special type of task that automatically executes `BEGIN` + `C
 db.tx(function (t) {
     // `t` and `this` here are the same;
     // creating a sequence of transaction queries:
-    var q1 = this.none('update users set active=$1 where id=$2', [true, 123]);
-    var q2 = this.one('insert into audit(entity, id) values($1, $2) returning id',
+    var q1 = t.none('UPDATE users SET active=$1 WHERE id=$2', [true, 123]);
+    var q2 = t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id',
         ['users', 123]);
 
     // returning a promise that determines a successful transaction:
-    return this.batch([q1, q2]); // all of the queries are to be resolved;
+    return t.batch([q1, q2]); // all of the queries are to be resolved;
 })
     .then(function (data) {
         console.log(data); // printing successful transaction output;
@@ -605,25 +610,25 @@ This library sets no limitation as to the depth (nesting levels) of transactions
 
 Example:
 
-```javascript
+```js
 db.tx(function (t) {
     // `t` and `this` here are the same;
     var queries = [
-        this.none('drop table users;'),
-        this.none('create table users(id serial not null, name text not null)')
+        t.none('DROP TABLE users;'),
+        t.none('CREATE TABLE users(id SERIAL NOT NULL, name TEXT NOT NULL)')
     ];
     for (var i = 1; i <= 100; i++) {
-        queries.push(this.none('insert into users(name) values($1)', 'name-' + i));
+        queries.push(t.none('INSERT INTO users(name) VALUES($1)', 'name-' + i));
     }
     queries.push(
-        this.tx(function (t1) {
+        t.tx(function (t1) {
             // t1 = this != t;
-            return this.tx(function (t2) {
+            return t1.tx(function (t2) {
                 // t2 = this != t1 != t;
-                return this.one('select count(*) from users');
+                return t2.one('SELECT count(*) FROM users');
             });
         }));
-    return this.batch(queries);
+    return t.batch(queries);
 })
     .then(function (data) {
         console.log(data); // printing transaction result;
@@ -668,11 +673,11 @@ function source(index, data, delay) {
     // based on the index of the sequence;
     switch (index) {
         case 0:
-            return this.query('select 0');
+            return this.query('SELECT 0');
         case 1:
-            return this.query('select 1');
+            return this.query('SELECT 1');
         case 2:
-            return this.query('select 2');
+            return this.query('SELECT 2');
     }
     // returning or resolving with undefined ends the sequence;
     // throwing an error will result in a reject;
@@ -680,7 +685,7 @@ function source(index, data, delay) {
 
 db.tx(function (t) {
     // `t` and `this` here are the same;
-    return this.sequence(source);
+    return t.sequence(source);
 })
     .then(function (data) {
         console.log(data); // print result;
@@ -755,8 +760,8 @@ If you prefer writing asynchronous code in a synchronous manner, you can impleme
 ```js
 function * getUser(t) {
     // `t` and `this` here are the same;
-    let user = yield this.oneOrNone('select * from users where id = $1', 123);
-    return yield user || this.one('insert into users(name) values($1) returning *', 'John');
+    let user = yield t.oneOrNone('SELECT * FROM users WHERE id = $1', 123);
+    return yield user || t.one('INSERT INTO users(name) VALUES($1) RETURNING *', 'John');
 }
 
 db.task(getUser)
@@ -802,7 +807,7 @@ not the old string syntax;
 * Automatic [QueryFile] support
 
 **NOTE:** Formatting parameters for calling functions (methods `func` and `proc`) is not affected by this override.
-When needed, use the generic `query` instead to invoke functions with redirected query formatting.
+When needed, use the generic [query] instead to invoke functions with redirected query formatting.
 
 ---
 #### promiseLib
@@ -856,7 +861,7 @@ For the list of all changes see the [history log](history.md).
 
 # License
 
-Copyright (c) 2016 Vitaly Tomilov (vitaly.tomilov@gmail.com)
+Copyright (c) 2017 Vitaly Tomilov (vitaly.tomilov@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -870,6 +875,7 @@ DEALINGS IN THE SOFTWARE.
 
 [Configuration Object]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object
 [Connection String]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#connection-string
+[query]:http://vitaly-t.github.io/pg-promise/Database.html#.query
 [each]:http://vitaly-t.github.io/pg-promise/Database.html#.each
 [map]:http://vitaly-t.github.io/pg-promise/Database.html#.map
 [Connection Syntax]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax
