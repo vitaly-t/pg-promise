@@ -128,7 +128,7 @@ describe("UPDATE", function () {
                 expect(helpers.update(dataMulti, ['?id', 'val', {
                     name: 'msg',
                     cast: 'text'
-                }], 'table')).toBe('update "table" as t set "val"=v."val","msg"=v."msg"::text from (values(1,123,\'hello\'),(2,456,\'world\')) as v("id","val","msg")');
+                }], 'table')).toBe('update "table" as t set "val"=v."val","msg"=v."msg" from (values(1,123,\'hello\'::text),(2,456,\'world\'::text)) as v("id","val","msg")');
             });
         });
     });
