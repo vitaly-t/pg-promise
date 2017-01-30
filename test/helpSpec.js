@@ -547,6 +547,18 @@ describe("ColumnSet", function () {
         });
     });
 
+    describe("property 'variables'", function () {
+        var cs = new helpers.ColumnSet(['id^', {name: 'cells', cast: 'int[]'}, 'doc:json']);
+        var csEmpty = new helpers.ColumnSet([]);
+        it("must return the right string", function () {
+            expect(cs.variables).toBe('${id^},${cells}::int[],${doc:json}');
+            expect(csEmpty.variables).toBe('');
+        });
+        it("must reuse the data", function () {
+            expect(cs.variables).toBe('${id^},${cells}::int[],${doc:json}');
+        });
+    });
+
     describe("method 'getUpdates'", function () {
         var cs = new helpers.ColumnSet(dataSingle);
         var csEmpty = new helpers.ColumnSet([]);
