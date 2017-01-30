@@ -198,7 +198,7 @@ function update(data, columns, table, options, capSQL) {
             return '(' + format(columns.variables, columns.prepare(d)) + ')';
         }).join();
 
-        return format(query, [table.name, tableAlias, targetCols, values, valueAlias + columns.names]);
+        return format(query, [table.name, tableAlias, targetCols, values, valueAlias, columns.names]);
     }
 
     var updates = columns.getUpdates(data);
@@ -232,8 +232,8 @@ var sql = {
         capCase: "UPDATE $1^ SET "
     },
     multi: {
-        lowCase: "update $1^ as $2^ set $3^ from (values$4^) as $5^",
-        capCase: "UPDATE $1^ AS $2^ SET $3^ FROM (VALUES$4^) AS $5^"
+        lowCase: "update $1^ as $2^ set $3^ from (values$4^) as $5^($6^)",
+        capCase: "UPDATE $1^ AS $2^ SET $3^ FROM (VALUES$4^) AS $5^($6^)"
     }
 };
 

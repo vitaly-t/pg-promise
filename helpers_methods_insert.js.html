@@ -149,7 +149,7 @@ function insert(data, columns, table, capSQL) {
     var query = capSQL ? sql.capCase : sql.lowCase;
 
     var format = $npm.formatting.as.format;
-    query = format(query, table.name + columns.names);
+    query = format(query, [table.name, columns.names]);
 
     if (isArray) {
         return query + $arr.map(data, function (d, index) {
@@ -163,8 +163,8 @@ function insert(data, columns, table, capSQL) {
 }
 
 var sql = {
-    lowCase: "insert into $1^ values",
-    capCase: "INSERT INTO $1^ VALUES"
+    lowCase: "insert into $1^($2^) values",
+    capCase: "INSERT INTO $1^($2^) VALUES"
 };
 
 module.exports = insert;
