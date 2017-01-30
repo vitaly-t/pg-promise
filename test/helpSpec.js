@@ -539,11 +539,11 @@ describe("ColumnSet", function () {
         var cs = new helpers.ColumnSet(['name1', 'name2']);
         var csEmpty = new helpers.ColumnSet([]);
         it("must return the right string", function () {
-            expect(cs.names).toBe('("name1","name2")');
+            expect(cs.names).toBe('"name1","name2"');
             expect(csEmpty.names).toBe('');
         });
         it("must reuse the data", function () {
-            expect(cs.names).toBe('("name1","name2")');
+            expect(cs.names).toBe('"name1","name2"');
         });
     });
 
