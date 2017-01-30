@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.5.0 or later.
+// Requires pg-promise v5.6.0 or later.
 ////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -163,7 +163,9 @@ declare namespace pgPromise {
 
         // these are all read-only:
         columns: Array<Column>;
+        names: string;
         table: TableName;
+        variables: string;
 
         extend(columns: Column|ColumnSet|Array<string|TColumnConfig|Column>): ColumnSet;
 
