@@ -1,5 +1,6 @@
 ### Release History
 
+* 5.5.5 Extended type `ColumnSet` with new properties `names` and `variables`. Released: Jan 30, 2017
 * 5.5.0 Changed the diagnostics for invalid initialization + warnings. Released: Dec 09, 2016
 * 5.4.3 Major changes for supporting TypeScript 2.0 (no code changes). Released: Nov 20, 2016.
 * 5.4.1 Now forwarding `Date` formatting into the `node-postgres` driver. Released: Nov 20, 2016.
