@@ -1,10 +1,11 @@
 import * as pgPromise from '../../typescript/pg-promise';
+import {Column, ColumnSet, TableName, IMain} from '../../typescript/pg-promise';
 
-var pgp: pgPromise.IMain = pgPromise({
+var pgp: IMain = pgPromise({
     capSQL: true
 });
 
-var col1 = new pgp.helpers.Column({
+var col1: Column = new pgp.helpers.Column({
     name: 'third-col',
     prop: 'third',
     def: 888,
@@ -20,7 +21,7 @@ var col1 = new pgp.helpers.Column({
     }
 });
 
-var col2 = new pgp.helpers.Column('col');
+var col2: Column = new pgp.helpers.Column('col');
 
 var data = [
     {
@@ -32,11 +33,11 @@ var data = [
     }
 ];
 
-var table1 = new pgp.helpers.TableName('');
-var table2 = new pgp.helpers.TableName({table: ''});
-var table3 = new pgp.helpers.TableName({table: '', schema: ''});
+var table1: TableName = new pgp.helpers.TableName('');
+var table2: TableName = new pgp.helpers.TableName({table: ''});
+var table3: TableName = new pgp.helpers.TableName({table: '', schema: ''});
 
-var cs = new pgp.helpers.ColumnSet([
+var cs: ColumnSet = new pgp.helpers.ColumnSet([
     'first', 'second', {
         name: 'third-col',
         prop: 'third',
@@ -50,20 +51,27 @@ var cs = new pgp.helpers.ColumnSet([
     }
 ], {table: 'my-table', inherit: true});
 
-var insert = pgp.helpers.insert(data, cs, 'my-table');
-var update = pgp.helpers.update(data, cs, table1, {tableAlias: 'W'});
+var insert: string = pgp.helpers.insert(data, cs, 'my-table');
+var update: string = pgp.helpers.update(data, cs, table1, {tableAlias: 'W'});
 
-var values1 = pgp.helpers.values({});
-var values2 = pgp.helpers.values({}, []);
-var values3 = pgp.helpers.values([{}], []);
-var values4 = pgp.helpers.values([], cs);
+var values1: string = pgp.helpers.values({});
+var values2: string = pgp.helpers.values({}, []);
+var values3: string = pgp.helpers.values([{}], []);
+var values4: string = pgp.helpers.values([], cs);
 
-var sets1 = pgp.helpers.sets({});
-var sets2 = pgp.helpers.sets([]);
-var sets3 = pgp.helpers.sets({}, cs);
+var names: string = cs.names;
+var variables: string = cs.variables;
 
-var cs1 = cs.extend(['']);
-var cs2 = cs1.merge(cs);
+var sets1: string = pgp.helpers.sets({});
+var sets2: string = pgp.helpers.sets([]);
+var sets3: string = pgp.helpers.sets({}, cs);
 
-pgp.helpers.concat(['first', {query: 'second'}]);
-pgp.helpers.concat(['first', new pgp.QueryFile(''), {query: '', values: 123, options: {partial: true}}]);
+var cs1: ColumnSet = cs.extend(['']);
+var cs2: ColumnSet = cs1.merge(cs);
+
+var c1: string = pgp.helpers.concat(['first', {query: 'second'}]);
+var c2: string = pgp.helpers.concat(['first', new pgp.QueryFile(''), {
+    query: '',
+    values: 123,
+    options: {partial: true}
+}]);
