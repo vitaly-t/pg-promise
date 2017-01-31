@@ -173,8 +173,6 @@ declare namespace pgPromise {
 
         prepare(obj: Object): Object;
 
-        assign(obj: Object): string;
-
         // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#.toString
         toString(): string;
     }
