@@ -559,15 +559,15 @@ describe("ColumnSet", function () {
         });
     });
 
-    describe("method 'getUpdates'", function () {
+    describe("method 'assign'", function () {
         var cs = new helpers.ColumnSet(dataSingle);
         var csEmpty = new helpers.ColumnSet([]);
         it("must return the right update string", function () {
-            expect(cs.getUpdates(dataSingle)).toBe('"val"=${val},"msg"=${msg}');
-            expect(csEmpty.getUpdates(dataSingle)).toBe('');
+            expect(cs.assign(dataSingle)).toBe('"val"=${val},"msg"=${msg}');
+            expect(csEmpty.assign(dataSingle)).toBe('');
         });
         it("must reuse the data", function () {
-            expect(cs.getUpdates(dataSingle)).toBe('"val"=${val},"msg"=${msg}');
+            expect(cs.assign(dataSingle)).toBe('"val"=${val},"msg"=${msg}');
         });
         it("must handle cnd and skip", function () {
             var cs1 = new helpers.ColumnSet(['?val', 'msg']);
@@ -580,9 +580,9 @@ describe("ColumnSet", function () {
                     return true;
                 }
             }]);
-            expect(cs1.getUpdates(dataSingle)).toBe('"msg"=${msg}');
-            expect(cs2.getUpdates(dataSingle)).toBe('"val"=${val},"msg"=${msg}');
-            expect(cs3.getUpdates(dataSingle)).toBe('"val"=${val}');
+            expect(cs1.assign(dataSingle)).toBe('"msg"=${msg}');
+            expect(cs2.assign(dataSingle)).toBe('"val"=${val},"msg"=${msg}');
+            expect(cs3.assign(dataSingle)).toBe('"val"=${val}');
         });
 
     });

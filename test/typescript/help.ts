@@ -62,6 +62,12 @@ var values4: string = pgp.helpers.values([], cs);
 var names: string = cs.names;
 var variables: string = cs.variables;
 
+var assign: string = cs.assign({});
+assign = cs.assign({one: 123});
+
+var obj = cs.prepare(null);
+obj = cs.prepare({});
+
 var sets1: string = pgp.helpers.sets({});
 var sets2: string = pgp.helpers.sets([]);
 var sets3: string = pgp.helpers.sets({}, cs);
