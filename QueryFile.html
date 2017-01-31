@@ -130,7 +130,7 @@ and <a href="ParameterizedQuery.html">ParameterizedQuery</a>.</p>
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type"><a href="QueryFile.html#.Options">QueryFile.Options</a></span>
 
 
             
@@ -150,221 +150,7 @@ and <a href="ParameterizedQuery.html">ParameterizedQuery</a>.</p>
 
             
 
-            <td class="description last"><p>A set of configuration options.</p>
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>debug</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>When in debug mode, the query file is checked for its last modification time on every query request,
-so if it changes, the file is read afresh.</p>
-<p>The default for this property is <code>true</code> when <code>NODE_ENV</code> = <code>development</code>,
-or <code>false</code> otherwise.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>minify</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Parses and minifies the SQL using <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a>:</p>
-<ul>
-<li><code>false</code> - do not use <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a></li>
-<li><code>true</code> - use <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a> to parse and minify SQL</li>
-<li><code>'after'</code> - use <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a> after applying static formatting parameters
-(option <code>params</code>), as opposed to before it (default)</li>
-</ul>
-<p>If option <code>compress</code> is set, then the default for <code>minify</code> is <code>true</code>.</p>
-<p>Failure to parse SQL will result in <a href="https://github.com/vitaly-t/pg-minify/blob/master/lib/error.js">SQLParsingError</a>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>compress</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Sets option <code>compress</code> as supported by <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a>, to uglify the SQL:</p>
-<ul>
-<li><code>false</code> - no compression to be applied, keep minimum spaces for easier read</li>
-<li><code>true</code> - remove all unnecessary spaces from SQL</li>
-</ul>
-<p>This option has no meaning, if <code>minify</code> is explicitly set to <code>false</code>. However, if <code>minify</code> is not
-specified and <code>compress</code> is specified as <code>true</code>, then <code>minify</code> defaults to <code>true</code>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">array</span>
-|
-
-<span class="param-type">object</span>
-|
-
-<span class="param-type">value</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Static formatting parameters to be applied to the SQL, using the same method <a href="formatting.html#.format">as.format</a>,
-but with option <code>partial</code> = <code>true</code>.</p>
-<p>Most of the time query formatting is fully dynamic, and applied just before executing the query.
-In some cases though you may need to pre-format SQL with static values. Examples of it can be a
-schema name, or a configurable table name.</p>
-<p>This option makes two-step SQL formatting easy: you can pre-format the SQL initially, and then
-apply the second-step dynamic formatting when executing the query.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+            <td class="description last"><p>Set of configuration options, as documented by <a href="QueryFile.html#.Options">QueryFile.Options</a>.</p></td>
         </tr>
 
     
@@ -488,7 +274,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
 
 <div class="description">
     <p>When in an error state, it is set to a <a href="errors.QueryFileError.html">QueryFileError</a> object. Otherwise, it is <code>undefined</code>.</p>
-<p>This property is meant primarily for internal use by the library.</p>
+<p>This property is primarily for internal use by the library.</p>
 </div>
 
 
@@ -541,7 +327,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line247">line 247</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line210">line 210</a>
     </li></ul></dd>
     
 
@@ -566,7 +352,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
 
 <div class="description">
     <p>File name that was passed into the constructor.</p>
-<p>This property is meant primarily for internal use by the library.</p>
+<p>This property is primarily for internal use by the library.</p>
 </div>
 
 
@@ -614,7 +400,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line263">line 263</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line226">line 226</a>
     </li></ul></dd>
     
 
@@ -632,14 +418,14 @@ apply the second-step dynamic formatting when executing the query.</p></td>
 
         
             
-<h4 class="name" id="options"><span class="type-signature">(readonly) </span>options<span class="type-signature"> :object</span></h4>
+<h4 class="name" id="options"><span class="type-signature">(readonly) </span>options<span class="type-signature"> :<a href="QueryFile.html#.Options">QueryFile.Options</a></span></h4>
 
 
 
 
 <div class="description">
     <p>Set of options, as configured during the object's construction.</p>
-<p>This property is meant primarily for internal use by the library.</p>
+<p>This property is primarily for internal use by the library.</p>
 </div>
 
 
@@ -648,7 +434,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     <ul>
         <li>
             
-<span class="param-type">object</span>
+<span class="param-type"><a href="QueryFile.html#.Options">QueryFile.Options</a></span>
 
 
         </li>
@@ -687,7 +473,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line278">line 278</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line241">line 241</a>
     </li></ul></dd>
     
 
@@ -714,7 +500,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
 
 <div class="description">
     <p>When property <a href="QueryFile.html#error">error</a> is set, the query is <code>undefined</code>.</p>
-<p>This property is meant primarily for internal use by the library.</p>
+<p>This property is primarily for internal use by the library.</p>
 </div>
 
 
@@ -767,7 +553,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line230">line 230</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line193">line 193</a>
     </li></ul></dd>
     
 
@@ -805,7 +591,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
 <div class="description">
     <p>If the the query hasn't been prepared yet, it will read the file and process the contents according
 to the parameters passed into the constructor.</p>
-<p>This method is meant primarily for internal use by the library.</p>
+<p>This method is primarily for internal use by the library.</p>
 </div>
 
 
@@ -918,7 +704,7 @@ to the parameters passed into the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line172">line 172</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line135">line 135</a>
     </li></ul></dd>
     
 
@@ -1070,7 +856,7 @@ to the parameters passed into the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line296">line 296</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line259">line 259</a>
     </li></ul></dd>
     
 
@@ -1117,6 +903,247 @@ to the parameters passed into the constructor.</p>
         
     
 
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id=".Options">Options</h4>
+
+
+
+
+<div class="description">
+    <p>A set of configuration options as passed into the <a href="QueryFile.html">QueryFile</a> constructor.</p>
+</div>
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>debug</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>When in debug mode, the query file is checked for its last modification time on every query request,
+so if it changes, the file is read afresh.</p>
+<p>The default for this property is <code>true</code> when <code>NODE_ENV</code> = <code>development</code>,
+or <code>false</code> otherwise.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>minify</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Parses and minifies the SQL using <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a>:</p>
+<ul>
+<li><code>false</code> - do not use <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a></li>
+<li><code>true</code> - use <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a> to parse and minify SQL</li>
+<li><code>'after'</code> - use <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a> after applying static formatting parameters
+(option <code>params</code>), as opposed to before it (default)</li>
+</ul>
+<p>If option <code>compress</code> is set, then the default for <code>minify</code> is <code>true</code>.</p>
+<p>Failure to parse SQL will result in <a href="https://github.com/vitaly-t/pg-minify/blob/master/lib/error.js">SQLParsingError</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>compress</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Sets option <code>compress</code> as supported by <a href="https://github.com/vitaly-t/pg-minify">pg-minify</a>, to uglify the SQL:</p>
+<ul>
+<li><code>false</code> - no compression to be applied, keep minimum spaces for easier read</li>
+<li><code>true</code> - remove all unnecessary spaces from SQL</li>
+</ul>
+<p>This option has no meaning, if <code>minify</code> is explicitly set to <code>false</code>. However, if <code>minify</code> is not
+specified and <code>compress</code> is specified as <code>true</code>, then <code>minify</code> defaults to <code>true</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">object</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Static formatting parameters to be applied to the SQL, using the same method <a href="formatting.html#.format">as.format</a>,
+but with option <code>partial</code> = <code>true</code>.</p>
+<p>Most of the time query formatting is fully dynamic, and applied just before executing the query.
+In some cases though you may need to pre-format SQL with static values. Examples of it can be a
+schema name, or a configurable table name.</p>
+<p>This option makes two-step SQL formatting easy: you can pre-format the SQL initially, and then
+apply the second-step dynamic formatting when executing the query.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line295">line 295</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
     
 
     

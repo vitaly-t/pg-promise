@@ -272,6 +272,8 @@ function ColumnSet(columns, options) {
      *
      * Returns a string - comma-separated list of all column names, properly escaped.
      *
+     * This method is primarily for internal use.
+     *
      * @example
      * var cs = new ColumnSet(['id^', {name: 'cells', cast: 'int[]'}, 'doc:json']);
      * console.log(cs.names);
@@ -297,6 +299,8 @@ function ColumnSet(columns, options) {
      *
      * Returns a string - formatting template for all column values.
      *
+     * This method is primarily for internal use.
+     *
      * @example
      * var cs = new ColumnSet(['id^', {name: 'cells', cast: 'int[]'}, 'doc:json']);
      * console.log(cs.variables);
@@ -314,13 +318,20 @@ function ColumnSet(columns, options) {
     });
 
     /**
-     * @method helpers.ColumnSet.getUpdates
+     * @method helpers.ColumnSet.assign
      * @private
-     * @readonly
      * @description
-     * Returns the complete list of SET-s for a single object.
+     * Returns a template of SET assignments for a single object.
+     *
+     * This method is for internal use only.
+     *
+     * @param {object} source
+     * Source object that contains values for columns.
+     *
+     * @returns {string}
+     * Comma-separated list of variable-to-column assignments.
      */
-    this.getUpdates = function (obj) {
+    this.assign = function (source) {
         if (updates) {
             return updates;
         }
@@ -331,8 +342,8 @@ function ColumnSet(columns, options) {
             }
             if (c.skip) {
                 dynamic = true;
-                var a = colDesc(c, obj);
-                if (c.skip.call(obj, a)) {
+                var a = colDesc(c, source);
+                if (c.skip.call(source, a)) {
                     return false;
                 }
             }
@@ -495,29 +506,36 @@ function ColumnSet(columns, options) {
 
     /**
      * @method helpers.ColumnSet.prepare
-     * @private
      * @description
+     * **Added in v5.5.6**
+     *
      * Prepares a source object to be formatted, by cloning it and applying the rules
      * as set by the columns configuration.
      *
-     * This method is meant primarily for internal use.
+     * This method is primarily for internal use, and as such it does not validate
+     * its input parameters.
      *
-     * @param {object} obj
-     * Source object to be prepared.
+     * @param {object} source
+     * The source object to be prepared, if required.
+     *
+     * It must be a non-`null` object, which the method does not validate, as it is
+     * intended primarily for internal use by the library.
      *
      * @returns {object}
-     * A clone of the source objects, with all properties and values set according to
-     * the columns configuration.
+     * When the object needs to be prepared, the method returns a clone of the source object,
+     * with all properties and values set according to the columns configuration.
+     *
+     * When the object does not need to be prepared, the original object is returned.
      */
-    this.prepare = function (obj) {
+    this.prepare = function (source) {
         if (isSimple) {
-            return obj; // a simple ColumnSet requires no object preparation;
+            return source; // a simple ColumnSet requires no object preparation;
         }
         var target = {};
         $arr.forEach(this.columns, function (c) {
-            var a = colDesc(c, obj);
+            var a = colDesc(c, source);
             if (c.init) {
-                target[a.name] = c.init.call(obj, a);
+                target[a.name] = c.init.call(source, a);
             } else {
                 if (a.exists || 'def' in c) {
                     target[a.name] = a.value;

@@ -201,7 +201,7 @@ function update(data, columns, table, options, capSQL) {
         return format(query, [table.name, tableAlias, targetCols, values, valueAlias, columns.names]);
     }
 
-    var updates = columns.getUpdates(data);
+    var updates = columns.assign(data);
 
     checkColumns(updates);
     checkTable();

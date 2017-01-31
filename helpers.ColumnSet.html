@@ -476,6 +476,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
 <div class="description">
     <p><strong>Added in v5.5.5</strong></p>
 <p>Returns a string - comma-separated list of all column names, properly escaped.</p>
+<p>This method is primarily for internal use.</p>
 </div>
 
 
@@ -630,6 +631,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
 <div class="description">
     <p><strong>Added in v5.5.5</strong></p>
 <p>Returns a string - formatting template for all column values.</p>
+<p>This method is primarily for internal use.</p>
 </div>
 
 
@@ -677,7 +679,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line262">line 262</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line264">line 264</a>
     </li></ul></dd>
     
 
@@ -820,7 +822,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line323">line 323</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line334">line 334</a>
     </li></ul></dd>
     
 
@@ -996,7 +998,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line387">line 387</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line398">line 398</a>
     </li></ul></dd>
     
 
@@ -1053,6 +1055,167 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>var pgp = require('pg-promise')();var cs = new pgp.helpers.ColumnSet(['?one', 'two:json'], {table: 'my-table'});console.log(cs);//=>// ColumnSet {//    table: "my-table"//    columns: [//        Column {//            name: "one"//            cnd: true//        }//        Column {//            name: "two"//            mod: ":json"//        }//    ]// }var csMerged = cs.merge(['two', 'three^']);console.log(csMerged);//=>// ColumnSet {//    table: "my-table"//    columns: [//        Column {//            name: "one"//            cnd: true//        }//        Column {//            name: "two"//        }//        Column {//            name: "three"//            mod: "^"//        }//    ]// }</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".prepare"><span class="type-signature">(static) </span>prepare<span class="signature">(source)</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p><strong>Added in v5.5.6</strong></p>
+<p>Prepares a source object to be formatted, by cloning it and applying the rules
+as set by the columns configuration.</p>
+<p>This method is primarily for internal use, and as such it does not validate
+its input parameters.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The source object to be prepared, if required.</p>
+<p>It must be a non-<code>null</code> object, which the method does not validate, as it is
+intended primarily for internal use by the library.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line478">line 478</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>When the object needs to be prepared, the method returns a clone of the source object,
+with all properties and values set according to the columns configuration.</p>
+<p>When the object does not need to be prepared, the original object is returned.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -1182,7 +1345,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line518">line 518</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line536">line 536</a>
     </li></ul></dd>
     
 
