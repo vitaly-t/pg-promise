@@ -82,6 +82,7 @@ var $npm = {
  *
  * @property {} [def]
  * Default value for the property, to be used only when the source object doesn't have the property.
+ * It is ignored when property `init` is set.
  *
  * @property {helpers.initCB} [init]
  * Override callback for the value.
@@ -344,6 +345,7 @@ Column.prototype.inspect = function () {
  *
  * @property {} [def]
  * Default value for the property, to be used only when the source object doesn't have the property.
+ * It is ignored when property `init` is set.
  *
  * @property {helpers.initCB} [init]
  * Override callback for the value.
