@@ -471,11 +471,14 @@ describe("Method 'map'", function () {
                     done();
                 });
         });
-        it("must reject with an error", function () {
+        it("must resolve with the right value", function () {
             expect(pValue).toEqual({value: 1});
             expect(pIndex).toBe(0);
             expect(pArr).toEqual([{value: 1}]);
             expect(pData).toEqual([{newVal: 2}]);
+        });
+        it("must provide 'duration'", function () {
+            expect(typeof pData.duration).toBe('number');
         });
     });
 
@@ -531,11 +534,14 @@ describe("Method 'each'", function () {
                     done();
                 });
         });
-        it("must reject with an error", function () {
+        it("must resolve with the right value", function () {
             expect(pValue).toEqual({value: 2});
             expect(pIndex).toBe(0);
             expect(pArr).toEqual([{value: 2}]);
             expect(pData).toEqual([{value: 2}]);
+        });
+        it("must provide 'duration'", function () {
+            expect(typeof pData.duration).toBe('number');
         });
     });
 
