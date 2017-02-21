@@ -44,6 +44,7 @@ import {
     ITXMode,
     IUtils,
     IHelpers,
-    IGenericPromise
+    IGenericPromise,
+    IArrayExt
 }
     from '../../typescript/pg-promise';

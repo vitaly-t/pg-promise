@@ -10,7 +10,7 @@ utils.camelize('');
 
 utils.camelizeVar('');
 
-var tree = utils.enumSql('', {recursive: true, ignoreErrors: true}, (file, name, path) => {
+var tree = utils.enumSql('', {recursive: true, ignoreErrors: true}, (file: string, name: string, path: string) => {
 
 });
 
