@@ -757,7 +757,7 @@ function Database(cn, dc, config) {
          *
          * @returns {external:Promise}
          *
-         * It calls {@link Database.func func}(`procName`, `values`, `queryResult.oneOrNone`),
+         * It calls {@link Database.func func}(`procName`, `values`, `queryResult.one|queryResult.none`),
          * and then returns the same result as method {@link Database.oneOrNone oneOrNone}.
          *
          * @see
