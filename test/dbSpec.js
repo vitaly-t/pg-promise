@@ -936,6 +936,47 @@ describe("Executing method query", function () {
 
 });
 
+describe("Cancellation", function () {
+    it("cancelled query must in an error", function () {
+        var result1, result2, result3;
+
+        var cancel1 = pgp.utils.createCancelEmitter();
+        // var cancel2 = pgp.utils.createCancelEmitter();
+
+        db.query('SELECT pg_sleep(1)', undefined, undefined, cancel1).then(function () {
+            result1 = 'success';
+        }).catch(function (e) {
+            result1 = 'error';
+        });
+
+        db.query('SELECT pg_sleep(1)').then(function () {
+            result2 = 'success';
+        }).catch(function (e) {
+            result2 = 'error';
+        });
+
+        db.query('SELECT pg_sleep(1)').then(function () {
+            result3 = 'success';
+        }).catch(function (e) {
+            result3 = 'error';
+        });
+
+        setTimeout(function () {
+            cancel1.cancel();
+        }, 800);
+
+        waitsFor(function () {
+            return result1 && result2 && result3;
+        }, "Query timed out", 5000);
+
+        runs(function () {
+            expect(result1).toEqual('error');
+            expect(result2).toEqual('success');
+            expect(result3).toEqual('success')
+        });
+    });
+});
+
 describe("Transactions", function () {
 
     // NOTE: The same test for 100,000 inserts works also the same.
