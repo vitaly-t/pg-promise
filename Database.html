@@ -344,7 +344,7 @@ depending on the database context.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line250">line 250</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line259">line 259</a>
     </li></ul></dd>
     
 
@@ -541,7 +541,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line540">line 540</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line549">line 549</a>
     </li></ul></dd>
     
 
@@ -1115,7 +1115,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line855">line 855</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line873">line 873</a>
     </li></ul></dd>
     
 
@@ -1181,7 +1181,7 @@ number of milliseconds it took the client to execute the query.</p>
 
     
 
-    <h4 class="name" id=".func"><span class="type-signature">(static) </span>func<span class="signature">(funcName, values<span class="signature-attributes">opt</span>, qrm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id=".func"><span class="type-signature">(static) </span>func<span class="signature">(funcName, values<span class="signature-attributes">opt</span>, qrm<span class="signature-attributes">opt</span>, ncm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -1339,6 +1339,47 @@ number of milliseconds it took the client to execute the query.</p>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>ncm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p><strong>Added in v.5.6.0</strong></p>
+<p>Non-Critical Message handler, in the format of <code>function(msg){}</code>, with <code>msg</code> extending
+type <a href="external-Error.html">Error</a>. If the handler throws an error, the method will reject
+with that error.</p>
+<p>See also: <a href="https://www.postgresql.org/docs/9.6/static/plpgsql-errors-and-messages.html">PostgreSQL Errors and Messages</a>.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -1376,7 +1417,7 @@ number of milliseconds it took the client to execute the query.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line679">line 679</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line688">line 688</a>
     </li></ul></dd>
     
 
@@ -1601,7 +1642,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line404">line 404</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line413">line 413</a>
     </li></ul></dd>
     
 
@@ -1827,7 +1868,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line501">line 501</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line510">line 510</a>
     </li></ul></dd>
     
 
@@ -2131,7 +2172,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line743">line 743</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line761">line 761</a>
     </li></ul></dd>
     
 
@@ -2366,7 +2407,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line302">line 302</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line311">line 311</a>
     </li></ul></dd>
     
 
@@ -2655,7 +2696,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line338">line 338</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line347">line 347</a>
     </li></ul></dd>
     
 
@@ -2956,7 +2997,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line441">line 441</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line450">line 450</a>
     </li></ul></dd>
     
 
@@ -3241,7 +3282,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line706">line 706</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line724">line 724</a>
     </li></ul></dd>
     
 
@@ -3302,7 +3343,7 @@ and then returns the same result as method <a href="Database.html#.oneOrNone">on
 
     
 
-    <h4 class="name" id=".query"><span class="type-signature">(static) </span>query<span class="signature">(query, values<span class="signature-attributes">opt</span>, qrm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id=".query"><span class="type-signature">(static) </span>query<span class="signature">(query, values<span class="signature-attributes">opt</span>, qrm<span class="signature-attributes">opt</span>, ncm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -3475,6 +3516,47 @@ as an override for its internal <code>values</code>.</p></td>
             
 
             <td class="description last"><p><a href="global.html#queryResult">Query Result Mask</a></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ncm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p><strong>Added in v.5.6.0</strong></p>
+<p>Non-Critical Message handler, in the format of <code>function(msg){}</code>, with <code>msg</code> extending
+type <a href="external-Error.html">Error</a>. If the handler throws an error, the method will reject
+with that error.</p>
+<p>See also: <a href="https://www.postgresql.org/docs/9.6/static/plpgsql-errors-and-messages.html">PostgreSQL Errors and Messages</a>.</p></td>
         </tr>
 
     
@@ -3798,7 +3880,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line583">line 583</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line592">line 592</a>
     </li></ul></dd>
     
 
@@ -3988,7 +4070,7 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line646">line 646</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line655">line 655</a>
     </li></ul></dd>
     
 
@@ -4203,7 +4285,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line935">line 935</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line953">line 953</a>
     </li></ul></dd>
     
 
@@ -4428,7 +4510,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1029">line 1029</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1047">line 1047</a>
     </li></ul></dd>
     
 
@@ -4603,7 +4685,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1278">line 1278</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1296">line 1296</a>
     </li></ul></dd>
     
 

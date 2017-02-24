@@ -201,11 +201,11 @@ function Database(cn, dc, config) {
         var ctx = createContext();
         var self = {
             // Generic query method;
-            query: function (query, values, qrm) {
+            query: function (query, values, qrm, ncm) {
                 if (!ctx.db) {
                     throw new Error("Cannot execute a query on a disconnected client.");
                 }
-                return config.$npm.query.call(this, ctx, query, values, qrm);
+                return config.$npm.query.call(this, ctx, query, values, qrm, ncm);
             },
             // Connection release method;
             done: function () {
@@ -253,18 +253,27 @@ function Database(cn, dc, config) {
      * @param {queryResult} [qrm=queryResult.any]
      * {@link queryResult Query Result Mask}
      *
+     * @param {function} [ncm]
+     * **Added in v.5.6.0**
+     *
+     * Non-Critical Message handler, in the format of `function(msg){}`, with `msg` extending
+     * type {@link external:Error Error}. If the handler throws an error, the method will reject
+     * with that error.
+     *
+     * See also: $[PostgreSQL Errors and Messages].
+     *
      * @returns {external:Promise}
      * A promise object that represents the query result.
      *
      * When the query result is an array, it is extended with hidden property `duration` -
      * number of milliseconds it took the client to execute the query.
      */
-    this.query = function (query, values, qrm) {
+    this.query = function (query, values, qrm, ncm) {
         var self = this, ctx = createContext();
         return config.$npm.connect.pool(ctx)
             .then(function (db) {
                 ctx.connect(db);
-                return config.$npm.query.call(self, ctx, query, values, qrm);
+                return config.$npm.query.call(self, ctx, query, values, qrm, ncm);
             })
             .then(function (data) {
                 ctx.disconnect();
@@ -718,6 +727,15 @@ function Database(cn, dc, config) {
          *
          * @param {queryResult} [qrm=queryResult.any] - {@link queryResult Query Result Mask}.
          *
+         * @param {function} [ncm]
+         * **Added in v.5.6.0**
+         *
+         * Non-Critical Message handler, in the format of `function(msg){}`, with `msg` extending
+         * type {@link external:Error Error}. If the handler throws an error, the method will reject
+         * with that error.
+         *
+         * See also: $[PostgreSQL Errors and Messages].
+         *
          * @returns {external:Promise}
          *
          * A promise object as returned from method {@link Database.query query}, according to parameter `qrm`.
@@ -726,10 +744,10 @@ function Database(cn, dc, config) {
          * {@link Database.query query},
          * {@link Database.proc proc}
          */
-        obj.func = function (funcName, values, qrm) {
+        obj.func = function (funcName, values, qrm, ncm) {
             return obj.query.call(this, {
                 funcName: funcName
-            }, values, qrm);
+            }, values, qrm, ncm);
         };
 
         /**
