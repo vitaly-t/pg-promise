@@ -1,6 +1,9 @@
 language: node_js
 sudo: required
 dist: trusty
+node_js:
+  - "0.12"
+  - "4"
 matrix:
   include:
     - node_js: "0.12"
