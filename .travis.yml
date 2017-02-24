@@ -1,10 +1,10 @@
 language: node_js
 sudo: required
 dist: trusty
-node_js:
-  - "0.12"
-  - "4"
+dummy_build: true
 matrix:
+  exclude:
+    - dummy_build: true
   include:
     - node_js: "0.12"
       script: "npm test"
