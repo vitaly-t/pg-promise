@@ -3,8 +3,6 @@ sudo: required
 dist: trusty
 matrix:
   include:
-    - node_js: "0.10"
-      script: "npm test"
     - node_js: "0.12"
       script: "npm test"
     - node_js: "4"

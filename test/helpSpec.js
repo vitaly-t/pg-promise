@@ -1,14 +1,16 @@
 'use strict';
 
+var header = require('./db/header');
+var promise = header.defPromise;
 var options = {
+    promiseLib: promise,
     capSQL: false
 };
+var pgp = header(options).pgp;
 
 var os = require('os');
 var path = require('path');
 var utils = require('../lib/utils');
-var header = require('./db/header');
-var pgp = header(options).pgp;
 var helpers = pgp.helpers;
 var QueryFile = pgp.QueryFile;
 
