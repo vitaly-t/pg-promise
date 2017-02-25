@@ -180,6 +180,8 @@ function QueryFile(file, options) {
             try {
                 lastMod = $npm.fs.statSync(filePath).mtime.getTime();
                 if (lastMod === modTime) {
+                    // istanbul ignore next;
+                    // coverage for this works differently under Windows and Linux
                     return;
                 }
                 ready = false;

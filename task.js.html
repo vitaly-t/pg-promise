@@ -142,11 +142,11 @@ function Task(ctx, tag, isTX, config) {
     $npm.utils.addReadProp(this.ctx, 'dc', ctx.dc);
 
     // generic query method;
-    this.query = function (query, values, qrm, ncm) {
+    this.query = function (query, values, qrm) {
         if (!ctx.db) {
             throw new Error("Unexpected call outside of " + (isTX ? "transaction." : "task."));
         }
-        return config.$npm.query.call(this, ctx, query, values, qrm, ncm);
+        return config.$npm.query.call(this, ctx, query, values, qrm);
     };
 
     /**
