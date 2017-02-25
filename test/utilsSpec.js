@@ -177,72 +177,66 @@ describe("objectToCode", function () {
 
 describe("buildSqlModule", function () {
 
-    // For some reasons these tests have a problem on Travis CI under Node.js 0.12,
-    // while locally they all work just fine. It is a Travis CI issue.
+    it("must succeed for a valid configurator", function () {
+        var code1 = utils.buildSqlModule({dir: './test/sql'});
+        var code2 = utils.buildSqlModule({dir: './test/sql', output: path.join(__dirname, '../generated.js')});
+        expect(typeof code1).toBe('string');
+        expect(typeof code2).toBe('string');
+        expect(code1.length > 100).toBe(true);
+        expect(code2.length > 100).toBe(true);
+    });
 
-    if (process.version.indexOf("v0.12.") === -1) {
+    it("must succeed for valid configuration files", function () {
+        var code1 = utils.buildSqlModule(path.join(__dirname, './sql-special/sql-config.json'));
+        var code2 = utils.buildSqlModule(path.join(__dirname, './sql-special/sql-simple.json'));
+        expect(typeof code1).toBe('string');
+        expect(typeof code2).toBe('string');
+        expect(code1.length > 100).toBe(true);
+        expect(code2.length > 100).toBe(true);
+    });
 
-        it("must succeed for a valid configurator", function () {
-            var code1 = utils.buildSqlModule({dir: './test/sql'});
-            var code2 = utils.buildSqlModule({dir: './test/sql', output: path.join(__dirname, '../generated.js')});
-            expect(typeof code1).toBe('string');
-            expect(typeof code2).toBe('string');
-            expect(code1.length > 100).toBe(true);
-            expect(code2.length > 100).toBe(true);
+    describe("negative", function () {
+        it("must fail without any configuration", function () {
+            var err;
+            try {
+                utils.buildSqlModule();
+            } catch (e) {
+                err = e;
+            }
+            expect(err instanceof Error).toBe(true);
+            expect(err.message).toContain("Default SQL configuration file not found:");
         });
 
-        it("must succeed for valid configuration files", function () {
-            var code1 = utils.buildSqlModule(path.join(__dirname, './sql-special/sql-config.json'));
-            var code2 = utils.buildSqlModule(path.join(__dirname, './sql-special/sql-simple.json'));
-            expect(typeof code1).toBe('string');
-            expect(typeof code2).toBe('string');
-            expect(code1.length > 100).toBe(true);
-            expect(code2.length > 100).toBe(true);
+        it("must throw on missing 'dir'", function () {
+            var err = new Error("Property 'dir' must be a non-empty string.");
+            expect(function () {
+                utils.buildSqlModule(path.join(__dirname, './sql-special/sql-invalid.json'));
+            }).toThrow(err);
         });
 
-        describe("negative", function () {
-            it("must fail without any configuration", function () {
-                var err;
-                try {
-                    utils.buildSqlModule();
-                } catch (e) {
-                    err = e;
-                }
-                expect(err instanceof Error).toBe(true);
-                expect(err.message).toContain("Default SQL configuration file not found:");
-            });
-
-            it("must throw on missing 'dir'", function () {
-                var err = new Error("Property 'dir' must be a non-empty string.");
-                expect(function () {
-                    utils.buildSqlModule(path.join(__dirname, './sql-special/sql-invalid.json'));
-                }).toThrow(err);
-            });
-
-            it("must throw on invalid 'config' parameter", function () {
-                var err = new TypeError("Invalid parameter 'config' specified.");
-                expect(function () {
-                    utils.buildSqlModule(123);
-                }).toThrow(err);
-                expect(function () {
-                    utils.buildSqlModule(0);
-                }).toThrow(err);
-                expect(function () {
-                    utils.buildSqlModule('');
-                }).toThrow(err);
-                expect(function () {
-                    utils.buildSqlModule('    ');
-                }).toThrow(err);
-            });
-
-            it("must throw in invalid config file path", function () {
-                // this one is mainly for coverage:
-                expect(function () {
-                    utils.buildSqlModule('./sql-special/non-existent.json');
-                }).toThrow();
-            });
+        it("must throw on invalid 'config' parameter", function () {
+            var err = new TypeError("Invalid parameter 'config' specified.");
+            expect(function () {
+                utils.buildSqlModule(123);
+            }).toThrow(err);
+            expect(function () {
+                utils.buildSqlModule(0);
+            }).toThrow(err);
+            expect(function () {
+                utils.buildSqlModule('');
+            }).toThrow(err);
+            expect(function () {
+                utils.buildSqlModule('    ');
+            }).toThrow(err);
         });
-    }
+
+        it("must throw in invalid config file path", function () {
+            // this one is mainly for coverage:
+            expect(function () {
+                utils.buildSqlModule('./sql-special/non-existent.json');
+            }).toThrow();
+        });
+    });
 });
 
 describe('isDev', function () {
