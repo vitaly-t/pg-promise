@@ -1,6 +1,6 @@
 'use strict';
 
-var header = require('../db/header');
+var header = require('./db/header');
 var promise = header.defPromise;
 
 var options = {};

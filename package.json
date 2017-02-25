@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "5.5.8",
+  "version": "5.6.0",
   "description": "Promises interface for PostgreSQL",
   "main": "lib/index.js",
   "typings": "typescript/pg-promise.d.ts",
@@ -35,7 +35,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=0.12",
+    "node": ">=4.0",
     "npm": ">=2.15"
   },
   "dependencies": {
