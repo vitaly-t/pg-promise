@@ -1,5 +1,6 @@
 ### Release History
 
+* 5.6.0 Removed support for legacy Node.js versions, now requiring 4.x and higher. Released: Feb 25, 2017
 * 5.5.5 Extended type `ColumnSet` with new properties `names` and `variables`. Released: Jan 30, 2017
 * 5.5.0 Changed the diagnostics for invalid initialization + warnings. Released: Dec 09, 2016
 * 5.4.3 Major changes for supporting TypeScript 2.0 (no code changes). Released: Nov 20, 2016.

@@ -1094,7 +1094,7 @@ describe("Transactions", function () {
                     })
                 ])
                     .then(function () {
-                        return promise.reject();
+                        return promise.reject(new Error('ops!'));
                     });
             })
                 .then(dummy, function () {
