@@ -1,7 +1,5 @@
 ### `utils` namespace
 
-**Added in v.4.3.6**
-
 This folder contains everything that's available via the [utils] namespace, before and after initialization:
 
 ```js

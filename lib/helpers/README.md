@@ -1,7 +1,5 @@
 ### `helpers` namespace
 
-**Added in v.4.1.0**
-
 This folder contains everything that's available via the [helpers] namespace, after initializing the library:
 
 ```js
