@@ -151,7 +151,7 @@ Every connection context of the library shares the same query protocol, starting
 defined as shown below:
 
 ```js
-function query(query, values, qrm);
+function query(query, values, qrm){}
 ```
 
 * `query` (required) - a string with support for three types of formatting, depending on the `values` passed:
@@ -354,10 +354,10 @@ Property `this` is a reference to the formatting object itself, so it can be ins
 ```js
 var doc = {
     id: 123,
-    body: "some text"
+    body: 'some text'
 };
 
-db.none("INSERT INTO documents(id, doc) VALUES(${id}, ${this})", doc)
+db.none('INSERT INTO documents(id, doc) VALUES(${id}, ${this})', doc)
     .then(() => {
         // success;
     })
