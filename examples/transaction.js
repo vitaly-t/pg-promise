@@ -29,21 +29,20 @@ var db = pgp(cn); // database instance;
 // NOTE: The default ES6 Promise doesn't have methods `.spread` and `.finally`,
 // but they are available within Bluebird library used here as an example.
 
-db.tx(function (t) {
-    // t = this;
+db.tx(t => {
     return t.batch([
-        t.one("insert into users(name) values($1) returning id", "John"),
-        t.one("insert into events(code) values($1) returning id", 123)
+        t.one('insert into users(name) values($1) returning id', 'John'),
+        t.one('insert into events(code) values($1) returning id', 123)
     ]);
 })
-    .spread(function (user, event) {
+    .spread((user, event) => {
         // print new user id + new event id;
-        console.log("DATA:", user.id, event.id);
+        console.log('DATA:', user.id, event.id);
     })
-    .catch(function (error) {
-        console.log("ERROR:", error); // print the error;
+    .catch(error => {
+        console.log('ERROR:', error); // print the error;
     })
-    .finally(function () {
+    .finally(() => {
         // If we do not close the connection pool when exiting the application,
         // it may take 30 seconds (poolIdleTimeout) before the process terminates,
         // waiting for the connection to expire in the pool.

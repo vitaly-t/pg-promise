@@ -30,7 +30,7 @@ monitor.attach(options); // attach to all query events;
 monitor.setTheme('matrix'); // change the default theme;
 // Other themes: https://github.com/vitaly-t/pg-monitor/wiki/Color-Themes
 
-monitor.setLog(function (msg, info) {
+monitor.setLog((msg, info) => {
     // save the screen messages into your own log file;
 });
 // See API: https://github.com/vitaly-t/pg-monitor#log
@@ -49,11 +49,11 @@ var db = pgp(cn); // database instance;
 // NOTE: The default ES6 Promise doesn't have method `.finally`, but it is
 // available within Bluebird library used here as an example.
 
-db.any("select * from users where active=$1", [true])
-    .then(function (data) {
-        console.log("DATA:", data);
+db.any('select * from users where active=$1', [true])
+    .then(data => {
+        console.log('DATA:', data);
     })
-    .catch(function (error) {
-        console.log("ERROR:", error);
+    .catch(error => {
+        console.log('ERROR:', error);
     })
     .finally(pgp.end); // for immediate app exit, closing the connection pool.

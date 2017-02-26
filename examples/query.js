@@ -29,14 +29,14 @@ var db = pgp(cn); // database instance;
 // NOTE: The default ES6 Promise doesn't have method `.finally`, but it is
 // available within Bluebird library used here as an example.
 
-db.any("select * from users where active=$1", [true])
-    .then(function (data) {
-        console.log("DATA:", data); // print data;
+db.any('select * from users where active=$1', [true])
+    .then(data => {
+        console.log('DATA:', data); // print data;
     })
-    .catch(function (error) {
-        console.log("ERROR:", error); // print the error;
+    .catch(error => {
+        console.log('ERROR:', error); // print the error;
     })
-    .finally(function () {
+    .finally(() => {
         // If we do not close the connection pool when exiting the application,
         // it may take 30 seconds (poolIdleTimeout) before the process terminates,
         // waiting for the connection to expire in the pool.

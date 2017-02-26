@@ -358,10 +358,10 @@ var doc = {
 };
 
 db.none("INSERT INTO documents(id, doc) VALUES(${id}, ${this})", doc)
-    .then(function () {
+    .then(() => {
         // success;
     })
-    .catch(function (error) {
+    .catch(error => {
         // error;
     });
 ```    
@@ -385,10 +385,10 @@ We can make such call as shown below:
 
 ```js
 db.func('findAudit', [123, new Date()])
-    .then(function (data) {
+    .then(data => {
         console.log(data); // printing the data returned
     })
-    .catch(function (error) {
+    .catch(error => {
         console.log(error); // printing the error
     });
 ```
@@ -555,14 +555,13 @@ A task represents a shared connection to be used within a callback function. The
 A transaction, for example, is just a special type of task, wrapped in `CONNECT->COMMIT/ROLLBACK`. 
 
 ```js
-db.task(function (t) {
-    // `t` and `this` here are the same;
+db.task(t => {
     // execute a chain of queries;
 })
-    .then(function (data) {
+    .then(data => {
         // success;
     })
-    .catch(function (error) {
+    .catch(error => {
         // failed;    
     });
 ```
@@ -582,7 +581,7 @@ A transaction is a special type of task that automatically executes `BEGIN` + `C
 6. Resolves with the callback result, if successful; rejects with the reason when fails.
 
 ```js
-db.tx(function (t) {
+db.tx(t => {
     // `t` and `this` here are the same;
     // creating a sequence of transaction queries:
     var q1 = t.none('UPDATE users SET active=$1 WHERE id=$2', [true, 123]);
@@ -592,10 +591,10 @@ db.tx(function (t) {
     // returning a promise that determines a successful transaction:
     return t.batch([q1, q2]); // all of the queries are to be resolved;
 })
-    .then(function (data) {
+    .then(data => {
         console.log(data); // printing successful transaction output;
     })
-    .catch(function (error) {
+    .catch(error => {
         console.log(error); // printing the error;
     });
 ```
@@ -611,8 +610,7 @@ This library sets no limitation as to the depth (nesting levels) of transactions
 Example:
 
 ```js
-db.tx(function (t) {
-    // `t` and `this` here are the same;
+db.tx(t => {
     var queries = [
         t.none('DROP TABLE users;'),
         t.none('CREATE TABLE users(id SERIAL NOT NULL, name TEXT NOT NULL)')
@@ -621,19 +619,17 @@ db.tx(function (t) {
         queries.push(t.none('INSERT INTO users(name) VALUES($1)', 'name-' + i));
     }
     queries.push(
-        t.tx(function (t1) {
-            // t1 = this != t;
-            return t1.tx(function (t2) {
-                // t2 = this != t1 != t;
+        t.tx(t1 => {
+            return t1.tx(t2 => {
                 return t2.one('SELECT count(*) FROM users');
             });
         }));
     return t.batch(queries);
 })
-    .then(function (data) {
+    .then(data => {
         console.log(data); // printing transaction result;
     })
-    .catch(function (error) {
+    .catch(error => {
         console.log(error); // printing the error;
     });
 ```
@@ -683,14 +679,13 @@ function source(index, data, delay) {
     // throwing an error will result in a reject;
 }
 
-db.tx(function (t) {
-    // `t` and `this` here are the same;
+db.tx(t => {
     return t.sequence(source);
 })
-    .then(function (data) {
+    .then(data => {
         console.log(data); // print result;
     })
-    .catch(function (error) {
+    .catch(error => {
         console.log(error); // print the error;
     });
 ```
@@ -738,7 +733,7 @@ function myTransaction() {
 myTransaction.txMode = tmSRD; // assign transaction mode;
 
 db.tx(myTransaction)
-    .then(function(){
+    .then(() => {
         // success;
     });
 ```
@@ -765,10 +760,10 @@ function * getUser(t) {
 }
 
 db.task(getUser)
-    .then(function (user) {
+    .then(user => {
         // success;
     })
-    .catch(function (error) {
+    .catch(error => {
         // error;
     });
 ```
