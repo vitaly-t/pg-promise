@@ -159,19 +159,19 @@ function Column(col) {
     } else {
         if (col &amp;&amp; typeof col === 'object' &amp;&amp; 'name' in col) {
             if (!$npm.utils.isText(col.name)) {
-                throw new TypeError("Invalid 'name' value: " + JSON.stringify(col.name) + ". A non-empty string was expected.");
+                throw new TypeError('Invalid \'name\' value: ' + JSON.stringify(col.name) + '. A non-empty string was expected.');
             }
             if ($npm.utils.isNull(col.prop) &amp;&amp; !isValidVariable(col.name)) {
-                throw new TypeError("Invalid 'name' syntax: " + JSON.stringify(col.name) + ". A valid variable name was expected.");
+                throw new TypeError('Invalid \'name\' syntax: ' + JSON.stringify(col.name) + '. A valid variable name was expected.');
             }
             this.name = col.name; // column name + property name (if 'prop' isn't specified)
 
             if (!$npm.utils.isNull(col.prop)) {
                 if (!$npm.utils.isText(col.prop)) {
-                    throw new TypeError("Invalid 'prop' value: " + JSON.stringify(col.prop) + ". A non-empty string was expected.");
+                    throw new TypeError('Invalid \'prop\' value: ' + JSON.stringify(col.prop) + '. A non-empty string was expected.');
                 }
                 if (!isValidVariable(col.prop)) {
-                    throw new TypeError("Invalid 'prop' syntax: " + JSON.stringify(col.prop) + ". A valid variable name was expected.");
+                    throw new TypeError('Invalid \'prop\' syntax: ' + JSON.stringify(col.prop) + '. A valid variable name was expected.');
                 }
                 if (col.prop !== col.name) {
                     // optional property name, if different from the column's name;
@@ -180,7 +180,7 @@ function Column(col) {
             }
             if (!$npm.utils.isNull(col.mod)) {
                 if (typeof col.mod !== 'string' || !isValidMod(col.mod)) {
-                    throw new TypeError("Invalid 'mod' value: " + JSON.stringify(col.mod) + ".");
+                    throw new TypeError('Invalid \'mod\' value: ' + JSON.stringify(col.mod) + '.');
                 }
                 this.mod = col.mod; // optional format modifier;
             }
@@ -200,7 +200,7 @@ function Column(col) {
                 this.skip = col.skip;
             }
         } else {
-            throw new TypeError("Invalid column details.");
+            throw new TypeError('Invalid column details.');
         }
     }
 
@@ -233,7 +233,7 @@ function parseCast(name) {
             return s;
         }
     }
-    throw new TypeError("Invalid 'cast' value: " + JSON.stringify(name) + ".");
+    throw new TypeError('Invalid \'cast\' value: ' + JSON.stringify(name) + '.');
 }
 
 function parseColumn(name) {
@@ -253,7 +253,7 @@ function parseColumn(name) {
         }
         return res;
     }
-    throw new TypeError("Invalid column syntax: " + JSON.stringify(name) + ".");
+    throw new TypeError('Invalid column syntax: ' + JSON.stringify(name) + '.');
 }
 
 function isValidMod(mod) {

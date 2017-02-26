@@ -113,7 +113,7 @@ Object.freeze(isolationLevel);
  * myTransaction.txMode = tmSRD; // assign transaction mode;
  *
  * db.tx(myTransaction)
- *     .then(function() {
+ *     .then(() => {
  *         // success;
  *     });
  *
@@ -177,7 +177,7 @@ function TransactionMode(tiLevel, readOnly, deferrable) {
 
     capBegin = begin.toUpperCase();
 
-    this.begin = function (cap) {
+    this.begin = cap => {
         return cap ? capBegin : begin;
     };
 }

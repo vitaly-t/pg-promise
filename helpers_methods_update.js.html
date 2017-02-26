@@ -145,13 +145,13 @@ var $arr = require('../../array');
 function update(data, columns, table, options, capSQL) {
 
     if (!data || typeof data !== 'object') {
-        throw new TypeError("Invalid parameter 'data' specified.");
+        throw new TypeError('Invalid parameter \'data\' specified.');
     }
 
     var isArray = Array.isArray(data);
 
     if (isArray &amp;&amp; !data.length) {
-        throw new TypeError("Cannot generate an UPDATE from an empty array.");
+        throw new TypeError('Cannot generate an UPDATE from an empty array.');
     }
 
     if (columns instanceof $npm.ColumnSet) {
@@ -160,7 +160,7 @@ function update(data, columns, table, options, capSQL) {
         }
     } else {
         if (isArray &amp;&amp; $npm.utils.isNull(columns)) {
-            throw new TypeError("Parameter 'columns' is required when updating multiple records.");
+            throw new TypeError('Parameter \'columns\' is required when updating multiple records.');
         }
         columns = new $npm.ColumnSet(columns || data);
     }
@@ -178,27 +178,23 @@ function update(data, columns, table, options, capSQL) {
             }
         }
 
-        var query = capSQL ? sql.multi.capCase : sql.multi.lowCase;
+        var q = capSQL ? sql.multi.capCase : sql.multi.lowCase;
 
-        var actualColumns = $arr.filter(columns.columns, function (c) {
-            return !c.cnd;
-        });
+        var actualColumns = $arr.filter(columns.columns, c => !c.cnd);
 
         checkColumns(actualColumns);
         checkTable();
 
-        var targetCols = $arr.map(actualColumns, function (c) {
-            return c.escapedName + '=' + valueAlias + '.' + c.escapedName;
-        }).join();
+        var targetCols = $arr.map(actualColumns, c => c.escapedName + '=' + valueAlias + '.' + c.escapedName).join();
 
-        var values = $arr.map(data, function (d, index) {
+        var values = $arr.map(data, (d, index) => {
             if (!d || typeof d !== 'object') {
-                throw new Error("Invalid update object at index " + index + ".");
+                throw new Error('Invalid update object at index ' + index + '.');
             }
             return '(' + format(columns.variables, columns.prepare(d)) + ')';
         }).join();
 
-        return format(query, [table.name, tableAlias, targetCols, values, valueAlias, columns.names]);
+        return format(q, [table.name, tableAlias, targetCols, values, valueAlias, columns.names]);
     }
 
     var updates = columns.assign(data);
@@ -215,25 +211,25 @@ function update(data, columns, table, options, capSQL) {
             table = new $npm.TableName(table);
         }
         if (!table) {
-            throw new Error("Table name is unknown.");
+            throw new Error('Table name is unknown.');
         }
     }
 
     function checkColumns(cols) {
         if (!cols.length) {
-            throw new Error("Cannot generate an UPDATE without any columns.");
+            throw new Error('Cannot generate an UPDATE without any columns.');
         }
     }
 }
 
 var sql = {
     single: {
-        lowCase: "update $1^ set ",
-        capCase: "UPDATE $1^ SET "
+        lowCase: 'update $1^ set ',
+        capCase: 'UPDATE $1^ SET '
     },
     multi: {
-        lowCase: "update $1^ as $2^ set $3^ from (values$4^) as $5^($6^)",
-        capCase: "UPDATE $1^ AS $2^ SET $3^ FROM (VALUES$4^) AS $5^($6^)"
+        lowCase: 'update $1^ as $2^ set $3^ from (values$4^) as $5^($6^)',
+        capCase: 'UPDATE $1^ AS $2^ SET $3^ FROM (VALUES$4^) AS $5^($6^)'
     }
 };
 

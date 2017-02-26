@@ -175,7 +175,7 @@ function Database(cn, dc, config) {
      * var sco; // shared connection object;
      *
      * db.connect()
-     *     .then(function (obj) {
+     *     .then(obj => {
      *         // obj.client = new connected Client object;
      *
      *         sco = obj; // save the connection object;
@@ -183,13 +183,13 @@ function Database(cn, dc, config) {
      *         // execute all the queries you need:
      *         return sco.any('SELECT * FROM Users');
      *     })
-     *     .then(function (data) {
+     *     .then(data => {
      *         // success
      *     })
-     *     .catch(function (error) {
+     *     .catch(error => {
      *         // error
      *     })
-     *     .finally(function () {
+     *     .finally(() => {
      *         // release the connection, if it was successful:
      *         if (sco) {
      *             sco.done();
@@ -203,21 +203,21 @@ function Database(cn, dc, config) {
             // Generic query method;
             query: function (query, values, qrm) {
                 if (!ctx.db) {
-                    throw new Error("Cannot execute a query on a disconnected client.");
+                    throw new Error('Cannot execute a query on a disconnected client.');
                 }
                 return config.$npm.query.call(this, ctx, query, values, qrm);
             },
             // Connection release method;
-            done: function () {
+            done: () => {
                 if (!ctx.db) {
-                    throw new Error("Cannot invoke done() on a disconnected client.");
+                    throw new Error('Cannot invoke done() on a disconnected client.');
                 }
                 ctx.disconnect();
             }
         };
         var method = (options &amp;&amp; options.direct) ? 'direct' : 'pool';
         return config.$npm.connect[method](ctx)
-            .then(function (db) {
+            .then(db => {
                 ctx.connect(db);
                 self.client = db.client;
                 extend(ctx, self);
@@ -262,15 +262,15 @@ function Database(cn, dc, config) {
     this.query = function (query, values, qrm) {
         var self = this, ctx = createContext();
         return config.$npm.connect.pool(ctx)
-            .then(function (db) {
+            .then(db => {
                 ctx.connect(db);
                 return config.$npm.query.call(self, ctx, query, values, qrm);
             })
-            .then(function (data) {
+            .then(data => {
                 ctx.disconnect();
                 return data;
             })
-            .catch(function (error) {
+            .catch(error => {
                 ctx.disconnect();
                 return $p.reject(error);
             });
@@ -302,7 +302,7 @@ function Database(cn, dc, config) {
      * var resolvedPromise = $p.resolve('some data');
      * var rejectedPromise = $p.reject('some reason');
      *
-     * var newPromise = $p(function(resolve, reject) {
+     * var newPromise = $p((resolve, reject) => {
      *     // call either resolve(data) or reject(reason) here
      * });
      */
@@ -316,7 +316,7 @@ function Database(cn, dc, config) {
 
     function transform(value, cb, thisArg) {
         if (typeof cb === 'function') {
-            value = value.then(function (data) {
+            value = value.then(data => {
                 return cb.call(thisArg, data);
             });
         }
@@ -779,8 +779,8 @@ function Database(cn, dc, config) {
          *
          * ```js
          * db.any(query, values)
-         *     .then(function(data) {
-         *         return data.map(function(row, index, data) {
+         *     .then(data => {
+         *         return data.map((row, index, data) => {
          *              // return a new element
          *         });
          *     });
@@ -874,7 +874,7 @@ function Database(cn, dc, config) {
          */
         obj.map = function (query, values, cb, thisArg) {
             return obj.any.call(this, query, values)
-                .then(function (data) {
+                .then(data => {
                     var result = $arr.map(data, cb, thisArg);
                     $npm.utils.addReadProp(result, 'duration', data.duration, true);
                     return result;
@@ -890,8 +890,8 @@ function Database(cn, dc, config) {
          *
          * ```js
          * db.any(query, values)
-         *     .then(function(data) {
-         *         data.forEach(function(row, index, data) {
+         *     .then(data => {
+         *         data.forEach((row, index, data) => {
          *              // process the row
          *         });
          *         return data;
@@ -955,7 +955,7 @@ function Database(cn, dc, config) {
          */
         obj.each = function (query, values, cb, thisArg) {
             return obj.any.call(this, query, values)
-                .then(function (data) {
+                .then(data => {
                     $arr.forEach(data, cb, thisArg);
                     return data;
                 });
@@ -996,7 +996,7 @@ function Database(cn, dc, config) {
          * @example
          *
          * // using the regular callback syntax:
-         * db.task(function(t) {
+         * db.task(t => {
          *         // t = this
          *         // t.ctx = task context object
          *
@@ -1005,11 +1005,11 @@ function Database(cn, dc, config) {
          *                 return t.any('SELECT * FROM Events WHERE userId = $1', user.id);
          *             });
          *     })
-         *     .then(function(data) {
+         *     .then(data => {
          *         // success
          *         // data = as returned from the task's callback
          *     })
-         *     .catch(function(error) {
+         *     .catch(error => {
          *         // error
          *     });
          *
@@ -1042,11 +1042,11 @@ function Database(cn, dc, config) {
          *         let user = yield t.one('SELECT id FROM Users WHERE name = $1', 'John');
          *         return yield t.any('SELECT * FROM Events WHERE userId = $1', user.id);
          *     })
-         *     .then(function(data) {
+         *     .then(data => {
          *         // success
          *         // data = as returned from the task's callback
          *     })
-         *     .catch(function(error) {
+         *     .catch(error => {
          *         // error
          *     });
          *
@@ -1095,7 +1095,7 @@ function Database(cn, dc, config) {
          * @example
          *
          * // using the regular callback syntax:
-         * db.tx(function(t) {
+         * db.tx(t => {
          *         // t = this
          *         // t.ctx = transaction context object
          *
@@ -1104,11 +1104,11 @@ function Database(cn, dc, config) {
          *                 return t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);
          *             });
          *     })
-         *     .then(function(data) {
+         *     .then(data => {
          *         // success
          *         // data = as returned from the transaction's callback
          *     })
-         *     .catch(function(error) {
+         *     .catch(error => {
          *         // error
          *     });
          *
@@ -1144,11 +1144,11 @@ function Database(cn, dc, config) {
          *         let user = yield t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);
          *         return yield t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);
          *     })
-         *     .then(function(data) {
+         *     .then(data => {
          *         // success
          *         // data = as returned from the transaction's callback
          *     })
-         *     .catch(function(error) {
+         *     .catch(error => {
          *         // error
          *     });
          *
@@ -1184,7 +1184,7 @@ function Database(cn, dc, config) {
             var cb = taskCtx.cb;
 
             if (typeof cb !== 'function') {
-                return $p.reject(new TypeError("Callback function is required for the " + (isTX ? "transaction." : "task.")));
+                return $p.reject(new TypeError('Callback function is required for the ' + (isTX ? 'transaction.' : 'task.')));
             }
 
             if (tag === undefined) {
@@ -1210,16 +1210,16 @@ function Database(cn, dc, config) {
 
             // connection required;
             return config.$npm.connect.pool(taskCtx)
-                .then(function (db) {
+                .then(db => {
                     taskCtx.connect(db);
                     $npm.utils.addReadProp(tsk.ctx, 'isFresh', db.isFresh);
                     return config.$npm.task.exec(taskCtx, tsk, isTX, config);
                 })
-                .then(function (data) {
+                .then(data => {
                     taskCtx.disconnect();
                     return data;
                 })
-                .catch(function (error) {
+                .catch(error => {
                     taskCtx.disconnect();
                     return $p.reject(error);
                 });
@@ -1244,7 +1244,7 @@ function checkForDuplicates(cn, config) {
     var cnKey = normalizeConnection(cn);
     if (cnKey in dbObjects) {
         if (!config.options.noWarnings) {
-            $npm.con.warn("WARNING: Creating a duplicate database object for the same connection.\n%s\n",
+            $npm.con.warn('WARNING: Creating a duplicate database object for the same connection.\n%s\n',
                 $npm.utils.getLocalStack(5));
         }
     } else {
@@ -1261,7 +1261,7 @@ function checkForDuplicates(cn, config) {
 function normalizeConnection(cn) {
     if (typeof cn === 'object') {
         var obj = {}, keys = Object.keys(cn).sort();
-        $arr.forEach(keys, function (name) {
+        $arr.forEach(keys, name => {
             obj[name] = cn[name];
         });
         cn = obj;
@@ -1296,7 +1296,7 @@ function onError(err, client) {
     });
 }
 
-module.exports = function (config) {
+module.exports = config => {
     var npm = config.$npm;
     npm.connect = npm.connect || $npm.connect(config);
     npm.query = npm.query || $npm.query(config);
@@ -1320,15 +1320,15 @@ module.exports = function (config) {
  * // to format queries properly, via pg-promise;
  * var qs = new QueryStream('select * from users');
  *
- * db.stream(qs, function (stream) {
+ * db.stream(qs, stream => {
  *         // initiate streaming into the console:
  *         stream.pipe(JSONStream.stringify()).pipe(process.stdout);
  *     })
- *     .then(function (data) {
+ *     .then(data => {
  *         console.log("Total rows processed:", data.processed,
  *           "Duration in milliseconds:", data.duration);
  *     })
- *     .catch(function (error) {
+ *     .catch(error => {
  *         // error;
  *     });
  */

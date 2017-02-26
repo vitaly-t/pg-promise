@@ -72,14 +72,14 @@ var $events = {
      *
      *     // pg-promise initialization options...
      *
-     *     connect: function (client, dc, isFresh) {
+     *     connect: (client, dc, isFresh) => {
      *         var cp = client.connectionParameters;
      *         console.log("Connected to database:", cp.database);
      *     }
      *
      * };
      */
-    connect: function (ctx, client, isFresh) {
+    connect: (ctx, client, isFresh) => {
         if (typeof ctx.options.connect === 'function') {
             try {
                 ctx.options.connect(client, ctx.dc, isFresh);
@@ -113,14 +113,14 @@ var $events = {
      *
      *     // pg-promise initialization options...
      *
-     *     disconnect: function(client, dc) {
+     *     disconnect: (client, dc) => {
      *        var cp = client.connectionParameters;
      *        console.log("Disconnecting from database:", cp.database);
      *     }
      *
      * };
      */
-    disconnect: function (ctx, client) {
+    disconnect: (ctx, client) => {
         if (typeof ctx.options.disconnect === 'function') {
             try {
                 ctx.options.disconnect(client, ctx.dc);
@@ -191,7 +191,7 @@ var $events = {
      * while executing a task or transaction.
      *
      */
-    query: function (options, context) {
+    query: (options, context) => {
         if (typeof options.query === 'function') {
             try {
                 options.query(context);
@@ -239,7 +239,7 @@ var $events = {
      * // Example below shows the fastest way to camelize column names:
      *
      * var options = {
-     *     receive: function (data, result, e) {
+     *     receive: (data, result, e) => {
      *         camelizeColumns(data);
      *     }
      * };
@@ -258,7 +258,7 @@ var $events = {
      *     }
      * }
      */
-    receive: function (options, data, result, context) {
+    receive: (options, data, result, context) => {
         if (typeof options.receive === 'function') {
             try {
                 options.receive(data, result, context);
@@ -285,7 +285,7 @@ var $events = {
      * @example
      *
      * var options = {
-     *     task: function (e) {
+     *     task: e => {
      *         if (e.ctx.finish) {
      *             // this is a task->finish event;
      *             console.log("Finish Time:", e.ctx.finish);
@@ -302,7 +302,7 @@ var $events = {
      * };
      *
      */
-    task: function (options, context) {
+    task: (options, context) => {
         if (typeof options.task === 'function') {
             try {
                 options.task(context);
@@ -328,7 +328,7 @@ var $events = {
      * @example
      *
      * var options = {
-     *     transact: function (e) {
+     *     transact: e => {
      *         if (e.ctx.finish) {
      *             // this is a transaction->finish event;
      *             console.log("Finish Time:", e.ctx.finish);
@@ -345,7 +345,7 @@ var $events = {
      * };
      *
      */
-    transact: function (options, context) {
+    transact: (options, context) => {
         if (typeof options.transact === 'function') {
             try {
                 options.transact(context);
@@ -377,7 +377,7 @@ var $events = {
      *
      *     // pg-promise initialization options...
      *
-     *     error: function (err, e) {
+     *     error: (err, e) => {
      *
      *         // e.dc = Database Context
      *
@@ -402,7 +402,7 @@ var $events = {
      * };
      *
      */
-    error: function (options, err, context) {
+    error: (options, err, context) => {
         if (typeof options.error === 'function') {
             try {
                 options.error(err, context);
@@ -444,10 +444,10 @@ var $events = {
      * // that will insert one binary image and resolve with the new record id.
      *
      * var options = {
-     *     extend: function (obj, dc) {
+     *     extend: (obj, dc) => {
      *         // obj = this;
      *         // dc = database context;
-     *         obj.addImage = function (data) {
+     *         obj.addImage = data => {
      *             return obj.one("insert into images(data) values($1) returning id", '\\x' + data);
      *         }
      *     }
@@ -462,18 +462,16 @@ var $events = {
      * function repUsers(obj, dc) {
      *     // NOTE: You can change the implementation based on `dc`;
      *     return {
-     *         add: function (name, active) {
+     *         add: (name, active) => {
      *             return obj.none("insert into users values($1, $2)", [name, active]);
      *         },
-     *         delete: function (id) {
-     *             return obj.none("delete from users where id = $1", id);
-     *         }
+     *         delete: id => obj.none("delete from users where id = $1", id)
      *     }
      * }
      *
      * // Overriding 'extend' event;
      * var options = {
-     *     extend: function (obj, dc) {
+     *     extend: (obj, dc) => {
      *         // obj = this;
      *         // dc = database context;
      *         this.users = repUsers(this, dc);
@@ -483,15 +481,15 @@ var $events = {
      *
      * // Usage example:
      * db.users.add("John", true)
-     *     .then(function () {
+     *     .then(() => {
      *         // user added successfully;
      *     })
-     *     .catch(function (error) {
+     *     .catch(error => {
      *         // failed to add the user;
      *     });
      *
      */
-    extend: function (options, obj, dc) {
+    extend: (options, obj, dc) => {
         if (typeof options.extend === 'function') {
             try {
                 options.extend.call(obj, obj, dc);
@@ -510,7 +508,7 @@ var $events = {
      * @param {String|Error} e - unhandled error.
      * @private
      */
-    unexpected: function (event, e) {
+    unexpected: (event, e) => {
         // If you should ever get here, your app is definitely broken, and you need to fix
         // your event handler to prevent unhandled errors during event notifications.
         //
@@ -520,7 +518,7 @@ var $events = {
         /* istanbul ignore if */
         if (!$npm.main.suppressErrors) {
             var stack = e instanceof Error ? e.stack : new Error().stack;
-            $npm.con.error("Unexpected error in '%s' event handler.\n%s\n", event, stack);
+            $npm.con.error('Unexpected error in \'%s\' event handler.\n%s\n', event, stack);
         }
     }
 };

@@ -125,7 +125,7 @@ var $arr = require('../array');
  *     },
  *     {
  *         name: 'amount',
- *         init: function (col) {
+ *         init: col => {
  *             // set to 100, if the value is 0:
  *             return col.value === 0 ? 100 : col.value;
  *         }
@@ -133,7 +133,7 @@ var $arr = require('../array');
  *     {
  *         name: 'total-val',
  *         prop: 'total',
- *         skip: function (col) {
+ *         skip: col => {
  *             // skip from updates, if 'amount' is 0:
  *             return this.amount === 0; // = col.source.amount
  *         }
@@ -189,14 +189,14 @@ function ColumnSet(columns, options) {
     }
 
     if (!columns || typeof columns !== 'object') {
-        throw new TypeError("Invalid parameter 'columns' specified.");
+        throw new TypeError('Invalid parameter \'columns\' specified.');
     }
 
-    var inherit, names, variables, updates, cndCount = 0, isSimple = true;
+    var inherit, names, variables, updates, isSimple = true;
 
     if (!$npm.utils.isNull(options)) {
         if (typeof options !== 'object') {
-            throw new TypeError("Invalid parameter 'options' specified.");
+            throw new TypeError('Invalid parameter \'options\' specified.');
         }
         if (!$npm.utils.isNull(options.table)) {
             if (options.table instanceof $npm.TableName) {
@@ -229,7 +229,7 @@ function ColumnSet(columns, options) {
      */
     if (Array.isArray(columns)) {
         var colNames = {};
-        this.columns = $arr.map(columns, function (c) {
+        this.columns = $arr.map(columns, c => {
             var col = (c instanceof $npm.Column) ? c : new $npm.Column(c);
             if (col.name in colNames) {
                 throw new Error('Duplicate column name "' + col.name + '".');
@@ -254,13 +254,11 @@ function ColumnSet(columns, options) {
 
     for (var i = 0; i &lt; this.columns.length; i++) {
         var c = this.columns[i];
-        if (c.cnd) {
-            cndCount++;
-        }
         // ColumnSet is simple when the source objects require no preparation,
         // and should be used directly:
         if (c.prop || c.init || 'def' in c) {
             isSimple = false;
+            break;
         }
     }
 
@@ -281,11 +279,9 @@ function ColumnSet(columns, options) {
      * //=> "id","cells","doc"
      */
     Object.defineProperty(this, 'names', {
-        get: function () {
+        get: () => {
             if (!names) {
-                names = $arr.map(this.columns, function (c) {
-                    return c.escapedName;
-                }).join();
+                names = $arr.map(this.columns, c => c.escapedName).join();
             }
             return names;
         }
@@ -308,11 +304,9 @@ function ColumnSet(columns, options) {
      * //=> ${id^},${cells}::int[],${doc:json}
      */
     Object.defineProperty(this, 'variables', {
-        get: function () {
+        get: () => {
             if (!variables) {
-                variables = $arr.map(this.columns, function (c) {
-                    return c.variable + c.castText;
-                }).join();
+                variables = $arr.map(this.columns, c => c.variable + c.castText).join();
             }
             return variables;
         }
@@ -337,7 +331,7 @@ function ColumnSet(columns, options) {
             return updates;
         }
         var dynamic;
-        var list = $arr.filter(this.columns, function (c) {
+        var list = $arr.filter(this.columns, c => {
             if (c.cnd) {
                 return false;
             }
@@ -351,9 +345,7 @@ function ColumnSet(columns, options) {
             return true;
         });
 
-        list = $arr.map(list, function (c) {
-            return c.escapedName + '=' + c.variable + c.castText;
-        }).join();
+        list = $arr.map(list, c => c.escapedName + '=' + c.variable + c.castText).join();
 
         if (!dynamic) {
             updates = list;
@@ -491,11 +483,11 @@ function ColumnSet(columns, options) {
             cs = new ColumnSet(columns);
         }
         var colNames = {}, cols = [];
-        $arr.forEach(this.columns, function (c, idx) {
+        $arr.forEach(this.columns, (c, idx) => {
             cols.push(c);
             colNames[c.name] = idx;
         });
-        $arr.forEach(cs.columns, function (c) {
+        $arr.forEach(cs.columns, c => {
             if (c.name in colNames) {
                 cols[colNames[c.name]] = c;
             } else {
@@ -533,7 +525,7 @@ function ColumnSet(columns, options) {
             return source; // a simple ColumnSet requires no object preparation;
         }
         var target = {};
-        $arr.forEach(this.columns, function (c) {
+        $arr.forEach(this.columns, c => {
             var a = colDesc(c, source);
             if (c.init) {
                 target[a.name] = c.init.call(source, a);
@@ -587,7 +579,7 @@ ColumnSet.prototype.toString = function (level) {
     }
     if (this.columns.length) {
         lines.push(gap1 + 'columns: [');
-        $arr.forEach(this.columns, function (c) {
+        $arr.forEach(this.columns, c => {
             lines.push(c.toString(2));
         });
         lines.push(gap1 + ']');

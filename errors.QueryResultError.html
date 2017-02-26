@@ -318,7 +318,7 @@ Otherwise, the values are within the pre-formatted <code>query</code> string.</p
         
             <h3>Example</h3>
             
-    <pre class="prettyprint"><code>var QueryResultError = pgp.errors.QueryResultError;var qrec = pgp.errors.queryResultErrorCode;var options = {  // pg-promise initialization options...  error: function (err, e) {      if (err instanceof QueryResultError) {          // A query returned unexpected number of records, and thus rejected;                    // we can check the error code, if we want specifics:          if(err.code === qrec.noData) {              // expected some data, but received none;          }          // If you write QueryResultError into the console,          // you will get a nicely formatted output.          console.log(err);                    // See also: err, e.query, e.params, etc.      }  }};</code></pre>
+    <pre class="prettyprint"><code>var QueryResultError = pgp.errors.QueryResultError;var qrec = pgp.errors.queryResultErrorCode;var options = {  // pg-promise initialization options...  error: (err, e) => {      if (err instanceof QueryResultError) {          // A query returned unexpected number of records, and thus rejected;                    // we can check the error code, if we want specifics:          if(err.code === qrec.noData) {              // expected some data, but received none;          }          // If you write QueryResultError into the console,          // you will get a nicely formatted output.          console.log(err);                    // See also: err, e.query, e.params, etc.      }  }};</code></pre>
 
         
     

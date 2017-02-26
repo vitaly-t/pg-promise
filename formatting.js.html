@@ -116,12 +116,7 @@ function formatValue(value, fm, obj) {
 // as per PostgreSQL documentation: http://www.postgresql.org/docs/9.4/static/arrays.html
 // Arrays of any depth/dimension are supported.
 function formatArray(array) {
-    function loop(a) {
-        return '[' + $arr.map(a, function (v) {
-                return v instanceof Array ? loop(v) : formatValue(v);
-            }).join() + ']';
-    }
-
+    var loop = a => '[' + $arr.map(a, v => v instanceof Array ? loop(v) : formatValue(v)).join() + ']';
     return 'array' + loop(array);
 }
 
@@ -131,9 +126,7 @@ function formatArray(array) {
 // Both single value and array or values are supported.
 function formatCSV(values) {
     if (values instanceof Array) {
-        return $arr.map(values, function (v) {
-            return formatValue(v);
-        }).join();
+        return $arr.map(values, v => formatValue(v)).join();
     }
     return values === undefined ? '' : formatValue(values);
 }
@@ -142,10 +135,10 @@ function formatCSV(values) {
 // Query formatting helpers;
 var formatAs = {
 
-    object: function (query, obj, raw, options) {
+    object: (query, obj, raw, options) => {
         options = options &amp;&amp; typeof options === 'object' ? options : {};
         var pattern = /\$(?:({)|(\()|(&lt;)|(\[)|(\/))\s*[a-zA-Z0-9\$_]+(\^|~|#|:raw|:name|:json|:csv|:value)?\s*(?:(?=\2)(?=\3)(?=\4)(?=\5)}|(?=\1)(?=\3)(?=\4)(?=\5)\)|(?=\1)(?=\2)(?=\4)(?=\5)>|(?=\1)(?=\2)(?=\3)(?=\5)]|(?=\1)(?=\2)(?=\3)(?=\4)\/)/g;
-        return query.replace(pattern, function (name) {
+        return query.replace(pattern, name => {
             var v = formatAs.stripName(name.replace(/^\$[{(&lt;[/]|[\s})>\]/]/g, ''), raw);
             if (v.name in obj) {
                 return formatValue(obj[v.name], v.fm, obj);
@@ -165,9 +158,9 @@ var formatAs = {
         });
     },
 
-    array: function (query, array, raw, options) {
+    array: (query, array, raw, options) => {
         options = options &amp;&amp; typeof options === 'object' ? options : {};
-        return query.replace(/\$([1-9][0-9]{0,3}(?![0-9])(\^|~|#|:raw|:name|:json|:csv|:value)?)/g, function (name) {
+        return query.replace(/\$([1-9][0-9]{0,3}(?![0-9])(\^|~|#|:raw|:name|:json|:csv|:value)?)/g, name => {
             var v = formatAs.stripName(name.substr(1), raw);
             var idx = v.name - 1;
             if (idx &lt; array.length) {
@@ -184,14 +177,14 @@ var formatAs = {
         });
     },
 
-    value: function (query, value, raw) {
-        return query.replace(/\$1(?![0-9])(\^|~|#|:raw|:name|:json|:csv|:value)?/g, function (name) {
+    value: (query, value, raw) => {
+        return query.replace(/\$1(?![0-9])(\^|~|#|:raw|:name|:json|:csv|:value)?/g, name => {
             var v = formatAs.stripName(name, raw);
             return formatValue(value, v.fm);
         });
     },
 
-    stripName: function (name, raw) {
+    stripName: (name, raw) => {
         var mod = name.match(/\^|~|#|:raw|:name|:json|:csv|:value/);
         if (mod) {
             return {
@@ -216,7 +209,7 @@ function isNull(value) {
 /////////////////////////////////////////
 // Wraps a text string in single quotes;
 function TEXT(text) {
-    return "'" + text + "'";
+    return '\'' + text + '\'';
 }
 
 ////////////////////////////////////////////////
@@ -348,7 +341,7 @@ var $as = {
      *
      *  The result is not escaped, if `raw` was passed in as `true`.
      */
-    text: function (value, raw) {
+    text: (value, raw) => {
         value = resolveFunc(value);
         if (isNull(value)) {
             throwIfRaw(raw);
@@ -397,7 +390,7 @@ var $as = {
      * //=> INSERT INTO table("one","two") VALUES(1, 2)
      *
      */
-    name: function (name) {
+    name: name => {
         name = resolveFunc(name);
         if (name) {
             if (typeof name === 'string') {
@@ -408,7 +401,7 @@ var $as = {
                     if (!keys.length) {
                         throw new Error('Cannot retrieve sql names from an empty array/object.');
                     }
-                    return $arr.map(keys, function (value) {
+                    return $arr.map(keys, value => {
                         if (!value || typeof value !== 'string') {
                             throw new Error('Invalid sql name: ' + JSON.stringify(value));
                         }
@@ -439,7 +432,7 @@ var $as = {
      * @returns {string}
      * Formatted and properly escaped string, but without surrounding quotes for text types.
      */
-    value: function (value) {
+    value: value => {
         value = resolveFunc(value);
         if (isNull(value)) {
             throw new TypeError('Open values cannot be null or undefined.');
@@ -462,7 +455,7 @@ var $as = {
      *
      * @returns {string}
      */
-    buffer: function (obj, raw) {
+    buffer: (obj, raw) => {
         obj = resolveFunc(obj);
         if (isNull(obj)) {
             throwIfRaw(raw);
@@ -485,7 +478,7 @@ var $as = {
      *
      * @returns {string}
      */
-    bool: function (value) {
+    bool: value => {
         value = resolveFunc(value);
         if (isNull(value)) {
             return 'null';
@@ -507,7 +500,7 @@ var $as = {
      *
      * @returns {string}
      */
-    date: function (d, raw) {
+    date: (d, raw) => {
         d = resolveFunc(d);
         if (isNull(d)) {
             throwIfRaw(raw);
@@ -531,7 +524,7 @@ var $as = {
      *
      * @returns {string}
      */
-    number: function (num) {
+    number: num => {
         num = resolveFunc(num);
         if (isNull(num)) {
             return 'null';
@@ -566,7 +559,7 @@ var $as = {
      *
      * @returns {string}
      */
-    array: function (arr) {
+    array: arr => {
         arr = resolveFunc(arr);
         if (isNull(arr)) {
             return 'null';
@@ -588,9 +581,7 @@ var $as = {
      *
      * @returns {string}
      */
-    csv: function (values) {
-        return formatCSV(resolveFunc(values));
-    },
+    csv: values => formatCSV(resolveFunc(values)),
 
     /**
      * @method formatting.json
@@ -606,7 +597,7 @@ var $as = {
      *
      * @returns {string}
      */
-    json: function (obj, raw) {
+    json: (obj, raw) => {
         obj = resolveFunc(obj);
         if (isNull(obj)) {
             throwIfRaw(raw);
@@ -633,7 +624,7 @@ var $as = {
      *
      * @returns {string}
      */
-    func: function (func, raw, obj) {
+    func: (func, raw, obj) => {
         if (isNull(func)) {
             throwIfRaw(raw);
             return 'null';
@@ -719,7 +710,7 @@ var $as = {
      *
      * The function will throw an error, if any occurs during formatting.
      */
-    format: function (query, values, options) {
+    format: (query, values, options) => {
         if (query &amp;&amp; typeof query.formatDBType === 'function') {
             query = query.formatDBType();
         }

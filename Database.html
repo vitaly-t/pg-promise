@@ -361,7 +361,7 @@ depending on the database context.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Using the promise protocol as configured by pg-promise:var $p = db.$config.promise;var resolvedPromise = $p.resolve('some data');var rejectedPromise = $p.reject('some reason');var newPromise = $p(function(resolve, reject) {    // call either resolve(data) or reject(reason) here});</code></pre>
+    <pre class="prettyprint"><code>// Using the promise protocol as configured by pg-promise:var $p = db.$config.promise;var resolvedPromise = $p.resolve('some data');var rejectedPromise = $p.reject('some reason');var newPromise = $p((resolve, reject) => {    // call either resolve(data) or reject(reason) here});</code></pre>
 
 
 
@@ -866,7 +866,7 @@ and therefore cannot scale. This option is only suitable for global connection u
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var sco; // shared connection object;db.connect()    .then(function (obj) {        // obj.client = new connected Client object;        sco = obj; // save the connection object;        // execute all the queries you need:        return sco.any('SELECT * FROM Users');    })    .then(function (data) {        // success    })    .catch(function (error) {        // error    })    .finally(function () {        // release the connection, if it was successful:        if (sco) {            sco.done();        }    });</code></pre>
+    <pre class="prettyprint"><code>var sco; // shared connection object;db.connect()    .then(obj => {        // obj.client = new connected Client object;        sco = obj; // save the connection object;        // execute all the queries you need:        return sco.any('SELECT * FROM Users');    })    .then(data => {        // success    })    .catch(error => {        // error    })    .finally(() => {        // release the connection, if it was successful:        if (sco) {            sco.done();        }    });</code></pre>
 
 
 
@@ -885,8 +885,8 @@ and therefore cannot scale. This option is only suitable for global connection u
     <p>Executes a provided function once per array element, for an array of rows resolved by method <a href="Database.html#.any">any</a>.</p>
 <p>It is a convenience method to reduce the following code:</p>
 <pre class="prettyprint source lang-js"><code>db.any(query, values)
-    .then(function(data) {
-        data.forEach(function(row, index, data) {
+    .then(data => {
+        data.forEach((row, index, data) => {
              // process the row
         });
         return data;
@@ -1904,8 +1904,8 @@ it took the client to execute the query.</p>
 resolved by method <a href="Database.html#.any">any</a>.</p>
 <p>It is a convenience method to reduce the following code:</p>
 <pre class="prettyprint source lang-js"><code>db.any(query, values)
-    .then(function(data) {
-        return data.map(function(row, index, data) {
+    .then(data => {
+        return data.map((row, index, data) => {
              // return a new element
         });
     });</code></pre><p>In addition to much shorter code, it offers the following benefits:</p>
@@ -4259,11 +4259,11 @@ be passed in as the first parameter.</p></td>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// using the regular callback syntax:db.task(function(t) {        // t = this        // t.ctx = task context object        return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user=> {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(function(data) {        // success        // data = as returned from the task's callback    })    .catch(function(error) {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using the regular callback syntax:db.task(t => {        // t = this        // t.ctx = task context object        return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user=> {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
 
     <pre class="prettyprint"><code>// using the ES6 arrow syntax:db.task(t=> {        // t.ctx = task context object                return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user=> {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data=> {        // success        // data = as returned from the task's callback    })    .catch(error=> {        // error    });</code></pre>
 
-    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.task(function*(t) {        // t = this        // t.ctx = task context object        let user = yield t.one('SELECT id FROM Users WHERE name = $1', 'John');        return yield t.any('SELECT * FROM Events WHERE userId = $1', user.id);    })    .then(function(data) {        // success        // data = as returned from the task's callback    })    .catch(function(error) {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.task(function*(t) {        // t = this        // t.ctx = task context object        let user = yield t.one('SELECT id FROM Users WHERE name = $1', 'John');        return yield t.any('SELECT * FROM Events WHERE userId = $1', user.id);    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
 
 
 
@@ -4484,11 +4484,11 @@ passed in as the first parameter.</p></td>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// using the regular callback syntax:db.tx(function(t) {        // t = this        // t.ctx = transaction context object        return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user=> {                return t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);            });    })    .then(function(data) {        // success        // data = as returned from the transaction's callback    })    .catch(function(error) {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using the regular callback syntax:db.tx(t => {        // t = this        // t.ctx = transaction context object        return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user=> {                return t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);            });    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
 
     <pre class="prettyprint"><code>// using the ES6 arrow syntax:db.tx(t=> {        // t.ctx = transaction context object                return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user=> {                return t.batch([                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']),                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'login'])                ]);            });    })    .then(data=> {        // success        // data = as returned from the transaction's callback    })    .catch(error=> {        // error    });</code></pre>
 
-    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.tx(function*(t) {        // t = this        // t.ctx = transaction context object        let user = yield t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);        return yield t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);    })    .then(function(data) {        // success        // data = as returned from the transaction's callback    })    .catch(function(error) {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.tx(function*(t) {        // t = this        // t.ctx = transaction context object        let user = yield t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);        return yield t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
 
 
 
@@ -4630,7 +4630,7 @@ passed in as the first parameter.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var QueryStream = require('pg-query-stream');var JSONStream = require('JSONStream');// you can also use pgp.as.format(query, values, options)// to format queries properly, via pg-promise;var qs = new QueryStream('select * from users');db.stream(qs, function (stream) {        // initiate streaming into the console:        stream.pipe(JSONStream.stringify()).pipe(process.stdout);    })    .then(function (data) {        console.log("Total rows processed:", data.processed,          "Duration in milliseconds:", data.duration);    })    .catch(function (error) {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>var QueryStream = require('pg-query-stream');var JSONStream = require('JSONStream');// you can also use pgp.as.format(query, values, options)// to format queries properly, via pg-promise;var qs = new QueryStream('select * from users');db.stream(qs, stream => {        // initiate streaming into the console:        stream.pipe(JSONStream.stringify()).pipe(process.stdout);    })    .then(data => {        console.log("Total rows processed:", data.processed,          "Duration in milliseconds:", data.duration);    })    .catch(error => {        // error;    });</code></pre>
 
 
 

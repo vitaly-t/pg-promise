@@ -59,18 +59,18 @@ var $npm = {
  * {@link Task.page page}
  *
  * @example
- * db.task(function (t) {
- *       // this = t = task protocol context;
- *       // this.ctx = task config + state context;
+ * db.task(t => {
+ *       // t = task protocol context;
+ *       // t.ctx = task config + state context;
  *       return t.one("select * from users where id=$1", 123)
- *           .then(function (user) {
+ *           .then(user => {
  *               return t.any("select * from events where login=$1", user.name);
  *           });
  *   })
- * .then(function (events) {
+ * .then(events => {
  *       // success;
  *   })
- * .catch(function (error) {
+ * .catch(error => {
  *       // error;
  *   });
  *
@@ -96,7 +96,6 @@ function Task(ctx, tag, isTX, config) {
      *
      * Properties `context`, `dc`, `isTX`, `tag`, `start` and `isFresh` are set before the callback,
      * while properties `finish`, `success` and `result` are set after the callback has returned.
-     *
      *
      * @property {object} context
      * If the operation was invoked with an object context - `task.call(obj,...)` or
@@ -144,7 +143,7 @@ function Task(ctx, tag, isTX, config) {
     // generic query method;
     this.query = function (query, values, qrm) {
         if (!ctx.db) {
-            throw new Error("Unexpected call outside of " + (isTX ? "transaction." : "task."));
+            throw new Error('Unexpected call outside of ' + (isTX ? 'transaction.' : 'task.'));
         }
         return config.$npm.query.call(this, ctx, query, values, qrm);
     };
@@ -204,7 +203,7 @@ function Task(ctx, tag, isTX, config) {
 
 //////////////////////////
 // Executes a task;
-Task.exec = function (ctx, obj, isTX, config) {
+Task.exec = (ctx, obj, isTX, config) => {
 
     var $p = config.promise;
 
@@ -256,19 +255,19 @@ Task.exec = function (ctx, obj, isTX, config) {
 
     if (isTX) {
         // executing a transaction;
-        spName = "level_" + ctx.txLevel;
+        spName = 'level_' + ctx.txLevel;
         return begin()
-            .then(function () {
+            .then(() => {
                     return callback()
-                        .then(function (data) {
+                        .then(data => {
                             cbData = data; // save callback data;
                             success = true;
                             return commit();
-                        }, function (reason) {
+                        }, reason => {
                             cbReason = reason; // save callback failure reason;
                             return rollback();
                         })
-                        .then(function () {
+                        .then(() => {
                                 if (success) {
                                     update(false, true, cbData);
                                     return cbData;
@@ -316,18 +315,18 @@ Task.exec = function (ctx, obj, isTX, config) {
 
     // executing a task;
     return callback()
-        .then(function (data) {
+        .then(data => {
             update(false, true, data);
             return data;
         })
-        .catch(function (error) {
+        .catch(error => {
             update(false, false, error);
             return $p.reject(error);
         });
 
 };
 
-module.exports = function (config) {
+module.exports = config => {
     var npm = config.$npm;
 
     // istanbul ignore next:

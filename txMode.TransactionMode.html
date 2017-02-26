@@ -295,7 +295,7 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var TransactionMode = pgp.txMode.TransactionMode;var isolationLevel = pgp.txMode.isolationLevel;// Create a reusable transaction mode (serializable + read-only + deferrable):var tmSRD = new TransactionMode({    tiLevel: isolationLevel.serializable,    readOnly: true,    deferrable: true});function myTransaction() {    return this.query("SELECT * FROM table");}myTransaction.txMode = tmSRD; // assign transaction mode;db.tx(myTransaction)    .then(function() {        // success;    });// Instead of the default BEGIN, such transaction will initiate with:// BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE</code></pre>
+    <pre class="prettyprint"><code>var TransactionMode = pgp.txMode.TransactionMode;var isolationLevel = pgp.txMode.isolationLevel;// Create a reusable transaction mode (serializable + read-only + deferrable):var tmSRD = new TransactionMode({    tiLevel: isolationLevel.serializable,    readOnly: true,    deferrable: true});function myTransaction() {    return this.query("SELECT * FROM table");}myTransaction.txMode = tmSRD; // assign transaction mode;db.tx(myTransaction)    .then(() => {        // success;    });// Instead of the default BEGIN, such transaction will initiate with:// BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE</code></pre>
 
 
 

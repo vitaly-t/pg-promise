@@ -1378,11 +1378,11 @@ non-existing directory.</p></td>
     
     <pre class="prettyprint"><code>// Generating code for a simple objectvar tree = {one: 1, two: {item: 'abc'}};var code = pgp.utils.objectToCode(tree);console.log(code);//=>// {//     one: 1,//     two: {//         item: "abc"//     }// }</code></pre>
 
-    <pre class="prettyprint"><code>// Generating a Node.js module with an SQL treevar fs = require('fs');var EOL = require('os').EOL;// generating an SQL tree from the folder:var tree = pgp.utils.enumSql('./sql', {recursive: true});// generating the module's code:var code = "var load = require('./loadSql');" + EOL + EOL + "module.exports = " +        pgp.utils.objectToCode(tree, function (value) {            return 'load(' + JSON.stringify(value) + ')';        }) + ';';// saving the module:fs.writeFileSync('sql.js', code);</code></pre>
+    <pre class="prettyprint"><code>// Generating a Node.js module with an SQL treevar fs = require('fs');var EOL = require('os').EOL;// generating an SQL tree from the folder:var tree = pgp.utils.enumSql('./sql', {recursive: true});// generating the module's code:var code = "var load = require('./loadSql');" + EOL + EOL + "module.exports = " +        pgp.utils.objectToCode(tree, value => {            return 'load(' + JSON.stringify(value) + ')';        }) + ';';// saving the module:fs.writeFileSync('sql.js', code);</code></pre>
 
     <pre class="prettyprint"><code>// generated code example (file sql.js)var load = require('./loadSql');module.exports = {    events: {        add: load("../sql/events/add.sql"),        delete: load("../sql/events/delete.sql"),        find: load("../sql/events/find.sql"),        update: load("../sql/events/update.sql")    },    products: {        add: load("../sql/products/add.sql"),        delete: load("../sql/products/delete.sql"),        find: load("../sql/products/find.sql"),        update: load("../sql/products/update.sql")    },    users: {        add: load("../sql/users/add.sql"),        delete: load("../sql/users/delete.sql"),        find: load("../sql/users/find.sql"),        update: load("../sql/users/update.sql")    },    create: load("../sql/create.sql"),    init: load("../sql/init.sql"),    drop: load("../sql/drop.sql")};</code></pre>
 
-    <pre class="prettyprint"><code>// loadSql.js module examplevar QueryFile = require('pg-promise').QueryFile;module.exports = function(file) {    return new QueryFile(file, {minify: true});};</code></pre>
+    <pre class="prettyprint"><code>// loadSql.js module examplevar QueryFile = require('pg-promise').QueryFile;module.exports = file => {    return new QueryFile(file, {minify: true});};</code></pre>
 
 
 

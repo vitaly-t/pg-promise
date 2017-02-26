@@ -59,9 +59,9 @@ var queryResultErrorCode = {
 Object.freeze(queryResultErrorCode);
 
 var errorMessages = [
-    {name: "noData", message: "No data returned from the query."},
-    {name: "notEmpty", message: "No return data was expected."},
-    {name: "multiple", message: "Multiple rows were not expected."}
+    {name: 'noData', message: 'No data returned from the query.'},
+    {name: 'notEmpty', message: 'No return data was expected.'},
+    {name: 'multiple', message: 'Multiple rows were not expected.'}
 ];
 
 /**
@@ -122,7 +122,7 @@ var errorMessages = [
  *
  *   // pg-promise initialization options...
  *
- *   error: function (err, e) {
+ *   error: (err, e) => {
  *       if (err instanceof QueryResultError) {
  *           // A query returned unexpected number of records, and thus rejected;
  *           
@@ -204,7 +204,6 @@ module.exports = {
     QueryResultError: QueryResultError,
     queryResultErrorCode: queryResultErrorCode
 };
-
 </code></pre>
         </article>
     </section>

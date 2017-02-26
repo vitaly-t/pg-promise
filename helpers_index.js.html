@@ -73,13 +73,13 @@ var $npm = {
  * @property {function} concat
  * {@link helpers.concat concat} static method.
  */
-module.exports = function (config) {
+module.exports = config => {
     var res = {
-        insert: function (data, columns, table) {
+        insert: (data, columns, table) => {
             var capSQL = config.options &amp;&amp; config.options.capSQL;
             return $npm.insert(data, columns, table, capSQL);
         },
-        update: function (data, columns, table, options) {
+        update: (data, columns, table, options) => {
             var capSQL = config.options &amp;&amp; config.options.capSQL;
             return $npm.update(data, columns, table, options, capSQL);
         },

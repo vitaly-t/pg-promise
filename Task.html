@@ -101,7 +101,7 @@ execute multiple queries against the same connection that's released automatical
         
             <h3>Example</h3>
             
-    <pre class="prettyprint"><code>db.task(function (t) {      // this = t = task protocol context;      // this.ctx = task config + state context;      return t.one("select * from users where id=$1", 123)          .then(function (user) {              return t.any("select * from events where login=$1", user.name);          });  }).then(function (events) {      // success;  }).catch(function (error) {      // error;  });</code></pre>
+    <pre class="prettyprint"><code>db.task(t => {      // t = task protocol context;      // t.ctx = task config + state context;      return t.one("select * from users where id=$1", 123)          .then(user => {              return t.any("select * from events where login=$1", user.name);          });  }).then(events => {      // success;  }).catch(error => {      // error;  });</code></pre>
 
         
     
@@ -598,7 +598,7 @@ while properties <code>finish</code>, <code>success</code> and <code>result</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line123">line 123</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line122">line 122</a>
     </li></ul></dd>
     
 
@@ -841,7 +841,7 @@ while properties <code>finish</code>, <code>success</code> and <code>result</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line139">line 139</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line138">line 138</a>
     </li></ul></dd>
     
 
@@ -1123,7 +1123,7 @@ while properties <code>finish</code>, <code>success</code> and <code>result</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line156">line 156</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line155">line 155</a>
     </li></ul></dd>
     
 
