@@ -1,5 +1,7 @@
 'use strict';
 
+/*eslint-disable */
+
 var util = require('util');
 
 function hookConsole(callback) {

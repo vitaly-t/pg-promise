@@ -1,5 +1,7 @@
 'use strict';
 
+/*eslint-disable */
+
 var path = require('path');
 var pgp = require('../lib/index');
 

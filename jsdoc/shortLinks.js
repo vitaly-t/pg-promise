@@ -1,7 +1,7 @@
 var fixLinks = require('./fixLinks');
 
 exports.handlers = {
-    beforeParse: function (e) {
+    beforeParse: e => {
         e.source = fixLinks(e.source);
     }
 };

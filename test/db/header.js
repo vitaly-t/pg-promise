@@ -4,6 +4,8 @@
 
 'use strict';
 
+/*eslint-disable */
+
 var pgpLib = require('../../lib/index');
 var defPromise = require('bluebird'); // default promise library;
 

@@ -1,5 +1,7 @@
 'use strict';
 
+/*eslint-disable */
+
 var capture = require('./db/capture');
 var PromiseAdapter = require('../lib/index').PromiseAdapter;
 var supportsPromise = typeof(Promise) !== 'undefined';

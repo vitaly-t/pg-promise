@@ -1,5 +1,7 @@
 'use strict';
 
+/*eslint-disable */
+
 var capture = require('./db/capture');
 var pgResult = require('pg/lib/result');
 var header = require('./db/header');

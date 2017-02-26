@@ -1,5 +1,7 @@
 'use strict';
 
+/*eslint-disable */
+
 var EOL = require('os').EOL;
 
 var $u = require('../lib/utils');

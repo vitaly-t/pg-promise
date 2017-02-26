@@ -1,5 +1,7 @@
 'use strict';
 
+/*eslint-disable */
+
 var QueryStream = require('pg-query-stream');
 var JSONStream = require('JSONStream');
 

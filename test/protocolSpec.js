@@ -1,5 +1,7 @@
 'use strict';
 
+/*eslint-disable */
+
 var PG = require('pg');
 var header = require('./db/header');
 var promise = header.defPromise;

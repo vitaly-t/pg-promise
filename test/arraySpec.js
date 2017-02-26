@@ -1,5 +1,7 @@
 'use strict';
 
+/*eslint-disable */
+
 var $arr = require('../lib/array');
 
 var data = [1, 2, 3];

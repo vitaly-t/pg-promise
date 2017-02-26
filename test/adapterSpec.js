@@ -1,5 +1,7 @@
 'use strict';
 
+/*eslint-disable */
+
 var pgp = require('../lib/index');
 var PromiseAdapter = pgp.PromiseAdapter;
 

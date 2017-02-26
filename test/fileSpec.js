@@ -1,5 +1,7 @@
 'use strict';
 
+/*eslint-disable */
+
 var path = require('path');
 var fs = require('fs');
 var LB = require('os').EOL;
