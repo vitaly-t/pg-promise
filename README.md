@@ -195,7 +195,7 @@ var obj = {
     two: 2
 };
 
-format("INSERT INTO table(${this~}) VALUES(${one}, ${two})", obj);
+format('INSERT INTO table(${this~}) VALUES(${one}, ${two})', obj);
 //=>INSERT INTO table("one","two") VALUES(1, 2)
 ```
 
@@ -237,13 +237,13 @@ Below is an example of formatting `LIKE` filter that ends with a second name:
 
 ```js
 // using $1# or $1:value syntax:
-query("...WHERE name LIKE '%$1#'", "O'Connor");
-query("...WHERE name LIKE '%$1:value'", "O'Connor");
+query('...WHERE name LIKE \'%$1#\'', 'O\'Connor');
+query('...WHERE name LIKE \'%$1:value\'', 'O\'Connor');
 //=> ...WHERE name LIKE '%O''Connor'
 
 // using ${propName#} or ${propName:value} syntax:
-query("...WHERE name LIKE '%${filter#}'", {filter: "O'Connor"});
-query("...WHERE name LIKE '%${filter:value}'", {filter: "O'Connor"});
+query('...WHERE name LIKE \'%${filter#}\'', {filter: 'O\'Connor'});
+query('...WHERE name LIKE \'%${filter:value}\'', {filter: 'O\'Connor'});
 //=> ...WHERE name LIKE '%O''Connor'
 ```
 
@@ -582,7 +582,6 @@ A transaction is a special type of task that automatically executes `BEGIN` + `C
 
 ```js
 db.tx(t => {
-    // `t` and `this` here are the same;
     // creating a sequence of transaction queries:
     var q1 = t.none('UPDATE users SET active=$1 WHERE id=$2', [true, 123]);
     var q2 = t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id',
@@ -754,7 +753,6 @@ If you prefer writing asynchronous code in a synchronous manner, you can impleme
 
 ```js
 function * getUser(t) {
-    // `t` and `this` here are the same;
     let user = yield t.oneOrNone('SELECT * FROM users WHERE id = $1', 123);
     return yield user || t.one('INSERT INTO users(name) VALUES($1) RETURNING *', 'John');
 }
