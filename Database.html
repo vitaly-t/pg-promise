@@ -541,7 +541,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line540">line 540</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line547">line 547</a>
     </li></ul></dd>
     
 
@@ -1115,7 +1115,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line855">line 855</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line862">line 862</a>
     </li></ul></dd>
     
 
@@ -1376,7 +1376,7 @@ number of milliseconds it took the client to execute the query.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line679">line 679</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line686">line 686</a>
     </li></ul></dd>
     
 
@@ -1601,7 +1601,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line404">line 404</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line407">line 407</a>
     </li></ul></dd>
     
 
@@ -1827,7 +1827,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line501">line 501</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line505">line 505</a>
     </li></ul></dd>
     
 
@@ -1837,7 +1837,7 @@ as an override for its internal <code>values</code>.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.any">any</a></li>
+            <li><a href="Database.html#.any">any</a>,<a href="Database.html#.many">many</a>,<a href="Database.html#.none">none</a></li>
         </ul>
     </dd>
     
@@ -2131,7 +2131,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line743">line 743</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line750">line 750</a>
     </li></ul></dd>
     
 
@@ -2662,6 +2662,13 @@ When specified, the return value replaces the original resolved value.</p>
     
 
     
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html#.oneOrNone">Database.oneOrNone</a></li>
+        </ul>
+    </dd>
+    
 
     
 </dl>
@@ -2719,7 +2726,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <pre class="prettyprint"><code>// a query with in-line value transformation:db.one('INSERT INTO Events VALUES($1) RETURNING id', [123], event => event.id)    .then(data=> {        // data = a new event id, rather than an object with it    });</code></pre>
 
-    <pre class="prettyprint"><code>// a query with in-line value transformation + conversion:db.one('SELECT count(*) FROM Users', null, c => +c.count)    .then(count=> {        // count = a proper integer value, rather than an object with a string    });</code></pre>
+    <pre class="prettyprint"><code>// a query with in-line value transformation + conversion:db.one('SELECT count(*) FROM Users', [], c => +c.count)    .then(count=> {        // count = a proper integer value, rather than an object with a string    });</code></pre>
 
 
 
@@ -2956,7 +2963,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line441">line 441</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line444">line 444</a>
     </li></ul></dd>
     
 
@@ -2966,7 +2973,7 @@ When specified, the return value replaces the original resolved value.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.one">one</a>,<a href="Database.html#.none">none</a></li>
+            <li><a href="Database.html#.one">one</a>,<a href="Database.html#.none">none</a>,<a href="Database.html#.manyOrNone">manyOrNone</a></li>
         </ul>
     </dd>
     
@@ -3241,7 +3248,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line706">line 706</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line713">line 713</a>
     </li></ul></dd>
     
 
@@ -3798,7 +3805,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line583">line 583</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line590">line 590</a>
     </li></ul></dd>
     
 
@@ -3851,9 +3858,9 @@ number of milliseconds it took the client to execute the query.</li>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// use of value transformation:// deleting rows and returning the number of rows deleteddb.result('DELETE FROM Events WHERE id = $1', [123], r=>r.rowCount)    .then(data=> {        // data = number of rows that were deleted    });</code></pre>
+    <pre class="prettyprint"><code>// use of value transformation:// deleting rows and returning the number of rows deleteddb.result('DELETE FROM Events WHERE id = $1', [123], r => r.rowCount)    .then(data=> {        // data = number of rows that were deleted    });</code></pre>
 
-    <pre class="prettyprint"><code>// use of value transformation:// getting only column details from a tabledb.result('SELECT * FROM Users LIMIT 0', null, r=>r.fields)    .then(data=> {        // data = array of column descriptors    });</code></pre>
+    <pre class="prettyprint"><code>// use of value transformation:// getting only column details from a tabledb.result('SELECT * FROM Users LIMIT 0', null, r => r.fields)    .then(data=> {        // data = array of column descriptors    });</code></pre>
 
 
 
@@ -3988,7 +3995,7 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line646">line 646</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line653">line 653</a>
     </li></ul></dd>
     
 
@@ -4203,7 +4210,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line935">line 935</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line942">line 942</a>
     </li></ul></dd>
     
 
@@ -4259,11 +4266,11 @@ be passed in as the first parameter.</p></td>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// using the regular callback syntax:db.task(t => {        // t = this        // t.ctx = task context object        return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user=> {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using the regular callback syntax:db.task(t => {        // t.ctx = task context object        return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user=> {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
 
-    <pre class="prettyprint"><code>// using the ES6 arrow syntax:db.task(t=> {        // t.ctx = task context object                return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user=> {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data=> {        // success        // data = as returned from the task's callback    })    .catch(error=> {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using the ES6 arrow syntax:db.task(t => {        // t.ctx = task context object                return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user=> {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data=> {        // success        // data = as returned from the task's callback    })    .catch(error=> {        // error    });</code></pre>
 
-    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.task(function*(t) {        // t = this        // t.ctx = task context object        let user = yield t.one('SELECT id FROM Users WHERE name = $1', 'John');        return yield t.any('SELECT * FROM Events WHERE userId = $1', user.id);    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.task(function * (t) {        // t.ctx = task context object        let user = yield t.one('SELECT id FROM Users WHERE name = $1', 'John');        return yield t.any('SELECT * FROM Events WHERE userId = $1', user.id);    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
 
 
 
@@ -4428,7 +4435,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1029">line 1029</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1034">line 1034</a>
     </li></ul></dd>
     
 
@@ -4484,11 +4491,11 @@ passed in as the first parameter.</p></td>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// using the regular callback syntax:db.tx(t => {        // t = this        // t.ctx = transaction context object        return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user=> {                return t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);            });    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using the regular callback syntax:db.tx(t => {        // t.ctx = transaction context object        return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user=> {                return t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);            });    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
 
     <pre class="prettyprint"><code>// using the ES6 arrow syntax:db.tx(t=> {        // t.ctx = transaction context object                return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user=> {                return t.batch([                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']),                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'login'])                ]);            });    })    .then(data=> {        // success        // data = as returned from the transaction's callback    })    .catch(error=> {        // error    });</code></pre>
 
-    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.tx(function*(t) {        // t = this        // t.ctx = transaction context object        let user = yield t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);        return yield t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.tx(function * (t) {        // t.ctx = transaction context object        let user = yield t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);        return yield t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
 
 
 
@@ -4603,7 +4610,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1278">line 1278</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1281">line 1281</a>
     </li></ul></dd>
     
 

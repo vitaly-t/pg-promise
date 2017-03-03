@@ -408,6 +408,9 @@ function Database(cn, dc, config) {
          *   - `.message` = `Multiple rows were not expected.`
          *   - `.code` = {@link errors.queryResultErrorCode.multiple queryResultErrorCode.multiple}
          *
+         * @see
+         * {@link Database.oneOrNone}
+         *
          * @example
          *
          * // a query with in-line value transformation:
@@ -419,7 +422,7 @@ function Database(cn, dc, config) {
          * @example
          *
          * // a query with in-line value transformation + conversion:
-         * db.one('SELECT count(*) FROM Users', null, c => +c.count)
+         * db.one('SELECT count(*) FROM Users', [], c => +c.count)
          *     .then(count=> {
          *         // count = a proper integer value, rather than an object with a string
          *     });
@@ -511,7 +514,8 @@ function Database(cn, dc, config) {
          *
          * @see
          * {@link Database.one one},
-         * {@link Database.none none}
+         * {@link Database.none none},
+         * {@link Database.manyOrNone manyOrNone}
          *
          * @example
          *
@@ -559,7 +563,10 @@ function Database(cn, dc, config) {
          * The resolved array is extended with hidden property `duration` - number of milliseconds
          * it took the client to execute the query.
          *
-         * @see {@link Database.any any}
+         * @see
+         * {@link Database.any any},
+         * {@link Database.many many},
+         * {@link Database.none none}
          *
          */
         obj.manyOrNone = function (query, values) {
@@ -652,7 +659,7 @@ function Database(cn, dc, config) {
          *
          * // use of value transformation:
          * // deleting rows and returning the number of rows deleted
-         * db.result('DELETE FROM Events WHERE id = $1', [123], r=>r.rowCount)
+         * db.result('DELETE FROM Events WHERE id = $1', [123], r => r.rowCount)
          *     .then(data=> {
          *         // data = number of rows that were deleted
          *     });
@@ -661,7 +668,7 @@ function Database(cn, dc, config) {
          *
          * // use of value transformation:
          * // getting only column details from a table
-         * db.result('SELECT * FROM Users LIMIT 0', null, r=>r.fields)
+         * db.result('SELECT * FROM Users LIMIT 0', null, r => r.fields)
          *     .then(data=> {
          *         // data = array of column descriptors
          *     });
@@ -997,7 +1004,6 @@ function Database(cn, dc, config) {
          *
          * // using the regular callback syntax:
          * db.task(t => {
-         *         // t = this
          *         // t.ctx = task context object
          *
          *         return t.one('SELECT id FROM Users WHERE name = $1', 'John')
@@ -1016,7 +1022,7 @@ function Database(cn, dc, config) {
          * @example
          *
          * // using the ES6 arrow syntax:
-         * db.task(t=> {
+         * db.task(t => {
          *         // t.ctx = task context object
          *         
          *         return t.one('SELECT id FROM Users WHERE name = $1', 'John')
@@ -1035,8 +1041,7 @@ function Database(cn, dc, config) {
          * @example
          *
          * // using an ES6 generator for the callback:
-         * db.task(function*(t) {
-         *         // t = this
+         * db.task(function * (t) {
          *         // t.ctx = task context object
          *
          *         let user = yield t.one('SELECT id FROM Users WHERE name = $1', 'John');
@@ -1096,7 +1101,6 @@ function Database(cn, dc, config) {
          *
          * // using the regular callback syntax:
          * db.tx(t => {
-         *         // t = this
          *         // t.ctx = transaction context object
          *
          *         return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])
@@ -1137,8 +1141,7 @@ function Database(cn, dc, config) {
          * @example
          *
          * // using an ES6 generator for the callback:
-         * db.tx(function*(t) {
-         *         // t = this
+         * db.tx(function * (t) {
          *         // t.ctx = transaction context object
          *
          *         let user = yield t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);
