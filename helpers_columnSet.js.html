@@ -326,7 +326,7 @@ function ColumnSet(columns, options) {
      * @returns {string}
      * Comma-separated list of variable-to-column assignments.
      */
-    this.assign = function (source) {
+    this.assign = source => {
         if (updates) {
             return updates;
         }
@@ -408,7 +408,7 @@ function ColumnSet(columns, options) {
      * //    ]
      * // }
      */
-    this.extend = function (columns) {
+    this.extend = columns => {
         var cs = columns;
         if (!(cs instanceof ColumnSet)) {
             cs = new ColumnSet(columns);
@@ -477,7 +477,7 @@ function ColumnSet(columns, options) {
      * // }
      *
      */
-    this.merge = function (columns) {
+    this.merge = columns => {
         var cs = columns;
         if (!(cs instanceof ColumnSet)) {
             cs = new ColumnSet(columns);
@@ -520,7 +520,7 @@ function ColumnSet(columns, options) {
      *
      * When the object does not need to be prepared, the original object is returned.
      */
-    this.prepare = function (source) {
+    this.prepare = source => {
         if (isSimple) {
             return source; // a simple ColumnSet requires no object preparation;
         }
