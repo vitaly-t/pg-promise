@@ -135,7 +135,7 @@ var $arr = require('../array');
  *         prop: 'total',
  *         skip: col => {
  *             // skip from updates, if 'amount' is 0:
- *             return this.amount === 0; // = col.source.amount
+ *             return col.source.amount === 0;
  *         }
  *     }
  * ], {table: {table: 'purchases', schema: 'fiscal'}});
@@ -243,7 +243,7 @@ function ColumnSet(columns, options) {
         } else {
             this.columns = [];
             for (var name in columns) {
-                if (inherit || columns.hasOwnProperty(name)) {
+                if (inherit || Object.prototype.hasOwnProperty.call(columns, name)) {
                     this.columns.push(new $npm.Column(name));
                 }
             }
