@@ -8,6 +8,9 @@
     "sourceType": "module"
   },
   "rules": {
+    "no-whitespace-before-property": "error",
+    "camelcase": "error",
+    "new-cap": "error",
     "quotes": [
       "error",
       "single"
