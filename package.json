@@ -49,7 +49,7 @@
     "@types/node": "6.x",
     "JSONStream": "1.x",
     "bluebird": "3.x",
-    "coveralls": "2.x",
+    "coveralls": "2.11",
     "istanbul": "0.4",
     "jasmine-node": "1.x",
     "jsdoc": "3.x",
