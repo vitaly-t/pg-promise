@@ -347,7 +347,7 @@
     <p><strong>Added in v.5.3.0</strong></p>
 <p>Concatenates multiple queries into a single query string.</p>
 <ul>
-<li>Before joining any query, the method removes from it all leading and trailing spaces, tabs and semi-colons.</li>
+<li>Before joining each query, the method removes from it all leading and trailing spaces, tabs and semi-colons.</li>
 <li>Empty queries are skipped automatically.</li>
 </ul>
 </div>
@@ -404,7 +404,7 @@
             <td class="description last"><p>Array of mixed-type elements:</p>
 <ul>
 <li>a simple query string, to be used as is</li>
-<li>a simple <a href="helpers.html#.QueryFormat">QueryFormat</a>-like object = <code>{query, [values], [options]}</code></li>
+<li>a <a href="helpers.html#.QueryFormat">QueryFormat</a>-like object = <code>{query, [values], [options]}</code></li>
 <li>a <a href="QueryFile.html">QueryFile</a> object</li>
 </ul></td>
         </tr>
@@ -496,7 +496,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var pgp = require('pg-promise')();var qf1 = new pgp.QueryFile('./query1.sql', {minify: true});var qf2 = new pgp.QueryFile('./query2.sql', {minify: true});var query = pgp.helpers.concat([    {query: 'INSERT INTO Users(name, age) VALUES($1, $2)', values: ['John', 23]}, // QueryFormat-like object    {query: 'DELETE FROM Log WHERE userName = $1', values: 'John'}, // QueryFormat-like object    {query: qf1, values: [1, 'Name']}, // QueryFile with formatting parameters    'SELECT count(*) FROM Users', // a simple-string query,    qf2 // direct QueryFile object]);// query = concatenated string with all the queries</code></pre>
+    <pre class="prettyprint"><code>var pgp = require('pg-promise')();var qf1 = new pgp.QueryFile('./query1.sql', {minify: true});var qf2 = new pgp.QueryFile('./query2.sql', {minify: true});var query = pgp.helpers.concat([    {query: 'INSERT INTO Users(name, age) VALUES($1, $2)', values: ['John', 23]}, // QueryFormat-like object    {query: qf1, values: [1, 'Name']}, // QueryFile with formatting parameters    'SELECT count(*) FROM Users', // a simple-string query,    qf2 // direct QueryFile object]);// query = concatenated string with all the queries</code></pre>
 
 
 
@@ -2439,7 +2439,7 @@ It is ignored when property <code>init</code> is set.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_methods_concat.js.html">helpers/methods/concat.js</a>, <a href="helpers_methods_concat.js.html#line78">line 78</a>
+        <a href="helpers_methods_concat.js.html">helpers/methods/concat.js</a>, <a href="helpers_methods_concat.js.html#line77">line 77</a>
     </li></ul></dd>
     
 

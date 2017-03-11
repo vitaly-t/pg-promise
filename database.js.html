@@ -33,7 +33,7 @@ var $npm = {
     con: require('manakin').local,
     result: require('./result'),
     special: require('./special'),
-    context: require('./cnContext'),
+    Context: require('./cnContext'),
     events: require('./events'),
     utils: require('./utils'),
     connect: require('./connect'),
@@ -311,7 +311,7 @@ function Database(cn, dc, config) {
     extend(createContext(), this); // extending root protocol;
 
     function createContext() {
-        return new $npm.context(cn, dc, config.options);
+        return new $npm.Context(cn, dc, config.options);
     }
 
     function transform(value, cb, thisArg) {
@@ -1201,7 +1201,7 @@ function Database(cn, dc, config) {
                 }
             }
 
-            var tsk = new config.$npm.task(taskCtx, tag, isTX, config);
+            var tsk = new config.$npm.task(taskCtx, tag, isTX, config); // eslint-disable-line
 
             extend(taskCtx, tsk);
 

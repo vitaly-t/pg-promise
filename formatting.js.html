@@ -191,12 +191,11 @@ var formatAs = {
                 name: name.substr(0, mod.index),
                 fm: fmMap[mod[0]] | (raw ? fmFlags.raw : 0)
             };
-        } else {
-            return {
-                name: name,
-                fm: raw ? fmFlags.raw : null
-            };
         }
+        return {
+            name: name,
+            fm: raw ? fmFlags.raw : null
+        };
     }
 };
 
@@ -208,7 +207,7 @@ function isNull(value) {
 
 /////////////////////////////////////////
 // Wraps a text string in single quotes;
-function TEXT(text) {
+function wrapText(text) {
     return '\'' + text + '\'';
 }
 
@@ -350,7 +349,7 @@ var $as = {
         if (typeof value !== 'string') {
             value = value.toString();
         }
-        return raw ? value : TEXT(safeText(value));
+        return raw ? value : wrapText(safeText(value));
     },
 
     /**
@@ -395,19 +394,18 @@ var $as = {
         if (name) {
             if (typeof name === 'string') {
                 return /^\s*\*(\s*)$/.test(name) ? name : formatName(name);
-            } else {
-                if (typeof name === 'object') {
-                    var keys = Array.isArray(name) ? name : Object.keys(name);
-                    if (!keys.length) {
-                        throw new Error('Cannot retrieve sql names from an empty array/object.');
-                    }
-                    return $arr.map(keys, value => {
-                        if (!value || typeof value !== 'string') {
-                            throw new Error('Invalid sql name: ' + JSON.stringify(value));
-                        }
-                        return formatName(value);
-                    }).join();
+            }
+            if (typeof name === 'object') {
+                var keys = Array.isArray(name) ? name : Object.keys(name);
+                if (!keys.length) {
+                    throw new Error('Cannot retrieve sql names from an empty array/object.');
                 }
+                return $arr.map(keys, value => {
+                    if (!value || typeof value !== 'string') {
+                        throw new Error('Invalid sql name: ' + JSON.stringify(value));
+                    }
+                    return formatName(value);
+                }).join();
             }
         }
 
@@ -463,9 +461,9 @@ var $as = {
         }
         if (obj instanceof Buffer) {
             var s = '\\x' + obj.toString('hex');
-            return raw ? s : TEXT(s);
+            return raw ? s : wrapText(s);
         }
-        throw new TypeError(TEXT(obj) + ' is not a Buffer object.');
+        throw new TypeError(wrapText(obj) + ' is not a Buffer object.');
     },
 
     /**
@@ -508,9 +506,9 @@ var $as = {
         }
         if (d instanceof Date) {
             var s = $pgUtils.prepareValue(d);
-            return raw ? s : TEXT(s);
+            return raw ? s : wrapText(s);
         }
-        throw new TypeError(TEXT(d) + ' is not a Date object.');
+        throw new TypeError(wrapText(d) + ' is not a Date object.');
     },
 
     /**
@@ -530,7 +528,7 @@ var $as = {
             return 'null';
         }
         if (typeof num !== 'number') {
-            throw new TypeError(TEXT(num) + ' is not a number.');
+            throw new TypeError(wrapText(num) + ' is not a number.');
         }
         if (isFinite(num)) {
             return num.toString();
@@ -540,12 +538,12 @@ var $as = {
         //
         // NOTE: strings for 'NaN'/'+Infinity'/'-Infinity' are not case-sensitive.
         if (num === Number.POSITIVE_INFINITY) {
-            return TEXT('+Infinity');
+            return wrapText('+Infinity');
         }
         if (num === Number.NEGATIVE_INFINITY) {
-            return TEXT('-Infinity');
+            return wrapText('-Infinity');
         }
-        return TEXT('NaN');
+        return wrapText('NaN');
     },
 
     /**
@@ -567,7 +565,7 @@ var $as = {
         if (arr instanceof Array) {
             return formatArray(arr);
         }
-        throw new TypeError(TEXT(arr) + ' is not an Array object.');
+        throw new TypeError(wrapText(arr) + ' is not an Array object.');
     },
 
     /**
@@ -604,7 +602,7 @@ var $as = {
             return 'null';
         }
         var s = JSON.stringify(obj);
-        return raw ? s : TEXT(safeText(s));
+        return raw ? s : wrapText(safeText(s));
     },
 
     /**
@@ -630,7 +628,7 @@ var $as = {
             return 'null';
         }
         if (typeof func !== 'function') {
-            throw new TypeError(TEXT(func) + ' is not a function.');
+            throw new TypeError(wrapText(func) + ' is not a function.');
         }
         var fm = raw ? fmFlags.raw : null;
         if (isNull(obj)) {
@@ -639,7 +637,7 @@ var $as = {
         if (typeof obj === 'object') {
             return formatValue(resolveFunc(func, obj), fm, obj);
         }
-        throw new TypeError(TEXT(obj) + ' is not an object.');
+        throw new TypeError(wrapText(obj) + ' is not an object.');
     },
 
     /**
