@@ -23,7 +23,7 @@ For additional information see the project's [main page] and [WiKi pages].
 [QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
 [PreparedStatement]:http://vitaly-t.github.io/pg-promise/PreparedStatement.html
 [ParameterizedQuery]:http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
-[TransactionMode]:http://vitaly-t.github.io/pg-promise/TransactionMode.html
+[TransactionMode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
 [PromiseAdapter]:http://vitaly-t.github.io/pg-promise/PromiseAdapter.html
 [Prepared Statements]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#prepared-statements
 [Parameterized Queries]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#parameterized-queries
@@ -31,14 +31,16 @@ For additional information see the project's [main page] and [WiKi pages].
 ### Namespaces
 
 * [formatting] - the library's query formatting engine
-* [helpers] - to automatically generate `INSERT` and `UPDATE` queries
-* [utils] - to simplify the use of external SQL files
+* [helpers] - for automatic query generation
+* [utils] - simplifies the use of external SQL files
 * [errors] - custom error types supported by the library
+* [txMode] - types for configuring a transaction
 
 [formatting]:http://vitaly-t.github.io/pg-promise/formatting.html
 [helpers]:http://vitaly-t.github.io/pg-promise/helpers.html
 [utils]:http://vitaly-t.github.io/pg-promise/utils.html
 [errors]:http://vitaly-t.github.io/pg-promise/errors.html
+[txMode]:http://vitaly-t.github.io/pg-promise/txMode.html
 
 ### Events
 
