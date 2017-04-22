@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.6.5 or later.
+// Requires pg-promise v5.6.7 or later.
 ////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
