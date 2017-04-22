@@ -174,6 +174,14 @@ describe("UPDATE", function () {
         });
     });
 
+    describe("emptyUpdate", function () {
+        var cs = new helpers.ColumnSet(['?id', '?val', '?msg'], {table: 'table'});
+        it("must return the option value", function () {
+            expect(helpers.update(dataSingle, cs, null, {emptyUpdate: 123})).toBe(123);
+            expect(helpers.update(dataMulti, cs, null, {emptyUpdate: 123})).toBe(123);
+        });
+    });
+
     describe("negative", function () {
         it("must throw on invalid data", function () {
             var error = new TypeError("Invalid parameter 'data' specified.");

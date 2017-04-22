@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.5.8 or later.
+// Requires pg-promise v5.6.5 or later.
 ////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -92,7 +92,8 @@ declare namespace pgPromise {
 
     type TUpdateOptions = {
         tableAlias?: string,
-        valueAlias?: string
+        valueAlias?: string,
+        emptyUpdate?: any
     };
 
     type TTable = {
