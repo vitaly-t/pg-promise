@@ -353,7 +353,7 @@ function Database(cn, dc, config) {
          * and `values` is not `null` or `undefined`, it is automatically set within such object,
          * as an override for its internal `values`.
          *
-         * @returns {external:Promise}
+         * @returns {external:Promise&lt;null>}
          * A promise object that represents the query result:
          * - When no records are returned, it resolves with `null`.
          * - When any data is returned, it rejects with {@link errors.QueryResultError QueryResultError}:
@@ -407,6 +407,7 @@ function Database(cn, dc, config) {
          * - When multiple rows are returned, it rejects with {@link errors.QueryResultError QueryResultError}:
          *   - `.message` = `Multiple rows were not expected.`
          *   - `.code` = {@link errors.queryResultErrorCode.multiple queryResultErrorCode.multiple}
+         * - Resolves with the new value, if transformation callback `cb` was specified.
          *
          * @see
          * {@link Database.oneOrNone oneOrNone}
@@ -511,6 +512,7 @@ function Database(cn, dc, config) {
          * - When multiple rows are returned, it rejects with {@link errors.QueryResultError QueryResultError}:
          *   - `.message` = `Multiple rows were not expected.`
          *   - `.code` = {@link errors.queryResultErrorCode.multiple queryResultErrorCode.multiple}
+         * - Resolves with the new value, if transformation callback `cb` was specified.
          *
          * @see
          * {@link Database.one one},
@@ -555,7 +557,7 @@ function Database(cn, dc, config) {
          * and `values` is not `null` or `undefined`, it is automatically set within such object,
          * as an override for its internal `values`.
          *
-         * @returns {external:Promise}
+         * @returns {external:Promise&lt;Array>}
          * A promise object that represents the query result:
          * - When no rows are returned, it resolves with an empty array.
          * - When 1 or more rows are returned, it resolves with the array of rows.
@@ -598,7 +600,7 @@ function Database(cn, dc, config) {
          * and `values` is not `null` or `undefined`, it is automatically set within such object,
          * as an override for its internal `values`.
          *
-         * @returns {external:Promise}
+         * @returns {external:Promise&lt;Array>}
          * A promise object that represents the query result:
          * - When no rows are returned, it resolves with an empty array.
          * - When 1 or more rows are returned, it resolves with the array of rows.
@@ -654,6 +656,7 @@ function Database(cn, dc, config) {
          * A promise object that represents the query result:
          * - resolves with the original $[Result] object, extended with property `duration` -
          *   number of milliseconds it took the client to execute the query.
+         * - resolves with the new value, if transformation callback `cb` was specified.
          *
          * @example
          *
@@ -767,6 +770,8 @@ function Database(cn, dc, config) {
          * It calls {@link Database.func func}(`procName`, `values`, `queryResult.one|queryResult.none`),
          * and then returns the same result as method {@link Database.oneOrNone oneOrNone}.
          *
+         * And if transformation callback `cb` was specified, it resolves with the new value.
+         *
          * @see
          * {@link Database.oneOrNone oneOrNone},
          * {@link Database.func func}
@@ -826,7 +831,7 @@ function Database(cn, dc, config) {
          * @param {} [thisArg]
          * Value to use as `this` when executing the callback.
          *
-         * @returns {external:Promise}
+         * @returns {external:Promise&lt;Array>}
          * Resolves with the new array of values returned from the callback. The array is extended with
          * hidden property `duration` - number of milliseconds it took the client to execute the query.
          *
@@ -938,7 +943,7 @@ function Database(cn, dc, config) {
          * @param {} [thisArg]
          * Value to use as `this` when executing the callback.
          *
-         * @returns {external:Promise}
+         * @returns {external:Promise&lt;Array&lt;Object>>}
          * Resolves with the original array of rows, extended with hidden property `duration` -
          * number of milliseconds it took the client to execute the query.
          *
