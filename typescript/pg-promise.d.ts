@@ -612,7 +612,7 @@ declare namespace pgPromise {
         concat(queries: Array<string|TQueryFormat|QueryFile>): string;
 
         insert(data: Object|Array<Object>, columns?: TQueryColumns, table?: string|TTable|TableName): string;
-        update(data: Object|Array<Object>, columns?: TQueryColumns, table?: string|TTable|TableName, options?: TUpdateOptions): string;
+        update(data: Object|Array<Object>, columns?: TQueryColumns, table?: string|TTable|TableName, options?: TUpdateOptions): any;
 
         values(data: Object|Array<Object>, columns?: TQueryColumns): string;
         sets(data: Object, columns?: TQueryColumns): string;
