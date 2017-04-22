@@ -1002,7 +1002,7 @@ to be used as part of a query.</p>
 
     
 
-    <h4 class="name" id=".update"><span class="type-signature">(static) </span>update<span class="signature">(data, columns<span class="signature-attributes">opt</span>, table<span class="signature-attributes">opt</span>, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".update"><span class="type-signature">(static) </span>update<span class="signature">(data, columns<span class="signature-attributes">opt</span>, table<span class="signature-attributes">opt</span>, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -1420,22 +1420,12 @@ But when this option is present, the method will instead return whatever value t
 
         
 <div class="param-desc">
-    <p>The resulting query string that typically needs a <code>WHERE</code> condition appended.</p>
+    <p>The method usually returns the resulting query string that typically needs a <code>WHERE</code> condition appended.</p>
+<p>However, if it results in an empty update, and option <code>emptyUpdate</code> was passed in, then the method returns whatever
+value the option was passed.</p>
 </div>
 
 
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
 
     
 
@@ -1451,6 +1441,8 @@ But when this option is present, the method will instead return whatever value t
     <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance):var cs = new pgp.helpers.ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});pgp.helpers.update(dataMulti, cs) + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
 
     <pre class="prettyprint"><code>// Using parameter `options` to change the default alias names:pgp.helpers.update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.id = X.id';//=> UPDATE "my-table" AS X SET "val"=Y."val","msg"=Y."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS Y("id","val","msg") WHERE Y.id = X.id</code></pre>
+
+    <pre class="prettyprint"><code>// Handling an empty updatevar cs = new pgp.helpers.ColumnSet(['?id', '?name'], {table: 'tt'}); // no actual update-able columnsvar result = pgp.helpers.update(dataMulti, cs, null, {emptyUpdate: 123});if(result === 123) {   // We know the update is empty, i.e. no columns that can be updated;   // And it didn't throw because we specified `emptyUpdate` option.}</code></pre>
 
 
 
