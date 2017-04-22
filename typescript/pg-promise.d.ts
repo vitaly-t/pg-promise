@@ -351,7 +351,7 @@ declare namespace pgPromise {
         any(query: TQuery, values?: any): XPromise<IArrayExt<any>>;
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.result
-        result(query: TQuery, values?: any, cb?: (value: any) => any, thisArg?: any): XPromise<pg.IResult>;
+        result(query: TQuery, values?: any, cb?: (value: any) => any, thisArg?: any): XPromise<any>;
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.stream
         stream(qs: Object, init: (stream: NodeJS.ReadableStream) => void): XPromise<{processed: number, duration: number}>;
