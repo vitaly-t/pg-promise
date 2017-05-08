@@ -614,12 +614,12 @@ it took the client to execute the query.</p>
 
 
 <div class="description">
-    <p>Acquires a new or existing connection, based on the current connection parameters.</p>
-<p>This method creates a shared connection for executing a chain of queries against it.
-The connection must be released in the end of the chain by calling method <code>done()</code> on the connection object.</p>
-<p>This is an older, low-level approach to chaining queries on the same connection.
-A newer and safer approach is via methods <a href="Database.html#.task">task</a> and <a href="Database.html#.tx">tx</a> (for transactions),
-which allocate and release the shared connection automatically.</p>
+    <p>Acquires a new or existing connection, depending on the current state of the connection pool, and parameter <code>direct</code>.</p>
+<p>This method creates a shared connection for executing a chain of queries against it. The connection must be released
+in the end of the chain by calling method <code>done()</code> on the connection object.</p>
+<p>This is an obsolete, low-level approach to chaining queries on the same connection. A newer and safer approach is via
+methods <a href="Database.html#.task">task</a> and <a href="Database.html#.tx">tx</a> (for transactions), which allocate and release a shared
+connection automatically.</p>
 <p><strong>NOTE:</strong> Even though this method exposes a <a href="external-Client.html">Client</a> object via property <code>client</code>,
 you cannot call <code>client.end()</code> directly, or it will print an error into the console:
 <code>Abnormal client.end() call, due to invalid code or failed server connection.</code>
@@ -749,12 +749,12 @@ You should only call method <code>done()</code> to release the connection.</p>
                 </td>
             
 
-            <td class="description last"><p>Creates the connection directly, through the <a href="external-Client.html">Client</a>, bypassing the connection pool.</p>
-<p>By default, all connections are acquired from the connection pool. If you set this option, the library will instead
+            <td class="description last"><p>Creates a new connection directly, through the <a href="external-Client.html">Client</a>, bypassing the connection pool.</p>
+<p>By default, all connections are acquired from the connection pool. If you set this option however, the library will instead
 create a new <a href="external-Client.html">Client</a> object directly (separately from the pool), and then call its <code>connect</code> method.</p>
 <p><strong>WARNING:</strong></p>
 <p>Do not use this option for regular query execution, because it exclusively occupies one physical connection,
-and therefore cannot scale. This option is only suitable for global connection usage, such as database event listeners.</p></td>
+and therefore cannot scale. This option is only suitable for global connection usage, such as event listeners.</p></td>
         </tr>
 
     
