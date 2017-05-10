@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.6.7 or later.
+// Requires pg-promise v5.6.8 or later.
 ////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -288,9 +288,17 @@ declare namespace pgPromise {
     interface IDatabase<Ext> extends IBaseProtocol<Ext> {
         connect(options?: TConnectionOptions): XPromise<IConnected<Ext>>;
 
-        // A hidden property, for integrating with third-party libraries.
+        /////////////////////////////////////////////////////////////////////////////
+        // Hidden, read-only properties, for integrating with third-party libraries:
+
         // API: http://vitaly-t.github.io/pg-promise/Database.html#$config
-        $config: ILibConfig<Ext>;
+        readonly $config: ILibConfig<Ext>;
+
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#$cn
+        readonly $cn: string|IConfig;
+
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#$dc
+        readonly $dc: any;
     }
 
     type IConfig = pg.IConnectionParameters;

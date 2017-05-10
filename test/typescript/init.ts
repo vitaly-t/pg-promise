@@ -1,4 +1,5 @@
 import * as pgPromise from '../../typescript/pg-promise';
+import {IConnectionParameters} from "../../typescript/pg-subset";
 
 var pgp: pgPromise.IMain = pgPromise({
     capSQL: true,
@@ -18,6 +19,11 @@ interface Test {
 }
 
 var db = <pgPromise.IDatabase<Test>&Test>pgp('connection');
+
+var connection1:string = <string>db.$cn;
+var connection2:IConnectionParameters = <IConnectionParameters>db.$cn;
+
+var context:any = db.$dc;
 
 db.one('');
 
