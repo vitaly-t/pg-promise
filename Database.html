@@ -102,10 +102,10 @@ per connection details. See the example provided below.</p>
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
             
@@ -128,7 +128,8 @@ per connection details. See the example provided below.</p>
 <li>a configuration object</li>
 <li>a connection string</li>
 </ul>
-<p>For details see <a href="https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax">Connection Syntax</a>.</p></td>
+<p>For details see <a href="https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax">Connection Syntax</a>.</p>
+<p>The value can be accessed from the database object via property <a href="Database.html#.$cn">$cn</a>.</p></td>
         </tr>
 
     
@@ -157,11 +158,12 @@ per connection details. See the example provided below.</p>
             
 
             <td class="description last"><p>Database Context.</p>
-<p>Any object or value to be propagated through the protocol, to allow implementations
-and event handling that depend on the database context.</p>
+<p>Any object or value to be propagated through the protocol, to allow implementations and event handling
+that depend on the database context.</p>
 <p>This is mainly to facilitate the use of multiple databases which may need separate protocol
 extensions, or different implementations within a single task / transaction callback,
-depending on the database context.</p></td>
+depending on the database context.</p>
+<p>The value can be accessed from the database object via property <a href="Database.html#.$dc">$dc</a>.</p></td>
         </tr>
 
     
@@ -212,7 +214,7 @@ depending on the database context.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.query">query</a>,<a href="Database.html#.none">none</a>,<a href="Database.html#.one">one</a>,<a href="Database.html#.oneOrNone">oneOrNone</a>,<a href="Database.html#.many">many</a>,<a href="Database.html#.manyOrNone">manyOrNone</a>,<a href="Database.html#.any">any</a>,<a href="Database.html#.func">func</a>,<a href="Database.html#.proc">proc</a>,<a href="Database.html#.result">result</a>,<a href="Database.html#.map">map</a>,<a href="Database.html#.each">each</a>,<a href="Database.html#.stream">stream</a>,<a href="Database.html#.task">task</a>,<a href="Database.html#.tx">tx</a>,<a href="Database.html#.connect">connect</a>,<a href="Database.html#.$config">$config</a>,<a href="global.html#event:extend">extend</a></li>
+            <li><a href="Database.html#.query">query</a>,<a href="Database.html#.none">none</a>,<a href="Database.html#.one">one</a>,<a href="Database.html#.oneOrNone">oneOrNone</a>,<a href="Database.html#.many">many</a>,<a href="Database.html#.manyOrNone">manyOrNone</a>,<a href="Database.html#.any">any</a>,<a href="Database.html#.func">func</a>,<a href="Database.html#.proc">proc</a>,<a href="Database.html#.result">result</a>,<a href="Database.html#.map">map</a>,<a href="Database.html#.each">each</a>,<a href="Database.html#.stream">stream</a>,<a href="Database.html#.task">task</a>,<a href="Database.html#.tx">tx</a>,<a href="Database.html#.connect">connect</a>,<a href="Database.html#.$config">$config</a>,<a href="Database.html#.$cn">$cn</a>,<a href="Database.html#.$dc">$dc</a>,<a href="global.html#event:extend">extend</a></li>
         </ul>
     </dd>
     
@@ -273,6 +275,90 @@ depending on the database context.</p></td>
 
     
         <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".$cn"><span class="type-signature">(static, readonly) </span>$cn<span class="type-signature"> :string|object</span></h4>
+
+
+
+
+<div class="description">
+    <p><strong>Added in v5.6.8</strong></p>
+<p>Database connection, as was passed in during the object's construction.</p>
+<p>This is a hidden property, to help integrating type <a href="Database.html">Database</a> directly with third-party libraries.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line288">line 288</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html">Database</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
 
         
             
@@ -344,7 +430,7 @@ depending on the database context.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line250">line 250</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line256">line 256</a>
     </li></ul></dd>
     
 
@@ -362,6 +448,90 @@ depending on the database context.</p></td>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// Using the promise protocol as configured by pg-promise:var $p = db.$config.promise;var resolvedPromise = $p.resolve('some data');var rejectedPromise = $p.reject('some reason');var newPromise = $p((resolve, reject) => {    // call either resolve(data) or reject(reason) here});</code></pre>
+
+
+
+        
+            
+<h4 class="name" id=".$dc"><span class="type-signature">(static, readonly) </span>$dc<span class="type-signature"> :string|object</span></h4>
+
+
+
+
+<div class="description">
+    <p><strong>Added in v5.6.8</strong></p>
+<p>Database Context, as was passed in during the object's construction.</p>
+<p>This is a hidden property, to help integrating type <a href="Database.html">Database</a> directly with third-party libraries.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line302">line 302</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html">Database</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
 
 
 
@@ -428,10 +598,10 @@ This is simply a shorter alias for method <a href="Database.html#.manyOrNone">ma
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
             
@@ -541,7 +711,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line549">line 549</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line583">line 583</a>
     </li></ul></dd>
     
 
@@ -802,7 +972,7 @@ and therefore cannot scale. This option is only suitable for global connection u
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line103">line 103</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line109">line 109</a>
     </li></ul></dd>
     
 
@@ -938,10 +1108,10 @@ and therefore cannot scale. This option is only suitable for global connection u
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
             
@@ -1115,7 +1285,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line867">line 867</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line901">line 901</a>
     </li></ul></dd>
     
 
@@ -1376,7 +1546,7 @@ number of milliseconds it took the client to execute the query.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line689">line 689</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line723">line 723</a>
     </li></ul></dd>
     
 
@@ -1488,10 +1658,10 @@ When the query returns no rows, the method rejects.</p>
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
             
@@ -1601,7 +1771,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line408">line 408</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line442">line 442</a>
     </li></ul></dd>
     
 
@@ -1714,10 +1884,10 @@ hidden property <code>duration</code> - number of milliseconds it took the clien
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
             
@@ -1827,7 +1997,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line507">line 507</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line541">line 541</a>
     </li></ul></dd>
     
 
@@ -2131,7 +2301,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line755">line 755</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line789">line 789</a>
     </li></ul></dd>
     
 
@@ -2253,10 +2423,10 @@ If the query returns any kind of data, the method rejects.</p>
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
             
@@ -2366,7 +2536,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line302">line 302</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line336">line 336</a>
     </li></ul></dd>
     
 
@@ -2479,10 +2649,10 @@ When 0 or more than 1 rows are returned, the method rejects.</p>
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
             
@@ -2655,7 +2825,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line338">line 338</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line372">line 372</a>
     </li></ul></dd>
     
 
@@ -2788,10 +2958,10 @@ When the query returns more than 1 row, the method rejects.</p>
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
             
@@ -2964,7 +3134,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line445">line 445</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line479">line 479</a>
     </li></ul></dd>
     
 
@@ -3250,7 +3420,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line716">line 716</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line750">line 750</a>
     </li></ul></dd>
     
 
@@ -3365,10 +3535,10 @@ and then returns the same result as method <a href="Database.html#.oneOrNone">on
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
             
@@ -3525,7 +3695,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line199">line 199</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line205">line 205</a>
     </li></ul></dd>
     
 
@@ -3632,10 +3802,10 @@ original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
             
@@ -3808,7 +3978,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line592">line 592</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line626">line 626</a>
     </li></ul></dd>
     
 
@@ -3999,7 +4169,7 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line656">line 656</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line690">line 690</a>
     </li></ul></dd>
     
 
@@ -4214,7 +4384,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line947">line 947</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line981">line 981</a>
     </li></ul></dd>
     
 
@@ -4439,7 +4609,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1039">line 1039</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1073">line 1073</a>
     </li></ul></dd>
     
 
@@ -4614,7 +4784,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1288">line 1288</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1322">line 1322</a>
     </li></ul></dd>
     
 
