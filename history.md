@@ -1,5 +1,6 @@
 ### Release History
 
+* 5.7.0 Major query formatting overhaul for passing in the calling context. Released: May 15, 2017
 * 5.6.0 Removed support for legacy Node.js versions, now requiring 4.x and higher. Released: Feb 25, 2017
 * 5.5.5 Extended type `ColumnSet` with new properties `names` and `variables`. Released: Jan 30, 2017
 * 5.5.0 Changed the diagnostics for invalid initialization + warnings. Released: Dec 09, 2016

@@ -414,7 +414,7 @@ returns a formatted string when successful or throws an error when it fails.
 
 ## Custom Type Formatting
 
-When we pass `values` as a single parameter or inside an array, it is verified to be an object
+When we pass `values` as a single parameter or inside an array, it is verified to be an object/value
 that supports function `formatDBType`, as either its own or inherited. And if the function exists,
 its return result overrides both the actual value and the formatting syntax for parameter `query`.
 
@@ -424,6 +424,7 @@ overriding formatting for standard object types, such as `Date` and `Array`.
 **Example: your own type formatting**
 
 ```js
+// ES5:
 function Money(m) {
     this.amount = m;
     this.formatDBType = function () {
@@ -431,20 +432,30 @@ function Money(m) {
         return this.amount.toFixed(2);
     }
 }
+
+// ES6:
+function Money(m) {
+    this.amount = m;
+    this.formatDBType = a => a.amount.toFixed(2);
+}
 ```
 
 **Example: overriding standard types**
 
 ```js
+// ES5:
 Date.prototype.formatDBType = function () {
     // format Date as a local timestamp;
     return this.getTime();
 };
+
+// ES6:
+Date.prototype.formatDBType = a => a.getTime();
 ```
 
 Function `formatDBType` is allowed to return absolutely anything, including:
 * instance of another object that supports its own custom formatting;
-* instance of another object that doesn't have its own custom formatting;
+* instance of another object that does not have its own custom formatting;
 * another function, with recursion of any depth;
 
 Please note that the return result from `formatDBType` may even affect the
@@ -454,7 +465,7 @@ If you pass in `values` as an object that has function `formatDBType`,
 and that function returns an array, then your `query` is expected to use 
 `$1, $2` as the formatting syntax.
 
-And if `formatDBType` in that case returns a custom-type object that doesn't support
+And if `formatDBType` in that case returns a custom-type object that does not support
 custom formatting, then `query` will be expected to use `$*propName*` as the formatting syntax.
 
 ### Raw Custom Types
@@ -486,7 +497,7 @@ function UUID(value) {
     };
 }
 ``` 
-  
+
 When you chain one custom-formatting type to return another one, please note that
 setting `_rawDBType` on any level will set the flag for the entire chain.
 
@@ -503,13 +514,15 @@ Use of external SQL files (via [QueryFile]) offers many advantages:
 Example:
 
 ```js
-// Helper for linking to external query files: 
+var path = require('path');
+
+// Helper for linking to external query files:
 function sql(file) {
-    // consider using here: path.join(__dirname, file)
-    return new pgp.QueryFile(file, {minify: true});
+    var fullPath = path.join(__dirname, file);
+    return new pgp.QueryFile(fullPath, {minify: true});
 }
 
-// Create QueryFile globally, once per file:
+// Create a QueryFile globally, once per file:
 var sqlFindUser = sql('./sql/findUser.sql');
 
 db.one(sqlFindUser, {id: 123})
