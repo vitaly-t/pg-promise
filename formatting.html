@@ -372,7 +372,7 @@ constructor string: <code>array[]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">array</span>
+<span class="param-type">Array</span>
 |
 
 <span class="param-type">function</span>
@@ -885,7 +885,7 @@ according to their type.</p>
             <td class="type">
             
                 
-<span class="param-type">array</span>
+<span class="param-type">Array</span>
 |
 
 <span class="param-type">value</span>
@@ -1045,7 +1045,7 @@ wrapped in quotes (unless flag <code>raw</code> is set).</p>
             <td class="type">
             
                 
-<span class="param-type">date</span>
+<span class="param-type">Date</span>
 |
 
 <span class="param-type">function</span>
@@ -1285,7 +1285,7 @@ not allowed to be <code>null</code> or <code>undefined</code>, or the method wil
 <span class="param-type">string</span>
 |
 
-<span class="param-type">value</span>
+<span class="param-type"><a href="QueryFile.html">QueryFile</a></span>
 |
 
 <span class="param-type">object</span>
@@ -1306,8 +1306,7 @@ not allowed to be <code>null</code> or <code>undefined</code>, or the method wil
 
             
 
-            <td class="description last"><p>A query string or a value/object that implements <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, to be formatted according to <code>values</code>.</p>
-<p><strong>NOTE:</strong> Support for <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a> was added in v5.2.7.</p></td>
+            <td class="description last"><p>A query string, a <a href="QueryFile.html">QueryFile</a> or any object that implements <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, to be formatted according to <code>values</code>.</p></td>
         </tr>
 
     
@@ -1475,8 +1474,7 @@ property name that's missing within the formatting parameters.</p>
                 </td>
             
 
-            <td class="description last"><p><strong>Added in v.5.0.5</strong></p>
-<p>Sets a default value for every variable that's missing, consequently preventing errors when encountering a variable
+            <td class="description last"><p>Sets a default value for every variable that's missing, consequently preventing errors when encountering a variable
 or property name that's missing within the formatting parameters.</p>
 <p>It can also be set to a function, to be called with two parameters that depend on the type of formatting being used,
 and to return the actual default value:</p>
@@ -1541,7 +1539,7 @@ and to return the actual default value:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line614">line 614</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line608">line 608</a>
     </li></ul></dd>
     
 
@@ -1595,7 +1593,7 @@ and to return the actual default value:</p>
 
     
 
-    <h4 class="name" id=".func"><span class="type-signature">(static) </span>func<span class="signature">(func, raw<span class="signature-attributes">opt</span>, obj<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".func"><span class="type-signature">(static) </span>func<span class="signature">(func, raw<span class="signature-attributes">opt</span>, cc<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
 
@@ -1717,15 +1715,10 @@ according to its type + <code>raw</code> flag.</p>
 
         <tr>
             
-                <td class="name"><code>obj</code></td>
+                <td class="name"><code>cc</code></td>
             
 
             <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
             
             </td>
 
@@ -1747,7 +1740,7 @@ according to its type + <code>raw</code> flag.</p>
                 </td>
             
 
-            <td class="description last"><p><code>this</code> context to be passed into the function on all nested levels.</p></td>
+            <td class="description last"><p>Calling Context: <code>this</code> + the only value to be passed into the function on all nested levels.</p></td>
         </tr>
 
     
@@ -1837,7 +1830,7 @@ according to its type + <code>raw</code> flag.</p>
 
     
 
-    <h4 class="name" id=".json"><span class="type-signature">(static) </span>json<span class="signature">(obj, raw<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".json"><span class="type-signature">(static) </span>json<span class="signature">(data, raw<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
 
@@ -1885,18 +1878,10 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
 
         <tr>
             
-                <td class="name"><code>obj</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
-            
-                
-<span class="param-type">object</span>
-|
-
-<span class="param-type">function</span>
-
-
             
             </td>
 
@@ -1916,7 +1901,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
                 </td>
             
 
-            <td class="description last"><p>Object/Value to be converted, or a function that returns it.</p></td>
+            <td class="description last"><p>Object/value to be converted, or a function that returns it.</p></td>
         </tr>
 
     
