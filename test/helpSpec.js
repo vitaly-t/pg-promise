@@ -289,6 +289,7 @@ describe("TableName", function () {
     describe("custom-type formatting", function () {
         var t = new helpers.TableName({table: 'table', schema: 'schema'});
         it("must return the full name", function () {
+            expect(t.formatDBType(t)).toBe(t.name);
             expect(t.formatDBType()).toBe(t.name);
         });
     });

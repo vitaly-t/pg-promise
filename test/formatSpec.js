@@ -552,6 +552,10 @@ describe("Method as.func", function () {
             test: "Hello!"
         })).toBe("'Hello!'");
 
+        expect(pgp.as.func(dummy, false, '')).toBe('null');
+
+        expect(pgp.as.func(a => a, false, 123)).toBe('123');
+
         /////////////////////////////
         // negative tests;
 
@@ -572,14 +576,6 @@ describe("Method as.func", function () {
                 throw "internal error";
             });
         }).toThrow("internal error");
-
-        expect(function () {
-            pgp.as.func(dummy, false, '');
-        }).toThrow(new Error("'' is not an object."));
-
-        expect(function () {
-            pgp.as.func(dummy, false, 0);
-        }).toThrow(new Error("'0' is not an object."));
 
     });
 });
@@ -1103,6 +1099,12 @@ describe("Custom Format", function () {
 
     var test1 = new MyType1(12.3);
     var test2 = new MyType2(56.7);
+
+    describe('as formatting type', function () {
+        it('must pass the values in correctly', function () {
+            expect(pgp.as.format(test2)).toBe("56.70");
+        });
+    });
 
     describe("as array value", function () {
         it("must convert correctly", function () {
