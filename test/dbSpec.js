@@ -429,11 +429,7 @@ describe("Masked Connection Log", function () {
                 });
         });
         it("must report the password masked correctly", function () {
-            expect(cn).toEqual({
-                host: 'localhost',
-                user: 'unknown',
-                password: '###'
-            });
+            expect(cn.password).toEqual('###');
         });
     });
 
