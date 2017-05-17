@@ -49,7 +49,7 @@
 
 <div class="description">
     <p><strong>Alternative Syntax:</strong> <code>PreparedStatement({name, text, values, ...})</code> &#8658; <a href="PreparedStatement.html">PreparedStatement</a></p>
-<p>Constructs a new <a href="http://www.postgresql.org/docs/9.5/static/sql-prepare.html">Prepared Statement</a> object.</p>
+<p>Constructs a new <a href="http://www.postgresql.org/docs/9.6/static/sql-prepare.html">Prepared Statement</a> object.</p>
 <p>The alternative syntax supports advanced properties <a href="PreparedStatement.html#binary">binary</a>, <a href="PreparedStatement.html#rowMode">rowMode</a>
 and <a href="PreparedStatement.html#rows">rows</a>, which are passed into <a href="https://github.com/brianc/node-postgres">pg</a>, but not used by the class.</p>
 <p>All properties can also be set after the object's construction.</p>
@@ -155,7 +155,7 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
             
 
             <td class="description last"><p>A non-empty query string or a <a href="QueryFile.html">QueryFile</a> object.</p>
-<p>Only the basic variables (<code>$1</code>, <code>$2</code>, etc) can be used in the query, because <a href="http://www.postgresql.org/docs/9.5/static/sql-prepare.html">Prepared Statements</a> are formatted by the database server.</p></td>
+<p>Only the basic variables (<code>$1</code>, <code>$2</code>, etc) can be used in the query, because <a href="http://www.postgresql.org/docs/9.6/static/sql-prepare.html">Prepared Statements</a> are formatted by the database server.</p></td>
         </tr>
 
     
