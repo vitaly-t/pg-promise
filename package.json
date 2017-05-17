@@ -40,7 +40,7 @@
     "npm": ">=2.15"
   },
   "dependencies": {
-    "pg": "5.1",
+    "pg": "6.2",
     "spex": "1.2",
     "pg-minify": "0.4",
     "manakin": "0.4"
