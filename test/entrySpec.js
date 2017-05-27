@@ -144,15 +144,15 @@ describe("Library entry function", function () {
         });
     });
 
-    describe("with invalid options parameter", function () {
-        var error = "Invalid initialization options.";
+    describe('with invalid options parameter', function () {
+        var errBody = 'Invalid initialization options: ';
         it("must throw an error", function () {
-            expect(function () {
+            expect(() => {
                 header(123);
-            }).toThrow(error);
-            expect(function () {
+            }).toThrow(new TypeError(errBody + '123'));
+            expect(() => {
                 header('hello');
-            }).toThrow(error);
+            }).toThrow(new TypeError(errBody + '"hello"'));
         });
     });
 
@@ -191,7 +191,7 @@ describe("Library entry function", function () {
             function (data) {
                 return promise.resolve(data);
             },
-            function (reason) {
+            function () {
                 return promise.reject('reject-two');
             }
         ];
@@ -203,12 +203,12 @@ describe("Library entry function", function () {
         beforeEach(function (done) {
             var pg1 = header({promiseLib: one}), db1 = pg1.db;
             var pg2 = header({promiseLib: two}), db2 = pg2.db;
-            db.task(function (t) {
+            db.task(t => {
                 return t.batch([
                     db1.query('select $1', []), db2.query('select $1', [])
                 ])
             })
-                .catch(function (error) {
+                .catch(error => {
                     result = error;
                     done();
                 });

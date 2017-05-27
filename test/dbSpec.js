@@ -33,16 +33,16 @@ describe("Database Instantiation", function () {
         var errBody = 'Invalid connection details: ';
         expect(pgp).toThrow(new TypeError(errBody + 'undefined'));
 
-        expect(function () {
+        expect(() => {
             pgp(null);
         }).toThrow(new TypeError(errBody + 'null'));
-        expect(function () {
+        expect(() => {
             pgp('');
         }).toThrow(new TypeError(errBody + '""'));
-        expect(function () {
+        expect(() => {
             pgp('   ');
         }).toThrow(new TypeError(errBody + '"   "'));
-        expect(function () {
+        expect(() => {
             pgp(123);
         }).toThrow(new TypeError(errBody + '123'));
     });
