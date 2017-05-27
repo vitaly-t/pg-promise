@@ -20,27 +20,31 @@ function dummy() {
 var BatchError = pgp.spex.errors.BatchError;
 
 var $errors = {
-    func: "Invalid function name.",
-    query: "Invalid query format.",
-    emptyQuery: "Empty or undefined query.",
-    notEmpty: "No return data was expected.",
-    noData: "No data returned from the query.",
-    multiple: "Multiple rows were not expected."
+    func: 'Invalid function name.',
+    query: 'Invalid query format.',
+    emptyQuery: 'Empty or undefined query.',
+    notEmpty: 'No return data was expected.',
+    noData: 'No data returned from the query.',
+    multiple: 'Multiple rows were not expected.'
 };
 
 describe("Database Instantiation", function () {
-    it("must throw an invalid connection passed", function () {
-        var err = "Invalid connection details.";
-        expect(pgp).toThrow(err);
-        expect(function () {
+    it('must throw an invalid connection passed', function () {
+        var errBody = 'Invalid connection details: ';
+        expect(pgp).toThrow(new TypeError(errBody + 'undefined'));
+
+        expect(() => {
             pgp(null);
-        }).toThrow(err);
-        expect(function () {
-            pgp("");
-        }).toThrow(err);
-        expect(function () {
+        }).toThrow(new TypeError(errBody + 'null'));
+        expect(() => {
+            pgp('');
+        }).toThrow(new TypeError(errBody + '""'));
+        expect(() => {
+            pgp('   ');
+        }).toThrow(new TypeError(errBody + '"   "'));
+        expect(() => {
             pgp(123);
-        }).toThrow(err);
+        }).toThrow(new TypeError(errBody + '123'));
     });
 });
 
