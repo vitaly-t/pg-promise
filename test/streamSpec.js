@@ -16,7 +16,7 @@ var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
 if (options.pgNative) {
-    return; // streams do not work with native bindings;
+    process.exit(0); // streams do not work with native bindings;
 }
 
 function dummy() {
