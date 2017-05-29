@@ -76,7 +76,7 @@ describe("QueryFile / Positive:", function () {
     describe("non-minified query", function () {
         var result;
         beforeEach(function (done) {
-            db.query(QueryFile(sqlUsers, {}))
+            db.query(QueryFile(sqlUsers, {noWarnings: true}))
                 .then(function (data) {
                     result = data;
                     done();
@@ -91,7 +91,7 @@ describe("QueryFile / Positive:", function () {
     describe("minified query", function () {
         var result;
         beforeEach(function (done) {
-            db.query(QueryFile(sqlUsers, {minify: true}))
+            db.query(QueryFile(sqlUsers, {minify: true, noWarnings: true}))
                 .then(function (data) {
                     result = data;
                     done();
@@ -106,7 +106,7 @@ describe("QueryFile / Positive:", function () {
     describe("compressed query", function () {
         var result, sql;
         beforeEach(function (done) {
-            sql = QueryFile(sqlUsers, {compress: true});
+            sql = QueryFile(sqlUsers, {compress: true, noWarnings: true});
             db.query(sql)
                 .then(function (data) {
                     result = data;
@@ -124,19 +124,22 @@ describe("QueryFile / Positive:", function () {
         var options1 = {
             debug: utils.isDev(),
             minify: false,
-            compress: false
+            compress: false,
+            noWarnings: true
         }, options2 = {
             debug: false,
-            compress: true
+            compress: true,
+            noWarnings: true
         }, options3 = {
             debug: false,
             minify: true,
-            compress: true
+            compress: true,
+            noWarnings: true
         };
         Object.freeze(options1);
         Object.freeze(options3);
         it("must be consistent with the settings", function () {
-            expect(QueryFile(sqlSimple).options).toEqual(options1);
+            expect(QueryFile(sqlSimple, {noWarnings: true}).options).toEqual(options1);
             expect(QueryFile(sqlSimple, options2).options).toEqual(options3);
         });
     });
@@ -170,7 +173,7 @@ describe("QueryFile / Positive:", function () {
     describe("repeated read", function () {
         // this is just for code coverage;
         it("must not read again", function () {
-            var qf = new QueryFile(sqlSimple, {debug: false, minify: true});
+            var qf = new QueryFile(sqlSimple, {debug: false, minify: true, noWarnings: true});
             qf.prepare();
             qf.prepare();
             expect(qf.query).toBe('select 1;');
@@ -207,7 +210,7 @@ describe("QueryFile / Negative:", function () {
         var error, query = "select 123 as value";
         it("must result in error once deleted", function () {
             fs.writeFileSync(sqlTemp, query);
-            var qf = new QueryFile(sqlTemp, {debug: true});
+            var qf = new QueryFile(sqlTemp, {debug: true, noWarnings: true});
             expect(qf.query).toBe(query);
             expect(qf.error).toBeUndefined();
             fs.unlinkSync(sqlTemp);
@@ -218,7 +221,7 @@ describe("QueryFile / Negative:", function () {
 
         it("must throw when preparing", function () {
             fs.writeFileSync(sqlTemp, query);
-            var qf = new QueryFile(sqlTemp, {debug: true});
+            var qf = new QueryFile(sqlTemp, {debug: true, noWarnings: true});
             expect(qf.query).toBe(query);
             expect(qf.error).toBeUndefined();
             fs.unlinkSync(sqlTemp);
@@ -236,7 +239,7 @@ describe("QueryFile / Negative:", function () {
 
     describe("invalid sql", function () {
         it("must throw an error", function () {
-            var qf = new QueryFile(sqlInvalid, {minify: true});
+            var qf = new QueryFile(sqlInvalid, {minify: true, noWarnings: true});
             expect(qf.error instanceof QueryFileError).toBe(true);
             expect(qf.error.file).toBe(sqlInvalid);
         });

@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.7.0 or later.
+// Requires pg-promise v5.8.0 or later.
 ////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -21,7 +21,8 @@ declare namespace pgPromise {
         debug?: boolean,
         minify?: boolean | 'after',
         compress?: boolean,
-        params?: any
+        params?: any,
+        noWarnings?: boolean
     };
 
     type TFormattingOptions = {
