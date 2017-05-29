@@ -871,7 +871,7 @@ describe("method 'concat'", function () {
         });
         describe("with QueryFile", function () {
             it("must support mixed types correctly", function () {
-                var qf = new QueryFile(path.join(__dirname, './sql/allUsers.sql'), {minify: true});
+                var qf = new QueryFile(path.join(__dirname, './sql/allUsers.sql'), {minify: true, noWarnings: true});
                 expect(helpers.concat(['one', {query: 'two'}, qf])).toBe('one;two;select * from users');
             });
         });

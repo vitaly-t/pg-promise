@@ -5,7 +5,6 @@ pg-promise
 
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
 [![Coverage Status](https://coveralls.io/repos/vitaly-t/pg-promise/badge.svg?branch=master)](https://coveralls.io/r/vitaly-t/pg-promise?branch=master)
-[![Downloads Count](http://img.shields.io/npm/dm/pg-promise.svg)](https://www.npmjs.com/package/pg-promise)
 [![Package Quality](http://npm.packagequality.com/shield/pg-promise.svg)](http://packagequality.com/#?package=pg-promise)
 [![Join the chat at https://gitter.im/vitaly-t/pg-promise](https://img.shields.io/gitter/room/vitaly-t/pg-promise.svg)](https://gitter.im/vitaly-t/pg-promise?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -550,7 +549,10 @@ WHERE id = ${id}
 Every query method of the library can accept type [QueryFile] as its `query` parameter.
 The type never throws any error, leaving it for query methods to reject with [QueryFileError].
 
-You should only create a single instance of [QueryFile] per file, and then reuse that instance throughout the application.
+**IMPORTANT**
+
+You should only create a single reusable instance of [QueryFile] per file, in order to avoid
+repeated file reads, as the IO is a very expensive resource.
 
 Notable features of [QueryFile]:
 
