@@ -54,11 +54,9 @@ The SQL can be of any complexity, with both single and multi-line comments.</p>
 <p>The type can be used in place of the <code>query</code> parameter, with any query method directly, plus as <code>text</code> in <a href="PreparedStatement.html">PreparedStatement</a>
 and <a href="ParameterizedQuery.html">ParameterizedQuery</a>.</p>
 <p>It never throws any error, leaving it for query methods to reject with <a href="errors.QueryFileError.html">QueryFileError</a>.</p>
-<p>For any given SQL file you should only create a single instance of this class throughout the application.</p>
 <p><strong>IMPORTANT:</strong> You should only create a single reusable object per file, in order to avoid repeated file reads,
-as the IO is a very expensive resource. Starting from version 5.8.0, if you do not follow it, then while in <code>debug</code>
-mode, you will be seeing the following warning: <code>Creating a duplicate QueryFile object for the same file</code>, to signal
-a bad usage pattern.</p>
+as the IO is a very expensive resource. Starting from version 5.8.0, if you do not follow it, you will be seeing the following
+warning: <code>Creating a duplicate QueryFile object for the same file</code>, which signals a bad-use pattern.</p>
 </div>
 
 
@@ -331,7 +329,7 @@ a bad usage pattern.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line225">line 225</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line222">line 222</a>
     </li></ul></dd>
     
 
@@ -404,7 +402,7 @@ a bad usage pattern.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line239">line 239</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line236">line 236</a>
     </li></ul></dd>
     
 
@@ -477,7 +475,7 @@ a bad usage pattern.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line252">line 252</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line249">line 249</a>
     </li></ul></dd>
     
 
@@ -557,7 +555,7 @@ a bad usage pattern.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line210">line 210</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line207">line 207</a>
     </li></ul></dd>
     
 
@@ -708,7 +706,7 @@ to the parameters passed into the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line150">line 150</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line147">line 147</a>
     </li></ul></dd>
     
 
@@ -860,7 +858,7 @@ to the parameters passed into the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line270">line 270</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line267">line 267</a>
     </li></ul></dd>
     
 
@@ -1162,7 +1160,7 @@ that may require it.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line306">line 306</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line303">line 303</a>
     </li></ul></dd>
     
 
