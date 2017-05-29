@@ -55,6 +55,10 @@ The SQL can be of any complexity, with both single and multi-line comments.</p>
 and <a href="ParameterizedQuery.html">ParameterizedQuery</a>.</p>
 <p>It never throws any error, leaving it for query methods to reject with <a href="errors.QueryFileError.html">QueryFileError</a>.</p>
 <p>For any given SQL file you should only create a single instance of this class throughout the application.</p>
+<p><strong>IMPORTANT:</strong> You should only create a single reusable object per file, in order to avoid repeated file reads,
+as the IO is a very expensive resource. Starting from version 5.8.0, if you do not follow it, then while in <code>debug</code>
+mode, you will be seeing the following warning: <code>Creating a duplicate QueryFile object for the same file</code>, to signal
+a bad usage pattern.</p>
 </div>
 
 
@@ -191,7 +195,7 @@ and <a href="ParameterizedQuery.html">ParameterizedQuery</a>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line13">line 13</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line14">line 14</a>
     </li></ul></dd>
     
 
@@ -327,7 +331,7 @@ and <a href="ParameterizedQuery.html">ParameterizedQuery</a>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line206">line 206</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line225">line 225</a>
     </li></ul></dd>
     
 
@@ -400,7 +404,7 @@ and <a href="ParameterizedQuery.html">ParameterizedQuery</a>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line220">line 220</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line239">line 239</a>
     </li></ul></dd>
     
 
@@ -473,7 +477,7 @@ and <a href="ParameterizedQuery.html">ParameterizedQuery</a>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line233">line 233</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line252">line 252</a>
     </li></ul></dd>
     
 
@@ -553,7 +557,7 @@ and <a href="ParameterizedQuery.html">ParameterizedQuery</a>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line191">line 191</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line210">line 210</a>
     </li></ul></dd>
     
 
@@ -704,7 +708,7 @@ to the parameters passed into the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line131">line 131</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line150">line 150</a>
     </li></ul></dd>
     
 
@@ -856,7 +860,7 @@ to the parameters passed into the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line249">line 249</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line270">line 270</a>
     </li></ul></dd>
     
 
@@ -1092,6 +1096,37 @@ apply the second-step dynamic formatting when executing the query.</p></td>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>noWarnings</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p><strong> Added in v5.8.0 </strong></p>
+<p>Suppresses all warnings produced by the class. It is not recommended for general use, only in specific tests
+that may require it.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -1127,7 +1162,7 @@ apply the second-step dynamic formatting when executing the query.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line285">line 285</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line306">line 306</a>
     </li></ul></dd>
     
 
