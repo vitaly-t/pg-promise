@@ -18,11 +18,12 @@ $ npm install pgp
 
 ...until the day when it is ready to become the `master` branch that is.
 
-
 ---
 
 The only difference from the `master` branch is that it uses the latest version of [node-postgres],
 automatically creating and maintaining a separate pool for each database.
+
+See also: [Why the `master` branch is currently using node-postgres v5.1](https://github.com/vitaly-t/pg-promise/issues/206).
 
 [pg-promise]:https://github.com/vitaly-t/pg-promise
 [node-postgres]:https://github.com/brianc/node-postgres
