@@ -430,6 +430,10 @@ describe("Masked Connection Log", function () {
         beforeEach(function (done) {
             var errDB = pgp(connection);
             errDB.connect()
+                .then(data=>{
+                    console.log('#### SUCCESS');
+                    done();
+                })
                 .catch(function () {
                     done();
                 });
