@@ -1,6 +1,6 @@
 {
-  "name": "pgp",
-  "version": "0.0.1",
+  "name": "pg-promise",
+  "version": "5.8.0",
   "description": "Promises interface for PostgreSQL",
   "main": "lib/index.js",
   "typings": "typescript/pg-promise.d.ts",
@@ -16,7 +16,7 @@
     "lib",
     "typescript"
   ],
-  "homepage": "https://github.com/vitaly-t/pg-promise/tree/6.x",
+  "homepage": "https://github.com/vitaly-t/pg-promise",
   "repository": {
     "type": "git",
     "url": "https://github.com/vitaly-t/pg-promise.git"
