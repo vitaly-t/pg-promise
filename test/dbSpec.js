@@ -424,16 +424,13 @@ describe("Masked Connection Log", function () {
         var connection = {
             host: 'localhost',
             database: 'something',
+            port: 123,
             user: 'unknown',
             password: '123'
         };
         beforeEach(function (done) {
             var errDB = pgp(connection);
             errDB.connect()
-                .then(data=>{
-                    console.log('#### SUCCESS');
-                    done();
-                })
                 .catch(function () {
                     done();
                 });
