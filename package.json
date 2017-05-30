@@ -1,6 +1,6 @@
 {
-  "name": "pg-promise",
-  "version": "5.8.1",
+  "name": "pgp",
+  "version": "0.0.1",
   "description": "Promises interface for PostgreSQL",
   "main": "lib/index.js",
   "typings": "typescript/pg-promise.d.ts",
@@ -16,7 +16,7 @@
     "lib",
     "typescript"
   ],
-  "homepage": "https://github.com/vitaly-t/pg-promise",
+  "homepage": "https://github.com/vitaly-t/pg-promise/tree/6.x",
   "repository": {
     "type": "git",
     "url": "https://github.com/vitaly-t/pg-promise.git"
@@ -40,7 +40,7 @@
     "npm": ">=2.15"
   },
   "dependencies": {
-    "pg": "5.1",
+    "pg": "6.2",
     "spex": "1.2",
     "pg-minify": "0.4",
     "manakin": "0.4"
