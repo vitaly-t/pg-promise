@@ -25,3 +25,5 @@ The only difference from the `master` branch is that it uses the latest version 
 automatically creating and maintaining a separate pool for each database server.
 
 [pg-promise]:https://github.com/vitaly-t/pg-promise
+[node-postgres]:https://github.com/brianc/node-postgres
+[Promises/A+]:https://promisesaplus.com/
