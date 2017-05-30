@@ -226,8 +226,9 @@ describe("Connection", function () {
             db.connect()
                 .then(function (obj) {
                     var c = capture();
-                    obj.client.end();
+                    obj.client.end(true);
                     txt = c();
+                    obj.done();
                     done();
                 });
         });
