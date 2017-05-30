@@ -6,7 +6,8 @@ var header = require('./db/header');
 var promise = header.defPromise;
 var options = {
     promiseLib: promise,
-    capSQL: false
+    capSQL: false,
+    noWarnings: true
 };
 var pgp = header(options).pgp;
 

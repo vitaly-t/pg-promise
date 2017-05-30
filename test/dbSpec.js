@@ -7,7 +7,8 @@ var pgResult = require('pg/lib/result');
 var header = require('./db/header');
 var promise = header.defPromise;
 var options = {
-    promiseLib: promise
+    promiseLib: promise,
+    noWarnings: true
 };
 var dbHeader = header(options);
 var pgp = dbHeader.pgp;
@@ -16,8 +17,6 @@ var db = dbHeader.db;
 function dummy() {
     // dummy/empty function;
 }
-
-var BatchError = pgp.spex.errors.BatchError;
 
 var $errors = {
     func: 'Invalid function name.',

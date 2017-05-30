@@ -5,7 +5,9 @@
 var header = require('./db/header');
 var promise = header.defPromise;
 
-var options = {};
+var options = {
+    noWarnings: true
+};
 
 var dbHeader = header(options);
 var db = dbHeader.db;
@@ -60,7 +62,7 @@ describe("Generators - Negative", function () {
     describe("normal reject", function () {
         var result;
 
-        var myTask = function*() {
+        var myTask = function* () {
             return yield promise.reject(123);
         };
 
