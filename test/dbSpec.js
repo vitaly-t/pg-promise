@@ -423,6 +423,7 @@ describe("Masked Connection Log", function () {
     describe("as an object", function () {
         var connection = {
             host: 'localhost',
+            database: 'something',
             user: 'unknown',
             password: '123'
         };
