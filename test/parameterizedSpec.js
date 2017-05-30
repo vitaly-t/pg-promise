@@ -165,7 +165,7 @@ describe("ParameterizedQuery", function () {
 
         describe("successful", function () {
             var f = path.join(__dirname, './sql/simple.sql');
-            var qf = new pgp.QueryFile(f, {compress: true});
+            var qf = new pgp.QueryFile(f, {compress: true, noWarnings: true});
             var pq = new pgp.ParameterizedQuery(qf);
             var result = pq.parse();
             expect(result && typeof result === 'object').toBeTruthy();
