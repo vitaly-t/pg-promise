@@ -170,7 +170,7 @@ describe("PreparedStatement", function () {
 
         describe("successful", function () {
             var f = path.join(__dirname, './sql/simple.sql');
-            var qf = new pgp.QueryFile(f, {compress: true});
+            var qf = new pgp.QueryFile(f, {compress: true, noWarnings: true});
             var ps = new pgp.PreparedStatement('test-name', qf);
             var result = ps.parse();
             expect(result && typeof result === 'object').toBeTruthy();
@@ -180,7 +180,7 @@ describe("PreparedStatement", function () {
         });
 
         describe("with error", function () {
-            var qf = new pgp.QueryFile('./invalid.sql');
+            var qf = new pgp.QueryFile('./invalid.sql', {noWarnings: true});
             var ps = new pgp.PreparedStatement('test-name', qf);
             var result = ps.parse();
             expect(result instanceof pgp.errors.PreparedStatementError).toBe(true);

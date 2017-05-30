@@ -63,11 +63,11 @@ describe("QueryFile / Positive:", function () {
             table: "users",
             column: "col"
         };
-        var qf1 = new QueryFile(sqlParams, {minify: true, compress: true, params: params});
+        var qf1 = new QueryFile(sqlParams, {minify: true, compress: true, params: params, noWarnings: true});
         it("must return uncompressed replacements by default", function () {
             expect(qf1.query).toBe('SELECT "col" FROM "public"."users"');
         });
-        var qf2 = new QueryFile(sqlParams, {minify: "after", compress: true, params: params});
+        var qf2 = new QueryFile(sqlParams, {minify: "after", compress: true, params: params, noWarnings: true});
         it("must return compressed replacements for 'after'", function () {
             expect(qf2.query).toBe('SELECT"col"FROM"public"."users"');
         });
@@ -145,7 +145,7 @@ describe("QueryFile / Positive:", function () {
     });
 
     describe("inspect", function () {
-        var qf = new QueryFile(sqlSimple);
+        var qf = new QueryFile(sqlSimple, {noWarnings: true});
         it("must return the query", function () {
             expect(qf.inspect()).toBe(qf.toString());
         });
