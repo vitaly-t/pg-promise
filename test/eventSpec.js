@@ -12,7 +12,8 @@ var header = require('./db/header');
 
 var promise = header.defPromise;
 var options = {
-    promiseLib: promise // use Bluebird for testing;
+    promiseLib: promise, // use Bluebird for testing;
+    noWarnings: true
 };
 
 var testDC = 'test_DC_123';

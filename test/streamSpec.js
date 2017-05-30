@@ -8,7 +8,8 @@ var header = require('./db/header');
 var promise = header.defPromise;
 
 var options = {
-    promiseLib: promise
+    promiseLib: promise,
+    noWarnings: true
 };
 
 var dbHeader = header(options);
