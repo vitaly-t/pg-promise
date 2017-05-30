@@ -22,7 +22,7 @@ $ npm install pgp
 ---
 
 The only difference from the `master` branch is that it uses the latest version of [node-postgres],
-automatically creating and maintaining a separate pool for each database server.
+automatically creating and maintaining a separate pool for each database.
 
 [pg-promise]:https://github.com/vitaly-t/pg-promise
 [node-postgres]:https://github.com/brianc/node-postgres
