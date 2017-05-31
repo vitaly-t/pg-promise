@@ -25,7 +25,8 @@ var links = {
     'Performance Boost': 'https://github.com/vitaly-t/pg-promise/wiki/Performance-Boost',
     'Prepared Statement': 'http://www.postgresql.org/docs/9.6/static/sql-prepare.html',
     'Prepared Statements': 'http://www.postgresql.org/docs/9.6/static/sql-prepare.html',
-    'Custom Type Formatting': 'https://github.com/vitaly-t/pg-promise#custom-type-formatting'
+    'Custom Type Formatting': 'https://github.com/vitaly-t/pg-promise#custom-type-formatting',
+    '6.x': 'https://github.com/vitaly-t/pg-promise/tree/6.x'
 };
 
 function fixLinks(source) {
