@@ -1,5 +1,5 @@
-pg-promise 6.x
-==============
+pg-promise 6.x Beta
+===================
 
 [Promises/A+] interface for PostgreSQL.
 
@@ -10,18 +10,15 @@ pg-promise 6.x
 
 ---
 
-This is 6.x branch of [pg-promise], temporarily distributed as a `pgp` package:
+This is 6.x branch of [pg-promise], currently in Beta, and to be installed as follows:
 
 ```
-$ npm install pgp
+$ npm install pg-promise@beta
 ```
-
-...until the day when it is ready to become the `master` branch that is.
 
 ---
 
-The only difference from the `master` branch is that it uses the latest version of [node-postgres],
-automatically creating and maintaining a separate pool for each database.
+It uses the latest version of [node-postgres], automatically creating and maintaining a separate pool for each database.
 
 See also: [Why the `master` branch is currently using node-postgres v5.1](https://github.com/vitaly-t/pg-promise/issues/206).
 
