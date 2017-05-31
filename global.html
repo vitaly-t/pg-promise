@@ -319,7 +319,7 @@ as well as method <a href="Database.html#.func">func</a>.</p>
 <div class="description">
     <p><strong> This is a <a href="https://github.com/vitaly-t/pg-promise/tree/6.x">6.x</a> feature. </strong></p>
 <p>This type defines string values supported by property <code>poolStrategy</code> (see <a href="module-pg-promise.html">Initialization Options</a>).</p>
-<p>You can override the default <code>database</code> value with one of these, to select a different
+<p>You can override the default (<code>server</code>) value with one of these, to select a different
 strategy for allocating new connection pools.</p>
 </div>
 
@@ -417,7 +417,7 @@ strategy for allocating new connection pools.</p>
 
             
 
-            <td class="description last"><p>Create a separate pool for each virtual server (machine + port).</p></td>
+            <td class="description last"><p><strong>DEFAULT:</strong> Create a separate pool for each virtual server (machine + port).</p></td>
         </tr>
 
     
@@ -440,7 +440,7 @@ strategy for allocating new connection pools.</p>
 
             
 
-            <td class="description last"><p><strong>DEFAULT:</strong> Create a separate pool for every database being accessed.</p></td>
+            <td class="description last"><p>Create a separate pool for every database being accessed.</p></td>
         </tr>
 
     
@@ -502,7 +502,7 @@ strategy for allocating new connection pools.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="pools.js.html">pools.js</a>, <a href="pools.js.html#line76">line 76</a>
+        <a href="pools.js.html">pools.js</a>, <a href="pools.js.html#line81">line 81</a>
     </li></ul></dd>
     
 
