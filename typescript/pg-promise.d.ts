@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.8.0 or later.
+// Requires pg-promise v6.0.1 or later.
 ////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -120,6 +120,8 @@ declare namespace pgPromise {
         values?: any,
         options?: TFormattingOptions
     };
+
+    type PoolStrategy = 'single' | 'machine' | 'server' | 'database' | 'user';
 
     interface IArrayExt<T> extends Array<T> {
         duration: number;
@@ -541,6 +543,7 @@ declare namespace pgPromise {
         pgFormatting?: boolean;
         pgNative?: boolean,
         promiseLib?: any;
+        poolStrategy?: PoolStrategy;
         connect?: (client: pg.Client, dc: any, fresh: boolean) => void;
         disconnect?: (client: pg.Client, dc: any) => void;
         query?: (e: IEventContext) => void;

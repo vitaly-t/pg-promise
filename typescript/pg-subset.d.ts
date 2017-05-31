@@ -44,13 +44,13 @@ declare namespace pg {
     // For property types and documentation see:
     // http://nodejs.org/api/tls.html#tls_tls_connect_options_callback
     interface ISSLConfig {
-        ca?: string|string[]|Buffer|Buffer[];
-        pfx?: string|Buffer;
-        cert?: string|string[]|Buffer|Buffer[];
-        key?: string|string[]|Buffer|Object[];
+        ca?: string | string[] | Buffer | Buffer[];
+        pfx?: string | Buffer;
+        cert?: string | string[] | Buffer | Buffer[];
+        key?: string | string[] | Buffer | Object[];
         passphrase?: string;
         rejectUnauthorized?: boolean;
-        NPNProtocols?: string[]|Buffer;
+        NPNProtocols?: string[] | Buffer;
     }
 
     interface IConnectionParameters {
@@ -59,7 +59,7 @@ declare namespace pg {
         password?: string;
         port?: number;
         host?: string;
-        ssl?: boolean|ISSLConfig;
+        ssl?: boolean | ISSLConfig;
         binary?: boolean;
         client_encoding?: string;
         application_name?: string;
@@ -70,7 +70,7 @@ declare namespace pg {
     // Interface of 'pg-types' module;
     // See: https://github.com/brianc/node-pg-types
     interface ITypes {
-        setTypeParser: (oid: number, format: string|((value: string) => any)) => void;
+        setTypeParser: (oid: number, format: string | ((value: string) => any)) => void;
         getTypeParser: (oid: number, format?: string) => any;
         arrayParser: (source: string, transform: (entry: any) => any) => Array<any>;
     }
@@ -115,7 +115,7 @@ declare namespace pg {
 
         client_encoding: string,
 
-        ssl: boolean|ISSLConfig,
+        ssl: boolean | ISSLConfig,
 
         application_name?: string,
 
@@ -155,7 +155,7 @@ declare namespace pg {
 
         queryQueue: Array<Query>;
         binary: boolean;
-        ssl: boolean|ISSLConfig;
+        ssl: boolean | ISSLConfig;
         secretKey: number;
         processID: number;
         encoding: string;
@@ -167,4 +167,4 @@ declare namespace pg {
     var types: ITypes;
 }
 
-export=pg;
+export = pg;
