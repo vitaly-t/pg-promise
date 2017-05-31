@@ -835,7 +835,7 @@ var pgp = require('pg-promise')(options);
 
 [Promises/A+] libraries that implement a recognizable promise signature and work automatically:
 
-* **ES6 Promise** - used by default, though it doesn't have `done()` or `finally()`.
+* **ES6 Promise** - used by default, though it doesn't have `done()` or `finally()` and generates poor stack traces
 * [Bluebird] - best alternative all around;
 * [Promise] - very solid library;
 * [When] - quite old, not the best support;
