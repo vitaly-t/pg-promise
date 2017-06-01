@@ -25,4 +25,4 @@ See also: [Why the `master` branch is currently using node-postgres v5.1](https:
 [pg-promise]:https://github.com/vitaly-t/pg-promise
 [node-postgres]:https://github.com/brianc/node-postgres
 [Promises/A+]:https://promisesaplus.com/
-[Pool Strategy]:http://vitaly-t.github.io/pg-promise/global.html#PoolStrategy
+[Database]:http://vitaly-t.github.io/pg-promise/Database.html
