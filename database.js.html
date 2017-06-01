@@ -355,6 +355,21 @@ function Database(cn, dc, config) {
      */
     $npm.utils.addReadProp(this, '$pool', pool, true);
 
+    /**
+     * @member {function} Database.$destroy
+     * @readonly
+     * @private
+     * @description
+     * Permanently shuts down the database object.
+     */
+    $npm.utils.addReadProp(this, '$destroy', () => {
+        if (!pool) {
+            throw new Error('Invalid attempt at calling Database.$destroy()');
+        }
+        pool.removeListener('error', onError);
+        pool = null;
+    }, true);
+
     extend(createContext(), this); // extending root protocol;
 
     $npm.dbPool.register(this);

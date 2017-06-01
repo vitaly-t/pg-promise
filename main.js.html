@@ -225,8 +225,11 @@ function $main(options) {
      * @member {function} end
      * @readonly
      * @description
+     * Shuts down the entire library, as well as all the connections + pools currently allocated.
      *
-     * Shuts down all connection pools currently allocated (call it when exiting the application).
+     * The library cannot be used after making this call, or else it will throw all kinds of errors.
+     *
+     * If you ever need to terminate the library explicitly, you must do it only before exiting the application.
      *
      * Available as `pgp.end`, after initializing the library.
      */
