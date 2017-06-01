@@ -37,9 +37,9 @@ var $npm = {
 
 var pools = {}; // global list of pools
 
-function getPool(ctx, pg, db) {
+function acquirePool(ctx, pg, db) {
 
-    var cp = new $npm.ConnectionParameters(ctx.cn),
+    var p, cp = new $npm.ConnectionParameters(ctx.cn),
         ps = ctx.options.poolStrategy;
 
     if ($npm.utils.isNull(ps)) {
@@ -73,20 +73,25 @@ function getPool(ctx, pg, db) {
     }
 
     if (poolName in pools) {
-        return pools[poolName].pool;
+        p = pools[poolName];
+        db.$pool = p.pool;
+        p.dbs.push(db);
+        return p.pool;
     }
 
-    var p = new pg.Pool(ctx.cn);
+    p = new pg.Pool(ctx.cn);
     p.on('error', onError);
     pools[poolName] = {
-        pool: p, db
+        pool: p, dbs: [db]
     };
     return p;
 }
 
 function shutDown() {
     for (var p in pools) {
-        pools[p].db.$pool = null;
+        pools[p].dbs.forEach(db => {
+            db.$pool = null;
+        });
         pools[p].pool.removeListener('error', onError);
         pools[p].pool.end(); // Mr. Dead Pool :)
     }
@@ -111,7 +116,7 @@ function getAllPools() {
 }
 
 module.exports = {
-    getPool,
+    acquirePool,
     getAllPools,
     shutDown
 };
