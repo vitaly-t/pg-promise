@@ -4,8 +4,7 @@ import {IConnectionParameters} from "../../typescript/pg-subset";
 var pgp: pgPromise.IMain = pgPromise({
     capSQL: true,
     pgFormatting: true,
-    pgNative: true,
-    poolStrategy: "user"
+    pgNative: true
 });
 
 var c: pgPromise.IConfig;

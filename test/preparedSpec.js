@@ -140,14 +140,16 @@ describe("PreparedStatement", function () {
     });
 
     describe("valid, with parameters", function () {
-        var result, ps = new pgp.PreparedStatement('test', 'select count(*) from users where login = $1', ['non-existing']);
+        var result,
+            ps = new pgp.PreparedStatement('test', 'select count(*) from users where login = $1', ['non-existing']);
         beforeEach(function (done) {
             db.one(ps)
                 .then(function (data) {
                     result = data;
-                }).catch(function (error) {
-                console.log("ERROR:", error);
-            })
+                })
+                .catch(function (error) {
+                    console.log("ERROR:", error);
+                })
                 .finally(function () {
                     done();
                 });

@@ -18,7 +18,7 @@ $ npm install pg-promise@beta
 
 ---
 
-It uses the latest version of [node-postgres], automatically managing pools, according to the [Pool Strategy].
+It uses the latest version of [node-postgres], automatically allocating a new connection pool for each [Database] object.
 
 See also: [Why the `master` branch is currently using node-postgres v5.1](https://github.com/vitaly-t/pg-promise/issues/206).
 
