@@ -17,6 +17,7 @@ var links = {
     'SQLParsingError': 'https://github.com/vitaly-t/pg-minify/blob/master/lib/error.js',
     'PG': 'https://github.com/brianc/node-postgres',
     'pg': 'https://github.com/brianc/node-postgres',
+    'pg-pool': 'https://github.com/brianc/node-pg-pool',
     'Native Bindings': 'https://github.com/brianc/node-postgres#native-bindings',
     'pg-native': 'https://github.com/brianc/node-pg-native',
     'Named Parameters': 'https://github.com/vitaly-t/pg-promise#named-parameters',
