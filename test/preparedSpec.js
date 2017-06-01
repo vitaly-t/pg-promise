@@ -124,7 +124,7 @@ describe("PreparedStatement", function () {
     });
 
     describe("valid, without parameters", function () {
-        var result, ps = new pgp.PreparedStatement('test', 'select 1 as value');
+        var result, ps = new pgp.PreparedStatement('test-1', 'select 1 as value');
         beforeEach(function (done) {
             db.one(ps)
                 .then(function (data) {
@@ -141,7 +141,7 @@ describe("PreparedStatement", function () {
 
     describe("valid, with parameters", function () {
         var result,
-            ps = new pgp.PreparedStatement('test', 'select count(*) from users where login = $1', ['non-existing']);
+            ps = new pgp.PreparedStatement('test-2', 'select count(*) from users where login = $1', ['non-existing']);
         beforeEach(function (done) {
             db.one(ps)
                 .then(function (data) {
