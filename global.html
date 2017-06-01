@@ -320,7 +320,7 @@ as well as method <a href="Database.html#.func">func</a>.</p>
     <p><strong> This is a <a href="https://github.com/vitaly-t/pg-promise/tree/6.x">6.x</a> feature. </strong></p>
 <p>This type defines string values supported by property <code>poolStrategy</code> (see <a href="module-pg-promise.html">Initialization Options</a>).</p>
 <p>You can override the default (<code>server</code>) value with one of these, to select a different
-strategy for allocating new connection pools.</p>
+strategy for allocating new connection pools (see <a href="https://github.com/brianc/node-pg-pool">pg-pool</a>).</p>
 </div>
 
 
@@ -371,7 +371,8 @@ strategy for allocating new connection pools.</p>
 
             
 
-            <td class="description last"><p>Maintain a single pool regardless of the connection parameters.</p></td>
+            <td class="description last"><p>Maintains a single pool regardless of the connection parameters.</p>
+<p>This singleton pattern makes sure that only one connection pool is used throughout the process.</p></td>
         </tr>
 
     
@@ -394,7 +395,8 @@ strategy for allocating new connection pools.</p>
 
             
 
-            <td class="description last"><p>Create a separate pool for each machine hosting a database server.</p></td>
+            <td class="description last"><p>Creates a separate pool for each machine hosting a database server.</p>
+<p>A new pool is created for each unique <code>host</code> parameter in the connection.</p></td>
         </tr>
 
     
@@ -417,7 +419,8 @@ strategy for allocating new connection pools.</p>
 
             
 
-            <td class="description last"><p><strong>DEFAULT:</strong> Create a separate pool for each virtual server (machine + port).</p></td>
+            <td class="description last"><p><strong>DEFAULT:</strong> Creates a separate pool for each virtual server (machine + port).</p>
+<p>Each unique pair of <code>host</code> + <code>port</code> in the connection is allocated a separate connection pool.</p></td>
         </tr>
 
     
@@ -440,7 +443,8 @@ strategy for allocating new connection pools.</p>
 
             
 
-            <td class="description last"><p>Create a separate pool for every database being accessed.</p></td>
+            <td class="description last"><p>Creates a separate pool for every database being accessed.</p>
+<p>Each unique combination of <code>host</code> + <code>port</code> + <code>database</code> in the connection is allocated a separate connection pool.</p></td>
         </tr>
 
     
@@ -463,7 +467,8 @@ strategy for allocating new connection pools.</p>
 
             
 
-            <td class="description last"><p>Create a separate pool for each database user.</p></td>
+            <td class="description last"><p>Creates a separate pool for each database user.</p>
+<p>Each unique combination of <code>host</code> + <code>port</code> + <code>database</code> + <code>user</code> in the connection is allocated a separate connection pool.</p></td>
         </tr>
 
     
@@ -502,7 +507,7 @@ strategy for allocating new connection pools.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="pools.js.html">pools.js</a>, <a href="pools.js.html#line81">line 81</a>
+        <a href="pools.js.html">pools.js</a>, <a href="pools.js.html#line90">line 90</a>
     </li></ul></dd>
     
 
