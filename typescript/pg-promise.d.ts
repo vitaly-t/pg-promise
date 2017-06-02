@@ -214,7 +214,7 @@ declare namespace pgPromise {
         rows: any;
 
         // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.parse
-        parse(): TPreparedBasic | IPreparedStatementError;
+        parse(): TPreparedBasic|errors.PreparedStatementError;
 
         // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.toString
         toString(): string;
@@ -238,7 +238,7 @@ declare namespace pgPromise {
         rowMode: string;
 
         // API: http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html#.parse
-        parse(): TParameterizedBasic | IParameterizedQueryError;
+        parse(): TParameterizedBasic|errors.ParameterizedQueryError;
 
         // API: http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html#.toString
         toString(): string;
@@ -277,7 +277,6 @@ declare namespace pgPromise {
     }
 
     var txMode: ITXMode;
-    var errors: IErrors;
     var utils: IUtils;
     var as: IFormatting;
 
@@ -318,7 +317,7 @@ declare namespace pgPromise {
         queryResult: typeof queryResult;
         minify: typeof pgMinify;
         spex: spexLib.ISpex;
-        errors: IErrors;
+        errors: typeof errors;
         utils: IUtils;
         txMode: ITXMode;
         helpers: IHelpers;
@@ -430,92 +429,86 @@ declare namespace pgPromise {
         ctx: ITaskContext;
     }
 
-    // QueryResultError interface;
-    // API: http://vitaly-t.github.io/pg-promise/QueryResultError.html
-    interface IQueryResultError extends Error {
-
-        // standard error properties:
-        name: string;
-        message: string;
-        stack: string;
-
-        // extended properties:
-        result: pg.IResult;
-        received: number;
-        code: queryResultErrorCode;
-        query: string;
-        values: any;
-
-        // API: http://vitaly-t.github.io/pg-promise/QueryResultError.html#.toString
-        toString(): string;
-    }
-
-    // QueryFileError interface;
-    // API: http://vitaly-t.github.io/pg-promise/QueryFileError.html
-    interface IQueryFileError extends Error {
-
-        // standard error properties:
-        name: string;
-        message: string;
-        stack: string;
-
-        // extended properties:
-        file: string;
-        options: TQueryFileOptions;
-        error: pgMinify.SQLParsingError;
-
-        // API: http://vitaly-t.github.io/pg-promise/QueryFileError.html#.toString
-        toString(): string;
-    }
-
-    // PreparedStatementError interface;
-    // API: http://vitaly-t.github.io/pg-promise/PreparedStatementError.html
-    interface IPreparedStatementError extends Error {
-
-        // standard error properties:
-        name: string;
-        message: string;
-        stack: string;
-
-        // extended properties:
-        error: IQueryFileError;
-
-        // API: http://vitaly-t.github.io/pg-promise/PreparedStatementError.html#.toString
-        toString(): string;
-    }
-
-    // ParameterizedQueryError interface;
-    // API: http://vitaly-t.github.io/pg-promise/ParameterizedQueryError.html
-    interface IParameterizedQueryError extends Error {
-
-        // standard error properties:
-        name: string;
-        message: string;
-        stack: string;
-
-        // extended properties:
-        error: IQueryFileError;
-
-        // API: http://vitaly-t.github.io/pg-promise/ParameterizedQueryError.html#.toString
-        toString(): string;
-    }
-
-    // Query Result Error Code;
-    // API: http://vitaly-t.github.io/pg-promise/global.html#queryResultErrorCode
-    enum queryResultErrorCode {
-        noData = 0,
-        notEmpty = 1,
-        multiple = 2
-    }
-
     // Errors namespace
     // API: http://vitaly-t.github.io/pg-promise/errors.html
-    interface IErrors {
-        QueryResultError: IQueryResultError;
-        queryResultErrorCode: typeof queryResultErrorCode;
-        QueryFileError: IQueryFileError;
-        PreparedStatementError: IPreparedStatementError;
-        ParameterizedQueryError: IParameterizedQueryError;
+    namespace errors {
+        // QueryResultError interface;
+        // API: http://vitaly-t.github.io/pg-promise/QueryResultError.html
+        class QueryResultError extends Error {
+
+            // standard error properties:
+            name: string;
+            message: string;
+            stack: string;
+
+            // extended properties:
+            result: pg.IResult;
+            received: number;
+            code: queryResultErrorCode;
+            query: string;
+            values: any;
+
+            // API: http://vitaly-t.github.io/pg-promise/QueryResultError.html#.toString
+            toString(): string;
+        }
+
+        // QueryFileError interface;
+        // API: http://vitaly-t.github.io/pg-promise/QueryFileError.html
+        class QueryFileError extends Error {
+
+            // standard error properties:
+            name: string;
+            message: string;
+            stack: string;
+
+            // extended properties:
+            file: string;
+            options: TQueryFileOptions;
+            error: pgMinify.SQLParsingError;
+
+            // API: http://vitaly-t.github.io/pg-promise/QueryFileError.html#.toString
+            toString(): string;
+        }
+
+        // PreparedStatementError interface;
+        // API: http://vitaly-t.github.io/pg-promise/PreparedStatementError.html
+        class PreparedStatementError extends Error {
+
+            // standard error properties:
+            name: string;
+            message: string;
+            stack: string;
+
+            // extended properties:
+            error: QueryFileError;
+
+            // API: http://vitaly-t.github.io/pg-promise/PreparedStatementError.html#.toString
+            toString(): string;
+        }
+
+        // ParameterizedQueryError interface;
+        // API: http://vitaly-t.github.io/pg-promise/ParameterizedQueryError.html
+        class ParameterizedQueryError extends Error {
+
+            // standard error properties:
+            name: string;
+            message: string;
+            stack: string;
+
+            // extended properties:
+            error: QueryFileError;
+
+            // API: http://vitaly-t.github.io/pg-promise/ParameterizedQueryError.html#.toString
+            toString(): string;
+        }
+
+        // Query Result Error Code;
+        // API: http://vitaly-t.github.io/pg-promise/global.html#queryResultErrorCode
+        enum queryResultErrorCode {
+            noData = 0,
+            notEmpty = 1,
+            multiple = 2
+        }
     }
 
     // Transaction Isolation Level;
