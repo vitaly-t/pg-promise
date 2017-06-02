@@ -18,7 +18,8 @@ $ npm install pg-promise@beta
 
 ---
 
-It uses the latest version of [node-postgres], automatically allocating a new connection pool for each [Database] object.
+* It uses the latest version of [node-postgres], automatically allocating a new connection pool for each [Database] object.
+* Version 6.x of the library is 100% backward compatible with version 5.x, and thus requires no code changes.
 
 See also: [Why the `master` branch is currently using node-postgres v5.1](https://github.com/vitaly-t/pg-promise/issues/206).
 
