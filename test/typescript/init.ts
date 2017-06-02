@@ -24,6 +24,7 @@ var connection1: string = <string>db.$cn;
 var connection2: IConnectionParameters = <IConnectionParameters>db.$cn;
 
 var context: any = db.$dc;
+var pool: any = db.$pool;
 
 db.one('');
 

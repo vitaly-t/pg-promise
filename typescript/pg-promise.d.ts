@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.8.0 or later.
+// Requires pg-promise v6.0.10 or later.
 ////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -299,6 +299,10 @@ declare namespace pgPromise {
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#$dc
         readonly $dc: any;
+
+        // Pool object as provided by pg-pool;
+        // API: https://github.com/brianc/node-pg-pool
+        readonly $pool: any;
     }
 
     type IConfig = pg.IConnectionParameters;
