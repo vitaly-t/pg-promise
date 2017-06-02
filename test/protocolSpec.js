@@ -7,7 +7,8 @@ var header = require('./db/header');
 var promise = header.defPromise;
 var options = {
     promiseLib: promise,
-    noLocking: true
+    noLocking: true,
+    noWarnings: true
 };
 var testDC = 'test_DC_123';
 var dbHeader = header(options, testDC);
@@ -295,6 +296,7 @@ describe("Protocol Extension", function () {
         var result, dcParam, THIS, ctx, counter = 0;
         var pgpTest = header({
             promiseLib: header.defPromise,
+            noWarnings: true,
             extend: function (obj, dc) {
                 dcParam = dc;
                 ctx = obj;
@@ -327,6 +329,7 @@ describe("Protocol Extension", function () {
         var result, THIS, ctx, counter = 0;
         var pgpTest = header({
             promiseLib: header.defPromise,
+            noWarnings: true,
             extend: function (obj) {
                 counter++;
                 if (counter === 2) {

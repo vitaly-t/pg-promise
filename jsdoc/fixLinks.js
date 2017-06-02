@@ -11,8 +11,8 @@ var links = {
     'pg-query-stream': 'https://github.com/brianc/node-pg-query-stream',
     'QueryStream': 'https://github.com/brianc/node-pg-query-stream/blob/master/index.js#L5',
     'pg.Client': 'https://github.com/brianc/node-postgres/wiki/Client',
-    'BEGIN': 'http://www.postgresql.org/docs/9.5/static/sql-begin.html',
-    'Transaction Isolation': 'http://www.postgresql.org/docs/9.5/static/transaction-iso.html',
+    'BEGIN': 'http://www.postgresql.org/docs/9.6/static/sql-begin.html',
+    'Transaction Isolation': 'http://www.postgresql.org/docs/9.6/static/transaction-iso.html',
     'pg-minify': 'https://github.com/vitaly-t/pg-minify',
     'SQLParsingError': 'https://github.com/vitaly-t/pg-minify/blob/master/lib/error.js',
     'PG': 'https://github.com/brianc/node-postgres',
@@ -23,8 +23,8 @@ var links = {
     'tags': 'https://github.com/vitaly-t/pg-promise/wiki/tags',
     'ES6 generator': 'https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*',
     'Performance Boost': 'https://github.com/vitaly-t/pg-promise/wiki/Performance-Boost',
-    'Prepared Statement': 'http://www.postgresql.org/docs/9.5/static/sql-prepare.html',
-    'Prepared Statements': 'http://www.postgresql.org/docs/9.5/static/sql-prepare.html',
+    'Prepared Statement': 'http://www.postgresql.org/docs/9.6/static/sql-prepare.html',
+    'Prepared Statements': 'http://www.postgresql.org/docs/9.6/static/sql-prepare.html',
     'Custom Type Formatting': 'https://github.com/vitaly-t/pg-promise#custom-type-formatting'
 };
 

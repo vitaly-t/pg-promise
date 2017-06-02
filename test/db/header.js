@@ -25,12 +25,15 @@ function main(options, dc) {
     var pgNative = eval(process.env.PG_NATIVE);
     if (pgNative) {
         if (options && typeof options === 'object') {
-            if (!('pgNative' in options))
+            if (!('pgNative' in options)) {
                 options.pgNative = true;
+                options.noWarnings = true;
+            }
         } else {
             if (!options) {
                 options = {
-                    pgNative: true
+                    pgNative: true,
+                    noWarnings: true
                 };
             }
         }

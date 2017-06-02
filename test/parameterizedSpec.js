@@ -8,7 +8,8 @@ var pgResult = require('pg/lib/result');
 var header = require('./db/header');
 var promise = header.defPromise;
 var options = {
-    promiseLib: promise
+    promiseLib: promise,
+    noWarnings: true
 };
 var dbHeader = header(options);
 var pgp = dbHeader.pgp;
@@ -165,7 +166,7 @@ describe("ParameterizedQuery", function () {
 
         describe("successful", function () {
             var f = path.join(__dirname, './sql/simple.sql');
-            var qf = new pgp.QueryFile(f, {compress: true});
+            var qf = new pgp.QueryFile(f, {compress: true, noWarnings: true});
             var pq = new pgp.ParameterizedQuery(qf);
             var result = pq.parse();
             expect(result && typeof result === 'object').toBeTruthy();

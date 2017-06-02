@@ -8,7 +8,8 @@ var header = require('./db/header');
 var promise = header.defPromise;
 
 var options = {
-    promiseLib: promise
+    promiseLib: promise,
+    noWarnings: true
 };
 
 var dbHeader = header(options);
@@ -16,7 +17,7 @@ var pgp = dbHeader.pgp;
 var db = dbHeader.db;
 
 if (options.pgNative) {
-    return; // streams do not work with native bindings;
+    process.exit(0); // streams do not work with native bindings;
 }
 
 function dummy() {

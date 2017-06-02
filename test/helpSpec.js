@@ -6,7 +6,8 @@ var header = require('./db/header');
 var promise = header.defPromise;
 var options = {
     promiseLib: promise,
-    capSQL: false
+    capSQL: false,
+    noWarnings: true
 };
 var pgp = header(options).pgp;
 
@@ -174,6 +175,14 @@ describe("UPDATE", function () {
         });
     });
 
+    describe("emptyUpdate", function () {
+        var cs = new helpers.ColumnSet(['?id', '?val', '?msg'], {table: 'table'});
+        it("must return the option value", function () {
+            expect(helpers.update(dataSingle, cs, null, {emptyUpdate: 123})).toBe(123);
+            expect(helpers.update(dataMulti, cs, null, {emptyUpdate: 123})).toBe(123);
+        });
+    });
+
     describe("negative", function () {
         it("must throw on invalid data", function () {
             var error = new TypeError("Invalid parameter 'data' specified.");
@@ -281,6 +290,7 @@ describe("TableName", function () {
     describe("custom-type formatting", function () {
         var t = new helpers.TableName({table: 'table', schema: 'schema'});
         it("must return the full name", function () {
+            expect(t.formatDBType(t)).toBe(t.name);
             expect(t.formatDBType()).toBe(t.name);
         });
     });
@@ -862,7 +872,7 @@ describe("method 'concat'", function () {
         });
         describe("with QueryFile", function () {
             it("must support mixed types correctly", function () {
-                var qf = new QueryFile(path.join(__dirname, './sql/allUsers.sql'), {minify: true});
+                var qf = new QueryFile(path.join(__dirname, './sql/allUsers.sql'), {minify: true, noWarnings: true});
                 expect(helpers.concat(['one', {query: 'two'}, qf])).toBe('one;two;select * from users');
             });
         });

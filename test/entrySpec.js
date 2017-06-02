@@ -9,7 +9,8 @@ var supportsPromise = typeof(Promise) !== 'undefined';
 var header = require('./db/header');
 var promise = header.defPromise;
 var options = {
-    promiseLib: promise
+    promiseLib: promise,
+    noWarnings: true
 };
 var dbHeader = header(options);
 var pgp = dbHeader.pgp;
@@ -24,7 +25,8 @@ describe("Library entry function", function () {
 
     afterEach(function () {
         header({
-            promiseLib: header.defPromise
+            promiseLib: header.defPromise,
+            noWarnings: true
         });
     });
 
@@ -59,7 +61,8 @@ describe("Library entry function", function () {
         var adapter = new PromiseAdapter(create, resolve, reject);
         it("must accept custom promise", function () {
             var lib = header({
-                promiseLib: adapter
+                promiseLib: adapter,
+                noWarnings: true
             });
             expect(lib.pgp instanceof Function).toBe(true);
         })
@@ -68,7 +71,8 @@ describe("Library entry function", function () {
             var result;
             beforeEach(function (done) {
                 var lib = header({
-                    promiseLib: adapter
+                    promiseLib: adapter,
+                    noWarnings: true
                 });
                 lib.db.one("select 1 as value")
                     .then(function (data) {
@@ -106,7 +110,8 @@ describe("Library entry function", function () {
                     promiseLib: {
                         resolve: dummy,
                         reject: dummy
-                    }
+                    },
+                    noWarnings: true
                 });
             expect(typeof(lib.pgp)).toBe('function');
         })
@@ -120,7 +125,8 @@ describe("Library entry function", function () {
             fakePromiseLib.resolve = dummy;
             fakePromiseLib.reject = dummy;
             var lib = header({
-                promiseLib: fakePromiseLib
+                promiseLib: fakePromiseLib,
+                noWarnings: true
             });
             expect(typeof(lib.pgp)).toBe('function');
         })
@@ -144,15 +150,15 @@ describe("Library entry function", function () {
         });
     });
 
-    describe("with invalid options parameter", function () {
-        var error = "Invalid initialization options.";
+    describe('with invalid options parameter', function () {
+        var errBody = 'Invalid initialization options: ';
         it("must throw an error", function () {
-            expect(function () {
+            expect(() => {
                 header(123);
-            }).toThrow(error);
-            expect(function () {
+            }).toThrow(new TypeError(errBody + '123'));
+            expect(() => {
                 header('hello');
-            }).toThrow(error);
+            }).toThrow(new TypeError(errBody + '"hello"'));
         });
     });
 
@@ -191,7 +197,7 @@ describe("Library entry function", function () {
             function (data) {
                 return promise.resolve(data);
             },
-            function (reason) {
+            function () {
                 return promise.reject('reject-two');
             }
         ];
@@ -201,14 +207,14 @@ describe("Library entry function", function () {
         var result;
 
         beforeEach(function (done) {
-            var pg1 = header({promiseLib: one}), db1 = pg1.db;
-            var pg2 = header({promiseLib: two}), db2 = pg2.db;
-            db.task(function (t) {
+            var pg1 = header({promiseLib: one, noWarnings: true}), db1 = pg1.db;
+            var pg2 = header({promiseLib: two, noWarnings: true}), db2 = pg2.db;
+            db.task(t => {
                 return t.batch([
                     db1.query('select $1', []), db2.query('select $1', [])
                 ])
             })
-                .catch(function (error) {
+                .catch(error => {
                     result = error;
                     done();
                 });

@@ -8,6 +8,13 @@
     "sourceType": "module"
   },
   "rules": {
+    "no-else-return": "error",
+    "no-multi-spaces": "error",
+    "no-whitespace-before-property": "error",
+    "camelcase": "error",
+    "new-cap": "error",
+    "no-console": "error",
+    "comma-dangle": "error",
     "quotes": [
       "error",
       "single"

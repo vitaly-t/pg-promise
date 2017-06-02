@@ -531,13 +531,14 @@ describe("Method as.func", function () {
         })).toBe("'one',one");
 
         // testing function-object context;
-        expect(pgp.as.format("${summ}", {
+        expect(pgp.as.format("${summ1} + ${summ2}", {
             val1: 1,
             val2: 2,
-            summ: function () {
+            summ1: function () {
                 return this.val1 + this.val2; // `this` must work here;
-            }
-        })).toBe("3");
+            },
+            summ2: a => a.val2 * 3
+        })).toBe("3 + 6");
 
         // the same object context must be
         // passed into every sub-function;
@@ -550,6 +551,10 @@ describe("Method as.func", function () {
         }, false, {
             test: "Hello!"
         })).toBe("'Hello!'");
+
+        expect(pgp.as.func(dummy, false, '')).toBe('null');
+
+        expect(pgp.as.func(a => a, false, 123)).toBe('123');
 
         /////////////////////////////
         // negative tests;
@@ -571,14 +576,6 @@ describe("Method as.func", function () {
                 throw "internal error";
             });
         }).toThrow("internal error");
-
-        expect(function () {
-            pgp.as.func(dummy, false, '');
-        }).toThrow(new Error("'' is not an object."));
-
-        expect(function () {
-            pgp.as.func(dummy, false, 0);
-        }).toThrow(new Error("'0' is not an object."));
 
     });
 });
@@ -825,7 +822,7 @@ describe("Method as.format", function () {
 
     describe("QueryFile - positive", function () {
         it("must format the object", function () {
-            var qf = new pgp.QueryFile(sqlParams, {debug: false, minify: true});
+            var qf = new pgp.QueryFile(sqlParams, {debug: false, minify: true, noWarnings: true});
             expect(pgp.as.format(qf, {
                 column: 'col',
                 schema: 'sc',
@@ -834,7 +831,7 @@ describe("Method as.format", function () {
         });
 
         it("must format the type as a parameter", function () {
-            var qf = new pgp.QueryFile(sqlSimple, {debug: false, minify: true});
+            var qf = new pgp.QueryFile(sqlSimple, {debug: false, minify: true, noWarnings: true});
             expect(pgp.as.format('$1', [qf])).toBe("'select 1;'");
             expect(pgp.as.format('$1^', qf)).toBe("select 1;");
             expect(pgp.as.format('$1#', qf)).toBe("select 1;");
@@ -964,9 +961,7 @@ describe("Named Parameters", function () {
             two: true,
             three: -123.45,
             four: dateSample,
-            five: function () {
-                return "text";
-            }
+            five: () => "text"
         })).toBe("null,true,-123.45,'" + $pgUtils.prepareValue(dateSample) + "','text'");
     });
 
@@ -1088,7 +1083,7 @@ describe("Format Modifiers", function () {
 
 describe("Custom Format", function () {
 
-    function MyType(v) {
+    function MyType1(v) {
         this.value = v;
         this._rawDBType = true;
         this.formatDBType = function () {
@@ -1096,17 +1091,32 @@ describe("Custom Format", function () {
         }
     }
 
-    var test = new MyType(12.3);
+    function MyType2(v) {
+        this.value = v;
+        this._rawDBType = true;
+        this.formatDBType = a => a.value.toFixed(2);
+    }
+
+    var test1 = new MyType1(12.3);
+    var test2 = new MyType2(56.7);
+
+    describe('as formatting type', function () {
+        it('must pass the values in correctly', function () {
+            expect(pgp.as.format(test2)).toBe("56.70");
+        });
+    });
 
     describe("as array value", function () {
         it("must convert correctly", function () {
-            expect(pgp.as.format("$1", [test])).toBe("12.3000");
+            expect(pgp.as.format("$1", [test1])).toBe("12.3000");
+            expect(pgp.as.format("$1", [test2])).toBe("56.70");
         });
     });
 
     describe("as one value", function () {
         it("must covert correctly", function () {
-            expect(pgp.as.format("$1", test)).toBe("12.3000");
+            expect(pgp.as.format("$1", test1)).toBe("12.3000");
+            expect(pgp.as.format("$1", test2)).toBe("56.70");
         });
     });
 
@@ -1132,7 +1142,7 @@ describe("Custom Format", function () {
     describe("for Array override", function () {
         beforeEach(function () {
             Array.prototype.formatDBType = function () {
-                return new MyType(88); // testing recursive conversion;
+                return new MyType1(88); // testing recursive conversion;
             }
         });
         it("must covert correctly", function () {
