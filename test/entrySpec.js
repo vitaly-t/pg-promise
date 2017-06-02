@@ -33,7 +33,7 @@ describe("Library entry function", function () {
     describe("without any promise override", function () {
         it("must return a valid library object", function () {
             if (supportsPromise) {
-                var lib = header();
+                var lib = header({noWarnings: true});
                 expect(typeof(lib.pgp)).toBe('function');
             } else {
                 expect(function () {

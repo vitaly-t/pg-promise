@@ -4,7 +4,6 @@
 
 var path = require('path');
 var fs = require('fs');
-var pgResult = require('pg/lib/result');
 var header = require('./db/header');
 var promise = header.defPromise;
 var options = {
@@ -121,9 +120,6 @@ describe("ParameterizedQuery", function () {
             db.one(pq)
                 .then(function (data) {
                     result = data;
-                })
-                .catch(function (error) {
-                    console.log("ERROR:", error);
                 })
                 .finally(function () {
                     done();

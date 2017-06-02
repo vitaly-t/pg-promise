@@ -15,15 +15,15 @@ var pgp: pgPromise.IMain = pgPromise({
 var db = pgp('connection');
 
 var pgpExt = pgPromise<Extensions>({
-    extend: function (obj: pgPromise.IDatabase<Extensions>&Extensions) {
+    extend: function (obj: pgPromise.IDatabase<Extensions> & Extensions) {
         obj.findUser = (userId: number) => {
             return obj.one('', userId);
         }
     }
 });
 
-var dbExt1 = <pgPromise.IDatabase<Extensions>&Extensions>pgp('connection');
-var dbExt2 = <pgPromise.IDatabase<Extensions>&Extensions>pgpExt('connection');
+var dbExt1 = <pgPromise.IDatabase<Extensions> & Extensions>pgp('connection');
+var dbExt2 = <pgPromise.IDatabase<Extensions> & Extensions>pgpExt('connection');
 var dbExt3 = pgpExt<Extensions>('connection');
 
 dbExt1.findUser(123).then();

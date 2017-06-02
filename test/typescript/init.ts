@@ -18,12 +18,12 @@ interface Test {
     hello: string;
 }
 
-var db = <pgPromise.IDatabase<Test>&Test>pgp('connection');
+var db = <pgPromise.IDatabase<Test> & Test>pgp('connection');
 
-var connection1:string = <string>db.$cn;
-var connection2:IConnectionParameters = <IConnectionParameters>db.$cn;
+var connection1: string = <string>db.$cn;
+var connection2: IConnectionParameters = <IConnectionParameters>db.$cn;
 
-var context:any = db.$dc;
+var context: any = db.$dc;
 
 db.one('');
 
