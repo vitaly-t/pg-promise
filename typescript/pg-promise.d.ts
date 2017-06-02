@@ -214,7 +214,7 @@ declare namespace pgPromise {
         rows: any;
 
         // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.parse
-        parse(): TPreparedBasic|errors.PreparedStatementError;
+        parse(): TPreparedBasic | errors.PreparedStatementError;
 
         // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html#.toString
         toString(): string;
@@ -238,7 +238,7 @@ declare namespace pgPromise {
         rowMode: string;
 
         // API: http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html#.parse
-        parse(): TParameterizedBasic|errors.ParameterizedQueryError;
+        parse(): TParameterizedBasic | errors.ParameterizedQueryError;
 
         // API: http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html#.toString
         toString(): string;
