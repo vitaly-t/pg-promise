@@ -26,5 +26,5 @@ db.one({
     text: qf
 });
 
-var test1 = <typeof pgPromise.errors.PreparedStatementError>ps1.parse();
+var test1 = <pgPromise.errors.PreparedStatementError>ps1.parse();
 var file = test1.error.file;
