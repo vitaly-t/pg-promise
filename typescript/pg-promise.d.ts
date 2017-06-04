@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.8.0 or later.
+// Requires pg-promise v5.8.3 or later.
 ////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -168,15 +168,29 @@ declare namespace pgPromise {
         constructor(columns: Object, options?: TColumnSetOptions);
 
         // these are all read-only:
+
+        // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#columns
         columns: Array<Column>;
+
+        // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#names
         names: string;
+
+        // http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#table
         table: TableName;
+
+        // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#variables
         variables: string;
 
+        // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#.prepare
+        assign(source?: Object): string;
+
+        // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#.extend
         extend(columns: Column | ColumnSet | Array<string | TColumnConfig | Column>): ColumnSet;
 
+        // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#.merge
         merge(columns: Column | ColumnSet | Array<string | TColumnConfig | Column>): ColumnSet;
 
+        // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#.prepare
         prepare(obj: Object): Object;
 
         // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#.toString
@@ -259,9 +273,6 @@ declare namespace pgPromise {
 
         // API: http://vitaly-t.github.io/pg-promise/QueryFile.html#options
         options: any;
-
-        // API: http://vitaly-t.github.io/pg-promise/QueryFile.html#query
-        query: string;
 
         // API: http://vitaly-t.github.io/pg-promise/QueryFile.html#.prepare
         prepare(): void;

@@ -115,14 +115,20 @@ describe("INSERT", function () {
     });
 });
 
-describe("UPDATE", function () {
+describe('UPDATE', function () {
 
-    describe("single:", function () {
-        describe("direct data", function () {
-            it("must return all properties correctly", function () {
+    describe('single:', function () {
+        describe('direct data', function () {
+            it('must return all properties correctly', function () {
                 var cs = ['?val', {name: 'msg', cast: 'text'}, {name: 'extra', def: 555}];
                 expect(helpers.update(dataSingle, cs, 'table')).toBe('update "table" set "msg"=\'test\'::text,"extra"=555');
                 expect(helpers.update(dataSingle, null, 'table')).toBe('update "table" set "val"=123,"msg"=\'test\'');
+            });
+        });
+        describe('skipping columns', () => {
+            var cs = ['val', {name: 'msg', skip: () => true}];
+            it('must work', () => {
+                expect(helpers.update(dataSingle, cs, 'table')).toBe('update "table" set "val"=123');
             });
         });
     });
@@ -577,11 +583,17 @@ describe("ColumnSet", function () {
         var cs = new helpers.ColumnSet(dataSingle);
         var csEmpty = new helpers.ColumnSet([]);
         it("must return the right update string", function () {
-            expect(cs.assign(dataSingle)).toBe('"val"=${val},"msg"=${msg}');
-            expect(csEmpty.assign(dataSingle)).toBe('');
+            expect(cs.assign({source: dataSingle})).toBe('"val"=${val},"msg"=${msg}');
+            expect(csEmpty.assign({source: dataSingle})).toBe('');
+        });
+        it("must return the right string without source", function () {
+            var specialCS = new helpers.ColumnSet([{name: 'val', skip: () => false}, 'msg']);
+            expect(specialCS.assign()).toBe('"val"=${val},"msg"=${msg}');
+            expect(specialCS.assign(null)).toBe('"val"=${val},"msg"=${msg}');
+            expect(specialCS.assign(123)).toBe('"val"=${val},"msg"=${msg}');
         });
         it("must reuse the data", function () {
-            expect(cs.assign(dataSingle)).toBe('"val"=${val},"msg"=${msg}');
+            expect(cs.assign({source: dataSingle})).toBe('"val"=${val},"msg"=${msg}');
         });
         it("must handle cnd and skip", function () {
             var cs1 = new helpers.ColumnSet(['?val', 'msg']);
@@ -594,11 +606,17 @@ describe("ColumnSet", function () {
                     return true;
                 }
             }]);
-            expect(cs1.assign(dataSingle)).toBe('"msg"=${msg}');
-            expect(cs2.assign(dataSingle)).toBe('"val"=${val},"msg"=${msg}');
-            expect(cs3.assign(dataSingle)).toBe('"val"=${val}');
+            expect(cs1.assign({source: dataSingle})).toBe('"msg"=${msg}');
+            expect(cs2.assign({source: dataSingle})).toBe('"val"=${val},"msg"=${msg}');
+            expect(cs3.assign({source: dataSingle})).toBe('"val"=${val}');
         });
 
+        describe('with alias', () => {
+            var cs = new helpers.ColumnSet(['val', 'msg']);
+            it('must escape correctly', () => {
+                expect(cs.assign({source: dataSingle, alias: 'a'})).toBe('"a"."val"=${val},"a"."msg"=${msg}');
+            });
+        });
     });
 
     describe("method 'prepare'", function () {
@@ -719,6 +737,10 @@ describe("method 'sets'", function () {
         it("must skip conditional columns", function () {
             var cs = new helpers.ColumnSet(['?val', 'msg']);
             expect(helpers.sets(dataSingle, cs)).toBe('"msg"=\'test\'');
+        });
+        it("must skip dynamic columns correctly", function () {
+            var cs = new helpers.ColumnSet(['val', {name: 'msg', skip: () => true}]);
+            expect(helpers.sets(dataSingle, cs)).toBe('"val"=123');
         });
         it("must apply sql casting correctly", function () {
             var cs = new helpers.ColumnSet([{name: 'msg', cast: 'text'}]);
