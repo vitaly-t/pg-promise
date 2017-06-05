@@ -155,6 +155,18 @@ describe("Library entry function", function () {
         });
     });
 
+    describe("with defaults for pg", function () {
+        it("must return a valid library object", function () {
+            var lib = header({
+                defaults: {
+                    parseInputDatesAsUTC: true
+                }
+            });
+            expect(typeof(lib.pgp)).toBe('function');
+            expect(lib.pgp.pg.defaults.parseInputDatesAsUTC).toBe(true);
+        })
+    });
+
     describe("with invalid options", function () {
         var txt;
         beforeEach(function (done) {
