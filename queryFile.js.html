@@ -239,11 +239,13 @@ function QueryFile(file, options) {
      * @type {string}
      * @default undefined
      * @readonly
+     * @private
      * @summary Prepared query string.
      * @description
      * When property {@link QueryFile#error error} is set, the query is `undefined`.
      *
-     * This property is primarily for internal use by the library.
+     * **IMPORTANT:** This property is for internal use by the library only, never use this
+     * property directly from your code.
      */
     Object.defineProperty(this, 'query', {
         get: () => sql
@@ -256,8 +258,6 @@ function QueryFile(file, options) {
      * @readonly
      * @description
      * When in an error state, it is set to a {@link errors.QueryFileError QueryFileError} object. Otherwise, it is `undefined`.
-     *
-     * This property is primarily for internal use by the library.
      */
     Object.defineProperty(this, 'error', {
         get: () => error

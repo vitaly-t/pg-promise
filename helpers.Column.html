@@ -108,7 +108,7 @@
             <td class="description last"><p>Column details, depending on the type.</p>
 <p>When it is a string, it is expected to contain a name for both the column and the source property, assuming that the two are the same.
 The name must adhere to JavaScript syntax for variable names. The name can be appended with any format modifier as supported by
-<a href="formatting.html#.format">as.format</a> (<code>^</code>, <code>~</code>, <code>#</code>, <code>:csv</code>, <code>:json</code>, <code>:name</code>, <code>:raw</code>, <code>:value</code>), which is then removed from the name and put
+<a href="formatting.html#.format">as.format</a> (<code>^</code>, <code>~</code>, <code>#</code>, <code>:csv</code>, <code>:json</code>, <code>:alias</code>, <code>:name</code>, <code>:raw</code>, <code>:value</code>), which is then removed from the name and put
 into property <code>mod</code>. If the name starts with <code>?</code>, it is removed, while setting flag <code>cnd</code> = <code>true</code>.</p>
 <p>If the string doesn't adhere to the above requirements, the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Invalid column syntax</code>.</p>
 <p>When <code>col</code> is a simple <a href="helpers.html#.ColumnConfig">ColumnConfig</a>-like object, it is used as an input configurator to set all the properties
@@ -238,7 +238,7 @@ unless <code>prop</code> is specified, in which case <code>name</code> represent
 
             
 
-            <td class="description last"><p>Formatting modifier, as supported by method <a href="formatting.html#.format">as.format</a>: <code>^</code>, <code>~</code>, <code>#</code>, <code>:csv</code>, <code>:json</code>, <code>:name</code>, <code>:raw</code>, <code>:value</code>.</p></td>
+            <td class="description last"><p>Formatting modifier, as supported by method <a href="formatting.html#.format">as.format</a>: <code>^</code>, <code>~</code>, <code>#</code>, <code>:csv</code>, <code>:json</code>, <code>:alias</code>, <code>:name</code>, <code>:raw</code>, <code>:value</code>.</p></td>
         </tr>
 
     

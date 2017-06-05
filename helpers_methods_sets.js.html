@@ -95,7 +95,7 @@ function sets(data, columns) {
         columns = new $npm.ColumnSet(columns || data);
     }
 
-    return $npm.format(columns.assign(data), columns.prepare(data));
+    return $npm.format(columns.assign({source: data}), columns.prepare(data));
 }
 
 module.exports = sets;

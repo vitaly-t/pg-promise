@@ -332,7 +332,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="helpers.ColumnSet.html#columns">columns</a>,<a href="helpers.ColumnSet.html#names">names</a>,<a href="helpers.ColumnSet.html#table">table</a>,<a href="helpers.ColumnSet.html#variables">variables</a> |<a href="helpers.ColumnSet.html#.extend">extend</a>,<a href="helpers.ColumnSet.html#.merge">merge</a>,<a href="helpers.ColumnSet.html#.prepare">prepare</a></li>
+            <li><a href="helpers.ColumnSet.html#columns">columns</a>,<a href="helpers.ColumnSet.html#names">names</a>,<a href="helpers.ColumnSet.html#table">table</a>,<a href="helpers.ColumnSet.html#variables">variables</a> |<a href="helpers.ColumnSet.html#.assign">assign</a>,<a href="helpers.ColumnSet.html#.extend">extend</a>,<a href="helpers.ColumnSet.html#.merge">merge</a>,<a href="helpers.ColumnSet.html#.prepare">prepare</a></li>
         </ul>
     </dd>
     
@@ -450,7 +450,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line192">line 192</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line193">line 193</a>
     </li></ul></dd>
     
 
@@ -523,7 +523,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line234">line 234</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line235">line 235</a>
     </li></ul></dd>
     
 
@@ -604,7 +604,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line180">line 180</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line181">line 181</a>
     </li></ul></dd>
     
 
@@ -677,7 +677,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line257">line 257</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line258">line 258</a>
     </li></ul></dd>
     
 
@@ -703,6 +703,276 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".assign"><span class="type-signature">(static) </span>assign<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p><strong> Added in v5.9.0 </strong></p>
+<p>Returns a formatting template of SET assignments, either generic or for a single object.</p>
+<p>The method is optimized to cache the output string when there are no columns that can be skipped dynamically.</p>
+<p>This method is primarily for internal use, that's why it does not validate the input.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Assignment/formatting options.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Source - a single object that contains values for columns.</p>
+<p>The object is only necessary to correctly apply the logic of skipping columns dynamically, based on the source data
+and the rules defined in the <a href="helpers.ColumnSet.html">ColumnSet</a>. If, however, you do not care about that, then you do not need to specify any object.</p>
+<p>Note that even if you do not specify the object, the columns marked as conditional (<code>cnd: true</code>) will always be skipped.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>prefix</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Alias prefix to be added before each column.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line281">line 281</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Comma-separated list of variable-to-column assignments.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var cs = new pgp.helpers.ColumnSet([    '?first', // = {name: 'first', cnd: true}    'second:json',    {name: 'third', mod: ':raw', cast: 'text'}]);cs.assign();//=> "second"=${second:json},"third"=${third:raw}::textcs.assign({prefix: 'a b c'});//=> "a b c"."second"=${second:json},"a b c"."third"=${third:raw}::text</code></pre>
+
+
 
         
             
@@ -820,7 +1090,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line321">line 321</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line355">line 355</a>
     </li></ul></dd>
     
 
@@ -996,7 +1266,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line385">line 385</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line419">line 419</a>
     </li></ul></dd>
     
 
@@ -1069,10 +1339,9 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
 
 <div class="description">
     <p><strong>Added in v5.5.6</strong></p>
-<p>Prepares a source object to be formatted, by cloning it and applying the rules
-as set by the columns configuration.</p>
-<p>This method is primarily for internal use, and as such it does not validate
-its input parameters.</p>
+<p>Prepares a source object to be formatted, by cloning it and applying the rules as set by the
+columns configuration.</p>
+<p>This method is primarily for internal use, that's why it does not validate the input parameters.</p>
 </div>
 
 
@@ -1167,7 +1436,7 @@ intended primarily for internal use by the library.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line465">line 465</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line499">line 499</a>
     </li></ul></dd>
     
 
@@ -1343,7 +1612,7 @@ with all properties and values set according to the columns configuration.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line523">line 523</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line556">line 556</a>
     </li></ul></dd>
     
 

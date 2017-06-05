@@ -70,6 +70,29 @@
 
         <tr>
             
+                <td class="name"><code>alias</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="formatting.html#.alias">alias</a> - formats an SQL alias.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>name</code></td>
             
 
@@ -86,7 +109,7 @@
 
             
 
-            <td class="description last"><p><a href="formatting.html#.name">name</a> - formats an SQL name.</p></td>
+            <td class="description last"><p><a href="formatting.html#.name">name</a> - formats an SQL Name/Identifier.</p></td>
         </tr>
 
     
@@ -286,7 +309,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line255">line 255</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line263">line 263</a>
     </li></ul></dd>
     
 
@@ -316,6 +339,174 @@
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".alias"><span class="type-signature">(static) </span>alias<span class="signature">(name)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p><strong> Added in v5.9.0 </strong></p>
+<p>Simpler, non-verbose version of method <a href="formatting.html#.name">name</a>, to handle only a simple string-identifier
+that's used as an SQL alias, i.e. it doesn't support <code>*</code> or an array/object of names, which in the context of
+an SQL alias would be incorrect.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>SQL alias name, or a function that returns it.</p>
+<p>The name must be at least 1 character long.</p>
+<p>If <code>name</code> doesn't resolve into a non-empty string, it throws <a href="external-TypeError.html">TypeError</a> = <code>Invalid sql alias: ...</code></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line394">line 394</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="formatting.html#.name">name</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The SQL alias, properly escaped for compliance with the PostgreSQL standard for SQL names and identifiers.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
 
         
             
@@ -426,7 +617,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line519">line 519</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line553">line 553</a>
     </li></ul></dd>
     
 
@@ -578,7 +769,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line439">line 439</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line473">line 473</a>
     </li></ul></dd>
     
 
@@ -786,7 +977,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line411">line 411</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line445">line 445</a>
     </li></ul></dd>
     
 
@@ -942,7 +1133,7 @@ according to their type.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line541">line 541</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line575">line 575</a>
     </li></ul></dd>
     
 
@@ -1150,7 +1341,7 @@ wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line457">line 457</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line491">line 491</a>
     </li></ul></dd>
     
 
@@ -1238,6 +1429,7 @@ not allowed to be <code>null</code> or <code>undefined</code>, or the method wil
 </li>
 <li>JSON override ends with <code>:json</code> to format the value of any type as a JSON string</li>
 <li>CSV override ends with <code>:csv</code> to format an array as a properly escaped comma-separated list of values.</li>
+<li>Version 5.9.0 added support for <code>:alias</code> - non-verbose SQL Name escaping.</li>
 </ul>
 </div>
 
@@ -1539,7 +1731,7 @@ and to return the actual default value:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line607">line 607</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line641">line 641</a>
     </li></ul></dd>
     
 
@@ -1781,7 +1973,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line578">line 578</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line612">line 612</a>
     </li></ul></dd>
     
 
@@ -1981,7 +2173,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line554">line 554</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line588">line 588</a>
     </li></ul></dd>
     
 
@@ -2103,7 +2295,6 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
 <p>The name must be at least 1 character long.</p>
 <p>If <code>name</code> doesn't resolve into a non-empty string, it throws <a href="external-TypeError.html">TypeError</a> = <code>Invalid sql name: ...</code></p>
 <p>If the <code>name</code> contains only a single <code>*</code> (trailing spaces are ignored), then <code>name</code> is returned exactly as is (unescaped).</p>
-<p><strong>Added in v.5.2.1:</strong></p>
 <ul>
 <li>If <code>name</code> is an Array, it is formatted as a comma-separated list of SQL names</li>
 <li>If <code>name</code> is a non-Array object, its keys are formatted as a comma-separated list of SQL names</li>
@@ -2149,12 +2340,19 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line325">line 325</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line336">line 336</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="formatting.html#.alias">alias</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -2176,7 +2374,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
 
         
 <div class="param-desc">
-    <p>The SQL Name/Identifier properly escaped for compliance with the PostgreSQL standard for SQL names and identifiers.</p>
+    <p>The SQL Name/Identifier, properly escaped for compliance with the PostgreSQL standard for SQL names and identifiers.</p>
 </div>
 
 
@@ -2198,7 +2396,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// example of using v5.2.1 feature:// automatically list object properties as sql names:format('INSERT INTO table(${this~}) VALUES(${one}, ${two})', {    one: 1,    two: 2});//=> INSERT INTO table("one","two") VALUES(1, 2)</code></pre>
+    <pre class="prettyprint"><code>// automatically list object properties as sql names:format('INSERT INTO table(${this~}) VALUES(${one}, ${two})', {    one: 1,    two: 2});//=> INSERT INTO table("one","two") VALUES(1, 2)</code></pre>
 
 
 
@@ -2311,7 +2509,7 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line484">line 484</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line518">line 518</a>
     </li></ul></dd>
     
 
@@ -2525,7 +2723,7 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line287">line 287</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line298">line 298</a>
     </li></ul></dd>
     
 
@@ -2689,7 +2887,7 @@ but without surrounding quotes for text types.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line389">line 389</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line423">line 423</a>
     </li></ul></dd>
     
 
