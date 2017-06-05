@@ -45,6 +45,7 @@ var $npm = {
     pubUtils: require('./utils/public'),
     mode: require('./txMode'),
     types: require('./types'),
+    dbPool: require('./dbPool'),
     package: require('../package.json')
 };
 
@@ -224,12 +225,16 @@ function $main(options) {
      * @member {function} end
      * @readonly
      * @description
-     * Terminates pg library (call it when exiting the application).
+     * Shuts down the entire library, as well as all the connections + pools currently allocated.
+     *
+     * The library cannot be used after making this call, or else it will throw all kinds of errors.
+     *
+     * If you ever need to terminate the library explicitly, you must do it only before exiting the application.
      *
      * Available as `pgp.end`, after initializing the library.
      */
     $npm.utils.addReadProp(inst, 'end', () => {
-        pg.end();
+        $npm.dbPool.shutDown();
     });
 
     /**

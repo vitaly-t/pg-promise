@@ -30,13 +30,13 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 var $npm = {
-    con: require('manakin').local,
     result: require('./result'),
     special: require('./special'),
     Context: require('./cnContext'),
     events: require('./events'),
     utils: require('./utils'),
     connect: require('./connect'),
+    dbPool: require('./dbPool'),
     query: require('./query'),
     task: require('./task')
 };
@@ -107,6 +107,7 @@ var $npm = {
  * {@link Database.$config $config},
  * {@link Database.$cn $cn},
  * {@link Database.$dc $dc},
+ * {@link Database.$pool $pool},
  * {@link event:extend extend}
  *
  * @example
@@ -128,10 +129,11 @@ var $npm = {
  */
 function Database(cn, dc, config) {
 
-    checkForDuplicates(cn, config);
-    setErrorHandler(config);
+    var dbThis = this,
+        pool = new config.pgp.pg.Pool(cn),
+        $p = config.promise;
 
-    var $p = config.promise;
+    pool.on('error', onError);
 
     /**
      * @method Database.connect
@@ -219,8 +221,8 @@ function Database(cn, dc, config) {
                 ctx.disconnect();
             }
         };
-        var method = (options &amp;&amp; options.direct) ? 'direct' : 'pool';
-        return config.$npm.connect[method](ctx)
+        var connection = (options &amp;&amp; options.direct) ? config.$npm.connect.direct(ctx) : config.$npm.connect.pool(ctx, dbThis);
+        return connection
             .then(db => {
                 ctx.connect(db);
                 self.client = db.client;
@@ -265,7 +267,7 @@ function Database(cn, dc, config) {
      */
     this.query = function (query, values, qrm) {
         var self = this, ctx = createContext();
-        return config.$npm.connect.pool(ctx)
+        return config.$npm.connect.pool(ctx, dbThis)
             .then(db => {
                 ctx.connect(db);
                 return config.$npm.query.call(self, ctx, query, values, qrm);
@@ -340,7 +342,40 @@ function Database(cn, dc, config) {
      */
     $npm.utils.addReadProp(this, '$dc', dc, true);
 
+    /**
+     * @member {} Database.$pool
+     * @readonly
+     * @description
+     * ** This is a $[6.x] feature. **
+     *
+     * A $[pg-pool] object associated with the database object.
+     *
+     * This is a hidden property, to help integrating type {@link Database} directly with third-party libraries.
+     *
+     * @see Database
+     */
+    $npm.utils.addReadProp(this, '$pool', pool, true);
+
+    /**
+     * @member {function} Database.$destroy
+     * @readonly
+     * @private
+     * @description
+     * Permanently shuts down the database object.
+     */
+    $npm.utils.addReadProp(this, '$destroy', () => {
+        if (pool) {
+            if (!pool.pool._draining) {
+                pool.end();
+            }
+            pool.removeListener('error', onError);
+            pool = null;
+        }
+    }, true);
+
     extend(createContext(), this); // extending root protocol;
+
+    $npm.dbPool.register(this);
 
     function createContext() {
         return new $npm.Context(cn, dc, config.options);
@@ -1239,7 +1274,7 @@ function Database(cn, dc, config) {
             }
 
             // connection required;
-            return config.$npm.connect.pool(taskCtx)
+            return config.$npm.connect.pool(taskCtx, dbThis)
                 .then(db => {
                     taskCtx.connect(db);
                     $npm.utils.addReadProp(tsk.ctx, 'isFresh', db.isFresh);
@@ -1268,60 +1303,11 @@ function Database(cn, dc, config) {
 
 }
 
-var jsHandled, nativeHandled, dbObjects = {};
-
-function checkForDuplicates(cn, config) {
-    var cnKey = normalizeConnection(cn);
-    if (cnKey in dbObjects) {
-        if (!config.options.noWarnings) {
-            $npm.con.warn('WARNING: Creating a duplicate database object for the same connection.\n%s\n',
-                $npm.utils.getLocalStack(5));
-        }
-    } else {
-        dbObjects[cnKey] = true;
-    }
-}
-
-/**
- * For connections that are objects it reorders the keys alphabetically,
- * and then serializes the result into a JSON string.
- *
- * @param {string|object} cn - connection string or object
- *
- * @private
- */
-function normalizeConnection(cn) {
-    if (typeof cn === 'object') {
-        var obj = {}, keys = Object.keys(cn).sort();
-        keys.forEach(name => {
-            obj[name] = cn[name];
-        });
-        cn = obj;
-    }
-    return JSON.stringify(cn);
-}
-
-function setErrorHandler(config) {
-    // we do not do code coverage specific to Native Bindings:
-    // istanbul ignore if
-    if (config.options.pgNative) {
-        if (!nativeHandled) {
-            config.pgp.pg.on('error', onError);
-            nativeHandled = true;
-        }
-    } else {
-        if (!jsHandled) {
-            config.pgp.pg.on('error', onError);
-            jsHandled = true;
-        }
-    }
-}
-
 // this event only happens when the connection is lost physically,
 // which cannot be tested automatically; removing from coverage:
 // istanbul ignore next
-function onError(err, client) {
-    var ctx = client.$ctx;
+function onError(err) {
+    var ctx = err.client.$ctx;
     $npm.events.error(ctx.options, err, {
         cn: $npm.utils.getSafeConnection(ctx.cn),
         dc: ctx.dc
