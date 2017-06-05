@@ -23,13 +23,6 @@ function dummy() {
 
 describe("Library entry function", function () {
 
-    afterEach(function () {
-        header({
-            promiseLib: header.defPromise,
-            noWarnings: true
-        });
-    });
-
     describe("without any promise override", function () {
         it("must return a valid library object", function () {
             if (supportsPromise) {
@@ -235,6 +228,11 @@ describe("Library entry function", function () {
         });
     });
 
+    describe('Taking no initilization options', function () {
+        it('must be supported', function () {
+            expect(typeof dbHeader.pgpLib()).toBe('function');
+        });
+    });
 });
 
 if (jasmine.Runner) {

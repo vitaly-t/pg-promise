@@ -10,6 +10,9 @@ var value4 = pgp.as.array(() => []);
 var value5 = pgp.as.format('hello', []);
 var value6 = pgp.as.format(new pgPromise.QueryFile(''));
 
+var alias = pgp.as.alias('a');
+alias = pgp.as.alias(() => 'a');
+
 class CTF {
     formatDBType(a: any) {
 

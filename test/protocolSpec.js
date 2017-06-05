@@ -38,6 +38,7 @@ describe("Library instance", function () {
         expect(pgpLib.as.format instanceof Function).toBe(true);
         expect(pgpLib.as.func instanceof Function).toBe(true);
         expect(pgpLib.as.name instanceof Function).toBe(true);
+        expect(pgpLib.as.alias instanceof Function).toBe(true);
         expect(pgpLib.as.value instanceof Function).toBe(true);
         expect(pgpLib.as.buffer instanceof Function).toBe(true);
     });

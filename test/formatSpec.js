@@ -628,6 +628,47 @@ describe("Method as.name", function () {
 
 });
 
+describe('Method as.alias', function () {
+
+    describe('with an empty or non-string', function () {
+        it('must throw na error', function () {
+            expect(function () {
+                pgp.as.alias();
+            }).toThrow(new TypeError('Invalid sql alias: undefined'));
+            expect(function () {
+                pgp.as.alias(null);
+            }).toThrow(new TypeError('Invalid sql alias: null'));
+            expect(function () {
+                pgp.as.alias(123);
+            }).toThrow(new TypeError('Invalid sql alias: 123'));
+            expect(function () {
+                pgp.as.alias('');
+            }).toThrow(new TypeError('Invalid sql alias: ""'));
+        });
+    });
+
+    describe('with regular names', function () {
+        it('must return the right name', function () {
+            expect(pgp.as.alias('a')).toBe('"a"');
+            expect(pgp.as.alias(' ')).toBe('" "');
+            expect(pgp.as.alias('\t')).toBe('"\t"');
+            expect(pgp.as.alias('"')).toBe('""""');
+            expect(pgp.as.alias('""')).toBe('""""""');
+        });
+    });
+
+    describe('with a function', function () {
+        function getName() {
+            return 'name';
+        }
+
+        it('must support the function value', function () {
+            expect(pgp.as.alias(getName)).toBe('"name"');
+        });
+    });
+
+});
+
 describe("Method as.format", function () {
 
     it("must return a correctly formatted string", function () {
@@ -1079,6 +1120,13 @@ describe("Format Modifiers", function () {
         });
     });
 
+    describe('alias modifier', () => {
+        it('must replace any value correctly', () => {
+            expect(pgp.as.format('$1:alias', 'name')).toBe('"name"');
+            expect(pgp.as.format('$1:alias', '*')).toBe('"*"');
+            expect(pgp.as.format('${name:alias}', {name: 'hello'})).toBe('"hello"');
+        });
+    });
 });
 
 describe("Custom Format", function () {
