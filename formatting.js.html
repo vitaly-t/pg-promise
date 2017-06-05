@@ -367,7 +367,9 @@ var $as = {
      * @description
      * Properly escapes an sql name or identifier, fixing double-quote symbols and wrapping the result in double quotes.
      *
-     * Implements a safe way to format SQL Names that neutralizes SQL Injection.
+     * Implements a safe way to format $[SQL Names] that neutralizes SQL Injection.
+     *
+     * When formatting a query, a variable makes use of this method via modifier `:name` or `~`. See method {@link formatting.format format}.
      *
      * @param {string|function|array|object} name
      * SQL name or identifier, or a function that returns it.
@@ -378,15 +380,17 @@ var $as = {
      *
      * If the `name` contains only a single `*` (trailing spaces are ignored), then `name` is returned exactly as is (unescaped).
      *
-     * - If `name` is an Array, it is formatted as a comma-separated list of SQL names
-     * - If `name` is a non-Array object, its keys are formatted as a comma-separated list of SQL names
+     * - If `name` is an Array, it is formatted as a comma-separated list of $[SQL Names]
+     * - If `name` is a non-Array object, its keys are formatted as a comma-separated list of $[SQL Names]
      *
      * Passing in an empty array/object will throw {@link external:Error Error} = `Cannot retrieve sql names from an empty array/object.`
      *
      * @returns {string}
-     * The SQL Name/Identifier, properly escaped for compliance with the PostgreSQL standard for SQL names and identifiers.
+     * The SQL Name/Identifier, properly escaped for compliance with the PostgreSQL standard for $[SQL Names] and identifiers.
      *
-     * @see {@link formatting.alias alias}
+     * @see
+     * {@link formatting.alias alias},
+     * {@link formatting.format format}
      *
      * @example
      *
@@ -425,9 +429,11 @@ var $as = {
      * @description
      * ** Added in v5.9.0 **
      *
-     * Simpler, non-verbose version of method {@link formatting.name name}, to handle only a simple string-identifier
+     * Simpler (non-verbose) version of method {@link formatting.name name}, to handle only a regular string-identifier
      * that's used as an SQL alias, i.e. it doesn't support `*` or an array/object of names, which in the context of
      * an SQL alias would be incorrect.
+     *
+     * When formatting a query, a variable makes use of this method via modifier `:alias`. See method {@link formatting.format format}.
      *
      * @param {string|function} name
      * SQL alias name, or a function that returns it.
@@ -437,9 +443,12 @@ var $as = {
      * If `name` doesn't resolve into a non-empty string, it throws {@link external:TypeError TypeError} = `Invalid sql alias: ...`
      *
      * @returns {string}
-     * The SQL alias, properly escaped for compliance with the PostgreSQL standard for SQL names and identifiers.
+     * The SQL alias, properly escaped for compliance with the PostgreSQL standard for $[SQL Names] and identifiers.
      *
-     * @see {@link formatting.name name}
+     * @see
+     * {@link formatting.name name},
+     * {@link formatting.format format}
+     *
      */
     alias: name => {
         name = resolveFunc(name);
@@ -452,8 +461,9 @@ var $as = {
     /**
      * @method formatting.value
      * @description
-     * Represents an open value, one to be formatted according to its type, properly escaped,
-     * but without surrounding quotes for text types.
+     * Represents an open value, one to be formatted according to its type, properly escaped, but without surrounding quotes for text types.
+     *
+     * When formatting a query, a variable makes use of this method via modifier `:value` or `#`. See method {@link formatting.format format}.
      *
      * @param {value|function} value
      * Value to be converted, or a function that returns the value.
@@ -462,6 +472,9 @@ var $as = {
      *
      * @returns {string}
      * Formatted and properly escaped string, but without surrounding quotes for text types.
+     *
+     * @see {@link formatting.format format}
+     *
      */
     value: value => {
         value = resolveFunc(value);
@@ -582,8 +595,7 @@ var $as = {
     /**
      * @method formatting.array
      * @description
-     * Converts an array of values into its PostgreSQL presentation as an Array-Type
-     * constructor string: `array[]`.
+     * Converts an array of values into its PostgreSQL presentation as an Array-Type constructor string: `array[]`.
      *
      * @param {Array|function} arr
      * Array to be converted, or a function that returns one.
@@ -604,21 +616,26 @@ var $as = {
     /**
      * @method formatting.csv
      * @description
-     * Converts a single value or an array of values into a CSV string, with all values formatted
-     * according to their type.
+     * Converts a single value or an array of values into a CSV string, with all values formatted according to their type.
+     *
+     * When formatting a query, a variable makes use of this method via modifier `:csv`. See method {@link formatting.format format}.
      *
      * @param {Array|value|function} values
      * Value(s) to be converted, or a function that returns it.
      *
      * @returns {string}
+     *
+     * @see {@link formatting.format format}
      */
     csv: values => formatCSV(resolveFunc(values)),
 
     /**
      * @method formatting.json
      * @description
-     * Converts any value into JSON (using `JSON.stringify`), and returns it as
-     * a valid string, with single-quote symbols fixed, unless flag `raw` is set.
+     * Converts any value into JSON (using `JSON.stringify`), and returns it as a valid string, with single-quote
+     * symbols fixed, unless flag `raw` is set.
+     *
+     * When formatting a query, a variable makes use of this method via modifier `:json`. See method {@link formatting.format format}.
      *
      * @param {} data
      * Object/value to be converted, or a function that returns it.
@@ -627,6 +644,8 @@ var $as = {
      * Indicates when not to escape the result.
      *
      * @returns {string}
+     *
+     * @see {@link formatting.format format}
      */
     json: (data, raw) => {
         data = resolveFunc(data);
@@ -693,9 +712,9 @@ var $as = {
      * - SQL name variables end with `:name` or symbol `~` (tilde), and provide proper escaping for SQL names/identifiers:
      *   - `$1:name`, `$2:name`,..., and `$*propName:name*` (see `*` above)
      *   - `$1~`, `$2~`,..., and `$*propName~*` (see `*` above)
+     * - **Version 5.9.0** added support for modifier `:alias` - non-verbose $[SQL Names] escaping.
      * - JSON override ends with `:json` to format the value of any type as a JSON string
      * - CSV override ends with `:csv` to format an array as a properly escaped comma-separated list of values.
-     * - Version 5.9.0 added support for `:alias` - non-verbose SQL Name escaping.
      *
      * @param {string|QueryFile|object} query
      * A query string, a {@link QueryFile} or any object that implements $[Custom Type Formatting], to be formatted according to `values`.

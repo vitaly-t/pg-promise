@@ -353,9 +353,10 @@
 
 <div class="description">
     <p><strong> Added in v5.9.0 </strong></p>
-<p>Simpler, non-verbose version of method <a href="formatting.html#.name">name</a>, to handle only a simple string-identifier
+<p>Simpler (non-verbose) version of method <a href="formatting.html#.name">name</a>, to handle only a regular string-identifier
 that's used as an SQL alias, i.e. it doesn't support <code>*</code> or an array/object of names, which in the context of
 an SQL alias would be incorrect.</p>
+<p>When formatting a query, a variable makes use of this method via modifier <code>:alias</code>. See method <a href="formatting.html#.format">format</a>.</p>
 </div>
 
 
@@ -453,7 +454,7 @@ an SQL alias would be incorrect.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line394">line 394</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line398">line 398</a>
     </li></ul></dd>
     
 
@@ -463,7 +464,7 @@ an SQL alias would be incorrect.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="formatting.html#.name">name</a></li>
+            <li><a href="formatting.html#.name">name</a>,<a href="formatting.html#.format">format</a></li>
         </ul>
     </dd>
     
@@ -487,7 +488,7 @@ an SQL alias would be incorrect.</p>
 
         
 <div class="param-desc">
-    <p>The SQL alias, properly escaped for compliance with the PostgreSQL standard for SQL names and identifiers.</p>
+    <p>The SQL alias, properly escaped for compliance with the PostgreSQL standard for <a href="https://github.com/vitaly-t/pg-promise#sql-names">SQL Names</a> and identifiers.</p>
 </div>
 
 
@@ -520,8 +521,7 @@ an SQL alias would be incorrect.</p>
 
 
 <div class="description">
-    <p>Converts an array of values into its PostgreSQL presentation as an Array-Type
-constructor string: <code>array[]</code>.</p>
+    <p>Converts an array of values into its PostgreSQL presentation as an Array-Type constructor string: <code>array[]</code>.</p>
 </div>
 
 
@@ -617,7 +617,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line553">line 553</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line566">line 566</a>
     </li></ul></dd>
     
 
@@ -769,7 +769,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line473">line 473</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line486">line 486</a>
     </li></ul></dd>
     
 
@@ -977,7 +977,7 @@ constructor string: <code>array[]</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line445">line 445</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line458">line 458</a>
     </li></ul></dd>
     
 
@@ -1033,8 +1033,8 @@ constructor string: <code>array[]</code>.</p>
 
 
 <div class="description">
-    <p>Converts a single value or an array of values into a CSV string, with all values formatted
-according to their type.</p>
+    <p>Converts a single value or an array of values into a CSV string, with all values formatted according to their type.</p>
+<p>When formatting a query, a variable makes use of this method via modifier <code>:csv</code>. See method <a href="formatting.html#.format">format</a>.</p>
 </div>
 
 
@@ -1133,12 +1133,19 @@ according to their type.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line575">line 575</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line587">line 587</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="formatting.html#.format">format</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -1341,7 +1348,7 @@ wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line491">line 491</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line504">line 504</a>
     </li></ul></dd>
     
 
@@ -1427,9 +1434,9 @@ not allowed to be <code>null</code> or <code>undefined</code>, or the method wil
 <li><code>$1~</code>, <code>$2~</code>,..., and <code>$*propName~*</code> (see <code>*</code> above)</li>
 </ul>
 </li>
+<li><strong>Version 5.9.0</strong> added support for modifier <code>:alias</code> - non-verbose <a href="https://github.com/vitaly-t/pg-promise#sql-names">SQL Names</a> escaping.</li>
 <li>JSON override ends with <code>:json</code> to format the value of any type as a JSON string</li>
 <li>CSV override ends with <code>:csv</code> to format an array as a properly escaped comma-separated list of values.</li>
-<li>Version 5.9.0 added support for <code>:alias</code> - non-verbose SQL Name escaping.</li>
 </ul>
 </div>
 
@@ -1731,7 +1738,7 @@ and to return the actual default value:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line641">line 641</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line660">line 660</a>
     </li></ul></dd>
     
 
@@ -1973,7 +1980,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line612">line 612</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line631">line 631</a>
     </li></ul></dd>
     
 
@@ -2029,8 +2036,9 @@ according to its type + <code>raw</code> flag.</p>
 
 
 <div class="description">
-    <p>Converts any value into JSON (using <code>JSON.stringify</code>), and returns it as
-a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is set.</p>
+    <p>Converts any value into JSON (using <code>JSON.stringify</code>), and returns it as a valid string, with single-quote
+symbols fixed, unless flag <code>raw</code> is set.</p>
+<p>When formatting a query, a variable makes use of this method via modifier <code>:json</code>. See method <a href="formatting.html#.format">format</a>.</p>
 </div>
 
 
@@ -2173,12 +2181,19 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line588">line 588</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line603">line 603</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="formatting.html#.format">format</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -2230,7 +2245,8 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
 
 <div class="description">
     <p>Properly escapes an sql name or identifier, fixing double-quote symbols and wrapping the result in double quotes.</p>
-<p>Implements a safe way to format SQL Names that neutralizes SQL Injection.</p>
+<p>Implements a safe way to format <a href="https://github.com/vitaly-t/pg-promise#sql-names">SQL Names</a> that neutralizes SQL Injection.</p>
+<p>When formatting a query, a variable makes use of this method via modifier <code>:name</code> or <code>~</code>. See method <a href="formatting.html#.format">format</a>.</p>
 </div>
 
 
@@ -2296,8 +2312,8 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
 <p>If <code>name</code> doesn't resolve into a non-empty string, it throws <a href="external-TypeError.html">TypeError</a> = <code>Invalid sql name: ...</code></p>
 <p>If the <code>name</code> contains only a single <code>*</code> (trailing spaces are ignored), then <code>name</code> is returned exactly as is (unescaped).</p>
 <ul>
-<li>If <code>name</code> is an Array, it is formatted as a comma-separated list of SQL names</li>
-<li>If <code>name</code> is a non-Array object, its keys are formatted as a comma-separated list of SQL names</li>
+<li>If <code>name</code> is an Array, it is formatted as a comma-separated list of <a href="https://github.com/vitaly-t/pg-promise#sql-names">SQL Names</a></li>
+<li>If <code>name</code> is a non-Array object, its keys are formatted as a comma-separated list of <a href="https://github.com/vitaly-t/pg-promise#sql-names">SQL Names</a></li>
 </ul>
 <p>Passing in an empty array/object will throw <a href="external-Error.html">Error</a> = <code>Cannot retrieve sql names from an empty array/object.</code></p></td>
         </tr>
@@ -2350,7 +2366,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="formatting.html#.alias">alias</a></li>
+            <li><a href="formatting.html#.alias">alias</a>,<a href="formatting.html#.format">format</a></li>
         </ul>
     </dd>
     
@@ -2374,7 +2390,7 @@ a valid string, with single-quote symbols fixed, unless flag <code>raw</code> is
 
         
 <div class="param-desc">
-    <p>The SQL Name/Identifier, properly escaped for compliance with the PostgreSQL standard for SQL names and identifiers.</p>
+    <p>The SQL Name/Identifier, properly escaped for compliance with the PostgreSQL standard for <a href="https://github.com/vitaly-t/pg-promise#sql-names">SQL Names</a> and identifiers.</p>
 </div>
 
 
@@ -2509,7 +2525,7 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line518">line 518</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line531">line 531</a>
     </li></ul></dd>
     
 
@@ -2789,8 +2805,8 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
 
 
 <div class="description">
-    <p>Represents an open value, one to be formatted according to its type, properly escaped,
-but without surrounding quotes for text types.</p>
+    <p>Represents an open value, one to be formatted according to its type, properly escaped, but without surrounding quotes for text types.</p>
+<p>When formatting a query, a variable makes use of this method via modifier <code>:value</code> or <code>#</code>. See method <a href="formatting.html#.format">format</a>.</p>
 </div>
 
 
@@ -2887,12 +2903,19 @@ but without surrounding quotes for text types.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line423">line 423</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line432">line 432</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="formatting.html#.format">format</a></li>
+        </ul>
+    </dd>
     
 
     
