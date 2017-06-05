@@ -611,10 +611,13 @@ describe("ColumnSet", function () {
             expect(cs3.assign({source: dataSingle})).toBe('"val"=${val}');
         });
 
-        describe('with alias', () => {
+        describe('with prefix', () => {
             var cs = new helpers.ColumnSet(['val', 'msg']);
-            it('must escape correctly', () => {
-                expect(cs.assign({source: dataSingle, prefix: 'a'})).toBe('"a"."val"=${val},"a"."msg"=${msg}');
+            it('must correctly escape as alias', () => {
+                expect(cs.assign({
+                    source: dataSingle,
+                    prefix: 'a b c'
+                })).toBe('"a b c"."val"=${val},"a b c"."msg"=${msg}');
             });
         });
     });

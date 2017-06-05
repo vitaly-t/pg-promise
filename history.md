@@ -1,5 +1,6 @@
 ### Release History
 
+* 5.9.0 Added support SQL aliases, plus method `ColumnSet.assign`. Released: June 05, 2017.
 * 5.8.0 Added support for warnings to class [QueryFile]. Released: May 29, 2017.
 * 5.7.0 Major query formatting overhaul for passing in the calling context. Released: May 15, 2017
 * 5.6.0 Removed support for legacy Node.js versions, now requiring 4.x and higher. Released: Feb 25, 2017

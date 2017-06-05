@@ -203,6 +203,9 @@ makes your application impervious to sql injection.
 
 See method [as.name] for the latest API.
 
+Version 5.9.0 added explicit support for SQL aliases, to keep them separate from the generic SQL Names,
+as they only allow a simple syntax. See method [as.alias].
+
 ### Raw Text
 
 Raw-text values can be injected by ending the variable name with `^` or `:raw`:
@@ -900,6 +903,7 @@ DEALINGS IN THE SOFTWARE.
 [pgp.as]:http://vitaly-t.github.io/pg-promise/formatting.html
 [as.value]:http://vitaly-t.github.io/pg-promise/formatting.html#.value
 [as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
+[as.alias]:http://vitaly-t.github.io/pg-promise/formatting.html#.alias
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
 [batch]:http://vitaly-t.github.io/pg-promise/Task.html#.batch
 [sequence]:http://vitaly-t.github.io/pg-promise/Task.html#.sequence
