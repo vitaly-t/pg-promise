@@ -139,7 +139,7 @@ describe('UPDATE', function () {
                 expect(helpers.update(dataMulti, ['?id', 'val', {
                     name: 'msg',
                     cast: 'text'
-                }], 'table')).toBe('update "table" as t set "val"=v."val","msg"=v."msg" from (values(1,123,\'hello\'::text),(2,456,\'world\'::text)) as v("id","val","msg")');
+                }], 'table')).toBe('update "table" as "t" set "val"="v"."val","msg"="v"."msg" from (values(1,123,\'hello\'::text),(2,456,\'world\'::text)) as "v"("id","val","msg")');
             });
         });
     });
@@ -163,7 +163,7 @@ describe('UPDATE', function () {
             expect(helpers.update(dataSingle, cs)).toBe('UPDATE "table" SET "val"=123,"msg"=\'test\'');
         });
         it("must return a capitalized query for multi-row data", function () {
-            expect(helpers.update(dataMulti, cs)).toBe('UPDATE "table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,\'hello\'),(2,456,\'world\')) AS v("id","val","msg")');
+            expect(helpers.update(dataMulti, cs)).toBe('UPDATE "table" AS "t" SET "val"="v"."val","msg"="v"."msg" FROM (VALUES(1,123,\'hello\'),(2,456,\'world\')) AS "v"("id","val","msg")');
         });
         afterEach(function () {
             options.capSQL = false;
@@ -174,10 +174,10 @@ describe('UPDATE', function () {
         var cs = new helpers.ColumnSet(['?id', 'val', 'msg'], {table: 'table'});
         var opt = {tableAlias: 'X', valueAlias: 'Y'};
         it("must use the options", function () {
-            expect(helpers.update(dataMulti, cs, null, opt)).toBe('update "table" as X set "val"=Y."val","msg"=Y."msg" from (values(1,123,\'hello\'),(2,456,\'world\')) as Y("id","val","msg")');
+            expect(helpers.update(dataMulti, cs, null, opt)).toBe('update "table" as "X" set "val"="Y"."val","msg"="Y"."msg" from (values(1,123,\'hello\'),(2,456,\'world\')) as "Y"("id","val","msg")');
         });
         it("must ignore empty options", function () {
-            expect(helpers.update(dataMulti, cs, null, {})).toBe('update "table" as t set "val"=v."val","msg"=v."msg" from (values(1,123,\'hello\'),(2,456,\'world\')) as v("id","val","msg")');
+            expect(helpers.update(dataMulti, cs, null, {})).toBe('update "table" as "t" set "val"="v"."val","msg"="v"."msg" from (values(1,123,\'hello\'),(2,456,\'world\')) as "v"("id","val","msg")');
         });
     });
 
@@ -614,7 +614,7 @@ describe("ColumnSet", function () {
         describe('with alias', () => {
             var cs = new helpers.ColumnSet(['val', 'msg']);
             it('must escape correctly', () => {
-                expect(cs.assign({source: dataSingle, alias: 'a'})).toBe('"a"."val"=${val},"a"."msg"=${msg}');
+                expect(cs.assign({source: dataSingle, prefix: 'a'})).toBe('"a"."val"=${val},"a"."msg"=${msg}');
             });
         });
     });
