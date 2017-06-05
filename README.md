@@ -203,8 +203,10 @@ makes your application impervious to sql injection.
 
 See method [as.name] for the latest API.
 
-Version 5.9.0 added explicit support for SQL aliases, to keep them separate from the generic SQL Names,
+**Version 5.9.0** added explicit support for SQL aliases, to keep them separate from the generic SQL Names,
 as they only allow a simple syntax. See method [as.alias].
+
+The formatting engine was extended with modifier `:alias`, which automatically calls method [as.alias].
 
 ### Raw Text
 
