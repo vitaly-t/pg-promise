@@ -315,6 +315,10 @@ declare namespace pgPromise {
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#$dc
         readonly $dc: any
+
+        // Pool object as provided by pg-pool;
+        // API: https://github.com/brianc/node-pg-pool
+        readonly $pool: any
     }
 
     type IConfig = pg.IConnectionParameters
