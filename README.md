@@ -10,10 +10,16 @@ pg-promise 6.x Beta
 
 ---
 
-This is 6.x branch of [pg-promise], currently in Beta, and to be installed as follows:
+This is 6.x branch of [pg-promise], currently in Beta, though very stable since `v6.0.15`
+
+It can be installed as follows:
 
 ```
 $ npm install pg-promise@beta
+```
+OR
+```
+$ npm install pg-promise@6
 ```
 
 ---
