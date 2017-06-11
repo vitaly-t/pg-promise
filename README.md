@@ -870,7 +870,7 @@ If, however you normally exit your application by killing the NodeJS process, th
 
 # History
 
-For the list of all changes see the [history log](history.md).
+For the list of all changes see the [CHANGELOG](CHANGELOG.md).
 
 # License
 
