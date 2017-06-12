@@ -60,10 +60,10 @@ describe("Generators - Positive", function () {
 describe("Generators - Negative", function () {
 
     describe("normal reject", function () {
-        var result;
+        var result, err = new Error('ops!');
 
         var myTask = function* () {
-            return yield promise.reject(123);
+            return yield promise.reject(err);
         };
 
         beforeEach(function (done) {
@@ -75,7 +75,7 @@ describe("Generators - Negative", function () {
         });
 
         it("must reject with the right value", function () {
-            expect(result).toBe(123);
+            expect(result).toBe(err);
         });
     });
 

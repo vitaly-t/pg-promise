@@ -1504,7 +1504,7 @@ describe("Querying a function", function () {
                 errCtx = e;
             };
             db.func("findUser", [function () {
-                throw 1;
+                throw new Error("1");
             }])
                 .catch(function () {
                     done();
@@ -1670,6 +1670,7 @@ describe("Task", function () {
                 counter++;
                 event = e;
             };
+
             function myTask() {
                 return promise.resolve("success");
             }
@@ -1727,10 +1728,10 @@ describe("negative query formatting", function () {
     });
 
     describe("with formatting parameter throwing error", function () {
-        var error;
+        var error, err = new Error('ops!');
         beforeEach(function (done) {
             db.one('select $1', [function () {
-                throw new Error("ops!");
+                throw err;
             }])
                 .catch(function (e) {
                     error = e;
@@ -1739,41 +1740,7 @@ describe("negative query formatting", function () {
         });
         it("must reject with correct error", function () {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe("ops!");
-        });
-    });
-
-    describe("with formatting parameter throwing value", function () {
-        var error;
-        beforeEach(function (done) {
-            db.one('select $1', [function () {
-                throw 123;
-            }])
-                .catch(function (e) {
-                    error = e;
-                    done();
-                });
-        });
-        it("must reject with correct error", function () {
-            expect(error).toBe(123);
-        });
-    });
-
-    describe("with formatting parameter throwing undefined", function () {
-        var error, handled;
-        beforeEach(function (done) {
-            db.one('select $1', [function () {
-                throw undefined;
-            }])
-                .catch(function (e) {
-                    handled = true;
-                    error = e;
-                    done();
-                });
-        });
-        it("must reject with correct error", function () {
-            expect(handled).toBe(true);
-            expect(error).toBeUndefined();
+            expect(error).toBe(err);
         });
     });
 
