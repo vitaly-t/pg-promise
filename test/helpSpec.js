@@ -236,6 +236,7 @@ describe('TableName', function () {
 
     describe('Function call', function () {
         it('must return a new object', function () {
+            // eslint-disable-next-line
             var obj = helpers.TableName('table');
             expect(obj instanceof helpers.TableName).toBe(true);
         });
@@ -305,7 +306,7 @@ describe('Column', function () {
 
     describe('Function call', function () {
         it('must return a new object', function () {
-            /*eslint new-cap: 0*/
+            // eslint-disable-next-line
             var obj = helpers.Column('col');
             expect(obj instanceof helpers.Column).toBe(true);
         });
@@ -417,72 +418,72 @@ describe('Column', function () {
         it('must throw on invalid column', function () {
             var error = new TypeError('Invalid column details.');
             expect(function () {
-                helpers.Column();
+                new helpers.Column();
             }).toThrow(error);
             expect(function () {
-                helpers.Column(123);
+                new helpers.Column(123);
             }).toThrow(error);
         });
         it('must throw on invalid input name', function () {
             expect(function () {
-                helpers.Column('');
+                new helpers.Column('');
             }).toThrow(new TypeError('Invalid column syntax: "".'));
             expect(function () {
-                helpers.Column('  ');
+                new helpers.Column('  ');
             }).toThrow(new TypeError('Invalid column syntax: "  ".'));
             expect(function () {
-                helpers.Column('name:bla');
+                new helpers.Column('name:bla');
             }).toThrow(new TypeError('Invalid column syntax: "name:bla".'));
         });
         it('must throw on invalid property \'name\'', function () {
             expect(function () {
-                helpers.Column({name: ''});
+                new helpers.Column({name: ''});
             }).toThrow(new TypeError('Invalid \'name\' value: "". A non-empty string was expected.'));
             expect(function () {
-                helpers.Column({name: '  '});
+                new helpers.Column({name: '  '});
             }).toThrow(new TypeError('Invalid \'name\' value: "  ". A non-empty string was expected.'));
             expect(function () {
-                helpers.Column({name: 123});
+                new helpers.Column({name: 123});
             }).toThrow(new TypeError('Invalid \'name\' value: 123. A non-empty string was expected.'));
             expect(function () {
-                helpers.Column({name: 'n-a-m-e'});
+                new helpers.Column({name: 'n-a-m-e'});
             }).toThrow(new TypeError('Invalid \'name\' syntax: "n-a-m-e". A valid variable name was expected.'));
         });
         it('must throw on invalid property \'prop\'', function () {
             expect(function () {
-                helpers.Column({name: 'name', prop: 123});
+                new helpers.Column({name: 'name', prop: 123});
             }).toThrow(new TypeError('Invalid \'prop\' value: 123. A non-empty string was expected.'));
             expect(function () {
-                helpers.Column({name: 'name', prop: ''});
+                new helpers.Column({name: 'name', prop: ''});
             }).toThrow(new TypeError('Invalid \'prop\' value: "". A non-empty string was expected.'));
             expect(function () {
-                helpers.Column({name: 'name', prop: '  '});
+                new helpers.Column({name: 'name', prop: '  '});
             }).toThrow(new TypeError('Invalid \'prop\' value: "  ". A non-empty string was expected.'));
             expect(function () {
-                helpers.Column({name: 'name', prop: 'one-two'});
+                new helpers.Column({name: 'name', prop: 'one-two'});
             }).toThrow(new TypeError('Invalid \'prop\' syntax: "one-two". A valid variable name was expected.'));
 
         });
         it('must throw on invalid property \'cast\'', function () {
             expect(function () {
-                helpers.Column({name: 'name', cast: 123});
+                new helpers.Column({name: 'name', cast: 123});
             }).toThrow(new TypeError('Invalid \'cast\' value: 123.'));
             expect(function () {
-                helpers.Column({name: 'name', cast: ''});
+                new helpers.Column({name: 'name', cast: ''});
             }).toThrow(new TypeError('Invalid \'cast\' value: "".'));
             expect(function () {
-                helpers.Column({name: 'name', cast: '  '});
+                new helpers.Column({name: 'name', cast: '  '});
             }).toThrow(new TypeError('Invalid \'cast\' value: "  ".'));
         });
         it('must throw on invalid property \'mod\'', function () {
             expect(function () {
-                helpers.Column({name: 'name', mod: 123});
+                new helpers.Column({name: 'name', mod: 123});
             }).toThrow(new TypeError('Invalid \'mod\' value: 123.'));
             expect(function () {
-                helpers.Column({name: 'name', mod: ''});
+                new helpers.Column({name: 'name', mod: ''});
             }).toThrow(new TypeError('Invalid \'mod\' value: "".'));
             expect(function () {
-                helpers.Column({name: 'name', mod: '  '});
+                new helpers.Column({name: 'name', mod: '  '});
             }).toThrow(new TypeError('Invalid \'mod\' value: "  ".'));
         });
     });
@@ -493,6 +494,7 @@ describe('ColumnSet', function () {
 
     describe('Function call', function () {
         it('must return a new object', function () {
+            // eslint-disable-next-line
             var obj = helpers.ColumnSet(['colName']);
             expect(obj instanceof helpers.ColumnSet).toBe(true);
         });
@@ -694,22 +696,22 @@ describe('ColumnSet', function () {
         it('must throw on invalid columns', function () {
             var error = new TypeError('Invalid parameter \'columns\' specified.');
             expect(function () {
-                helpers.ColumnSet();
+                new helpers.ColumnSet();
             }).toThrow(error);
             expect(function () {
-                helpers.ColumnSet(123);
+                new helpers.ColumnSet(123);
             }).toThrow(error);
         });
         it('must throw on duplicate columns', function () {
             expect(function () {
-                helpers.ColumnSet(['one', 'one']);
+                new helpers.ColumnSet(['one', 'one']);
             }).toThrow(new Error('Duplicate column name "one".'));
         });
 
         it('must throw on invalid options', function () {
             var error = new TypeError('Invalid parameter \'options\' specified.');
             expect(function () {
-                helpers.ColumnSet({}, 123);
+                new helpers.ColumnSet({}, 123);
             }).toThrow(error);
         });
     });

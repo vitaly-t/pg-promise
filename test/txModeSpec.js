@@ -58,7 +58,7 @@ describe('Transaction Mode', function () {
                 return promise.resolve('success');
             }
 
-            /*eslint new-cap: 0*/
+            // eslint-disable-next-line
             txNoParams.txMode = pgp.txMode.TransactionMode();
 
             db.tx(txNoParams)

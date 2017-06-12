@@ -21,7 +21,7 @@ describe('PreparedStatement', function () {
 
     describe('non-class initialization', function () {
         it('must return a new object', function () {
-            /*eslint new-cap: 0*/
+            // eslint-disable-next-line
             var ps = pgp.PreparedStatement('test-name', 'test-query');
             expect(ps instanceof pgp.PreparedStatement).toBe(true);
         });

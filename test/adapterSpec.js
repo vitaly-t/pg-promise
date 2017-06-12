@@ -38,7 +38,7 @@ describe('Adapter', function () {
             expect(adapter instanceof PromiseAdapter).toBe(true);
         });
         it('must be successful without new', function () {
-            /*eslint new-cap: 0*/
+            // eslint-disable-next-line
             var adapter = PromiseAdapter(dummy, dummy, dummy);
             expect(adapter instanceof PromiseAdapter).toBe(true);
         });

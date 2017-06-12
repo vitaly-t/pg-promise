@@ -1,7 +1,5 @@
 'use strict';
 
-/*eslint-disable */
-
 var header = require('./db/header');
 var promise = header.defPromise;
 
@@ -13,7 +11,7 @@ var dbHeader = header(options);
 var db = dbHeader.db;
 var pgp = dbHeader.pgp;
 
-describe("Generators - Positive", function () {
+describe('Generators - Positive', function () {
 
     var result, tag, query;
 
@@ -22,7 +20,7 @@ describe("Generators - Positive", function () {
     });
 
     function* myTX(t) {
-        return yield t.one("select 123 as value");
+        return yield t.one('select 123 as value');
     }
 
     myTX.txMode = tmTest;
@@ -36,18 +34,18 @@ describe("Generators - Positive", function () {
                 query = e.query;
             }
         };
-        db.tx("Custom", myTX)
+        db.tx('Custom', myTX)
             .then(function (data) {
                 result = data;
                 done();
             });
     });
 
-    it("must resolve with the right value", function () {
+    it('must resolve with the right value', function () {
         expect(result && typeof result === 'object').toBeTruthy();
         expect(result.value).toBe(123);
-        expect(tag).toBe("Custom");
-        expect(query).toBe("begin isolation level serializable");
+        expect(tag).toBe('Custom');
+        expect(query).toBe('begin isolation level serializable');
     });
 
     afterEach(function () {
@@ -57,9 +55,9 @@ describe("Generators - Positive", function () {
 
 });
 
-describe("Generators - Negative", function () {
+describe('Generators - Negative', function () {
 
-    describe("normal reject", function () {
+    describe('normal reject', function () {
         var result, err = new Error('ops!');
 
         var myTask = function* () {
@@ -74,20 +72,21 @@ describe("Generators - Negative", function () {
                 });
         });
 
-        it("must reject with the right value", function () {
+        it('must reject with the right value', function () {
             expect(result).toBe(err);
         });
     });
 
-    describe("error thrown", function () {
+    describe('error thrown', function () {
 
         var result, tag;
 
+        // eslint-disable-next-line
         function* myTask() {
             throw 123;
         }
 
-        myTask.tag = "myTag";
+        myTask.tag = 'myTag';
 
         beforeEach(function (done) {
             options.task = function (e) {
@@ -100,9 +99,9 @@ describe("Generators - Negative", function () {
                 });
         });
 
-        it("must reject with the right value", function () {
+        it('must reject with the right value', function () {
             expect(result).toBe(123);
-            expect(tag).toBe("myTag");
+            expect(tag).toBe('myTag');
         });
 
         afterEach(function () {
