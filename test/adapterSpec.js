@@ -1,7 +1,5 @@
 'use strict';
 
-/*eslint-disable */
-
 var pgp = require('../lib/index');
 var PromiseAdapter = pgp.PromiseAdapter;
 
@@ -40,6 +38,7 @@ describe('Adapter', function () {
             expect(adapter instanceof PromiseAdapter).toBe(true);
         });
         it('must be successful without new', function () {
+            /*eslint new-cap: 0*/
             var adapter = PromiseAdapter(dummy, dummy, dummy);
             expect(adapter instanceof PromiseAdapter).toBe(true);
         });

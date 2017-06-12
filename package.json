@@ -10,7 +10,7 @@
     "doc": "./node_modules/.bin/jsdoc -c ./jsdoc/jsDoc.json ./jsdoc/README.md",
     "coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test",
     "travis": "npm run lint && istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test --captureExceptions && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "lint": "./node_modules/.bin/eslint ./lib"
+    "lint": "./node_modules/.bin/eslint ./lib ./test/*.js"
   },
   "files": [
     "lib",
