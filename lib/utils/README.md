@@ -3,8 +3,8 @@
 This folder contains everything that's available via the [utils] namespace, before and after initialization:
 
 ```js
-var pgpLib = require('pg-promise');
-var pgp = pgpLib(/*initialization options*/);
+const pgpLib = require('pg-promise');
+const pgp = pgpLib(/*initialization options*/);
 
 pgpLib.utils; // `utils` namespace
 pgp.utils; // `utils` namespace
