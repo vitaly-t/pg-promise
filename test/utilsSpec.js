@@ -267,3 +267,10 @@ describe('isDev', function () {
         process.env.NODE_ENV = env;
     });
 });
+
+describe('getSafeConnection', () => {
+    const cn = 'postgres://postgres:password@localhost:5432/invalidDB';
+    it('must obscure passwords', () => {
+        expect(internal.getSafeConnection(cn)).toBe('postgres://postgres:########@localhost:5432/invalidDB');
+    });
+});

@@ -32,19 +32,19 @@ describe('QueryFile / Positive:', function () {
     describe('function-style call', () => {
         it('must return an object', () => {
             // eslint-disable-next-line
-            expect(QueryFile(sqlSimple) instanceof QueryFile).toBe(true);
+            expect(QueryFile(sqlSimple, {noWarnings: true}) instanceof QueryFile).toBe(true);
         });
     });
 
     describe('without options', function () {
-        var qf = new QueryFile(sqlSimple);
+        var qf = new QueryFile(sqlSimple, {noWarnings: true});
         it('must not minify', function () {
             expect(qf.query).toBe('select 1; --comment');
         });
     });
 
     describe('with minify=true && debug=true', function () {
-        var qf = new QueryFile(sqlUsers, {debug: true, minify: true});
+        var qf = new QueryFile(sqlUsers, {debug: true, minify: true, noWarnings: true});
         it('must return minified query', function () {
             expect(qf.query).toBe('select * from users');
         });
@@ -55,7 +55,7 @@ describe('QueryFile / Positive:', function () {
             schema: 'public',
             table: 'users'
         };
-        var qf = new QueryFile(sqlParams, {minify: true, params: params});
+        var qf = new QueryFile(sqlParams, {minify: true, params: params, noWarnings: true});
         it('must return pre-formatted query', function () {
             expect(qf.query).toBe('SELECT ${column~} FROM "public"."users"');
         });
@@ -202,7 +202,7 @@ describe('QueryFile / Negative:', function () {
     });
 
     describe('inspect', function () {
-        var qf = new QueryFile(sqlInvalid, {minify: true});
+        var qf = new QueryFile(sqlInvalid, {minify: true, noWarnings: true});
         it('must return the error', function () {
             expect(qf.inspect() != qf.toString(1)).toBe(true);
             expect(qf.error instanceof QueryFileError).toBe(true);
