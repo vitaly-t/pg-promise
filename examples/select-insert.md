@@ -70,7 +70,7 @@ We recommend one of the following runtimes or transpilers when using the ES7 asy
 
 It is possible to wrap the whole operation into a single query, which would offer a better
 performance, executing always just one query, and more importantly - proper data integrity,
-by making sure that a parallel request wouldn't try to execute a second `INSERT`. 
+by making sure that a parallel request would not try to execute a second `INSERT`. 
 
 Implementing such a query however isn't trivial, and can vary based on whether it is for
 PostgreSQL 9.5+ or an older version of the server.

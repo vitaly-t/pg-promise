@@ -1,4 +1,4 @@
-var fixLinks = require('./fixLinks');
+const fixLinks = require('./fixLinks');
 
 exports.handlers = {
     beforeParse: e => {
