@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -245,9 +245,9 @@ warning: <code>Creating a duplicate QueryFile object for the same file</code>, w
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// File sql.js// Proper way to organize an sql provider://// - have all sql files for Users in ./sql/users// - have all sql files for Products in ./sql/products// - have your sql provider module as ./sql/index.jsvar QueryFile = require('pg-promise').QueryFile;var path = require('path');// Helper for linking to external query files:function sql(file) {    var fullPath = path.join(__dirname, file); // generating full path;    return new QueryFile(fullPath, {minify: true});}module.exports = {    // external queries for Users:    users: {        add: sql('users/create.sql'),        search: sql('users/search.sql'),        report: sql('users/report.sql'),    },    // external queries for Products:    products: {        add: sql('products/add.sql'),        quote: sql('products/quote.sql'),        search: sql('products/search.sql'),    }};</code></pre>
+    <pre class="prettyprint"><code>// File sql.js// Proper way to organize an sql provider://// - have all sql files for Users in ./sql/users// - have all sql files for Products in ./sql/products// - have your sql provider module as ./sql/index.jsconst QueryFile = require('pg-promise').QueryFile;const path = require('path');// Helper for linking to external query files:function sql(file) {    const fullPath = path.join(__dirname, file); // generating full path;    return new QueryFile(fullPath, {minify: true});}module.exports = {    // external queries for Users:    users: {        add: sql('users/create.sql'),        search: sql('users/search.sql'),        report: sql('users/report.sql'),    },    // external queries for Products:    products: {        add: sql('products/add.sql'),        quote: sql('products/quote.sql'),        search: sql('products/search.sql'),    }};</code></pre>
 
-    <pre class="prettyprint"><code>// Testing our SQL providervar db = require('./db'); // our database module;var sql = require('./sql').users; // our sql for users;module.exports = {    addUser: (name, age) => db.none(sql.add, [name, age]),    findUser: name => db.any(sql.search, name)};</code></pre>
+    <pre class="prettyprint"><code>// Testing our SQL providerconst db = require('./db'); // our database module;const sql = require('./sql').users; // our sql for users;module.exports = {    addUser: (name, age) => db.none(sql.add, [name, age]),    findUser: name => db.any(sql.search, name)};</code></pre>
 
 
 
@@ -328,7 +328,7 @@ warning: <code>Creating a duplicate QueryFile object for the same file</code>, w
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line225">line 225</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line227">line 227</a>
     </li></ul></dd>
     
 
@@ -401,7 +401,7 @@ warning: <code>Creating a duplicate QueryFile object for the same file</code>, w
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line237">line 237</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line239">line 239</a>
     </li></ul></dd>
     
 
@@ -474,7 +474,7 @@ warning: <code>Creating a duplicate QueryFile object for the same file</code>, w
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line250">line 250</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line252">line 252</a>
     </li></ul></dd>
     
 
@@ -625,7 +625,7 @@ to the parameters passed into the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line148">line 148</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line150">line 150</a>
     </li></ul></dd>
     
 
@@ -777,7 +777,7 @@ to the parameters passed into the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line268">line 268</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line270">line 270</a>
     </li></ul></dd>
     
 
@@ -1079,7 +1079,7 @@ that may require it.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line304">line 304</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line306">line 306</a>
     </li></ul></dd>
     
 

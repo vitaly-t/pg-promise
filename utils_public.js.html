@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,14 +29,14 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-var $npm = {
+const $npm = {
     fs: require('fs'),
     path: require('path'),
     utils: require('./'),
     package: require('../../package.json')
 };
 
-var EOL = require('os').EOL;
+const EOL = require('os').EOL;
 
 /**
  * @method utils.camelize
@@ -60,7 +60,7 @@ var EOL = require('os').EOL;
  *
  */
 function camelize(text) {
-    text = text.replace(/[\-_\s\.]+(.)?/g, (match, chr) => {
+    text = text.replace(/[-_\s.]+(.)?/g, (match, chr) => {
         return chr ? chr.toUpperCase() : '';
     });
     return text.substr(0, 1).toLowerCase() + text.substr(1);
@@ -89,14 +89,15 @@ function camelize(text) {
  *
  */
 function camelizeVar(text) {
-    text = text.replace(/[^a-zA-Z0-9\$_\-\s\.]/g, '').replace(/^[0-9_\-\s\.]+/, '');
+    text = text.replace(/[^a-zA-Z0-9$_\-\s.]/g, '').replace(/^[0-9_\-\s.]+/, '');
     return camelize(text);
 }
 
 function _enumSql(dir, options, cb, namePath) {
-    var tree = {};
+    const tree = {};
     $npm.fs.readdirSync(dir).forEach(file => {
-        var stat, fullPath = $npm.path.join(dir, file);
+        let stat;
+        const fullPath = $npm.path.join(dir, file);
         try {
             stat = $npm.fs.statSync(fullPath);
         } catch (e) {
@@ -111,9 +112,9 @@ function _enumSql(dir, options, cb, namePath) {
         }
         if (stat.isDirectory()) {
             if (options.recursive) {
-                var dirName = camelizeVar(file);
-                var np = namePath ? (namePath + '.' + dirName) : dirName;
-                var t = _enumSql(fullPath, options, cb, np);
+                const dirName = camelizeVar(file);
+                const np = namePath ? (namePath + '.' + dirName) : dirName;
+                const t = _enumSql(fullPath, options, cb, np);
                 if (Object.keys(t).length) {
                     if (!dirName.length || dirName in tree) {
                         if (!options.ignoreErrors) {
@@ -125,7 +126,7 @@ function _enumSql(dir, options, cb, namePath) {
             }
         } else {
             if ($npm.path.extname(file).toLowerCase() === '.sql') {
-                var name = camelizeVar(file.replace(/\.[^/.]+$/, ''));
+                const name = camelizeVar(file.replace(/\.[^/.]+$/, ''));
                 if (!name.length || name in tree) {
                     if (!options.ignoreErrors) {
                         throw new Error('Empty or duplicate camelized file name: ' + fullPath);
@@ -133,7 +134,7 @@ function _enumSql(dir, options, cb, namePath) {
                 }
                 tree[name] = fullPath;
                 if (cb) {
-                    var result = cb(fullPath, name, namePath ? (namePath + '.' + name) : name);
+                    const result = cb(fullPath, name, namePath ? (namePath + '.' + name) : name);
                     if (result !== undefined) {
                         tree[name] = result;
                     }
@@ -191,21 +192,21 @@ function _enumSql(dir, options, cb, namePath) {
  * @example
  *
  * // simple SQL tree generation for further processing:
- * var tree = pgp.utils.enumSql('../sql', {recursive: true});
+ * const tree = pgp.utils.enumSql('../sql', {recursive: true});
  *
  * @example
  *
  * // generating an SQL tree for dynamic use of names:
- * var sql = pgp.utils.enumSql(__dirname, {recursive: true}, file=> {
+ * const sql = pgp.utils.enumSql(__dirname, {recursive: true}, file=> {
  *     return new pgp.QueryFile(file, {minify: true});
  * });
  *
  * @example
  *
- * var path = require('path');
+ * const path = require('path');
  *
  * // replacing each relative path in the tree with a full one:
- * var tree = pgp.utils.enumSql('../sql', {recursive: true}, file=> {
+ * const tree = pgp.utils.enumSql('../sql', {recursive: true}, file=> {
  *     return path.join(__dirname, file);
  * });
  *
@@ -251,9 +252,9 @@ function enumSql(dir, options, cb) {
  *
  * // Generating code for a simple object
  *
- * var tree = {one: 1, two: {item: 'abc'}};
+ * const tree = {one: 1, two: {item: 'abc'}};
  *
- * var code = pgp.utils.objectToCode(tree);
+ * const code = pgp.utils.objectToCode(tree);
  *
  * console.log(code);
  * //=>
@@ -268,14 +269,14 @@ function enumSql(dir, options, cb) {
  *
  * // Generating a Node.js module with an SQL tree
  *
- * var fs = require('fs');
- * var EOL = require('os').EOL;
+ * const fs = require('fs');
+ * const EOL = require('os').EOL;
  *
  * // generating an SQL tree from the folder:
- * var tree = pgp.utils.enumSql('./sql', {recursive: true});
+ * const tree = pgp.utils.enumSql('./sql', {recursive: true});
  *
  * // generating the module's code:
- * var code = "var load = require('./loadSql');" + EOL + EOL + "module.exports = " +
+ * const code = "const load = require('./loadSql');" + EOL + EOL + "module.exports = " +
  *         pgp.utils.objectToCode(tree, value => {
  *             return 'load(' + JSON.stringify(value) + ')';
  *         }) + ';';
@@ -287,7 +288,7 @@ function enumSql(dir, options, cb) {
  *
  * // generated code example (file sql.js)
  *
- * var load = require('./loadSql');
+ * const load = require('./loadSql');
  *
  * module.exports = {
  *     events: {
@@ -317,7 +318,7 @@ function enumSql(dir, options, cb) {
  *
  * // loadSql.js module example
  *
- * var QueryFile = require('pg-promise').QueryFile;
+ * const QueryFile = require('pg-promise').QueryFile;
  *
  * module.exports = file => {
  *     return new QueryFile(file, {minify: true});
@@ -335,10 +336,10 @@ function objectToCode(obj, cb) {
     return '{' + generate(obj, 1) + EOL + '}';
 
     function generate(obj, level) {
-        var code = '', gap = $npm.utils.messageGap(level);
-        var idx = 0;
-        for (var prop in obj) {
-            var value = obj[prop];
+        let code = '', idx = 0;
+        const gap = $npm.utils.messageGap(level);
+        for (let prop in obj) {
+            const value = obj[prop];
             if (idx) {
                 code += ',';
             }
@@ -427,7 +428,7 @@ function objectToCode(obj, cb) {
  * // API: http://vitaly-t.github.io/pg-promise/utils.html#.buildSqlModule
  * /////////////////////////////////////////////////////////////////////////
  *
- * var load = require('./loadSql');
+ * const load = require('./loadSql');
  *
  * module.exports = {
  *     events: {
@@ -457,11 +458,11 @@ function objectToCode(obj, cb) {
 function buildSqlModule(config) {
 
     if ($npm.utils.isText(config)) {
-        var path = $npm.utils.isPathAbsolute(config) ? config : $npm.path.join($npm.utils.startDir, config);
+        const path = $npm.utils.isPathAbsolute(config) ? config : $npm.path.join($npm.utils.startDir, config);
         config = require(path);
     } else {
         if ($npm.utils.isNull(config)) {
-            var defConfig = $npm.path.join($npm.utils.startDir, 'sql-config.json');
+            const defConfig = $npm.path.join($npm.utils.startDir, 'sql-config.json');
             // istanbul ignore else;
             if (!$npm.fs.existsSync(defConfig)) {
                 throw new Error('Default SQL configuration file not found: ' + defConfig);
@@ -481,13 +482,13 @@ function buildSqlModule(config) {
         throw new Error('Property \'dir\' must be a non-empty string.');
     }
 
-    var total = 0;
+    let total = 0;
 
-    var tree = enumSql(config.dir, {recursive: config.recursive, ignoreErrors: config.ignoreErrors}, () => {
+    const tree = enumSql(config.dir, {recursive: config.recursive, ignoreErrors: config.ignoreErrors}, () => {
         total++;
     });
 
-    var modulePath = './loadSql', moduleName = 'load';
+    let modulePath = './loadSql', moduleName = 'load';
     if (config.module &amp;&amp; typeof config.module === 'object') {
         if ($npm.utils.isText(config.module.path)) {
             modulePath = config.module.path;
@@ -497,9 +498,9 @@ function buildSqlModule(config) {
         }
     }
 
-    var d = new Date();
+    const d = new Date();
 
-    var header =
+    const header =
         '/////////////////////////////////////////////////////////////////////////' + EOL +
         '// This file was automatically generated by pg-promise v.' + $npm.package.version + EOL +
         '//' + EOL +
@@ -509,15 +510,15 @@ function buildSqlModule(config) {
         '// API: http://vitaly-t.github.io/pg-promise/utils.html#.buildSqlModule' + EOL +
         '/////////////////////////////////////////////////////////////////////////' + EOL + EOL +
         '\'use strict\';' + EOL + EOL +
-        'var ' + moduleName + ' = require(\'' + modulePath + '\');' + EOL + EOL +
+        'const ' + moduleName + ' = require(\'' + modulePath + '\');' + EOL + EOL +
         'module.exports = ';
 
-    var code = header + objectToCode(tree, value => {
-            return moduleName + '(' + JSON.stringify(value) + ')';
-        }) + ';';
+    const code = header + objectToCode(tree, value => {
+        return moduleName + '(' + JSON.stringify(value) + ')';
+    }) + ';';
 
     if ($npm.utils.isText(config.output)) {
-        var p = config.output;
+        let p = config.output;
         if (!$npm.utils.isPathAbsolute(p)) {
             p = $npm.path.join($npm.utils.startDir, p);
         }

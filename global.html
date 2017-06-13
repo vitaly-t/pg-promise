@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -97,7 +97,7 @@
 
         
             
-<h4 class="name" id="queryResult"><span class="type-signature">(readonly) </span>queryResult<span class="type-signature"> :number</span></h4>
+<h4 class="name" id="queryResult"><span class="type-signature">(constant) </span>queryResult<span class="type-signature"> :number</span></h4>
 
 
 
@@ -495,7 +495,7 @@ with parameter <code>{direct: true}</code>).</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    connect: (client, dc, isFresh) => {        var cp = client.connectionParameters;        console.log("Connected to database:", cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>const options = {    // pg-promise initialization options...    connect: (client, dc, isFresh) => {        const cp = client.connectionParameters;        console.log("Connected to database:", cp.database);    }};</code></pre>
 
 
 
@@ -653,7 +653,7 @@ i.e. releasing the virtual connection.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    disconnect: (client, dc) => {       var cp = client.connectionParameters;       console.log("Disconnecting from database:", cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>const options = {    // pg-promise initialization options...    disconnect: (client, dc) => {       const cp = client.connectionParameters;       console.log("Disconnecting from database:", cp.database);    }};</code></pre>
 
 
 
@@ -810,7 +810,7 @@ for its complete documentation.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var options = {    // pg-promise initialization options...    error: (err, e) => {        // e.dc = Database Context        if (e.cn) {            // this is a connection-related error            // cn = safe connection details passed into the library:            //      if password is present, it is masked by #        }        if (e.query) {            // query string is available            if (e.params) {                // query parameters are available            }        }        if (e.ctx) {            // occurred inside a task or transaction        }      }};</code></pre>
+    <pre class="prettyprint"><code>const options = {    // pg-promise initialization options...    error: (err, e) => {        // e.dc = Database Context        if (e.cn) {            // this is a connection-related error            // cn = safe connection details passed into the library:            //      if password is present, it is masked by #        }        if (e.query) {            // query string is available            if (e.params) {                // query parameters are available            }        }        if (e.ctx) {            // occurred inside a task or transaction        }      }};</code></pre>
 
 
 
@@ -975,9 +975,9 @@ if you try overriding them.</p>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// In the example below we extend the protocol with function `addImage`// that will insert one binary image and resolve with the new record id.var options = {    extend: (obj, dc) => {        // obj = this;        // dc = database context;        obj.addImage = data => {            return obj.one("insert into images(data) values($1) returning id", '\\x' + data);        }    }};</code></pre>
+    <pre class="prettyprint"><code>// In the example below we extend the protocol with function `addImage`// that will insert one binary image and resolve with the new record id.const options = {    extend: (obj, dc) => {        // obj = this;        // dc = database context;        obj.addImage = data => {            return obj.one("insert into images(data) values($1) returning id", '\\x' + data);        }    }};</code></pre>
 
-    <pre class="prettyprint"><code>// It is best to extend the protocol by adding whole entity repositories to it// as shown in the following example.// Users repository;function repUsers(obj, dc) {    // NOTE: You can change the implementation based on `dc`;    return {        add: (name, active) => {            return obj.none("insert into users values($1, $2)", [name, active]);        },        delete: id => obj.none("delete from users where id = $1", id)    }}// Overriding 'extend' event;var options = {    extend: (obj, dc) => {        // obj = this;        // dc = database context;        this.users = repUsers(this, dc);        // You can set different repositories based on `dc`    }};// Usage example:db.users.add("John", true)    .then(() => {        // user added successfully;    })    .catch(error => {        // failed to add the user;    });</code></pre>
+    <pre class="prettyprint"><code>// It is best to extend the protocol by adding whole entity repositories to it// as shown in the following example.// Users repository;function repUsers(obj, dc) {    // NOTE: You can change the implementation based on `dc`;    return {        add: (name, active) => {            return obj.none("insert into users values($1, $2)", [name, active]);        },        delete: id => obj.none("delete from users where id = $1", id)    }}// Overriding 'extend' event;const options = {    extend: (obj, dc) => {        // obj = this;        // dc = database context;        this.users = repUsers(this, dc);        // You can set different repositories based on `dc`    }};// Usage example:db.users.add("John", true)    .then(() => {        // user added successfully;    })    .catch(error => {        // failed to add the user;    });</code></pre>
 
 
 
@@ -1494,7 +1494,7 @@ validation for regular queries, which is executed right after this notification.
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize column names:var options = {    receive: (data, result, e) => {        camelizeColumns(data);    }};function camelizeColumns(data) {    var template = data[0];    for (var prop in template) {        var camel = pgp.utils.camelize(prop);        if (!(camel in template)) {            for (var i = 0; i &lt; data.length; i++) {                var d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
+    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize column names:const options = {    receive: (data, result, e) => {        camelizeColumns(data);    }};function camelizeColumns(data) {    const tmp = data[0];    for (let prop in tmp) {        const camel = pgp.utils.camelize(prop);        if (!(camel in tmp)) {            for (let i = 0; i &lt; data.length; i++) {                const d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
 
 
 
@@ -1633,7 +1633,7 @@ for its complete documentation.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var options = {    task: e => {        if (e.ctx.finish) {            // this is a task->finish event;            console.log("Finish Time:", e.ctx.finish);            if (e.ctx.success) {                // e.ctx.result = resolved data;            } else {                // e.ctx.result = error/rejection reason;            }        } else {            // this is a task->start event;            console.log("Start Time:", e.ctx.start);        }    }};</code></pre>
+    <pre class="prettyprint"><code>const options = {    task: e => {        if (e.ctx.finish) {            // this is a task->finish event;            console.log("Finish Time:", e.ctx.finish);            if (e.ctx.success) {                // e.ctx.result = resolved data;            } else {                // e.ctx.result = error/rejection reason;            }        } else {            // this is a task->start event;            console.log("Start Time:", e.ctx.start);        }    }};</code></pre>
 
 
 
@@ -1772,7 +1772,7 @@ for its complete documentation.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var options = {    transact: e => {        if (e.ctx.finish) {            // this is a transaction->finish event;            console.log("Finish Time:", e.ctx.finish);            if (e.ctx.success) {                // e.ctx.result = resolved data;            } else {                // e.ctx.result = error/rejection reason;            }        } else {            // this is a transaction->start event;            console.log("Start Time:", e.ctx.start);        }    }};</code></pre>
+    <pre class="prettyprint"><code>const options = {    transact: e => {        if (e.ctx.finish) {            // this is a transaction->finish event;            console.log("Finish Time:", e.ctx.finish);            if (e.ctx.success) {                // e.ctx.result = resolved data;            } else {                // e.ctx.result = error/rejection reason;            }        } else {            // this is a transaction->start event;            console.log("Start Time:", e.ctx.start);        }    }};</code></pre>
 
 
 

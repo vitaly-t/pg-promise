@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,7 +29,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-var $npm = {
+const $npm = {
     TableName: require('../tableName'),
     ColumnSet: require('../columnSet'),
     formatting: require('../../formatting'),
@@ -80,12 +80,12 @@ var $npm = {
  *
  * @example
  *
- * var pgp = require('pg-promise')({
+ * const pgp = require('pg-promise')({
  *    capSQL: true // if you want all generated SQL capitalized
  * });
  *
- * var dataSingle = {val: 123, msg: 'hello'};
- * var dataMulti = [{val: 123, msg: 'hello'}, {val: 456, msg: 'world!'}];
+ * const dataSingle = {val: 123, msg: 'hello'};
+ * const dataMulti = [{val: 123, msg: 'hello'}, {val: 456, msg: 'world!'}];
  *
  * // Column details can be taken from the data object:
  *
@@ -103,7 +103,7 @@ var $npm = {
  *
  * // Column details from a reusable ColumnSet (recommended for performance):
  *
- * var cs = new pgp.helpers.ColumnSet(['val', 'msg'], {table: 'my-table'});
+ * const cs = new pgp.helpers.ColumnSet(['val', 'msg'], {table: 'my-table'});
  *
  * pgp.helpers.insert(dataMulti, cs);
  * //=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')
@@ -115,7 +115,7 @@ function insert(data, columns, table, capSQL) {
         throw new TypeError('Invalid parameter \'data\' specified.');
     }
 
-    var isArray = Array.isArray(data);
+    const isArray = Array.isArray(data);
 
     if (isArray &amp;&amp; !data.length) {
         throw new TypeError('Cannot generate an INSERT from an empty array.');
@@ -144,9 +144,9 @@ function insert(data, columns, table, capSQL) {
         table = new $npm.TableName(table);
     }
 
-    var query = capSQL ? sql.capCase : sql.lowCase;
+    let query = capSQL ? sql.capCase : sql.lowCase;
 
-    var format = $npm.formatting.as.format;
+    const format = $npm.formatting.as.format;
     query = format(query, [table.name, columns.names]);
 
     if (isArray) {
@@ -160,7 +160,7 @@ function insert(data, columns, table, capSQL) {
     return query + '(' + format(columns.variables, columns.prepare(data)) + ')';
 }
 
-var sql = {
+const sql = {
     lowCase: 'insert into $1^($2^) values',
     capCase: 'INSERT INTO $1^($2^) VALUES'
 };

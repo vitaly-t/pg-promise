@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,7 +29,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-var $npm = {
+const $npm = {
     con: require('manakin').local,
     path: require('path'),
     pg: require('pg'),
@@ -143,11 +143,11 @@ var $npm = {
  *
  * @example
  *
- * var options = {
+ * const options = {
  *   // Initialization Options
  * };
  *
- * var pgp = require('pg-promise')(options);
+ * const pgp = require('pg-promise')(options);
  *
  */
 function $main(options) {
@@ -160,11 +160,11 @@ function $main(options) {
         }
 
         // list of supported initialization options:
-        var validOptions = ['pgFormatting', 'pgNative', 'promiseLib', 'noLocking', 'capSQL', 'noWarnings',
+        const validOptions = ['pgFormatting', 'pgNative', 'promiseLib', 'noLocking', 'capSQL', 'noWarnings',
             'connect', 'disconnect', 'query', 'receive', 'task', 'transact', 'error', 'extend'];
 
         if (!options.noWarnings) {
-            for (var prop in options) {
+            for (let prop in options) {
                 if (validOptions.indexOf(prop) === -1) {
                     $npm.con.warn('WARNING: Invalid property \'%s\' in initialization options.\n%s\n', prop, $npm.utils.getLocalStack(3));
                     break;
@@ -173,9 +173,10 @@ function $main(options) {
         }
     }
 
-    var pg = $npm.pg, p = $npm.promise(options.promiseLib);
+    let pg = $npm.pg;
+    const p = $npm.promise(options.promiseLib);
 
-    var config = {
+    const config = {
         version: $npm.package.version,
         promiseLib: p.promiseLib,
         promise: p.promise
@@ -198,9 +199,9 @@ function $main(options) {
         }
     }
 
-    var Database = require('./database')(config);
+    const Database = require('./database')(config);
 
-    var inst = (cn, dc) => {
+    const inst = (cn, dc) => {
         if ($npm.utils.isText(cn) || (cn &amp;&amp; typeof cn === 'object')) {
             return new Database(cn, dc, config);
         }
@@ -270,7 +271,7 @@ function $main(options) {
     return inst;
 }
 
-var rootNameSpace = {
+const rootNameSpace = {
 
     /**
      * @member {formatting} as

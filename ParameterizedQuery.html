@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -249,9 +249,9 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>var PQ = require('pg-promise').ParameterizedQuery;// Creating a complete Parameterized Query with parameters:var findUser = new PQ('SELECT * FROM Users WHERE id = $1', [123]);db.one(findUser)    .then(user=> {        // user found;    })    .catch(error=> {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>const PQ = require('pg-promise').ParameterizedQuery;// Creating a complete Parameterized Query with parameters:const findUser = new PQ('SELECT * FROM Users WHERE id = $1', [123]);db.one(findUser)    .then(user=> {        // user found;    })    .catch(error=> {        // error;    });</code></pre>
 
-    <pre class="prettyprint"><code>var PQ = require('pg-promise').ParameterizedQuery;// Creating a reusable Parameterized Query without values:var addUser = new PQ('INSERT INTO Users(name, age) VALUES($1, $2)');// setting values explicitly:addUser.values = ['John', 30];db.none(addUser)    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });// setting values implicitly, by passing them into the query method:db.none(addUser, ['Mike', 25])    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>const PQ = require('pg-promise').ParameterizedQuery;// Creating a reusable Parameterized Query without values:const addUser = new PQ('INSERT INTO Users(name, age) VALUES($1, $2)');// setting values explicitly:addUser.values = ['John', 30];db.none(addUser)    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });// setting values implicitly, by passing them into the query method:db.none(addUser, ['Mike', 25])    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });</code></pre>
 
 
 
@@ -332,7 +332,7 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line149">line 149</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line150">line 150</a>
     </li></ul></dd>
     
 
@@ -417,7 +417,7 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line187">line 187</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line188">line 188</a>
     </li></ul></dd>
     
 
@@ -498,7 +498,7 @@ By default, rows arrive as objects.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line168">line 168</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line169">line 169</a>
     </li></ul></dd>
     
 
@@ -573,7 +573,7 @@ By default, rows arrive as objects.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line115">line 115</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line116">line 116</a>
     </li></ul></dd>
     
 
@@ -651,7 +651,7 @@ is then automatically wrapped into an array</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line131">line 131</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line132">line 132</a>
     </li></ul></dd>
     
 
@@ -731,7 +731,7 @@ or else it returns a <a href="errors.ParameterizedQueryError.html">Parameterized
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line208">line 208</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line209">line 209</a>
     </li></ul></dd>
     
 
@@ -904,7 +904,7 @@ or else it returns a <a href="errors.ParameterizedQueryError.html">Parameterized
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line270">line 270</a>
+        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line271">line 271</a>
     </li></ul></dd>
     
 

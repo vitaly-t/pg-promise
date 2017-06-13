@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -223,7 +223,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line502">line 502</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line503">line 503</a>
     </li></ul></dd>
     
 
@@ -404,7 +404,7 @@ application's entry point file, and if not found - throw <a href="external-Error
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line334">line 334</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line335">line 335</a>
     </li></ul></dd>
     
 
@@ -462,7 +462,7 @@ application's entry point file, and if not found - throw <a href="external-Error
     
     <pre class="prettyprint"><code>// generate SQL module automatically, from sql-config.json in the module's start-up folder:pgp.utils.buildSqlModule();// see generated file below:</code></pre>
 
-    <pre class="prettyprint"><code>/////////////////////////////////////////////////////////////////////////// This file was automatically generated by pg-promise v.4.3.8//// Generated on: 6/2/2016, at 2:15:23 PM// Total files: 15//// API: http://vitaly-t.github.io/pg-promise/utils.html#.buildSqlModule/////////////////////////////////////////////////////////////////////////var load = require('./loadSql');module.exports = {    events: {        add: load("../sql/events/add.sql"),        delete: load("../sql/events/delete.sql"),        find: load("../sql/events/find.sql"),        update: load("../sql/events/update.sql")    },    products: {        add: load("../sql/products/add.sql"),        delete: load("../sql/products/delete.sql"),        find: load("../sql/products/find.sql"),        update: load("../sql/products/update.sql")    },    users: {        add: load("../sql/users/add.sql"),        delete: load("../sql/users/delete.sql"),        find: load("../sql/users/find.sql"),        update: load("../sql/users/update.sql")    },    create: load("../sql/create.sql"),    init: load("../sql/init.sql"),    drop: load("../sql/drop.sql")};</code></pre>
+    <pre class="prettyprint"><code>/////////////////////////////////////////////////////////////////////////// This file was automatically generated by pg-promise v.4.3.8//// Generated on: 6/2/2016, at 2:15:23 PM// Total files: 15//// API: http://vitaly-t.github.io/pg-promise/utils.html#.buildSqlModule/////////////////////////////////////////////////////////////////////////const load = require('./loadSql');module.exports = {    events: {        add: load("../sql/events/add.sql"),        delete: load("../sql/events/delete.sql"),        find: load("../sql/events/find.sql"),        update: load("../sql/events/update.sql")    },    products: {        add: load("../sql/products/add.sql"),        delete: load("../sql/products/delete.sql"),        find: load("../sql/products/find.sql"),        update: load("../sql/products/update.sql")    },    users: {        add: load("../sql/users/add.sql"),        delete: load("../sql/users/delete.sql"),        find: load("../sql/users/find.sql"),        update: load("../sql/users/update.sql")    },    create: load("../sql/create.sql"),    init: load("../sql/init.sql"),    drop: load("../sql/drop.sql")};</code></pre>
 
 
 
@@ -1105,7 +1105,7 @@ non-existing directory.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line118">line 118</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line119">line 119</a>
     </li></ul></dd>
     
 
@@ -1161,11 +1161,11 @@ non-existing directory.</p></td>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// simple SQL tree generation for further processing:var tree = pgp.utils.enumSql('../sql', {recursive: true});</code></pre>
+    <pre class="prettyprint"><code>// simple SQL tree generation for further processing:const tree = pgp.utils.enumSql('../sql', {recursive: true});</code></pre>
 
-    <pre class="prettyprint"><code>// generating an SQL tree for dynamic use of names:var sql = pgp.utils.enumSql(__dirname, {recursive: true}, file=> {    return new pgp.QueryFile(file, {minify: true});});</code></pre>
+    <pre class="prettyprint"><code>// generating an SQL tree for dynamic use of names:const sql = pgp.utils.enumSql(__dirname, {recursive: true}, file=> {    return new pgp.QueryFile(file, {minify: true});});</code></pre>
 
-    <pre class="prettyprint"><code>var path = require('path');// replacing each relative path in the tree with a full one:var tree = pgp.utils.enumSql('../sql', {recursive: true}, file=> {    return path.join(__dirname, file);});</code></pre>
+    <pre class="prettyprint"><code>const path = require('path');// replacing each relative path in the tree with a full one:const tree = pgp.utils.enumSql('../sql', {recursive: true}, file=> {    return path.join(__dirname, file);});</code></pre>
 
 
 
@@ -1324,7 +1324,7 @@ non-existing directory.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line195">line 195</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line196">line 196</a>
     </li></ul></dd>
     
 
@@ -1376,13 +1376,13 @@ non-existing directory.</p></td>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// Generating code for a simple objectvar tree = {one: 1, two: {item: 'abc'}};var code = pgp.utils.objectToCode(tree);console.log(code);//=>// {//     one: 1,//     two: {//         item: "abc"//     }// }</code></pre>
+    <pre class="prettyprint"><code>// Generating code for a simple objectconst tree = {one: 1, two: {item: 'abc'}};const code = pgp.utils.objectToCode(tree);console.log(code);//=>// {//     one: 1,//     two: {//         item: "abc"//     }// }</code></pre>
 
-    <pre class="prettyprint"><code>// Generating a Node.js module with an SQL treevar fs = require('fs');var EOL = require('os').EOL;// generating an SQL tree from the folder:var tree = pgp.utils.enumSql('./sql', {recursive: true});// generating the module's code:var code = "var load = require('./loadSql');" + EOL + EOL + "module.exports = " +        pgp.utils.objectToCode(tree, value => {            return 'load(' + JSON.stringify(value) + ')';        }) + ';';// saving the module:fs.writeFileSync('sql.js', code);</code></pre>
+    <pre class="prettyprint"><code>// Generating a Node.js module with an SQL treeconst fs = require('fs');const EOL = require('os').EOL;// generating an SQL tree from the folder:const tree = pgp.utils.enumSql('./sql', {recursive: true});// generating the module's code:const code = "const load = require('./loadSql');" + EOL + EOL + "module.exports = " +        pgp.utils.objectToCode(tree, value => {            return 'load(' + JSON.stringify(value) + ')';        }) + ';';// saving the module:fs.writeFileSync('sql.js', code);</code></pre>
 
-    <pre class="prettyprint"><code>// generated code example (file sql.js)var load = require('./loadSql');module.exports = {    events: {        add: load("../sql/events/add.sql"),        delete: load("../sql/events/delete.sql"),        find: load("../sql/events/find.sql"),        update: load("../sql/events/update.sql")    },    products: {        add: load("../sql/products/add.sql"),        delete: load("../sql/products/delete.sql"),        find: load("../sql/products/find.sql"),        update: load("../sql/products/update.sql")    },    users: {        add: load("../sql/users/add.sql"),        delete: load("../sql/users/delete.sql"),        find: load("../sql/users/find.sql"),        update: load("../sql/users/update.sql")    },    create: load("../sql/create.sql"),    init: load("../sql/init.sql"),    drop: load("../sql/drop.sql")};</code></pre>
+    <pre class="prettyprint"><code>// generated code example (file sql.js)const load = require('./loadSql');module.exports = {    events: {        add: load("../sql/events/add.sql"),        delete: load("../sql/events/delete.sql"),        find: load("../sql/events/find.sql"),        update: load("../sql/events/update.sql")    },    products: {        add: load("../sql/products/add.sql"),        delete: load("../sql/products/delete.sql"),        find: load("../sql/products/find.sql"),        update: load("../sql/products/update.sql")    },    users: {        add: load("../sql/users/add.sql"),        delete: load("../sql/users/delete.sql"),        find: load("../sql/users/find.sql"),        update: load("../sql/users/update.sql")    },    create: load("../sql/create.sql"),    init: load("../sql/init.sql"),    drop: load("../sql/drop.sql")};</code></pre>
 
-    <pre class="prettyprint"><code>// loadSql.js module examplevar QueryFile = require('pg-promise').QueryFile;module.exports = file => {    return new QueryFile(file, {minify: true});};</code></pre>
+    <pre class="prettyprint"><code>// loadSql.js module exampleconst QueryFile = require('pg-promise').QueryFile;module.exports = file => {    return new QueryFile(file, {minify: true});};</code></pre>
 
 
 

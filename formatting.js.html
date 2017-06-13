@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,10 +29,10 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-var $pgUtils = require('pg/lib/utils');
+const $pgUtils = require('pg/lib/utils');
 
 // Format Modification Flags;
-var fmFlags = {
+const fmFlags = {
     raw: 1, // Raw-Text variable
     alias: 2, // SQL Alias
     name: 4, // SQL Name/Identifier
@@ -42,7 +42,7 @@ var fmFlags = {
 };
 
 // Format Modification Map;
-var fmMap = {
+const fmMap = {
     '^': fmFlags.raw,
     ':raw': fmFlags.raw,
     ':alias': fmFlags.alias,
@@ -54,6 +54,8 @@ var fmMap = {
     '#': fmFlags.value
 };
 
+const maxVariable = 100000; // maximum supported variable is '$100000'
+
 ////////////////////////////////////////////////////
 // Converts a single value into its Postgres format.
 function formatValue(value, fm, cc) {
@@ -63,14 +65,14 @@ function formatValue(value, fm, cc) {
     }
 
     if (value &amp;&amp; typeof value === 'object') {
-        var ctf = value['formatDBType']; // custom type formatting;
+        const ctf = value['formatDBType']; // custom type formatting;
         if (typeof ctf === 'function') {
             fm |= value._rawDBType ? fmFlags.raw : 0;
             return formatValue(resolveFunc(ctf, value), fm, cc);
         }
     }
 
-    var isRaw = !!(fm &amp; fmFlags.raw);
+    const isRaw = !!(fm &amp; fmFlags.raw);
     fm &amp;= ~fmFlags.raw;
 
     switch (fm) {
@@ -119,7 +121,7 @@ function formatValue(value, fm, cc) {
 // as per PostgreSQL documentation: http://www.postgresql.org/docs/9.4/static/arrays.html
 // Arrays of any depth/dimension are supported.
 function formatArray(array) {
-    var loop = a => '[' + a.map(v => v instanceof Array ? loop(v) : formatValue(v)).join() + ']';
+    const loop = a => '[' + a.map(v => v instanceof Array ? loop(v) : formatValue(v)).join() + ']';
     return 'array' + loop(array);
 }
 
@@ -136,13 +138,13 @@ function formatCSV(values) {
 
 ///////////////////////////////
 // Query formatting helpers;
-var formatAs = {
+const formatAs = {
 
     object: (query, obj, raw, options) => {
         options = options &amp;&amp; typeof options === 'object' ? options : {};
-        var pattern = /\$(?:({)|(\()|(&lt;)|(\[)|(\/))\s*[a-zA-Z0-9\$_]+(\^|~|#|:raw|:alias|:name|:json|:csv|:value)?\s*(?:(?=\2)(?=\3)(?=\4)(?=\5)}|(?=\1)(?=\3)(?=\4)(?=\5)\)|(?=\1)(?=\2)(?=\4)(?=\5)>|(?=\1)(?=\2)(?=\3)(?=\5)]|(?=\1)(?=\2)(?=\3)(?=\4)\/)/g;
+        const pattern = /\$(?:({)|(\()|(&lt;)|(\[)|(\/))\s*[a-zA-Z0-9$_]+(\^|~|#|:raw|:alias|:name|:json|:csv|:value)?\s*(?:(?=\2)(?=\3)(?=\4)(?=\5)}|(?=\1)(?=\3)(?=\4)(?=\5)\)|(?=\1)(?=\2)(?=\4)(?=\5)>|(?=\1)(?=\2)(?=\3)(?=\5)]|(?=\1)(?=\2)(?=\3)(?=\4)\/)/g;
         return query.replace(pattern, name => {
-            var v = formatAs.stripName(name.replace(/^\$[{(&lt;[/]|[\s})>\]/]/g, ''), raw);
+            const v = formatAs.stripName(name.replace(/^\$[{(&lt;[/]|[\s})>\]/]/g, ''), raw);
             if (v.name in obj) {
                 return formatValue(obj[v.name], v.fm, obj);
             }
@@ -150,7 +152,7 @@ var formatAs = {
                 return formatValue(obj, v.fm);
             }
             if ('default' in options) {
-                var d = options.default, value = typeof d === 'function' ? d.call(obj, v.name, obj) : d;
+                const d = options.default, value = typeof d === 'function' ? d.call(obj, v.name, obj) : d;
                 return formatValue(value, v.fm, obj);
             }
             if (options.partial) {
@@ -163,14 +165,17 @@ var formatAs = {
 
     array: (query, array, raw, options) => {
         options = options &amp;&amp; typeof options === 'object' ? options : {};
-        return query.replace(/\$([1-9][0-9]{0,4}(?![0-9])(\^|~|#|:raw|:alias|:name|:json|:csv|:value)?)/g, name => {
-            var v = formatAs.stripName(name.substr(1), raw);
-            var idx = v.name - 1;
+        return query.replace(/\$([1-9][0-9]{0,16}(?![0-9])(\^|~|#|:raw|:alias|:name|:json|:csv|:value)?)/g, name => {
+            const v = formatAs.stripName(name.substr(1), raw);
+            const idx = v.name - 1;
+            if (idx >= maxVariable) {
+                throw new RangeError('Variable $' + v.name + ' exceeds supported maximum of $' + maxVariable);
+            }
             if (idx &lt; array.length) {
                 return formatValue(array[idx], v.fm);
             }
             if ('default' in options) {
-                var d = options.default, value = typeof d === 'function' ? d.call(array, idx, array) : d;
+                const d = options.default, value = typeof d === 'function' ? d.call(array, idx, array) : d;
                 return formatValue(value, v.fm);
             }
             if (options.partial) {
@@ -182,13 +187,13 @@ var formatAs = {
 
     value: (query, value, raw) => {
         return query.replace(/\$1(?![0-9])(\^|~|#|:raw|:alias|:name|:json|:csv|:value)?/g, name => {
-            var v = formatAs.stripName(name, raw);
+            const v = formatAs.stripName(name, raw);
             return formatValue(value, v.fm);
         });
     },
 
     stripName: (name, raw) => {
-        var mod = name.match(/\^|~|#|:raw|:alias|:name|:json|:csv|:value/);
+        const mod = name.match(/\^|~|#|:raw|:alias|:name|:json|:csv|:value/);
         if (mod) {
             return {
                 name: name.substr(0, mod.index),
@@ -261,7 +266,7 @@ function $formatQuery(query, values, raw, options) {
         throw new TypeError('Parameter \'query\' must be a text string.');
     }
     if (values &amp;&amp; typeof values === 'object') {
-        var ctf = values['formatDBType']; // custom type formatting;
+        const ctf = values['formatDBType']; // custom type formatting;
         if (typeof ctf === 'function') {
             return $formatQuery(query, resolveFunc(ctf, values), raw || values._rawDBType, options);
         }
@@ -281,7 +286,7 @@ function $formatQuery(query, values, raw, options) {
 //////////////////////////////////////////////////////
 // Formats a standard PostgreSQL function call query;
 function $formatFunction(funcName, values, capSQL) {
-    var sql = capSQL ? 'SELECT * FROM ' : 'select * from ';
+    const sql = capSQL ? 'SELECT * FROM ' : 'select * from ';
     return sql + funcName + '(' + formatCSV(values) + ')';
 }
 
@@ -322,7 +327,7 @@ function $formatSqlName(name) {
  * {@link formatting.format format} - formats a query according to parameters.
  *
  */
-var $as = {
+const $as = {
 
     /**
      * @method formatting.text
@@ -409,7 +414,7 @@ var $as = {
                 return /^\s*\*(\s*)$/.test(name) ? name : $formatSqlName(name);
             }
             if (typeof name === 'object') {
-                var keys = Array.isArray(name) ? name : Object.keys(name);
+                const keys = Array.isArray(name) ? name : Object.keys(name);
                 if (!keys.length) {
                     throw new Error('Cannot retrieve sql names from an empty array/object.');
                 }
@@ -506,7 +511,7 @@ var $as = {
             return 'null';
         }
         if (obj instanceof Buffer) {
-            var s = '\\x' + obj.toString('hex');
+            const s = '\\x' + obj.toString('hex');
             return raw ? s : wrapText(s);
         }
         throw new TypeError(wrapText(obj) + ' is not a Buffer object.');
@@ -551,7 +556,7 @@ var $as = {
             return 'null';
         }
         if (d instanceof Date) {
-            var s = $pgUtils.prepareValue(d);
+            const s = $pgUtils.prepareValue(d);
             return raw ? s : wrapText(s);
         }
         throw new TypeError(wrapText(d) + ' is not a Date object.');
@@ -653,7 +658,7 @@ var $as = {
             throwIfRaw(raw);
             return 'null';
         }
-        var s = JSON.stringify(data);
+        const s = JSON.stringify(data);
         return raw ? s : wrapText(safeText(s));
     },
 
@@ -682,7 +687,7 @@ var $as = {
         if (typeof func !== 'function') {
             throw new TypeError(wrapText(func) + ' is not a function.');
         }
-        var fm = raw ? fmFlags.raw : null;
+        const fm = raw ? fmFlags.raw : null;
         return formatValue(resolveFunc(func, cc), fm, cc);
     },
 
@@ -781,7 +786,6 @@ module.exports = {
  * @external RangeError
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError
  */
-
 </code></pre>
         </article>
     </section>

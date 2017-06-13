@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,7 +29,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-var $npm = {
+const $npm = {
     con: require('manakin').local,
     main: require('./'),
     utils: require('./utils')
@@ -37,7 +37,7 @@ var $npm = {
 
 /////////////////////////////////
 // Client notification helpers;
-var $events = {
+const $events = {
 
     /**
      * @event connect
@@ -68,12 +68,12 @@ var $events = {
      *
      * @example
      *
-     * var options = {
+     * const options = {
      *
      *     // pg-promise initialization options...
      *
      *     connect: (client, dc, isFresh) => {
-     *         var cp = client.connectionParameters;
+     *         const cp = client.connectionParameters;
      *         console.log("Connected to database:", cp.database);
      *     }
      *
@@ -109,12 +109,12 @@ var $events = {
      *
      * @example
      *
-     * var options = {
+     * const options = {
      *
      *     // pg-promise initialization options...
      *
      *     disconnect: (client, dc) => {
-     *        var cp = client.connectionParameters;
+     *        const cp = client.connectionParameters;
      *        console.log("Disconnecting from database:", cp.database);
      *     }
      *
@@ -238,19 +238,19 @@ var $events = {
      *
      * // Example below shows the fastest way to camelize column names:
      *
-     * var options = {
+     * const options = {
      *     receive: (data, result, e) => {
      *         camelizeColumns(data);
      *     }
      * };
      *
      * function camelizeColumns(data) {
-     *     var template = data[0];
-     *     for (var prop in template) {
-     *         var camel = pgp.utils.camelize(prop);
-     *         if (!(camel in template)) {
-     *             for (var i = 0; i &lt; data.length; i++) {
-     *                 var d = data[i];
+     *     const tmp = data[0];
+     *     for (let prop in tmp) {
+     *         const camel = pgp.utils.camelize(prop);
+     *         if (!(camel in tmp)) {
+     *             for (let i = 0; i &lt; data.length; i++) {
+     *                 const d = data[i];
      *                 d[camel] = d[prop];
      *                 delete d[prop];
      *             }
@@ -284,7 +284,7 @@ var $events = {
      *
      * @example
      *
-     * var options = {
+     * const options = {
      *     task: e => {
      *         if (e.ctx.finish) {
      *             // this is a task->finish event;
@@ -327,7 +327,7 @@ var $events = {
      *
      * @example
      *
-     * var options = {
+     * const options = {
      *     transact: e => {
      *         if (e.ctx.finish) {
      *             // this is a transaction->finish event;
@@ -373,7 +373,7 @@ var $events = {
      * for its complete documentation.
      *
      * @example
-     * var options = {
+     * const options = {
      *
      *     // pg-promise initialization options...
      *
@@ -443,7 +443,7 @@ var $events = {
      * // In the example below we extend the protocol with function `addImage`
      * // that will insert one binary image and resolve with the new record id.
      *
-     * var options = {
+     * const options = {
      *     extend: (obj, dc) => {
      *         // obj = this;
      *         // dc = database context;
@@ -470,7 +470,7 @@ var $events = {
      * }
      *
      * // Overriding 'extend' event;
-     * var options = {
+     * const options = {
      *     extend: (obj, dc) => {
      *         // obj = this;
      *         // dc = database context;
@@ -517,7 +517,7 @@ var $events = {
 
         /* istanbul ignore if */
         if (!$npm.main.suppressErrors) {
-            var stack = e instanceof Error ? e.stack : new Error().stack;
+            const stack = e instanceof Error ? e.stack : new Error().stack;
             $npm.con.error('Unexpected error in \'%s\' event handler.\n%s\n', event, stack);
         }
     }

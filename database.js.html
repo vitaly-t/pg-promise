@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,7 +29,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-var $npm = {
+const $npm = {
     result: require('./result'),
     special: require('./special'),
     Context: require('./cnContext'),
@@ -114,24 +114,24 @@ var $npm = {
  * // Proper way to initialize and share the Database object
  *
  * // Loading and initializing the library:
- * var pgp = require('pg-promise')({
+ * const pgp = require('pg-promise')({
  *     // Initialization Options
  * });
  *
  * // Preparing the connection details:
- * var cn = "postgres://username:password@host:port/database";
+ * const cn = "postgres://username:password@host:port/database";
  *
  * // Creating a new database instance from the connection details:
- * var db = pgp(cn);
+ * const db = pgp(cn);
  *
  * // Exporting the database object for shared use:
  * module.exports = db;
  */
 function Database(cn, dc, config) {
 
-    var dbThis = this,
-        pool = new config.pgp.pg.Pool(cn),
-        $p = config.promise;
+    const dbThis = this, $p = config.promise;
+    let pool = new config.pgp.pg.Pool(cn);
+
 
     pool.on('error', onError);
 
@@ -178,7 +178,7 @@ function Database(cn, dc, config) {
      *
      * @example
      *
-     * var sco; // shared connection object;
+     * let sco; // shared connection object;
      *
      * db.connect()
      *     .then(obj => {
@@ -204,8 +204,8 @@ function Database(cn, dc, config) {
      *
      */
     this.connect = function (options) {
-        var ctx = createContext();
-        var self = {
+        const ctx = createContext();
+        const self = {
             // Generic query method;
             query: function (query, values, qrm) {
                 if (!ctx.db) {
@@ -221,7 +221,7 @@ function Database(cn, dc, config) {
                 ctx.disconnect();
             }
         };
-        var connection = (options &amp;&amp; options.direct) ? config.$npm.connect.direct(ctx) : config.$npm.connect.pool(ctx, dbThis);
+        const connection = (options &amp;&amp; options.direct) ? config.$npm.connect.direct(ctx) : config.$npm.connect.pool(ctx, dbThis);
         return connection
             .then(db => {
                 ctx.connect(db);
@@ -266,7 +266,7 @@ function Database(cn, dc, config) {
      * number of milliseconds it took the client to execute the query.
      */
     this.query = function (query, values, qrm) {
-        var self = this, ctx = createContext();
+        const self = this, ctx = createContext();
         return config.$npm.connect.pool(ctx, dbThis)
             .then(db => {
                 ctx.connect(db);
@@ -303,12 +303,12 @@ function Database(cn, dc, config) {
      *
      * // Using the promise protocol as configured by pg-promise:
      *
-     * var $p = db.$config.promise;
+     * const $p = db.$config.promise;
      *
-     * var resolvedPromise = $p.resolve('some data');
-     * var rejectedPromise = $p.reject('some reason');
+     * const resolvedPromise = $p.resolve('some data');
+     * const rejectedPromise = $p.reject('some reason');
      *
-     * var newPromise = $p((resolve, reject) => {
+     * const newPromise = $p((resolve, reject) => {
      *     // call either resolve(data) or reject(reason) here
      * });
      */
@@ -497,7 +497,7 @@ function Database(cn, dc, config) {
          *
          */
         obj.one = function (query, values, cb, thisArg) {
-            var v = obj.query.call(this, query, values, $npm.result.one);
+            const v = obj.query.call(this, query, values, $npm.result.one);
             return transform(v, cb, thisArg);
         };
 
@@ -596,7 +596,7 @@ function Database(cn, dc, config) {
          *
          */
         obj.oneOrNone = function (query, values, cb, thisArg) {
-            var v = obj.query.call(this, query, values, $npm.result.one | $npm.result.none);
+            const v = obj.query.call(this, query, values, $npm.result.one | $npm.result.none);
             return transform(v, cb, thisArg);
         };
 
@@ -745,7 +745,7 @@ function Database(cn, dc, config) {
          *
          */
         obj.result = function (query, values, cb, thisArg) {
-            var v = obj.query.call(this, query, values, $npm.special.cache.resultQuery);
+            const v = obj.query.call(this, query, values, $npm.special.cache.resultQuery);
             return transform(v, cb, thisArg);
         };
 
@@ -844,7 +844,7 @@ function Database(cn, dc, config) {
          * {@link Database.func func}
          */
         obj.proc = function (procName, values, cb, thisArg) {
-            var v = obj.func.call(this, procName, values, $npm.result.one | $npm.result.none);
+            const v = obj.func.call(this, procName, values, $npm.result.one | $npm.result.none);
             return transform(v, cb, thisArg);
         };
 
@@ -949,7 +949,7 @@ function Database(cn, dc, config) {
         obj.map = function (query, values, cb, thisArg) {
             return obj.any.call(this, query, values)
                 .then(data => {
-                    var result = data.map(cb, thisArg);
+                    const result = data.map(cb, thisArg);
                     $npm.utils.addReadProp(result, 'duration', data.duration, true);
                     return result;
                 });
@@ -1226,8 +1226,8 @@ function Database(cn, dc, config) {
         // Resolves with result from the callback function;
         function taskProcessor(p1, p2, isTX) {
 
-            var tag, // tag object/value;
-                taskCtx = ctx.clone(); // task context object;
+            let tag; // tag object/value;
+            const taskCtx = ctx.clone(); // task context object;
 
             if (isTX) {
                 taskCtx.txLevel = taskCtx.txLevel >= 0 ? (taskCtx.txLevel + 1) : 0;
@@ -1246,7 +1246,7 @@ function Database(cn, dc, config) {
                 taskCtx.cb = p2;
             }
 
-            var cb = taskCtx.cb;
+            const cb = taskCtx.cb;
 
             if (typeof cb !== 'function') {
                 return $p.reject(new TypeError('Callback function is required for the ' + (isTX ? 'transaction.' : 'task.')));
@@ -1263,7 +1263,7 @@ function Database(cn, dc, config) {
                 }
             }
 
-            var tsk = new config.$npm.task(taskCtx, tag, isTX, config); // eslint-disable-line
+            const tsk = new config.$npm.task(taskCtx, tag, isTX, config); // eslint-disable-line
 
             extend(taskCtx, tsk);
 
@@ -1307,7 +1307,7 @@ function Database(cn, dc, config) {
 // which cannot be tested automatically; removing from coverage:
 // istanbul ignore next
 function onError(err) {
-    var ctx = err.client.$ctx;
+    const ctx = err.client.$ctx;
     $npm.events.error(ctx.options, err, {
         cn: $npm.utils.getSafeConnection(ctx.cn),
         dc: ctx.dc
@@ -1315,7 +1315,7 @@ function onError(err) {
 }
 
 module.exports = config => {
-    var npm = config.$npm;
+    const npm = config.$npm;
     npm.connect = npm.connect || $npm.connect(config);
     npm.query = npm.query || $npm.query(config);
     npm.task = npm.task || $npm.task(config);
@@ -1331,12 +1331,12 @@ module.exports = config => {
  * Stream object to initialize streaming.
  *
  * @example
- * var QueryStream = require('pg-query-stream');
- * var JSONStream = require('JSONStream');
+ * const QueryStream = require('pg-query-stream');
+ * const JSONStream = require('JSONStream');
  *
  * // you can also use pgp.as.format(query, values, options)
  * // to format queries properly, via pg-promise;
- * var qs = new QueryStream('select * from users');
+ * const qs = new QueryStream('select * from users');
  *
  * db.stream(qs, stream => {
  *         // initiate streaming into the console:

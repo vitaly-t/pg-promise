@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="DatabasePool.html">DatabasePool</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,7 +29,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-var $npm = {
+const $npm = {
     os: require('os'),
     utils: require('../utils'),
     formatting: require('../formatting')
@@ -101,14 +101,14 @@ var $npm = {
  *
  * @example
  *
- * var pgp = require('pg-promise')({
+ * const pgp = require('pg-promise')({
  *     capSQL: true // if you want all generated SQL capitalized
  * });
  *
- * var Column = pgp.helpers.Column;
+ * const Column = pgp.helpers.Column;
  *
  * // creating a column from just a name:
- * var col1 = new Column('colName');
+ * const col1 = new Column('colName');
  * console.log(col1);
  * //=>
  * // Column {
@@ -116,7 +116,7 @@ var $npm = {
  * // }
  *
  * // creating a column from a name + modifier:
- * var col2 = new Column('colName:csv');
+ * const col2 = new Column('colName:csv');
  * console.log(col2);
  * //=>
  * // Column {
@@ -125,7 +125,7 @@ var $npm = {
  * // }
  *
  * // creating a column from a configurator:
- * var col3 = new Column({
+ * const col3 = new Column({
  *     name: 'colName', // required
  *     prop: 'propName', // optional
  *     mod: '^', // optional
@@ -148,7 +148,7 @@ function Column(col) {
     }
 
     if (typeof col === 'string') {
-        var info = parseColumn(col);
+        const info = parseColumn(col);
         this.name = info.name;
         if ('mod' in info) {
             this.mod = info.mod;
@@ -204,7 +204,7 @@ function Column(col) {
         }
     }
 
-    var variable = '${' + (this.prop || this.name) + (this.mod || '') + '}',
+    const variable = '${' + (this.prop || this.name) + (this.mod || '') + '}',
         castText = this.cast ? ('::' + this.cast) : '',
         escapedName = $npm.formatting.as.alias(this.name);
 
@@ -228,7 +228,7 @@ function Column(col) {
 
 function parseCast(name) {
     if (typeof name === 'string') {
-        var s = name.replace(/^[:\s]*|\s*$/g, '');
+        const s = name.replace(/^[:\s]*|\s*$/g, '');
         if (s) {
             return s;
         }
@@ -237,14 +237,14 @@ function parseCast(name) {
 }
 
 function parseColumn(name) {
-    var m = name.match(/\??[a-zA-Z0-9\$_]+(\^|~|#|:raw|:alias|:name|:json|:csv|:value)?/);
+    const m = name.match(/\??[a-zA-Z0-9$_]+(\^|~|#|:raw|:alias|:name|:json|:csv|:value)?/);
     if (m &amp;&amp; m[0] === name) {
-        var res = {};
+        const res = {};
         if (name[0] === '?') {
             res.cnd = true;
             name = name.substr(1);
         }
-        var mod = name.match(/\^|~|#|:raw|:alias|:name|:json|:csv|:value/);
+        const mod = name.match(/\^|~|#|:raw|:alias|:name|:json|:csv|:value/);
         if (mod) {
             res.name = name.substr(0, mod.index);
             res.mod = mod[0];
@@ -257,12 +257,12 @@ function parseColumn(name) {
 }
 
 function isValidMod(mod) {
-    var values = ['^', '~', '#', ':raw', ':alias', ':name', ':json', ':csv', ':value'];
+    const values = ['^', '~', '#', ':raw', ':alias', ':name', ':json', ':csv', ':value'];
     return values.indexOf(mod) !== -1;
 }
 
 function isValidVariable(name) {
-    var m = name.match(/^[0-9]+|[a-zA-Z0-9\$_]+/);
+    const m = name.match(/^[0-9]+|[a-zA-Z0-9$_]+/);
     return !!m &amp;&amp; m[0] === name;
 }
 
@@ -280,7 +280,7 @@ function isValidVariable(name) {
  */
 Column.prototype.toString = function (level) {
     level = level > 0 ? parseInt(level) : 0;
-    var gap0 = $npm.utils.messageGap(level),
+    const gap0 = $npm.utils.messageGap(level),
         gap1 = $npm.utils.messageGap(level + 1),
         lines = [
             gap0 + 'Column {',
