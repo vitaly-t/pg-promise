@@ -15,16 +15,16 @@
 // Packages used: pg-promise, pg-monitor, bluebird.
 ////////////////////////////////////////////////////
 
-var promise = require('bluebird'); // or any other Promise/A+ compatible library;
+const promise = require('bluebird'); // or any other Promise/A+ compatible library;
 
-var options = {
+const options = {
     promiseLib: promise // overriding the default (ES6 Promise);
 };
 
-var pgp = require('pg-promise')(options);
+const pgp = require('pg-promise')(options);
 // See all options: https://github.com/vitaly-t/pg-promise#initialization-options
 
-var monitor = require('pg-monitor');
+const monitor = require('pg-monitor');
 
 monitor.attach(options); // attach to all query events;
 // See API: https://github.com/vitaly-t/pg-monitor#attachoptions-events-override
@@ -38,7 +38,7 @@ monitor.setLog((msg, info) => {
 // See API: https://github.com/vitaly-t/pg-monitor#log
 
 // Database connection details;
-var cn = {
+const cn = {
     host: 'localhost', // 'localhost' is the default;
     port: 5432, // 5432 is the default;
     database: 'myDatabase',
@@ -46,7 +46,7 @@ var cn = {
     password: 'myPassword'
 };
 
-var db = pgp(cn); // database instance;
+const db = pgp(cn); // database instance;
 
 // NOTE: The default ES6 Promise doesn't have method `.finally`, but it is
 // available within Bluebird library used here as an example.

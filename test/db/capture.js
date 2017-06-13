@@ -1,9 +1,5 @@
 'use strict';
 
-/*eslint-disable */
-
-var util = require('util');
-
 function hookConsole(callback) {
 
     var stdout = process.stdout,
@@ -12,25 +8,26 @@ function hookConsole(callback) {
         oldErrWrite = stderr.write;
 
     stdout.write = (function () {
-        return function (string) {
+        return string => {
             callback(string);
-        }
+        };
     })(stdout.write);
 
     stderr.write = (function () {
-        return function (string) {
+        return string => {
             callback(string);
-        }
+        };
     })(stderr.write);
 
-    return function () {
+    return () => {
         stdout.write = oldOutWrite;
         stderr.write = oldErrWrite;
-    }
+    };
 }
 
 // removes color elements from text;
 function removeColors(text) {
+    // eslint-disable-next-line
     return text.replace(/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]/g, '');
 }
 

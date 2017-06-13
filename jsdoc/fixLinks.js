@@ -1,7 +1,7 @@
 'use strict';
 
 // Automatic links:
-var links = {
+const links = {
     'Promises/A+': 'https://promisesaplus.com',
     'spex': 'https://github.com/vitaly-t/spex',
     'spex.batch': 'http://vitaly-t.github.io/spex/global.html#batch',
@@ -32,10 +32,10 @@ var links = {
 };
 
 function fixLinks(source) {
-    return source.replace(/\$\[[a-z0-9\s\/\+-\.]+\]/gi, name => {
-        var sln = name.replace(/\$\[|\]/g, ''); // stripped link name;
+    return source.replace(/\$\[[a-z0-9\s/+-.]+\]/gi, name => {
+        const sln = name.replace(/\$\[|\]/g, ''); // stripped link name;
         if (sln in links) {
-            return '<a href="' + links[sln] + '\">' + sln + '</a>';
+            return '<a href="' + links[sln] + '">' + sln + '</a>';
         }
         return name;
     });

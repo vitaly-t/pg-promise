@@ -4,12 +4,11 @@
 
 'use strict';
 
-/*eslint-disable */
-
 var dbHeader = require('./header');
 var promise = dbHeader.defPromise;
 var header = dbHeader({
     query: e => {
+        // eslint-disable-next-line
         console.log(e.query); // print all of the queries being executed;
     },
     promiseLib: promise
@@ -57,9 +56,11 @@ var db = header.db;
         ]);
     })
         .then(() => {
+            // eslint-disable-next-line
             console.log('*** SUCCESS ***');
         })
         .catch(error => {
+            // eslint-disable-next-line
             console.log('FAILED:', error);
         })
         .finally(pgp.end);
