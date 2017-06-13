@@ -1407,8 +1407,8 @@ wrapped in quotes (unless flag <code>raw</code> is set).</p>
     <p>Replaces variables in a string according to the type of <code>values</code>:</p>
 <ul>
 <li>Replaces <code>$1</code> occurrences when <code>values</code> is of type <code>string</code>, <code>boolean</code>, <code>number</code>, <code>Date</code>, <code>Buffer</code> or when it is <code>null</code>.</li>
-<li>Replaces variables <code>$1</code>, <code>$2</code>, ...<code>$100000</code> when <code>values</code> is an array of parameters. It throws a RangeError when the values
-or variables are out of range.</li>
+<li>Replaces variables <code>$1</code>, <code>$2</code>, ...<code>$100000</code> when <code>values</code> is an array of parameters. It throws a <a href="external-RangeError.html">RangeError</a>
+when the values or variables are out of range.</li>
 <li>Replaces <code>$*propName*</code>, where <code>*</code> is any of <code>{}</code>, <code>()</code>, <code>[]</code>, <code>&lt;&gt;</code>, <code>//</code>, when <code>values</code> is an object that's not a
 <code>Date</code>, <code>Buffer</code>, <a href="QueryFile.html">QueryFile</a> or <code>null</code>. Special property name <code>this</code> refers to the formatting object itself,
 to be injected as a JSON string. When referencing a property that doesn't exist in the formatting object, it throws
