@@ -811,6 +811,9 @@ describe('Method as.format', function () {
             pgp.as.format('$3', [1, 2]);
         }).toThrow(new RangeError(errors.range('$3', 2)));
 
+        expect(function () {
+            pgp.as.format('$100001', []);
+        }).toThrow(new RangeError('Variable $100001 exceeds supported maximum of $100000'));
     });
 
     describe('formatting options', function () {

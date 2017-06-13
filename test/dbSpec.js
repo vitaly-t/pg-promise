@@ -347,6 +347,22 @@ describe('Connection', function () {
             expect(error.message).toBe('Cannot execute a query on a disconnected client.');
         });
     });
+
+    describe('external closing of the connection pool', () => {
+        const tmpDB = pgp('bla-bla');
+        let error;
+        beforeEach(done => {
+            tmpDB.$pool.end();
+            tmpDB.connect()
+                .catch(e => {
+                    error = e;
+                    done();
+                });
+        });
+        it('must be handled', () => {
+            expect(error).toEqual(new Error('Connection pool of the database object has been destroyed.'));
+        });
+    });
 });
 
 describe('Direct Connection', function () {

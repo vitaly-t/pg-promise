@@ -29,6 +29,13 @@ function getPath(file) {
 
 describe('QueryFile / Positive:', function () {
 
+    describe('function-style call', () => {
+        it('must return an object', () => {
+            // eslint-disable-next-line
+            expect(QueryFile(sqlSimple) instanceof QueryFile).toBe(true);
+        });
+    });
+
     describe('without options', function () {
         var qf = new QueryFile(sqlSimple);
         it('must not minify', function () {

@@ -215,6 +215,23 @@ describe('Start/Finish transaction events', function () {
 
 describe('Error event', function () {
 
+    describe('for invalid connection strings', () => {
+        const tmpDB = pgp('postgres://username:password@localhost/invalidDB');
+        let context;
+        beforeEach(done => {
+            options.error = function (err, e) {
+                context = e;
+            };
+            tmpDB.connect()
+                .catch(() => {
+                    done();
+                });
+        });
+        it('must report the details correctly', () => {
+            expect(context.cn).toBe('postgres://username:########@localhost/invalidDB');
+        });
+    });
+
     describe('from transaction callbacks', function () {
         var r, error, context, counter = 0;
         beforeEach(function (done) {
