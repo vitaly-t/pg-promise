@@ -77,7 +77,7 @@ $ npm install pg-promise
 Loading and initializing the library with [Initialization Options]:
 
 ```js
-var pgp = require('pg-promise')({
+const pgp = require('pg-promise')({
     // Initialization Options
 });
 ```
@@ -85,7 +85,7 @@ var pgp = require('pg-promise')({
 &#8722; or without [Initialization Options]:
 
 ```js
-var pgp = require('pg-promise')();
+const pgp = require('pg-promise')();
 ```
  
 ## Database
@@ -93,7 +93,7 @@ var pgp = require('pg-promise')();
 Create your [Database] object from the connection details:
 
 ```js
-var db = pgp(connection);
+const db = pgp(connection);
 ```
 
 The `connection` parameter can be any of the following:
@@ -178,7 +178,7 @@ query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
 //=> INSERT INTO "Table Name"("Column Name") VALUES(...)
 
 // A mixed example for a dynamic column list:
-var columns = ['id', 'message'];
+const columns = ['id', 'message'];
 query('SELECT ${columns^} FROM ${table~}', {
     columns: columns.map(pgp.as.name).join(),
     table: 'Table Name'
@@ -189,7 +189,7 @@ query('SELECT ${columns^} FROM ${table~}', {
 Version 5.2.1 and later supports extended syntax for `${this~}` and for method [as.name]:
 
 ```js
-var obj = {
+const obj = {
     one: 1,
     two: 2
 };
@@ -263,7 +263,7 @@ method [query] uses parameter `qrm` (Query Result Mask):
 // Query Result Mask flags;
 //
 // Any combination is supported, except for one + many.
-var queryResult = {
+const queryResult = {
     /** Single row is expected. */
     one: 1,
     /** One or more rows expected. */
@@ -284,7 +284,7 @@ db.query('select * from users');
 which is equivalent to making one of the following calls:
 
 ```js
-var qrm = pgp.queryResult;
+const qrm = pgp.queryResult;
 db.query('SELECT * FROM users', undefined, qrm.many | qrm.none);
 db.query('SELECT * FROM users', undefined, qrm.any);
 db.manyOrNone('SELECT * FROM users');
@@ -356,7 +356,7 @@ Property `this` is a reference to the formatting object itself, so it can be ins
 **example:**
 
 ```js
-var doc = {
+const doc = {
     id: 123,
     body: 'some text'
 };
@@ -428,16 +428,6 @@ overriding formatting for standard object types, such as `Date` and `Array`.
 **Example: your own type formatting**
 
 ```js
-// ES5:
-function Money(m) {
-    this.amount = m;
-    this.formatDBType = function () {
-        // return a string with 2 decimal points;
-        return this.amount.toFixed(2);
-    }
-}
-
-// ES6:
 function Money(m) {
     this.amount = m;
     this.formatDBType = a => a.amount.toFixed(2);
@@ -447,13 +437,6 @@ function Money(m) {
 **Example: overriding standard types**
 
 ```js
-// ES5:
-Date.prototype.formatDBType = function () {
-    // format Date as a local timestamp;
-    return this.getTime();
-};
-
-// ES6:
 Date.prototype.formatDBType = a => a.getTime();
 ```
 
@@ -518,16 +501,16 @@ Use of external SQL files (via [QueryFile]) offers many advantages:
 Example:
 
 ```js
-var path = require('path');
+const path = require('path');
 
 // Helper for linking to external query files:
 function sql(file) {
-    var fullPath = path.join(__dirname, file);
+    const fullPath = path.join(__dirname, file);
     return new pgp.QueryFile(fullPath, {minify: true});
 }
 
 // Create a QueryFile globally, once per file:
-var sqlFindUser = sql('./sql/findUser.sql');
+const sqlFindUser = sql('./sql/findUser.sql');
 
 db.one(sqlFindUser, {id: 123})
     .then(user=> {
@@ -603,8 +586,8 @@ A transaction is a special type of task that automatically executes `BEGIN` + `C
 ```js
 db.tx(t => {
     // creating a sequence of transaction queries:
-    var q1 = t.none('UPDATE users SET active=$1 WHERE id=$2', [true, 123]);
-    var q2 = t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id',
+    const q1 = t.none('UPDATE users SET active=$1 WHERE id=$2', [true, 123]);
+    const q2 = t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id',
         ['users', 123]);
 
     // returning a promise that determines a successful transaction:
@@ -630,11 +613,11 @@ Example:
 
 ```js
 db.tx(t => {
-    var queries = [
+    const queries = [
         t.none('DROP TABLE users;'),
         t.none('CREATE TABLE users(id SERIAL NOT NULL, name TEXT NOT NULL)')
     ];
-    for (var i = 1; i <= 100; i++) {
+    for (let i = 1; i <= 100; i++) {
         queries.push(t.none('INSERT INTO users(name) VALUES($1)', 'name-' + i));
     }
     queries.push(
@@ -735,11 +718,11 @@ without your control, or so it was until [Transaction Mode] type was added (read
 [Transaction Mode] extends the `BEGIN` command in your transaction with a complete set of configuration parameters.
 
 ```js
-var TransactionMode = pgp.txMode.TransactionMode;
-var isolationLevel = pgp.txMode.isolationLevel;
+const TransactionMode = pgp.txMode.TransactionMode;
+const isolationLevel = pgp.txMode.isolationLevel;
  
 // Create a reusable transaction mode (serializable + read-only + deferrable):
-var tmSRD = new TransactionMode({
+const tmSRD = new TransactionMode({
     tiLevel: isolationLevel.serializable,
     readOnly: true,
     deferrable: true
@@ -831,11 +814,11 @@ or you want a different promise library to be used, set this property to the lib
 Example of switching over to [Bluebird]:
 
 ```js
-var promise = require('bluebird');
-var options = {
+const promise = require('bluebird');
+const options = {
     promiseLib: promise
 };
-var pgp = require('pg-promise')(options);
+const pgp = require('pg-promise')(options);
 ```
 
 [Promises/A+] libraries that implement a recognizable promise signature and work automatically:
