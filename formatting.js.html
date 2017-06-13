@@ -697,9 +697,8 @@ const $as = {
      * Replaces variables in a string according to the type of `values`:
      *
      * - Replaces `$1` occurrences when `values` is of type `string`, `boolean`, `number`, `Date`, `Buffer` or when it is `null`.
-     * - Replaces variables `$1`, `$2`, ...`$99999` when `values` is an array of parameters. When a variable is out of range,
-     *   it throws {@link external:RangeError RangeError} = `Variable $n out of range. Parameters array length: x`, unless
-     *   option `partial` is used.
+     * - Replaces variables `$1`, `$2`, ...`$100000` when `values` is an array of parameters. It throws a RangeError when the values
+     *   or variables are out of range.
      * - Replaces `$*propName*`, where `*` is any of `{}`, `()`, `[]`, `&lt;>`, `//`, when `values` is an object that's not a
      * `Date`, `Buffer`, {@link QueryFile} or `null`. Special property name `this` refers to the formatting object itself,
      *   to be injected as a JSON string. When referencing a property that doesn't exist in the formatting object, it throws
