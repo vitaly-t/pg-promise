@@ -349,7 +349,7 @@ describe('Connection', function () {
     });
 
     describe('external closing of the connection pool', () => {
-        const tmpDB = pgp('bla-bla');
+        const tmpDB = pgp('postgres://postgres:password@localhost:5432/invalidDB');
         let error;
         beforeEach(done => {
             tmpDB.$pool.end();
