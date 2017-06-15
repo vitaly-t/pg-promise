@@ -636,20 +636,43 @@ db.tx(t => {
     });
 ```
 
+### Implementation details
+
+It is important to know that PostgreSQL doesn't have proper support for nested transactions, but it
+supports [savepoints](http://www.postgresql.org/docs/9.4/static/sql-savepoint.html) inside
+transactions. Nested transactions and save-points are two ways to deal with *partial rollbacks*.
+Save-points are more general and allow this library to offer you nested transactions as an
+abstraction.
+
+Save-points allow you to rollback to any previous state since the beginning of the (only) top-level
+transaction. Nested transactions allow you to only rollback to the state at the beginning of
+the current transaction. Proper support for nested transactions means that the result of a
+successful sub-transaction or query is rolled back when its parent transaction is rolled back.
+
+From a practical point of view, it means that when using nested transactions, a rollback knows
+automatically which state to restore but when using save-points you must specify which previous
+save-point to use.
+This library tracks the save-points for you so you can work as if nested transactions were
+supported by Postgres.
+
+It is important to note that when using either save-points or "real" nested transactions (which are
+tools for partial rollbacks), data is finally written only when the top level transaction is
+committed.
+
+Also, Postgres uses `BEGIN` amd `COMMIT / ROLLBACK` for the top transaction and `SAVEPOINT pointName`
+and `ROLLBACK TO pointName` for inner save-points. This library automatically provides a transaction
+on the top level, and save-points for all sub-transactions.
+
 ### Limitations
 
-It is important to know that PostgreSQL doesn't have proper support for nested transactions, it only
-supports *partial rollbacks* via [savepoints](http://www.postgresql.org/docs/9.4/static/sql-savepoint.html) inside transactions.
-The difference between the two techniques is huge, as explained further.
+This implementation of nested transactions has the following transactions
+- The `txMode` property of sub-transactions is ignored. The transaction mode is only applied for
+  `BEGIN` statements, so only for top-level transactions.
+- `SET TRANSACTION` statements are only effective if they are called before any query of the
+  real Postgres transaction. This means that once any nested transaction does a query, the
+  transaction mode is locked for the whole transaction tree.
 
-Proper support for nested transactions means that the result of a successful sub-transaction isn't rolled back
-when its parent transaction is rolled back. But with PostgreSQL save-points, if you roll-back the top-level
-transaction, the result of all inner save-points is also rolled back.
-
-Save-points are only good for *partial rollbacks*, i.e. you can roll-back results of sub-transactions, with
-yet successful *commit* for the top-level transaction. Using promises it is easy to construct your transaction
-so it would utilize that logic. This library automatically provides a transaction on the top level, and
-save-points for all sub-transactions.
+See the implementation details above for more information.
 
 ### Synchronous Transactions
 
