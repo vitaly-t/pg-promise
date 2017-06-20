@@ -121,7 +121,7 @@ describe('Method stream', function () {
             var result;
             beforeEach(function (done) {
                 options.query = function () {
-                    throw new Error('query notification error');
+                    throw 'query notification error';
                 };
                 db.stream({
                     _reading: false,
@@ -133,8 +133,8 @@ describe('Method stream', function () {
                     });
             });
             it('must reject with the same error', function () {
-                expect(result instanceof Error).toBe(true);
-                expect(result.message).toBe('query notification error');
+                expect(result instanceof Error).toBe(false);
+                expect(result).toBe('query notification error');
             });
             afterEach(function () {
                 options.query = null;

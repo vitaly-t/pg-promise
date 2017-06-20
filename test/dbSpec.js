@@ -1756,6 +1756,23 @@ describe('negative query formatting', function () {
         });
     });
 
+    describe('with formatting parameter throwing a non-error', function () {
+        var error, err = 'ops!';
+        beforeEach(function (done) {
+            db.one('select $1', [function () {
+                throw err;
+            }])
+                .catch(function (e) {
+                    error = e;
+                    done();
+                });
+        });
+        it('must reject with correct error', function () {
+            expect(error instanceof Error).toBe(false);
+            expect(error).toBe(err);
+        });
+    });
+
 });
 
 if (jasmine.Runner) {
