@@ -226,7 +226,7 @@ describe('Library entry function', function () {
         });
     });
 
-    describe('Taking no initilization options', function () {
+    describe('Taking no initialization options', function () {
         it('must be supported', function () {
             expect(typeof dbHeader.pgpLib()).toBe('function');
         });
