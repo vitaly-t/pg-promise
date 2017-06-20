@@ -25,13 +25,11 @@ function main(options, dc) {
         if (options && typeof options === 'object') {
             if (!('pgNative' in options)) {
                 options.pgNative = true;
-                options.noWarnings = true;
             }
         } else {
             if (!options) {
                 options = {
-                    pgNative: true,
-                    noWarnings: true
+                    pgNative: true
                 };
             }
         }
