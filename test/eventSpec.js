@@ -630,7 +630,7 @@ describe('pgFormatting', function () {
                 ctx.push(e);
             };
             promise.all([
-                db.func('findUser', 1),
+                db.func('findUser', [1]),
                 db.one('select * from users where id=$1', [1])
             ])
                 .then(function (data) {
@@ -649,10 +649,8 @@ describe('pgFormatting', function () {
             // params will be passed back only because the formatting
             // is done by PG, and not by pg-promise:
             //
-            // Cannot verify the second parameter because of the bug in pg:
-            // https://github.com/brianc/node-postgres/issues/750
-            // expect(ctx[0].params === 1 && ctx[1].params[0] === 1).toBe(true);
-            expect(ctx[0].params === 1).toBe(true);
+            expect(ctx[0].params).toBeUndefined();
+            expect(ctx[1].params).toEqual([1]);
         });
     });
 
