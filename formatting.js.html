@@ -29,7 +29,10 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-const $pgUtils = require('pg/lib/utils');
+const $npm = {
+    pgUtils: require('pg/lib/utils'),
+    patterns: require('./patterns')
+};
 
 // Format Modification Flags;
 const fmFlags = {
@@ -142,8 +145,7 @@ const formatAs = {
 
     object: (query, obj, raw, options) => {
         options = options &amp;&amp; typeof options === 'object' ? options : {};
-        const pattern = /\$(?:({)|(\()|(&lt;)|(\[)|(\/))\s*[a-zA-Z0-9$_]+(\^|~|#|:raw|:alias|:name|:json|:csv|:value)?\s*(?:(?=\2)(?=\3)(?=\4)(?=\5)}|(?=\1)(?=\3)(?=\4)(?=\5)\)|(?=\1)(?=\2)(?=\4)(?=\5)>|(?=\1)(?=\2)(?=\3)(?=\5)]|(?=\1)(?=\2)(?=\3)(?=\4)\/)/g;
-        return query.replace(pattern, name => {
+        return query.replace($npm.patterns.namedParameters, name => {
             const v = formatAs.stripName(name.replace(/^\$[{(&lt;[/]|[\s})>\]/]/g, ''), raw);
             if (v.name in obj) {
                 return formatValue(obj[v.name], v.fm, obj);
@@ -165,7 +167,7 @@ const formatAs = {
 
     array: (query, array, raw, options) => {
         options = options &amp;&amp; typeof options === 'object' ? options : {};
-        return query.replace(/\$([1-9][0-9]{0,16}(?![0-9])(\^|~|#|:raw|:alias|:name|:json|:csv|:value)?)/g, name => {
+        return query.replace($npm.patterns.multipleValues, name => {
             const v = formatAs.stripName(name.substr(1), raw);
             const idx = v.name - 1;
             if (idx >= maxVariable) {
@@ -186,14 +188,14 @@ const formatAs = {
     },
 
     value: (query, value, raw) => {
-        return query.replace(/\$1(?![0-9])(\^|~|#|:raw|:alias|:name|:json|:csv|:value)?/g, name => {
+        return query.replace($npm.patterns.singleValue, name => {
             const v = formatAs.stripName(name, raw);
             return formatValue(value, v.fm);
         });
     },
 
     stripName: (name, raw) => {
-        const mod = name.match(/\^|~|#|:raw|:alias|:name|:json|:csv|:value/);
+        const mod = name.match($npm.patterns.hasValidModifier);
         if (mod) {
             return {
                 name: name.substr(0, mod.index),
@@ -556,7 +558,7 @@ const $as = {
             return 'null';
         }
         if (d instanceof Date) {
-            const s = $pgUtils.prepareValue(d);
+            const s = $npm.pgUtils.prepareValue(d);
             return raw ? s : wrapText(s);
         }
         throw new TypeError(wrapText(d) + ' is not a Date object.');
