@@ -48,6 +48,9 @@ describe('QueryFile / Positive:', function () {
         it('must return minified query', function () {
             expect(qf.query).toBe('select * from users');
         });
+        it('must count parameters', function () {
+            expect(qf.paramCount).toBe(0);
+        });
     });
 
     describe('default with params', function () {
@@ -58,6 +61,9 @@ describe('QueryFile / Positive:', function () {
         var qf = new QueryFile(sqlParams, {minify: true, params: params, noWarnings: true});
         it('must return pre-formatted query', function () {
             expect(qf.query).toBe('SELECT ${column~} FROM "public"."users"');
+        });
+        it('must count parameters', function () {
+            expect(qf.paramCount).toBe(1);
         });
     });
 
