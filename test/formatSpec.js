@@ -138,8 +138,11 @@ describe('Method as.number', function () {
         expect(pgp.as.number(1234567890)).toBe('1234567890');
         expect(pgp.as.number(-123.456)).toBe('-123.456');
         expect(pgp.as.number(NaN)).toBe('\'NaN\'');
+        expect(pgp.as.number(Number.NaN)).toBe('\'NaN\'');
         expect(pgp.as.number(1 / 0)).toBe('\'+Infinity\'');
+        expect(pgp.as.number(Number.POSITIVE_INFINITY)).toBe('\'+Infinity\'');
         expect(pgp.as.number(-1 / 0)).toBe('\'-Infinity\'');
+        expect(pgp.as.number(Number.NEGATIVE_INFINITY)).toBe('\'-Infinity\'');
     });
 
     it('must correctly resolve functions', function () {
