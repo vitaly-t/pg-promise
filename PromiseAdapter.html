@@ -41,7 +41,7 @@
 
     
 
-    <h4 class="name" id="PromiseAdapter"><span class="type-signature"></span>new PromiseAdapter<span class="signature">(create, resolve, reject)</span><span class="type-signature"> &rarr; {<a href="PromiseAdapter.html">PromiseAdapter</a>}</span></h4>
+    <h4 class="name" id="PromiseAdapter"><span class="type-signature"></span>new PromiseAdapter<span class="signature">(api)</span><span class="type-signature"> &rarr; {<a href="PromiseAdapter.html">PromiseAdapter</a>}</span></h4>
 
     
     <p class="summary">Adapter for the primary promise operations.</p>
@@ -56,6 +56,7 @@ via functions that implement the primary operations with promises:</p>
 <li>construct a new promise with a callback function</li>
 <li>resolve a promise with some result data</li>
 <li>reject a promise with a reason</li>
+<li>resolve an array of promises</li>
 </ul>
 <p>The type is available from the library's root: <code>pgp.PromiseAdapter</code>.</p>
 </div>
@@ -70,6 +71,49 @@ via functions that implement the primary operations with promises:</p>
 
     <h5>Parameters:</h5>
     
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>api</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Promise API configuration object.</p>
+<p>Passing in anything other than an object will throw <a href="external-TypeError.html">TypeError</a> = <code>Adapter requires an api configuration object.</code></p>
+                <h6>Properties</h6>
+                
 
 <table class="params">
     <thead>
@@ -111,7 +155,7 @@ via functions that implement the primary operations with promises:</p>
 
             <td class="description last"><p>A function that takes a callback parameter and returns a new promise object.
 The callback parameter is expected to be <code>function(resolve, reject)</code>.</p>
-<p>Passing in anything other than a function will throw <code>Adapter requires a function to create a promise.</code></p></td>
+<p>Passing in anything other than a function will throw <a href="external-TypeError.html">TypeError</a> = <code>Function 'create' must be specified.</code></p></td>
         </tr>
 
     
@@ -135,7 +179,7 @@ The callback parameter is expected to be <code>function(resolve, reject)</code>.
             
 
             <td class="description last"><p>A function that takes an optional data parameter and resolves a promise with it.</p>
-<p>Passing in anything other than a function will throw <code>Adapter requires a function to resolve a promise.</code></p></td>
+<p>Passing in anything other than a function will throw <a href="external-TypeError.html">TypeError</a> = <code>Function 'resolve' must be specified.</code></p></td>
         </tr>
 
     
@@ -159,7 +203,38 @@ The callback parameter is expected to be <code>function(resolve, reject)</code>.
             
 
             <td class="description last"><p>A function that takes an optional error parameter and rejects a promise with it.</p>
-<p>Passing in anything other than a function will throw <code>Adapter requires a function to reject a promise.</code></p></td>
+<p>Passing in anything other than a function will throw <a href="external-TypeError.html">TypeError</a> = <code>Function 'reject' must be specified.</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>all</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A function that resolves an array of promises.</p>
+<p>Passing in anything other than a function will throw <a href="external-TypeError.html">TypeError</a> = <code>Function 'all' must be specified.</code></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
