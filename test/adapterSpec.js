@@ -8,43 +8,69 @@ var dummy = function () {
 
 describe('Adapter', function () {
 
-    describe('with invalid \'create\'', function () {
+    describe('with invalid parameters', function () {
+        const error = new TypeError('Adapter requires an api configuration object.');
         it('must throw an error', function () {
             expect(function () {
                 new PromiseAdapter();
-            }).toThrow('Adapter requires a function to create a promise.');
+            }).toThrow(error);
+            expect(function () {
+                new PromiseAdapter(null);
+            }).toThrow(error);
+            expect(function () {
+                new PromiseAdapter(123);
+            }).toThrow(error);
+            expect(function () {
+                new PromiseAdapter('test');
+            }).toThrow(error);
+        });
+    });
+
+    describe('with invalid \'create\'', function () {
+        it('must throw an error', function () {
+            expect(function () {
+                new PromiseAdapter({});
+            }).toThrow('Function \'create\' must be specified.');
         });
     });
 
     describe('with invalid \'resolve\'', function () {
         it('must throw an error', function () {
             expect(function () {
-                new PromiseAdapter(dummy);
-            }).toThrow('Adapter requires a function to resolve a promise.');
+                new PromiseAdapter({create: dummy});
+            }).toThrow('Function \'resolve\' must be specified.');
         });
     });
 
     describe('with invalid \'reject\'', function () {
         it('must throw an error', function () {
             expect(function () {
-                new PromiseAdapter(dummy, dummy);
-            }).toThrow('Adapter requires a function to reject a promise.');
+                new PromiseAdapter({create: dummy, resolve: dummy});
+            }).toThrow('Function \'reject\' must be specified.');
+        });
+    });
+
+    describe('with invalid \'all\'', function () {
+        it('must throw an error', function () {
+            expect(function () {
+                new PromiseAdapter({create: dummy, resolve: dummy, reject: dummy});
+            }).toThrow('Function \'all\' must be specified.');
         });
     });
 
     describe('with valid parameters', function () {
         it('must be successful with new', function () {
-            var adapter = new PromiseAdapter(dummy, dummy, dummy);
+            var adapter = new PromiseAdapter({create: dummy, resolve: dummy, reject: dummy, all: dummy});
             expect(adapter instanceof PromiseAdapter).toBe(true);
         });
         it('must be successful without new', function () {
             // eslint-disable-next-line
-            var adapter = PromiseAdapter(dummy, dummy, dummy);
+            var adapter = PromiseAdapter({create: dummy, resolve: dummy, reject: dummy, all: dummy});
             expect(adapter instanceof PromiseAdapter).toBe(true);
         });
         it('must be successful with wrong context', function () {
             var obj = {};
-            var adapter = PromiseAdapter.call(obj, dummy, dummy, dummy);
+            var adapter = PromiseAdapter.call(obj, {create: dummy, resolve: dummy, reject: dummy, all: dummy});
             expect(adapter instanceof PromiseAdapter).toBe(true);
         });
     });

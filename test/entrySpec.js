@@ -49,7 +49,11 @@ describe('Library entry function', function () {
             return P.reject(reason);
         }
 
-        var adapter = new PromiseAdapter(create, resolve, reject);
+        function all(data) {
+            return P.all(data);
+        }
+
+        var adapter = new PromiseAdapter({create, resolve, reject, all});
         it('must accept custom promise', function () {
             var lib = header({
                 promiseLib: adapter,
@@ -100,7 +104,8 @@ describe('Library entry function', function () {
                 {
                     promiseLib: {
                         resolve: dummy,
-                        reject: dummy
+                        reject: dummy,
+                        all: dummy
                     },
                     noWarnings: true
                 });
@@ -115,6 +120,7 @@ describe('Library entry function', function () {
 
             fakePromiseLib.resolve = dummy;
             fakePromiseLib.reject = dummy;
+            fakePromiseLib.all = dummy;
             var lib = header({
                 promiseLib: fakePromiseLib,
                 noWarnings: true
@@ -169,32 +175,22 @@ describe('Library entry function', function () {
 
     describe('multi-init', function () {
 
-        var PromiseOne = [
-            function (cb) {
-                return new promise.Promise(cb);
-            },
-            function (data) {
-                return promise.resolve(data);
-            },
-            function () {
-                return promise.reject('reject-one');
-            }
-        ];
+        var PromiseOne = {
+            create: cb => new promise.Promise(cb),
+            resolve: data => promise.resolve(data),
+            reject: () => promise.reject('reject-one'),
+            all: data => promise.all(data)
+        };
 
-        var PromiseTwo = [
-            function (cb) {
-                return new promise.Promise(cb);
-            },
-            function (data) {
-                return promise.resolve(data);
-            },
-            function () {
-                return promise.reject('reject-two');
-            }
-        ];
+        var PromiseTwo = {
+            create: cb => new promise.Promise(cb),
+            resolve: data => promise.resolve(data),
+            reject: () => promise.reject('reject-two'),
+            all: data => promise.all(data)
+        };
 
-        var one = PromiseAdapter.apply(null, PromiseOne);
-        var two = PromiseAdapter.apply(null, PromiseTwo);
+        var one = PromiseAdapter.call(null, PromiseOne);
+        var two = PromiseAdapter.call(null, PromiseTwo);
         var result;
 
         beforeEach(function (done) {
