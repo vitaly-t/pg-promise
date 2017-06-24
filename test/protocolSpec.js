@@ -1,18 +1,18 @@
 'use strict';
 
-var PG = require('pg');
-var header = require('./db/header');
-var promise = header.defPromise;
-var options = {
+const PG = require('pg');
+const header = require('./db/header');
+const promise = header.defPromise;
+const options = {
     promiseLib: promise,
     noLocking: true,
     noWarnings: true
 };
-var testDC = 'test_DC_123';
-var dbHeader = header(options, testDC);
-var pgpLib = dbHeader.pgpLib;
-var pgp = dbHeader.pgp;
-var db = dbHeader.db;
+const testDC = 'test_DC_123';
+const dbHeader = header(options, testDC);
+const pgpLib = dbHeader.pgpLib;
+const pgp = dbHeader.pgp;
+const db = dbHeader.db;
 
 describe('Library instance', function () {
 
@@ -156,7 +156,10 @@ describe('Database Protocol', function () {
 
         // must have a hidden configurator;
         expect(db.$config && typeof db.$config === 'object').toBeTruthy();
-        expect(db.$config.promise).toBeTruthy();
+        expect(typeof db.$config.promise).toBe('function');
+        expect(typeof db.$config.promise.resolve).toBe('function');
+        expect(typeof db.$config.promise.reject).toBe('function');
+        expect(typeof db.$config.promise.all).toBe('function');
         expect(db.$config.promiseLib).toBeTruthy();
         expect(typeof db.$config.options).toBe('object');
         expect(typeof db.$config.pgp).toBe('function');
@@ -166,7 +169,7 @@ describe('Database Protocol', function () {
 
     describe('on connection level', function () {
 
-        var connection;
+        let connection;
         beforeEach(function (done) {
             db.connect(function (t) {
                 return promise.resolve(t);
@@ -207,7 +210,7 @@ describe('Database Protocol', function () {
 
     describe('on transaction level', function () {
 
-        var protocol;
+        let protocol;
         beforeEach(function (done) {
             db.tx(function (t) {
                 return promise.resolve(t);
@@ -248,7 +251,7 @@ describe('Database Protocol', function () {
 
     describe('on task level', function () {
 
-        var protocol;
+        let protocol;
         beforeEach(function (done) {
             db.task(function (t) {
                 return promise.resolve(t);
@@ -292,8 +295,8 @@ describe('Database Protocol', function () {
 describe('Protocol Extension', function () {
 
     describe('on database level', function () {
-        var result, dcParam, THIS, ctx, counter = 0;
-        var pgpTest = header({
+        let result, dcParam, THIS, ctx, counter = 0;
+        const pgpTest = header({
             promiseLib: header.defPromise,
             noWarnings: true,
             extend: function (obj, dc) {
@@ -325,8 +328,8 @@ describe('Protocol Extension', function () {
     });
 
     describe('on transaction level', function () {
-        var result, THIS, ctx, counter = 0;
-        var pgpTest = header({
+        let result, THIS, ctx, counter = 0;
+        const pgpTest = header({
             promiseLib: header.defPromise,
             noWarnings: true,
             extend: function (obj) {
@@ -370,7 +373,7 @@ describe('Protocol Extension', function () {
 describe('spex', function () {
 
     describe('batch', function () {
-        var result;
+        let result;
         beforeEach(function (done) {
             db.task(function () {
                 return this.batch([1, 2]);
@@ -388,7 +391,7 @@ describe('spex', function () {
     });
 
     describe('page', function () {
-        var result;
+        let result;
         beforeEach(function (done) {
             function source() {
             }
@@ -411,7 +414,7 @@ describe('spex', function () {
     });
 
     describe('sequence', function () {
-        var result;
+        let result;
         beforeEach(function (done) {
             function source() {
             }
@@ -436,19 +439,19 @@ describe('spex', function () {
 // This one is just for coverage;
 describe('Error protocol', function () {
 
-    var result = {
+    const result = {
         rows: []
     };
     it('must return correctly formatted error body', function () {
-        var error1 = new pgp.errors.QueryResultError(0, result, '');
-        var error2 = new pgp.errors.QueryResultError(0, result, {name: 'name', text: 'text'}, []);
+        const error1 = new pgp.errors.QueryResultError(0, result, '');
+        const error2 = new pgp.errors.QueryResultError(0, result, {name: 'name', text: 'text'}, []);
         expect(error1.inspect()).toBe(error1.toString());
         expect(error2.inspect()).toBe(error2.toString());
     });
 });
 
 if (jasmine.Runner) {
-    var _finishCallback = jasmine.Runner.prototype.finishCallback;
+    const _finishCallback = jasmine.Runner.prototype.finishCallback;
     jasmine.Runner.prototype.finishCallback = function () {
         // Run the old finishCallback:
         _finishCallback.bind(this)();
