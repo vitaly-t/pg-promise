@@ -58,19 +58,9 @@ describe('Adapter', function () {
         });
     });
 
-    describe('with valid parameters', function () {
-        it('must be successful with new', function () {
+    describe('with all valid parameters', function () {
+        it('must be successful', function () {
             const adapter = new PromiseAdapter({create: dummy, resolve: dummy, reject: dummy, all: dummy});
-            expect(adapter instanceof PromiseAdapter).toBe(true);
-        });
-        it('must be successful without new', function () {
-            // eslint-disable-next-line
-            const adapter = PromiseAdapter({create: dummy, resolve: dummy, reject: dummy, all: dummy});
-            expect(adapter instanceof PromiseAdapter).toBe(true);
-        });
-        it('must be successful with wrong context', function () {
-            const obj = {};
-            const adapter = PromiseAdapter.call(obj, {create: dummy, resolve: dummy, reject: dummy, all: dummy});
             expect(adapter instanceof PromiseAdapter).toBe(true);
         });
     });

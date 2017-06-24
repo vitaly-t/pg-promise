@@ -189,8 +189,8 @@ describe('Library entry function', function () {
             all: data => promise.all(data)
         };
 
-        const one = PromiseAdapter.call(null, PromiseOne);
-        const two = PromiseAdapter.call(null, PromiseTwo);
+        const one = new PromiseAdapter(PromiseOne);
+        const two = new PromiseAdapter(PromiseTwo);
         let result;
 
         beforeEach(function (done) {
