@@ -1,7 +1,7 @@
 'use strict';
 
-var exec = require('child_process').exec;
-var path = require('path');
+const exec = require('child_process').exec;
+const path = require('path');
 
 describe('Typescript', function () {
     describe('build', function () {

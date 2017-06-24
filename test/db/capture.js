@@ -2,7 +2,7 @@
 
 function hookConsole(callback) {
 
-    var stdout = process.stdout,
+    const stdout = process.stdout,
         stderr = process.stderr,
         oldOutWrite = stdout.write,
         oldErrWrite = stderr.write;
@@ -32,7 +32,8 @@ function removeColors(text) {
 }
 
 function capture() {
-    var text = '', hook = hookConsole(function (s) {
+    let text = '';
+    const hook = hookConsole(function (s) {
         if (!text) {
             text = s;
         }

@@ -1,9 +1,9 @@
 'use strict';
 
-var pgp = require('../lib/index');
-var PromiseAdapter = pgp.PromiseAdapter;
+const pgp = require('../lib/index');
+const PromiseAdapter = pgp.PromiseAdapter;
 
-var dummy = function () {
+const dummy = function () {
 };
 
 describe('Adapter', function () {
@@ -60,17 +60,17 @@ describe('Adapter', function () {
 
     describe('with valid parameters', function () {
         it('must be successful with new', function () {
-            var adapter = new PromiseAdapter({create: dummy, resolve: dummy, reject: dummy, all: dummy});
+            const adapter = new PromiseAdapter({create: dummy, resolve: dummy, reject: dummy, all: dummy});
             expect(adapter instanceof PromiseAdapter).toBe(true);
         });
         it('must be successful without new', function () {
             // eslint-disable-next-line
-            var adapter = PromiseAdapter({create: dummy, resolve: dummy, reject: dummy, all: dummy});
+            const adapter = PromiseAdapter({create: dummy, resolve: dummy, reject: dummy, all: dummy});
             expect(adapter instanceof PromiseAdapter).toBe(true);
         });
         it('must be successful with wrong context', function () {
-            var obj = {};
-            var adapter = PromiseAdapter.call(obj, {create: dummy, resolve: dummy, reject: dummy, all: dummy});
+            const obj = {};
+            const adapter = PromiseAdapter.call(obj, {create: dummy, resolve: dummy, reject: dummy, all: dummy});
             expect(adapter instanceof PromiseAdapter).toBe(true);
         });
     });

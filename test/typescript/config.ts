@@ -1,10 +1,10 @@
 import * as pgPromise from '../../typescript/pg-promise';
 
-var pgp: pgPromise.IMain = pgPromise();
-var db = pgp('connection');
+const pgp: pgPromise.IMain = pgPromise();
+const db = pgp('connection');
 
-var cfg = db.$config;
-var p = cfg.promise;
+const cfg = db.$config;
+const p = cfg.promise;
 
 p((resolve, reject) => {
     resolve(123);
@@ -18,4 +18,4 @@ cfg.options.capSQL = true;
 
 cfg.pgp.as.format('');
 
-var version: string = cfg.version;
+const version: string = cfg.version;

@@ -4,10 +4,10 @@ function create(cb: any) {
     return {};
 }
 
-var adapter = new pgPromise.PromiseAdapter(create, (data) => {
+const adapter = new pgPromise.PromiseAdapter(create, (data) => {
 }, (error) => {
 });
 
-var pgp = pgPromise({
+const pgp = pgPromise({
     promiseLib: adapter
 });

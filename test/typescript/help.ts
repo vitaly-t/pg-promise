@@ -1,29 +1,29 @@
 import * as pgPromise from '../../typescript/pg-promise';
 import {Column, ColumnSet, TableName, IMain} from '../../typescript/pg-promise';
 
-var pgp: IMain = pgPromise({
+const pgp: IMain = pgPromise({
     capSQL: true
 });
 
-var col1: Column = new pgp.helpers.Column({
+const col1: Column = new pgp.helpers.Column({
     name: 'third-col',
     prop: 'third',
     def: 888,
     cast: '',
     cnd: true,
     init: (col) => {
-        var e = col.exists;
+        const e = col.exists;
         return this.test;
     },
     skip: (col) => {
-        var e = col.exists;
+        const e = col.exists;
         return false;
     }
 });
 
-var col2: Column = new pgp.helpers.Column('col');
+const col2: Column = new pgp.helpers.Column('col');
 
-var data = [
+const data = [
     {
         first: 1,
         second: 'two'
@@ -33,11 +33,11 @@ var data = [
     }
 ];
 
-var table1: TableName = new pgp.helpers.TableName('');
-var table2: TableName = new pgp.helpers.TableName({table: ''});
-var table3: TableName = new pgp.helpers.TableName({table: '', schema: ''});
+const table1: TableName = new pgp.helpers.TableName('');
+const table2: TableName = new pgp.helpers.TableName({table: ''});
+const table3: TableName = new pgp.helpers.TableName({table: '', schema: ''});
 
-var cs: ColumnSet = new pgp.helpers.ColumnSet([
+const cs: ColumnSet = new pgp.helpers.ColumnSet([
     'first', 'second', {
         name: 'third-col',
         prop: 'third',
@@ -51,29 +51,29 @@ var cs: ColumnSet = new pgp.helpers.ColumnSet([
     }
 ], {table: 'my-table', inherit: true});
 
-var insert: string = pgp.helpers.insert(data, cs, 'my-table');
-var update: string = pgp.helpers.update(data, cs, table1, {tableAlias: 'W'});
+const insert: string = pgp.helpers.insert(data, cs, 'my-table');
+const update: string = pgp.helpers.update(data, cs, table1, {tableAlias: 'W'});
 
-var values1: string = pgp.helpers.values({});
-var values2: string = pgp.helpers.values({}, []);
-var values3: string = pgp.helpers.values([{}], []);
-var values4: string = pgp.helpers.values([], cs);
+const values1: string = pgp.helpers.values({});
+const values2: string = pgp.helpers.values({}, []);
+const values3: string = pgp.helpers.values([{}], []);
+const values4: string = pgp.helpers.values([], cs);
 
-var names: string = cs.names;
-var variables: string = cs.variables;
+const names: string = cs.names;
+const variables: string = cs.variables;
 
-var obj = cs.prepare(null); // this one should fail
+let obj = cs.prepare(null); // this one should fail
 obj = cs.prepare({});
 
-var sets1: string = pgp.helpers.sets({});
-var sets2: string = pgp.helpers.sets([]);
-var sets3: string = pgp.helpers.sets({}, cs);
+const sets1: string = pgp.helpers.sets({});
+const sets2: string = pgp.helpers.sets([]);
+const sets3: string = pgp.helpers.sets({}, cs);
 
-var cs1: ColumnSet = cs.extend(['']);
-var cs2: ColumnSet = cs1.merge(cs);
+const cs1: ColumnSet = cs.extend(['']);
+const cs2: ColumnSet = cs1.merge(cs);
 
-var c1: string = pgp.helpers.concat(['first', {query: 'second'}]);
-var c2: string = pgp.helpers.concat(['first', new pgp.QueryFile(''), {
+const c1: string = pgp.helpers.concat(['first', {query: 'second'}]);
+const c2: string = pgp.helpers.concat(['first', new pgp.QueryFile(''), {
     query: '',
     values: 123,
     options: {partial: true}

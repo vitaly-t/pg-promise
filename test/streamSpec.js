@@ -1,18 +1,18 @@
 'use strict';
 
-var QueryStream = require('pg-query-stream');
-var JSONStream = require('JSONStream');
-var header = require('./db/header');
-var promise = header.defPromise;
+const QueryStream = require('pg-query-stream');
+const JSONStream = require('JSONStream');
+const header = require('./db/header');
+const promise = header.defPromise;
 
-var options = {
+const options = {
     promiseLib: promise,
     noWarnings: true
 };
 
-var dbHeader = header(options);
-var pgp = dbHeader.pgp;
-var db = dbHeader.db;
+const dbHeader = header(options);
+const pgp = dbHeader.pgp;
+const db = dbHeader.db;
 
 if (options.pgNative) {
     return;
@@ -24,7 +24,7 @@ function dummy() {
 
 describe('Method stream', function () {
     describe('with invalid stream object', function () {
-        var result;
+        let result;
         beforeEach(function (done) {
             promise.any([
                 db.stream(),
@@ -39,14 +39,14 @@ describe('Method stream', function () {
         });
         it('must throw an error', function () {
             expect(result.length).toBe(4);
-            for (var i = 0; i < result.length; i++) {
+            for (let i = 0; i < result.length; i++) {
                 expect(result[i] instanceof TypeError).toBe(true);
                 expect(result[i].message).toBe('Invalid or missing stream object.');
             }
         });
     });
     describe('with invalid stream state', function () {
-        var result;
+        let result;
         beforeEach(function (done) {
             promise.any([
                 db.stream({
@@ -65,15 +65,15 @@ describe('Method stream', function () {
         });
         it('must throw an error', function () {
             expect(result.length).toBe(2);
-            for (var i = 0; i < result.length; i++) {
+            for (let i = 0; i < result.length; i++) {
                 expect(result[i] instanceof Error).toBe(true);
                 expect(result[i].message).toBe('Invalid stream state.');
             }
         });
         describe('with invalid initialization callback', function () {
-            var result;
+            let result;
             beforeEach(function (done) {
-                var stream = {
+                const stream = {
                     _reading: false,
                     state: 'initialized'
                 };
@@ -90,16 +90,16 @@ describe('Method stream', function () {
             });
             it('must throw an error', function () {
                 expect(result.length).toBe(4);
-                for (var i = 0; i < result.length; i++) {
+                for (let i = 0; i < result.length; i++) {
                     expect(result[i] instanceof TypeError).toBe(true);
                     expect(result[i].message).toBe('Invalid or missing stream initialization callback.');
                 }
             });
         });
         describe('with initialization callback throwing error', function () {
-            var result;
+            let result;
             beforeEach(function (done) {
-                var stream = {
+                const stream = {
                     _reading: false,
                     state: 'initialized'
                 };
@@ -118,7 +118,7 @@ describe('Method stream', function () {
         });
 
         describe('throwing error during query notification', function () {
-            var result;
+            let result;
             beforeEach(function (done) {
                 options.query = function () {
                     throw 'query notification error';
@@ -142,8 +142,8 @@ describe('Method stream', function () {
         });
 
         describe('with a valid request', function () {
-            var result, count = 0, context, initCtx;
-            var qs = new QueryStream('select * from users where id=$1', [1]);
+            let result, count = 0, context, initCtx;
+            const qs = new QueryStream('select * from users where id=$1', [1]);
             beforeEach(function (done) {
                 options.query = function (e) {
                     context = e;
@@ -175,14 +175,14 @@ describe('Method stream', function () {
         });
 
         describe('with invalid request', function () {
-            var result, err, context, count = 0;
+            let result, err, context, count = 0;
             beforeEach(function (done) {
                 options.error = function (error, e) {
                     err = error;
                     context = e;
                     count++;
                 };
-                var qs = new QueryStream('select * from unknown where id=$1', [1]);
+                const qs = new QueryStream('select * from unknown where id=$1', [1]);
                 db.stream(qs, function (stream) {
                     stream.pipe(JSONStream.stringify());
                 })
@@ -211,7 +211,7 @@ describe('Method stream', function () {
 });
 
 if (jasmine.Runner) {
-    var _finishCallback = jasmine.Runner.prototype.finishCallback;
+    const _finishCallback = jasmine.Runner.prototype.finishCallback;
     jasmine.Runner.prototype.finishCallback = function () {
         // Run the old finishCallback:
         _finishCallback.bind(this)();
