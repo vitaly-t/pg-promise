@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v5.9.0 or later.
+// Requires pg-promise v5.9.6 or later.
 ////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -662,11 +662,13 @@ declare namespace pgPromise {
     }
 
     interface IGenericPromise {
-        (cb: (resolve: (value?: any) => void, reject: (value?: any) => void) => void): XPromise<any>
+        (cb: (resolve: (value?: any) => void, reject: (reason?: any) => void) => void): XPromise<any>
 
         resolve(value?: any): void
 
-        reject(value?: any): void
+        reject(reason?: any): void
+
+        all(iterable: any): XPromise<any>
     }
 
 }
