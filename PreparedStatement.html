@@ -281,9 +281,9 @@ subsequently used to execute or deallocate a previously prepared statement.</p><
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>const PS = require('pg-promise').PreparedStatement;// Creating a complete Prepared Statement with parameters:const findUser = new PS('find-user', 'SELECT * FROM Users WHERE id = $1', [123]);db.one(findUser)    .then(user=> {        // user found;    })    .catch(error=> {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>const PS = require('pg-promise').PreparedStatement;// Creating a complete Prepared Statement with parameters:const findUser = new PS('find-user', 'SELECT * FROM Users WHERE id = $1', [123]);db.one(findUser)    .then(user => {        // user found;    })    .catch(error => {        // error;    });</code></pre>
 
-    <pre class="prettyprint"><code>const PS = require('pg-promise').PreparedStatement;// Creating a reusable Prepared Statement without values:const addUser = new PS('add-user', 'INSERT INTO Users(name, age) VALUES($1, $2)');// setting values explicitly:addUser.values = ['John', 30];db.none(addUser)    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });// setting values implicitly, by passing them into the query method:db.none(addUser, ['Mike', 25])    .then(()=> {        // user added;    })    .catch(error=> {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>const PS = require('pg-promise').PreparedStatement;// Creating a reusable Prepared Statement without values:const addUser = new PS('add-user', 'INSERT INTO Users(name, age) VALUES($1, $2)');// setting values explicitly:addUser.values = ['John', 30];db.none(addUser)    .then(() => {        // user added;    })    .catch(error => {        // error;    });// setting values implicitly, by passing them into the query method:db.none(addUser, ['Mike', 25])    .then(() => {        // user added;    })    .catch(error => {        // error;    });</code></pre>
 
 
 

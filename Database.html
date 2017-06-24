@@ -2946,9 +2946,9 @@ When specified, the return value replaces the original resolved value.</p>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// a query with in-line value transformation:db.one('INSERT INTO Events VALUES($1) RETURNING id', [123], event => event.id)    .then(data=> {        // data = a new event id, rather than an object with it    });</code></pre>
+    <pre class="prettyprint"><code>// a query with in-line value transformation:db.one('INSERT INTO Events VALUES($1) RETURNING id', [123], event => event.id)    .then(data => {        // data = a new event id, rather than an object with it    });</code></pre>
 
-    <pre class="prettyprint"><code>// a query with in-line value transformation + conversion:db.one('SELECT count(*) FROM Users', [], c => +c.count)    .then(count=> {        // count = a proper integer value, rather than an object with a string    });</code></pre>
+    <pre class="prettyprint"><code>// a query with in-line value transformation + conversion:db.one('SELECT count(*) FROM Users', [], c => +c.count)    .then(count => {        // count = a proper integer value, rather than an object with a string    });</code></pre>
 
 
 
@@ -3251,7 +3251,7 @@ When specified, the return value replaces the original resolved value.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// a query with in-line value transformation:db.oneOrNone('SELECT id FROM Events WHERE type = $1', ['entry'], e => e &amp;&amp; e.id)    .then(data=> {        // data = the event id or null (rather than object or null)    });</code></pre>
+    <pre class="prettyprint"><code>// a query with in-line value transformation:db.oneOrNone('SELECT id FROM Events WHERE type = $1', ['entry'], e => e &amp;&amp; e.id)    .then(data => {        // data = the event id or null (rather than object or null)    });</code></pre>
 
 
 
@@ -4083,9 +4083,9 @@ number of milliseconds it took the client to execute the query.</li>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// use of value transformation:// deleting rows and returning the number of rows deleteddb.result('DELETE FROM Events WHERE id = $1', [123], r => r.rowCount)    .then(data=> {        // data = number of rows that were deleted    });</code></pre>
+    <pre class="prettyprint"><code>// use of value transformation:// deleting rows and returning the number of rows deleteddb.result('DELETE FROM Events WHERE id = $1', [123], r => r.rowCount)    .then(data => {        // data = number of rows that were deleted    });</code></pre>
 
-    <pre class="prettyprint"><code>// use of value transformation:// getting only column details from a tabledb.result('SELECT * FROM Users LIMIT 0', null, r => r.fields)    .then(data=> {        // data = array of column descriptors    });</code></pre>
+    <pre class="prettyprint"><code>// use of value transformation:// getting only column details from a tabledb.result('SELECT * FROM Users LIMIT 0', null, r => r.fields)    .then(data => {        // data = array of column descriptors    });</code></pre>
 
 
 
@@ -4294,7 +4294,7 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
 <div class="description">
     <p>Executes a callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) with an automatically managed connection.</p>
 <p>This method should be used whenever executing more than one query at once, so the allocated connection
-is reused between all queries, and released only after the task has finished.</p>
+is reused between all queries, and released only after the task has finished (see <a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a>).</p>
 <p>The callback function is called with one parameter - database protocol (same as <code>this</code>), extended with methods
 <a href="Task.html#.batch">batch</a>, <a href="Task.html#.page">page</a>, <a href="Task.html#.sequence">sequence</a>, plus property <a href="Task.html#.ctx">ctx</a> -
 the task context object.</p>
@@ -4356,8 +4356,7 @@ the task context object.</p>
             
 
             <td class="description last"><p>When the method takes only one parameter, it must be the callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) for the task.
-However, when calling the method with 2 parameters, the first one is always the <code>tag</code> - traceable context for the
-task (see <a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>).</p></td>
+When calling the method with 2 parameters, the first one is the <code>tag</code> - traceable context for the task (see <a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>).</p></td>
         </tr>
 
     
@@ -4445,7 +4444,7 @@ be passed in as the first parameter.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Task.html">Task</a>,<a href="Database.html#.tx">tx</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a></li>
+            <li><a href="Task.html">Task</a>,<a href="Database.html#.tx">tx</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a></li>
         </ul>
     </dd>
     
@@ -4491,11 +4490,9 @@ be passed in as the first parameter.</p></td>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// using the regular callback syntax:db.task(t => {        // t.ctx = task context object        return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user=> {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>db.task('my-task', t => {        // t.ctx = task context object                return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user => {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
 
-    <pre class="prettyprint"><code>// using the ES6 arrow syntax:db.task(t => {        // t.ctx = task context object                return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user=> {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data=> {        // success        // data = as returned from the task's callback    })    .catch(error=> {        // error    });</code></pre>
-
-    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.task(function * (t) {        // t.ctx = task context object        let user = yield t.one('SELECT id FROM Users WHERE name = $1', 'John');        return yield t.any('SELECT * FROM Events WHERE userId = $1', user.id);    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.task('my-task', function * (t) {        // t.ctx = task context object        let user = yield t.one('SELECT id FROM Users WHERE name = $1', 'John');        return yield t.any('SELECT * FROM Events WHERE userId = $1', user.id);    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
 
 
 
@@ -4517,6 +4514,7 @@ be passed in as the first parameter.</p></td>
 <li>it executes <code>BEGIN</code> just before invoking the callback function</li>
 <li>it executes <code>COMMIT</code>, if the callback didn't throw any error or return a rejected promise</li>
 <li>it executes <code>ROLLBACK</code>, if the callback did throw an error or return a rejected promise</li>
+<li>it executes corresponding <code>SAVEPOINT</code> commands when the method is called recursively.</li>
 </ul>
 <p>The callback function is called with one parameter - database protocol (same as <code>this</code>), extended with methods
 <a href="Task.html#.batch">batch</a>, <a href="Task.html#.page">page</a>, <a href="Task.html#.sequence">sequence</a>, plus property <a href="Task.html#.ctx">ctx</a> -
@@ -4581,8 +4579,7 @@ transactions are blocking operations, and must be used with caution.</p>
             
 
             <td class="description last"><p>When the method takes only one parameter, it must be the callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) for the transaction.
-However, when calling the method with 2 parameters, the first one is always the <code>tag</code> - traceable context for the
-transaction (see <a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>).</p></td>
+When calling the method with 2 parameters, the first one is the <code>tag</code> - traceable context for the transaction (see <a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>).</p></td>
         </tr>
 
     
@@ -4660,7 +4657,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1097">line 1097</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1077">line 1077</a>
     </li></ul></dd>
     
 
@@ -4670,7 +4667,7 @@ passed in as the first parameter.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Task.html">Task</a>,<a href="Database.html#.task">Database.task</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a></li>
+            <li><a href="Task.html">Task</a>,<a href="Database.html#.task">Database.task</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a></li>
         </ul>
     </dd>
     
@@ -4716,11 +4713,9 @@ passed in as the first parameter.</p></td>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// using the regular callback syntax:db.tx(t => {        // t.ctx = transaction context object        return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user=> {                return t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);            });    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>db.tx('my-transaction', t => {        // t.ctx = transaction context object                return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user=> {                return t.batch([                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']),                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'login'])                ]);            });    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
 
-    <pre class="prettyprint"><code>// using the ES6 arrow syntax:db.tx(t=> {        // t.ctx = transaction context object                return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user=> {                return t.batch([                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']),                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'login'])                ]);            });    })    .then(data=> {        // success        // data = as returned from the transaction's callback    })    .catch(error=> {        // error    });</code></pre>
-
-    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.tx(function * (t) {        // t.ctx = transaction context object        let user = yield t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);        return yield t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.tx('my-transaction', function * (t) {        // t.ctx = transaction context object        let user = yield t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);        return yield t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
 
 
 
@@ -4835,7 +4830,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1298">line 1298</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1259">line 1259</a>
     </li></ul></dd>
     
 
