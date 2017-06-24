@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,7 +29,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-const $npm = {
+const npm = {
     spex: require('spex'),
     utils: require('./utils'),
     mode: require('./txMode'),
@@ -131,14 +131,14 @@ function Task(ctx, tag, isTX, config) {
      */
     this.ctx = ctx.ctx = {}; // task context object;
 
-    $npm.utils.addReadProp(this.ctx, 'isTX', isTX);
+    npm.utils.addReadProp(this.ctx, 'isTX', isTX);
 
     if ('context' in ctx) {
-        $npm.utils.addReadProp(this.ctx, 'context', ctx.context);
+        npm.utils.addReadProp(this.ctx, 'context', ctx.context);
     }
 
-    $npm.utils.addReadProp(this.ctx, 'tag', tag);
-    $npm.utils.addReadProp(this.ctx, 'dc', ctx.dc);
+    npm.utils.addReadProp(this.ctx, 'tag', tag);
+    npm.utils.addReadProp(this.ctx, 'dc', ctx.dc);
 
     // generic query method;
     this.query = function (query, values, qrm) {
@@ -216,7 +216,7 @@ Task.exec = (ctx, obj, isTX, config) => {
         try {
             result = cb.call(obj, obj); // invoking the callback function;
         } catch (err) {
-            $npm.events.error(ctx.options, err, {
+            npm.events.error(ctx.options, err, {
                 client: ctx.db.client,
                 dc: ctx.dc,
                 ctx: ctx.ctx
@@ -233,14 +233,14 @@ Task.exec = (ctx, obj, isTX, config) => {
     function update(start, success, result) {
         const c = ctx.ctx;
         if (start) {
-            $npm.utils.addReadProp(c, 'start', new Date());
+            npm.utils.addReadProp(c, 'start', new Date());
         } else {
             c.finish = new Date();
             c.success = success;
             c.result = result;
-            $npm.utils.lock(c, true);
+            npm.utils.lock(c, true);
         }
-        (isTX ? $npm.events.transact : $npm.events.task)(ctx.options, {
+        (isTX ? npm.events.transact : npm.events.task)(ctx.options, {
             client: ctx.db.client,
             dc: ctx.dc,
             ctx: c
@@ -292,7 +292,7 @@ Task.exec = (ctx, obj, isTX, config) => {
     }
 
     function begin() {
-        if (!ctx.txLevel &amp;&amp; ctx.cb.txMode instanceof $npm.mode.TransactionMode) {
+        if (!ctx.txLevel &amp;&amp; ctx.cb.txMode instanceof npm.mode.TransactionMode) {
             return exec(ctx.cb.txMode.begin(capSQL), 'savepoint');
         }
         return exec('begin', 'savepoint');
@@ -327,15 +327,15 @@ Task.exec = (ctx, obj, isTX, config) => {
 };
 
 module.exports = config => {
-    const npm = config.$npm;
+    const npmLocal = config.$npm;
 
     // istanbul ignore next:
     // we keep 'npm.query' initialization here, even though it is always
     // pre-initialized by the 'database' module, for integrity purpose. 
-    npm.query = npm.query || $npm.query(config);
+    npmLocal.query = npmLocal.query || npm.query(config);
 
-    npm.async = npm.async || $npm.async(config);
-    npm.spex = npm.spex || $npm.spex(config.promiseLib);
+    npmLocal.async = npmLocal.async || npm.async(config);
+    npmLocal.spex = npmLocal.spex || npm.spex(config.promiseLib);
     return Task;
 };
 </code></pre>

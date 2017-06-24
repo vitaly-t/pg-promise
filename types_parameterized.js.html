@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,7 +29,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-const $npm = {
+const npm = {
     os: require('os'),
     utils: require('../utils'),
     errors: require('../errors'),
@@ -37,7 +37,7 @@ const $npm = {
 };
 
 /**
- * @constructor ParameterizedQuery
+ * @class ParameterizedQuery
  * @description
  * **Alternative Syntax:** `ParameterizedQuery({text, values, ...})` &amp;#8658; {@link ParameterizedQuery}
  *
@@ -132,7 +132,7 @@ function ParameterizedQuery(text, values) {
                 delete PQ.values;
             }
         } else {
-            if ($npm.utils.isNull(v)) {
+            if (npm.utils.isNull(v)) {
                 delete PQ.values;
             } else {
                 PQ.values = [v];
@@ -228,7 +228,7 @@ function ParameterizedQuery(text, values) {
         get: () => currentError
     });
 
-    if ($npm.utils.isObject(text, ['text'])) {
+    if (npm.utils.isObject(text, ['text'])) {
         state.text = text.text;
         state.binary = text.binary;
         state.rowMode = text.rowMode;
@@ -247,7 +247,7 @@ function ParameterizedQuery(text, values) {
      */
     this.parse = () => {
 
-        const qf = state.text instanceof $npm.QueryFile ? state.text : null;
+        const qf = state.text instanceof npm.QueryFile ? state.text : null;
 
         if (!changed &amp;&amp; !qf) {
             return PQ;
@@ -271,11 +271,11 @@ function ParameterizedQuery(text, values) {
         } else {
             PQ.text = state.text;
         }
-        if (!$npm.utils.isText(PQ.text)) {
+        if (!npm.utils.isText(PQ.text)) {
             errors.push('Property \'text\' must be a non-empty text string.');
         }
 
-        if (!$npm.utils.isNull(values)) {
+        if (!npm.utils.isNull(values)) {
             PQ.values = values;
         }
 
@@ -288,7 +288,7 @@ function ParameterizedQuery(text, values) {
         }
 
         if (errors.length) {
-            return currentError = new $npm.errors.ParameterizedQueryError(errors[0], PQ);
+            return currentError = new npm.errors.ParameterizedQueryError(errors[0], PQ);
         }
 
         changed = false;
@@ -311,12 +311,12 @@ function ParameterizedQuery(text, values) {
  */
 ParameterizedQuery.prototype.toString = function (level) {
     level = level > 0 ? parseInt(level) : 0;
-    const gap = $npm.utils.messageGap(level + 1);
+    const gap = npm.utils.messageGap(level + 1);
     const pq = this.parse();
     const lines = [
         'ParameterizedQuery {'
     ];
-    if ($npm.utils.isText(pq.text)) {
+    if (npm.utils.isText(pq.text)) {
         lines.push(gap + 'text: "' + pq.text + '"');
     }
     if (this.values !== undefined) {
@@ -331,8 +331,8 @@ ParameterizedQuery.prototype.toString = function (level) {
     if (this.error !== undefined) {
         lines.push(gap + 'error: ' + this.error.toString(level + 1));
     }
-    lines.push($npm.utils.messageGap(level) + '}');
-    return lines.join($npm.os.EOL);
+    lines.push(npm.utils.messageGap(level) + '}');
+    return lines.join(npm.os.EOL);
 };
 
 module.exports = ParameterizedQuery;

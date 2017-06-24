@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -39,7 +39,17 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>This error is specified as the rejection reason for all result-specific methods when the result doesn't match
+
+    
+
+    <h4 class="name" id="QueryResultError"><span class="type-signature"></span>new QueryResultError<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>This error is specified as the rejection reason for all result-specific methods when the result doesn't match
 the expectation, i.e. when a query result doesn't match its Query Result Mask - the value of <a href="global.html#queryResult">queryResult</a>.</p>
 <p>The error applies to the result from the following methods: <a href="Database.html#.none">none</a>,
 <a href="Database.html#.one">one</a>, <a href="Database.html#.oneOrNone">oneOrNone</a> and <a href="Database.html#.many">many</a>.</p>
@@ -50,10 +60,19 @@ the expectation, i.e. when a query result doesn't match its Query Result Mask - 
 <li><code>Multiple rows were not expected.</code>, methods <a href="Database.html#.one">one</a> and <a href="Database.html#.oneOrNone">oneOrNone</a></li>
 </ul>
 <p>Like any other error, this one is notified with through the global event <a href="global.html#event:error">error</a>.</p>
-<p>The type is available from the <a href="errors.html">errors</a> namespace.</p></div>
-        
+<p>The type is available from the <a href="errors.html">errors</a> namespace.</p>
+</div>
 
-        
+
+
+
+
+
+
+
+
+
+
 
 
     <h5 class="subsection-title">Properties:</h5>
@@ -315,12 +334,25 @@ Otherwise, the values are within the pre-formatted <code>query</code> string.</p
 </dl>
 
 
-        
-            <h3>Example</h3>
-            
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
     <pre class="prettyprint"><code>const QueryResultError = pgp.errors.QueryResultError;const qrec = pgp.errors.queryResultErrorCode;const options = {  // pg-promise initialization options...  error: (err, e) => {      if (err instanceof QueryResultError) {          // A query returned unexpected number of records, and thus rejected;                    // we can check the error code, if we want specifics:          if(err.code === qrec.noData) {              // expected some data, but received none;          }          // If you write QueryResultError into the console,          // you will get a nicely formatted output.          console.log(err);                    // See also: err, e.query, e.params, etc.      }  }};</code></pre>
 
-        
+
+
     
     </div>
 
@@ -355,7 +387,7 @@ Otherwise, the values are within the pre-formatted <code>query</code> string.</p
 
     
 
-    <h4 class="name" id=".toString"><span class="type-signature">(static) </span>toString<span class="signature">(level<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="toString"><span class="type-signature"></span>toString<span class="signature">(level<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
 
@@ -476,7 +508,7 @@ Otherwise, the values are within the pre-formatted <code>query</code> string.</p
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="errors_queryResult.js.html">errors/queryResult.js</a>, <a href="errors_queryResult.js.html#line140">line 140</a>
+        <a href="errors_queryResult.js.html">errors/queryResult.js</a>, <a href="errors_queryResult.js.html#line133">line 133</a>
     </li></ul></dd>
     
 
