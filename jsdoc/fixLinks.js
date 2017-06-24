@@ -22,6 +22,7 @@ const links = {
     'pg-native': 'https://github.com/brianc/node-pg-native',
     'Named Parameters': 'https://github.com/vitaly-t/pg-promise#named-parameters',
     'tags': 'https://github.com/vitaly-t/pg-promise/wiki/tags',
+    'Chaining Queries': 'https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries',
     'ES6 generator': 'https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*',
     'Performance Boost': 'https://github.com/vitaly-t/pg-promise/wiki/Performance-Boost',
     'Prepared Statement': 'http://www.postgresql.org/docs/9.6/static/sql-prepare.html',
