@@ -151,11 +151,11 @@ function insert(data, columns, table, capSQL) {
 
     if (isArray) {
         return query + data.map((d, index) => {
-                if (!d || typeof d !== 'object') {
-                    throw new Error('Invalid insert object at index ' + index + '.');
-                }
-                return '(' + format(columns.variables, columns.prepare(d)) + ')';
-            }).join();
+            if (!d || typeof d !== 'object') {
+                throw new Error('Invalid insert object at index ' + index + '.');
+            }
+            return '(' + format(columns.variables, columns.prepare(d)) + ')';
+        }).join();
     }
     return query + '(' + format(columns.variables, columns.prepare(data)) + ')';
 }
