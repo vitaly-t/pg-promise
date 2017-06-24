@@ -15,8 +15,10 @@ html, body, section {
 }
 
 h4.name {
-    color: DarkCyan;
-    font-size: 26px;
+    padding: 4px 10px;
+    background-color: Black;
+    color: Cyan;
+    font-size: 24px;
 }
 
 section {
@@ -31,8 +33,9 @@ div#main {
 }
 
 code {
-    background-color: LightYellow;
-    color: Maroon !important;
+    padding: 2px 4px;
+    background-color: grey;
+    color: white !important;
 }
 
 code span {
@@ -62,7 +65,7 @@ nav div.home-link a:visited {
 
 nav ul li a,
 nav ul li a:visited {
-    color: LightYellow;
+    color: White;
     font-size: 17px;
 }
 
@@ -86,4 +89,11 @@ nav h2 {
 .home-link a {
     font-size: 16px;
     font-weight: bold;
+}
+
+table.params th,
+table.props th {
+    font-family: 'Verdana';
+    background-color: SteelBlue;
+    color: White;
 }
