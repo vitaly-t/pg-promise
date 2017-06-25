@@ -894,9 +894,9 @@ DEALINGS IN THE SOFTWARE.
 
 [Configuration Object]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object
 [Connection String]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#connection-string
-[query]:http://vitaly-t.github.io/pg-promise/Database.html#.query
-[each]:http://vitaly-t.github.io/pg-promise/Database.html#.each
-[map]:http://vitaly-t.github.io/pg-promise/Database.html#.map
+[query]:http://vitaly-t.github.io/pg-promise/Database.html#query
+[each]:http://vitaly-t.github.io/pg-promise/Database.html#each
+[map]:http://vitaly-t.github.io/pg-promise/Database.html#map
 [Connection Syntax]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax
 [helpers]:http://vitaly-t.github.io/pg-promise/helpers.html
 [QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
@@ -913,8 +913,8 @@ DEALINGS IN THE SOFTWARE.
 [as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
 [as.alias]:http://vitaly-t.github.io/pg-promise/formatting.html#.alias
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
-[batch]:http://vitaly-t.github.io/pg-promise/Task.html#.batch
-[sequence]:http://vitaly-t.github.io/pg-promise/Task.html#.sequence
+[batch]:http://vitaly-t.github.io/pg-promise/Task.html#batch
+[sequence]:http://vitaly-t.github.io/pg-promise/Task.html#sequence
 [Protocol API]:http://vitaly-t.github.io/pg-promise/index.html
 [API]:http://vitaly-t.github.io/pg-promise/index.html
 [API Documentation]:http://vitaly-t.github.io/pg-promise/index.html
@@ -935,4 +935,4 @@ DEALINGS IN THE SOFTWARE.
 [Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
 [Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
 [spex.sequence]:http://vitaly-t.github.io/spex/global.html#sequence
-[Result]:https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6
+[Result]:https://github.com/brianc/node-postgres/blob/master/lib/result.js#L14

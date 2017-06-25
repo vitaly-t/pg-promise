@@ -83,8 +83,8 @@
 
 [spex]:https://github.com/vitaly-t/spex
 [utils]:http://vitaly-t.github.io/pg-promise/utils.html
-[each]:http://vitaly-t.github.io/pg-promise/Database.html#.each
-[map]:http://vitaly-t.github.io/pg-promise/Database.html#.map
+[each]:http://vitaly-t.github.io/pg-promise/Database.html#each
+[map]:http://vitaly-t.github.io/pg-promise/Database.html#map
 [Connection Syntax]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax
 [helpers]:http://vitaly-t.github.io/pg-promise/helpers.html
 [QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
@@ -99,8 +99,8 @@
 [as.value]:http://vitaly-t.github.io/pg-promise/formatting.html#.value
 [as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
-[batch]:http://vitaly-t.github.io/pg-promise/Task.html#.batch
-[sequence]:http://vitaly-t.github.io/pg-promise/Task.html#.sequence
+[batch]:http://vitaly-t.github.io/pg-promise/Task.html#batch
+[sequence]:http://vitaly-t.github.io/pg-promise/Task.html#sequence
 [API]:http://vitaly-t.github.io/pg-promise/Database.html
 [API Documentation]:http://vitaly-t.github.io/pg-promise/Database.html
 [Transaction Mode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
@@ -120,4 +120,4 @@
 [Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
 [Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
 [spex.sequence]:https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
-[Result]:https://github.com/brianc/node-postgres/blob/master/lib/result.js#L6
+[Result]:https://github.com/brianc/node-postgres/blob/master/lib/result.js#L14
