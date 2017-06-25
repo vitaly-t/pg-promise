@@ -105,8 +105,8 @@
 <div class="description">
     <p><em>Query Result Mask.</em></p>
 <p>Binary mask that represents the result expected from queries.
-It is used in the generic <a href="Database.html#.query">query</a> method,
-as well as method <a href="Database.html#.func">func</a>.</p>
+It is used in the generic <a href="Database.html#query">query</a> method,
+as well as method <a href="Database.html#func">func</a>.</p>
 <p>The mask is always the last optional parameter, which defaults to <code>queryResult.any</code>.</p>
 <p>Any combination of flags is supported, except for <code>one + many</code>.</p>
 <p>The type is available from the library's root: <code>pgp.queryResult</code>.</p>
@@ -288,7 +288,7 @@ as well as method <a href="Database.html#.func">func</a>.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.query">Database.query</a>, <a href="Database.html#.func">Database.func</a></li>
+            <li><a href="Database.html#query">Database#query</a>, <a href="Database.html#func">Database#func</a></li>
         </ul>
     </dd>
     
@@ -325,7 +325,7 @@ as well as method <a href="Database.html#.func">func</a>.</p>
 <div class="description">
     <p>Global notification of acquiring a new database connection from the connection pool,
 i.e. a virtual connection.</p>
-<p>However, for direct calls to method <a href="Database.html#.connect">Database.connect</a> with parameter <code>{direct: true}</code>,
+<p>However, for direct calls to method <a href="Database.html#connect">Database#connect</a> with parameter <code>{direct: true}</code>,
 this event represents a physical connection.</p>
 <p>The library will suppress any error thrown by the handler and write it into the console.</p>
 </div>
@@ -426,7 +426,7 @@ this event represents a physical connection.</p>
 <li><code>false</code> - the connection has been used previously</li>
 </ul>
 <p><strong>NOTE:</strong></p>
-<p>This parameter is always <code>true</code> for direct connections (created by calling <a href="Database.html#.connect">Database.connect</a>
+<p>This parameter is always <code>true</code> for direct connections (created by calling <a href="Database.html#connect">Database#connect</a>
 with parameter <code>{direct: true}</code>).</p></td>
         </tr>
 
@@ -513,7 +513,7 @@ with parameter <code>{direct: true}</code>).</p></td>
 <div class="description">
     <p>Global notification of releasing a database connection back to the connection pool,
 i.e. releasing the virtual connection.</p>
-<p>However, when releasing a direct connection (created by calling <a href="Database.html#.connect">Database.connect</a> with parameter
+<p>However, when releasing a direct connection (created by calling <a href="Database.html#connect">Database#connect</a> with parameter
 <code>{direct: true}</code>), this event represents a physical disconnection.</p>
 <p>The library will suppress any error thrown by the handler and write it into the console.</p>
 </div>

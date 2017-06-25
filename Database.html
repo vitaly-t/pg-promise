@@ -129,7 +129,7 @@ per connection details. See the example provided below.</p>
 <li>a connection string</li>
 </ul>
 <p>For details see <a href="https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax">Connection Syntax</a>.</p>
-<p>The value can be accessed from the database object via property <a href="Database.html#.$cn">$cn</a>.</p></td>
+<p>The value can be accessed from the database object via property $cn.</p></td>
         </tr>
 
     
@@ -140,6 +140,11 @@ per connection details. See the example provided below.</p>
             
 
             <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
             
             </td>
 
@@ -163,7 +168,7 @@ that depend on the database context.</p>
 <p>This is mainly to facilitate the use of multiple databases which may need separate protocol
 extensions, or different implementations within a single task / transaction callback,
 depending on the database context.</p>
-<p>The value can be accessed from the database object via property <a href="Database.html#.$dc">$dc</a>.</p></td>
+<p>The value can be accessed from the database object via property <a href="Database.html#$dc">$dc</a>.</p></td>
         </tr>
 
     
@@ -214,7 +219,7 @@ depending on the database context.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.query">query</a>,<a href="Database.html#.none">none</a>,<a href="Database.html#.one">one</a>,<a href="Database.html#.oneOrNone">oneOrNone</a>,<a href="Database.html#.many">many</a>,<a href="Database.html#.manyOrNone">manyOrNone</a>,<a href="Database.html#.any">any</a>,<a href="Database.html#.func">func</a>,<a href="Database.html#.proc">proc</a>,<a href="Database.html#.result">result</a>,<a href="Database.html#.map">map</a>,<a href="Database.html#.each">each</a>,<a href="Database.html#.stream">stream</a>,<a href="Database.html#.task">task</a>,<a href="Database.html#.tx">tx</a>,<a href="Database.html#.connect">connect</a>,<a href="Database.html#.$config">$config</a>,<a href="Database.html#.$cn">$cn</a>,<a href="Database.html#.$dc">$dc</a>,<a href="Database.html#.$pool">$pool</a>,<a href="global.html#event:extend">extend</a></li>
+            <li><a href="Database.html#query">query</a>,<a href="Database.html#none">none</a>,<a href="Database.html#one">one</a>,<a href="Database.html#oneOrNone">oneOrNone</a>,<a href="Database.html#many">many</a>,<a href="Database.html#manyOrNone">manyOrNone</a>,<a href="Database.html#any">any</a>,<a href="Database.html#func">func</a>,<a href="Database.html#proc">proc</a>,<a href="Database.html#result">result</a>,<a href="Database.html#map">map</a>,<a href="Database.html#each">each</a>,<a href="Database.html#stream">stream</a>,<a href="Database.html#task">task</a>,<a href="Database.html#tx">tx</a>,<a href="Database.html#connect">connect</a>,<a href="Database.html#$config">$config</a>,<a href="Database.html#$cn">$cn</a>,<a href="Database.html#$dc">$dc</a>,<a href="Database.html#$pool">$pool</a>,<a href="global.html#event:extend">extend</a></li>
         </ul>
     </dd>
     
@@ -278,7 +283,7 @@ depending on the database context.</p>
 
         
             
-<h4 class="name" id=".$cn"><span class="type-signature">(static, readonly) </span>$cn<span class="type-signature"> :string|object</span></h4>
+<h4 class="name" id="$cn"><span class="type-signature">(readonly) </span>$cn<span class="type-signature"> :string|object</span></h4>
 
 
 
@@ -337,7 +342,7 @@ depending on the database context.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line289">line 289</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line290">line 290</a>
     </li></ul></dd>
     
 
@@ -362,7 +367,7 @@ depending on the database context.</p>
 
         
             
-<h4 class="name" id=".$config"><span class="type-signature">(static, readonly) </span>$config<span class="type-signature"> :object</span></h4>
+<h4 class="name" id="$config"><span class="type-signature">(readonly) </span>$config<span class="type-signature"> :object</span></h4>
 
 
 
@@ -431,7 +436,7 @@ depending on the database context.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line256">line 256</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line257">line 257</a>
     </li></ul></dd>
     
 
@@ -454,7 +459,7 @@ depending on the database context.</p>
 
         
             
-<h4 class="name" id=".$dc"><span class="type-signature">(static, readonly) </span>$dc<span class="type-signature"></span></h4>
+<h4 class="name" id="$dc"><span class="type-signature">(readonly) </span>$dc<span class="type-signature"></span></h4>
 
 
 
@@ -500,7 +505,7 @@ depending on the database context.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line303">line 303</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line304">line 304</a>
     </li></ul></dd>
     
 
@@ -525,18 +530,32 @@ depending on the database context.</p>
 
         
             
-<h4 class="name" id=".$pool"><span class="type-signature">(static, readonly) </span>$pool<span class="type-signature"></span></h4>
+<h4 class="name" id="$pool"><span class="type-signature">(readonly) </span>$pool<span class="type-signature"> :<a href="external-pg-pool.html">external:pg-pool</a></span></h4>
 
 
 
 
 <div class="description">
-    <p><strong> This is a <a href="https://github.com/vitaly-t/pg-promise/tree/6.x">6.x</a> feature. </strong></p>
-<p>A <a href="https://github.com/brianc/node-pg-pool">pg-pool</a> object associated with the database object.</p>
-<p>This is a hidden property, to help integrating type <a href="Database.html">Database</a> directly with third-party libraries.</p>
+    <p><strong> This is a version <a href="https://github.com/vitaly-t/pg-promise/tree/6.x">6.x</a> feature. </strong></p>
+<p>A <a href="https://github.com/brianc/node-pg-pool">pg-pool</a> object associated with the database object, as each <a href="Database.html">Database</a> creates its own <a href="https://github.com/brianc/node-pg-pool">pg-pool</a> instance.</p>
+<p>This is a hidden property, primarily for integrating type <a href="Database.html">Database</a> with third-party libraries that support
+<a href="https://github.com/brianc/node-pg-pool">pg-pool</a> directly.</p>
+<p>Note that if you pass the pool object into a library that calls <code>pool.end()</code>, you will no longer be able to use this
+<a href="Database.html">Database</a> object, and each query method will be rejecting with <a href="external-Error.html">Error</a> =
+<code>Connection pool of the database object has been destroyed.</code></p>
 </div>
 
 
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="external-pg-pool.html">external:pg-pool</a></span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -571,7 +590,7 @@ depending on the database context.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line317">line 317</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line318">line 318</a>
     </li></ul></dd>
     
 
@@ -605,7 +624,7 @@ depending on the database context.</p>
 
     
 
-    <h4 class="name" id=".any"><span class="type-signature">(static) </span>any<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array>}</span></h4>
+    <h4 class="name" id="any"><span class="type-signature"></span>any<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array>}</span></h4>
 
     
 
@@ -613,7 +632,7 @@ depending on the database context.</p>
 
 <div class="description">
     <p>Executes a query that expects any number of rows.
-This is simply a shorter alias for method <a href="Database.html#.manyOrNone">manyOrNone</a>.</p>
+This is simply a shorter alias for method <a href="Database.html#manyOrNone">manyOrNone</a>.</p>
 </div>
 
 
@@ -770,7 +789,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line617">line 617</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line623">line 623</a>
     </li></ul></dd>
     
 
@@ -780,7 +799,7 @@ as an override for its internal <code>values</code>.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.manyOrNone">manyOrNone</a>,<a href="Database.html#.map">map</a>,<a href="Database.html#.each">each</a></li>
+            <li><a href="Database.html#manyOrNone">manyOrNone</a>,<a href="Database.html#map">map</a>,<a href="Database.html#each">each</a></li>
         </ul>
     </dd>
     
@@ -836,7 +855,7 @@ it took the client to execute the query.</p>
 
     
 
-    <h4 class="name" id=".connect"><span class="type-signature">(static) </span>connect<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id="connect"><span class="type-signature"></span>connect<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -847,7 +866,7 @@ it took the client to execute the query.</p>
 <p>This method creates a shared connection for executing a chain of queries against it. The connection must be released
 in the end of the chain by calling method <code>done()</code> on the connection object.</p>
 <p>This is an obsolete, low-level approach to chaining queries on the same connection. A newer and safer approach is via
-methods <a href="Database.html#.task">task</a> and <a href="Database.html#.tx">tx</a> (for transactions), which allocate and release a shared
+methods <a href="Database.html#task">task</a> and <a href="Database.html#tx">tx</a> (for transactions), which allocate and release a shared
 connection automatically.</p>
 <p><strong>NOTE:</strong> Even though this method exposes a <a href="external-Client.html">Client</a> object via property <code>client</code>,
 you cannot call <code>client.end()</code> directly, or it will print an error into the console:
@@ -1031,7 +1050,7 @@ and therefore cannot scale. This option is only suitable for global connection u
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line109">line 109</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line110">line 110</a>
     </li></ul></dd>
     
 
@@ -1041,7 +1060,7 @@ and therefore cannot scale. This option is only suitable for global connection u
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.task">Database.task</a>,<a href="Database.html#.tx">Database.tx</a></li>
+            <li><a href="Database.html#task">Database#task</a>,<a href="Database.html#tx">Database#tx</a></li>
         </ul>
     </dd>
     
@@ -1104,14 +1123,14 @@ and therefore cannot scale. This option is only suitable for global connection u
 
     
 
-    <h4 class="name" id=".each"><span class="type-signature">(static) </span>each<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array.&lt;Object>>}</span></h4>
+    <h4 class="name" id="each"><span class="type-signature"></span>each<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array.&lt;Object>>}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Executes a provided function once per array element, for an array of rows resolved by method <a href="Database.html#.any">any</a>.</p>
+    <p>Executes a provided function once per array element, for an array of rows resolved by method <a href="Database.html#any">any</a>.</p>
 <p>It is a convenience method to reduce the following code:</p>
 <pre class="prettyprint source lang-js"><code>db.any(query, values)
     .then(data => {
@@ -1270,7 +1289,7 @@ as an override for its internal <code>values</code>.</p></td>
 <ul>
 <li><code>row</code> - the current row object being processed in the array</li>
 <li><code>index</code> - the index of the current row being processed in the array</li>
-<li><code>data</code> - the array of rows resolved by method <a href="Database.html#.any">any</a></li>
+<li><code>data</code> - the array of rows resolved by method <a href="Database.html#any">any</a></li>
 </ul></td>
         </tr>
 
@@ -1340,7 +1359,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line930">line 930</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line936">line 936</a>
     </li></ul></dd>
     
 
@@ -1350,7 +1369,7 @@ as an override for its internal <code>values</code>.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.any">any</a>,<a href="Database.html#.map">map</a>,<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">Array.forEach</a></li>
+            <li><a href="Database.html#any">any</a>,<a href="Database.html#map">map</a>,<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">Array.forEach</a></li>
         </ul>
     </dd>
     
@@ -1406,7 +1425,7 @@ number of milliseconds it took the client to execute the query.</p>
 
     
 
-    <h4 class="name" id=".func"><span class="type-signature">(static) </span>func<span class="signature">(funcName, values<span class="signature-attributes">opt</span>, qrm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id="func"><span class="type-signature"></span>func<span class="signature">(funcName, values<span class="signature-attributes">opt</span>, qrm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -1601,7 +1620,7 @@ number of milliseconds it took the client to execute the query.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line757">line 757</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line763">line 763</a>
     </li></ul></dd>
     
 
@@ -1611,7 +1630,7 @@ number of milliseconds it took the client to execute the query.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.query">query</a>,<a href="Database.html#.proc">proc</a></li>
+            <li><a href="Database.html#query">query</a>,<a href="Database.html#proc">proc</a></li>
         </ul>
     </dd>
     
@@ -1635,7 +1654,7 @@ number of milliseconds it took the client to execute the query.</p>
 
         
 <div class="param-desc">
-    <p>A promise object as returned from method <a href="Database.html#.query">query</a>, according to parameter <code>qrm</code>.</p>
+    <p>A promise object as returned from method <a href="Database.html#query">query</a>, according to parameter <code>qrm</code>.</p>
 </div>
 
 
@@ -1661,7 +1680,7 @@ number of milliseconds it took the client to execute the query.</p>
 
     
 
-    <h4 class="name" id=".many"><span class="type-signature">(static) </span>many<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id="many"><span class="type-signature"></span>many<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -1826,7 +1845,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line476">line 476</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line482">line 482</a>
     </li></ul></dd>
     
 
@@ -1888,7 +1907,7 @@ hidden property <code>duration</code> - number of milliseconds it took the clien
 
     
 
-    <h4 class="name" id=".manyOrNone"><span class="type-signature">(static) </span>manyOrNone<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array>}</span></h4>
+    <h4 class="name" id="manyOrNone"><span class="type-signature"></span>manyOrNone<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array>}</span></h4>
 
     
 
@@ -2052,7 +2071,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line575">line 575</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line581">line 581</a>
     </li></ul></dd>
     
 
@@ -2062,7 +2081,7 @@ as an override for its internal <code>values</code>.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.any">any</a>,<a href="Database.html#.many">many</a>,<a href="Database.html#.none">none</a></li>
+            <li><a href="Database.html#any">any</a>,<a href="Database.html#many">many</a>,<a href="Database.html#none">none</a></li>
         </ul>
     </dd>
     
@@ -2118,7 +2137,7 @@ it took the client to execute the query.</p>
 
     
 
-    <h4 class="name" id=".map"><span class="type-signature">(static) </span>map<span class="signature">(query, values, cb, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array>}</span></h4>
+    <h4 class="name" id="map"><span class="type-signature"></span>map<span class="signature">(query, values, cb, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array>}</span></h4>
 
     
 
@@ -2126,7 +2145,7 @@ it took the client to execute the query.</p>
 
 <div class="description">
     <p>Creates a new array with the results of calling a provided function on every element in the array of rows
-resolved by method <a href="Database.html#.any">any</a>.</p>
+resolved by method <a href="Database.html#any">any</a>.</p>
 <p>It is a convenience method to reduce the following code:</p>
 <pre class="prettyprint source lang-js"><code>db.any(query, values)
     .then(data => {
@@ -2282,7 +2301,7 @@ as an override for its internal <code>values</code>.</p></td>
 <ul>
 <li><code>row</code> - the current row object being processed in the array</li>
 <li><code>index</code> - the index of the current row being processed in the array</li>
-<li><code>data</code> - the original array of rows resolved by method <a href="Database.html#.any">any</a></li>
+<li><code>data</code> - the original array of rows resolved by method <a href="Database.html#any">any</a></li>
 </ul></td>
         </tr>
 
@@ -2352,7 +2371,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line823">line 823</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line829">line 829</a>
     </li></ul></dd>
     
 
@@ -2362,7 +2381,7 @@ as an override for its internal <code>values</code>.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.any">any</a>,<a href="Database.html#.each">each</a>,<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.map</a></li>
+            <li><a href="Database.html#any">any</a>,<a href="Database.html#each">each</a>,<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.map</a></li>
         </ul>
     </dd>
     
@@ -2422,7 +2441,7 @@ hidden property <code>duration</code> - number of milliseconds it took the clien
 
     
 
-    <h4 class="name" id=".none"><span class="type-signature">(static) </span>none<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;null>}</span></h4>
+    <h4 class="name" id="none"><span class="type-signature"></span>none<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;null>}</span></h4>
 
     
 
@@ -2587,7 +2606,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line370">line 370</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line376">line 376</a>
     </li></ul></dd>
     
 
@@ -2648,7 +2667,7 @@ as an override for its internal <code>values</code>.</p></td>
 
     
 
-    <h4 class="name" id=".one"><span class="type-signature">(static) </span>one<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id="one"><span class="type-signature"></span>one<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -2876,7 +2895,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line406">line 406</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line412">line 412</a>
     </li></ul></dd>
     
 
@@ -2886,7 +2905,7 @@ When specified, the return value replaces the original resolved value.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.oneOrNone">oneOrNone</a></li>
+            <li><a href="Database.html#oneOrNone">oneOrNone</a></li>
         </ul>
     </dd>
     
@@ -2957,7 +2976,7 @@ When specified, the return value replaces the original resolved value.</p>
 
     
 
-    <h4 class="name" id=".oneOrNone"><span class="type-signature">(static) </span>oneOrNone<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id="oneOrNone"><span class="type-signature"></span>oneOrNone<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -3185,7 +3204,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line513">line 513</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line519">line 519</a>
     </li></ul></dd>
     
 
@@ -3195,7 +3214,7 @@ When specified, the return value replaces the original resolved value.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.one">one</a>,<a href="Database.html#.none">none</a>,<a href="Database.html#.manyOrNone">manyOrNone</a></li>
+            <li><a href="Database.html#one">one</a>,<a href="Database.html#none">none</a>,<a href="Database.html#manyOrNone">manyOrNone</a></li>
         </ul>
     </dd>
     
@@ -3260,7 +3279,7 @@ When specified, the return value replaces the original resolved value.</p>
 
     
 
-    <h4 class="name" id=".proc"><span class="type-signature">(static) </span>proc<span class="signature">(procName, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id="proc"><span class="type-signature"></span>proc<span class="signature">(procName, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -3269,7 +3288,7 @@ When specified, the return value replaces the original resolved value.</p>
 <div class="description">
     <p>Executes a query against a stored procedure via its name: <code>select * from procName(values)</code>,
 expecting back 0 or 1 rows.</p>
-<p>The method simply forwards into <a href="Database.html#.func">func</a><code>(procName, values, queryResult.one|queryResult.none)</code>.</p>
+<p>The method simply forwards into <a href="Database.html#func">func</a><code>(procName, values, queryResult.one|queryResult.none)</code>.</p>
 </div>
 
 
@@ -3471,7 +3490,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line784">line 784</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line790">line 790</a>
     </li></ul></dd>
     
 
@@ -3481,7 +3500,7 @@ When specified, the return value replaces the original resolved value.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#.oneOrNone">oneOrNone</a>,<a href="Database.html#.func">func</a></li>
+            <li><a href="Database.html#oneOrNone">oneOrNone</a>,<a href="Database.html#func">func</a></li>
         </ul>
     </dd>
     
@@ -3505,8 +3524,8 @@ When specified, the return value replaces the original resolved value.</p>
 
         
 <div class="param-desc">
-    <p>It calls <a href="Database.html#.func">func</a>(<code>procName</code>, <code>values</code>, <code>queryResult.one|queryResult.none</code>),
-and then returns the same result as method <a href="Database.html#.oneOrNone">oneOrNone</a>.</p>
+    <p>It calls <a href="Database.html#func">func</a>(<code>procName</code>, <code>values</code>, <code>queryResult.one|queryResult.none</code>),
+and then returns the same result as method <a href="Database.html#oneOrNone">oneOrNone</a>.</p>
 <p>And if transformation callback <code>cb</code> was specified, it resolves with the new value.</p>
 </div>
 
@@ -3533,7 +3552,7 @@ and then returns the same result as method <a href="Database.html#.oneOrNone">on
 
     
 
-    <h4 class="name" id=".query"><span class="type-signature">(static) </span>query<span class="signature">(query, values<span class="signature-attributes">opt</span>, qrm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id="query"><span class="type-signature"></span>query<span class="signature">(query, values<span class="signature-attributes">opt</span>, qrm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -3746,7 +3765,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line205">line 205</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line206">line 206</a>
     </li></ul></dd>
     
 
@@ -3801,7 +3820,7 @@ number of milliseconds it took the client to execute the query.</p>
 
     
 
-    <h4 class="name" id=".result"><span class="type-signature">(static) </span>result<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id="result"><span class="type-signature"></span>result<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -4029,7 +4048,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line660">line 660</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line666">line 666</a>
     </li></ul></dd>
     
 
@@ -4094,7 +4113,7 @@ number of milliseconds it took the client to execute the query.</li>
 
     
 
-    <h4 class="name" id=".stream"><span class="type-signature">(static) </span>stream<span class="signature">(qs, initCB)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id="stream"><span class="type-signature"></span>stream<span class="signature">(qs, initCB)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -4220,7 +4239,7 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line724">line 724</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line730">line 730</a>
     </li></ul></dd>
     
 
@@ -4285,7 +4304,7 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
 
     
 
-    <h4 class="name" id=".task"><span class="type-signature">(static) </span>task<span class="signature">(tag/cb, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id="task"><span class="type-signature"></span>task<span class="signature">(tag/cb, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -4434,7 +4453,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1005">line 1005</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1011">line 1011</a>
     </li></ul></dd>
     
 
@@ -4444,7 +4463,7 @@ be passed in as the first parameter.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Task.html">Task</a>,<a href="Database.html#.tx">tx</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a></li>
+            <li><a href="Task.html">Task</a>,<a href="Database.html#tx">tx</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a></li>
         </ul>
     </dd>
     
@@ -4501,7 +4520,7 @@ be passed in as the first parameter.</p></td>
 
     
 
-    <h4 class="name" id=".tx"><span class="type-signature">(static) </span>tx<span class="signature">(tag/cb, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id="tx"><span class="type-signature"></span>tx<span class="signature">(tag/cb, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -4509,7 +4528,7 @@ be passed in as the first parameter.</p></td>
 
 <div class="description">
     <p>Executes a callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) as a transaction.</p>
-<p>A transaction simply wraps a regular <a href="Database.html#.task">task</a> in automatic queries:</p>
+<p>A transaction simply wraps a regular <a href="Database.html#task">task</a> in automatic queries:</p>
 <ul>
 <li>it executes <code>BEGIN</code> just before invoking the callback function</li>
 <li>it executes <code>COMMIT</code>, if the callback didn't throw any error or return a rejected promise</li>
@@ -4657,7 +4676,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1077">line 1077</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1083">line 1083</a>
     </li></ul></dd>
     
 
@@ -4667,7 +4686,7 @@ passed in as the first parameter.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Task.html">Task</a>,<a href="Database.html#.task">Database.task</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a></li>
+            <li><a href="Task.html">Task</a>,<a href="Database.html#task">Database#task</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a></li>
         </ul>
     </dd>
     
@@ -4737,7 +4756,7 @@ passed in as the first parameter.</p></td>
 
 
 <div class="description">
-    <p>Stream initialization callback, used by <a href="Database.html#.stream">Database.stream</a>.</p>
+    <p>Stream initialization callback, used by <a href="Database.html#stream">Database#stream</a>.</p>
 </div>
 
 
@@ -4830,7 +4849,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1259">line 1259</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1265">line 1265</a>
     </li></ul></dd>
     
 

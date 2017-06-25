@@ -39,7 +39,7 @@
     
         
             <div class="description"><p>Extends <a href="Database.html">Database</a> for an automatic connection session, with methods for executing multiple database queries.
-The type isn't available directly, it can only be created via methods <a href="Database.html#.task">Database.task</a> and <a href="Database.html#.tx">Database.tx</a>.</p>
+The type isn't available directly, it can only be created via methods <a href="Database.html#task">Database#task</a> and <a href="Database.html#tx">Database#tx</a>.</p>
 <p>When executing more than one request at a time, one should allocate and release the connection only once,
 while executing all the required queries within the same connection session. More importantly, a transaction
 can only work within a single connection.</p>
@@ -266,7 +266,7 @@ while properties <code>finish</code>, <code>success</code> and <code>result</cod
 
             
 
-            <td class="description last"><p>Tag value as it was passed into the task. See methods <a href="Database.html#.task">task</a> and <a href="Database.html#.tx">tx</a>.</p></td>
+            <td class="description last"><p>Tag value as it was passed into the task. See methods <a href="Database.html#task">task</a> and <a href="Database.html#tx">tx</a>.</p></td>
         </tr>
 
     
@@ -430,6 +430,358 @@ while properties <code>finish</code>, <code>success</code> and <code>result</cod
     <dd class="tag-see">
         <ul>
             <li>event <a href="global.html#event:query">query</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="$cn"><span class="type-signature">(readonly) </span>$cn<span class="type-signature"> :string|object</span></h4>
+
+
+
+
+<div class="description">
+    <p><strong>Added in v5.6.8</strong></p>
+<p>Database connection, as was passed in during the object's construction.</p>
+<p>This is a hidden property, to help integrating type <a href="Database.html">Database</a> directly with third-party libraries.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#$cn">Database#$cn</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line290">line 290</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html">Database</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="$config"><span class="type-signature">(readonly) </span>$config<span class="type-signature"> :object</span></h4>
+
+
+
+
+<div class="description">
+    <p>This is a hidden property, to help integrating type <a href="Database.html">Database</a> directly with third-party libraries.</p>
+<p>Properties available in the object:</p>
+<ul>
+<li><code>pgp</code> - instance of the entire library after initialization</li>
+<li><code>options</code> - the library's <a href="module-pg-promise.html">Initialization Options</a> object</li>
+<li><code>promiseLib</code> - instance of the promise library that's used</li>
+<li><code>promise</code> - generic promise interface that uses <code>promiseLib</code> via 4 basic methods:<ul>
+<li><code>promise((resolve, reject)=&gt;{})</code> - to create a new promise</li>
+<li><code>promise.resolve(value)</code> - to resolve with a value</li>
+<li><code>promise.reject(value)</code> - to reject with a value</li>
+<li><code>promise.all(data)</code> - to resolve an array of promises</li>
+</ul>
+</li>
+<li><code>version</code> - this library's version</li>
+<li><code>$npm</code> <em>(hidden property)</em> - internal module cache</li>
+</ul>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#$config">Database#$config</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line257">line 257</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Using the promise protocol as configured by pg-promise:const $p = db.$config.promise;const resolvedPromise = $p.resolve('some data');const rejectedPromise = $p.reject('some reason');const newPromise = $p((resolve, reject) => {    // call either resolve(data) or reject(reason) here});</code></pre>
+
+
+
+        
+            
+<h4 class="name" id="$dc"><span class="type-signature">(readonly) </span>$dc<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p><strong>Added in v5.6.8</strong></p>
+<p>Database Context, as was passed in during the object's construction.</p>
+<p>This is a hidden property, to help integrating type <a href="Database.html">Database</a> directly with third-party libraries.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#$dc">Database#$dc</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line304">line 304</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html">Database</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="$pool"><span class="type-signature">(readonly) </span>$pool<span class="type-signature"> :<a href="external-pg-pool.html">external:pg-pool</a></span></h4>
+
+
+
+
+<div class="description">
+    <p><strong> This is a version <a href="https://github.com/vitaly-t/pg-promise/tree/6.x">6.x</a> feature. </strong></p>
+<p>A <a href="https://github.com/brianc/node-pg-pool">pg-pool</a> object associated with the database object, as each <a href="Database.html">Database</a> creates its own <a href="https://github.com/brianc/node-pg-pool">pg-pool</a> instance.</p>
+<p>This is a hidden property, primarily for integrating type <a href="Database.html">Database</a> with third-party libraries that support
+<a href="https://github.com/brianc/node-pg-pool">pg-pool</a> directly.</p>
+<p>Note that if you pass the pool object into a library that calls <code>pool.end()</code>, you will no longer be able to use this
+<a href="Database.html">Database</a> object, and each query method will be rejecting with <a href="external-Error.html">Error</a> =
+<code>Connection pool of the database object has been destroyed.</code></p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="external-pg-pool.html">external:pg-pool</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#$pool">Database#$pool</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line318">line 318</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html">Database</a></li>
         </ul>
     </dd>
     
@@ -1164,6 +1516,4205 @@ while properties <code>finish</code>, <code>success</code> and <code>result</cod
 </dl>
 
     
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="any"><span class="type-signature"></span>any<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a query that expects any number of rows.
+This is simply a shorter alias for method <a href="Database.html#manyOrNone">manyOrNone</a>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
+<ul>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#any">Database#any</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line623">line 623</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html#manyOrNone">manyOrNone</a>,<a href="Database.html#map">map</a>,<a href="Database.html#each">each</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise object that represents the query result:</p>
+<ul>
+<li>When no rows are returned, it resolves with an empty array.</li>
+<li>When 1 or more rows are returned, it resolves with the array of rows.</li>
+</ul>
+<p>The resolved array is extended with hidden property <code>duration</code> - number of milliseconds
+it took the client to execute the query.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a>.&lt;Array></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="connect"><span class="type-signature"></span>connect<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Acquires a new or existing connection, depending on the current state of the connection pool, and parameter <code>direct</code>.</p>
+<p>This method creates a shared connection for executing a chain of queries against it. The connection must be released
+in the end of the chain by calling method <code>done()</code> on the connection object.</p>
+<p>This is an obsolete, low-level approach to chaining queries on the same connection. A newer and safer approach is via
+methods <a href="Database.html#task">task</a> and <a href="Database.html#tx">tx</a> (for transactions), which allocate and release a shared
+connection automatically.</p>
+<p><strong>NOTE:</strong> Even though this method exposes a <a href="external-Client.html">Client</a> object via property <code>client</code>,
+you cannot call <code>client.end()</code> directly, or it will print an error into the console:
+<code>Abnormal client.end() call, due to invalid code or failed server connection.</code>
+You should only call method <code>done()</code> to release the connection.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>direct</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Creates a new connection directly, through the <a href="external-Client.html">Client</a>, bypassing the connection pool.</p>
+<p>By default, all connections are acquired from the connection pool. If you set this option however, the library will instead
+create a new <a href="external-Client.html">Client</a> object directly (separately from the pool), and then call its <code>connect</code> method.</p>
+<p><strong>WARNING:</strong></p>
+<p>Do not use this option for regular query execution, because it exclusively occupies one physical connection,
+and therefore cannot scale. This option is only suitable for global connection usage, such as event listeners.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#connect">Database#connect</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line110">line 110</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html#task">Database#task</a>,<a href="Database.html#tx">Database#tx</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise object that represents the connection result:</p>
+<ul>
+<li>resolves with the complete <a href="Database.html">Database</a> protocol, extended with:<ul>
+<li>property <code>client</code> of type <a href="external-Client.html">Client</a> that represents the open connection</li>
+<li>method <code>done()</code> that must be called in the end, in order to release the connection</li>
+</ul>
+</li>
+<li>rejects with a connection-related error when it fails to connect.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>let sco; // shared connection object;db.connect()    .then(obj => {        // obj.client = new connected Client object;        sco = obj; // save the connection object;        // execute all the queries you need:        return sco.any('SELECT * FROM Users');    })    .then(data => {        // success    })    .catch(error => {        // error    })    .finally(() => {        // release the connection, if it was successful:        if (sco) {            sco.done();        }    });</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="each"><span class="type-signature"></span>each<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array.&lt;Object>>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a provided function once per array element, for an array of rows resolved by method <a href="Database.html#any">any</a>.</p>
+<p>It is a convenience method to reduce the following code:</p>
+<pre class="prettyprint source lang-js"><code>db.any(query, values)
+    .then(data => {
+        data.forEach((row, index, data) => {
+             // process the row
+        });
+        return data;
+    });</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
+<ul>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Function to execute for each row, taking three arguments:</p>
+<ul>
+<li><code>row</code> - the current row object being processed in the array</li>
+<li><code>index</code> - the index of the current row being processed in the array</li>
+<li><code>data</code> - the array of rows resolved by method <a href="Database.html#any">any</a></li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thisArg</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Value to use as <code>this</code> when executing the callback.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#each">Database#each</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line936">line 936</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html#any">any</a>,<a href="Database.html#map">map</a>,<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">Array.forEach</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Resolves with the original array of rows, extended with hidden property <code>duration</code> -
+number of milliseconds it took the client to execute the query.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a>.&lt;Array.&lt;Object>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>db.each('SELECT id, code, name FROM Events', [], row => {    row.code = +row.code; // leading `+` is short for `parseInt()`})    .then(data => {        // data = array of events, with 'code' converted into integer    })    .catch(error => {        // error    });</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="func"><span class="type-signature"></span>func<span class="signature">(funcName, values<span class="signature-attributes">opt</span>, qrm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a query against a database function by its name: <code>SELECT * FROM funcName(values)</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>funcName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Name of the function to be executed.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Parameters for the function - one value or an array of values.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>qrm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#queryResult">queryResult</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    queryResult.any
+                
+                </td>
+            
+
+            <td class="description last"><p><a href="global.html#queryResult">Query Result Mask</a>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#func">Database#func</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line763">line 763</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html#query">query</a>,<a href="Database.html#proc">proc</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise object as returned from method <a href="Database.html#query">query</a>, according to parameter <code>qrm</code>.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="many"><span class="type-signature"></span>many<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a query that expects one or more rows.
+When the query returns no rows, the method rejects.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
+<ul>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#many">Database#many</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line482">line 482</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise object that represents the query result:</p>
+<ul>
+<li>When 1 or more rows are returned, it resolves with the array of rows. The array is extended with
+hidden property <code>duration</code> - number of milliseconds it took the client to execute the query.</li>
+<li>When no rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:<ul>
+<li><code>.message</code> = <code>No data returned from the query.</code></li>
+<li><code>.code</code> = <a href="errors.html#.queryResultErrorCode#.noData">queryResultErrorCode.noData</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="manyOrNone"><span class="type-signature"></span>manyOrNone<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a query that expects any number of rows.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
+<ul>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#manyOrNone">Database#manyOrNone</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line581">line 581</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html#any">any</a>,<a href="Database.html#many">many</a>,<a href="Database.html#none">none</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise object that represents the query result:</p>
+<ul>
+<li>When no rows are returned, it resolves with an empty array.</li>
+<li>When 1 or more rows are returned, it resolves with the array of rows.</li>
+</ul>
+<p>The resolved array is extended with hidden property <code>duration</code> - number of milliseconds
+it took the client to execute the query.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a>.&lt;Array></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="map"><span class="type-signature"></span>map<span class="signature">(query, values, cb, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Creates a new array with the results of calling a provided function on every element in the array of rows
+resolved by method <a href="Database.html#any">any</a>.</p>
+<p>It is a convenience method to reduce the following code:</p>
+<pre class="prettyprint source lang-js"><code>db.any(query, values)
+    .then(data => {
+        return data.map((row, index, data) => {
+             // return a new element
+        });
+    });</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
+<ul>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Function that produces an element of the new array, taking three arguments:</p>
+<ul>
+<li><code>row</code> - the current row object being processed in the array</li>
+<li><code>index</code> - the index of the current row being processed in the array</li>
+<li><code>data</code> - the original array of rows resolved by method <a href="Database.html#any">any</a></li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thisArg</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Value to use as <code>this</code> when executing the callback.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#map">Database#map</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line829">line 829</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html#any">any</a>,<a href="Database.html#each">each</a>,<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.map</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Resolves with the new array of values returned from the callback. The array is extended with
+hidden property <code>duration</code> - number of milliseconds it took the client to execute the query.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a>.&lt;Array></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>db.map('SELECT id FROM Users WHERE status = $1', ['active'], row => row.id)    .then(data => {        // data = array of active user id-s    })    .catch(error => {       // error    });</code></pre>
+
+    <pre class="prettyprint"><code>db.tx(t => {    return t.map('SELECT id FROM Users WHERE status = $1', ['active'], row => {       return t.none('UPDATE Events SET checked = $1 WHERE userId = $2', [true, row.id]);    }).then(t.batch);})    .then(data => {        // success    })    .catch(error => {        // error    });</code></pre>
+
+    <pre class="prettyprint"><code>// Build a list of active users, each with the list of user events:db.task(t => {    return t.map('SELECT id FROM Users WHERE status = $1', ['active'], user => {        return t.any('SELECT * FROM Events WHERE userId = $1', user.id)            .then(events=> {                user.events = events;                return user;            });    }).then(t.batch);})    .then(data => {        // success    })    .catch(error => {        // error    });</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="none"><span class="type-signature"></span>none<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;null>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a query that expects no data to be returned.
+If the query returns any kind of data, the method rejects.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
+<ul>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#none">Database#none</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line376">line 376</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise object that represents the query result:</p>
+<ul>
+<li>When no records are returned, it resolves with <code>null</code>.</li>
+<li>When any data is returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:<ul>
+<li><code>.message</code> = <code>No return data was expected.</code></li>
+<li><code>.code</code> = <a href="errors.html#.queryResultErrorCode#.notEmpty">queryResultErrorCode.notEmpty</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a>.&lt;null></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="one"><span class="type-signature"></span>one<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a query that expects exactly one row of data.
+When 0 or more than 1 rows are returned, the method rejects.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
+<ul>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Value transformation callback, to allow in-line value change.
+When specified, the return value replaces the original resolved value.</p>
+<p>The function takes only one parameter - value resolved from the query.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thisArg</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#one">Database#one</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line412">line 412</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html#oneOrNone">oneOrNone</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise object that represents the query result:</p>
+<ul>
+<li>When 1 row is returned, it resolves with that row as a single object.</li>
+<li>When no rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:<ul>
+<li><code>.message</code> = <code>No data returned from the query.</code></li>
+<li><code>.code</code> = <a href="errors.html#.queryResultErrorCode#.noData">queryResultErrorCode.noData</a></li>
+</ul>
+</li>
+<li>When multiple rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:<ul>
+<li><code>.message</code> = <code>Multiple rows were not expected.</code></li>
+<li><code>.code</code> = <a href="errors.html#.queryResultErrorCode#.multiple">queryResultErrorCode.multiple</a></li>
+</ul>
+</li>
+<li>Resolves with the new value, if transformation callback <code>cb</code> was specified.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// a query with in-line value transformation:db.one('INSERT INTO Events VALUES($1) RETURNING id', [123], event => event.id)    .then(data => {        // data = a new event id, rather than an object with it    });</code></pre>
+
+    <pre class="prettyprint"><code>// a query with in-line value transformation + conversion:db.one('SELECT count(*) FROM Users', [], c => +c.count)    .then(count => {        // count = a proper integer value, rather than an object with a string    });</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="oneOrNone"><span class="type-signature"></span>oneOrNone<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a query that expects 0 or 1 rows.
+When the query returns more than 1 row, the method rejects.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
+<ul>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Value transformation callback, to allow in-line value change.
+When specified, the return value replaces the original resolved value.</p>
+<p>The function takes only one parameter - value resolved from the query.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thisArg</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#oneOrNone">Database#oneOrNone</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line519">line 519</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html#one">one</a>,<a href="Database.html#none">none</a>,<a href="Database.html#manyOrNone">manyOrNone</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise object that represents the query result:</p>
+<ul>
+<li>When no rows are returned, it resolves with <code>null</code>.</li>
+<li>When 1 row is returned, it resolves with that row as a single object.</li>
+<li>When multiple rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:<ul>
+<li><code>.message</code> = <code>Multiple rows were not expected.</code></li>
+<li><code>.code</code> = <a href="errors.html#.queryResultErrorCode#.multiple">queryResultErrorCode.multiple</a></li>
+</ul>
+</li>
+<li>Resolves with the new value, if transformation callback <code>cb</code> was specified.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// a query with in-line value transformation:db.oneOrNone('SELECT id FROM Events WHERE type = $1', ['entry'], e => e &amp;&amp; e.id)    .then(data => {        // data = the event id or null (rather than object or null)    });</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="proc"><span class="type-signature"></span>proc<span class="signature">(procName, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a query against a stored procedure via its name: <code>select * from procName(values)</code>,
+expecting back 0 or 1 rows.</p>
+<p>The method simply forwards into <a href="Database.html#func">func</a><code>(procName, values, queryResult.one|queryResult.none)</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>procName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Name of the stored procedure to be executed.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Parameters for the procedure - one value or an array of values.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Value transformation callback, to allow in-line value change.
+When specified, the return value replaces the original resolved value.</p>
+<p>The function takes only one parameter - value resolved from the query.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thisArg</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#proc">Database#proc</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line790">line 790</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html#oneOrNone">oneOrNone</a>,<a href="Database.html#func">func</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>It calls <a href="Database.html#func">func</a>(<code>procName</code>, <code>values</code>, <code>queryResult.one|queryResult.none</code>),
+and then returns the same result as method <a href="Database.html#oneOrNone">oneOrNone</a>.</p>
+<p>And if transformation callback <code>cb</code> was specified, it resolves with the new value.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="query"><span class="type-signature"></span>query<span class="signature">(query, values<span class="signature-attributes">opt</span>, qrm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a generic query request that expects the return data according to parameter <code>qrm</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
+<ul>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>qrm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#queryResult">queryResult</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    queryResult.any
+                
+                </td>
+            
+
+            <td class="description last"><p><a href="global.html#queryResult">Query Result Mask</a></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#query">Database#query</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line206">line 206</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise object that represents the query result.</p>
+<p>When the query result is an array, it is extended with hidden property <code>duration</code> -
+number of milliseconds it took the client to execute the query.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="result"><span class="type-signature"></span>result<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a query without any expectation for the return data, to resolve with the
+original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L14">Result</a> object when successful.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query to be executed, which can any of the following types:</p>
+<ul>
+<li>A non-empty query string</li>
+<li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
+<li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
+<li><a href="QueryFile.html">QueryFile</a> object</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query formatting parameters.</p>
+<p>When <code>query</code> is of type <code>string</code> or a <a href="QueryFile.html">QueryFile</a> object, the <code>values</code> can be:</p>
+<ul>
+<li>a single value - to replace all <code>$1</code> occurrences</li>
+<li>an array of values - to replace all <code>$1</code>, <code>$2</code>, ... variables</li>
+<li>an object - to apply <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting</li>
+</ul>
+<p>When <code>query</code> is a Prepared Statement or a Parameterized Query (or their class types),
+and <code>values</code> is not <code>null</code> or <code>undefined</code>, it is automatically set within such object,
+as an override for its internal <code>values</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Value transformation callback, to allow in-line value change.
+When specified, the return value replaces the original resolved value.</p>
+<p>The function takes only one parameter - value resolved from the query.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thisArg</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#result">Database#result</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line666">line 666</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise object that represents the query result:</p>
+<ul>
+<li>resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L14">Result</a> object, extended with property <code>duration</code> -
+number of milliseconds it took the client to execute the query.</li>
+<li>resolves with the new value, if transformation callback <code>cb</code> was specified.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// use of value transformation:// deleting rows and returning the number of rows deleteddb.result('DELETE FROM Events WHERE id = $1', [123], r => r.rowCount)    .then(data => {        // data = number of rows that were deleted    });</code></pre>
+
+    <pre class="prettyprint"><code>// use of value transformation:// getting only column details from a tabledb.result('SELECT * FROM Users LIMIT 0', null, r => r.fields)    .then(data => {        // data = array of column descriptors    });</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="stream"><span class="type-signature"></span>stream<span class="signature">(qs, initCB)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Custom data streaming, with the help of <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a>.</p>
+<p>This method doesn't work with the <a href="https://github.com/brianc/node-postgres#native-bindings">Native Bindings</a>, and if option <code>pgNative</code>
+is set, it will reject with <code>Streaming doesn't work with Native Bindings.</code></p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>qs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">QueryStream</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Stream object of type <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js#L5">QueryStream</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>initCB</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Database.html#.streamInitCB">Database.streamInitCB</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Stream initialization callback.</p>
+<p>It is invoked with the same <code>this</code> context as the calling method.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#stream">Database#stream</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line730">line 730</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Result of the streaming operation.</p>
+<p>Once the streaming has finished successfully, the method resolves with
+<code>{processed, duration}</code>:</p>
+<ul>
+<li><code>processed</code> - total number of rows processed;</li>
+<li><code>duration</code> - streaming duration, in milliseconds.</li>
+</ul>
+<p>Possible rejections messages:</p>
+<ul>
+<li><code>Invalid or missing stream object.</code></li>
+<li><code>Invalid stream state.</code></li>
+<li><code>Invalid or missing stream initialization callback.</code></li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="task"><span class="type-signature"></span>task<span class="signature">(tag/cb, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) with an automatically managed connection.</p>
+<p>This method should be used whenever executing more than one query at once, so the allocated connection
+is reused between all queries, and released only after the task has finished (see <a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a>).</p>
+<p>The callback function is called with one parameter - database protocol (same as <code>this</code>), extended with methods
+<a href="Task.html#.batch">batch</a>, <a href="Task.html#.page">page</a>, <a href="Task.html#.sequence">sequence</a>, plus property <a href="Task.html#.ctx">ctx</a> -
+the task context object.</p>
+<p>See class <a href="Task.html">Task</a> for more details.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tag/cb</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>When the method takes only one parameter, it must be the callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) for the task.
+When calling the method with 2 parameters, the first one is the <code>tag</code> - traceable context for the task (see <a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+|
+
+<span class="param-type">generator</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Task callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>), if it is not <code>undefined</code>, or else the callback is expected to
+be passed in as the first parameter.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#task">Database#task</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1011">line 1011</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Task.html">Task</a>,<a href="Database.html#tx">tx</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise object that represents the result from the callback function.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>db.task('my-task', t => {        // t.ctx = task context object                return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user => {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
+
+    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.task('my-task', function * (t) {        // t.ctx = task context object        let user = yield t.one('SELECT id FROM Users WHERE name = $1', 'John');        return yield t.any('SELECT * FROM Events WHERE userId = $1', user.id);    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="tx"><span class="type-signature"></span>tx<span class="signature">(tag/cb, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) as a transaction.</p>
+<p>A transaction simply wraps a regular <a href="Database.html#task">task</a> in automatic queries:</p>
+<ul>
+<li>it executes <code>BEGIN</code> just before invoking the callback function</li>
+<li>it executes <code>COMMIT</code>, if the callback didn't throw any error or return a rejected promise</li>
+<li>it executes <code>ROLLBACK</code>, if the callback did throw an error or return a rejected promise</li>
+<li>it executes corresponding <code>SAVEPOINT</code> commands when the method is called recursively.</li>
+</ul>
+<p>The callback function is called with one parameter - database protocol (same as <code>this</code>), extended with methods
+<a href="Task.html#.batch">batch</a>, <a href="Task.html#.page">page</a>, <a href="Task.html#.sequence">sequence</a>, plus property <a href="Task.html#.ctx">ctx</a> -
+the transaction context object.</p>
+<p>See class <a href="Task.html">Task</a> for more details.</p>
+<p>Note that transactions should be chosen over tasks only where they are necessary, because unlike regular tasks,
+transactions are blocking operations, and must be used with caution.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tag/cb</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>When the method takes only one parameter, it must be the callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) for the transaction.
+When calling the method with 2 parameters, the first one is the <code>tag</code> - traceable context for the transaction (see <a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+|
+
+<span class="param-type">generator</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Transaction callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>), if it is not <code>undefined</code>, or else the callback is expected to be
+passed in as the first parameter.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Database.html#tx">Database#tx</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1083">line 1083</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Task.html">Task</a>,<a href="Database.html#task">Database#task</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise object that represents the result from the callback function.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>db.tx('my-transaction', t => {        // t.ctx = transaction context object                return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user=> {                return t.batch([                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']),                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'login'])                ]);            });    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
+
+    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.tx('my-transaction', function * (t) {        // t.ctx = transaction context object        let user = yield t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);        return yield t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
 
 
 

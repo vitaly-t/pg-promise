@@ -37,8 +37,8 @@
  * _Query Result Mask._
  *
  * Binary mask that represents the result expected from queries.
- * It is used in the generic {@link Database.query query} method,
- * as well as method {@link Database.func func}.
+ * It is used in the generic {@link Database#query query} method,
+ * as well as method {@link Database#func func}.
  *
  * The mask is always the last optional parameter, which defaults to `queryResult.any`.
  *
@@ -46,7 +46,7 @@
  *
  * The type is available from the library's root: `pgp.queryResult`.
  *
- * @see {@link Database.query}, {@link Database.func}
+ * @see {@link Database#query}, {@link Database#func}
  */
 const queryResult = {
     /** Single row is expected. */

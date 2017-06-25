@@ -72,14 +72,14 @@ const errorMessages = [
  * This error is specified as the rejection reason for all result-specific methods when the result doesn't match
  * the expectation, i.e. when a query result doesn't match its Query Result Mask - the value of {@link queryResult}.
  *
- * The error applies to the result from the following methods: {@link Database.none none},
- * {@link Database.one one}, {@link Database.oneOrNone oneOrNone} and {@link Database.many many}.
+ * The error applies to the result from the following methods: {@link Database#none none},
+ * {@link Database#one one}, {@link Database#oneOrNone oneOrNone} and {@link Database#many many}.
  *
  * Supported errors:
  *
- * - `No return data was expected.`, method {@link Database.none none}
- * - `No data returned from the query.`, methods {@link Database.one one} and {@link Database.many many}
- * - `Multiple rows were not expected.`, methods {@link Database.one one} and {@link Database.oneOrNone oneOrNone}
+ * - `No return data was expected.`, method {@link Database#none none}
+ * - `No data returned from the query.`, methods {@link Database#one one} and {@link Database#many many}
+ * - `Multiple rows were not expected.`, methods {@link Database#one one} and {@link Database#oneOrNone oneOrNone}
  *
  * Like any other error, this one is notified with through the global event {@link event:error error}.
  *
@@ -142,8 +142,8 @@ const errorMessages = [
  * };
  *
  * @see
- * {@link queryResult}, {@link Database.none none}, {@link Database.one one},
- * {@link Database.oneOrNone oneOrNone}, {@link Database.many many}
+ * {@link queryResult}, {@link Database#none none}, {@link Database#one one},
+ * {@link Database#oneOrNone oneOrNone}, {@link Database#many many}
  *
  */
 class QueryResultError extends Error {

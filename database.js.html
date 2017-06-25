@@ -72,7 +72,7 @@ const npm = {
  *
  * The value can be accessed from the database object via property {@link Database.$cn $cn}.
  *
- * @param {} [dc]
+ * @param {*} [dc]
  * Database Context.
  *
  * Any object or value to be propagated through the protocol, to allow implementations and event handling
@@ -82,32 +82,32 @@ const npm = {
  * extensions, or different implementations within a single task / transaction callback,
  * depending on the database context.
  *
- * The value can be accessed from the database object via property {@link Database.$dc $dc}.
+ * The value can be accessed from the database object via property {@link Database#$dc $dc}.
  *
  * @returns {Database}
  *
  * @see
  *
- * {@link Database.query query},
- * {@link Database.none none},
- * {@link Database.one one},
- * {@link Database.oneOrNone oneOrNone},
- * {@link Database.many many},
- * {@link Database.manyOrNone manyOrNone},
- * {@link Database.any any},
- * {@link Database.func func},
- * {@link Database.proc proc},
- * {@link Database.result result},
- * {@link Database.map map},
- * {@link Database.each each},
- * {@link Database.stream stream},
- * {@link Database.task task},
- * {@link Database.tx tx},
- * {@link Database.connect connect},
- * {@link Database.$config $config},
- * {@link Database.$cn $cn},
- * {@link Database.$dc $dc},
- * {@link Database.$pool $pool},
+ * {@link Database#query query},
+ * {@link Database#none none},
+ * {@link Database#one one},
+ * {@link Database#oneOrNone oneOrNone},
+ * {@link Database#many many},
+ * {@link Database#manyOrNone manyOrNone},
+ * {@link Database#any any},
+ * {@link Database#func func},
+ * {@link Database#proc proc},
+ * {@link Database#result result},
+ * {@link Database#map map},
+ * {@link Database#each each},
+ * {@link Database#stream stream},
+ * {@link Database#task task},
+ * {@link Database#tx tx},
+ * {@link Database#connect connect},
+ * {@link Database#$config $config},
+ * {@link Database#$cn $cn},
+ * {@link Database#$dc $dc},
+ * {@link Database#$pool $pool},
  * {@link event:extend extend}
  *
  * @example
@@ -130,13 +130,14 @@ const npm = {
 function Database(cn, dc, config) {
 
     const dbThis = this, $p = config.promise;
-    let pool = new config.pgp.pg.Pool(cn);
 
+    let pool = new config.pgp.pg.Pool(cn);
+    pool.end = pool.end.bind(pool);
 
     pool.on('error', onError);
 
     /**
-     * @method Database.connect
+     * @method Database#connect
      *
      * @description
      * Acquires a new or existing connection, depending on the current state of the connection pool, and parameter `direct`.
@@ -145,7 +146,7 @@ function Database(cn, dc, config) {
      * in the end of the chain by calling method `done()` on the connection object.
      *
      * This is an obsolete, low-level approach to chaining queries on the same connection. A newer and safer approach is via
-     * methods {@link Database.task task} and {@link Database.tx tx} (for transactions), which allocate and release a shared
+     * methods {@link Database#task task} and {@link Database#tx tx} (for transactions), which allocate and release a shared
      * connection automatically.
      *
      * **NOTE:** Even though this method exposes a {@link external:Client Client} object via property `client`,
@@ -173,8 +174,8 @@ function Database(cn, dc, config) {
      *  - rejects with a connection-related error when it fails to connect.
      *
      * @see
-     * {@link Database.task},
-     * {@link Database.tx}
+     * {@link Database#task},
+     * {@link Database#tx}
      *
      * @example
      *
@@ -232,7 +233,7 @@ function Database(cn, dc, config) {
     };
 
     /**
-     * @method Database.query
+     * @method Database#query
      *
      * @description
      * Executes a generic query request that expects the return data according to parameter `qrm`.
@@ -283,7 +284,7 @@ function Database(cn, dc, config) {
     };
 
     /**
-     * @member {object} Database.$config
+     * @member {object} Database#$config
      * @readonly
      * @description
      * This is a hidden property, to help integrating type {@link Database} directly with third-party libraries.
@@ -316,7 +317,7 @@ function Database(cn, dc, config) {
     npm.utils.addReadProp(this, '$config', config, true);
 
     /**
-     * @member {string|object} Database.$cn
+     * @member {string|object} Database#$cn
      * @readonly
      * @description
      * **Added in v5.6.8**
@@ -330,7 +331,7 @@ function Database(cn, dc, config) {
     npm.utils.addReadProp(this, '$cn', cn, true);
 
     /**
-     * @member {} Database.$dc
+     * @member {} Database#$dc
      * @readonly
      * @description
      * **Added in v5.6.8**
@@ -344,14 +345,19 @@ function Database(cn, dc, config) {
     npm.utils.addReadProp(this, '$dc', dc, true);
 
     /**
-     * @member {} Database.$pool
+     * @member {external:pg-pool} Database#$pool
      * @readonly
      * @description
-     * ** This is a $[6.x] feature. **
+     * ** This is a version $[6.x] feature. **
      *
-     * A $[pg-pool] object associated with the database object.
+     * A $[pg-pool] object associated with the database object, as each {@link Database} creates its own $[pg-pool] instance.
      *
-     * This is a hidden property, to help integrating type {@link Database} directly with third-party libraries.
+     * This is a hidden property, primarily for integrating type {@link Database} with third-party libraries that support
+     * $[pg-pool] directly.
+     *
+     * Note that if you pass the pool object into a library that calls `pool.end()`, you will no longer be able to use this
+     * {@link Database} object, and each query method will be rejecting with {@link external:Error Error} =
+     * `Connection pool of the database object has been destroyed.`
      *
      * @see Database
      */
@@ -397,7 +403,7 @@ function Database(cn, dc, config) {
     function extend(ctx, obj) {
 
         /**
-         * @method Database.none
+         * @method Database#none
          * @description
          * Executes a query that expects no data to be returned.
          * If the query returns any kind of data, the method rejects.
@@ -433,7 +439,7 @@ function Database(cn, dc, config) {
         };
 
         /**
-         * @method Database.one
+         * @method Database#one
          * @description
          * Executes a query that expects exactly one row of data.
          * When 0 or more than 1 rows are returned, the method rejects.
@@ -478,7 +484,7 @@ function Database(cn, dc, config) {
          * - Resolves with the new value, if transformation callback `cb` was specified.
          *
          * @see
-         * {@link Database.oneOrNone oneOrNone}
+         * {@link Database#oneOrNone oneOrNone}
          *
          * @example
          *
@@ -503,7 +509,7 @@ function Database(cn, dc, config) {
         };
 
         /**
-         * @method Database.many
+         * @method Database#many
          * @description
          * Executes a query that expects one or more rows.
          * When the query returns no rows, the method rejects.
@@ -540,7 +546,7 @@ function Database(cn, dc, config) {
         };
 
         /**
-         * @method Database.oneOrNone
+         * @method Database#oneOrNone
          * @description
          * Executes a query that expects 0 or 1 rows.
          * When the query returns more than 1 row, the method rejects.
@@ -583,9 +589,9 @@ function Database(cn, dc, config) {
          * - Resolves with the new value, if transformation callback `cb` was specified.
          *
          * @see
-         * {@link Database.one one},
-         * {@link Database.none none},
-         * {@link Database.manyOrNone manyOrNone}
+         * {@link Database#one one},
+         * {@link Database#none none},
+         * {@link Database#manyOrNone manyOrNone}
          *
          * @example
          *
@@ -602,7 +608,7 @@ function Database(cn, dc, config) {
         };
 
         /**
-         * @method Database.manyOrNone
+         * @method Database#manyOrNone
          * @description
          * Executes a query that expects any number of rows.
          *
@@ -634,9 +640,9 @@ function Database(cn, dc, config) {
          * it took the client to execute the query.
          *
          * @see
-         * {@link Database.any any},
-         * {@link Database.many many},
-         * {@link Database.none none}
+         * {@link Database#any any},
+         * {@link Database#many many},
+         * {@link Database#none none}
          *
          */
         obj.manyOrNone = function (query, values) {
@@ -644,10 +650,10 @@ function Database(cn, dc, config) {
         };
 
         /**
-         * @method Database.any
+         * @method Database#any
          * @description
          * Executes a query that expects any number of rows.
-         * This is simply a shorter alias for method {@link Database.manyOrNone manyOrNone}.
+         * This is simply a shorter alias for method {@link Database#manyOrNone manyOrNone}.
          *
          * @param {string|object} query
          * Query to be executed, which can any of the following types:
@@ -677,9 +683,9 @@ function Database(cn, dc, config) {
          * it took the client to execute the query.
          *
          * @see
-         * {@link Database.manyOrNone manyOrNone},
-         * {@link Database.map map},
-         * {@link Database.each each}
+         * {@link Database#manyOrNone manyOrNone},
+         * {@link Database#map map},
+         * {@link Database#each each}
          *
          */
         obj.any = function (query, values) {
@@ -687,7 +693,7 @@ function Database(cn, dc, config) {
         };
 
         /**
-         * @method Database.result
+         * @method Database#result
          * @description
          * Executes a query without any expectation for the return data, to resolve with the
          * original $[Result] object when successful.
@@ -751,7 +757,7 @@ function Database(cn, dc, config) {
         };
 
         /**
-         * @method Database.stream
+         * @method Database#stream
          * @description
          * Custom data streaming, with the help of $[pg-query-stream].
          *
@@ -784,7 +790,7 @@ function Database(cn, dc, config) {
         };
 
         /**
-         * @method Database.func
+         * @method Database#func
          * @description
          * Executes a query against a database function by its name: `SELECT * FROM funcName(values)`.
          *
@@ -798,11 +804,11 @@ function Database(cn, dc, config) {
          *
          * @returns {external:Promise}
          *
-         * A promise object as returned from method {@link Database.query query}, according to parameter `qrm`.
+         * A promise object as returned from method {@link Database#query query}, according to parameter `qrm`.
          *
          * @see
-         * {@link Database.query query},
-         * {@link Database.proc proc}
+         * {@link Database#query query},
+         * {@link Database#proc proc}
          */
         obj.func = function (funcName, values, qrm) {
             return obj.query.call(this, {
@@ -811,12 +817,12 @@ function Database(cn, dc, config) {
         };
 
         /**
-         * @method Database.proc
+         * @method Database#proc
          * @description
          * Executes a query against a stored procedure via its name: `select * from procName(values)`,
          * expecting back 0 or 1 rows.
          *
-         * The method simply forwards into {@link Database.func func}`(procName, values, queryResult.one|queryResult.none)`.
+         * The method simply forwards into {@link Database#func func}`(procName, values, queryResult.one|queryResult.none)`.
          *
          * @param {string} procName
          * Name of the stored procedure to be executed.
@@ -835,14 +841,14 @@ function Database(cn, dc, config) {
          *
          * @returns {external:Promise}
          *
-         * It calls {@link Database.func func}(`procName`, `values`, `queryResult.one|queryResult.none`),
-         * and then returns the same result as method {@link Database.oneOrNone oneOrNone}.
+         * It calls {@link Database#func func}(`procName`, `values`, `queryResult.one|queryResult.none`),
+         * and then returns the same result as method {@link Database#oneOrNone oneOrNone}.
          *
          * And if transformation callback `cb` was specified, it resolves with the new value.
          *
          * @see
-         * {@link Database.oneOrNone oneOrNone},
-         * {@link Database.func func}
+         * {@link Database#oneOrNone oneOrNone},
+         * {@link Database#func func}
          */
         obj.proc = function (procName, values, cb, thisArg) {
             const v = obj.func.call(this, procName, values, npm.result.one | npm.result.none);
@@ -850,10 +856,10 @@ function Database(cn, dc, config) {
         };
 
         /**
-         * @method Database.map
+         * @method Database#map
          * @description
          * Creates a new array with the results of calling a provided function on every element in the array of rows
-         * resolved by method {@link Database.any any}.
+         * resolved by method {@link Database#any any}.
          *
          * It is a convenience method to reduce the following code:
          *
@@ -889,7 +895,7 @@ function Database(cn, dc, config) {
          * Function that produces an element of the new array, taking three arguments:
          * - `row` - the current row object being processed in the array
          * - `index` - the index of the current row being processed in the array
-         * - `data` - the original array of rows resolved by method {@link Database.any any}
+         * - `data` - the original array of rows resolved by method {@link Database#any any}
          *
          * @param {} [thisArg]
          * Value to use as `this` when executing the callback.
@@ -899,8 +905,8 @@ function Database(cn, dc, config) {
          * hidden property `duration` - number of milliseconds it took the client to execute the query.
          *
          * @see
-         * {@link Database.any any},
-         * {@link Database.each each},
+         * {@link Database#any any},
+         * {@link Database#each each},
          * {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map Array.map}
          *
          * @example
@@ -957,9 +963,9 @@ function Database(cn, dc, config) {
         };
 
         /**
-         * @method Database.each
+         * @method Database#each
          * @description
-         * Executes a provided function once per array element, for an array of rows resolved by method {@link Database.any any}.
+         * Executes a provided function once per array element, for an array of rows resolved by method {@link Database#any any}.
          *
          * It is a convenience method to reduce the following code:
          *
@@ -996,7 +1002,7 @@ function Database(cn, dc, config) {
          * Function to execute for each row, taking three arguments:
          * - `row` - the current row object being processed in the array
          * - `index` - the index of the current row being processed in the array
-         * - `data` - the array of rows resolved by method {@link Database.any any}
+         * - `data` - the array of rows resolved by method {@link Database#any any}
          *
          * @param {} [thisArg]
          * Value to use as `this` when executing the callback.
@@ -1006,8 +1012,8 @@ function Database(cn, dc, config) {
          * number of milliseconds it took the client to execute the query.
          *
          * @see
-         * {@link Database.any any},
-         * {@link Database.map map},
+         * {@link Database#any any},
+         * {@link Database#map map},
          * {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach Array.forEach}
          *
          * @example
@@ -1032,7 +1038,7 @@ function Database(cn, dc, config) {
         };
 
         /**
-         * @method Database.task
+         * @method Database#task
          * @description
          * Executes a callback function (or $[ES6 generator]) with an automatically managed connection.
          *
@@ -1059,7 +1065,7 @@ function Database(cn, dc, config) {
          *
          * @see
          * {@link Task},
-         * {@link Database.tx tx},
+         * {@link Database#tx tx},
          * $[tags],
          * $[Chaining Queries]
          *
@@ -1104,11 +1110,11 @@ function Database(cn, dc, config) {
         };
 
         /**
-         * @method Database.tx
+         * @method Database#tx
          * @description
          * Executes a callback function (or $[ES6 generator]) as a transaction.
          *
-         * A transaction simply wraps a regular {@link Database.task task} in automatic queries:
+         * A transaction simply wraps a regular {@link Database#task task} in automatic queries:
          * - it executes `BEGIN` just before invoking the callback function
          * - it executes `COMMIT`, if the callback didn't throw any error or return a rejected promise
          * - it executes `ROLLBACK`, if the callback did throw an error or return a rejected promise
@@ -1137,7 +1143,7 @@ function Database(cn, dc, config) {
          *
          * @see
          * {@link Task},
-         * {@link Database.task},
+         * {@link Database#task},
          * $[tags],
          * $[Chaining Queries]
          *
@@ -1288,7 +1294,7 @@ module.exports = config => {
 /**
  * @callback Database.streamInitCB
  * @description
- * Stream initialization callback, used by {@link Database.stream}.
+ * Stream initialization callback, used by {@link Database#stream}.
  *
  * @param {external:Stream} stream
  * Stream object to initialize streaming.
@@ -1317,6 +1323,12 @@ module.exports = config => {
 /**
  * @external Stream
  * @see https://nodejs.org/api/stream.html
+ */
+
+/**
+ * @external pg-pool
+ * @alias pg-pool
+ * @see https://github.com/brianc/node-pg-pool
  */
 </code></pre>
         </article>
