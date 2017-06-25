@@ -1,11 +1,12 @@
 import * as pgPromise from '../../typescript/pg-promise';
 
-function create(cb: any) {
-    return {};
-}
-
-const adapter = new pgPromise.PromiseAdapter(create, (data) => {
-}, (error) => {
+const adapter = new pgPromise.PromiseAdapter({
+    create: cb => new Promise(cb),
+    resolve: () => {
+    },
+    reject: () => {
+    },
+    all: () => Promise.resolve()
 });
 
 const pgp = pgPromise({

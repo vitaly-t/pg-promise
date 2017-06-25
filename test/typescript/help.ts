@@ -51,6 +51,8 @@ const cs: ColumnSet = new pgp.helpers.ColumnSet([
     }
 ], {table: 'my-table', inherit: true});
 
+var r = cs.columns;
+
 const insert: string = pgp.helpers.insert(data, cs, 'my-table');
 const update: string = pgp.helpers.update(data, cs, table1, {tableAlias: 'W'});
 
