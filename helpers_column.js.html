@@ -81,7 +81,7 @@ const npm = {
  *
  * It can be set from a string initialization, by adding `?` in front of the name.
  *
- * @property {} [def]
+ * @property {*} [def]
  * Default value for the property, to be used only when the source object doesn't have the property.
  * It is ignored when property `init` is set.
  *
@@ -364,7 +364,7 @@ Column.prototype.inspect = function () {
  *
  * It can be set from a string initialization, by adding `?` in front of the name.
  *
- * @property {} [def]
+ * @property {*} [def]
  * Default value for the property, to be used only when the source object doesn't have the property.
  * It is ignored when property `init` is set.
  *
@@ -390,7 +390,7 @@ Column.prototype.inspect = function () {
  *
  * The function is called with `this` set to the `source` object.
  *
- * @param {} col
+ * @param {*} col
  * Column-to-property descriptor.
  *
  * @param {object} col.source
@@ -399,7 +399,7 @@ Column.prototype.inspect = function () {
  * @param {string} col.name
  * Name of the property within the `source` object.
  *
- * @param {} col.value
+ * @param {*} col.value
  *
  * Property value, set to one of the following:
  *
@@ -410,7 +410,7 @@ Column.prototype.inspect = function () {
  * @param {boolean} col.exists
  * Indicates whether the property exists in the `source` object (`exists = name in source`).
  *
- * @returns {}
+ * @returns {*}
  * The new value to be used for the corresponding column.
  */
 
@@ -423,7 +423,7 @@ Column.prototype.inspect = function () {
  *
  * The function is called with `this` set to the `source` object.
  *
- * @param {} col
+ * @param {*} col
  * Column-to-property descriptor.
  *
  * @param {object} col.source
@@ -432,7 +432,7 @@ Column.prototype.inspect = function () {
  * @param {string} col.name
  * Name of the property within the `source` object.
  *
- * @param {} col.value
+ * @param {*} col.value
  *
  * Property value, set to one of the following:
  *

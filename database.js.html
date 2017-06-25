@@ -331,7 +331,7 @@ function Database(cn, dc, config) {
     npm.utils.addReadProp(this, '$cn', cn, true);
 
     /**
-     * @member {} Database#$dc
+     * @member {*} Database#$dc
      * @readonly
      * @description
      * **Added in v5.6.8**
@@ -469,7 +469,7 @@ function Database(cn, dc, config) {
          *
          * The function takes only one parameter - value resolved from the query.
          *
-         * @param {} [thisArg]
+         * @param {*} [thisArg]
          * Value to use as `this` when executing the transformation callback.
          *
          * @returns {external:Promise}
@@ -576,7 +576,7 @@ function Database(cn, dc, config) {
          *
          * The function takes only one parameter - value resolved from the query.
          *
-         * @param {} [thisArg]
+         * @param {*} [thisArg]
          * Value to use as `this` when executing the transformation callback.
          *
          * @returns {external:Promise}
@@ -723,7 +723,7 @@ function Database(cn, dc, config) {
          *
          * The function takes only one parameter - value resolved from the query.
          *
-         * @param {} [thisArg]
+         * @param {*} [thisArg]
          * Value to use as `this` when executing the transformation callback.
          *
          * @returns {external:Promise}
@@ -836,7 +836,7 @@ function Database(cn, dc, config) {
          *
          * The function takes only one parameter - value resolved from the query.
          *
-         * @param {} [thisArg]
+         * @param {*} [thisArg]
          * Value to use as `this` when executing the transformation callback.
          *
          * @returns {external:Promise}
@@ -897,7 +897,7 @@ function Database(cn, dc, config) {
          * - `index` - the index of the current row being processed in the array
          * - `data` - the original array of rows resolved by method {@link Database#any any}
          *
-         * @param {} [thisArg]
+         * @param {*} [thisArg]
          * Value to use as `this` when executing the callback.
          *
          * @returns {external:Promise&lt;Array>}
@@ -1004,7 +1004,7 @@ function Database(cn, dc, config) {
          * - `index` - the index of the current row being processed in the array
          * - `data` - the array of rows resolved by method {@link Database#any any}
          *
-         * @param {} [thisArg]
+         * @param {*} [thisArg]
          * Value to use as `this` when executing the callback.
          *
          * @returns {external:Promise&lt;Array&lt;Object>>}
@@ -1051,7 +1051,7 @@ function Database(cn, dc, config) {
          *
          * See class {@link Task} for more details.
          *
-         * @param {} tag/cb
+         * @param {*} tag/cb
          * When the method takes only one parameter, it must be the callback function (or $[ES6 generator]) for the task.
          * When calling the method with 2 parameters, the first one is the `tag` - traceable context for the task (see $[tags]).
          *
@@ -1129,7 +1129,7 @@ function Database(cn, dc, config) {
          * Note that transactions should be chosen over tasks only where they are necessary, because unlike regular tasks,
          * transactions are blocking operations, and must be used with caution.
          *
-         * @param {} tag/cb
+         * @param {*} tag/cb
          * When the method takes only one parameter, it must be the callback function (or $[ES6 generator]) for the transaction.
          * When calling the method with 2 parameters, the first one is the `tag` - traceable context for the transaction (see $[tags]).
          *
