@@ -45,7 +45,7 @@ const $events = {
      * Global notification of acquiring a new database connection from the connection pool,
      * i.e. a virtual connection.
      *
-     * However, for direct calls to method {@link Database#connect} with parameter `{direct: true}`,
+     * However, for direct calls to method {@link Database#connect Database.connect} with parameter `{direct: true}`,
      * this event represents a physical connection.
      *
      * The library will suppress any error thrown by the handler and write it into the console.
@@ -63,7 +63,7 @@ const $events = {
      *
      * **NOTE:**
      *
-     * This parameter is always `true` for direct connections (created by calling {@link Database#connect}
+     * This parameter is always `true` for direct connections (created by calling {@link Database#connect Database.connect}
      * with parameter `{direct: true}`).
      *
      * @example
@@ -98,7 +98,7 @@ const $events = {
      * Global notification of releasing a database connection back to the connection pool,
      * i.e. releasing the virtual connection.
      *
-     * However, when releasing a direct connection (created by calling {@link Database#connect} with parameter
+     * However, when releasing a direct connection (created by calling {@link Database#connect Database.connect} with parameter
      * `{direct: true}`), this event represents a physical disconnection.
      *
      * The library will suppress any error thrown by the handler and write it into the console.
@@ -184,7 +184,7 @@ const $events = {
      * - property `query` of this object already contains all the formatting values in it, so logging only the query is sufficient.
      *
      * @param {object} e.ctx
-     * _Task/Transaction Context_ object. See {@link Task.ctx} for details.
+     * _Task/Transaction Context_ object. See {@link Task#ctx Task.ctx} for details.
      *
      * This property is always set for events {@link event:task task} and {@link event:transact transact}, while for events
      * {@link event:query query}, {@link event:receive receive} and {@link event:error error} it is only set when the event occurred

@@ -1060,7 +1060,7 @@ and therefore cannot scale. This option is only suitable for global connection u
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#task">Database#task</a>,<a href="Database.html#tx">Database#tx</a></li>
+            <li><a href="Database.html#task">Database.task</a>,<a href="Database.html#tx">Database.tx</a></li>
         </ul>
     </dd>
     
@@ -4315,7 +4315,7 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
 <p>This method should be used whenever executing more than one query at once, so the allocated connection
 is reused between all queries, and released only after the task has finished (see <a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a>).</p>
 <p>The callback function is called with one parameter - database protocol (same as <code>this</code>), extended with methods
-<a href="Task.html#.batch">batch</a>, <a href="Task.html#.page">page</a>, <a href="Task.html#.sequence">sequence</a>, plus property <a href="Task.html#.ctx">ctx</a> -
+<a href="Task.html#batch">batch</a>, <a href="Task.html#page">page</a>, <a href="Task.html#sequence">sequence</a>, plus property <a href="Task.html#ctx">ctx</a> -
 the task context object.</p>
 <p>See class <a href="Task.html">Task</a> for more details.</p>
 </div>
@@ -4536,7 +4536,7 @@ be passed in as the first parameter.</p></td>
 <li>it executes corresponding <code>SAVEPOINT</code> commands when the method is called recursively.</li>
 </ul>
 <p>The callback function is called with one parameter - database protocol (same as <code>this</code>), extended with methods
-<a href="Task.html#.batch">batch</a>, <a href="Task.html#.page">page</a>, <a href="Task.html#.sequence">sequence</a>, plus property <a href="Task.html#.ctx">ctx</a> -
+<a href="Task.html#batch">batch</a>, <a href="Task.html#page">page</a>, <a href="Task.html#sequence">sequence</a>, plus property <a href="Task.html#ctx">ctx</a> -
 the transaction context object.</p>
 <p>See class <a href="Task.html">Task</a> for more details.</p>
 <p>Note that transactions should be chosen over tasks only where they are necessary, because unlike regular tasks,
@@ -4686,7 +4686,7 @@ passed in as the first parameter.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Task.html">Task</a>,<a href="Database.html#task">Database#task</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a></li>
+            <li><a href="Task.html">Task</a>,<a href="Database.html#task">Database.task</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a></li>
         </ul>
     </dd>
     
@@ -4756,7 +4756,7 @@ passed in as the first parameter.</p></td>
 
 
 <div class="description">
-    <p>Stream initialization callback, used by <a href="Database.html#stream">Database#stream</a>.</p>
+    <p>Stream initialization callback, used by <a href="Database.html#stream">Database.stream</a>.</p>
 </div>
 
 
