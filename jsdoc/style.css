@@ -15,8 +15,9 @@ html, body, section {
 }
 
 h4.name {
+    border-radius: 7px;
     padding: 4px 10px;
-    background-color: Black;
+    background-color: #303030;
     color: Cyan;
     font-size: 24px;
 }
@@ -33,6 +34,7 @@ div#main {
 }
 
 code {
+    border-radius: 3px;
     padding: 2px 4px;
     background-color: grey;
     color: white !important;
@@ -91,9 +93,34 @@ nav h2 {
     font-weight: bold;
 }
 
+table.params th:first-child,
+table.props th:first-child {
+    border-top-left-radius: 5px;
+}
+
+table.params th:last-child,
+table.props th:last-child {
+    border-top-right-radius: 5px;
+}
+
+table.params th,
+table.props th {
+    border: none;
+    border-right: 1px solid #F5F5F5;
+}
+
 table.params th,
 table.props th {
     font-family: 'Verdana';
+    font-weight: normal;
+}
+
+table.params th {
     background-color: SteelBlue;
+    color: White;
+}
+
+table.props th {
+    background-color: DarkCyan;
     color: White;
 }
