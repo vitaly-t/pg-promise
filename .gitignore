@@ -8,3 +8,4 @@ test/typescript/*.js
 test/typescript/*.map
 typings/
 generated.js
+package-lock.json
