@@ -1,21 +1,21 @@
 import * as pgPromise from '../../typescript/pg-promise';
 
-var pgp: pgPromise.IMain = pgPromise({
+const pgp: pgPromise.IMain = pgPromise({
     connect: (bla1: any, dc: any, fresh: boolean) => {
     },
     receive: (data: any, result: any, e: any) => {
-        var dc = e.dc;
-        var d = data[0].prop;
-        var r = result.fields[0].name;
-        var query = e.query;
+        const dc = e.dc;
+        const d = data[0].prop;
+        const r = result.fields[0].name;
+        const query = e.query;
     },
     query: (e: any) => {
-        var dc = e.dc;
-        var query = e.query;
+        const dc = e.dc;
+        const query = e.query;
     },
     error: (err: any, e: any) => {
-        var dc = e.dc;
-        var query = e.query;
+        const dc = e.dc;
+        const query = e.query;
     },
     extend: (obj: any, dc: any) => {
         obj['method'] = (val: any) => {
@@ -24,10 +24,10 @@ var pgp: pgPromise.IMain = pgPromise({
     }
 });
 
-var db = pgp('connection');
+const db = pgp('connection');
 
 db.task(t => {
-    var dc = t.ctx.dc;
+    const dc = t.ctx.dc;
     return t.batch([
         t.one('query'),
         t.none('query')

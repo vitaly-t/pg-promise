@@ -1,20 +1,20 @@
 'use strict';
 
-var capture = require('./db/capture');
-var PromiseAdapter = require('../lib/index').PromiseAdapter;
-var supportsPromise = typeof(Promise) !== 'undefined';
+const capture = require('./db/capture');
+const PromiseAdapter = require('../lib/index').PromiseAdapter;
+const supportsPromise = typeof(Promise) !== 'undefined';
 
-var header = require('./db/header');
-var promise = header.defPromise;
-var options = {
+const header = require('./db/header');
+const promise = header.defPromise;
+const options = {
     promiseLib: promise,
     noWarnings: true
 };
-var dbHeader = header(options);
-var pgp = dbHeader.pgp;
-var db = dbHeader.db;
+const dbHeader = header(options);
+const pgp = dbHeader.pgp;
+const db = dbHeader.db;
 
-var BatchError = pgp.spex.errors.BatchError;
+const BatchError = pgp.spex.errors.BatchError;
 
 function dummy() {
 }
@@ -24,7 +24,7 @@ describe('Library entry function', function () {
     describe('without any promise override', function () {
         it('must return a valid library object', function () {
             if (supportsPromise) {
-                var lib = header({noWarnings: true});
+                const lib = header({noWarnings: true});
                 expect(typeof(lib.pgp)).toBe('function');
             } else {
                 expect(function () {
@@ -35,7 +35,7 @@ describe('Library entry function', function () {
     });
 
     describe('with PromiseAdapter override', function () {
-        var P = header.defPromise;
+        const P = header.defPromise;
 
         function create(func) {
             return new P(func);
@@ -53,9 +53,9 @@ describe('Library entry function', function () {
             return P.all(data);
         }
 
-        var adapter = new PromiseAdapter({create, resolve, reject, all});
+        const adapter = new PromiseAdapter({create, resolve, reject, all});
         it('must accept custom promise', function () {
-            var lib = header({
+            const lib = header({
                 promiseLib: adapter,
                 noWarnings: true
             });
@@ -63,9 +63,9 @@ describe('Library entry function', function () {
         });
 
         describe('using PromiseAdapter', function () {
-            var result;
+            let result;
             beforeEach(function (done) {
-                var lib = header({
+                const lib = header({
                     promiseLib: adapter,
                     noWarnings: true
                 });
@@ -83,9 +83,9 @@ describe('Library entry function', function () {
 
     if (supportsPromise) {
         describe('without any options', function () {
-            var result;
+            let result;
             beforeEach(function (done) {
-                var db = header({noWarnings: true}).db;
+                const db = header({noWarnings: true}).db;
                 db.query('select * from users')
                     .then(function (data) {
                         result = data;
@@ -100,7 +100,7 @@ describe('Library entry function', function () {
 
     describe('with a valid promise library-object override', function () {
         it('must return a valid library object', function () {
-            var lib = header(
+            const lib = header(
                 {
                     promiseLib: {
                         resolve: dummy,
@@ -121,7 +121,7 @@ describe('Library entry function', function () {
             fakePromiseLib.resolve = dummy;
             fakePromiseLib.reject = dummy;
             fakePromiseLib.all = dummy;
-            var lib = header({
+            const lib = header({
                 promiseLib: fakePromiseLib,
                 noWarnings: true
             });
@@ -130,7 +130,7 @@ describe('Library entry function', function () {
     });
 
     describe('with invalid promise override', function () {
-        var error = 'Invalid promise library specified.';
+        const error = 'Invalid promise library specified.';
         it('must throw the correct error', function () {
             expect(function () {
                 header({
@@ -148,7 +148,7 @@ describe('Library entry function', function () {
     });
 
     describe('with invalid options parameter', function () {
-        var errBody = 'Invalid initialization options: ';
+        const errBody = 'Invalid initialization options: ';
         it('must throw an error', function () {
             expect(() => {
                 header(123);
@@ -160,9 +160,9 @@ describe('Library entry function', function () {
     });
 
     describe('with invalid options', function () {
-        var txt;
+        let txt;
         beforeEach(function (done) {
-            var c = capture();
+            const c = capture();
             header({test: 123});
             txt = c();
             done();
@@ -175,27 +175,27 @@ describe('Library entry function', function () {
 
     describe('multi-init', function () {
 
-        var PromiseOne = {
+        const PromiseOne = {
             create: cb => new promise.Promise(cb),
             resolve: data => promise.resolve(data),
             reject: () => promise.reject('reject-one'),
             all: data => promise.all(data)
         };
 
-        var PromiseTwo = {
+        const PromiseTwo = {
             create: cb => new promise.Promise(cb),
             resolve: data => promise.resolve(data),
             reject: () => promise.reject('reject-two'),
             all: data => promise.all(data)
         };
 
-        var one = PromiseAdapter.call(null, PromiseOne);
-        var two = PromiseAdapter.call(null, PromiseTwo);
-        var result;
+        const one = new PromiseAdapter(PromiseOne);
+        const two = new PromiseAdapter(PromiseTwo);
+        let result;
 
         beforeEach(function (done) {
-            var pg1 = header({promiseLib: one, noWarnings: true}), db1 = pg1.db;
-            var pg2 = header({promiseLib: two, noWarnings: true}), db2 = pg2.db;
+            const pg1 = header({promiseLib: one, noWarnings: true}), db1 = pg1.db;
+            const pg2 = header({promiseLib: two, noWarnings: true}), db2 = pg2.db;
             db.task(t => {
                 return t.batch([
                     db1.query('select $1', []), db2.query('select $1', [])
@@ -230,7 +230,7 @@ describe('Library entry function', function () {
 });
 
 if (jasmine.Runner) {
-    var _finishCallback = jasmine.Runner.prototype.finishCallback;
+    const _finishCallback = jasmine.Runner.prototype.finishCallback;
     jasmine.Runner.prototype.finishCallback = function () {
         // Run the old finishCallback:
         _finishCallback.bind(this)();

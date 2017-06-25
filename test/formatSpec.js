@@ -1,14 +1,14 @@
 'use strict';
 
-var path = require('path');
-var pgp = require('../lib/index');
+const path = require('path');
+const pgp = require('../lib/index');
 
-var $pgUtils = require('pg/lib/utils');
+const $pgUtils = require('pg/lib/utils');
 
-var dateSample = new Date();
+const dateSample = new Date();
 
 // common error messages;
-var errors = {
+const errors = {
     rawNull: function () {
         return 'Values null/undefined cannot be used as raw text.';
     },
@@ -20,17 +20,17 @@ var errors = {
     }
 };
 
-var sqlSimple = getPath('./sql/simple.sql');
-var sqlParams = getPath('./sql/params.sql');
+const sqlSimple = getPath('./sql/simple.sql');
+const sqlParams = getPath('./sql/params.sql');
 
 function getPath(file) {
     return path.join(__dirname, file);
 }
 
-var dummy = function () {
+const dummy = function () {
 };
 
-var userObj = {
+const userObj = {
     name: 'John O\'Connor',
     dob: new Date(1980, 5, 15),
     active: true
@@ -39,8 +39,8 @@ var userObj = {
 describe('Method as.buffer', function () {
 
     describe('Positive:', function () {
-        var data = new Buffer([1, 2, 3]);
-        var hex = '\\x010203';
+        const data = new Buffer([1, 2, 3]);
+        const hex = '\\x010203';
 
         it('must hex-format data', function () {
             expect(pgp.as.buffer(data)).toBe('\'' + hex + '\'');
@@ -68,7 +68,7 @@ describe('Method as.buffer', function () {
         });
 
         it('must work in any other context', function () {
-            var input = [23, new Buffer([1, 2, 3]), 'Hello'], output = '23,\'\\x010203\',\'Hello\'',
+            const input = [23, new Buffer([1, 2, 3]), 'Hello'], output = '23,\'\\x010203\',\'Hello\'',
                 simple = new Buffer([1, 2, 3]);
             expect(pgp.as.csv(simple)).toBe('\'\\x010203\'');
             expect(pgp.as.format('$1:json', [simple])).toEqual('\'' + JSON.stringify(simple) + '\'');
@@ -173,7 +173,7 @@ describe('Method as.number', function () {
 
     it('must correctly reject invalid values', function () {
 
-        var err = ' is not a number.';
+        const err = ' is not a number.';
         expect(function () {
             pgp.as.number('');
         }).toThrow(new Error('\'\'' + err));
@@ -271,7 +271,7 @@ describe('Method as.value', function () {
     });
 
     it('must throw on null/undefined', function () {
-        var err = 'Open values cannot be null or undefined.';
+        const err = 'Open values cannot be null or undefined.';
         expect(function () {
             pgp.as.value();
         }).toThrow(new TypeError(err));
@@ -470,7 +470,7 @@ describe('Method as.array', function () {
 
     it('must correctly reject invalid requests', function () {
 
-        var err = ' is not an Array object.';
+        const err = ' is not an Array object.';
         expect(function () {
             pgp.as.array(123);
         }).toThrow(new Error('\'123\'' + err));
@@ -702,8 +702,9 @@ describe('Method as.format', function () {
         expect(pgp.as.format('Test: $1', ['don\'t break quotes!'])).toBe('Test: \'don\'\'t break quotes!\'');
 
         // testing with lots of variables;
-        var source = '', dest = '', params = [];
-        for (var i = 1; i <= 1000; i++) {
+        let source = '', dest = '';
+        const params = [];
+        for (let i = 1; i <= 1000; i++) {
             source += '$' + i;
             dest += i;
             params.push(i);
@@ -770,7 +771,7 @@ describe('Method as.format', function () {
 
     it('must correctly reject invalid requests', function () {
 
-        var errEmptyString = 'Parameter \'query\' must be a text string.';
+        const errEmptyString = 'Parameter \'query\' must be a text string.';
 
         expect(function () {
             pgp.as.format();
@@ -837,7 +838,7 @@ describe('Method as.format', function () {
                 expect(pgp.as.format('${present}, ${missing}', {present: 1}, {default: 2})).toBe('1, 2');
             });
             it('must invoke a callback correctly', function () {
-                var value, context, param;
+                let value, context, param;
 
                 function cb(v, p) {
                     context = this;
@@ -846,13 +847,13 @@ describe('Method as.format', function () {
                     return 123;
                 }
 
-                var arr = ['hi'];
+                const arr = ['hi'];
                 expect(pgp.as.format('$1, $2', arr, {default: cb})).toBe('\'hi\', 123');
                 expect(context === arr).toBe(true);
                 expect(param === arr).toBe(true);
                 expect(value).toBe(1);
 
-                var obj = {first: 'f'};
+                const obj = {first: 'f'};
                 expect(pgp.as.format('${first}, ${  second^ \t}', obj, {default: cb})).toBe('\'f\', 123');
                 expect(context === obj).toBe(true);
                 expect(param === obj).toBe(true);
@@ -865,7 +866,7 @@ describe('Method as.format', function () {
 
     describe('QueryFile - positive', function () {
         it('must format the object', function () {
-            var qf = new pgp.QueryFile(sqlParams, {debug: false, minify: true, noWarnings: true});
+            const qf = new pgp.QueryFile(sqlParams, {debug: false, minify: true, noWarnings: true});
             expect(pgp.as.format(qf, {
                 column: 'col',
                 schema: 'sc',
@@ -874,7 +875,7 @@ describe('Method as.format', function () {
         });
 
         it('must format the type as a parameter', function () {
-            var qf = new pgp.QueryFile(sqlSimple, {debug: false, minify: true, noWarnings: true});
+            const qf = new pgp.QueryFile(sqlSimple, {debug: false, minify: true, noWarnings: true});
             expect(pgp.as.format('$1', [qf])).toBe('\'select 1;\'');
             expect(pgp.as.format('$1^', qf)).toBe('select 1;');
             expect(pgp.as.format('$1#', qf)).toBe('select 1;');
@@ -884,7 +885,8 @@ describe('Method as.format', function () {
 
     describe('QueryFile - negative', function () {
         it('must throw QueryFileError', function () {
-            var error1, error2, qf = new pgp.QueryFile('bla-bla');
+            let error1, error2;
+            const qf = new pgp.QueryFile('bla-bla');
             try {
                 pgp.as.format(qf);
             } catch (e) {
@@ -915,11 +917,11 @@ describe('Named Parameters', function () {
     });
 
     it('must ignore mixed open-close symbols', function () {
-        var openers = '{([</', closers = '})]>/';
-        for (var i = 0; i < openers.length; i++) {
-            for (var k = 0; k < closers.length; k++) {
-                var txt = '$' + openers[i] + 'value' + closers[k];
-                var s = pgp.as.format(txt, {
+        const openers = '{([</', closers = '})]>/';
+        for (let i = 0; i < openers.length; i++) {
+            for (let k = 0; k < closers.length; k++) {
+                const txt = '$' + openers[i] + 'value' + closers[k];
+                const s = pgp.as.format(txt, {
                     value: 'hello'
                 });
                 if (i === k) {
@@ -1027,7 +1029,7 @@ describe('Named Parameters', function () {
     describe('\'this\' formatting', function () {
 
         it('must recognize \'this\'', function () {
-            var obj = {
+            const obj = {
                 val1: 123,
                 val2: 'hello'
             };
@@ -1035,7 +1037,7 @@ describe('Named Parameters', function () {
         });
 
         it('must recognize \'this^\'', function () {
-            var obj = {
+            const obj = {
                 val1: 123,
                 val2: 'hello'
             };
@@ -1043,7 +1045,7 @@ describe('Named Parameters', function () {
         });
 
         it('must ignore \'this\' when property exists', function () {
-            var obj = {
+            const obj = {
                 this: 'self',
                 val1: 123,
                 val2: 'hello'
@@ -1147,8 +1149,8 @@ describe('Custom Format', function () {
         this.formatDBType = a => a.value.toFixed(2);
     }
 
-    var test1 = new MyType1(12.3);
-    var test2 = new MyType2(56.7);
+    const test1 = new MyType1(12.3);
+    const test2 = new MyType2(56.7);
 
     describe('as formatting type', function () {
         it('must pass the values in correctly', function () {
@@ -1180,7 +1182,7 @@ describe('Custom Format', function () {
                 return subLevel;
             };
         });
-        var today = new Date();
+        const today = new Date();
         it('must covert correctly', function () {
             expect(pgp.as.format('$1', today)).toBe(today.getFullYear().toString());
         });
@@ -1204,7 +1206,7 @@ describe('Custom Format', function () {
     });
 
     describe('with custom object - formatter', function () {
-        var values = {
+        const values = {
             test: 'hello'
         };
 
@@ -1230,7 +1232,7 @@ describe('Custom Format', function () {
     });
 
     describe('raw inheritance/mutation', function () {
-        var obj = {
+        const obj = {
             // raw flag here must apply to every value of the array returned;
             _rawDBType: true,
             formatDBType: function () {
@@ -1272,7 +1274,7 @@ describe('SQL Names', function () {
             };
         }
 
-        var csTest = new CS('customType');
+        const csTest = new CS('customType');
 
         function getName() {
             return csTest;

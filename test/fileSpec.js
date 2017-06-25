@@ -1,27 +1,27 @@
 'use strict';
 
-var path = require('path');
-var fs = require('fs');
-var header = require('./db/header');
-var utils = require('../lib/utils');
-var promise = header.defPromise;
-var options = {
+const path = require('path');
+const fs = require('fs');
+const header = require('./db/header');
+const utils = require('../lib/utils');
+const promise = header.defPromise;
+const options = {
     promiseLib: promise,
     noWarnings: true
 };
-var dbHeader = header(options);
-var pgp = dbHeader.pgp;
-var db = dbHeader.db;
+const dbHeader = header(options);
+const pgp = dbHeader.pgp;
+const db = dbHeader.db;
 
-var QueryFileError = pgp.errors.QueryFileError;
-var QueryFile = pgp.QueryFile;
+const QueryFileError = pgp.errors.QueryFileError;
+const QueryFile = pgp.QueryFile;
 
-var sqlSimple = getPath('./sql/simple.sql');
-var sqlUsers = getPath('./sql/allUsers.sql');
-var sqlUnknown = getPath('./sql/unknown.sql');
-var sqlInvalid = getPath('./sql/invalid.sql');
-var sqlParams = getPath('./sql/params.sql');
-var sqlTemp = getPath('./sql/temp.sql');
+const sqlSimple = getPath('./sql/simple.sql');
+const sqlUsers = getPath('./sql/allUsers.sql');
+const sqlUnknown = getPath('./sql/unknown.sql');
+const sqlInvalid = getPath('./sql/invalid.sql');
+const sqlParams = getPath('./sql/params.sql');
+const sqlTemp = getPath('./sql/temp.sql');
 
 function getPath(file) {
     return path.join(__dirname, file);
@@ -37,48 +37,48 @@ describe('QueryFile / Positive:', function () {
     });
 
     describe('without options', function () {
-        var qf = new QueryFile(sqlSimple, {noWarnings: true});
+        const qf = new QueryFile(sqlSimple, {noWarnings: true});
         it('must not minify', function () {
             expect(qf.query).toBe('select 1; --comment');
         });
     });
 
     describe('with minify=true && debug=true', function () {
-        var qf = new QueryFile(sqlUsers, {debug: true, minify: true, noWarnings: true});
+        const qf = new QueryFile(sqlUsers, {debug: true, minify: true, noWarnings: true});
         it('must return minified query', function () {
             expect(qf.query).toBe('select * from users');
         });
     });
 
     describe('default with params', function () {
-        var params = {
+        const params = {
             schema: 'public',
             table: 'users'
         };
-        var qf = new QueryFile(sqlParams, {minify: true, params: params, noWarnings: true});
+        const qf = new QueryFile(sqlParams, {minify: true, params: params, noWarnings: true});
         it('must return pre-formatted query', function () {
             expect(qf.query).toBe('SELECT ${column~} FROM "public"."users"');
         });
     });
 
     describe('compression with params', function () {
-        var params = {
+        const params = {
             schema: 'public',
             table: 'users',
             column: 'col'
         };
-        var qf1 = new QueryFile(sqlParams, {minify: true, compress: true, params: params, noWarnings: true});
+        const qf1 = new QueryFile(sqlParams, {minify: true, compress: true, params: params, noWarnings: true});
         it('must return uncompressed replacements by default', function () {
             expect(qf1.query).toBe('SELECT "col" FROM "public"."users"');
         });
-        var qf2 = new QueryFile(sqlParams, {minify: 'after', compress: true, params: params, noWarnings: true});
+        const qf2 = new QueryFile(sqlParams, {minify: 'after', compress: true, params: params, noWarnings: true});
         it('must return compressed replacements for \'after\'', function () {
             expect(qf2.query).toBe('SELECT"col"FROM"public"."users"');
         });
     });
 
     describe('non-minified query', function () {
-        var result;
+        let result;
         beforeEach(function (done) {
             db.query(new QueryFile(sqlUsers, {noWarnings: true}))
                 .then(function (data) {
@@ -93,7 +93,7 @@ describe('QueryFile / Positive:', function () {
     });
 
     describe('minified query', function () {
-        var result;
+        let result;
         beforeEach(function (done) {
             db.query(new QueryFile(sqlUsers, {minify: true, noWarnings: true}))
                 .then(function (data) {
@@ -108,7 +108,7 @@ describe('QueryFile / Positive:', function () {
     });
 
     describe('compressed query', function () {
-        var result, sql;
+        let result, sql;
         beforeEach(function (done) {
             sql = new QueryFile(sqlUsers, {compress: true, noWarnings: true});
             db.query(sql)
@@ -125,7 +125,7 @@ describe('QueryFile / Positive:', function () {
     });
 
     describe('property options', function () {
-        var options1 = {
+        const options1 = {
             debug: utils.isDev(),
             minify: false,
             compress: false,
@@ -149,23 +149,23 @@ describe('QueryFile / Positive:', function () {
     });
 
     describe('inspect', function () {
-        var qf = new QueryFile(sqlSimple, {noWarnings: true});
+        const qf = new QueryFile(sqlSimple, {noWarnings: true});
         it('must return the query', function () {
             expect(qf.inspect()).toBe(qf.toString());
         });
     });
 
     describe('modified file', function () {
-        var q1 = 'select 1';
-        var q2 = 'select 2';
+        const q1 = 'select 1';
+        const q2 = 'select 2';
         it('must be read again', function () {
             fs.writeFileSync(sqlTemp, q1);
-            var qf = new QueryFile(sqlTemp, {debug: true});
+            const qf = new QueryFile(sqlTemp, {debug: true});
             expect(qf.query).toBe(q1);
             expect(qf.error).toBeUndefined();
 
             fs.writeFileSync(sqlTemp, q2);
-            var t = new Date();
+            const t = new Date();
             t.setTime(t.getTime() + 60 * 60 * 1000);
             fs.utimesSync(sqlTemp, t, t);
             qf.prepare();
@@ -177,7 +177,7 @@ describe('QueryFile / Positive:', function () {
     describe('repeated read', function () {
         // this is just for code coverage;
         it('must not read again', function () {
-            var qf = new QueryFile(sqlSimple, {debug: false, minify: true, noWarnings: true});
+            const qf = new QueryFile(sqlSimple, {debug: false, minify: true, noWarnings: true});
             qf.prepare();
             qf.prepare();
             expect(qf.query).toBe('select 1;');
@@ -188,7 +188,7 @@ describe('QueryFile / Positive:', function () {
 describe('QueryFile / Negative:', function () {
 
     describe('non-minified query', function () {
-        var error;
+        let error;
         beforeEach(function (done) {
             db.query(new QueryFile(sqlUnknown))
                 .catch(function (err) {
@@ -202,7 +202,7 @@ describe('QueryFile / Negative:', function () {
     });
 
     describe('inspect', function () {
-        var qf = new QueryFile(sqlInvalid, {minify: true, noWarnings: true});
+        const qf = new QueryFile(sqlInvalid, {minify: true, noWarnings: true});
         it('must return the error', function () {
             expect(qf.inspect() != qf.toString(1)).toBe(true);
             expect(qf.error instanceof QueryFileError).toBe(true);
@@ -211,10 +211,11 @@ describe('QueryFile / Negative:', function () {
     });
 
     describe('accessing a temporary file', function () {
-        var error, query = 'select 123 as value';
+        let error;
+        const query = 'select 123 as value';
         it('must result in error once deleted', function () {
             fs.writeFileSync(sqlTemp, query);
-            var qf = new QueryFile(sqlTemp, {debug: true, noWarnings: true});
+            const qf = new QueryFile(sqlTemp, {debug: true, noWarnings: true});
             expect(qf.query).toBe(query);
             expect(qf.error).toBeUndefined();
             fs.unlinkSync(sqlTemp);
@@ -225,7 +226,7 @@ describe('QueryFile / Negative:', function () {
 
         it('must throw when preparing', function () {
             fs.writeFileSync(sqlTemp, query);
-            var qf = new QueryFile(sqlTemp, {debug: true, noWarnings: true});
+            const qf = new QueryFile(sqlTemp, {debug: true, noWarnings: true});
             expect(qf.query).toBe(query);
             expect(qf.error).toBeUndefined();
             fs.unlinkSync(sqlTemp);
@@ -242,7 +243,7 @@ describe('QueryFile / Negative:', function () {
 
     describe('invalid sql', function () {
         it('must throw an error', function () {
-            var qf = new QueryFile(sqlInvalid, {minify: true, noWarnings: true});
+            const qf = new QueryFile(sqlInvalid, {minify: true, noWarnings: true});
             expect(qf.error instanceof QueryFileError).toBe(true);
             expect(qf.error.file).toBe(sqlInvalid);
         });

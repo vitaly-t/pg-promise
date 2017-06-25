@@ -1,33 +1,33 @@
 'use strict';
 
-var QueryStream = require('pg-query-stream');
-var JSONStream = require('JSONStream');
+const QueryStream = require('pg-query-stream');
+const JSONStream = require('JSONStream');
 
-var pgResult = require('pg/lib/result');
-var pgClient = require('pg/lib/client');
+const pgResult = require('pg/lib/result');
+const pgClient = require('pg/lib/client');
 
-var header = require('./db/header');
+const header = require('./db/header');
 
-var promise = header.defPromise;
-var options = {
+const promise = header.defPromise;
+const options = {
     promiseLib: promise, // use Bluebird for testing;
     noWarnings: true
 };
 
-var testDC = 'test_DC_123';
+const testDC = 'test_DC_123';
 
-var dbHeader = header(options, testDC);
-var pgp = dbHeader.pgp;
-var db = dbHeader.db;
+const dbHeader = header(options, testDC);
+const pgp = dbHeader.pgp;
+const db = dbHeader.db;
 
 // empty function;
-var dummy = function () {
+const dummy = function () {
 };
 
 describe('Connect/Disconnect events', function () {
 
     describe('during a query', function () {
-        var p1, p2, dc1, dc2, connect = 0, disconnect = 0;
+        let p1, p2, dc1, dc2, connect = 0, disconnect = 0;
         beforeEach(function (done) {
             options.connect = function (client, dc) {
                 dc1 = dc;
@@ -64,7 +64,7 @@ describe('Connect/Disconnect events', function () {
     });
 
     describe('during a transaction', function () {
-        var p1, p2, dc1, dc2, ctx, connect = 0, disconnect = 0;
+        let p1, p2, dc1, dc2, ctx, connect = 0, disconnect = 0;
         beforeEach(function (done) {
             options.connect = function (client, dc) {
                 dc1 = dc;
@@ -110,7 +110,7 @@ describe('Connect/Disconnect events', function () {
 describe('Query event', function () {
 
     describe('positive', function () {
-        var param, counter = 0;
+        let param, counter = 0;
         beforeEach(function (done) {
             options.query = function (e) {
                 counter++;
@@ -130,7 +130,8 @@ describe('Query event', function () {
     });
 
     describe('negative, with an error object', function () {
-        var result, errMsg = 'Throwing a new Error during \'query\' notification.';
+        let result;
+        const errMsg = 'Throwing a new Error during \'query\' notification.';
         beforeEach(function (done) {
             options.query = function () {
                 throw new Error(errMsg);
@@ -147,7 +148,7 @@ describe('Query event', function () {
     });
 
     describe('negative, with undefined', function () {
-        var result, handled;
+        let result, handled;
         beforeEach(function (done) {
             options.query = function () {
                 throw undefined;
@@ -172,7 +173,7 @@ describe('Query event', function () {
 });
 
 describe('Start/Finish transaction events', function () {
-    var result, tag, ctx, e1, e2, start = 0, finish = 0;
+    let result, tag, ctx, e1, e2, start = 0, finish = 0;
     beforeEach(function (done) {
         options.transact = function (e) {
             if (e.ctx.finish) {
@@ -216,7 +217,7 @@ describe('Start/Finish transaction events', function () {
 describe('Error event', function () {
 
     describe('from transaction callbacks', function () {
-        var r, error, context, counter = 0;
+        let r, error, context, counter = 0;
         beforeEach(function (done) {
             options.error = function (err, e) {
                 counter++;
@@ -249,7 +250,7 @@ describe('Error event', function () {
     });
 
     describe('for null-queries', function () {
-        var error, context, counter = 0;
+        let error, context, counter = 0;
         beforeEach(function (done) {
             options.error = function (err, e) {
                 counter++;
@@ -274,7 +275,7 @@ describe('Error event', function () {
     });
 
     describe('for incorrect QRM', function () {
-        var error, context, counter = 0;
+        let error, context, counter = 0;
         beforeEach(function (done) {
             options.error = function (err, e) {
                 counter++;
@@ -300,7 +301,7 @@ describe('Error event', function () {
     });
 
     describe('for single-row requests', function () {
-        var errTxt, context, counter = 0;
+        let errTxt, context, counter = 0;
         beforeEach(function (done) {
             options.error = function (err, e) {
                 counter++;
@@ -326,7 +327,7 @@ describe('Error event', function () {
     });
 
     describe('for no-row requests', function () {
-        var errTxt, context, counter = 0;
+        let errTxt, context, counter = 0;
         beforeEach(function (done) {
             options.error = function (err, e) {
                 counter++;
@@ -352,7 +353,7 @@ describe('Error event', function () {
     });
 
     describe('for empty requests', function () {
-        var errTxt, context, counter = 0;
+        let errTxt, context, counter = 0;
         beforeEach(function (done) {
             options.error = function (err, e) {
                 counter++;
@@ -378,14 +379,15 @@ describe('Error event', function () {
     });
 
     describe('for loose query requests', function () {
-        var error, r, context, counter = 0, msg = 'Loose request outside an expired connection.';
+        let error, r, context, counter = 0;
+        const msg = 'Loose request outside an expired connection.';
         beforeEach(function (done) {
             options.error = function (err, e) {
                 counter++;
                 error = err;
                 context = e;
             };
-            var query, sco;
+            let query, sco;
             db.connect()
                 .then(function (obj) {
                     sco = obj;
@@ -417,15 +419,16 @@ describe('Error event', function () {
 
     if (!options.pgNative) {
         describe('for loose stream requests', function () {
-            var error, r, context, counter = 0, msg = 'Loose request outside an expired connection.';
+            let error, r, context, counter = 0;
+            const msg = 'Loose request outside an expired connection.';
             beforeEach(function (done) {
                 options.error = function (err, e) {
                     counter++;
                     error = err;
                     context = e;
                 };
-                var query, sco;
-                var qs = new QueryStream('select $1::int', [123]);
+                let query, sco;
+                const qs = new QueryStream('select $1::int', [123]);
                 db.connect()
                     .then(function (obj) {
                         sco = obj;
@@ -459,7 +462,8 @@ describe('Error event', function () {
     }
 
     describe('for invalid parameters', function () {
-        var error, context, counter = 0, params = {};
+        let error, context, counter = 0;
+        const params = {};
         beforeEach(function (done) {
             options.error = function (err, e) {
                 counter++;
@@ -493,7 +497,7 @@ describe('Error event', function () {
 describe('Receive event', function () {
 
     describe('query positive', function () {
-        var ctx, data, res, counter = 0;
+        let ctx, data, res, counter = 0;
         beforeEach(function (done) {
             options.receive = function (d, r, e) {
                 counter++;
@@ -521,7 +525,8 @@ describe('Receive event', function () {
     });
 
     describe('query negative', function () {
-        var result, error = new Error('ops!');
+        let result;
+        const error = new Error('ops!');
         beforeEach(function (done) {
             options.receive = function () {
                 throw error;
@@ -538,7 +543,7 @@ describe('Receive event', function () {
     });
 
     describe('query negative, undefined', function () {
-        var result, handled;
+        let result, handled;
         beforeEach(function (done) {
             options.receive = function () {
                 throw undefined;
@@ -560,7 +565,7 @@ describe('Receive event', function () {
         // Cannot test streams against native bindings;
 
         describe('stream positive', function () {
-            var ctx, data, res, counter = 0;
+            let ctx, data, res, counter = 0;
             beforeEach(function (done) {
                 options.receive = function (d, r, e) {
                     counter++;
@@ -568,7 +573,7 @@ describe('Receive event', function () {
                     res = r;
                     ctx = e;
                 };
-                var qs = new QueryStream('select $1::int as value', [123]);
+                const qs = new QueryStream('select $1::int as value', [123]);
                 db.stream(qs, function (s) {
                     s.pipe(JSONStream.stringify());
                 })
@@ -588,12 +593,13 @@ describe('Receive event', function () {
         });
 
         describe('stream negative', function () {
-            var result, err = new Error('Ops!');
+            let result;
+            const err = new Error('Ops!');
             beforeEach(function (done) {
                 options.receive = function () {
                     throw err;
                 };
-                var qs = new QueryStream('select $1::int as value', [123]);
+                const qs = new QueryStream('select $1::int as value', [123]);
                 db.stream(qs, function (s) {
                     s.pipe(JSONStream.stringify());
                 })
@@ -615,7 +621,7 @@ describe('Receive event', function () {
 });
 
 describe('pgFormatting', function () {
-    var result;
+    let result;
     beforeEach(function () {
         result = undefined;
         options.pgFormatting = true;
@@ -624,7 +630,7 @@ describe('pgFormatting', function () {
         options.pgFormatting = false;
     });
     describe('query event', function () {
-        var ctx = [];
+        const ctx = [];
         beforeEach(function (done) {
             options.query = function (e) {
                 ctx.push(e);
@@ -646,13 +652,16 @@ describe('pgFormatting', function () {
         it('must affect formatting accordingly', function () {
             expect(Array.isArray(result)).toBe(true);
             expect(ctx.length).toBe(2);
+            // params will be passed back only because the formatting
+            // is done by PG, and not by pg-promise:
+            //
             expect(ctx[0].params).toBeUndefined();
             expect(ctx[1].params).toEqual([1]);
         });
     });
 
     describe('empty / null query', function () {
-        var err;
+        let err;
         beforeEach(function (done) {
             promise.any([
                 db.query(),
@@ -671,7 +680,7 @@ describe('pgFormatting', function () {
         it('must provide the original pg response', function () {
             if (!options.pgNative) {
                 expect(err.length).toBe(4);
-                for (var i = 0; i < 4; i++) {
+                for (let i = 0; i < 4; i++) {
                     expect(err[i] instanceof TypeError).toBe(true);
                     expect(err[i].message).toBe('Empty or undefined query.');
                 }
@@ -681,7 +690,7 @@ describe('pgFormatting', function () {
 });
 
 if (jasmine.Runner) {
-    var _finishCallback = jasmine.Runner.prototype.finishCallback;
+    const _finishCallback = jasmine.Runner.prototype.finishCallback;
     jasmine.Runner.prototype.finishCallback = function () {
         // Run the old finishCallback:
         _finishCallback.bind(this)();

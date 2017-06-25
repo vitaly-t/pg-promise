@@ -1,19 +1,21 @@
 'use strict';
 
-var header = require('./db/header');
-var promise = header.defPromise;
-var options = {
+const header = require('./db/header');
+const promise = header.defPromise;
+const options = {
     promiseLib: promise,
     noWarnings: true
 };
-var dbHeader = header(options);
-var pgp = dbHeader.pgp;
-var db = dbHeader.db;
+const dbHeader = header(options);
+const pgp = dbHeader.pgp;
+const db = dbHeader.db;
 
 describe('Transaction Mode', function () {
 
     describe('without parameters, capitalized', function () {
-        var queries = [], result, ctx, context = {};
+        const queries = [];
+        let result, ctx;
+        const context = {};
         beforeEach(function (done) {
 
             options.capSQL = true;
@@ -47,7 +49,8 @@ describe('Transaction Mode', function () {
     });
 
     describe('initialized without new', function () {
-        var queries = [], result;
+        const queries = [];
+        let result;
         beforeEach(function (done) {
 
             options.query = function (e) {
@@ -78,7 +81,8 @@ describe('Transaction Mode', function () {
     });
 
     describe('with isolation level', function () {
-        var queries = [], result;
+        const queries = [];
+        let result;
         beforeEach(function (done) {
 
             options.query = function (e) {
@@ -108,7 +112,8 @@ describe('Transaction Mode', function () {
     });
 
     describe('with access mode = read only', function () {
-        var queries = [], result;
+        const queries = [];
+        let result;
         beforeEach(function (done) {
 
             options.query = function (e) {
@@ -138,7 +143,8 @@ describe('Transaction Mode', function () {
     });
 
     describe('with access mode = read/write', function () {
-        var queries = [], result;
+        const queries = [];
+        let result;
         beforeEach(function (done) {
 
             options.query = function (e) {
@@ -168,7 +174,8 @@ describe('Transaction Mode', function () {
     });
 
     describe('with serializable and read-only', function () {
-        var queries = [], result;
+        const queries = [];
+        let result;
         beforeEach(function (done) {
 
             options.query = function (e) {
@@ -179,7 +186,7 @@ describe('Transaction Mode', function () {
                 return promise.resolve('success');
             }
 
-            var level = pgp.txMode.isolationLevel;
+            const level = pgp.txMode.isolationLevel;
 
             txNoParams.txMode = new pgp.txMode.TransactionMode({
                 tiLevel: level.serializable,
@@ -203,7 +210,8 @@ describe('Transaction Mode', function () {
     });
 
     describe('with deferrable', function () {
-        var queries = [], result;
+        const queries = [];
+        let result;
         beforeEach(function (done) {
 
             options.query = function (e) {
@@ -214,7 +222,7 @@ describe('Transaction Mode', function () {
                 return promise.resolve('success');
             }
 
-            var level = pgp.txMode.isolationLevel;
+            const level = pgp.txMode.isolationLevel;
 
             txNoParams.txMode = new pgp.txMode.TransactionMode({
                 tiLevel: level.serializable,
@@ -239,7 +247,8 @@ describe('Transaction Mode', function () {
     });
 
     describe('with not deferrable', function () {
-        var queries = [], result;
+        const queries = [];
+        let result;
         beforeEach(function (done) {
 
             options.query = function (e) {
@@ -250,7 +259,7 @@ describe('Transaction Mode', function () {
                 return promise.resolve('success');
             }
 
-            var level = pgp.txMode.isolationLevel;
+            const level = pgp.txMode.isolationLevel;
 
             txNoParams.txMode = new pgp.txMode.TransactionMode({
                 tiLevel: level.serializable,
@@ -308,7 +317,7 @@ describe('Transaction Mode', function () {
 });
 
 if (jasmine.Runner) {
-    var _finishCallback = jasmine.Runner.prototype.finishCallback;
+    const _finishCallback = jasmine.Runner.prototype.finishCallback;
     jasmine.Runner.prototype.finishCallback = function () {
         // Run the old finishCallback:
         _finishCallback.bind(this)();

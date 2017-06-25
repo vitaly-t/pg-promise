@@ -1,22 +1,22 @@
 'use strict';
 
-var capture = require('./db/capture');
-var pgResult = require('pg/lib/result');
-var header = require('./db/header');
-var promise = header.defPromise;
-var options = {
+const capture = require('./db/capture');
+const pgResult = require('pg/lib/result');
+const header = require('./db/header');
+const promise = header.defPromise;
+const options = {
     promiseLib: promise,
     noWarnings: true
 };
-var dbHeader = header(options);
-var pgp = dbHeader.pgp;
-var db = dbHeader.db;
+const dbHeader = header(options);
+const pgp = dbHeader.pgp;
+const db = dbHeader.db;
 
 function dummy() {
     // dummy/empty function;
 }
 
-var $errors = {
+const $errors = {
     func: 'Invalid function name.',
     query: 'Invalid query format.',
     emptyQuery: 'Empty or undefined query.',
@@ -27,7 +27,7 @@ var $errors = {
 
 describe('Database Instantiation', function () {
     it('must throw an invalid connection passed', function () {
-        var errBody = 'Invalid connection details: ';
+        const errBody = 'Invalid connection details: ';
         expect(pgp).toThrow(new TypeError(errBody + 'undefined'));
 
         expect(() => {
@@ -48,7 +48,7 @@ describe('Database Instantiation', function () {
 describe('Connection', function () {
 
     describe('with default parameters', function () {
-        var status = 'connecting', error;
+        let status = 'connecting', error;
         beforeEach(function (done) {
             db.connect()
                 .then(function (obj) {
@@ -73,7 +73,7 @@ describe('Connection', function () {
     });
 
     describe('for regular queries', function () {
-        var result, sco;
+        let result, sco;
         beforeEach(function (done) {
             db.connect()
                 .then(function (obj) {
@@ -103,7 +103,7 @@ describe('Connection', function () {
     });
 
     describe('for raw queries', function () {
-        var result, sco;
+        let result, sco;
         beforeEach(function (done) {
             db.connect()
                 .then(function (obj) {
@@ -134,7 +134,7 @@ describe('Connection', function () {
     });
 
     describe('for invalid port', function () {
-        var errCN, dbErr, result, log;
+        let errCN, dbErr, result, log;
         beforeEach(function () {
             errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
             errCN.port = 9999;
@@ -193,9 +193,10 @@ describe('Connection', function () {
     });
 
     describe('for an invalid port', function () {
-        var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+        const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
         errCN.port = '12345';
-        var dbErr = pgp(errCN), result;
+        const dbErr = pgp(errCN);
+        let result;
         beforeEach(function (done) {
             dbErr.connect()
                 .then(function () {
@@ -218,11 +219,11 @@ describe('Connection', function () {
     });
 
     describe('direct end() call', function () {
-        var txt;
+        let txt;
         beforeEach(function (done) {
             db.connect()
                 .then(function (obj) {
-                    var c = capture();
+                    const c = capture();
                     obj.client.end(true);
                     txt = c();
                     obj.done();
@@ -301,7 +302,7 @@ describe('Connection', function () {
      */
 
     describe('on repeated disconnection', function () {
-        var error;
+        let error;
         beforeEach(function (done) {
             db.connect()
                 .then(function (obj) {
@@ -325,7 +326,7 @@ describe('Connection', function () {
     });
 
     describe('when executing a disconnected query', function () {
-        var error;
+        let error;
         beforeEach(function (done) {
             db.connect()
                 .then(function (obj) {
@@ -348,12 +349,27 @@ describe('Connection', function () {
         });
     });
 
+    describe('external closing of the connection pool', () => {
+        const tmpDB = pgp('postgres://postgres:password@localhost:5432/invalidDB');
+        let error;
+        beforeEach(done => {
+            tmpDB.$pool.end();
+            tmpDB.connect()
+                .catch(e => {
+                    error = e;
+                    done();
+                });
+        });
+        it('must be handled', () => {
+            expect(error).toEqual(new Error('Connection pool of the database object has been destroyed.'));
+        });
+    });
 });
 
 describe('Direct Connection', function () {
 
     describe('successful connection', function () {
-        var sco;
+        let sco;
         beforeEach(function (done) {
             db.connect({direct: true})
                 .then(function (obj) {
@@ -368,11 +384,11 @@ describe('Direct Connection', function () {
     });
 
     describe('direct end() call', function () {
-        var txt;
+        let txt;
         beforeEach(function (done) {
             db.connect({direct: true})
                 .then(function (obj) {
-                    var c = capture();
+                    const c = capture();
                     obj.client.end();
                     txt = c();
                     done();
@@ -384,9 +400,10 @@ describe('Direct Connection', function () {
     });
 
     describe('for an invalid port', function () {
-        var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+        const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
         errCN.port = '12345';
-        var dbErr = pgp(errCN), result;
+        const dbErr = pgp(errCN);
+        let result;
         beforeEach(function (done) {
             dbErr.connect({direct: true})
                 .then(function () {
@@ -412,21 +429,21 @@ describe('Direct Connection', function () {
 
 describe('Masked Connection Log', function () {
 
-    var cn;
+    let cn;
     beforeEach(function () {
         options.error = function (err, e) {
             cn = e.cn;
         };
     });
     describe('as an object', function () {
-        var connection = {
+        const connection = {
             host: 'localhost',
             port: 123,
             user: 'unknown',
             password: '123'
         };
         beforeEach(function (done) {
-            var errDB = pgp(connection);
+            const errDB = pgp(connection);
             errDB.connect()
                 .catch(function () {
                     done();
@@ -437,6 +454,7 @@ describe('Masked Connection Log', function () {
         });
     });
 
+    /* Doesn't work with pg v6.2, probably due to this issue: https://github.com/brianc/node-postgres/issues/1141
     describe('as a string', function () {
         var connection = 'postgres://postgres:password@localhost:123/unknown';
         beforeEach(function (done) {
@@ -450,6 +468,7 @@ describe('Masked Connection Log', function () {
             expect(cn).toBe('postgres://postgres:########@localhost:123/unknown');
         });
     });
+    */
 
     afterEach(function () {
         delete options.error;
@@ -460,7 +479,7 @@ describe('Masked Connection Log', function () {
 describe('Method \'map\'', function () {
 
     describe('positive:', function () {
-        var pValue, pIndex, pArr, pData;
+        let pValue, pIndex, pArr, pData;
         beforeEach(function (done) {
             db.map('SELECT 1 as value', null, function (value, index, arr) {
                 pValue = value;
@@ -487,7 +506,7 @@ describe('Method \'map\'', function () {
     describe('negative:', function () {
 
         describe('with invalid parameters', function () {
-            var err;
+            let err;
             beforeEach(function (done) {
                 db.map('SELECT 1')
                     .catch(function (error) {
@@ -502,7 +521,7 @@ describe('Method \'map\'', function () {
         });
 
         describe('with error thrown inside the callback', function () {
-            var err;
+            let err;
             beforeEach(function (done) {
                 db.map('SELECT 1', null, function () {
                     throw new Error('Ops!');
@@ -523,7 +542,7 @@ describe('Method \'map\'', function () {
 describe('Method \'each\'', function () {
 
     describe('positive:', function () {
-        var pValue, pIndex, pArr, pData;
+        let pValue, pIndex, pArr, pData;
         beforeEach(function (done) {
             db.each('SELECT 1 as value', null, function (value, index, arr) {
                 pValue = value;
@@ -550,7 +569,7 @@ describe('Method \'each\'', function () {
     describe('negative:', function () {
 
         describe('with invalid parameters', function () {
-            var err;
+            let err;
             beforeEach(function (done) {
                 db.each('SELECT 1')
                     .catch(function (error) {
@@ -565,7 +584,7 @@ describe('Method \'each\'', function () {
         });
 
         describe('with error thrown inside the callback', function () {
-            var err;
+            let err;
             beforeEach(function (done) {
                 db.each('SELECT 1', null, function () {
                     throw new Error('Ops!');
@@ -586,7 +605,7 @@ describe('Method \'each\'', function () {
 describe('Method \'none\'', function () {
 
     it('must resolve with \'undefined\'', function () {
-        var result, error, finished;
+        let result, error, finished;
         db.none('select * from users where id=$1', 12345678)
             .then(function (data) {
                 result = data;
@@ -605,7 +624,7 @@ describe('Method \'none\'', function () {
     });
 
     it('must reject on any data returned', function () {
-        var result, error, finished;
+        let result, error, finished;
         db.none('select * from users')
             .then(function (data) {
                 result = data;
@@ -630,7 +649,7 @@ describe('Method \'none\'', function () {
 describe('Method \'one\'', function () {
 
     it('must resolve with one object', function () {
-        var result, error;
+        let result, error;
         db.one('select 123 as value')
             .then(function (data) {
                 result = data;
@@ -649,7 +668,7 @@ describe('Method \'one\'', function () {
     });
 
     describe('value transformation', function () {
-        var result, context;
+        let result, context;
         beforeEach(function (done) {
             db.one('select count(*) from users', null, function (value) {
                 context = this;
@@ -668,7 +687,7 @@ describe('Method \'one\'', function () {
     });
 
     it('must reject when no data found', function () {
-        var result, error, finished;
+        let result, error, finished;
         db.one('select * from users where id=$1', 12345678)
             .then(function (data) {
                 result = data;
@@ -688,7 +707,7 @@ describe('Method \'one\'', function () {
     });
 
     it('must reject when multiple rows are found', function () {
-        var result, error, finished;
+        let result, error, finished;
         db.one('select * from users')
             .then(function (data) {
                 result = data;
@@ -711,7 +730,7 @@ describe('Method \'one\'', function () {
 describe('Method \'oneOrNone\'', function () {
 
     it('must resolve with one object when found', function () {
-        var result, error;
+        let result, error;
         db.oneOrNone('select * from users where id=$1', 1)
             .then(function (data) {
                 result = data;
@@ -730,7 +749,7 @@ describe('Method \'oneOrNone\'', function () {
     });
 
     it('must resolve with null when no data found', function () {
-        var result, error, finished;
+        let result, error, finished;
         db.oneOrNone('select * from users where id=$1', 12345678)
             .then(function (data) {
                 result = data;
@@ -749,7 +768,7 @@ describe('Method \'oneOrNone\'', function () {
     });
 
     describe('value transformation', function () {
-        var result, context;
+        let result, context;
         beforeEach(function (done) {
             db.oneOrNone('select count(*) from users', null, function (value) {
                 context = this;
@@ -768,7 +787,7 @@ describe('Method \'oneOrNone\'', function () {
     });
 
     it('must reject when multiple rows are found', function () {
-        var result, error, finished;
+        let result, error, finished;
         db.oneOrNone('select * from users')
             .then(function (data) {
                 result = data;
@@ -792,7 +811,7 @@ describe('Method \'oneOrNone\'', function () {
 describe('Method \'many\'', function () {
 
     it('must resolve with array of objects', function () {
-        var result, error;
+        let result, error;
         db.many('select * from users')
             .then(function (data) {
                 result = data;
@@ -811,7 +830,7 @@ describe('Method \'many\'', function () {
     });
 
     it('must reject when no data found', function () {
-        var result, error, finished;
+        let result, error, finished;
         db.many('select * from users where id=$1', 12345678)
             .then(function (data) {
                 result = data;
@@ -835,7 +854,7 @@ describe('Method \'many\'', function () {
 describe('Method \'manyOrNone\'', function () {
 
     it('must resolve with array of objects', function () {
-        var result, error;
+        let result, error;
         db.manyOrNone('select * from users')
             .then(function (data) {
                 result = data;
@@ -854,7 +873,7 @@ describe('Method \'manyOrNone\'', function () {
     });
 
     it('must resolve with an empty array when no data found', function () {
-        var result, error, finished;
+        let result, error, finished;
         db.manyOrNone('select * from users where id=$1', 12345678)
             .then(function (data) {
                 result = data;
@@ -878,7 +897,7 @@ describe('Method \'manyOrNone\'', function () {
 describe('Executing method query', function () {
 
     it('with invalid query as parameter must throw an error', function () {
-        var finished, result;
+        let finished, result;
         promise.any([
             db.query(),
             db.query(''),
@@ -907,7 +926,8 @@ describe('Executing method query', function () {
     });
 
     it('with invalid qrm as parameter must throw an error', function () {
-        var finished, result, error = 'Invalid Query Result Mask specified.';
+        let finished, result;
+        const error = 'Invalid Query Result Mask specified.';
         promise.any([
             db.query('something', undefined, ''),
             db.query('something', undefined, '2'),
@@ -929,7 +949,7 @@ describe('Executing method query', function () {
         }, 'Query timed out', 5000);
         runs(function () {
             expect(result.length).toBe(9);
-            for (var i = 0; i < 9; i++) {
+            for (let i = 0; i < 9; i++) {
                 expect(result[i] instanceof TypeError).toBe(true);
                 expect(result[i].message).toBe(error);
             }
@@ -946,17 +966,17 @@ describe('Transactions', function () {
     // huge transactions should  be throttled into smaller chunks.
     describe('A complex transaction with 10,000 inserts', function () {
 
-        var result, error, context, THIS, tag;
+        let result, error, context, THIS, tag;
         beforeEach(function (done) {
             db.tx('complex', function (t) {
                 tag = t.ctx.tag;
                 THIS = this;
                 context = t;
-                var queries = [
+                const queries = [
                     this.none('drop table if exists test'),
                     this.none('create table test(id serial, name text)')
                 ];
-                for (var i = 1; i <= 10000; i++) {
+                for (let i = 1; i <= 10000; i++) {
                     queries.push(this.none('insert into test(name) values($1)', 'name-' + i));
                 }
                 queries.push(this.one('select count(*) from test'));
@@ -973,7 +993,7 @@ describe('Transactions', function () {
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(10003); // drop + create + insert x 10000 + select;
-            var last = result[result.length - 1]; // result from the select;
+            const last = result[result.length - 1]; // result from the select;
             expect(typeof(last)).toBe('object');
             expect(last.count).toBe('10000'); // last one must be the counter (as text);
             expect(tag).toBe('complex');
@@ -981,7 +1001,7 @@ describe('Transactions', function () {
     });
 
     describe('When a nested transaction fails', function () {
-        var error, THIS, context;
+        let error, THIS, context;
         beforeEach(function (done) {
             options.capSQL = true;
             db.tx(function (t) {
@@ -1010,7 +1030,7 @@ describe('Transactions', function () {
     });
 
     describe('Detached Transaction', function () {
-        var error, tx;
+        let error, tx;
         beforeEach(function (done) {
             db.tx(function () {
                 tx = this;
@@ -1038,7 +1058,7 @@ describe('Transactions', function () {
     });
 
     describe('bottom-level failure', function () {
-        var result, nestError, THIS1, THIS2, context1, context2;
+        let result, nestError, THIS1, THIS2, context1, context2;
         beforeEach(function (done) {
             db.tx(function (t1) {
                 THIS1 = this;
@@ -1084,7 +1104,7 @@ describe('Transactions', function () {
     });
 
     describe('top-level failure', function () {
-        var result;
+        let result;
         beforeEach(function (done) {
             db.tx(function () {
                 return this.batch([
@@ -1118,7 +1138,7 @@ describe('Transactions', function () {
 
     describe('Calling without a callback', function () {
         describe('for a transaction', function () {
-            var error;
+            let error;
             beforeEach(function (done) {
                 db.tx()
                     .catch(function (reason) {
@@ -1134,7 +1154,7 @@ describe('Transactions', function () {
             });
         });
         describe('for a task', function () {
-            var error;
+            let error;
             beforeEach(function (done) {
                 db.task()
                     .catch(function (reason) {
@@ -1153,7 +1173,8 @@ describe('Transactions', function () {
     });
 
     describe('A nested transaction (10 levels)', function () {
-        var result, THIS, context, ctx = [];
+        let result, THIS, context;
+        const ctx = [];
         beforeEach(function (done) {
             options.capSQL = true;
             db.tx(0, function () {
@@ -1201,7 +1222,7 @@ describe('Transactions', function () {
             expect(THIS && context && THIS === context).toBeTruthy();
             expect(result instanceof Array).toBe(true);
             expect(result).toEqual([{word: 'Hello'}, {word: 'World!'}]);
-            for (var i = 0; i < 10; i++) {
+            for (let i = 0; i < 10; i++) {
                 expect(ctx[i].tag).toBe(i);
             }
         });
@@ -1216,7 +1237,7 @@ describe('Transactions', function () {
 describe('Return data from a query must match the request type', function () {
 
     describe('when no data returned', function () {
-        var error;
+        let error;
         beforeEach(function (done) {
             db.none('select * from person where name=$1', 'John')
                 .catch(function (err) {
@@ -1231,7 +1252,7 @@ describe('Return data from a query must match the request type', function () {
     });
 
     it('method \'one\' must throw an error when there was no data returned', function () {
-        var result, error;
+        let result, error;
         db.one('select * from person where name=$1', 'Unknown')
             .then(function (data) {
                 result = data;
@@ -1250,7 +1271,7 @@ describe('Return data from a query must match the request type', function () {
     });
 
     it('method \'one\' must throw an error when more than one row was returned', function () {
-        var result, error;
+        let result, error;
         db.one('select * from person')
             .then(function (data) {
                 result = data;
@@ -1269,7 +1290,7 @@ describe('Return data from a query must match the request type', function () {
     });
 
     it('method \'oneOrNone\' must resolve into null when no data returned', function () {
-        var result, error;
+        let result, error;
         db.oneOrNone('select * from person where name=$1', 'Unknown')
             .then(function (data) {
                 result = data;
@@ -1287,7 +1308,7 @@ describe('Return data from a query must match the request type', function () {
     });
 
     it('method \'any\' must return an empty array when no records found', function () {
-        var result, error;
+        let result, error;
         db.any('select * from person where name=\'Unknown\'')
             .then(function (data) {
                 result = data;
@@ -1309,7 +1330,7 @@ describe('Return data from a query must match the request type', function () {
 
 describe('Queries must not allow invalid QRM (Query Request Mask) combinations', function () {
     it('method \'query\' must throw an error when mask is one+many', function () {
-        var result, error;
+        let result, error;
         db.query('select * from person', undefined, pgp.queryResult.one | pgp.queryResult.many)
             .then(function (data) {
                 result = data;
@@ -1327,7 +1348,7 @@ describe('Queries must not allow invalid QRM (Query Request Mask) combinations',
         });
     });
     it('method \'query\' must throw an error when QRM is > 6', function () {
-        var result, error;
+        let result, error;
         db.query('select * from person', undefined, 7)
             .then(function (data) {
                 result = data;
@@ -1345,7 +1366,7 @@ describe('Queries must not allow invalid QRM (Query Request Mask) combinations',
         });
     });
     it('method \'query\' must throw an error when QRM is < 1', function () {
-        var result, error;
+        let result, error;
         db.query('select * from person', undefined, 0)
             .then(function (data) {
                 result = data;
@@ -1364,7 +1385,7 @@ describe('Queries must not allow invalid QRM (Query Request Mask) combinations',
     });
 
     it('method \'query\' must throw an error when QRM is of the wrong type', function () {
-        var result, error;
+        let result, error;
         db.query('select * from person', undefined, 'wrong qrm')
             .then(function (data) {
                 result = data;
@@ -1387,7 +1408,7 @@ describe('Queries must not allow invalid QRM (Query Request Mask) combinations',
 describe('result', function () {
 
     it('must resolve with PG result instance', function () {
-        var result;
+        let result;
         db.result('select * from users')
             .then(function (data) {
                 result = data;
@@ -1408,7 +1429,7 @@ describe('result', function () {
 describe('Querying a function', function () {
 
     describe('that expects multiple rows', function () {
-        var result;
+        let result;
         beforeEach(function (done) {
             options.capSQL = true;
             db.func('getUsers')
@@ -1429,7 +1450,7 @@ describe('Querying a function', function () {
     });
 
     describe('that expects a single row', function () {
-        var result;
+        let result;
         beforeEach(function (done) {
             db.proc('findUser', 1)
                 .then(function (data) {
@@ -1446,7 +1467,7 @@ describe('Querying a function', function () {
     });
 
     describe('value transformation', function () {
-        var result, context;
+        let result, context;
         beforeEach(function (done) {
             db.proc('findUser', 1, function (value) {
                 context = this;
@@ -1465,7 +1486,7 @@ describe('Querying a function', function () {
     });
 
     describe('with function-parameter that throws an error', function () {
-        var result, errCtx;
+        let result, errCtx;
         beforeEach(function (done) {
             options.error = function (err, e) {
                 errCtx = e;
@@ -1492,7 +1513,7 @@ describe('Querying a function', function () {
     });
 
     describe('with function-parameter that throws an error + capitalized', function () {
-        var errCtx;
+        let errCtx;
         beforeEach(function (done) {
             options.capSQL = true;
             options.error = function (err, e) {
@@ -1515,7 +1536,7 @@ describe('Querying a function', function () {
     });
 
     describe('with invalid parameters', function () {
-        var result;
+        let result;
         beforeEach(function (done) {
             promise.any([
                 db.func(), // undefined function name;
@@ -1544,7 +1565,7 @@ describe('Querying a function', function () {
         });
         it('must reject with the right error', function () {
             expect(result.length).toBe(8);
-            for (var i = 0; i < result.length; i++) {
+            for (let i = 0; i < result.length; i++) {
                 expect(result[i] instanceof Error).toBe(true);
                 expect(result[i].message).toBe($errors.func);
             }
@@ -1555,7 +1576,7 @@ describe('Querying a function', function () {
 describe('Task', function () {
 
     describe('with detached connection', function () {
-        var error, tsk;
+        let error, tsk;
         beforeEach(function (done) {
             db.task(function () {
                 tsk = this;
@@ -1579,7 +1600,7 @@ describe('Task', function () {
     });
 
     describe('with a callback that returns nothing', function () {
-        var result;
+        let result;
         beforeEach(function (done) {
             db.task(dummy)
                 .then(function (data) {
@@ -1595,7 +1616,7 @@ describe('Task', function () {
     });
 
     describe('with a callback that returns a value', function () {
-        var result;
+        let result;
         beforeEach(function (done) {
             db.task(function () {
                 return 123;
@@ -1613,7 +1634,7 @@ describe('Task', function () {
     });
 
     describe('with the callback throwing an error', function () {
-        var result;
+        let result;
         beforeEach(function (done) {
             db.task(function () {
                 throw new Error('test');
@@ -1632,7 +1653,7 @@ describe('Task', function () {
     });
 
     describe('with a simple promise result', function () {
-        var result, context, THIS;
+        let result, context, THIS;
         beforeEach(function (done) {
             db.task(function (t) {
                 THIS = this;
@@ -1656,7 +1677,7 @@ describe('Task', function () {
     });
 
     describe('with a notification error', function () {
-        var result, event, counter = 0;
+        let result, event, counter = 0;
         beforeEach(function (done) {
             options.task = function (e) {
                 if (counter) {
@@ -1693,7 +1714,7 @@ describe('Task', function () {
 describe('negative query formatting', function () {
 
     describe('with invalid property name', function () {
-        var error;
+        let error;
         beforeEach(function (done) {
             db.one('select ${invalid}', {})
                 .catch(function (e) {
@@ -1708,7 +1729,7 @@ describe('negative query formatting', function () {
     });
 
     describe('with invalid variable index', function () {
-        var error;
+        let error;
         beforeEach(function (done) {
             db.one('select $1', [])
                 .catch(function (e) {
@@ -1723,7 +1744,8 @@ describe('negative query formatting', function () {
     });
 
     describe('with formatting parameter throwing error', function () {
-        var error, err = new Error('ops!');
+        let error;
+        const err = new Error('ops!');
         beforeEach(function (done) {
             db.one('select $1', [function () {
                 throw err;
@@ -1740,7 +1762,8 @@ describe('negative query formatting', function () {
     });
 
     describe('with formatting parameter throwing a non-error', function () {
-        var error, err = 'ops!';
+        let error;
+        const err = 'ops!';
         beforeEach(function (done) {
             db.one('select $1', [function () {
                 throw err;
@@ -1759,7 +1782,7 @@ describe('negative query formatting', function () {
 });
 
 if (jasmine.Runner) {
-    var _finishCallback = jasmine.Runner.prototype.finishCallback;
+    const _finishCallback = jasmine.Runner.prototype.finishCallback;
     jasmine.Runner.prototype.finishCallback = function () {
         // Run the old finishCallback:
         _finishCallback.bind(this)();

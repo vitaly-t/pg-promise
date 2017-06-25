@@ -4,9 +4,9 @@
 
 'use strict';
 
-var dbHeader = require('./header');
-var promise = dbHeader.defPromise;
-var header = dbHeader({
+const dbHeader = require('./header');
+const promise = dbHeader.defPromise;
+const header = dbHeader({
     query: e => {
         // eslint-disable-next-line
         console.log(e.query); // print all of the queries being executed;
@@ -14,8 +14,8 @@ var header = dbHeader({
     promiseLib: promise
 });
 
-var pgp = header.pgp;
-var db = header.db;
+const pgp = header.pgp;
+const db = header.db;
 
 (function () {
 

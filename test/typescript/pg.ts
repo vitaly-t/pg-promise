@@ -1,12 +1,12 @@
 import * as pgPromise from '../../typescript/pg-promise';
 import * as pgSubset from '../../typescript/pg-subset';
 
-var pgp: pgPromise.IMain = pgPromise();
-var db = pgp('connection');
+const pgp: pgPromise.IMain = pgPromise();
+const db = pgp('connection');
 
-var pg = pgp.pg;
+const pg = pgp.pg;
 
-var client = new pg.Client({
+const client = new pg.Client({
     ssl: {
         rejectUnauthorized: true
     }
@@ -15,15 +15,15 @@ var client = new pg.Client({
 db.connect()
     .then(t => {
         t.client.on('notification', (message) => {
-            var s = message.anything;
+            const s = message.anything;
         });
         t.client.removeAllListeners();
     });
 
-var query = new pg.Query();
-var connection = new pg.Connection();
+const query = new pg.Query();
+const connection = new pg.Connection();
 
-var database = pg.defaults.database;
+const database = pg.defaults.database;
 
-var col: pgSubset.IColumn;
-var res: pgSubset.IResult;
+let col: pgSubset.IColumn;
+let res: pgSubset.IResult;

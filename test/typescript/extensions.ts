@@ -4,7 +4,7 @@ interface Extensions {
     findUser(userId: number): Promise<any>;
 }
 
-var pgp: pgPromise.IMain = pgPromise({
+const pgp: pgPromise.IMain = pgPromise({
     extend: function (obj: any, dc: any) {
         obj['findUser'] = (userId: number) => {
             return obj.one('', userId);
@@ -12,9 +12,9 @@ var pgp: pgPromise.IMain = pgPromise({
     }
 });
 
-var db = pgp('connection');
+const db = pgp('connection');
 
-var pgpExt = pgPromise<Extensions>({
+const pgpExt = pgPromise<Extensions>({
     extend: function (obj: pgPromise.IDatabase<Extensions> & Extensions) {
         obj.findUser = (userId: number) => {
             return obj.one('', userId);
@@ -22,9 +22,9 @@ var pgpExt = pgPromise<Extensions>({
     }
 });
 
-var dbExt1 = <pgPromise.IDatabase<Extensions> & Extensions>pgp('connection');
-var dbExt2 = <pgPromise.IDatabase<Extensions> & Extensions>pgpExt('connection');
-var dbExt3 = pgpExt<Extensions>('connection');
+const dbExt1 = <pgPromise.IDatabase<Extensions> & Extensions>pgp('connection');
+const dbExt2 = <pgPromise.IDatabase<Extensions> & Extensions>pgpExt('connection');
+const dbExt3 = pgpExt<Extensions>('connection');
 
 dbExt1.findUser(123).then();
 dbExt2.findUser(123).then();

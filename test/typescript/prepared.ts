@@ -1,18 +1,18 @@
 import * as pgPromise from '../../typescript/pg-promise';
 
-var pgp: pgPromise.IMain = pgPromise();
-var db: pgPromise.IDatabase<any> = pgp('connection');
+const pgp: pgPromise.IMain = pgPromise();
+const db: pgPromise.IDatabase<any> = pgp('connection');
 
-var ps1 = new pgp.PreparedStatement('', '', []);
-var ps2 = new pgp.PreparedStatement({name: '', text: ''});
-var ps3 = new pgp.PreparedStatement(ps1);
+const ps1 = new pgp.PreparedStatement('', '', []);
+const ps2 = new pgp.PreparedStatement({name: '', text: ''});
+const ps3 = new pgp.PreparedStatement(ps1);
 
-var qf = new pgPromise.QueryFile('file');
+const qf = new pgPromise.QueryFile('file');
 
 ps3.text = 'some text';
 ps3.text = qf;
 
-var ps4 = new pgp.PreparedStatement({name: '', text: qf, values: [], rowMode: 'hello', rows: 123});
+const ps4 = new pgp.PreparedStatement({name: '', text: qf, values: [], rowMode: 'hello', rows: 123});
 
 db.one(ps1);
 
@@ -26,5 +26,5 @@ db.one({
     text: qf
 });
 
-var test1 = <pgPromise.errors.PreparedStatementError>ps1.parse();
-var file = test1.error.file;
+const test1 = <pgPromise.errors.PreparedStatementError>ps1.parse();
+const file = test1.error.file;

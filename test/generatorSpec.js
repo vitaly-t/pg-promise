@@ -1,21 +1,21 @@
 'use strict';
 
-var header = require('./db/header');
-var promise = header.defPromise;
+const header = require('./db/header');
+const promise = header.defPromise;
 
-var options = {
+const options = {
     noWarnings: true
 };
 
-var dbHeader = header(options);
-var db = dbHeader.db;
-var pgp = dbHeader.pgp;
+const dbHeader = header(options);
+const db = dbHeader.db;
+const pgp = dbHeader.pgp;
 
 describe('Generators - Positive', function () {
 
-    var result, tag, query;
+    let result, tag, query;
 
-    var tmTest = new pgp.txMode.TransactionMode({
+    const tmTest = new pgp.txMode.TransactionMode({
         tiLevel: pgp.txMode.isolationLevel.serializable
     });
 
@@ -58,9 +58,10 @@ describe('Generators - Positive', function () {
 describe('Generators - Negative', function () {
 
     describe('normal reject', function () {
-        var result, err = new Error('ops!');
+        let result;
+        const err = new Error('ops!');
 
-        var myTask = function* () {
+        const myTask = function* () {
             return yield promise.reject(err);
         };
 
@@ -79,7 +80,7 @@ describe('Generators - Negative', function () {
 
     describe('error thrown', function () {
 
-        var result, tag;
+        let result, tag;
 
         // eslint-disable-next-line
         function* myTask() {
