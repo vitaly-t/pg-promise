@@ -747,6 +747,13 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
 
     
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-pg-promise.html#~end">end</a>,<a href="module-pg-promise.html#~as">as</a>,<a href="module-pg-promise.html#~errors">errors</a>,<a href="module-pg-promise.html#~helpers">helpers</a>,<a href="module-pg-promise.html#~minify">minify</a>,<a href="module-pg-promise.html#~ParameterizedQuery">ParameterizedQuery</a>,<a href="module-pg-promise.html#~PreparedStatement">PreparedStatement</a>,<a href="module-pg-promise.html#~pg">pg</a>,<a href="module-pg-promise.html#~QueryFile">QueryFile</a>,<a href="module-pg-promise.html#~queryResult">queryResult</a>,<a href="module-pg-promise.html#~spex">spex</a>,<a href="module-pg-promise.html#~txMode">txMode</a>,<a href="module-pg-promise.html#~utils">utils</a></li>
+        </ul>
+    </dd>
+    
 
     
 </dl>
@@ -845,7 +852,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line247">line 247</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line264">line 264</a>
     </li></ul></dd>
     
 
@@ -876,10 +883,12 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
 
 
 <div class="description">
-    <p>Shuts down the entire library, as well as all the connections + pools currently allocated.</p>
-<p>The library cannot be used after making this call, or else it will throw all kinds of errors.</p>
-<p>If you ever need to terminate the library explicitly, you must do it only before exiting the application.</p>
-<p>Available as <code>pgp.end</code>, after initializing the library.</p>
+    <p>Shuts down all connection pools currently allocated, so the process can terminate without delay.
+It is available as <code>pgp.end</code>, after initializing the library.</p>
+<p>The library cannot be used after making this call, or every database object will be throwing
+<a href="external-Error.html">Error</a> = <code>Connection pool of the database object has been destroyed.</code></p>
+<p>And if you want to shut down only a specific connection pool, you do so via the <a href="Database.html">Database</a>
+object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.html#$pool">Database.$pool</a>).</p>
 </div>
 
 
@@ -927,7 +936,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line196">line 196</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line211">line 211</a>
     </li></ul></dd>
     
 
@@ -1000,7 +1009,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line320">line 320</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line337">line 337</a>
     </li></ul></dd>
     
 
@@ -1073,7 +1082,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line212">line 212</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line229">line 229</a>
     </li></ul></dd>
     
 
@@ -1153,7 +1162,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line259">line 259</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line276">line 276</a>
     </li></ul></dd>
     
 
@@ -1226,7 +1235,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line289">line 289</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line306">line 306</a>
     </li></ul></dd>
     
 
@@ -1303,7 +1312,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line184">line 184</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line199">line 199</a>
     </li></ul></dd>
     
 
@@ -1376,7 +1385,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line299">line 299</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line316">line 316</a>
     </li></ul></dd>
     
 
@@ -1449,7 +1458,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line279">line 279</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line296">line 296</a>
     </li></ul></dd>
     
 
@@ -1522,7 +1531,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line309">line 309</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line326">line 326</a>
     </li></ul></dd>
     
 
@@ -1595,7 +1604,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line269">line 269</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line286">line 286</a>
     </li></ul></dd>
     
 
@@ -1668,7 +1677,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line224">line 224</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line241">line 241</a>
     </li></ul></dd>
     
 
@@ -1748,7 +1757,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line340">line 340</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line357">line 357</a>
     </li></ul></dd>
     
 
@@ -1821,7 +1830,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line330">line 330</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line347">line 347</a>
     </li></ul></dd>
     
 
