@@ -58,4 +58,5 @@ db.any('select * from users where active=$1', [true])
     .catch(error => {
         console.log('ERROR:', error);
     })
-    .finally(pgp.end); // for immediate app exit, closing the connection pool.
+    .finally(pgp.end); // For immediate app exit, shutting down all connection pools
+                       // See API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end

@@ -51,7 +51,8 @@ db.tx(t => {
 
         // But if you normally just kill the process, then it doesn't matter.
 
-        pgp.end(); // for immediate app exit, closing the connection pool.
+        pgp.end(); // For immediate app exit, shutting down all connection pools
+                   // See API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
 
         // See also:
         // https://github.com/vitaly-t/pg-promise#library-de-initialization
