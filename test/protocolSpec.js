@@ -165,6 +165,9 @@ describe('Database Protocol', function () {
         expect(typeof db.$config.pgp).toBe('function');
         expect(typeof db.$config.version).toBe('string');
         expect(typeof db.$config.$npm).toBe('object');
+        expect(db.$cn).toBe(dbHeader.cn);
+        expect('$dc' in db).toBe(true);
+        expect(db.$pool instanceof db.$config.pgp.pg.Pool).toBe(true);
     });
 
     describe('on connection level', function () {
@@ -201,10 +204,13 @@ describe('Database Protocol', function () {
             expect(typeof connection.proc).toBe('function');
             expect(typeof connection.map).toBe('function');
             expect(typeof connection.each).toBe('function');
-
             expect(typeof connection.done).toBe('function');
             expect(typeof connection.client).toBe('object');
-            expect(connection.$config).toBeUndefined();
+
+            expect('$config' in connection).toBe(false);
+            expect('$cn' in connection).toBe(false);
+            expect('$dc' in connection).toBe(false);
+            expect('$pool' in connection).toBe(false);
         });
     });
 
