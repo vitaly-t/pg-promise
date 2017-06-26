@@ -126,20 +126,22 @@ describe('QueryFile / Positive:', function () {
 
     describe('property options', function () {
         const options1 = {
-            debug: utils.isDev(),
-            minify: false,
-            compress: false,
-            noWarnings: true
-        }, options2 = {
-            debug: false,
-            compress: true,
-            noWarnings: true
-        }, options3 = {
-            debug: false,
-            minify: true,
-            compress: true,
-            noWarnings: true
-        };
+                debug: utils.isDev(),
+                minify: false,
+                compress: false,
+                noWarnings: true
+            },
+            options2 = {
+                debug: false,
+                compress: true,
+                noWarnings: true
+            },
+            options3 = {
+                debug: false,
+                minify: true,
+                compress: true,
+                noWarnings: true
+            };
         Object.freeze(options1);
         Object.freeze(options3);
         it('must be consistent with the settings', function () {

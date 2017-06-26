@@ -742,12 +742,10 @@ describe('Method as.format', function () {
 
         // b) for the Named Parameters;
         expect(pgp.as.format('${one}, ${two}, ${three^}, $four', {
-                one: '${two}',
-                two: '${three}',
-                three: '${two},${three}'
-            }
-        )).toBe('\'${two}\', \'${three}\', ${two},${three}, $four');
-
+            one: '${two}',
+            two: '${three}',
+            three: '${two},${three}'
+        })).toBe('\'${two}\', \'${three}\', ${two},${three}, $four');
     });
 
     it('must correctly inject raw-text variables', function () {
