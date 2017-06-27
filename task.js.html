@@ -257,37 +257,35 @@ Task.exec = (ctx, obj, isTX, config) => {
         // executing a transaction;
         spName = 'level_' + ctx.txLevel;
         return begin()
-            .then(() => {
-                    return callback()
-                        .then(data => {
-                            cbData = data; // save callback data;
-                            success = true;
-                            return commit();
-                        }, reason => {
-                            cbReason = reason; // save callback failure reason;
-                            return rollback();
-                        })
-                        .then(() => {
-                                if (success) {
-                                    update(false, true, cbData);
-                                    return cbData;
-                                }
-                                update(false, false, cbReason);
-                                return $p.reject(cbReason);
-                            },
-                            // istanbul ignore next: either `commit` or `rollback` has failed, which is
-                            // impossible to replicate in a test environment, so skipping from the test;
-                            function (reason) {
-                                update(false, false, reason);
-                                return $p.reject(reason);
-                            });
+            .then(() => callback()
+                .then(data => {
+                    cbData = data; // save callback data;
+                    success = true;
+                    return commit();
+                }, reason => {
+                    cbReason = reason; // save callback failure reason;
+                    return rollback();
+                })
+                .then(() => {
+                    if (success) {
+                        update(false, true, cbData);
+                        return cbData;
+                    }
+                    update(false, false, cbReason);
+                    return $p.reject(cbReason);
                 },
-                // istanbul ignore next: `begin` has failed, which is impossible
-                // to replicate in a test environment, so skipping from the test;
-                function (reason) {
+                // istanbul ignore next: either `commit` or `rollback` has failed, which is
+                // impossible to replicate in a test environment, so skipping from the test;
+                reason => {
                     update(false, false, reason);
                     return $p.reject(reason);
-                });
+                }),
+                // istanbul ignore next: `begin` has failed, which is impossible
+                // to replicate in a test environment, so skipping from the test;
+            reason => {
+                update(false, false, reason);
+                return $p.reject(reason);
+            });
     }
 
     function begin() {
@@ -330,7 +328,7 @@ module.exports = config => {
 
     // istanbul ignore next:
     // we keep 'npm.query' initialization here, even though it is always
-    // pre-initialized by the 'database' module, for integrity purpose. 
+    // pre-initialized by the 'database' module, for integrity purpose.
     npmLocal.query = npmLocal.query || npm.query(config);
 
     npmLocal.async = npmLocal.async || npm.async(config);
