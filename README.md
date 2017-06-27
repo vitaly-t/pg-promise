@@ -54,7 +54,7 @@ pg-promise
 
 # About
 
-Built on top of [node-postgres] and its connection pool, this library translates their callback interface into one based on [Promises/A+],
+Built on top of [node-postgres] and its connection pool, this library enhances the callback interface with promises,
 while extending the protocol to a higher level, with automated connections and transactions management.
 
 In addition, the library provides:
@@ -77,9 +77,8 @@ $ npm install pg-promise
 Loading and initializing the library with [Initialization Options]:
 
 ```js
-const pgp = require('pg-promise')({
-    // Initialization Options
-});
+const initOptions = {/* initialization options */};
+const pgp = require('pg-promise')(initOptions);
 ```
 
 &#8722; or without [Initialization Options]:
@@ -302,10 +301,10 @@ db.oneOrNone(query, values); // expects 1 or 0 rows
 db.manyOrNone(query, values); // expects anything, same as `any`
 ```
 
-There is however one specific method `result(query, values)` to bypass any result verification, and instead resolve
+There is however one specific method [result](http://vitaly-t.github.io/pg-promise/Database.html#result) to bypass any result verification, and instead resolve
 with the original [Result] object passed from the [PG] library.
 
-You can also add your own methods and properties to this protocol via the [extend](#extend) event.  
+You can also add your own methods and properties to this protocol via the [extend] event.  
 
 Each query function resolves its **data** according to the `qrm` that was used:
 
@@ -892,6 +891,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[extent]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
 [Configuration Object]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object
 [Connection String]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#connection-string
 [query]:http://vitaly-t.github.io/pg-promise/Database.html#query
