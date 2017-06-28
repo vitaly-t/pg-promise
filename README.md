@@ -884,8 +884,8 @@ DEALINGS IN THE SOFTWARE.
 [query]:http://vitaly-t.github.io/pg-promise/Database.html#query
 [each]:http://vitaly-t.github.io/pg-promise/Database.html#each
 [map]:http://vitaly-t.github.io/pg-promise/Database.html#map
-[map]:http://vitaly-t.github.io/pg-promise/Database.html#task
-[map]:http://vitaly-t.github.io/pg-promise/Database.html#tx
+[task]:http://vitaly-t.github.io/pg-promise/Database.html#task
+[tx]:http://vitaly-t.github.io/pg-promise/Database.html#tx
 [Connection Syntax]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax
 [helpers]:http://vitaly-t.github.io/pg-promise/helpers.html
 [QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
