@@ -552,9 +552,7 @@ In version 5.2.0, support for type [QueryFile] was also integrated into the quer
 
 ## Tasks
 
-A task represents a shared connection to be used within a callback function. The callback can be either a regular function or an ES6 generator.
-
-A transaction, for example, is just a special type of task, wrapped in `CONNECT->COMMIT/ROLLBACK`. 
+A [task] represents a shared connection to be used within a callback function:
 
 ```js
 db.task(t => {
@@ -568,19 +566,11 @@ db.task(t => {
     });
 ```
 
-The purpose of tasks is simply to provide a shared connection context within the callback function to execute and return
-a promise chain, and then automatically release the connection.
+The purpose of tasks is to provide a shared connection context for its callback function, and to be released when finished.
 
 ## Transactions
 
-A transaction is a special type of task that automatically executes `BEGIN` + `COMMIT`/`ROLLBACK`:
-
-1. Acquires a new connection;
-2. Executes `BEGIN` command;
-3. Invokes your callback function (or generator) with the connection object;
-4. Executes `COMMIT`, if the callback resolves, or `ROLLBACK`, if the callback rejects or throws an error;
-5. Releases the connection (detached chains only);
-6. Resolves with the callback result, if successful; rejects with the reason when fails.
+A transaction (method [tx]) is a special type of [task] that automatically executes `BEGIN` + `COMMIT`/`ROLLBACK`:
 
 ```js
 db.tx(t => {
@@ -599,9 +589,6 @@ db.tx(t => {
         console.log(error); // printing the error;
     });
 ```
-
-A detached transaction acquires a connection and exposes object `t`=`this` to let all containing queries
-execute on the same connection.
 
 ### Nested Transactions
 
@@ -897,6 +884,8 @@ DEALINGS IN THE SOFTWARE.
 [query]:http://vitaly-t.github.io/pg-promise/Database.html#query
 [each]:http://vitaly-t.github.io/pg-promise/Database.html#each
 [map]:http://vitaly-t.github.io/pg-promise/Database.html#map
+[map]:http://vitaly-t.github.io/pg-promise/Database.html#task
+[map]:http://vitaly-t.github.io/pg-promise/Database.html#tx
 [Connection Syntax]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax
 [helpers]:http://vitaly-t.github.io/pg-promise/helpers.html
 [QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
