@@ -6,7 +6,7 @@ const db: pgPromise.IDatabase<any> = pgp('connection');
 db.task(t => {
     const d: Date = t.ctx.start;
     const duration: number = t.ctx.duration;
-
+    const parentTag = t.ctx.parent.tag;
     return t.batch([]);
 });
 

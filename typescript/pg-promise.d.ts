@@ -361,7 +361,7 @@ declare namespace pgPromise {
     // API: http://vitaly-t.github.io/pg-promise/Task.html
     interface ITask<Ext> extends IBaseProtocol<Ext>, spexLib.ISpexBase {
         // API: http://vitaly-t.github.io/pg-promise/Task.html#ctx
-        ctx: ITaskContext
+        readonly ctx: ITaskContext
     }
 
     // Base database protocol
@@ -434,23 +434,23 @@ declare namespace pgPromise {
     interface ITaskContext {
 
         // these are set in the beginning of each task/transaction:
-        context: any
-        parent: ITaskContext
-        level: number
-        isFresh: boolean
-        isTX: boolean
-        start: Date
-        tag: any
-        dc: any
+        readonly context: any
+        readonly parent: ITaskContext
+        readonly level: number
+        readonly isFresh: boolean
+        readonly isTX: boolean
+        readonly start: Date
+        readonly tag: any
+        readonly dc: any
 
         // these are set at the end of each task/transaction:
-        finish: Date
-        duration: number
-        success: boolean
-        result: any
+        readonly finish: Date
+        readonly duration: number
+        readonly success: boolean
+        readonly result: any
 
         // this exists only inside transactions (isTX = true):
-        txLevel: number
+        readonly txLevel: number
     }
 
     // Generic Event Context interface;
