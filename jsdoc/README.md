@@ -1,4 +1,4 @@
-## PG-PROMISE 6.x API
+## PG-PROMISE API
 
 For additional information see the project's [main page] and [WiKi pages].
 
