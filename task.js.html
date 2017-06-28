@@ -82,6 +82,7 @@ function Task(ctx, tag, isTX, config) {
 
     /**
      * @member {TaskContext} Task#ctx
+     * @readonly
      * @description
      * Task/Transaction Context object - contains individual properties for each task/transaction.
      *
@@ -113,6 +114,7 @@ function Task(ctx, tag, isTX, config) {
         npm.utils.addReadProp(this.ctx, 'context', ctx.context);
     }
 
+    npm.utils.addReadProp(this.ctx, 'connected', !ctx.db);
     npm.utils.addReadProp(this.ctx, 'tag', tag);
     npm.utils.addReadProp(this.ctx, 'dc', ctx.dc);
     npm.utils.addReadProp(this.ctx, 'level', ctx.level);
@@ -120,6 +122,8 @@ function Task(ctx, tag, isTX, config) {
     if (isTX) {
         npm.utils.addReadProp(this.ctx, 'txLevel', ctx.txLevel);
     }
+
+    npm.utils.addReadProp(this.ctx, 'parent', ctx.parentCtx);
 
     // generic query method;
     this.query = function (query, values, qrm) {
@@ -182,9 +186,18 @@ function Task(ctx, tag, isTX, config) {
 
 }
 
-//////////////////////////
-// Executes a task;
-Task.exec = (ctx, obj, isTX, config) => {
+/**
+ * @private
+ * @method Task.execute
+ * Executes a task.
+ *
+ * @param ctx
+ * @param obj
+ * @param isTX
+ * @param config
+ * @returns {Promise.&lt;TResult>}
+ */
+const execute = (ctx, obj, isTX, config) => {
 
     const $p = config.promise;
 
@@ -320,7 +333,10 @@ module.exports = config => {
 
     npmLocal.async = npmLocal.async || npm.async(config);
     npmLocal.spex = npmLocal.spex || npm.spex(config.promiseLib);
-    return Task;
+
+    return {
+        Task, execute
+    };
 };
 
 /**
@@ -328,7 +344,7 @@ module.exports = config => {
  * @description
  * Task/Transaction Context used inside tasks (method {@link Database#task Database.task}) and transactions (method {@link Database#tx Database.tx}).
  *
- * Properties `context`, `level`, `dc`, `isTX`, `tag`, `start` and `isFresh` are set just before the operation has started,
+ * Properties `context`, `parent`, `level`, `dc`, `isTX`, `tag`, `start` and `isFresh` are set just before the operation has started,
  * while properties `finish`, `duration`, `success` and `result` are set immediately after the operation has finished.
  *
  * @property {*} context
@@ -360,6 +376,17 @@ module.exports = config => {
  * while transactions on nested levels use the corresponding `SAVEPOINT` commands.
  *
  * This property exists only within the context of a transaction (`isTX = true`).
+ *
+ * @property {TaskContext} parent
+ * ** Added in v6.2.1 **
+ *
+ * Parent task/transaction context, or `null` when it is top-level.
+ *
+ * @property {boolean} connected
+ * ** Added in v6.2.1 **
+ *
+ * Indicates when the task/transaction acquired the connection on its own (`connected = true`), and will release it once
+ * the operation has finished. When the value is `false`, the operation is reusing an existing connection.
  *
  * @property {*} tag
  * Tag value as it was passed into the task. See methods {@link Database#task task} and {@link Database#tx tx}.
