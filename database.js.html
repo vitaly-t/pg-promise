@@ -1055,14 +1055,16 @@ function Database(cn, dc, config) {
          * @description
          * Executes a callback function (or $[ES6 generator]) with an automatically managed connection.
          *
+         * When invoked on the root {@link Database} object, the method allocates the connection from the pool,
+         * executes the callback, and once finished - releases the connection back to the pool.
+         * However, when invoked inside another task or transaction, the method reuses the parent connection.
+         *
          * This method should be used whenever executing more than one query at once, so the allocated connection
          * is reused between all queries, and released only after the task has finished (see $[Chaining Queries]).
          *
          * The callback function is called with one parameter - database protocol (same as `this`), extended with methods
          * {@link Task#batch batch}, {@link Task#page page}, {@link Task#sequence sequence}, plus property {@link Task#ctx ctx} -
-         * the task context object.
-         *
-         * See class {@link Task} for more details.
+         * the task context object. See class {@link Task} for more details.
          *
          * @param {*} tag/cb
          * When the method takes only one parameter, it must be the callback function (or $[ES6 generator]) for the task.
@@ -1125,9 +1127,13 @@ function Database(cn, dc, config) {
         /**
          * @method Database#tx
          * @description
-         * Executes a callback function (or $[ES6 generator]) as a transaction.
+         * Executes a callback function (or $[ES6 generator]) as a transaction, with an automatically managed connection.
          *
-         * A transaction simply wraps a regular {@link Database#task task} in automatic queries:
+         * When invoked on the root {@link Database} object, the method allocates the connection from the pool,
+         * executes the callback, and once finished - releases the connection back to the pool.
+         * However, when invoked inside another task or transaction, the method reuses the parent connection.
+         *
+         * A transaction wraps a regular {@link Database#task task} in automatic queries:
          * - it executes `BEGIN` just before invoking the callback function
          * - it executes `COMMIT`, if the callback didn't throw any error or return a rejected promise
          * - it executes `ROLLBACK`, if the callback did throw an error or return a rejected promise
@@ -1135,11 +1141,9 @@ function Database(cn, dc, config) {
          *
          * The callback function is called with one parameter - database protocol (same as `this`), extended with methods
          * {@link Task#batch batch}, {@link Task#page page}, {@link Task#sequence sequence}, plus property {@link Task#ctx ctx} -
-         * the transaction context object.
+         * the transaction context object. See class {@link Task} for more details.
          *
-         * See class {@link Task} for more details.
-         *
-         * Note that transactions should be chosen over tasks only where they are necessary, because unlike regular tasks,
+         * Note that transactions should be chosen over tasks only where necessary, because unlike regular tasks,
          * transactions are blocking operations, and must be used with caution.
          *
          * @param {*} tag/cb

@@ -4357,12 +4357,14 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
 
 <div class="description">
     <p>Executes a callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) with an automatically managed connection.</p>
+<p>When invoked on the root <a href="Database.html">Database</a> object, the method allocates the connection from the pool,
+executes the callback, and once finished - releases the connection back to the pool.
+However, when invoked inside another task or transaction, the method reuses the parent connection.</p>
 <p>This method should be used whenever executing more than one query at once, so the allocated connection
 is reused between all queries, and released only after the task has finished (see <a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a>).</p>
 <p>The callback function is called with one parameter - database protocol (same as <code>this</code>), extended with methods
 <a href="Task.html#batch">batch</a>, <a href="Task.html#page">page</a>, <a href="Task.html#sequence">sequence</a>, plus property <a href="Task.html#ctx">ctx</a> -
-the task context object.</p>
-<p>See class <a href="Task.html">Task</a> for more details.</p>
+the task context object. See class <a href="Task.html">Task</a> for more details.</p>
 </div>
 
 
@@ -4577,8 +4579,11 @@ be passed in as the first parameter.</p></td>
 
 
 <div class="description">
-    <p>Executes a callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) as a transaction.</p>
-<p>A transaction simply wraps a regular <a href="Database.html#task">task</a> in automatic queries:</p>
+    <p>Executes a callback function (or <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator</a>) as a transaction, with an automatically managed connection.</p>
+<p>When invoked on the root <a href="Database.html">Database</a> object, the method allocates the connection from the pool,
+executes the callback, and once finished - releases the connection back to the pool.
+However, when invoked inside another task or transaction, the method reuses the parent connection.</p>
+<p>A transaction wraps a regular <a href="Database.html#task">task</a> in automatic queries:</p>
 <ul>
 <li>it executes <code>BEGIN</code> just before invoking the callback function</li>
 <li>it executes <code>COMMIT</code>, if the callback didn't throw any error or return a rejected promise</li>
@@ -4587,9 +4592,8 @@ be passed in as the first parameter.</p></td>
 </ul>
 <p>The callback function is called with one parameter - database protocol (same as <code>this</code>), extended with methods
 <a href="Task.html#batch">batch</a>, <a href="Task.html#page">page</a>, <a href="Task.html#sequence">sequence</a>, plus property <a href="Task.html#ctx">ctx</a> -
-the transaction context object.</p>
-<p>See class <a href="Task.html">Task</a> for more details.</p>
-<p>Note that transactions should be chosen over tasks only where they are necessary, because unlike regular tasks,
+the transaction context object. See class <a href="Task.html">Task</a> for more details.</p>
+<p>Note that transactions should be chosen over tasks only where necessary, because unlike regular tasks,
 transactions are blocking operations, and must be used with caution.</p>
 </div>
 
@@ -4731,7 +4735,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1096">line 1096</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1098">line 1098</a>
     </li></ul></dd>
     
 
@@ -4904,7 +4908,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1278">line 1278</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1282">line 1282</a>
     </li></ul></dd>
     
 
