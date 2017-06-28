@@ -1001,7 +1001,7 @@ describe('Transactions', function () {
     });
 
     describe('When a nested transaction fails', function () {
-        let error, THIS, context;
+        let error, THIS, context, ctx;
         beforeEach(function (done) {
             options.capSQL = true;
             db.tx(function (t) {
@@ -1010,6 +1010,7 @@ describe('Transactions', function () {
                 return this.batch([
                     this.none('update users set login=$1 where id=$2', ['TestName', 1]),
                     this.tx(function () {
+                        ctx = this.ctx;
                         throw new Error('Nested TX failure');
                     })
                 ]);
@@ -1023,6 +1024,8 @@ describe('Transactions', function () {
             expect(THIS === context).toBe(true);
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe('Nested TX failure');
+            expect(ctx.level).toBe(1);
+            expect(ctx.txLevel).toBe(1);
         });
         afterEach(function () {
             delete options.capSQL;
@@ -1225,6 +1228,8 @@ describe('Transactions', function () {
             for (let i = 0; i < 10; i++) {
                 expect(ctx[i].tag).toBe(i);
             }
+            expect(THIS.ctx.level).toBe(9);
+            expect(THIS.ctx.txLevel).toBe(9);
         });
         afterEach(function () {
             delete options.capSQL;
@@ -1596,6 +1601,7 @@ describe('Task', function () {
         it('must throw an error on any query request', function () {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe('Unexpected call outside of task.');
+            expect(tsk.ctx.level).toBe(0);
         });
     });
 
