@@ -51,6 +51,10 @@ const npm = {
  * This is an interface for tasks/transactions to implement a connection session, during which you can
  * execute multiple queries against the same connection that's released automatically when the task/transaction is finished.
  *
+ * Each task/transaction manages the connection automatically. When executed on the root {@link Database} object, the connection
+ * is allocated from the pool, and once the method's callback has finished, the connection is released back to the pool.
+ * However, when invoked inside another task or transaction, the method reuses the parent connection.
+ *
  * @see
  * {@link Task#ctx ctx},
  * {@link Task#batch batch},
@@ -61,9 +65,9 @@ const npm = {
  * db.task(t => {
  *       // t = task protocol context;
  *       // t.ctx = task config + state context;
- *       return t.one("select * from users where id=$1", 123)
+ *       return t.one('select * from users where id=$1', 123)
  *           .then(user => {
- *               return t.any("select * from events where login=$1", user.name);
+ *               return t.any('select * from events where login=$1', user.name);
  *           });
  *   })
  * .then(events => {
