@@ -1218,6 +1218,8 @@ function Database(cn, dc, config) {
                 taskCtx.txLevel = taskCtx.txLevel >= 0 ? (taskCtx.txLevel + 1) : 0;
             }
 
+            taskCtx.level = taskCtx.level >= 0 ? (taskCtx.level + 1) : 0;
+
             if (this !== obj) {
                 taskCtx.context = this; // calling context object;
             }

@@ -104,7 +104,7 @@ However, when invoked inside another task or transaction, the method reuses the 
         
             <h3>Example</h3>
             
-    <pre class="prettyprint"><code>db.task(t => {      // t = task protocol context;      // t.ctx = task config + state context;      return t.one('select * from users where id=$1', 123)          .then(user => {              return t.any('select * from events where login=$1', user.name);          });  }).then(events => {      // success;  }).catch(error => {      // error;  });</code></pre>
+    <pre class="prettyprint"><code>db.task(t => {      // t = task protocol context;      // t.ctx = Task Context;      return t.one('select * from users where id=$1', 123)          .then(user => {              return t.any('select * from events where login=$1', user.name);          });  }).then(events => {      // success;  }).catch(error => {      // error;  });</code></pre>
 
         
     
@@ -125,19 +125,13 @@ However, when invoked inside another task or transaction, the method reuses the 
 
         
             
-<h4 class="name" id="ctx"><span class="type-signature"></span>ctx<span class="type-signature"> :object</span></h4>
+<h4 class="name" id="ctx"><span class="type-signature"></span>ctx<span class="type-signature"> :<a href="global.html#TaskContext">TaskContext</a></span></h4>
 
 
 
 
 <div class="description">
     <p>Task/Transaction Context object - contains individual properties for each task/transaction.</p>
-<pre class="prettyprint source lang-js"><code>db.task(t => {
-   // t.ctx = task context object
-});</code></pre><pre class="prettyprint source lang-js"><code>db.tx(t => {
-   // t.ctx = transaction context object
-});</code></pre><p>Properties <code>context</code>, <code>dc</code>, <code>isTX</code>, <code>tag</code>, <code>start</code> and <code>isFresh</code> are set before the callback,
-while properties <code>finish</code>, <code>success</code> and <code>result</code> are set after the callback has returned.</p>
 </div>
 
 
@@ -146,253 +140,12 @@ while properties <code>finish</code>, <code>success</code> and <code>result</cod
     <ul>
         <li>
             
-<span class="param-type">object</span>
+<span class="param-type"><a href="global.html#TaskContext">TaskContext</a></span>
 
 
         </li>
     </ul>
 
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>context</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>If the operation was invoked with an object context - <code>task.call(obj,...)</code> or
-<code>tx.call(obj,...)</code>, this property is set with the context object that was passed in.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dc</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p><em>Database Context</em> that was used when creating the database object. See <a href="Database.html">Database</a>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>isTX</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Indicates whether this task represents a transaction.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>tag</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Tag value as it was passed into the task. See methods <a href="Database.html#task">task</a> and <a href="Database.html#tx">tx</a>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>start</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Date</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Date/Time of when this task or transaction started the execution.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>isFresh</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Indicates when a fresh physical connection is being used.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>finish</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Date</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Once the operation has finished, this property is set to the Data/Time of when it happened.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>success</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Once the operation has finished, this property indicates whether it was successful.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>result</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Once the operation has finished, this property contains the result, depending on property <code>success</code>:</p>
-<ul>
-<li>data resolved by the operation, if <code>success</code> = <code>true</code></li>
-<li>error / rejection reason, if <code>success</code> = <code>false</code></li>
-</ul></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -446,6 +199,13 @@ while properties <code>finish</code>, <code>success</code> and <code>result</cod
 
 
 
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>db.task(t => {    return t.ctx; // task context object})    .then(ctx => {        console.log('Task Duration:', ctx.duration);    });</code></pre>
+
+    <pre class="prettyprint"><code>db.tx(t => {    return t.ctx; // transaction context object})    .then(ctx => {        console.log('Transaction Duration:', ctx.duration);    });</code></pre>
 
 
 
@@ -605,7 +365,7 @@ while properties <code>finish</code>, <code>success</code> and <code>result</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line125">line 125</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line103">line 103</a>
     </li></ul></dd>
     
 
@@ -848,7 +608,7 @@ while properties <code>finish</code>, <code>success</code> and <code>result</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line141">line 141</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line119">line 119</a>
     </li></ul></dd>
     
 
@@ -1130,7 +890,7 @@ while properties <code>finish</code>, <code>success</code> and <code>result</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line158">line 158</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line136">line 136</a>
     </li></ul></dd>
     
 

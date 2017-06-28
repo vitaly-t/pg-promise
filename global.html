@@ -307,6 +307,648 @@ as well as method <a href="Database.html#func">func</a>.</p>
     
 
     
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id="EventContext">EventContext</h4>
+
+
+
+
+<div class="description">
+    <p>This common type is used for the following events: <a href="global.html#event:query">query</a>, <a href="global.html#event:receive">receive</a>,
+<a href="global.html#event:error">error</a>, <a href="global.html#event:task">task</a> and <a href="global.html#event:transact">transact</a>.</p>
+</div>
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Set only for event <a href="global.html#event:error">error</a>, and only when the error is connection-related.</p>
+<p>It is a safe copy of the connection string/object that was used when initializing <code>db</code> - the database instance.</p>
+<p>If the original connection contains a password, the safe copy contains it masked with symbol <code>#</code>, so the connection
+can be logged safely, without exposing the password.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Database Context that was used when creating the database object (see <a href="Database.html">Database</a>). It is set for all events.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Query string/object that was passed into the query method. This property is only set during events <a href="global.html#event:query">query</a>,
+<a href="global.html#event:receive">receive</a> and <a href="global.html#event:error">error</a> (only when the error is query-related).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>client</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="external-Client.html">external:Client</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents the connection. It is set for all events, except for event <a href="global.html#event:error">error</a>
+when it is connection-related.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Formatting parameters for the query.</p>
+<p>It is set only for events <a href="global.html#event:query">query</a>, <a href="global.html#event:receive">receive</a> and <a href="global.html#event:error">error</a>, and only
+when it is needed for logging. This library takes an extra step in figuring out when formatting parameters are of any value
+to the event logging:</p>
+<ul>
+<li>when an error occurs related to the query formatting, event <a href="global.html#event:error">error</a> is sent with the property set.</li>
+<li>when initialization parameter <code>pgFormat</code> is used, and all query formatting is done within the <a href="https://github.com/brianc/node-postgres">PG</a> library, events
+<a href="global.html#event:query">query</a> and <a href="global.html#event:receive">receive</a> will have this property set also, since this library no longer
+handles the query formatting.</li>
+</ul>
+<p>When this parameter is not set, it means one of the two things:</p>
+<ul>
+<li>there were no parameters passed into the query method;</li>
+<li>property <code>query</code> of this object already contains all the formatting values in it, so logging only the query is sufficient.</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ctx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#TaskContext">TaskContext</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><em>Task/Transaction Context</em> object.</p>
+<p>This property is always set for events <a href="global.html#event:task">task</a> and <a href="global.html#event:transact">transact</a>, while for events
+<a href="global.html#event:query">query</a>, <a href="global.html#event:receive">receive</a> and <a href="global.html#event:error">error</a> it is only set when they occur
+inside a task or transaction.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line465">line 465</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id="TaskContext">TaskContext</h4>
+
+
+
+
+<div class="description">
+    <p>Task/Transaction Context used inside tasks (method <a href="Database.html#task">Database.task</a>) and transactions (method <a href="Database.html#tx">Database.tx</a>).</p>
+<p>Properties <code>context</code>, <code>level</code>, <code>dc</code>, <code>isTX</code>, <code>tag</code>, <code>start</code> and <code>isFresh</code> are set just before the operation has started,
+while properties <code>finish</code>, <code>duration</code>, <code>success</code> and <code>result</code> are set immediately after the operation has finished.</p>
+</div>
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>context</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>If the operation was invoked with a calling context - <code>task.call(context,...)</code> or <code>tx.call(context,...)</code>,
+this property is set with the context that was passed in. Otherwise, the property doesn't exist.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><em>Database Context</em> that was passed into the <a href="Database.html">Database</a> object during construction.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isTX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Indicates whether this operation is a transaction (as opposed to a regular task).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><strong> Added in v6.2.0 </strong></p>
+<p>Number of milliseconds consumed by the operation.</p>
+<p>Set after the operation has finished, it is simply a shortcut for <code>finish - start</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><strong> Added in v6.2.0 </strong></p>
+<p>Task nesting level, starting from 0, counting both regular tasks and transactions.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>txLevel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><strong> Added in v6.2.0 </strong></p>
+<p>Transaction nesting level, starting from 0. Transactions on level 0 use <code>BEGIN/COMMIT/ROLLBACK</code>,
+while transactions on nested levels use the corresponding <code>SAVEPOINT</code> commands.</p>
+<p>This property exists only within the context of a transaction (<code>isTX = true</code>).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tag</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Tag value as it was passed into the task. See methods <a href="Database.html#task">task</a> and <a href="Database.html#tx">tx</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Date/Time of when this operation started the execution.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isFresh</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Indicates when a fresh physical connection is being used.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>finish</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Once the operation has finished, this property is set to the Data/Time of when it happened.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>success</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Once the operation has finished, this property indicates whether it was successful.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>result</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Once the operation has finished, this property contains the result, depending on property <code>success</code>:</p>
+<ul>
+<li>data resolved by the operation, if <code>success = true</code></li>
+<li>error / rejection reason, if <code>success = false</code></li>
+</ul></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line293">line 293</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+    
 
     
         <h3 class="subsection-title">Events</h3>
@@ -323,8 +965,7 @@ as well as method <a href="Database.html#func">func</a>.</p>
 
 
 <div class="description">
-    <p>Global notification of acquiring a new database connection from the connection pool,
-i.e. a virtual connection.</p>
+    <p>Global notification of acquiring a new database connection from the connection pool, i.e. a virtual connection.</p>
 <p>However, for direct calls to method <a href="Database.html#connect">Database.connect</a> with parameter <code>{direct: true}</code>,
 this event represents a physical connection.</p>
 <p>The library will suppress any error thrown by the handler and write it into the console.</p>
@@ -500,7 +1141,7 @@ with parameter <code>{direct: true}</code>).</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const options = {    // pg-promise initialization options...    connect: (client, dc, isFresh) => {        const cp = client.connectionParameters;        console.log("Connected to database:", cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    connect: (client, dc, isFresh) => {        const cp = client.connectionParameters;        console.log('Connected to database:', cp.database);    }};</code></pre>
 
 
 
@@ -516,8 +1157,7 @@ with parameter <code>{direct: true}</code>).</p></td>
 
 
 <div class="description">
-    <p>Global notification of releasing a database connection back to the connection pool,
-i.e. releasing the virtual connection.</p>
+    <p>Global notification of releasing a database connection back to the connection pool, i.e. releasing the virtual connection.</p>
 <p>However, when releasing a direct connection (created by calling <a href="Database.html#connect">Database.connect</a> with parameter
 <code>{direct: true}</code>), this event represents a physical disconnection.</p>
 <p>The library will suppress any error thrown by the handler and write it into the console.</p>
@@ -636,7 +1276,7 @@ i.e. releasing the virtual connection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line66">line 66</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line65">line 65</a>
     </li></ul></dd>
     
 
@@ -663,7 +1303,7 @@ i.e. releasing the virtual connection.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const options = {    // pg-promise initialization options...    disconnect: (client, dc) => {       const cp = client.connectionParameters;       console.log("Disconnecting from database:", cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    disconnect: (client, dc) => {       const cp = client.connectionParameters;       console.log('Disconnecting from database:', cp.database);    }};</code></pre>
 
 
 
@@ -745,7 +1385,7 @@ i.e. releasing the virtual connection.</p>
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type"><a href="global.html#EventContext">EventContext</a></span>
 
 
             
@@ -755,9 +1395,7 @@ i.e. releasing the virtual connection.</p>
 
             
 
-            <td class="description last"><p>Event Context Object.</p>
-<p>This type of object is used by several events. See event <a href="global.html#event:query">query</a>
-for its complete documentation.</p></td>
+            <td class="description last"><p>Event Context Object.</p></td>
         </tr>
 
     
@@ -798,7 +1436,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line330">line 330</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line296">line 296</a>
     </li></ul></dd>
     
 
@@ -825,7 +1463,7 @@ for its complete documentation.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const options = {    // pg-promise initialization options...    error: (err, e) => {        // e.dc = Database Context        if (e.cn) {            // this is a connection-related error            // cn = safe connection details passed into the library:            //      if password is present, it is masked by #        }        if (e.query) {            // query string is available            if (e.params) {                // query parameters are available            }        }        if (e.ctx) {            // occurred inside a task or transaction        }      }};</code></pre>
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    error: (err, e) => {        if (e.cn) {            // this is a connection-related error            // cn = safe connection details passed into the library:            //      if password is present, it is masked by #        }        if (e.query) {            // query string is available            if (e.params) {                // query parameters are available            }        }        if (e.ctx) {            // occurred inside a task or transaction        }      }};</code></pre>
 
 
 
@@ -968,12 +1606,19 @@ if you try overriding them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line389">line 389</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line349">line 349</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://github.com/vitaly-t/pg-promise-demo">pg-promise-demo</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -995,9 +1640,9 @@ if you try overriding them.</p>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// In the example below we extend the protocol with function `addImage`// that will insert one binary image and resolve with the new record id.const options = {    extend: (obj, dc) => {        // obj = this;        // dc = database context;        obj.addImage = data => {            return obj.one("insert into images(data) values($1) returning id", '\\x' + data);        }    }};</code></pre>
+    <pre class="prettyprint"><code>// In the example below we extend the protocol with function `addImage`// that will insert one binary image and resolve with the new record id.const initOptions = {    // pg-promise initialization options...    extend: (obj, dc) => {        // dc = database context;        obj.addImage = data => {            return obj.one('INSERT INTO images(data) VALUES($1) RETURNING id', data);        }    }};</code></pre>
 
-    <pre class="prettyprint"><code>// It is best to extend the protocol by adding whole entity repositories to it// as shown in the following example.// Users repository;function repUsers(obj, dc) {    // NOTE: You can change the implementation based on `dc`;    return {        add: (name, active) => {            return obj.none("insert into users values($1, $2)", [name, active]);        },        delete: id => obj.none("delete from users where id = $1", id)    }}// Overriding 'extend' event;const options = {    extend: (obj, dc) => {        // obj = this;        // dc = database context;        this.users = repUsers(this, dc);        // You can set different repositories based on `dc`    }};// Usage example:db.users.add("John", true)    .then(() => {        // user added successfully;    })    .catch(error => {        // failed to add the user;    });</code></pre>
+    <pre class="prettyprint"><code>// It is best to extend the protocol by adding whole entity repositories to it as shown in the following example.// For a complete example see https://github.com/vitaly-t/pg-promise-demo// Users repository;function repUsers(obj, dc) {    // NOTE: You can change the implementation based on `dc`;    return {        add: (name, active) => {            return obj.none('INSERT INTO users VALUES($1, $2)', [name, active]);        },        delete: id => obj.none('DELETE FROM users WHERE id = $1', id)    }}// Overriding 'extend' event;const initOptions = {    // pg-promise initialization options...    extend: (obj, dc) => {        // dc = database context;        obj.users = repUsers(obj, dc);        // You can set different repositories based on `dc`    }};// Usage example:db.users.add('John', true)    .then(() => {        // user added successfully;    })    .catch(error => {        // failed to add the user;    });</code></pre>
 
 
 
@@ -1057,7 +1702,7 @@ will be rejected with that error.</p>
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type"><a href="global.html#EventContext">EventContext</a></span>
 
 
             
@@ -1067,201 +1712,7 @@ will be rejected with that error.</p>
 
             
 
-            <td class="description last"><p>Event Context Object.</p>
-<p>This is a shared-type object that's passed in with the following events: <a href="global.html#event:query">query</a>,
-<a href="global.html#event:receive">receive</a>, <a href="global.html#event:error">error</a>, <a href="global.html#event:task">task</a> and <a href="global.html#event:transact">transact</a>.</p>
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>cn</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Set only for event <a href="global.html#event:error">error</a>, and only when the error is connection-related.</p>
-<p>It is a safe copy of the connection string/object that was used when initializing <code>db</code> - the database instance.</p>
-<p>If the original connection contains a password, the safe copy contains it masked with symbol <code>#</code>, so the connection
-can be logged safely, without exposing the password.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dc</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Database Context that was used when creating the database object (see <a href="Database.html">Database</a>). It is set for all events.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>query</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Query string/object that was passed into the query method. This property is only set during events <a href="global.html#event:query">query</a>
-and <a href="global.html#event:receive">receive</a>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>client</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="external-Client.html">external:Client</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p><a href="https://github.com/brianc/node-postgres/wiki/Client">pg.Client</a> object that represents the connection. It is set for all events, except for event <a href="global.html#event:error">error</a>
-when it is connection-related.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Formatting parameters for the query.</p>
-<p>It is set only for events <a href="global.html#event:query">query</a>, <a href="global.html#event:receive">receive</a> and <a href="global.html#event:error">error</a>, and only
-when it is needed for logging. This library takes an extra step in figuring out when formatting parameters are of any value
-to the event logging:</p>
-<ul>
-<li>when an error occurs related to the query formatting, event <a href="global.html#event:error">error</a> is sent with the property set.</li>
-<li>when initialization parameter <code>pgFormat</code> is used, and all query formatting is done within the <a href="https://github.com/brianc/node-postgres">PG</a> library, events
-<a href="global.html#event:query">query</a> and <a href="global.html#event:receive">receive</a> will have this property set also, since this library no longer
-handles the query formatting.</li>
-</ul>
-<p>When this parameter is not set, it means one of the two things:</p>
-<ul>
-<li>there were no parameters passed into the query method;</li>
-<li>property <code>query</code> of this object already contains all the formatting values in it, so logging only the query is sufficient.</li>
-</ul></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>ctx</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p><em>Task/Transaction Context</em> object. See <a href="Task.html#ctx">Task.ctx</a> for details.</p>
-<p>This property is always set for events <a href="global.html#event:task">task</a> and <a href="global.html#event:transact">transact</a>, while for events
-<a href="global.html#event:query">query</a>, <a href="global.html#event:receive">receive</a> and <a href="global.html#event:error">error</a> it is only set when the event occurred
-while executing a task or transaction.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+            <td class="description last"><p>Event Context Object.</p></td>
         </tr>
 
     
@@ -1302,7 +1753,7 @@ while executing a task or transaction.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line107">line 107</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -1325,6 +1776,11 @@ while executing a task or transaction.</p></td>
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    query: e => {        console.log('QUERY:', e.query);    }};</code></pre>
 
 
 
@@ -1445,7 +1901,7 @@ validation for regular queries, which is executed right after this notification.
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type"><a href="global.html#EventContext">EventContext</a></span>
 
 
             
@@ -1455,8 +1911,7 @@ validation for regular queries, which is executed right after this notification.
 
             
 
-            <td class="description last"><p>Event Context Object.</p>
-<p>This type of object is used by several events. See event <a href="global.html#event:query">query</a> for its complete documentation.</p></td>
+            <td class="description last"><p>Event Context Object.</p></td>
         </tr>
 
     
@@ -1497,7 +1952,7 @@ validation for regular queries, which is executed right after this notification.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line177">line 177</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line140">line 140</a>
     </li></ul></dd>
     
 
@@ -1524,7 +1979,7 @@ validation for regular queries, which is executed right after this notification.
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize column names:const options = {    receive: (data, result, e) => {        camelizeColumns(data);    }};function camelizeColumns(data) {    const tmp = data[0];    for (let prop in tmp) {        const camel = pgp.utils.camelize(prop);        if (!(camel in tmp)) {            for (let i = 0; i &lt; data.length; i++) {                const d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
+    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize column names:const initOptions = {    // pg-promise initialization options...    receive: (data, result, e) => {        camelizeColumns(data);    }};function camelizeColumns(data) {    const tmp = data[0];    for (let prop in tmp) {        const camel = pgp.utils.camelize(prop);        if (!(camel in tmp)) {            for (let i = 0; i &lt; data.length; i++) {                const d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
 
 
 
@@ -1583,7 +2038,7 @@ validation for regular queries, which is executed right after this notification.
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type"><a href="global.html#EventContext">EventContext</a></span>
 
 
             
@@ -1593,9 +2048,7 @@ validation for regular queries, which is executed right after this notification.
 
             
 
-            <td class="description last"><p>Event Context Object.</p>
-<p>This type of object is used by several events. See event <a href="global.html#event:query">query</a>
-for its complete documentation.</p></td>
+            <td class="description last"><p>Event Context Object.</p></td>
         </tr>
 
     
@@ -1636,7 +2089,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line244">line 244</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line208">line 208</a>
     </li></ul></dd>
     
 
@@ -1663,7 +2116,7 @@ for its complete documentation.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const options = {    task: e => {        if (e.ctx.finish) {            // this is a task->finish event;            console.log("Finish Time:", e.ctx.finish);            if (e.ctx.success) {                // e.ctx.result = resolved data;            } else {                // e.ctx.result = error/rejection reason;            }        } else {            // this is a task->start event;            console.log("Start Time:", e.ctx.start);        }    }};</code></pre>
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    task: e => {        if (e.ctx.finish) {            // this is a task->finish event;            console.log('Duration:', e.ctx.duration);            if (e.ctx.success) {                // e.ctx.result = resolved data;            } else {                // e.ctx.result = error/rejection reason;            }        } else {            // this is a task->start event;            console.log('Start Time:', e.ctx.start);        }    }};</code></pre>
 
 
 
@@ -1722,7 +2175,7 @@ for its complete documentation.</p></td>
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type"><a href="global.html#EventContext">EventContext</a></span>
 
 
             
@@ -1732,9 +2185,7 @@ for its complete documentation.</p></td>
 
             
 
-            <td class="description last"><p>Event Context Object.</p>
-<p>This type of object is used by several events. See event <a href="global.html#event:query">query</a>
-for its complete documentation.</p></td>
+            <td class="description last"><p>Event Context Object.</p></td>
         </tr>
 
     
@@ -1775,7 +2226,7 @@ for its complete documentation.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line287">line 287</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line252">line 252</a>
     </li></ul></dd>
     
 
@@ -1802,7 +2253,7 @@ for its complete documentation.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const options = {    transact: e => {        if (e.ctx.finish) {            // this is a transaction->finish event;            console.log("Finish Time:", e.ctx.finish);            if (e.ctx.success) {                // e.ctx.result = resolved data;            } else {                // e.ctx.result = error/rejection reason;            }        } else {            // this is a transaction->start event;            console.log("Start Time:", e.ctx.start);        }    }};</code></pre>
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    transact: e => {        if (e.ctx.finish) {            // this is a transaction->finish event;            console.log('Duration:', e.ctx.duration);            if (e.ctx.success) {                // e.ctx.result = resolved data;            } else {                // e.ctx.result = error/rejection reason;            }        } else {            // this is a transaction->start event;            console.log('Start Time:', e.ctx.start);        }    }};</code></pre>
 
 
 

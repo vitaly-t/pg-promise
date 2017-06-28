@@ -42,8 +42,7 @@ const $events = {
     /**
      * @event connect
      * @description
-     * Global notification of acquiring a new database connection from the connection pool,
-     * i.e. a virtual connection.
+     * Global notification of acquiring a new database connection from the connection pool, i.e. a virtual connection.
      *
      * However, for direct calls to method {@link Database#connect Database.connect} with parameter `{direct: true}`,
      * this event represents a physical connection.
@@ -68,13 +67,13 @@ const $events = {
      *
      * @example
      *
-     * const options = {
+     * const initOptions = {
      *
      *     // pg-promise initialization options...
      *
      *     connect: (client, dc, isFresh) => {
      *         const cp = client.connectionParameters;
-     *         console.log("Connected to database:", cp.database);
+     *         console.log('Connected to database:', cp.database);
      *     }
      *
      * };
@@ -95,8 +94,7 @@ const $events = {
     /**
      * @event disconnect
      * @description
-     * Global notification of releasing a database connection back to the connection pool,
-     * i.e. releasing the virtual connection.
+     * Global notification of releasing a database connection back to the connection pool, i.e. releasing the virtual connection.
      *
      * However, when releasing a direct connection (created by calling {@link Database#connect Database.connect} with parameter
      * `{direct: true}`), this event represents a physical disconnection.
@@ -109,13 +107,13 @@ const $events = {
      *
      * @example
      *
-     * const options = {
+     * const initOptions = {
      *
      *     // pg-promise initialization options...
      *
      *     disconnect: (client, dc) => {
      *        const cp = client.connectionParameters;
-     *        console.log("Disconnecting from database:", cp.database);
+     *        console.log('Disconnecting from database:', cp.database);
      *     }
      *
      * };
@@ -142,54 +140,19 @@ const $events = {
      * Notification happens just before the query execution. And if the handler throws an error, the query execution
      * will be rejected with that error.
      *
-     * @param {object} e - Event Context Object.
+     * @param {EventContext} e
+     * Event Context Object.
      *
-     * This is a shared-type object that's passed in with the following events: {@link event:query query},
-     * {@link event:receive receive}, {@link event:error error}, {@link event:task task} and {@link event:transact transact}.
+     * @example
      *
-     * @param {string|object} e.cn
+     * const initOptions = {
      *
-     * Set only for event {@link event:error error}, and only when the error is connection-related.
+     *     // pg-promise initialization options...
      *
-     * It is a safe copy of the connection string/object that was used when initializing `db` - the database instance.
-     *
-     * If the original connection contains a password, the safe copy contains it masked with symbol `#`, so the connection
-     * can be logged safely, without exposing the password.
-     *
-     * @param {*} e.dc
-     * Database Context that was used when creating the database object (see {@link Database}). It is set for all events.
-     *
-     * @param {string|object} e.query
-     *
-     * Query string/object that was passed into the query method. This property is only set during events {@link event:query query}
-     * and {@link event:receive receive}.
-     *
-     * @param {external:Client} e.client
-     *
-     * $[pg.Client] object that represents the connection. It is set for all events, except for event {@link event:error error}
-     * when it is connection-related.
-     *
-     * @param {*} e.params - Formatting parameters for the query.
-     *
-     * It is set only for events {@link event:query query}, {@link event:receive receive} and {@link event:error error}, and only
-     * when it is needed for logging. This library takes an extra step in figuring out when formatting parameters are of any value
-     * to the event logging:
-     * - when an error occurs related to the query formatting, event {@link event:error error} is sent with the property set.
-     * - when initialization parameter `pgFormat` is used, and all query formatting is done within the $[PG] library, events
-     * {@link event:query query} and {@link event:receive receive} will have this property set also, since this library no longer
-     * handles the query formatting.
-     *
-     * When this parameter is not set, it means one of the two things:
-     * - there were no parameters passed into the query method;
-     * - property `query` of this object already contains all the formatting values in it, so logging only the query is sufficient.
-     *
-     * @param {object} e.ctx
-     * _Task/Transaction Context_ object. See {@link Task#ctx Task.ctx} for details.
-     *
-     * This property is always set for events {@link event:task task} and {@link event:transact transact}, while for events
-     * {@link event:query query}, {@link event:receive receive} and {@link event:error error} it is only set when the event occurred
-     * while executing a task or transaction.
-     *
+     *     query: e => {
+     *         console.log('QUERY:', e.query);
+     *     }
+     * };
      */
     query: (options, context) => {
         if (typeof options.query === 'function') {
@@ -229,16 +192,17 @@ const $events = {
      * - original $[Result] object, if the data comes from a regular query, in which case `data = result.rows`.
      * - `undefined` when the data comes from a stream.
      *
-     * @param {object} e
+     * @param {EventContext} e
      * Event Context Object.
-     *
-     * This type of object is used by several events. See event {@link event:query query} for its complete documentation.
      *
      * @example
      *
      * // Example below shows the fastest way to camelize column names:
      *
-     * const options = {
+     * const initOptions = {
+     *
+     *     // pg-promise initialization options...
+     *
      *     receive: (data, result, e) => {
      *         camelizeColumns(data);
      *     }
@@ -277,18 +241,19 @@ const $events = {
      *
      * The library will suppress any error thrown by the handler and write it into the console.
      *
-     * @param {object} e - Event Context Object.
-     *
-     * This type of object is used by several events. See event {@link event:query query}
-     * for its complete documentation.
+     * @param {EventContext} e
+     * Event Context Object.
      *
      * @example
      *
-     * const options = {
+     * const initOptions = {
+     *
+     *     // pg-promise initialization options...
+     *
      *     task: e => {
      *         if (e.ctx.finish) {
      *             // this is a task->finish event;
-     *             console.log("Finish Time:", e.ctx.finish);
+     *             console.log('Duration:', e.ctx.duration);
      *             if (e.ctx.success) {
      *                 // e.ctx.result = resolved data;
      *             } else {
@@ -296,7 +261,7 @@ const $events = {
      *             }
      *         } else {
      *             // this is a task->start event;
-     *             console.log("Start Time:", e.ctx.start);
+     *             console.log('Start Time:', e.ctx.start);
      *         }
      *     }
      * };
@@ -320,18 +285,19 @@ const $events = {
      *
      * The library will suppress any error thrown by the handler and write it into the console.
      *
-     * @param {object} e - Event Context Object.
-     *
-     * This type of object is used by several events. See event {@link event:query query}
-     * for its complete documentation.
+     * @param {EventContext} e
+     * Event Context Object.
      *
      * @example
      *
-     * const options = {
+     * const initOptions = {
+     *
+     *     // pg-promise initialization options...
+     *
      *     transact: e => {
      *         if (e.ctx.finish) {
      *             // this is a transaction->finish event;
-     *             console.log("Finish Time:", e.ctx.finish);
+     *             console.log('Duration:', e.ctx.duration);
      *             if (e.ctx.success) {
      *                 // e.ctx.result = resolved data;
      *             } else {
@@ -339,7 +305,7 @@ const $events = {
      *             }
      *         } else {
      *             // this is a transaction->start event;
-     *             console.log("Start Time:", e.ctx.start);
+     *             console.log('Start Time:', e.ctx.start);
      *         }
      *     }
      * };
@@ -366,20 +332,15 @@ const $events = {
      * @param {*} err
      * The error encountered, of the same value and type as it was reported.
      *
-     * @param {object} e
+     * @param {EventContext} e
      * Event Context Object.
      *
-     * This type of object is used by several events. See event {@link event:query query}
-     * for its complete documentation.
-     *
      * @example
-     * const options = {
+     * const initOptions = {
      *
      *     // pg-promise initialization options...
      *
      *     error: (err, e) => {
-     *
-     *         // e.dc = Database Context
      *
      *         if (e.cn) {
      *             // this is a connection-related error
@@ -398,7 +359,6 @@ const $events = {
      *             // occurred inside a task or transaction
      *         }
      *       }
-     *
      * };
      *
      */
@@ -438,49 +398,55 @@ const $events = {
      *
      * @param {*} dc - Database Context that was used when creating the database object.
      *
+     * @see $[pg-promise-demo]
+     *
      * @example
      *
      * // In the example below we extend the protocol with function `addImage`
      * // that will insert one binary image and resolve with the new record id.
      *
-     * const options = {
+     * const initOptions = {
+     *
+     *     // pg-promise initialization options...
+     *
      *     extend: (obj, dc) => {
-     *         // obj = this;
      *         // dc = database context;
      *         obj.addImage = data => {
-     *             return obj.one("insert into images(data) values($1) returning id", '\\x' + data);
+     *             return obj.one('INSERT INTO images(data) VALUES($1) RETURNING id', data);
      *         }
      *     }
      * };
      *
      * @example
      *
-     * // It is best to extend the protocol by adding whole entity repositories to it
-     * // as shown in the following example.
+     * // It is best to extend the protocol by adding whole entity repositories to it as shown in the following example.
+     * // For a complete example see https://github.com/vitaly-t/pg-promise-demo
      *
      * // Users repository;
      * function repUsers(obj, dc) {
      *     // NOTE: You can change the implementation based on `dc`;
      *     return {
      *         add: (name, active) => {
-     *             return obj.none("insert into users values($1, $2)", [name, active]);
+     *             return obj.none('INSERT INTO users VALUES($1, $2)', [name, active]);
      *         },
-     *         delete: id => obj.none("delete from users where id = $1", id)
+     *         delete: id => obj.none('DELETE FROM users WHERE id = $1', id)
      *     }
      * }
      *
      * // Overriding 'extend' event;
-     * const options = {
+     * const initOptions = {
+     *
+     *     // pg-promise initialization options...
+     *
      *     extend: (obj, dc) => {
-     *         // obj = this;
      *         // dc = database context;
-     *         this.users = repUsers(this, dc);
+     *         obj.users = repUsers(obj, dc);
      *         // You can set different repositories based on `dc`
      *     }
      * };
      *
      * // Usage example:
-     * db.users.add("John", true)
+     * db.users.add('John', true)
      *     .then(() => {
      *         // user added successfully;
      *     })
@@ -524,6 +490,57 @@ const $events = {
 };
 
 module.exports = $events;
+
+/**
+ * @typedef EventContext
+ * @description
+ * This common type is used for the following events: {@link event:query query}, {@link event:receive receive},
+ * {@link event:error error}, {@link event:task task} and {@link event:transact transact}.
+ *
+ * @property {string|object} cn
+ *
+ * Set only for event {@link event:error error}, and only when the error is connection-related.
+ *
+ * It is a safe copy of the connection string/object that was used when initializing `db` - the database instance.
+ *
+ * If the original connection contains a password, the safe copy contains it masked with symbol `#`, so the connection
+ * can be logged safely, without exposing the password.
+ *
+ * @property {*} dc
+ * Database Context that was used when creating the database object (see {@link Database}). It is set for all events.
+ *
+ * @property {string|object} query
+ *
+ * Query string/object that was passed into the query method. This property is only set during events {@link event:query query},
+ * {@link event:receive receive} and {@link event:error error} (only when the error is query-related).
+ *
+ * @property {external:Client} client
+ *
+ * $[pg.Client] object that represents the connection. It is set for all events, except for event {@link event:error error}
+ * when it is connection-related.
+ *
+ * @property {*} params - Formatting parameters for the query.
+ *
+ * It is set only for events {@link event:query query}, {@link event:receive receive} and {@link event:error error}, and only
+ * when it is needed for logging. This library takes an extra step in figuring out when formatting parameters are of any value
+ * to the event logging:
+ * - when an error occurs related to the query formatting, event {@link event:error error} is sent with the property set.
+ * - when initialization parameter `pgFormat` is used, and all query formatting is done within the $[PG] library, events
+ * {@link event:query query} and {@link event:receive receive} will have this property set also, since this library no longer
+ * handles the query formatting.
+ *
+ * When this parameter is not set, it means one of the two things:
+ * - there were no parameters passed into the query method;
+ * - property `query` of this object already contains all the formatting values in it, so logging only the query is sufficient.
+ *
+ * @property {TaskContext} ctx
+ * _Task/Transaction Context_ object.
+ *
+ * This property is always set for events {@link event:task task} and {@link event:transact transact}, while for events
+ * {@link event:query query}, {@link event:receive receive} and {@link event:error error} it is only set when they occur
+ * inside a task or transaction.
+ *
+ */
 </code></pre>
         </article>
     </section>
