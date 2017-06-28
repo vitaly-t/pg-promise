@@ -435,7 +435,8 @@ declare namespace pgPromise {
 
         // these are set in the beginning of each task/transaction:
         readonly context: any
-        readonly parent: ITaskContext
+        readonly parent: ITaskContext | null
+        readonly connected: boolean
         readonly level: number
         readonly isFresh: boolean
         readonly isTX: boolean
@@ -444,13 +445,13 @@ declare namespace pgPromise {
         readonly dc: any
 
         // these are set at the end of each task/transaction:
-        readonly finish: Date
-        readonly duration: number
-        readonly success: boolean
-        readonly result: any
+        readonly finish?: Date
+        readonly duration?: number
+        readonly success?: boolean
+        readonly result?: any
 
         // this exists only inside transactions (isTX = true):
-        readonly txLevel: number
+        readonly txLevel?: number
     }
 
     // Generic Event Context interface;

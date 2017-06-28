@@ -7,6 +7,7 @@ db.task(t => {
     const d: Date = t.ctx.start;
     const duration: number = t.ctx.duration;
     const parentTag = t.ctx.parent.tag;
+    const connected: boolean = t.ctx.connected;
     return t.batch([]);
 });
 
