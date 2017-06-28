@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v6.2.0 or later.
+// Requires pg-promise v6.2.1 or later.
 ////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -430,11 +430,12 @@ declare namespace pgPromise {
     }
 
     // Event context extension for tasks + transactions;
-    // See: http://vitaly-t.github.io/pg-promise/Task.html#ctx
+    // See: http://vitaly-t.github.io/pg-promise/global.html#TaskContext
     interface ITaskContext {
 
         // these are set in the beginning of each task/transaction:
         context: any
+        parent: ITaskContext
         level: number
         isFresh: boolean
         isTX: boolean
@@ -453,7 +454,7 @@ declare namespace pgPromise {
     }
 
     // Generic Event Context interface;
-    // See: http://vitaly-t.github.io/pg-promise/global.html#event:query
+    // See: http://vitaly-t.github.io/pg-promise/global.html#EventContext
     interface IEventContext {
         client: pg.Client
         cn: any

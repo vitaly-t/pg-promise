@@ -1227,6 +1227,12 @@ describe('Transactions', function () {
             expect(result).toEqual([{word: 'Hello'}, {word: 'World!'}]);
             for (let i = 0; i < 10; i++) {
                 expect(ctx[i].tag).toBe(i);
+                if (i) {
+                    expect(ctx[i].parent).not.toBeNull();
+                    expect(ctx[i].parent.tag).toBe(i - 1);
+                } else {
+                    expect(ctx[i].parent).toBeNull();
+                }
             }
             expect(THIS.ctx.level).toBe(9);
             expect(THIS.ctx.txLevel).toBe(9);
@@ -1602,6 +1608,7 @@ describe('Task', function () {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe('Unexpected call outside of task.');
             expect(tsk.ctx.level).toBe(0);
+            expect(tsk.ctx.parent).toBeNull();
         });
     });
 
