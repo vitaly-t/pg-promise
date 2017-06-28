@@ -340,19 +340,19 @@ declare namespace pgPromise {
 
         <T>(cn: string | IConfig, dc?: any): IDatabase<T> & T
 
-        PromiseAdapter: typeof PromiseAdapter
-        PreparedStatement: typeof PreparedStatement
-        ParameterizedQuery: typeof ParameterizedQuery
-        QueryFile: typeof QueryFile
-        queryResult: typeof queryResult
-        minify: typeof pgMinify
-        spex: spexLib.ISpex
-        errors: typeof errors
-        utils: IUtils
-        txMode: ITXMode
-        helpers: IHelpers
-        as: IFormatting
-        pg: typeof pg
+        readonly PromiseAdapter: typeof PromiseAdapter
+        readonly PreparedStatement: typeof PreparedStatement
+        readonly ParameterizedQuery: typeof ParameterizedQuery
+        readonly QueryFile: typeof QueryFile
+        readonly queryResult: typeof queryResult
+        readonly minify: typeof pgMinify
+        readonly spex: spexLib.ISpex
+        readonly errors: typeof errors
+        readonly utils: IUtils
+        readonly txMode: ITXMode
+        readonly helpers: IHelpers
+        readonly as: IFormatting
+        readonly pg: typeof pg
 
         end(): void
     }
@@ -424,7 +424,7 @@ declare namespace pgPromise {
 
     // Database object in connected state;
     interface IConnected<Ext> extends IBaseProtocol<Ext> {
-        client: pg.Client
+        readonly client: pg.Client
 
         done(): void
     }
