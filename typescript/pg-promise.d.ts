@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v6.1.0 or later.
+// Requires pg-promise v6.2.0 or later.
 ////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -435,6 +435,7 @@ declare namespace pgPromise {
 
         // these are set in the beginning of each task/transaction:
         context: any
+        level: number
         isFresh: boolean
         isTX: boolean
         start: Date
@@ -443,8 +444,12 @@ declare namespace pgPromise {
 
         // these are set at the end of each task/transaction:
         finish: Date
+        duration: number
         success: boolean
         result: any
+
+        // this exists only inside transactions (isTX = true):
+        txLevel: number
     }
 
     // Generic Event Context interface;
