@@ -63,7 +63,7 @@ async function getInsertUserId(name) {
 
 We recommend one of the following runtimes or transpilers when using the ES7 async clause:
 * Node.js `7.6` or more recent
-* Typescript `2.1` or more recent
+* TypeScript `2.1` or more recent
 * Babel using `babel-preset-es2017` preset or `babel-plugin-transform-async-to-generator` plugin
 
 ## Single-query alternative

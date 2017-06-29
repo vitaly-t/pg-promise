@@ -1,14 +1,15 @@
 ## PG-PROMISE API
 
-For additional information see the project's [main page] and [WiKi pages].
+See also resources outside of the API:
 
-[main page]:https://github.com/vitaly-t/pg-promise
-[WiKi pages]:https://github.com/vitaly-t/pg-promise/wiki
+* [The library's Main Page](https://github.com/vitaly-t/pg-promise)
+* [The library's WiKi Pages](https://github.com/vitaly-t/pg-promise/wiki)
+* [Popular questions on StackOverflow](https://stackoverflow.com/questions/tagged/pg-promise?sort=votes&pageSize=50) 
 
 ### Main Types
  
 * [Database] - database-level methods and properties
-* [Task](http://vitaly-t.github.io/pg-promise/Task.html) - task-level methods and properties
+* [Task](http://vitaly-t.github.io/pg-promise/Task.html) - extends [Database] with task-level methods and properties
 
 [Database]:http://vitaly-t.github.io/pg-promise/Database.html
 
