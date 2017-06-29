@@ -341,7 +341,7 @@ parameter, without specifying any escaping.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const table = new pgp.helpers.TableName('my-table', 'my-schema');console.log(table);//=> "my-schema"."my-table"// Formatting the type directly:pgp.as.format("SELECT * FROM $1", table);//=> SELECT * FROM "my-schema"."my-table"</code></pre>
+    <pre class="prettyprint"><code>const table = new pgp.helpers.TableName('my-table', 'my-schema');console.log(table);//=> "my-schema"."my-table"// Formatting the type directly:pgp.as.format('SELECT * FROM $1', table);//=> SELECT * FROM "my-schema"."my-table"</code></pre>
 
 
 

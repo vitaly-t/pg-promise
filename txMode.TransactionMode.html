@@ -295,7 +295,7 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const TransactionMode = pgp.txMode.TransactionMode;const isolationLevel = pgp.txMode.isolationLevel;// Create a reusable transaction mode (serializable + read-only + deferrable):const tmSRD = new TransactionMode({    tiLevel: isolationLevel.serializable,    readOnly: true,    deferrable: true});function myTransaction() {    return this.query("SELECT * FROM table");}myTransaction.txMode = tmSRD; // assign transaction mode;db.tx(myTransaction)    .then(() => {        // success;    });// Instead of the default BEGIN, such transaction will initiate with:// BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE</code></pre>
+    <pre class="prettyprint"><code>const TransactionMode = pgp.txMode.TransactionMode;const isolationLevel = pgp.txMode.isolationLevel;// Create a reusable transaction mode (serializable + read-only + deferrable):const tmSRD = new TransactionMode({    tiLevel: isolationLevel.serializable,    readOnly: true,    deferrable: true});const myTransaction = t => {    return t.any('SELECT * FROM table');}myTransaction.txMode = tmSRD; // assign transaction mode;db.tx(myTransaction)    .then(data => {        // success;    })    .catch(error => {        // error    });// Instead of the default BEGIN, such transaction will start with:// BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE</code></pre>
 
 
 
@@ -314,6 +314,180 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
 
     
 
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="begin"><span class="type-signature"></span>begin<span class="signature">(cap<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Returns a complete BEGIN statement, according to all the parameters passed into the class.</p>
+<p>This method is primarily for internal use by the library.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Indicates whether the returned SQL must be capitalized.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="txMode.js.html">txMode.js</a>, <a href="txMode.js.html#line154">line 154</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
     
 
     

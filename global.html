@@ -575,7 +575,7 @@ inside a task or transaction.</p></td>
 
 
 <div class="description">
-    <p>Task/Transaction Context used inside tasks (method <a href="Database.html#task">Database.task</a>) and transactions (method <a href="Database.html#tx">Database.tx</a>).</p>
+    <p>Task/Transaction Context used via property <a href="Task.html#ctx">ctx</a> inside tasks (method <a href="Database.html#task">Database.task</a>) and transactions (method <a href="Database.html#tx">Database.tx</a>).</p>
 <p>Properties <code>context</code>, <code>connected</code>, <code>parent</code>, <code>level</code>, <code>dc</code>, <code>isTX</code>, <code>tag</code>, <code>start</code> and <code>isFresh</code> are set just before the operation has started,
 while properties <code>finish</code>, <code>duration</code>, <code>success</code> and <code>result</code> are set immediately after the operation has finished.</p>
 </div>
@@ -1528,7 +1528,7 @@ with parameter <code>{direct: true}</code>).</p></td>
 
 
 <div class="description">
-    <p>Extends database protocol with custom methods and properties.</p>
+    <p>Extends <a href="Database.html">Database</a> protocol with custom methods and properties.</p>
 <p>Override this event to extend the existing access layer with your own functions and
 properties best suited for your application.</p>
 <p>The extension thus becomes available across all access layers:</p>
@@ -1614,7 +1614,7 @@ if you try overriding them.</p>
 
             
 
-            <td class="description last"><p>Database Context that was used when creating the database object.</p></td>
+            <td class="description last"><p>Database Context that was used when creating the <a href="Database.html">Database</a> object.</p></td>
         </tr>
 
     
@@ -1691,7 +1691,7 @@ if you try overriding them.</p>
     
     <pre class="prettyprint"><code>// In the example below we extend the protocol with function `addImage`// that will insert one binary image and resolve with the new record id.const initOptions = {    // pg-promise initialization options...    extend: (obj, dc) => {        // dc = database context;        obj.addImage = data => {            return obj.one('INSERT INTO images(data) VALUES($1) RETURNING id', data);        }    }};</code></pre>
 
-    <pre class="prettyprint"><code>// It is best to extend the protocol by adding whole entity repositories to it as shown in the following example.// For a complete example see https://github.com/vitaly-t/pg-promise-demo// Users repository;function repUsers(obj, dc) {    // NOTE: You can change the implementation based on `dc`;    return {        add: (name, active) => {            return obj.none('INSERT INTO users VALUES($1, $2)', [name, active]);        },        delete: id => obj.none('DELETE FROM users WHERE id = $1', id)    }}// Overriding 'extend' event;const initOptions = {    // pg-promise initialization options...    extend: (obj, dc) => {        // dc = database context;        obj.users = repUsers(obj, dc);        // You can set different repositories based on `dc`    }};// Usage example:db.users.add('John', true)    .then(() => {        // user added successfully;    })    .catch(error => {        // failed to add the user;    });</code></pre>
+    <pre class="prettyprint"><code>// It is best to extend the protocol by adding whole entity repositories to it as shown in the following example.// For a comprehensive example see https://github.com/vitaly-t/pg-promise-demo// Users repository;function repUsers(obj, dc) {    // NOTE: You can change the implementation based on `dc`;    return {        add: (name, active) => {            return obj.none('INSERT INTO users VALUES($1, $2)', [name, active]);        },        delete: id => obj.none('DELETE FROM users WHERE id = $1', id)    }}// Overriding 'extend' event;const initOptions = {    // pg-promise initialization options...    extend: (obj, dc) => {        // dc = database context;        obj.users = repUsers(obj, dc);        // You can set different repositories based on `dc`    }};// Usage example:db.users.add('John', true)    .then(() => {        // user added successfully;    })    .catch(error => {        // failed to add the user;    });</code></pre>
 
 
 
@@ -2028,7 +2028,7 @@ validation for regular queries, which is executed right after this notification.
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize column names:const initOptions = {    // pg-promise initialization options...    receive: (data, result, e) => {        camelizeColumns(data);    }};function camelizeColumns(data) {    const tmp = data[0];    for (let prop in tmp) {        const camel = pgp.utils.camelize(prop);        if (!(camel in tmp)) {            for (let i = 0; i &lt; data.length; i++) {                const d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
+    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize all column names:const initOptions = {    // pg-promise initialization options...    receive: (data, result, e) => {        camelizeColumns(data);    }};function camelizeColumns(data) {    const tmp = data[0];    for (let prop in tmp) {        const camel = pgp.utils.camelize(prop);        if (!(camel in tmp)) {            for (let i = 0; i &lt; data.length; i++) {                const d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
 
 
 
@@ -2044,7 +2044,7 @@ validation for regular queries, which is executed right after this notification.
 
 
 <div class="description">
-    <p>Global notification of a task start / finish events.</p>
+    <p>Global notification of a task start / finish events, as executed via <a href="Database.html#task">Database.task</a>.</p>
 <p>The library will suppress any error thrown by the handler and write it into the console.</p>
 </div>
 
@@ -2181,7 +2181,7 @@ validation for regular queries, which is executed right after this notification.
 
 
 <div class="description">
-    <p>Global notification of a transaction start / finish events.</p>
+    <p>Global notification of a transaction start / finish events, as executed via <a href="Database.html#tx">Database.tx</a>.</p>
 <p>The library will suppress any error thrown by the handler and write it into the console.</p>
 </div>
 
