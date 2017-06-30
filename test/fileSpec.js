@@ -55,7 +55,7 @@ describe('QueryFile / Positive:', function () {
             schema: 'public',
             table: 'users'
         };
-        const qf = new QueryFile(sqlParams, {minify: true, params: params, noWarnings: true});
+        const qf = new QueryFile(sqlParams, {minify: true, params, noWarnings: true});
         it('must return pre-formatted query', function () {
             expect(qf.query).toBe('SELECT ${column~} FROM "public"."users"');
         });
@@ -67,11 +67,11 @@ describe('QueryFile / Positive:', function () {
             table: 'users',
             column: 'col'
         };
-        const qf1 = new QueryFile(sqlParams, {minify: true, compress: true, params: params, noWarnings: true});
+        const qf1 = new QueryFile(sqlParams, {minify: true, compress: true, params, noWarnings: true});
         it('must return uncompressed replacements by default', function () {
             expect(qf1.query).toBe('SELECT "col" FROM "public"."users"');
         });
-        const qf2 = new QueryFile(sqlParams, {minify: 'after', compress: true, params: params, noWarnings: true});
+        const qf2 = new QueryFile(sqlParams, {minify: 'after', compress: true, params, noWarnings: true});
         it('must return compressed replacements for \'after\'', function () {
             expect(qf2.query).toBe('SELECT"col"FROM"public"."users"');
         });

@@ -39,7 +39,7 @@ describe('ParameterizedQuery', function () {
         it('must get correctly', function () {
             const pq = new pgp.ParameterizedQuery({
                 text: 'original-sql',
-                values: values,
+                values,
                 binary: true,
                 rowMode: 'array'
             });
@@ -52,7 +52,7 @@ describe('ParameterizedQuery', function () {
         it('must keep original object when set to the same value', function () {
             const pq = new pgp.ParameterizedQuery({
                 text: 'original-sql',
-                values: values,
+                values,
                 binary: true,
                 rowMode: 'array'
             });
@@ -68,7 +68,7 @@ describe('ParameterizedQuery', function () {
         it('must create a new object when changed', function () {
             const pq = new pgp.ParameterizedQuery({
                 text: 'original-sql',
-                values: values,
+                values,
                 binary: true,
                 rowMode: 'array'
             });

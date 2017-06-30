@@ -16,6 +16,7 @@
     "no-console": "error",
     "comma-dangle": "error",
     "no-var": "error",
+    "object-shorthand": ["error", "properties"],
     "indent": [
       "error",
       4,

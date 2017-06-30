@@ -140,10 +140,7 @@ describe('Connection', function () {
             errCN.port = 9999;
             dbErr = pgp(errCN);
             options.error = function (err, e) {
-                log = {
-                    err: err,
-                    e: e
-                };
+                log = {err, e};
             };
         });
         describe('using connect()', function () {

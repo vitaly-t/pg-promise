@@ -40,7 +40,7 @@ describe('PreparedStatement', function () {
             const ps = new pgp.PreparedStatement({
                 name: 'original-name',
                 text: 'original-sql',
-                values: values,
+                values,
                 binary: true,
                 rowMode: 'array',
                 rows: 1
@@ -57,7 +57,7 @@ describe('PreparedStatement', function () {
             const ps = new pgp.PreparedStatement({
                 name: 'original-name',
                 text: 'original-sql',
-                values: values,
+                values,
                 binary: true,
                 rowMode: 'array',
                 rows: 1
@@ -77,7 +77,7 @@ describe('PreparedStatement', function () {
             const ps = new pgp.PreparedStatement({
                 name: 'original-name',
                 text: 'original-sql',
-                values: values,
+                values,
                 binary: true,
                 rowMode: 'array',
                 rows: 1
