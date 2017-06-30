@@ -46,7 +46,7 @@
     "spex": "1.2"
   },
   "devDependencies": {
-    "@types/node": "^7.0.32",
+    "@types/node": "^7.0.33",
     "JSONStream": "1.3",
     "bluebird": "3.5",
     "coveralls": "2.11",
@@ -55,6 +55,6 @@
     "jasmine-node": "1.14",
     "jsdoc": "3.4",
     "pg-query-stream": "1.x",
-    "typescript": "2.3"
+    "typescript": "2.4"
   }
 }
