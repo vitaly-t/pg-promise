@@ -146,18 +146,25 @@ const errorMessages = [
  * {@link Database#oneOrNone oneOrNone}, {@link Database#many many}
  *
  */
-class QueryResultError extends Error {
-    constructor(code, result, query, values) {
-        super();
-        Error.captureStackTrace(this, QueryResultError);
-        this.message = errorMessages[code].message;
-        this.code = code;
-        this.result = result;
-        this.query = query;
-        this.values = values;
-        this.received = result.rows.length;
-    }
+function QueryResultError(code, result, query, values) {
+    const temp = Error.apply(this, arguments);
+    temp.name = this.name = 'QueryResultError';
+    this.stack = temp.stack;
+    this.message = errorMessages[code].message;
+    this.code = code;
+    this.result = result;
+    this.query = query;
+    this.values = values;
+    this.received = result.rows.length;
 }
+
+QueryResultError.prototype = Object.create(Error.prototype, {
+    constructor: {
+        value: QueryResultError,
+        writable: true,
+        configurable: true
+    }
+});
 
 /**
  * @method errors.QueryResultError#toString
@@ -194,8 +201,8 @@ QueryResultError.prototype.inspect = function () {
 };
 
 module.exports = {
-    QueryResultError: QueryResultError,
-    queryResultErrorCode: queryResultErrorCode
+    QueryResultError,
+    queryResultErrorCode
 };
 </code></pre>
         </article>

@@ -63,19 +63,26 @@ const npm = {
  *
  * @see ParameterizedQuery
  */
-class ParameterizedQueryError extends Error {
-    constructor(error, ps) {
-        super();
-        Error.captureStackTrace(this, ParameterizedQueryError);
-        if (error instanceof npm.QueryFileError) {
-            this.error = error;
-            this.message = 'Failed to initialize \'text\' from a QueryFile.';
-        } else {
-            this.message = error;
-        }
-        this.result = ps;
+function ParameterizedQueryError(error, ps) {
+    const temp = Error.apply(this, arguments);
+    temp.name = this.name = 'ParameterizedQueryError';
+    this.stack = temp.stack;
+    if (error instanceof npm.QueryFileError) {
+        this.error = error;
+        this.message = 'Failed to initialize \'text\' from a QueryFile.';
+    } else {
+        this.message = error;
     }
+    this.result = ps;
 }
+
+ParameterizedQueryError.prototype = Object.create(Error.prototype, {
+    constructor: {
+        value: ParameterizedQueryError,
+        writable: true,
+        configurable: true
+    }
+});
 
 /**
  * @method errors.ParameterizedQueryError#toString

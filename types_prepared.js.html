@@ -123,8 +123,8 @@ function PreparedStatement(name, text, values) {
 
     let currentError, PS = {}, changed = true;
     const state = {
-        name: name,
-        text: text,
+        name,
+        text,
         binary: undefined,
         rowMode: undefined,
         rows: undefined

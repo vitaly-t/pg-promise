@@ -63,19 +63,26 @@ const npm = {
  *
  * @see PreparedStatement
  */
-class PreparedStatementError extends Error {
-    constructor(error, ps) {
-        super();
-        Error.captureStackTrace(this, PreparedStatementError);
-        if (error instanceof npm.QueryFileError) {
-            this.error = error;
-            this.message = 'Failed to initialize \'text\' from a QueryFile.';
-        } else {
-            this.message = error;
-        }
-        this.result = ps;
+function PreparedStatementError(error, ps) {
+    const temp = Error.apply(this, arguments);
+    temp.name = this.name = 'PreparedStatementError';
+    this.stack = temp.stack;
+    if (error instanceof npm.QueryFileError) {
+        this.error = error;
+        this.message = 'Failed to initialize \'text\' from a QueryFile.';
+    } else {
+        this.message = error;
     }
+    this.result = ps;
 }
+
+PreparedStatementError.prototype = Object.create(Error.prototype, {
+    constructor: {
+        value: PreparedStatementError,
+        writable: true,
+        configurable: true
+    }
+});
 
 /**
  * @method errors.PreparedStatementError#toString

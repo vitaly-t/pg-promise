@@ -573,7 +573,7 @@ function ColumnSet(columns, options) {
 
     function colDesc(column, source) {
         const a = {
-            source: source,
+            source,
             name: column.prop || column.name
         };
         a.exists = a.name in source;
