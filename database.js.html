@@ -62,6 +62,9 @@ const npm = {
  *
  * See also: property `noWarnings` in {@link module:pg-promise Initialization Options}.
  *
+ * Note however, that in special cases you may need to re-create the database object, if its connection pool has been
+ * shut-down externally. And in this case the library won't be showing any warning.
+ *
  * @param {string|object} cn
  * Database connection details, which can be:
  *
@@ -131,10 +134,18 @@ function Database(cn, dc, config) {
 
     const dbThis = this,
         $p = config.promise,
-        poolConnection = typeof cn === 'string' ? {connectionString: cn} : cn;
+        poolConnection = typeof cn === 'string' ? {connectionString: cn} : cn,
+        pool = new config.pgp.pg.Pool(poolConnection),
+        endMethod = pool.end;
 
-    let pool = new config.pgp.pg.Pool(poolConnection);
-    pool.end = pool.end.bind(pool);
+    let destroyed;
+
+    pool.end = cb => {
+        const res = endMethod.call(pool, cb);
+        dbThis.$destroy();
+        return res;
+    };
+
     pool.on('error', onError);
 
     /**
@@ -413,12 +424,13 @@ function Database(cn, dc, config) {
      * Permanently shuts down the database object.
      */
     npm.utils.addReadProp(this, '$destroy', () => {
-        if (pool) {
+        if (!destroyed) {
             if (!pool.pool._draining) {
-                pool.end();
+                endMethod.call(pool);
             }
+            npm.dbPool.unregister(dbThis);
             pool.removeListener('error', onError);
-            pool = null;
+            destroyed = true;
         }
     }, true);
 

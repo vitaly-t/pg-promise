@@ -894,7 +894,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
 <div class="description">
     <p>Shuts down all connection pools currently allocated, so the process can terminate without delay.
 It is available as <code>pgp.end</code>, after initializing the library.</p>
-<p>The library cannot be used after making this call, or every database object will be throwing
+<p>All <a href="Database.html">Database</a> objects created previously can no longer be used, throwing
 <a href="external-Error.html">Error</a> = <code>Connection pool of the database object has been destroyed.</code></p>
 <p>And if you want to shut down only a specific connection pool, you do so via the <a href="Database.html">Database</a>
 object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.html#$pool">Database.$pool</a>).</p>
