@@ -4,16 +4,16 @@
 /* SPAN elements with the classes below are added by prettyprint. */
 /* plain text */
 .pln {
-  color: #4d4d4c; }
+  color: #A9B7C6; }
 
 @media screen {
   /* string content */
   .str {
-    color: #718c00; }
+    color: #6A8759; }
 
   /* a keyword */
   .kwd {
-    color: #8959a8; }
+    color: #CC7832; }
 
   /* a comment */
   .com {
@@ -21,7 +21,7 @@
 
   /* a type name */
   .typ {
-    color: #4271ae; }
+    color: #6897BB; }
 
   /* a literal value */
   .lit {
@@ -29,7 +29,7 @@
 
   /* punctuation */
   .pun {
-    color: #4d4d4c; }
+    color: #A9B7C6; }
 
   /* lisp open bracket */
   .opn {
