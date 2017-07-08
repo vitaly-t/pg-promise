@@ -7,7 +7,7 @@ html {
 }
 
 html, body, section {
-    background-color: #F5F5F5
+    background-color: #F0F0F0;
 }
 
 .prettyprint {
@@ -17,8 +17,8 @@ html, body, section {
 h4.name {
     border-radius: 7px;
     padding: 4px 10px;
-    background-color: #303030;
-    color: Cyan;
+    background-color: rgb(16, 71, 70);
+    color: rgb(136, 191, 190);
     font-size: 24px;
 }
 
@@ -40,12 +40,27 @@ code {
     color: white !important;
 }
 
+.prettyprint code {
+    border-radius: 7px;
+}
+
 code span {
     line-height: 20px;
 }
 
 nav {
-    background-color: #404040;
+    /*background-color: #404040;*/
+
+    background:
+            linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+            linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+            linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+            linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+            linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+            linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
+    background-color: #131313;
+    background-size: 20px 20px;
+
     padding: 10px 20px 20px 20px;
     width: auto;
     top: 0;
