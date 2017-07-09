@@ -551,7 +551,7 @@ inside a task or transaction.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line465">line 465</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line470">line 470</a>
     </li></ul></dd>
     
 
@@ -1689,9 +1689,9 @@ if you try overriding them.</p>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// In the example below we extend the protocol with function `addImage`// that will insert one binary image and resolve with the new record id.const initOptions = {    // pg-promise initialization options...    extend: (obj, dc) => {        // dc = database context;        obj.addImage = data => {            return obj.one('INSERT INTO images(data) VALUES($1) RETURNING id', data);        }    }};</code></pre>
+    <pre class="prettyprint"><code>// In the example below we extend the protocol with function `addImage`// that will insert one binary image and resolve with the new record id.const initOptions = {    // pg-promise initialization options...    extend: (obj, dc) => {        // dc = database context;        obj.addImage = data => {            // adds a new image and resolves with its record id:            return obj.one('INSERT INTO images(data) VALUES($1) RETURNING id', data, a => a.id);        }    }};</code></pre>
 
-    <pre class="prettyprint"><code>// It is best to extend the protocol by adding whole entity repositories to it as shown in the following example.// For a comprehensive example see https://github.com/vitaly-t/pg-promise-demo// Users repository;function repUsers(obj, dc) {    // NOTE: You can change the implementation based on `dc`;    return {        add: (name, active) => {            return obj.none('INSERT INTO users VALUES($1, $2)', [name, active]);        },        delete: id => obj.none('DELETE FROM users WHERE id = $1', id)    }}// Overriding 'extend' event;const initOptions = {    // pg-promise initialization options...    extend: (obj, dc) => {        // dc = database context;        obj.users = repUsers(obj, dc);        // You can set different repositories based on `dc`    }};// Usage example:db.users.add('John', true)    .then(() => {        // user added successfully;    })    .catch(error => {        // failed to add the user;    });</code></pre>
+    <pre class="prettyprint"><code>// It is best to extend the protocol by adding whole entity repositories to it as shown in the following example.// For a comprehensive example see https://github.com/vitaly-t/pg-promise-democlass UsersRepository {    constructor(rep, pgp) {        this.rep = rep;        this.pgp = pgp;    }    add(name) {        return this.rep.one('INSERT INTO users(name) VALUES($1) RETURNING id', name, a => a.id);    }    remove(id) {        return this.rep.none('DELETE FROM users WHERE id = $1', id);    }}// Overriding 'extend' event;const initOptions = {    // pg-promise initialization options...    extend: (obj, dc) => {        // dc = database context;        obj.users = new UsersRepository(obj, pgp);        // You can set different repositories based on `dc`    }};// Usage example:db.users.add('John', true)    .then(id => {        // user added successfully, id = new user's id    })    .catch(error => {        // failed to add the user;    });</code></pre>
 
 
 

@@ -44,9 +44,18 @@
 
 
     <section>
-        <article><h2>PG-PROMISE API</h2><p>See also resources outside of the API:</p>
-<ul>
+        <article><h2>Installing</h2><pre class="prettyprint source"><code>$ npm install pg-promise</code></pre><h2>Initialization</h2><p>Loading and initializing the library with <a href="http://vitaly-t.github.io/pg-promise/module-pg-promise.html">Initialization Options</a>:</p>
+<pre class="prettyprint source lang-js"><code>const initOptions = {/* initialization options */};
+const pgp = require('pg-promise')(initOptions);</code></pre><p>&#8722; or without <a href="http://vitaly-t.github.io/pg-promise/module-pg-promise.html">Initialization Options</a>:</p>
+<pre class="prettyprint source lang-js"><code>const pgp = require('pg-promise')();</code></pre><h2>Database</h2><p>Create your <a href="http://vitaly-t.github.io/pg-promise/Database.html">Database</a> object from the connection details:</p>
+<pre class="prettyprint source lang-js"><code>const db = pgp(connection);</code></pre><p>The <code>connection</code> parameter is either a <a href="https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object">Configuration Object</a> or a <a href="https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#connection-string">Connection String</a>.</p>
+<p>Object <code>db</code> represents the <a href="http://vitaly-t.github.io/pg-promise/Database.html">Database</a> protocol with lazy connection, i.e. only the actual query methods acquire
+and release the connection automatically. Therefore you should create only one global/shared <code>db</code> object per connection details.</p>
+<p>It is best to initialize the library and create <a href="http://vitaly-t.github.io/pg-promise/Database.html">Database</a> in its own module, see <a href="https://stackoverflow.com/questions/34382796/where-should-i-initialize-pg-promise">Where should I initialize pg-promise</a>.</p>
+<h2>Usage</h2><p><a href="https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example">Learn by Example</a> is the best quick-start tutorial. See also the <a href="https://github.com/vitaly-t/pg-promise/wiki">WiKi</a> pages.</p>
+<h2>References</h2><h3>External Resources</h3><ul>
 <li><a href="https://github.com/vitaly-t/pg-promise">The library's Main Page</a></li>
+<li><a href="https://github.com/vitaly-t/pg-promise/tree/master/typescript">TypeScript 2.x</a> declarations for the library</li>
 <li><a href="https://github.com/vitaly-t/pg-promise/wiki">The library's WiKi Pages</a></li>
 <li><a href="https://stackoverflow.com/questions/tagged/pg-promise?sort=votes&amp;pageSize=50">Popular questions on StackOverflow</a> </li>
 </ul>
