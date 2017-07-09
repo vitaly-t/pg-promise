@@ -36,7 +36,7 @@ It is best to initialize the library and create [Database] in its own module, se
 
 ## Usage
 
-[Learn by Example] is the best quick-start tutorial. See also the [WiKi] pages.
+[Learn by Example] is the best quick-start tutorial. For everything else see the [WiKi] pages.
 
 ## References
 
