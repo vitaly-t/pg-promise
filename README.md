@@ -857,3 +857,4 @@ DEALINGS IN THE SOFTWARE.
 [Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
 [spex.sequence]:http://vitaly-t.github.io/spex/global.html#sequence
 [Result]:https://github.com/brianc/node-postgres/blob/master/lib/result.js#L14
+[Official Documentation]:http://vitaly-t.github.io/pg-promise/index.html
