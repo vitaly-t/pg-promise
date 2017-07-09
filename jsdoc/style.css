@@ -42,6 +42,7 @@ code {
 
 .prettyprint code {
     border-radius: 7px;
+    padding: 10px 12px;
 }
 
 code span {

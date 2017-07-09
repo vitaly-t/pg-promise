@@ -21,11 +21,7 @@ pg-promise
 ---
 
 * [About](#about)
-* [Installing](#installing)
-* [Getting Started](#getting-started)
-  - [Initialization](#initialization)
-  - [Database](#database)
-  - [Documentation](#documentation)  
+* [Documentation](#documentation)  
 * [Testing](#testing)    
 * [Usage](#usage)
   - [Queries and Parameters](#queries-and-parameters)
@@ -65,81 +61,17 @@ In addition, the library provides:
 * declarative approach to controlling query results
 * extensive support for external SQL files
 
-# Installing
-```
-$ npm install pg-promise
-```
+# Documentation
 
-# Getting Started
+See the [Official Documentation] to get started.
 
-## Initialization
-
-Loading and initializing the library with [Initialization Options]:
-
-```js
-const initOptions = {/* initialization options */};
-const pgp = require('pg-promise')(initOptions);
-```
-
-&#8722; or without [Initialization Options]:
-
-```js
-const pgp = require('pg-promise')();
-```
- 
-## Database
-
-Create your [Database] object from the connection details:
-
-```js
-const db = pgp(connection);
-```
-
-The `connection` parameter can be any of the following:
-
-* [Configuration Object]
-* [Connection String]
-
-Object `db` represents the [Database] protocol with lazy connection, i.e. only the actual query methods acquire
-and release the connection. You should create only one global/shared `db` object per connection details.
-
-## Documentation
-
-* [Learn by Example] - the quickest way to get started with this library
-* [Protocol API] - all the latest protocol documentation
-* [Wiki Pages](https://github.com/vitaly-t/pg-promise/wiki) - all the documentation references
-* [TypeScript 2.x](https://github.com/vitaly-t/pg-promise/tree/master/typescript) declarations for the library
+Much of the documentation on this page below is either detailing some of the larger aspects of using the library,
+or the older API documentation, due to be refactored out. You should use the [Official Documentation] as the
+most up-to-date source.
 
 # Testing
 
-* Clone the repository (or download, if you prefer):
-```
-$ git clone https://github.com/vitaly-t/pg-promise
-```
-
-* Install the library's DEV dependencies:
-```
-$ npm install
-```
-
-* Make sure all tests can connect to your local test database, using the connection details in
-[test/db/header.js](https://github.com/vitaly-t/pg-promise/blob/master/test/db/header.js).
-Either set up your test database accordingly or change the connection details in that file.
-
-* Initialize the database with some test data:
-```
-$ node test/db/init.js
-```
-
-* To run all tests:
-```
-$ npm test
-```
-
-* To run all tests with coverage:
-```
-$ npm run coverage
-```
+See [Testing](https://github.com/vitaly-t/pg-promise/wiki/Testing) wiki for instructions on how to test this library.
 
 # Usage
 

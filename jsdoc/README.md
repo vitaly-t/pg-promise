@@ -1,8 +1,49 @@
-## PG-PROMISE API
+## Installing
 
-See also resources outside of the API:
+```
+$ npm install pg-promise
+```
+
+## Initialization
+
+Loading and initializing the library with [Initialization Options]:
+
+```js
+const initOptions = {/* initialization options */};
+const pgp = require('pg-promise')(initOptions);
+```
+
+&#8722; or without [Initialization Options]:
+
+```js
+const pgp = require('pg-promise')();
+```
+
+## Database
+
+Create your [Database] object from the connection details:
+
+```js
+const db = pgp(connection);
+```
+
+The `connection` parameter is either a [Configuration Object] or a [Connection String].
+
+Object `db` represents the [Database] protocol with lazy connection, i.e. only the actual query methods acquire
+and release the connection automatically. Therefore you should create only one global/shared `db` object per connection details.
+
+It is best to initialize the library and create [Database] in its own module, see [Where should I initialize pg-promise].
+
+## Usage
+
+[Learn by Example] is the best quick-start tutorial. See also the [WiKi] pages.
+
+## References
+
+### External Resources
 
 * [The library's Main Page](https://github.com/vitaly-t/pg-promise)
+* [TypeScript 2.x](https://github.com/vitaly-t/pg-promise/tree/master/typescript) declarations for the library
 * [The library's WiKi Pages](https://github.com/vitaly-t/pg-promise/wiki)
 * [Popular questions on StackOverflow](https://stackoverflow.com/questions/tagged/pg-promise?sort=votes&pageSize=50) 
 
@@ -62,3 +103,11 @@ See also resources outside of the API:
 [receive]:http://vitaly-t.github.io/pg-promise/global.html#event:receive
 [error]:http://vitaly-t.github.io/pg-promise/global.html#event:error
 [extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
+
+[Configuration Object]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object
+[Connection String]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#connection-string
+[Initialization Options]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html
+[Where should I initialize pg-promise]:https://stackoverflow.com/questions/34382796/where-should-i-initialize-pg-promise
+[Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
+[WiKi]:https://github.com/vitaly-t/pg-promise/wiki
+
