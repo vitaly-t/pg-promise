@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v6.2.1 or later.
+// Requires pg-promise v6.3.3 or later.
 ////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -321,7 +321,7 @@ declare namespace pgPromise {
         readonly $config: ILibConfig<Ext>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#$cn
-        readonly $cn: string | IConfig
+        readonly $cn: string | TConfig
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#$dc
         readonly $dc: any
@@ -331,14 +331,14 @@ declare namespace pgPromise {
         readonly $pool: any
     }
 
-    type IConfig = pg.IConnectionParameters
+    type TConfig = pg.TConnectionParameters
 
     // Post-initialization interface;
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface IMain {
-        (cn: string | IConfig, dc?: any): IDatabase<IEmptyExt>
+        (cn: string | TConfig, dc?: any): IDatabase<IEmptyExt>
 
-        <T>(cn: string | IConfig, dc?: any): IDatabase<T> & T
+        <T>(cn: string | TConfig, dc?: any): IDatabase<T> & T
 
         readonly PromiseAdapter: typeof PromiseAdapter
         readonly PreparedStatement: typeof PreparedStatement

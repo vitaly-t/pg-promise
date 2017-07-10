@@ -3,7 +3,7 @@ import * as pgPromise from '../../typescript/pg-promise';
 const pgp: pgPromise.IMain = pgPromise();
 const db = pgp('connection');
 
-type t = pgPromise.IConfig;
+type t = pgPromise.TConfig;
 let r: t;
 r.application_name = 'hello';
 r.ssl = {

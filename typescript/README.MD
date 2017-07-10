@@ -1,6 +1,6 @@
 ## TypeScript for pg-promise
 
-Complete TypeScript 2.0 declarations for the [pg-promise] module.
+Complete TypeScript 2.x declarations for the [pg-promise] module.
 
 ### Inclusion
 
@@ -12,13 +12,13 @@ Typescript should be able to pick up the definitions without any manual configur
 import {IMain, IDatabase} from 'pg-promise';
 import * as pgPromise from 'pg-promise';
 
-var pgp:IMain = pgPromise({
+const pgp:IMain = pgPromise({
     // Initialization Options
 });
 
-var cn:string = 'postgres://username:password@host:port/database';
+const cn:string = 'postgres://username:password@host:port/database';
 
-var db:IDatabase<any> = pgp(cn);
+const db:IDatabase<any> = pgp(cn);
 ```
 
 Example of compiling into JavaScript:
@@ -47,40 +47,42 @@ interface IExtensions {
 }
 
 // pg-promise initialization options:
-var options = {
+const options = {
     extend: obj => {
         obj.findUser = userId => {
-            return obj.one('SELECT * FROM Users WHERE id=$1', userId);
+            return obj.one('SELECT * FROM Users WHERE id = $1', userId);
         }
     }
 };
 
-var cn = 'postgres://username:password@host:port/database';
+const cn = 'postgres://username:password@host:port/database';
 
 // initializing the library:
-var pgp: IMain = pgPromise(options);
+const pgp: IMain = pgPromise(options);
 
 // database object with extensions:
-var db = <IDatabase<IExtensions>&IExtensions>pgp(cn);
+const db = <IDatabase<IExtensions>&IExtensions>pgp(cn);
 
 // now you can use the extensions everywhere (including tasks and transactions):
 db.findUser(123).then(...);
 ```
 
 Alternatively, you can create the extended `db` object like this:
+
 ```ts
-var db = pgp<IExtensions>(cn);
+const db = pgp<IExtensions>(cn);
 ```
+
 The result is identical, but some IntelliSense implementations may struggle to inspect such type correctly.
 
 And if you want strict initialization options, with inline type casting, you can do this:
 
 ```ts
 // extended initialization:
-var pgp = pgPromise<IExtensions>({
-    extend: obj=> {
-        obj.findUser = userId=> {
-            return obj.one('SELECT * FROM Users WHERE id=$1', userId);
+const pgp = pgPromise<IExtensions>({
+    extend: obj => {
+        obj.findUser = userId => {
+            return obj.one('SELECT * FROM Users WHERE id = $1', userId);
         }
     }
 });

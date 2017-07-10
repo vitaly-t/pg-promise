@@ -23,7 +23,7 @@ import {
     QueryFile,
     PromiseAdapter,
     IDatabase,
-    IConfig,
+    TConfig,
     IMain,
     ITask,
     IBaseProtocol,

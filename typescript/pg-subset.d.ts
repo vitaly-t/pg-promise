@@ -4,7 +4,7 @@
 // Calling it 'pg-subset' to avoid a conflict in case the application also
 // includes the official 'pg' typings.
 //
-// Supported version of pg: 4.3.0 and later.
+// Supported version of pg: 6.3.0 and later.
 //
 // pg: https://github.com/brianc/node-postgres
 //////////////////////////////////////////////////////////////////////////////
@@ -18,7 +18,7 @@ declare namespace pg {
         name: string,
         dataTypeID: number,
 
-        // properties below are not available within Native Bindings:
+        // NOTE: properties below are not available within Native Bindings:
 
         tableID: number,
         columnID: number,
@@ -43,7 +43,7 @@ declare namespace pg {
     // SSL configuration;
     // For property types and documentation see:
     // http://nodejs.org/api/tls.html#tls_tls_connect_options_callback
-    interface ISSLConfig {
+    type TSSLConfig = {
         ca?: string | string[] | Buffer | Buffer[];
         pfx?: string | Buffer;
         cert?: string | string[] | Buffer | Buffer[];
@@ -53,18 +53,30 @@ declare namespace pg {
         NPNProtocols?: string[] | Buffer;
     }
 
-    interface IConnectionParameters {
+    // See:
+    // 1) https://github.com/brianc/node-postgres/blob/master/lib/defaults.js
+    // 2) https://github.com/brianc/node-pg-pool
+    type TConnectionParameters = {
         database?: string;
         user?: string;
         password?: string;
         port?: number;
         host?: string;
-        ssl?: boolean | ISSLConfig;
+        ssl?: boolean | TSSLConfig;
         binary?: boolean;
         client_encoding?: string;
         application_name?: string;
         fallback_application_name?: string;
         isDomainSocket?: boolean;
+        poolSize?: number; // is the same as `max` below
+        max?: number; // replaces `poolSize`
+        min?: number;
+        poolIdleTimeout?: number;
+        reapIntervalMillis?: number;
+        returnToHead?: boolean;
+        poolLog?: boolean | (() => void);
+        parseInputDatesAsUTC?: boolean;
+        rows?: number;
     }
 
     // Interface of 'pg-types' module;
@@ -115,7 +127,7 @@ declare namespace pg {
 
         client_encoding: string,
 
-        ssl: boolean | ISSLConfig,
+        ssl: boolean | TSSLConfig,
 
         application_name?: string,
 
@@ -134,7 +146,7 @@ declare namespace pg {
 
     class Client extends EventEmitter {
 
-        constructor(cn: string | IConnectionParameters);
+        constructor(cn: string | TConnectionParameters);
 
         query: (config: any, values: any, callback: (err: Error, result: IResult) => void) => Query;
 
@@ -144,7 +156,7 @@ declare namespace pg {
         on(event: 'notice', listener: (message: any) => void): this;
         on(event: string, listener: Function): this;
 
-        connectionParameters: IConnectionParameters;
+        connectionParameters: TConnectionParameters;
         database: string;
         user: string;
         password: string;
@@ -155,7 +167,7 @@ declare namespace pg {
 
         queryQueue: Array<Query>;
         binary: boolean;
-        ssl: boolean | ISSLConfig;
+        ssl: boolean | TSSLConfig;
         secretKey: number;
         processID: number;
         encoding: string;
