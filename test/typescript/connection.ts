@@ -22,5 +22,10 @@ db.connect()
 
 db.connect({});
 
-db.connect({direct: true});
-
+db.connect({
+    direct: true,
+    onLost: (err, e) => {
+        e.client.removeListener('notification', () => {
+        })
+    }
+});

@@ -30,8 +30,16 @@ declare namespace pgPromise {
         default?: any
     };
 
+    interface ILostContext {
+        cn: string
+        dc: any
+        start: Date
+        client: pg.Client
+    }
+
     type TConnectionOptions = {
         direct?: boolean
+        onLost?: (err?: any, e?: ILostContext) => void
     };
 
     type TAssignOptions = {
@@ -212,7 +220,7 @@ declare namespace pgPromise {
         toString(): string
     }
 
-    var minify: typeof pgMinify;
+    const minify: typeof pgMinify;
 
     // Query Result Mask;
     // API: http://vitaly-t.github.io/pg-promise/global.html#queryResult
