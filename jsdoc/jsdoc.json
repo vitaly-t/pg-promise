@@ -10,7 +10,7 @@
   },
   "templates": {
     "default": {
-      "layoutFile": "jsdoc/layout.html",
+      "layoutFile": "./jsdoc/layout.html",
       "staticFiles": {
         "include": [
           "./jsdoc/style.css"
@@ -20,6 +20,6 @@
   },
   "plugins": [
     "plugins/markdown",
-    "jsdoc/shortLinks"
+    "./jsdoc/shortLinks"
   ]
 }
