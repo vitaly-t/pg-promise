@@ -1,13 +1,13 @@
 {
   "name": "pg-promise",
-  "version": "6.4.0",
+  "version": "6.3.6",
   "description": "Promises interface for PostgreSQL",
   "main": "lib/index.js",
   "typings": "typescript/pg-promise.d.ts",
   "scripts": {
     "test": "jasmine-node test",
     "test-native": "jasmine-node test --config PG_NATIVE true",
-    "doc": "./node_modules/.bin/jsdoc -c ./jsdoc/jsDoc.json ./jsdoc/README.md -t ./jsdoc/templates/custom",
+    "doc": "./node_modules/.bin/jsdoc -c ./jsdoc/jsdoc.js ./jsdoc/README.md -t ./jsdoc/templates/custom",
     "coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test",
     "travis": "npm run lint && istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test --captureExceptions && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "lint": "./node_modules/.bin/eslint ./lib ./test/*.js ./test/db"
@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "manakin": "0.4",
-    "pg": "^7.0.0",
+    "pg": "^6.4.1",
     "pg-minify": "0.4",
     "spex": "1.2"
   },
