@@ -419,15 +419,15 @@ declare namespace pgPromise {
 
         // Tasks
         // API: http://vitaly-t.github.io/pg-promise/Database.html#task
-        task<T>(cb: (t: ITask<Ext> & Ext) => T): XPromise<T>
+        task<T=any>(cb: (t: ITask<Ext> & Ext) => T): XPromise<T>
 
-        task<T>(tag: any, cb: (t: ITask<Ext> & Ext) => T): XPromise<T>
+        task<T=any>(tag: any, cb: (t: ITask<Ext> & Ext) => T): XPromise<T>
 
         // Transactions
         // API: http://vitaly-t.github.io/pg-promise/Database.html#tx
-        tx<T>(cb: (t: ITask<Ext> & Ext) => T): XPromise<T>
+        tx<T=any>(cb: (t: ITask<Ext> & Ext) => T): XPromise<T>
 
-        tx<T>(tag: any, cb: (t: ITask<Ext> & Ext) => T): XPromise<T>
+        tx<T=any>(tag: any, cb: (t: ITask<Ext> & Ext) => T): XPromise<T>
     }
 
     // Database object in connected state;
