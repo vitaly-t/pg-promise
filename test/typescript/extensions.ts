@@ -42,6 +42,20 @@ dbExt3.task(function (t) {
     return t.findUser(123);
 });
 
+dbExt3.task(t => {
+    return [1, 2, 3];
+})
+    .then(data => {
+        const a: number = data[0];
+    });
+
+dbExt3.tx<number>(t => {
+    return 123;
+})
+    .then(data => {
+        const a: number = data;
+    });
+
 dbExt1.tx(t => {
     return t.findUser(123);
 });

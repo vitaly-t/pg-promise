@@ -377,7 +377,7 @@ declare namespace pgPromise {
     interface IBaseProtocol<Ext> {
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#query
-        query(query: TQuery, values?: any, qrm?: queryResult): XPromise<any>
+        query<T=any>(query: TQuery, values?: any, qrm?: queryResult): XPromise<T>
 
         // result-specific methods;
 
@@ -385,37 +385,37 @@ declare namespace pgPromise {
         none(query: TQuery, values?: any): XPromise<void>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#one
-        one(query: TQuery, values?: any, cb?: (value: any) => any, thisArg?: any): XPromise<any>
+        one<T=any>(query: TQuery, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#oneOrNone
-        oneOrNone(query: TQuery, values?: any, cb?: (value: any) => any, thisArg?: any): XPromise<any>
+        oneOrNone<T=any>(query: TQuery, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#many
-        many(query: TQuery, values?: any): XPromise<IArrayExt<any>>
+        many<T=any>(query: TQuery, values?: any): XPromise<IArrayExt<T>>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#manyOrNone
-        manyOrNone(query: TQuery, values?: any): XPromise<IArrayExt<any>>
+        manyOrNone<T=any>(query: TQuery, values?: any): XPromise<IArrayExt<T>>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#any
-        any(query: TQuery, values?: any): XPromise<IArrayExt<any>>
+        any<T=any>(query: TQuery, values?: any): XPromise<IArrayExt<T>>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#result
-        result(query: TQuery, values?: any, cb?: (value: any) => any, thisArg?: any): XPromise<any>
+        result<T=pg.IResult>(query: TQuery, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#stream
         stream(qs: Object, init: (stream: NodeJS.ReadableStream) => void): XPromise<{ processed: number, duration: number }>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#func
-        func(funcName: string, values?: any, qrm?: queryResult): XPromise<any>
+        func<T=any>(funcName: string, values?: any, qrm?: queryResult): XPromise<T>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#proc
-        proc(procName: string, values?: any, cb?: (value: any) => any, thisArg?: any): XPromise<any>
+        proc<T=any>(procName: string, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#map
-        map(query: TQuery, values: any, cb: (row: any, index: number, data: Array<any>) => any, thisArg?: any): XPromise<IArrayExt<any>>
+        map<T=any>(query: TQuery, values: any, cb: (row: any, index: number, data: Array<any>) => T, thisArg?: any): XPromise<IArrayExt<T>>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#each
-        each(query: TQuery, values: any, cb: (row: any, index: number, data: Array<any>) => void, thisArg?: any): XPromise<IArrayExt<any>>
+        each<T=any>(query: TQuery, values: any, cb: (row: any, index: number, data: Array<any>) => void, thisArg?: any): XPromise<IArrayExt<T>>
 
         // Tasks
         // API: http://vitaly-t.github.io/pg-promise/Database.html#task
