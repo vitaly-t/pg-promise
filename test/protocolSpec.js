@@ -205,6 +205,9 @@ describe('Database Protocol', function () {
             expect(typeof connection.map).toBe('function');
             expect(typeof connection.each).toBe('function');
             expect(typeof connection.done).toBe('function');
+            expect(typeof connection.batch).toBe('function');
+            expect(typeof connection.page).toBe('function');
+            expect(typeof connection.sequence).toBe('function');
             expect(typeof connection.client).toBe('object');
 
             expect('$config' in connection).toBe(false);

@@ -431,7 +431,7 @@ declare namespace pgPromise {
     }
 
     // Database object in connected state;
-    interface IConnected<Ext> extends IBaseProtocol<Ext> {
+    interface IConnected<Ext> extends IBaseProtocol<Ext>, spexLib.ISpexBase {
         readonly client: pg.Client
 
         done(): void

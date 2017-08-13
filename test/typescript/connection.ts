@@ -16,6 +16,11 @@ const db2 = pgp({
 
 db.connect()
     .then(ctx => {
+        ctx.batch([1, 2, 3]);
+        ctx.sequence(index => {
+        });
+        ctx.page(a => {
+        });
         const cn = ctx.client.connectionParameters;
         ctx.done();
     });
