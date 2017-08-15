@@ -14,6 +14,10 @@ const pgpLib = dbHeader.pgpLib;
 const pgp = dbHeader.pgp;
 const db = dbHeader.db;
 
+function dummy() {
+
+}
+
 describe('Library instance', function () {
 
     it('must NOT have property \'pg\'', function () {
@@ -381,66 +385,117 @@ describe('Protocol Extension', function () {
 // are properly tested within the spex library itself.
 describe('spex', function () {
 
-    describe('batch', function () {
-        let result;
-        beforeEach(function (done) {
-            db.task(function () {
-                return this.batch([1, 2]);
-            })
-                .then(function (data) {
-                    result = data;
+    describe('batch', () => {
+        describe('in tasks', () => {
+            let result;
+            beforeEach(done => {
+                db.task(t => {
+                    return t.batch([1, 2]);
                 })
-                .finally(function () {
-                    done();
-                });
+                    .then(data => {
+                        result = data;
+                    })
+                    .finally(done);
+            });
+            it('must work in general', () => {
+                expect(result).toEqual([1, 2]);
+            });
         });
-        it('must work in general', function () {
-            expect(result).toEqual([1, 2]);
+        describe('after connection', () => {
+            let result, sco;
+            beforeEach(done => {
+                db.connect()
+                    .then(obj => {
+                        sco = obj;
+                        return obj.batch([1, 2]);
+                    })
+                    .then(data => {
+                        result = data;
+                        sco.done();
+                    })
+                    .finally(done);
+            });
+            it('must work in general', () => {
+                expect(result).toEqual([1, 2]);
+            });
         });
     });
 
     describe('page', function () {
-        let result;
-        beforeEach(function (done) {
-            function source() {
-            }
-
-            db.task(function () {
-                return this.page(source);
-            })
-                .then(function (data) {
-                    result = data;
+        describe('in tasks', () => {
+            let result;
+            beforeEach(done => {
+                db.task(t => {
+                    return t.page(dummy);
                 })
-                .finally(function () {
-                    done();
-                });
+                    .then(data => {
+                        result = data;
+                    })
+                    .finally(done);
+            });
+            it('must work in general', () => {
+                expect(result && typeof result === 'object').toBe(true);
+                expect(result.pages).toBe(0);
+                expect(result.total).toBe(0);
+            });
         });
-        it('must work in general', function () {
-            expect(result && typeof result === 'object').toBe(true);
-            expect(result.pages).toBe(0);
-            expect(result.total).toBe(0);
+        describe('after connection', () => {
+            let result, sco;
+            beforeEach(done => {
+                db.connect()
+                    .then(obj => {
+                        sco = obj;
+                        return obj.page(dummy);
+                    })
+                    .then(data => {
+                        sco.done();
+                        result = data;
+                    })
+                    .finally(done);
+            });
+            it('must work in general', () => {
+                expect(result && typeof result === 'object').toBe(true);
+                expect(result.pages).toBe(0);
+                expect(result.total).toBe(0);
+            });
         });
     });
 
     describe('sequence', function () {
-        let result;
-        beforeEach(function (done) {
-            function source() {
-            }
-
-            db.task(function () {
-                return this.sequence(source);
-            })
-                .then(function (data) {
-                    result = data;
+        describe('in tasks', () => {
+            let result;
+            beforeEach(done => {
+                db.task(t => {
+                    return t.sequence(dummy);
                 })
-                .finally(function () {
-                    done();
-                });
+                    .then(data => {
+                        result = data;
+                    })
+                    .finally(done);
+            });
+            it('must work in general', () => {
+                expect(result && typeof result === 'object').toBe(true);
+                expect(result.total).toBe(0);
+            });
         });
-        it('must work in general', function () {
-            expect(result && typeof result === 'object').toBe(true);
-            expect(result.total).toBe(0);
+        describe('after connection', () => {
+            let result, sco;
+            beforeEach(done => {
+                db.connect()
+                    .then(obj => {
+                        sco = obj;
+                        return obj.sequence(dummy);
+                    })
+                    .then(data => {
+                        sco.done();
+                        result = data;
+                    })
+                    .finally(done);
+            });
+            it('must work in general', () => {
+                expect(result && typeof result === 'object').toBe(true);
+                expect(result.total).toBe(0);
+            });
         });
     });
 });
