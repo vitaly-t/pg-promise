@@ -1,5 +1,7 @@
 ### Release History
 
+* 6.4.0 Adding methods `batch`, `page` and `sequence` to post-`connect` state. Released: Aug 15, 2017.
+* 6.3.0 Major re-work on handling connectivity issues. Released: July 01, 2017
 * 6.2.0 Extending Task/Transaction context with properties `duration`, `level` and `txLevel`. Released: June 28, 2017.
 * 6.1.0 Switching over to the latest 6.4.0 `node-postgres` driver and its new connection pool. Released: June 25, 2017.
 * 5.9.0 Added support SQL aliases, plus method `ColumnSet.assign`. Released: June 05, 2017.
