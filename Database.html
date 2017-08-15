@@ -344,7 +344,7 @@ depending on the database context.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line331">line 331</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line341">line 341</a>
     </li></ul></dd>
     
 
@@ -438,7 +438,7 @@ depending on the database context.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line298">line 298</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line308">line 308</a>
     </li></ul></dd>
     
 
@@ -517,7 +517,7 @@ depending on the database context.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line345">line 345</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line355">line 355</a>
     </li></ul></dd>
     
 
@@ -602,7 +602,7 @@ to use this <a href="Database.html">Database</a> object, and each query method w
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line359">line 359</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line369">line 369</a>
     </li></ul></dd>
     
 
@@ -806,7 +806,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line677">line 677</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line687">line 687</a>
     </li></ul></dd>
     
 
@@ -1161,6 +1161,7 @@ set up on the connection's <code>client</code> object, you should remove them to
 <li>resolves with the complete <a href="Database.html">Database</a> protocol, extended with:<ul>
 <li>property <code>client</code> of type <a href="external-Client.html">Client</a> that represents the open connection</li>
 <li>method <code>done()</code> that must be called in the end, in order to release the connection</li>
+<li>methods <code>batch</code>, <code>page</code> and <code>sequence</code>, same as inside a <a href="Task.html">Task</a> <strong>(added in v6.4.0)</strong></li>
 </ul>
 </li>
 <li>rejects with a connection-related error when it fails to connect.</li>
@@ -1436,7 +1437,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line988">line 988</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line998">line 998</a>
     </li></ul></dd>
     
 
@@ -1697,7 +1698,7 @@ number of milliseconds it took the client to execute the query.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line817">line 817</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line827">line 827</a>
     </li></ul></dd>
     
 
@@ -1922,7 +1923,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line536">line 536</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line546">line 546</a>
     </li></ul></dd>
     
 
@@ -2148,7 +2149,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line635">line 635</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line645">line 645</a>
     </li></ul></dd>
     
 
@@ -2453,7 +2454,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line881">line 881</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line891">line 891</a>
     </li></ul></dd>
     
 
@@ -2688,7 +2689,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line430">line 430</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line440">line 440</a>
     </li></ul></dd>
     
 
@@ -2982,7 +2983,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line466">line 466</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line476">line 476</a>
     </li></ul></dd>
     
 
@@ -3296,7 +3297,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line573">line 573</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line583">line 583</a>
     </li></ul></dd>
     
 
@@ -3587,7 +3588,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line842">line 842</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line852">line 852</a>
     </li></ul></dd>
     
 
@@ -3862,7 +3863,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line247">line 247</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line257">line 257</a>
     </li></ul></dd>
     
 
@@ -4150,7 +4151,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line720">line 720</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line730">line 730</a>
     </li></ul></dd>
     
 
@@ -4341,7 +4342,7 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line784">line 784</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line794">line 794</a>
     </li></ul></dd>
     
 
@@ -4562,7 +4563,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1063">line 1063</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1073">line 1073</a>
     </li></ul></dd>
     
 
@@ -4792,7 +4793,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1137">line 1137</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1147">line 1147</a>
     </li></ul></dd>
     
 
@@ -4965,7 +4966,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1324">line 1324</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1334">line 1334</a>
     </li></ul></dd>
     
 
