@@ -1,5 +1,6 @@
 ### Release History
 
+* 6.5.0 [Custom Type Formatting] has been refactored (breaking change). Released: Aug 18, 2017.
 * 6.4.0 Adding methods `batch`, `page` and `sequence` to post-`connect` state. Released: Aug 15, 2017.
 * 6.3.0 Major re-work on handling connectivity issues. Released: July 01, 2017
 * 6.2.0 Extending Task/Transaction context with properties `duration`, `level` and `txLevel`. Released: June 28, 2017.
@@ -125,3 +126,5 @@
 [Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
 [spex.sequence]:https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
 [Result]:https://github.com/brianc/node-postgres/blob/master/lib/result.js#L14
+[Custom Type Formatting]:https://github.com/vitaly-t/pg-promise#custom-type-formatting
+
