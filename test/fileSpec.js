@@ -157,6 +157,15 @@ describe('QueryFile / Positive:', function () {
         });
     });
 
+    describe('custom-type formatting', function () {
+        const qf = new QueryFile(sqlSimple, {noWarnings: true});
+        it('must return the full name', function () {
+            expect(qf.toPostgres(qf)).toBe(qf.query);
+            expect(qf.toPostgres.call(null, qf)).toBe(qf.query);
+            expect(qf.toPostgres()).toBe(qf.query);
+        });
+    });
+
     describe('modified file', function () {
         const q1 = 'select 1';
         const q2 = 'select 2';

@@ -14,11 +14,11 @@ let alias = pgp.as.alias('a');
 alias = pgp.as.alias(() => 'a');
 
 class CTF {
-    formatDBType(a: any) {
+    toPostgres(a: any) {
 
     }
 
-    // _rawDBType:boolean;
+    // _rawType:boolean;
 }
 
 const ctf = new CTF();

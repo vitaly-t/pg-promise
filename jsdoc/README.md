@@ -21,13 +21,14 @@ const pgp = require('pg-promise')();
 
 ## Database
 
-Create your [Database] object from the connection details:
+Create your [Database] object from the connection as `pgp(connection, [dc])`:
 
 ```js
 const db = pgp(connection);
 ```
 
-The `connection` parameter is either a [Configuration Object] or a [Connection String].
+* The `connection` parameter is either a [Configuration Object] or a [Connection String].
+* `dc` = Database Context - optional parameter (see [Database] constructor).
 
 Object `db` represents the [Database] protocol with lazy connection, i.e. only the actual query methods acquire
 and release the connection automatically. Therefore you should create only one global/shared `db` object per connection details.

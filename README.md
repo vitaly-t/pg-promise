@@ -350,7 +350,7 @@ returns a formatted string when successful or throws an error when it fails.
 ## Custom Type Formatting
 
 When we pass `values` as a single parameter or inside an array, it is verified to be an object/value
-that supports function `formatDBType`, as either its own or inherited. And if the function exists,
+that supports function `toPostgres`, as either its own or inherited. And if the function exists,
 its return result overrides both the actual value and the formatting syntax for parameter `query`.
 
 This allows usage of your own custom types as formatting parameters for the queries, as well as
@@ -361,37 +361,36 @@ overriding formatting for standard object types, such as `Date` and `Array`.
 ```js
 function Money(m) {
     this.amount = m;
-    this.formatDBType = a => a.amount.toFixed(2);
+    this.toPostgres = a => a.amount.toFixed(2);
 }
 ```
 
 **Example: overriding standard types**
 
 ```js
-Date.prototype.formatDBType = a => a.getTime();
+Date.prototype.toPostgres = a => a.getTime();
 ```
 
-Function `formatDBType` is allowed to return absolutely anything, including:
+Function `toPostgres` is allowed to return absolutely anything, including:
 * instance of another object that supports its own custom formatting;
 * instance of another object that does not have its own custom formatting;
 * another function, with recursion of any depth;
 
-Please note that the return result from `formatDBType` may even affect the
+Please note that the return result from `toPostgres` may even affect the
 formatting syntax expected within parameter `query`, as explained below.
 
-If you pass in `values` as an object that has function `formatDBType`,
-and that function returns an array, then your `query` is expected to use 
-`$1, $2` as the formatting syntax.
+If you pass in `values` as an object that has function `toPostgres`, and that function returns an array,
+then your `query` is expected to use `$1, $2` as the formatting syntax. 
 
-And if `formatDBType` in that case returns a custom-type object that does not support
+And if `toPostgres` in that case returns a custom-type object that does not support
 custom formatting, then `query` will be expected to use `$*propName*` as the formatting syntax.
 
 ### Raw Custom Types
 
 This features allows overriding `raw` flag for the values returned from custom types.
 
-Any custom type or standard type that implements function `formatDBType` can also set
-property `_rawDBType = true` to force raw variable formatting on the returned value.
+Any custom type or standard type that implements function `toPostgres` can also set
+property `_rawType = true` to force raw variable formatting on the returned value.
 
 This makes the custom type formatting ultimately flexible, as there is no limitation
 as to how a custom type can format its value.
@@ -406,18 +405,18 @@ You can implement your own presentation for UUID that does not require extra cas
 ```js  
 function UUID(value) {
     this.uuid = value;
-    this._rawDBType = true; // force raw format on output;
-    this.formatDBType = function () {
+    this._rawType = true; // force raw format on output;
+    this.toPostgres = function () {
         // alternatively, you can set flag
-        // _rawDBType during this call:
-        // this._rawDBType = true;
+        // _rawType during this call:
+        // this._rawType = true;
         return this.uuid;
     };
 }
 ``` 
 
 When you chain one custom-formatting type to return another one, please note that
-setting `_rawDBType` on any level will set the flag for the entire chain.
+setting `_rawType` on any level will set the flag for the entire chain.
 
 ## Query Files
   
