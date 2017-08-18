@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "6.4.0",
+  "version": "6.5.0",
   "description": "Promises interface for PostgreSQL",
   "main": "lib/index.js",
   "typings": "typescript/pg-promise.d.ts",
@@ -40,13 +40,13 @@
     "npm": ">=2.15"
   },
   "dependencies": {
-    "manakin": "~0.4.7",
+    "manakin": "~0.5.1",
     "pg": "~6.4.2",
     "pg-minify": "~0.5.3",
     "spex": "~1.2.0"
   },
   "devDependencies": {
-    "@types/node": "~8.0.22",
+    "@types/node": "~8.0.24",
     "JSONStream": "~1.3.1",
     "bluebird": "~3.5.0",
     "coveralls": "~2.11.16",

@@ -1058,14 +1058,14 @@ describe('Named Parameters', function () {
 describe('Format Modifiers', function () {
 
     function SimpleValue() {
-        this.formatDBType = function () {
+        this.toPostgres = function () {
             return 'hello';
         };
     }
 
     function RawValue() {
-        this._rawDBType = true;
-        this.formatDBType = function () {
+        this._rawType = true;
+        this.toPostgres = function () {
             return 'experiment';
         };
     }
@@ -1093,14 +1093,14 @@ describe('Format Modifiers', function () {
     });
 
     function SimpleArray() {
-        this.formatDBType = function () {
+        this.toPostgres = function () {
             return [1, 'two'];
         };
     }
 
     function RawArray() {
-        this._rawDBType = true;
-        this.formatDBType = function () {
+        this._rawType = true;
+        this.toPostgres = function () {
             return [1, 'two'];
         };
     }
@@ -1135,16 +1135,16 @@ describe('Custom Format', function () {
 
     function MyType1(v) {
         this.value = v;
-        this._rawDBType = true;
-        this.formatDBType = () => {
+        this._rawType = true;
+        this.toPostgres = () => {
             return this.value.toFixed(4);
         };
     }
 
     function MyType2(v) {
         this.value = v;
-        this._rawDBType = true;
-        this.formatDBType = a => a.value.toFixed(2);
+        this._rawType = true;
+        this.toPostgres = a => a.value.toFixed(2);
     }
 
     const test1 = new MyType1(12.3);
@@ -1172,7 +1172,7 @@ describe('Custom Format', function () {
 
     describe('for Date override', function () {
         beforeEach(function () {
-            Date.prototype.formatDBType = () => {
+            Date.prototype.toPostgres = () => {
                 function subLevel() {
                     return this.getFullYear();
                 }
@@ -1185,13 +1185,13 @@ describe('Custom Format', function () {
             expect(pgp.as.format('$1', today)).toBe(today.getFullYear().toString());
         });
         afterEach(function () {
-            delete Date.prototype.formatDBType;
+            delete Date.prototype.toPostgres;
         });
     });
 
     describe('for Array override', function () {
         beforeEach(function () {
-            Array.prototype.formatDBType = () => {
+            Array.prototype.toPostgres = () => {
                 return new MyType1(88); // testing recursive conversion;
             };
         });
@@ -1199,7 +1199,7 @@ describe('Custom Format', function () {
             expect(pgp.as.format('$1^', [1, 2, 3])).toBe('88.0000');
         });
         afterEach(function () {
-            delete Array.prototype.formatDBType;
+            delete Array.prototype.toPostgres;
         });
     });
 
@@ -1209,7 +1209,7 @@ describe('Custom Format', function () {
         };
 
         function CustomFormatter() {
-            this.formatDBType = () => {
+            this.toPostgres = () => {
                 return values;
             };
         }
@@ -1221,7 +1221,7 @@ describe('Custom Format', function () {
 
     describe('with a simple value', function () {
         function SimpleFormatter() {
-            this.formatDBType = () => 'value';
+            this.toPostgres = () => 'value';
         }
 
         it('must return the simple value', function () {
@@ -1232,8 +1232,8 @@ describe('Custom Format', function () {
     describe('raw inheritance/mutation', function () {
         const obj = {
             // raw flag here must apply to every value of the array returned;
-            _rawDBType: true,
-            formatDBType: function () {
+            _rawType: true,
+            toPostgres: function () {
                 return ['first', 'second'];
             }
         };
@@ -1267,7 +1267,7 @@ describe('SQL Names', function () {
 
         function CS(name) {
             this.name = name;
-            this.formatDBType = function () {
+            this.toPostgres = function () {
                 return this.name;
             };
         }

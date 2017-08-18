@@ -1,5 +1,5 @@
 ////////////////////////////////////////
-// Requires pg-promise v6.3.3 or later.
+// Requires pg-promise v6.5.0 or later.
 ////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -603,7 +603,7 @@ declare namespace pgPromise {
     // Custom-Type Formatting object
     // API: https://github.com/vitaly-t/pg-promise#custom-type-formatting
     interface CTFObject {
-        formatDBType: (a: any) => any
+        toPostgres: (a: any) => any
     }
 
     // Query formatting namespace;
