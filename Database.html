@@ -384,8 +384,8 @@ depending on the database context.</p>
 <li><code>promise</code> - generic promise interface that uses <code>promiseLib</code> via 4 basic methods:<ul>
 <li><code>promise((resolve, reject)=&gt;{})</code> - to create a new promise</li>
 <li><code>promise.resolve(value)</code> - to resolve with a value</li>
-<li><code>promise.reject(value)</code> - to reject with a value</li>
-<li><code>promise.all(data)</code> - to resolve an array of promises</li>
+<li><code>promise.reject(reason)</code> - to reject with a reason</li>
+<li><code>promise.all(iterable)</code> - to resolve an iterable list of promises</li>
 </ul>
 </li>
 <li><code>version</code> - this library's version</li>

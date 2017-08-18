@@ -68,9 +68,9 @@ function formatValue(value, fm, cc) {
     }
 
     if (value &amp;&amp; typeof value === 'object') {
-        const ctf = value['formatDBType']; // custom type formatting;
+        const ctf = value.toPostgres; // custom type formatting;
         if (typeof ctf === 'function') {
-            fm |= value._rawDBType ? fmFlags.raw : 0;
+            fm |= value._rawType ? fmFlags.raw : 0;
             return formatValue(resolveFunc(ctf, value), fm, cc);
         }
     }
@@ -258,7 +258,7 @@ function resolveFunc(value, cc) {
 //
 // NOTES:
 // 1. Raw-text values can be injected using syntax: $1^,$2^,... or $*propName^*
-// 2. If 'values' is an object that supports function formatDBType, either its
+// 2. If 'values' is an object that supports function toPostgres, either its
 //    own or inherited, the actual value and the formatting syntax are determined
 //    by the result returned from that function.
 //
@@ -268,9 +268,9 @@ function $formatQuery(query, values, raw, options) {
         throw new TypeError('Parameter \'query\' must be a text string.');
     }
     if (values &amp;&amp; typeof values === 'object') {
-        const ctf = values['formatDBType']; // custom type formatting;
+        const ctf = values.toPostgres; // custom type formatting;
         if (typeof ctf === 'function') {
-            return $formatQuery(query, resolveFunc(ctf, values), raw || values._rawDBType, options);
+            return $formatQuery(query, resolveFunc(ctf, values), raw || values._rawType, options);
         }
         if (values instanceof Array) {
             // $1, $2,... formatting to be applied;
@@ -758,8 +758,8 @@ const $as = {
      * The function will throw an error, if any occurs during formatting.
      */
     format: (query, values, options) => {
-        if (query &amp;&amp; typeof query.formatDBType === 'function') {
-            query = query.formatDBType.call(query, query);
+        if (query &amp;&amp; typeof query.toPostgres === 'function') {
+            query = query.toPostgres.call(query, query);
         }
         return $formatQuery(query, values, false, options);
     }
