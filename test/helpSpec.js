@@ -296,6 +296,7 @@ describe('TableName', function () {
         const t = new helpers.TableName({table: 'table', schema: 'schema'});
         it('must return the full name', function () {
             expect(t.toPostgres(t)).toBe(t.name);
+            expect(t.toPostgres.call(null, t)).toBe(t.name);
             expect(t.toPostgres()).toBe(t.name);
         });
     });

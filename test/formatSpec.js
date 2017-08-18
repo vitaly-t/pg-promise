@@ -874,7 +874,7 @@ describe('Method as.format', function () {
 
         it('must format the type as a parameter', function () {
             const qf = new pgp.QueryFile(sqlSimple, {debug: false, minify: true, noWarnings: true});
-            expect(pgp.as.format('$1', [qf])).toBe('\'select 1;\'');
+            expect(pgp.as.format('$1', [qf])).toBe('select 1;');
             expect(pgp.as.format('$1^', qf)).toBe('select 1;');
             expect(pgp.as.format('$1#', qf)).toBe('select 1;');
         });

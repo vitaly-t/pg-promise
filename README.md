@@ -379,9 +379,8 @@ Function `toPostgres` is allowed to return absolutely anything, including:
 Please note that the return result from `toPostgres` may even affect the
 formatting syntax expected within parameter `query`, as explained below.
 
-If you pass in `values` as an object that has function `toPostgres`,
-and that function returns an array, then your `query` is expected to use 
-`$1, $2` as the formatting syntax.
+If you pass in `values` as an object that has function `toPostgres`, and that function returns an array,
+then your `query` is expected to use `$1, $2` as the formatting syntax. 
 
 And if `toPostgres` in that case returns a custom-type object that does not support
 custom formatting, then `query` will be expected to use `$*propName*` as the formatting syntax.

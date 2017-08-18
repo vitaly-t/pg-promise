@@ -29,8 +29,8 @@ declare namespace pg {
     interface IResult {
         command: string
         rowCount: number
-        rows: Array<any>
-        fields: Array<IColumn>
+        rows: any[]
+        fields: IColumn[]
 
         duration: number // pg-promise extension
 
@@ -83,7 +83,7 @@ declare namespace pg {
     interface ITypes {
         setTypeParser: (oid: number, format: string | ((value: string) => any)) => void
         getTypeParser: (oid: number, format?: string) => any
-        arrayParser: (source: string, transform: (entry: any) => any) => Array<any>
+        arrayParser: (source: string, transform: (entry: any) => any) => any[]
     }
 
     interface IDefaults {
@@ -164,7 +164,7 @@ declare namespace pg {
 
         // properties below are not available within Native Bindings:
 
-        queryQueue: Array<Query>;
+        queryQueue: Query[];
         binary: boolean;
         ssl: boolean | TSSLConfig;
         secretKey: number;
