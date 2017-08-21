@@ -1131,7 +1131,7 @@ describe('Format Modifiers', function () {
     });
 });
 
-describe('Custom Format', function () {
+describe('Custom Type Formatting', function () {
 
     function MyType1(v) {
         this.value = v;
@@ -1239,6 +1239,32 @@ describe('Custom Format', function () {
         };
         it('must work', function () {
             expect(pgp.as.format('$1, $2', obj)).toBe('first, second');
+        });
+    });
+
+    describe('for simple type', () => {
+        it('Boolean', () => {
+            Boolean.prototype.toPostgres = self => self + 1;
+            const a = true;
+            expect(pgp.as.format('$1', a)).toBe('2');
+            expect(pgp.as.format('$1', [a])).toBe('2');
+            delete Boolean.prototype.toPostgres;
+        });
+        it('Number', () => {
+            const a = 2;
+            Number.prototype.toPostgres = self => (self + 3).toString();
+            Number.prototype._rawType = true;
+            expect(pgp.as.format('$1', a)).toBe('5');
+            expect(pgp.as.format('$1', [a])).toBe('5');
+            delete Number.prototype.toPostgres;
+            delete Number.prototype._rawType;
+        });
+        it('String', () => {
+            const a = 'true';
+            String.prototype.toPostgres = self => self === 'true' ? true : self;
+            expect(pgp.as.format('$1', a)).toBe('true');
+            expect(pgp.as.format('$1', [a])).toBe('true');
+            delete String.prototype.toPostgres;
         });
     });
 });
