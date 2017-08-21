@@ -352,10 +352,10 @@ returns a formatted string when successful or throws an error when it fails.
 
 ---
 
-When a formatting value is an object that has function `toPostgres`, it supports _Custom Type Formatting_. 
+Any value/object that has function `toPostgres` makes use of the _Custom Type Formatting_.
 
-Query-formatting engine then calls `toPostgres` to get the actual value, passing it the object via `this`,
-and as a single parameter (in case `toPostgres` is an ES6 arrow function):
+Query-formatting engine then calls `toPostgres` to get the actual value, passing it the object via `this`, and as a single parameter
+(in case `toPostgres` is an ES6 arrow function):
 
 ```js
 const obj = {
