@@ -352,11 +352,10 @@ returns a formatted string when successful or throws an error when it fails.
 
 ---
 
-When a formatting value is an object that has function `toPostgres`, as its own or inherited, the object thus provides its own
-_Custom Type Formatting_. 
+When a formatting value is an object that has function `toPostgres`, it supports _Custom Type Formatting_. 
 
-Query-formatting engine invokes the function to get the actual value to be injected into the query, passing it the object
-via `this`, and as a single parameter (in case `toPostgres` is an ES6 arrow function):
+Query-formatting engine then calls `toPostgres` to get the actual value, passing it the object via `this`,
+and as a single parameter (in case `toPostgres` is an ES6 arrow function):
 
 ```js
 const obj = {
@@ -368,8 +367,9 @@ const obj = {
 }
 ```
 
-The actual value returned from `toPostgres` is then formatted/escaped according to its JavaScript type, unless the object contains
-property `_rawType` set to a truthy value, in which case the returned value is assumed to be pre-formatted/pre-escaped, and thus injected directly.
+The actual value returned from `toPostgres` is formatted/escaped according to its JavaScript type, unless the object contains
+property `_rawType` set to a truthy value, in which case the returned value is assumed to be pre-formatted, and thus injected directly,
+as a raw value.
 
 Example below implements a class that auto-formats `ST_MakePoint` from coordinates:
 
@@ -380,18 +380,18 @@ function STPoint(x, y) {
 }
 ```
 
-With this class, you can use formatting values as `new STPoint(12, 34)` to be injected correctly.  
+With this class you can use `new STPoint(12, 34)` as a formatting value that will be injected correctly.  
 
-You can also override formatting for standard types:
+You can also use _Custom Type Formatting_ to override any standard type:
 
 ```js
 Date.prototype.toPostgres = a => a.getTime();
 ```
 
-Function `toPostgres` is allowed to return absolutely anything, including:
+Function `toPostgres` can return anything, including:
 
-* instance of another object that does its own custom formatting
-* instance of another object without its own custom formatting
+* instance of another object that implements its own `toPostgres`
+* instance of a regular object, one without `toPostgres` in it
 * another function, with recursion of any depth
 
 ## Query Files
