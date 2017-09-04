@@ -3926,7 +3926,7 @@ number of milliseconds it took the client to execute the query.</p>
 
 <div class="description">
     <p>Executes a query without any expectation for the return data, to resolve with the
-original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L14">Result</a> object when successful.</p>
+original <a href="https://node-postgres.com/api/result">Result</a> object when successful.</p>
 </div>
 
 
@@ -4180,7 +4180,7 @@ When specified, the return value replaces the original resolved value.</p>
 <div class="param-desc">
     <p>A promise object that represents the query result:</p>
 <ul>
-<li>resolves with the original <a href="https://github.com/brianc/node-postgres/blob/master/lib/result.js#L14">Result</a> object, extended with property <code>duration</code> -
+<li>resolves with the original <a href="https://node-postgres.com/api/result">Result</a> object, extended with property <code>duration</code> -
 number of milliseconds it took the client to execute the query.</li>
 <li>resolves with the new value, if transformation callback <code>cb</code> was specified.</li>
 </ul>
@@ -4224,7 +4224,7 @@ number of milliseconds it took the client to execute the query.</li>
 
 <div class="description">
     <p>Custom data streaming, with the help of <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a>.</p>
-<p>This method doesn't work with the <a href="https://github.com/brianc/node-postgres#native-bindings">Native Bindings</a>, and if option <code>pgNative</code>
+<p>This method doesn't work with the <a href="https://node-postgres.com/features/native">Native Bindings</a>, and if option <code>pgNative</code>
 is set, it will reject with <code>Streaming doesn't work with Native Bindings.</code></p>
 </div>
 

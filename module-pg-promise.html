@@ -218,7 +218,7 @@ that this library implements.</p>
                 </td>
             
 
-            <td class="description last"><p>Use <a href="https://github.com/brianc/node-postgres#native-bindings">Native Bindings</a>. Library <a href="https://github.com/brianc/node-pg-native">pg-native</a> must be included and installed independently, or else there will
+            <td class="description last"><p>Use <a href="https://node-postgres.com/features/native">Native Bindings</a>. Library <a href="https://github.com/brianc/node-pg-native">pg-native</a> must be included and installed independently, or else there will
 be an error thrown: <a href="external-Error.html">Error</a> = <code>Failed to initialize Native Bindings.</code></p>
 <p>This is a static option (can only be set prior to initialization).</p></td>
         </tr>
@@ -1271,7 +1271,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     <p>Instance of the <a href="https://github.com/brianc/node-postgres">pg</a> library that's being used, depending on initialization option <code>pgNative</code>:</p>
 <ul>
 <li>regular <code>pg</code> module instance, without option <code>pgNative</code>, or equal to <code>false</code> (default)</li>
-<li><code>pg</code> module instance with <a href="https://github.com/brianc/node-postgres#native-bindings">Native Bindings</a>, if option <code>pgNative</code> was set.</li>
+<li><code>pg</code> module instance with <a href="https://node-postgres.com/features/native">Native Bindings</a>, if option <code>pgNative</code> was set.</li>
 </ul>
 <p>Available as <code>pgp.pg</code>, after initializing the library.</p>
 </div>
