@@ -98,7 +98,7 @@
 [ParameterizedQuery]:http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
 [Database]:http://vitaly-t.github.io/pg-promise/Database.html
 [QueryResultError]:http://vitaly-t.github.io/pg-promise/QueryResultError.html
-[Native Bindings]:https://github.com/brianc/node-postgres#native-bindings
+[Native Bindings]:https://node-postgres.com/features/native
 [Initialization Options]:#advanced
 [pgp.as]:http://vitaly-t.github.io/pg-promise/formatting.html
 [as.value]:http://vitaly-t.github.io/pg-promise/formatting.html#.value
@@ -125,6 +125,6 @@
 [Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
 [Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
 [spex.sequence]:https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
-[Result]:https://github.com/brianc/node-postgres/blob/master/lib/result.js#L14
+[Result]:https://node-postgres.com/api/result
 [Custom Type Formatting]:https://github.com/vitaly-t/pg-promise#custom-type-formatting
 

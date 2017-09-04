@@ -758,7 +758,7 @@ mostly needed by smaller and simplified [Conformant Implementations](https://pro
 When exiting your application, you can optionally call [pgp.end]:
 
 ```js
-pgp.end(); // shut down all connection pools
+pgp.end(); // shuts down all connection pools
 ```
 
 This will release all connection pools, to make sure the process can terminate without any delay.
@@ -801,7 +801,7 @@ DEALINGS IN THE SOFTWARE.
 [ParameterizedQuery]:http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
 [Database]:http://vitaly-t.github.io/pg-promise/Database.html
 [QueryResultError]:http://vitaly-t.github.io/pg-promise/QueryResultError.html
-[Native Bindings]:https://github.com/brianc/node-postgres#native-bindings
+[Native Bindings]:https://node-postgres.com/features/native
 [Initialization Options]:#advanced
 [pgp.end]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
 [pgp.as]:http://vitaly-t.github.io/pg-promise/formatting.html
@@ -831,5 +831,5 @@ DEALINGS IN THE SOFTWARE.
 [Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
 [Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
 [spex.sequence]:http://vitaly-t.github.io/spex/global.html#sequence
-[Result]:https://github.com/brianc/node-postgres/blob/master/lib/result.js#L14
+[Result]:https://node-postgres.com/api/result
 [Official Documentation]:http://vitaly-t.github.io/pg-promise/index.html
