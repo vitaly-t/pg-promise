@@ -22,7 +22,7 @@ pg-promise
 
 * [About](#about)
 * [Documentation](#documentation)  
-* [Testing](#testing)    
+* [Contributing](#contributing)    
 * [Usage](#usage)
   - [Queries and Parameters](#queries-and-parameters)
     - [SQL Names](#sql-names)  
@@ -68,9 +68,9 @@ Much of the documentation on this page below is either detailing some of the lar
 or the older API documentation, due to be refactored out. You should use the [Official Documentation] as the
 most up-to-date source.
 
-# Testing
+# Contributing
 
-See [Testing](https://github.com/vitaly-t/pg-promise/wiki/Testing) wiki for instructions on how to test this library.
+Please read the [Contribution Notes](https://github.com/vitaly-t/pg-promise/blob/master/CONTRIBUTING.md) before opening any new issue or PR.
 
 # Usage
 
