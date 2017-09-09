@@ -5,9 +5,9 @@ Please take your time reading through this short document, if you want to get pr
 
 ---
 
-At the time of writing this document, most of the new questions or issues are repeated.
+At the time of writing this document, most of the new questions or issues appear to be repeated.
 
-Please search through the following before opening any new issue or re-asking the same question:
+Please search through the following before opening any new issue or asking a question:
 
 * [List of all existing issues](https://github.com/vitaly-t/pg-promise/issues?q=is%3Aissue+is%3Aclosed)
 * [Questions on StackOverflow](https://stackoverflow.com/questions/tagged/pg-promise)
