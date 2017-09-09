@@ -20,7 +20,7 @@ If your question/issue is not covered by any of the resources above, you should 
 * [Project's Issues](https://github.com/vitaly-t/pg-promise/issues), if you think that you have found a bug.
 
 The author is no longer answering generic questions within [the chat](https://gitter.im/vitaly-t/pg-promise?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge),
-as those are not saved anywhere, and not searchable afterwards.  
+as those are neither saved no searchable.  
 
 Please do not email me any questions related to the library usage, I do not answer those, as I do not do any support via email.
 
