@@ -24,4 +24,4 @@ as those are neither saved no searchable.
 
 Please do not email me any questions related to the library usage, I do not answer those, as I do not do any support via email.
 
-See the [Testing](https://github.com/vitaly-t/pg-promise/wiki/Testing) page for instructions on how to test PR-s for this library.
+Before creating a PR, see the [Testing](https://github.com/vitaly-t/pg-promise/wiki/Testing) page for instructions on how to test the library locally.
