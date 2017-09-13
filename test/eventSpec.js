@@ -380,7 +380,7 @@ describe('Error event', function () {
 
     describe('for loose query requests', function () {
         let error, r, context, counter = 0;
-        const msg = 'Loose request outside an expired connection.';
+        const msg = 'Querying against a released or lost connection.';
         beforeEach(function (done) {
             options.error = function (err, e) {
                 counter++;
@@ -420,7 +420,7 @@ describe('Error event', function () {
     if (!options.pgNative) {
         describe('for loose stream requests', function () {
             let error, r, context, counter = 0;
-            const msg = 'Loose request outside an expired connection.';
+            const msg = 'Querying against a released or lost connection.';
             beforeEach(function (done) {
                 options.error = function (err, e) {
                     counter++;

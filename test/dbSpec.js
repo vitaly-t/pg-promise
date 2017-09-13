@@ -1053,7 +1053,7 @@ describe('Transactions', function () {
         });
         it('must throw an error on any query request', function () {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Unexpected call outside of transaction.');
+            expect(error.message).toBe('Querying against a released or lost connection.');
         });
     });
 
@@ -1605,7 +1605,7 @@ describe('Task', function () {
         });
         it('must throw an error on any query request', function () {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Unexpected call outside of task.');
+            expect(error.message).toBe('Querying against a released or lost connection.');
             expect(tsk.ctx.level).toBe(0);
             expect(tsk.ctx.parent).toBeNull();
             expect(tsk.ctx.connected).toBe(true);
