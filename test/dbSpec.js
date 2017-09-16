@@ -19,7 +19,7 @@ function dummy() {
 const $errors = {
     func: 'Invalid function name.',
     query: 'Invalid query format.',
-    emptyQuery: 'Empty or undefined query.',
+    invalidQuery: 'Invalid query format.',
     notEmpty: 'No return data was expected.',
     noData: 'No data returned from the query.',
     multiple: 'Multiple rows were not expected.'
@@ -913,12 +913,12 @@ describe('Executing method query', function () {
         }, 'Query timed out', 5000);
         runs(function () {
             expect(result.length).toBe(6);
-            expect(result[0].message).toBe($errors.emptyQuery); // reject to an undefined query;
-            expect(result[1].message).toBe($errors.emptyQuery); // reject to an empty-string query;
+            expect(result[0].message).toBe($errors.invalidQuery); // reject to an undefined query;
+            expect(result[1].message).toBe($errors.invalidQuery); // reject to an empty-string query;
             expect(result[2].message).toBe($errors.query); // reject to a white-space query string;
             expect(result[3].message).toBe($errors.query); // reject for an empty object;
             expect(result[4].message).toBe($errors.query); // reject to an invalid-type query;
-            expect(result[5].message).toBe($errors.emptyQuery); // reject to a null query;
+            expect(result[5].message).toBe($errors.invalidQuery); // reject to a null query;
         });
     });
 

@@ -171,7 +171,7 @@ describe('Database Protocol', function () {
         expect(typeof db.$config.$npm).toBe('object');
         expect(db.$cn).toBe(dbHeader.cn);
         expect('$dc' in db).toBe(true);
-        expect(db.$pool instanceof db.$config.pgp.pg.Pool).toBe(true);
+        expect(db.$pool && db.$pool.constructor && db.$pool.constructor.name).toBe('Pool');
     });
 
     describe('on connection level', function () {
