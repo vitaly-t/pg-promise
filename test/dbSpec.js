@@ -16,14 +16,7 @@ function dummy() {
     // dummy/empty function;
 }
 
-const $errors = {
-    func: 'Invalid function name.',
-    query: 'Invalid query format.',
-    emptyQuery: 'Empty or undefined query.',
-    notEmpty: 'No return data was expected.',
-    noData: 'No data returned from the query.',
-    multiple: 'Multiple rows were not expected.'
-};
+const $text = require('../lib/text');
 
 describe('Database Instantiation', function () {
     it('must throw an invalid connection passed', function () {
@@ -228,7 +221,7 @@ describe('Connection', function () {
                 });
         });
         it('must be reported into the console', function () {
-            expect(txt).toContain('Abnormal client.end() call, due to invalid code or failed server connection.');
+            expect(txt).toContain($text.clientEnd);
         });
     });
 
@@ -318,7 +311,7 @@ describe('Connection', function () {
         });
         it('must throw the right error', function () {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Cannot invoke done() on a disconnected client.');
+            expect(error.message).toBe($text.doneDisconnected);
         });
     });
 
@@ -342,7 +335,7 @@ describe('Connection', function () {
         });
         it('must throw the right error', function () {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Cannot execute a query on a disconnected client.');
+            expect(error.message).toBe($text.queryDisconnected);
         });
     });
 
@@ -358,7 +351,7 @@ describe('Connection', function () {
                 });
         });
         it('must be handled', () => {
-            expect(error).toEqual(new Error('Connection pool of the database object has been destroyed.'));
+            expect(error).toEqual(new Error($text.poolDestroyed));
         });
     });
 });
@@ -392,7 +385,7 @@ describe('Direct Connection', function () {
                 });
         });
         it('must be reported into the console', function () {
-            expect(txt).toContain('Abnormal client.end() call, due to invalid code or failed server connection.');
+            expect(txt).toContain($text.clientEnd);
         });
     });
 
@@ -637,7 +630,7 @@ describe('Method \'none\'', function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.toString(1) != error.inspect()).toBe(true);
-            expect(error.message).toBe($errors.notEmpty);
+            expect(error.message).toBe($text.notEmpty);
         });
     });
 
@@ -699,7 +692,7 @@ describe('Method \'one\'', function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe($errors.noData);
+            expect(error.message).toBe($text.noData);
         });
     });
 
@@ -719,7 +712,7 @@ describe('Method \'one\'', function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe($errors.multiple);
+            expect(error.message).toBe($text.multiple);
         });
     });
 });
@@ -799,7 +792,7 @@ describe('Method \'oneOrNone\'', function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe($errors.multiple);
+            expect(error.message).toBe($text.multiple);
         });
     });
 
@@ -842,7 +835,7 @@ describe('Method \'many\'', function () {
         runs(function () {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe($errors.noData);
+            expect(error.message).toBe($text.noData);
         });
     });
 
@@ -913,12 +906,12 @@ describe('Executing method query', function () {
         }, 'Query timed out', 5000);
         runs(function () {
             expect(result.length).toBe(6);
-            expect(result[0].message).toBe($errors.emptyQuery); // reject to an undefined query;
-            expect(result[1].message).toBe($errors.emptyQuery); // reject to an empty-string query;
-            expect(result[2].message).toBe($errors.query); // reject to a white-space query string;
-            expect(result[3].message).toBe($errors.query); // reject for an empty object;
-            expect(result[4].message).toBe($errors.query); // reject to an invalid-type query;
-            expect(result[5].message).toBe($errors.emptyQuery); // reject to a null query;
+            expect(result[0].message).toBe($text.invalidQuery); // reject to an undefined query;
+            expect(result[1].message).toBe($text.invalidQuery); // reject to an empty-string query;
+            expect(result[2].message).toBe($text.invalidQuery); // reject to a white-space query string;
+            expect(result[3].message).toBe($text.invalidQuery); // reject for an empty object;
+            expect(result[4].message).toBe($text.invalidQuery); // reject to an invalid-type query;
+            expect(result[5].message).toBe($text.invalidQuery); // reject to a null query;
         });
     });
 
@@ -1053,7 +1046,7 @@ describe('Transactions', function () {
         });
         it('must throw an error on any query request', function () {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Querying against a released or lost connection.');
+            expect(error.message).toBe($text.looseQuery);
         });
     });
 
@@ -1257,7 +1250,7 @@ describe('Return data from a query must match the request type', function () {
         });
         it('method \'none\' must return an error', function () {
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe($errors.notEmpty);
+            expect(error.message).toBe($text.notEmpty);
         });
     });
 
@@ -1276,7 +1269,7 @@ describe('Return data from a query must match the request type', function () {
         runs(function () {
             expect(result).toBeNull();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe($errors.noData);
+            expect(error.message).toBe($text.noData);
         });
     });
 
@@ -1295,7 +1288,7 @@ describe('Return data from a query must match the request type', function () {
         runs(function () {
             expect(result).toBeNull();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe($errors.multiple);
+            expect(error.message).toBe($text.multiple);
         });
     });
 
@@ -1577,7 +1570,7 @@ describe('Querying a function', function () {
             expect(result.length).toBe(8);
             for (let i = 0; i < result.length; i++) {
                 expect(result[i] instanceof Error).toBe(true);
-                expect(result[i].message).toBe($errors.func);
+                expect(result[i].message).toBe($text.invalidFunction);
             }
         });
     });
@@ -1605,7 +1598,7 @@ describe('Task', function () {
         });
         it('must throw an error on any query request', function () {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Querying against a released or lost connection.');
+            expect(error.message).toBe($text.looseQuery);
             expect(tsk.ctx.level).toBe(0);
             expect(tsk.ctx.parent).toBeNull();
             expect(tsk.ctx.connected).toBe(true);
@@ -1793,6 +1786,24 @@ describe('negative query formatting', function () {
     });
 
 });
+
+describe('Multi-result queries', () => {
+    let result;
+    beforeEach(done => {
+        db.one('select 1 as one;select 2 as two')
+            .then(data => {
+                result = data;
+                done();
+            })
+            .catch(() => {
+                done();
+            });
+    });
+    it('must return the first result', () => {
+        expect(result).toEqual({two: 2});
+    });
+});
+
 
 if (jasmine.Runner) {
     const _finishCallback = jasmine.Runner.prototype.finishCallback;

@@ -38,7 +38,6 @@ function main(options, dc) {
         pgpLib, cn,
         pgp: pgpLib(options)
     };
-    result.pgp.pg.setMaxListeners(100);
     result.db = result.pgp(cn, dc);
     return result;
 }
