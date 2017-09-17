@@ -20,10 +20,7 @@ const dbHeader = header(options, testDC);
 const pgp = dbHeader.pgp;
 const db = dbHeader.db;
 
-const $errors = {
-    notEmpty: 'No return data was expected.',
-    invalidQuery: 'Invalid query format.'
-};
+const $text = require('../lib/text');
 
 // empty function;
 const dummy = function () {
@@ -270,7 +267,7 @@ describe('Error event', function () {
         });
         it('must fail correctly', function () {
             expect(error instanceof TypeError).toBe(true);
-            expect(error.message).toBe($errors.invalidQuery);
+            expect(error.message).toBe($text.invalidQuery);
             expect(context.params).toBeUndefined();
             if (!options.pgNative) {
                 expect(context.client instanceof pgClient).toBe(true);
@@ -347,7 +344,7 @@ describe('Error event', function () {
         });
         it('must reject with correct error', function () {
             expect(errTxt instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(errTxt.message).toBe($errors.notEmpty);
+            expect(errTxt.message).toBe($text.notEmpty);
             expect(context.query).toBe('select * from users');
             expect(context.params).toBeUndefined();
             if (!options.pgNative) {
@@ -385,7 +382,6 @@ describe('Error event', function () {
 
     describe('for loose query requests', function () {
         let error, r, context, counter = 0;
-        const msg = 'Querying against a released or lost connection.';
         beforeEach(function (done) {
             options.error = function (err, e) {
                 counter++;
@@ -412,9 +408,9 @@ describe('Error event', function () {
         });
         it('must notify with correct error', function () {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe(msg);
+            expect(error.message).toBe($text.looseQuery);
             expect(r instanceof Error).toBe(true);
-            expect(r.message).toBe(msg);
+            expect(r.message).toBe($text.looseQuery);
             expect(context.query).toBe('select * from users where(false)');
             expect(context.client).toBeUndefined();
             expect(context.params).toBeUndefined();
@@ -425,7 +421,6 @@ describe('Error event', function () {
     if (!options.pgNative) {
         describe('for loose stream requests', function () {
             let error, r, context, counter = 0;
-            const msg = 'Querying against a released or lost connection.';
             beforeEach(function (done) {
                 options.error = function (err, e) {
                     counter++;
@@ -456,8 +451,8 @@ describe('Error event', function () {
             it('must notify with correct error', function () {
                 expect(error instanceof Error).toBe(true);
                 expect(r instanceof Error).toBe(true);
-                expect(error.message).toBe(msg);
-                expect(r.message).toBe(msg);
+                expect(error.message).toBe($text.looseQuery);
+                expect(r.message).toBe($text.looseQuery);
                 expect(context.query).toBe('select $1::int');
                 expect(context.client).toBeUndefined();
                 expect(context.params).toEqual(['123']);
@@ -687,7 +682,7 @@ describe('pgFormatting', function () {
                 expect(err.length).toBe(4);
                 for (let i = 0; i < 4; i++) {
                     expect(err[i] instanceof TypeError).toBe(true);
-                    expect(err[i].message).toBe($errors.invalidQuery);
+                    expect(err[i].message).toBe($text.invalidQuery);
                 }
             }
         });
