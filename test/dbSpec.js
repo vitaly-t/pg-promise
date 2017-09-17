@@ -1794,6 +1794,24 @@ describe('negative query formatting', function () {
 
 });
 
+describe('Multi-result queries', () => {
+    let result;
+    beforeEach(done => {
+        db.one('select 1 as one;select 2 as two')
+            .then(data => {
+                result = data;
+                done();
+            })
+            .catch(() => {
+                done();
+            });
+    });
+    it('must return the first result', () => {
+        expect(result).toEqual({two: 2});
+    });
+});
+
+
 if (jasmine.Runner) {
     const _finishCallback = jasmine.Runner.prototype.finishCallback;
     jasmine.Runner.prototype.finishCallback = function () {
