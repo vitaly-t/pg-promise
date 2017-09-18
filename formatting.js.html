@@ -98,22 +98,22 @@ function formatValue(value, fm, cc) {
 
     switch (typeof value) {
         case 'string':
-            return $as.text(value, isRaw);
+            return $to.text(value, isRaw);
         case 'boolean':
-            return $as.bool(value);
+            return $to.bool(value);
         case 'number':
-            return $as.number(value);
+            return $to.number(value);
         default:
             if (value instanceof Date) {
-                return $as.date(value, isRaw);
+                return $to.date(value, isRaw);
             }
             if (value instanceof Array) {
-                return $as.array(value);
+                return $to.array(value);
             }
             if (value instanceof Buffer) {
-                return $as.buffer(value, isRaw);
+                return $to.buffer(value, isRaw);
             }
-            return $as.json(value, isRaw);
+            return $to.json(value, isRaw);
     }
 }
 
@@ -321,11 +321,17 @@ function $formatSqlName(name) {
  * @property {function} json
  * {@link formatting.json json} - formats any value as JSON.
  *
+ * @property {function} array
+ * {@link formatting.array array} - formats an array of any depth.
+ *
+ * @property {function} csv
+ * {@link formatting.csv csv} - formats an array as a list of comma-separated values.
+ *
  * @property {function} func
  * {@link formatting.func func} - formats the value returned from a function.
  *
  * @property {function} format
- * {@link formatting.format format} - formats a query according to parameters.
+ * {@link formatting.format format} - formats a query, according to parameters.
  *
  */
 const $as = {
@@ -365,7 +371,7 @@ const $as = {
         if (typeof value !== 'string') {
             value = value.toString();
         }
-        return raw ? value : wrapText(safeText(value));
+        return $to.text(value, raw);
     },
 
     /**
@@ -512,8 +518,7 @@ const $as = {
             return 'null';
         }
         if (obj instanceof Buffer) {
-            const s = '\\x' + obj.toString('hex');
-            return raw ? s : wrapText(s);
+            return $to.buffer(obj, raw);
         }
         throw new TypeError(wrapText(obj) + ' is not a Buffer object.');
     },
@@ -533,7 +538,7 @@ const $as = {
         if (isNull(value)) {
             return 'null';
         }
-        return value ? 'true' : 'false';
+        return $to.bool(value);
     },
 
     /**
@@ -557,8 +562,7 @@ const $as = {
             return 'null';
         }
         if (d instanceof Date) {
-            const s = npm.pgUtils.prepareValue(d);
-            return raw ? s : wrapText(s);
+            return $to.date(d, raw);
         }
         throw new TypeError(wrapText(d) + ' is not a Date object.');
     },
@@ -582,20 +586,7 @@ const $as = {
         if (typeof num !== 'number') {
             throw new TypeError(wrapText(num) + ' is not a number.');
         }
-        if (isFinite(num)) {
-            return num.toString();
-        }
-        // Converting NaN/+Infinity/-Infinity according to Postgres documentation:
-        // http://www.postgresql.org/docs/9.4/static/datatype-numeric.html#DATATYPE-FLOAT
-        //
-        // NOTE: strings for 'NaN'/'+Infinity'/'-Infinity' are not case-sensitive.
-        if (num === Number.POSITIVE_INFINITY) {
-            return wrapText('+Infinity');
-        }
-        if (num === Number.NEGATIVE_INFINITY) {
-            return wrapText('-Infinity');
-        }
-        return wrapText('NaN');
+        return $to.number(num);
     },
 
     /**
@@ -619,7 +610,7 @@ const $as = {
             return 'null';
         }
         if (arr instanceof Array) {
-            return formatArray(arr);
+            return $to.array(arr);
         }
         throw new TypeError(wrapText(arr) + ' is not an Array object.');
     },
@@ -664,8 +655,7 @@ const $as = {
             throwIfRaw(raw);
             return 'null';
         }
-        const s = JSON.stringify(data);
-        return raw ? s : wrapText(safeText(s));
+        return $to.json(data, raw);
     },
 
     /**
@@ -767,6 +757,41 @@ const $as = {
         }
         return $formatQuery(query, values, false, options);
     }
+};
+
+/* Pre-parsed type formatting */
+const $to = {
+    array: arr => formatArray(arr),
+    bool: value => value ? 'true' : 'false',
+    buffer: (obj, raw) => {
+        const s = '\\x' + obj.toString('hex');
+        return raw ? s : wrapText(s);
+    },
+    date: (d, raw) => {
+        const s = npm.pgUtils.prepareValue(d);
+        return raw ? s : wrapText(s);
+    },
+    json: (data, raw) => {
+        const s = JSON.stringify(data);
+        return raw ? s : wrapText(safeText(s));
+    },
+    number: num => {
+        if (isFinite(num)) {
+            return num.toString();
+        }
+        // Converting NaN/+Infinity/-Infinity according to Postgres documentation:
+        // http://www.postgresql.org/docs/9.6/static/datatype-numeric.html#DATATYPE-FLOAT
+        //
+        // NOTE: strings for 'NaN'/'+Infinity'/'-Infinity' are not case-sensitive.
+        if (num === Number.POSITIVE_INFINITY) {
+            return wrapText('+Infinity');
+        }
+        if (num === Number.NEGATIVE_INFINITY) {
+            return wrapText('-Infinity');
+        }
+        return wrapText('NaN');
+    },
+    text: (value, raw) => raw ? value : wrapText(safeText(value))
 };
 
 Object.freeze($as);
