@@ -348,7 +348,7 @@ describe('Method as.csv', function () {
 
         expect(pgp.as.csv()).toBe(''); // test undefined;
         expect(pgp.as.csv([])).toBe(''); // test empty array;
-        expect(pgp.as.csv([[]])).toBe('array[]'); // test empty array;
+        expect(pgp.as.csv([[]])).toBe('\'{}\''); // test empty array;
         expect(pgp.as.csv(null)).toBe('null'); // test null;
         expect(pgp.as.csv([null])).toBe('null'); // test null in array;
         expect(pgp.as.csv([undefined])).toBe('null'); // test undefined in array;
@@ -440,12 +440,13 @@ describe('Method as.array', function () {
     it('must correctly convert an empty array or value', function () {
         expect(pgp.as.array()).toBe('null');
         expect(pgp.as.array(null)).toBe('null');
-        expect(pgp.as.array([])).toBe('array[]');
+        expect(pgp.as.array([])).toBe('\'{}\'');
     });
 
-    it('must correctly convert multi-dimension arrays', function () {
-        expect(pgp.as.array([[1, 2], ['three', 'four', [5, 'six', true]]]))
-            .toBe('array[[1,2],[\'three\',\'four\',[5,\'six\',true]]]');
+    it('must correctly convert nested arrays', function () {
+        expect(pgp.as.array([[]])).toBe('array[[]]');
+        expect(pgp.as.array([[1, 2], ['three', 'four', [], [5, 'six', true]]]))
+            .toBe('array[[1,2],[\'three\',\'four\',[],[5,\'six\',true]]]');
     });
 
     // 20-dimension test;
