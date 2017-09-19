@@ -559,7 +559,7 @@ describe('Receive event', function () {
         describe('stream positive', () => {
             let ctx, data, res, counter = 0;
             beforeEach(done => {
-                options.receive = function (d, r, e) {
+                options.receive = (d, r, e) => {
                     counter++;
                     data = d;
                     res = r;
@@ -569,7 +569,9 @@ describe('Receive event', function () {
                 db.stream(qs, s => {
                     s.pipe(JSONStream.stringify());
                 })
-                    .then(done);
+                    .then(() => {
+                        done();
+                    });
             });
             it('must pass in correct data and context', () => {
                 expect(counter).toBe(1);
