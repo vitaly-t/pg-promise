@@ -18,6 +18,8 @@ if (options.pgNative) {
     return;
 }
 
+const $text = require('../lib/text');
+
 function dummy() {
     // dummy/empty function;
 }
@@ -41,24 +43,22 @@ describe('Method stream', function () {
             expect(result.length).toBe(4);
             for (let i = 0; i < result.length; i++) {
                 expect(result[i] instanceof TypeError).toBe(true);
-                expect(result[i].message).toBe('Invalid or missing stream object.');
+                expect(result[i].message).toBe($text.invalidStream);
             }
         });
     });
     describe('with invalid stream state', function () {
         let result;
         beforeEach(function (done) {
+            const stream1 = new QueryStream('select 1');
+            stream1._reading = true;
+            const stream2 = new QueryStream('select 2');
+            stream2._closed = true;
             promise.any([
-                db.stream({
-                    _reading: true,
-                    state: undefined
-                }),
-                db.stream({
-                    _reading: false,
-                    state: 'unknown'
-                })
+                db.stream(stream1),
+                db.stream(stream2)
             ])
-                .then(dummy, function (reason) {
+                .catch(reason => {
                     result = reason;
                     done();
                 });
@@ -67,76 +67,66 @@ describe('Method stream', function () {
             expect(result.length).toBe(2);
             for (let i = 0; i < result.length; i++) {
                 expect(result[i] instanceof Error).toBe(true);
-                expect(result[i].message).toBe('Invalid stream state.');
+                expect(result[i].message).toBe($text.invalidStreamState);
             }
         });
-        describe('with invalid initialization callback', function () {
+        describe('with invalid initialization callback', () => {
             let result;
-            beforeEach(function (done) {
-                const stream = {
-                    _reading: false,
-                    state: 'initialized'
-                };
+            beforeEach(done => {
+                const stream = new QueryStream('select 1');
                 promise.any([
                     db.stream(stream),
                     db.stream(stream, null),
                     db.stream(stream, 123),
                     db.stream(stream, {})
                 ])
-                    .then(dummy, function (reason) {
+                    .catch(reason => {
                         result = reason;
                         done();
                     });
             });
-            it('must throw an error', function () {
+            it('must throw an error', () => {
                 expect(result.length).toBe(4);
                 for (let i = 0; i < result.length; i++) {
                     expect(result[i] instanceof TypeError).toBe(true);
-                    expect(result[i].message).toBe('Invalid or missing stream initialization callback.');
+                    expect(result[i].message).toBe($text.invalidStreamCB);
                 }
             });
         });
         describe('with initialization callback throwing error', function () {
             let result;
-            beforeEach(function (done) {
-                const stream = {
-                    _reading: false,
-                    state: 'initialized'
-                };
-                db.stream(stream, function () {
+            beforeEach(done => {
+                db.stream(new QueryStream('select 1'), () => {
                     throw new Error('initialization error');
                 })
-                    .then(dummy, function (reason) {
+                    .catch(reason => {
                         result = reason;
                         done();
                     });
             });
-            it('must throw an error', function () {
+            it('must throw an error', () => {
                 expect(result instanceof Error);
                 expect(result.message).toBe('initialization error');
             });
         });
 
-        describe('throwing error during query notification', function () {
+        describe('throwing error during query notification', () => {
             let result;
-            beforeEach(function (done) {
-                options.query = function () {
+            beforeEach(done => {
+                options.query = () => {
                     throw 'query notification error';
                 };
-                db.stream({
-                    _reading: false,
-                    state: 'initialized'
-                }, dummy)
-                    .then(dummy, function (reason) {
-                        result = reason;
+                db.stream(new QueryStream(), dummy)
+                    .catch(error => {
+                        result = error;
                         done();
                     });
             });
-            it('must reject with the same error', function () {
+            it('must reject with the same error', () => {
                 expect(result instanceof Error).toBe(false);
                 expect(result).toBe('query notification error');
             });
-            afterEach(function () {
+            afterEach(() => {
                 options.query = null;
             });
         });
