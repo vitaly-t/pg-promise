@@ -1,5 +1,7 @@
 ### Release History
 
+* 6.8.0 Upgrading [QueryStream] support to use version 1.1.x or later. Sept 20, 2017
+* 6.7.0 Upgrading driver [node-postgres] to version 7.x. Released: Sept 17, 2017 
 * 6.5.0 [Custom Type Formatting] has been refactored (breaking change). Released: Aug 18, 2017.
 * 6.4.0 Adding methods `batch`, `page` and `sequence` to post-`connect` state. Released: Aug 15, 2017.
 * 6.3.0 Major re-work on handling connectivity issues. Released: July 01, 2017
@@ -85,7 +87,7 @@
 * 0.1.4 first release. March 5th, 2015.
 * 0.0.1 initial draft. March 3rd, 2015.
 
-
+[QueryStream]:https://github.com/brianc/node-pg-query-stream
 [spex]:https://github.com/vitaly-t/spex
 [utils]:http://vitaly-t.github.io/pg-promise/utils.html
 [each]:http://vitaly-t.github.io/pg-promise/Database.html#each
