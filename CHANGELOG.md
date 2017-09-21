@@ -1,6 +1,7 @@
 ### Release History
 
-* 6.8.0 Upgrading [QueryStream] support to use version 1.1.x or later. Sept 20, 2017
+* 6.9.0 Upgrading to [spex] v2.0.0, with the updated protocol. Released: Sept 21, 2017
+* 6.8.0 Upgrading [QueryStream] support to use version 1.1.x or later. Released: Sept 20, 2017
 * 6.7.0 Upgrading driver [node-postgres] to version 7.x. Released: Sept 17, 2017 
 * 6.5.0 [Custom Type Formatting] has been refactored (breaking change). Released: Aug 18, 2017.
 * 6.4.0 Adding methods `batch`, `page` and `sequence` to post-`connect` state. Released: Aug 15, 2017.
@@ -129,4 +130,3 @@
 [spex.sequence]:https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
 [Result]:https://node-postgres.com/api/result
 [Custom Type Formatting]:https://github.com/vitaly-t/pg-promise#custom-type-formatting
-
