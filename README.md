@@ -30,6 +30,8 @@ pg-promise
     - [Open Values](#open-values)        
   - [Query Result Mask](#query-result-mask)    
   - [Named Parameters](#named-parameters)
+    - [`this` reference](#this-reference)
+    - [Nested Named Parameters](#nested-named-parameters)    
   - [Conversion Helpers](#conversion-helpers)
   - [Custom Type Formatting](#custom-type-formatting)  
   - [Query Files](#query-files)    
@@ -309,6 +311,23 @@ Modifier `:json` is an alternative to formatting the value as a JSON string.
 
 **NOTE:** Technically, it is possible in javascript, though not recommended, for an object to contain a property
 with name `this`. And in such cases the property's value will be used instead.
+
+#### Nested Named Parameters
+
+Starting from v6.10.0, the library supports Nested Named Parameters:
+
+```js
+const obj = {
+    one: {
+        two: 123
+    }
+};
+
+pgp.as.format('SELECT ${one.two}', obj);
+//=> SELECT 123
+```
+
+Please note, however, that this supports does not extend to the [helpers] namespace.
 
 ## Functions and Procedures
 

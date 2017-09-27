@@ -21,6 +21,7 @@ const links = {
     'Native Bindings': 'https://node-postgres.com/features/native',
     'pg-native': 'https://github.com/brianc/node-pg-native',
     'Named Parameters': 'https://github.com/vitaly-t/pg-promise#named-parameters',
+    'Nested Named Parameters': 'https://github.com/vitaly-t/pg-promise#nested-named-parameters',
     'tags': 'https://github.com/vitaly-t/pg-promise/wiki/tags',
     'Chaining Queries': 'https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries',
     'ES6 generator': 'https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*',
