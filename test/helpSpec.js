@@ -394,9 +394,9 @@ describe('Column', function () {
             expect(function () {
                 new helpers.Column({
                     name: 'name',
-                    prop: '1test'
+                    prop: '-test'
                 });
-            }).toThrow(new TypeError('Invalid \'prop\' syntax: "1test". A valid variable name was expected.'));
+            }).toThrow(new TypeError('Invalid \'prop\' syntax: "-test". A valid variable name was expected.'));
         });
     });
 
