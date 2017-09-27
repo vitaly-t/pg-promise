@@ -1025,6 +1025,19 @@ describe('Named Parameters', function () {
         }).toThrow(new Error('Property \'prop2\' doesn\'t exist.'));
     });
 
+    it('must throw error for invalid properties', () => {
+        const error = name => new Error('Invalid property name \'' + name + '\'.');
+        expect(function () {
+            pgp.as.format('${.}', {});
+        }).toThrow(error('.'));
+        expect(function () {
+            pgp.as.format('${ a. }', {});
+        }).toThrow(error('a.'));
+        expect(function () {
+            pgp.as.format('${.b}', {});
+        }).toThrow(error('.b'));
+    });
+
     describe('\'this\' formatting', function () {
 
         it('must recognize \'this\'', function () {
