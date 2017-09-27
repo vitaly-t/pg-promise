@@ -1017,12 +1017,22 @@ describe('Named Parameters', function () {
         })).toBe('null, null');
     });
 
-    it('must throw error when property doesn\'t exist', function () {
-        expect(function () {
-            pgp.as.format('${prop1},${prop2}', {
-                prop1: 'hello'
-            });
-        }).toThrow(new Error('Property \'prop2\' doesn\'t exist.'));
+    it('must throw error when property doesn\'t exist', () => {
+        const err = name => new Error('Property \'' + name + '\' doesn\'t exist.');
+        expect(() => pgp.as.format('${abc}', {})).toThrow(err('abc'));
+        expect(() => pgp.as.format('${a.b}', {a: {}})).toThrow(err('a.b'));
+    });
+
+    it('must throw error for invalid properties', () => {
+        const err = name => new Error('Invalid property name \'' + name + '\'.');
+        expect(() => pgp.as.format('${.}', {})).toThrow(err('.'));
+        expect(() => pgp.as.format('${ a. }', {})).toThrow(err('a.'));
+        expect(() => pgp.as.format('${.b}', {})).toThrow(err('.b'));
+    });
+
+    it('must support nested properties', () => {
+        expect(pgp.as.format('${a.b}', {a: {b: 123}})).toBe('123');
+        expect(pgp.as.format('${_.$.123}', {_: {$: {123: 111}}})).toBe('111');
     });
 
     describe('\'this\' formatting', function () {

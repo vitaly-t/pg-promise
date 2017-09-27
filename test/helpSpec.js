@@ -381,22 +381,20 @@ describe('Column', function () {
         });
     });
 
-    describe('prop', function () {
+    describe('prop', () => {
         const col = new helpers.Column({
             name: 'testName',
             prop: 'testName'
         });
-        it('must not be set if matches \'name\'', function () {
+        it('must not be set if matches \'name\'', () => {
             expect(col.name).toBe('testName');
             expect('prop' in col).toBe(false);
         });
-        it('must throw on invalid property names', function () {
-            expect(function () {
-                new helpers.Column({
-                    name: 'name',
-                    prop: '1test'
-                });
-            }).toThrow(new TypeError('Invalid \'prop\' syntax: "1test". A valid variable name was expected.'));
+        it('must throw on invalid property names', () => {
+            expect(() => new helpers.Column({
+                name: 'name',
+                prop: '-test'
+            })).toThrow(new TypeError('Invalid \'prop\' syntax: "-test".'));
         });
     });
 
@@ -416,7 +414,7 @@ describe('Column', function () {
     });
 
     describe('Negative', function () {
-        it('must throw on invalid column', function () {
+        it('must throw on invalid construction', function () {
             const error = new TypeError('Invalid column details.');
             expect(function () {
                 new helpers.Column();
@@ -433,8 +431,8 @@ describe('Column', function () {
                 new helpers.Column('  ');
             }).toThrow(new TypeError('Invalid column syntax: "  ".'));
             expect(function () {
-                new helpers.Column('name:bla');
-            }).toThrow(new TypeError('Invalid column syntax: "name:bla".'));
+                new helpers.Column('name.bla');
+            }).toThrow(new TypeError('Invalid column syntax: "name.bla".'));
         });
         it('must throw on invalid property \'name\'', function () {
             expect(function () {
@@ -447,8 +445,8 @@ describe('Column', function () {
                 new helpers.Column({name: 123});
             }).toThrow(new TypeError('Invalid \'name\' value: 123. A non-empty string was expected.'));
             expect(function () {
-                new helpers.Column({name: 'n-a-m-e'});
-            }).toThrow(new TypeError('Invalid \'name\' syntax: "n-a-m-e". A valid variable name was expected.'));
+                new helpers.Column({name: 'name.first'});
+            }).toThrow(new TypeError('Invalid \'name\' syntax: "name.first".'));
         });
         it('must throw on invalid property \'prop\'', function () {
             expect(function () {
@@ -461,9 +459,8 @@ describe('Column', function () {
                 new helpers.Column({name: 'name', prop: '  '});
             }).toThrow(new TypeError('Invalid \'prop\' value: "  ". A non-empty string was expected.'));
             expect(function () {
-                new helpers.Column({name: 'name', prop: 'one-two'});
-            }).toThrow(new TypeError('Invalid \'prop\' syntax: "one-two". A valid variable name was expected.'));
-
+                new helpers.Column({name: 'name', prop: 'one.two'});
+            }).toThrow(new TypeError('Invalid \'prop\' syntax: "one.two".'));
         });
         it('must throw on invalid property \'cast\'', function () {
             expect(function () {
@@ -639,11 +636,11 @@ describe('ColumnSet', function () {
                     }
                 },
                 {
-                    name: 'test1',
+                    name: 'one',
                     def: 'def-test'
                 },
                 {
-                    name: 'test2',
+                    name: 'first',
                     init: function () {
                         return 'init-test';
                     }
@@ -653,8 +650,8 @@ describe('ColumnSet', function () {
             expect(obj).toEqual({
                 val: dataSingle.val,
                 msg: dataSingle.msg + '-init',
-                test1: 'def-test',
-                test2: 'init-test'
+                one: 'def-test',
+                first: 'init-test'
             });
         });
     });
