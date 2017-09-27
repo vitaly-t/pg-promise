@@ -355,7 +355,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line269">line 269</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line274">line 274</a>
     </li></ul></dd>
     
 
@@ -500,7 +500,7 @@ an SQL alias would be incorrect.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line410">line 410</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line415">line 415</a>
     </li></ul></dd>
     
 
@@ -666,7 +666,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line563">line 563</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line568">line 568</a>
     </li></ul></dd>
     
 
@@ -818,7 +818,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line497">line 497</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line502">line 502</a>
     </li></ul></dd>
     
 
@@ -1026,7 +1026,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line470">line 470</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line475">line 475</a>
     </li></ul></dd>
     
 
@@ -1182,7 +1182,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line589">line 589</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line594">line 594</a>
     </li></ul></dd>
     
 
@@ -1397,7 +1397,7 @@ wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line515">line 515</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line520">line 520</a>
     </li></ul></dd>
     
 
@@ -1455,29 +1455,36 @@ wrapped in quotes (unless flag <code>raw</code> is set).</p>
 <div class="description">
     <p>Replaces variables in a string according to the type of <code>values</code>:</p>
 <ul>
-<li>Replaces <code>$1</code> occurrences when <code>values</code> is of type <code>string</code>, <code>boolean</code>, <code>number</code>, <code>Date</code>, <code>Buffer</code> or when it is <code>null</code>.</li>
-<li>Replaces variables <code>$1</code>, <code>$2</code>, ...<code>$100000</code> when <code>values</code> is an array of parameters. It throws a <a href="external-RangeError.html">RangeError</a>
-when the values or variables are out of range.</li>
-<li>Replaces <code>$*propName*</code>, where <code>*</code> is any of <code>{}</code>, <code>()</code>, <code>[]</code>, <code>&lt;&gt;</code>, <code>//</code>, when <code>values</code> is an object that's not a
+<li><p>Replaces <code>$1</code> occurrences when <code>values</code> is of type <code>string</code>, <code>boolean</code>, <code>number</code>, <code>Date</code>, <code>Buffer</code> or when it is <code>null</code>.</p>
+</li>
+<li><p>Replaces variables <code>$1</code>, <code>$2</code>, ...<code>$100000</code> when <code>values</code> is an array of parameters. It throws a <a href="external-RangeError.html">RangeError</a>
+when the values or variables are out of range.</p>
+</li>
+<li><p>Replaces <code>$*propName*</code>, where <code>*</code> is any of <code>{}</code>, <code>()</code>, <code>[]</code>, <code>&lt;&gt;</code>, <code>//</code>, when <code>values</code> is an object that's not a
 <code>Date</code>, <code>Buffer</code>, <a href="QueryFile.html">QueryFile</a> or <code>null</code>. Special property name <code>this</code> refers to the formatting object itself,
 to be injected as a JSON string. When referencing a property that doesn't exist in the formatting object, it throws
-<a href="external-Error.html">Error</a> = <code>Property 'PropName' doesn't exist</code>, unless option <code>partial</code> is used.</li>
+<a href="external-Error.html">Error</a> = <code>Property 'PropName' doesn't exist</code>, unless option <code>partial</code> is used.
+Version 6.10.0 added support for <a href="https://github.com/vitaly-t/pg-promise#nested-named-parameters">Nested Named Parameters</a>.</p>
+</li>
 </ul>
 <p>By default, each variable is automatically formatted according to its type, unless it is a special variable:</p>
 <ul>
-<li>Raw-text variables end with <code>:raw</code> or symbol <code>^</code>, and prevent escaping the text. Such variables are not
-allowed to be <code>null</code> or <code>undefined</code>, or the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Values null/undefined cannot be used as raw text.</code><ul>
+<li><p>Raw-text variables end with <code>:raw</code> or symbol <code>^</code>, and prevent escaping the text. Such variables are not
+allowed to be <code>null</code> or <code>undefined</code>, or the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Values null/undefined cannot be used as raw text.</code></p>
+<ul>
 <li><code>$1:raw</code>, <code>$2:raw</code>,..., and <code>$*propName:raw*</code> (see <code>*</code> above)</li>
 <li><code>$1^</code>, <code>$2^</code>,..., and <code>$*propName^*</code> (see <code>*</code> above)</li>
 </ul>
 </li>
-<li>Open-value variables end with <code>:value</code> or symbol <code>#</code>, to be escaped, but not wrapped in quotes. Such variables are
-not allowed to be <code>null</code> or <code>undefined</code>, or the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Open values cannot be null or undefined.</code><ul>
+<li><p>Open-value variables end with <code>:value</code> or symbol <code>#</code>, to be escaped, but not wrapped in quotes. Such variables are
+not allowed to be <code>null</code> or <code>undefined</code>, or the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Open values cannot be null or undefined.</code></p>
+<ul>
 <li><code>$1:value</code>, <code>$2:value</code>,..., and <code>$*propName:value*</code> (see <code>*</code> above)</li>
 <li><code>$1#</code>, <code>$2#</code>,..., and <code>$*propName#*</code> (see <code>*</code> above)</li>
 </ul>
 </li>
-<li>SQL name variables end with <code>:name</code> or symbol <code>~</code> (tilde), and provide proper escaping for SQL names/identifiers:<ul>
+<li><p>SQL name variables end with <code>:name</code> or symbol <code>~</code> (tilde), and provide proper escaping for SQL names/identifiers:</p>
+<ul>
 <li><code>$1:name</code>, <code>$2:name</code>,..., and <code>$*propName:name*</code> (see <code>*</code> above)</li>
 <li><code>$1~</code>, <code>$2~</code>,..., and <code>$*propName~*</code> (see <code>*</code> above)</li>
 </ul>
@@ -1791,7 +1798,7 @@ and to return the actual default value:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line661">line 661</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line666">line 666</a>
     </li></ul></dd>
     
 
@@ -2038,7 +2045,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line632">line 632</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line637">line 637</a>
     </li></ul></dd>
     
 
@@ -2244,7 +2251,7 @@ symbols fixed, unless flag <code>raw</code> is set.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line605">line 605</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line610">line 610</a>
     </li></ul></dd>
     
 
@@ -2419,7 +2426,7 @@ symbols fixed, unless flag <code>raw</code> is set.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line348">line 348</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line353">line 353</a>
     </li></ul></dd>
     
 
@@ -2588,7 +2595,7 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line541">line 541</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line546">line 546</a>
     </li></ul></dd>
     
 
@@ -2802,7 +2809,7 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line310">line 310</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line315">line 315</a>
     </li></ul></dd>
     
 
@@ -2966,7 +2973,7 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line444">line 444</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line449">line 449</a>
     </li></ul></dd>
     
 
