@@ -1463,9 +1463,9 @@ when the values or variables are out of range.</p>
 <li><p>Replaces <code>$*propName*</code>, where <code>*</code> is any of <code>{}</code>, <code>()</code>, <code>[]</code>, <code>&lt;&gt;</code>, <code>//</code>, when <code>values</code> is an object that's not a
 <code>Date</code>, <code>Buffer</code>, <a href="QueryFile.html">QueryFile</a> or <code>null</code>. Special property name <code>this</code> refers to the formatting object itself,
 to be injected as a JSON string. When referencing a property that doesn't exist in the formatting object, it throws
-<a href="external-Error.html">Error</a> = <code>Property 'PropName' doesn't exist</code>, unless option <code>partial</code> is used.
-Version 6.10.0 added support for <a href="https://github.com/vitaly-t/pg-promise#nested-named-parameters">Nested Named Parameters</a>.</p>
+<a href="external-Error.html">Error</a> = <code>Property 'PropName' doesn't exist</code>, unless option <code>partial</code> is used.</p>
 </li>
+<li><strong>Version 6.10.0</strong> added support for <a href="https://github.com/vitaly-t/pg-promise#nested-named-parameters">Nested Named Parameters</a>.</li>
 </ul>
 <p>By default, each variable is automatically formatted according to its type, unless it is a special variable:</p>
 <ul>
@@ -1489,9 +1489,12 @@ not allowed to be <code>null</code> or <code>undefined</code>, or the method wil
 <li><code>$1~</code>, <code>$2~</code>,..., and <code>$*propName~*</code> (see <code>*</code> above)</li>
 </ul>
 </li>
-<li><strong>Version 5.9.0</strong> added support for modifier <code>:alias</code> - non-verbose <a href="https://github.com/vitaly-t/pg-promise#sql-names">SQL Names</a> escaping.</li>
-<li>JSON override ends with <code>:json</code> to format the value of any type as a JSON string</li>
-<li>CSV override ends with <code>:csv</code> to format an array as a properly escaped comma-separated list of values.</li>
+<li><p><strong>Version 5.9.0</strong> added support for modifier <code>:alias</code> - non-verbose <a href="https://github.com/vitaly-t/pg-promise#sql-names">SQL Names</a> escaping.</p>
+</li>
+<li><p>JSON override ends with <code>:json</code> to format the value of any type as a JSON string</p>
+</li>
+<li><p>CSV override ends with <code>:csv</code> to format an array as a properly escaped comma-separated list of values.</p>
+</li>
 </ul>
 </div>
 
