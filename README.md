@@ -323,8 +323,7 @@ const obj = {
     }
 };
 
-pgp.as.format('SELECT ${one.two}', obj);
-//=> SELECT 123
+db.query('SELECT ${one.two}', obj);
 ```
 
 Please note, however, that this supports does not extend to the [helpers] namespace.

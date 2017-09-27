@@ -1,6 +1,6 @@
 ### Release History
 
-* 6.10.0 Initial support for `Nested Named Parameters`. Released: Sept 27, 2017
+* 6.10.0 Initial support for [Nested Named Parameters]. Released: Sept 27, 2017
 * 6.9.0 Upgrading to [spex] v2.0.0, with the updated protocol. Released: Sept 21, 2017
 * 6.8.0 Upgrading [QueryStream] support to use version 1.1.x or later. Released: Sept 20, 2017
 * 6.7.0 Upgrading driver [node-postgres] to version 7.x. Released: Sept 17, 2017 
@@ -89,6 +89,7 @@
 * 0.1.4 first release. March 5th, 2015.
 * 0.0.1 initial draft. March 3rd, 2015.
 
+[Nested Named Parameters]:https://github.com/vitaly-t/pg-promise#nested-named-parameters
 [QueryStream]:https://github.com/brianc/node-pg-query-stream
 [spex]:https://github.com/vitaly-t/spex
 [utils]:http://vitaly-t.github.io/pg-promise/utils.html
