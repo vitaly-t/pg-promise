@@ -1030,11 +1030,6 @@ describe('Named Parameters', function () {
         expect(() => pgp.as.format('${.b}', {})).toThrow(err('.b'));
     });
 
-    it('must support nested properties', () => {
-        expect(pgp.as.format('${a.b}', {a: {b: 123}})).toBe('123');
-        expect(pgp.as.format('${_.$.123}', {_: {$: {123: 111}}})).toBe('111');
-    });
-
     describe('\'this\' formatting', function () {
 
         it('must recognize \'this\'', function () {
@@ -1060,6 +1055,88 @@ describe('Named Parameters', function () {
                 val2: 'hello'
             };
             expect(pgp.as.format('${this^}', obj)).toBe('self');
+        });
+
+    });
+
+});
+
+describe('Nested Named Parameters', () => {
+
+    describe('basic variables', () => {
+        it('must be formatted correctly', () => {
+            expect(pgp.as.format('${a.b}', {a: {b: 123}})).toBe('123');
+            expect(pgp.as.format('${_.$.123}', {_: {$: {123: 111}}})).toBe('111');
+        });
+    });
+
+    describe('default values', () => {
+        it('must be formatted correctly', () => {
+            expect(pgp.as.format('${one.two.three}', {}, {'default': 123})).toBe('123');
+        });
+    });
+
+    describe('calling context', () => {
+        describe('for functions', () => {
+            it('must represent the container', () => {
+                const obj = {
+                    first: {
+                        second: {
+                            test1: a => a.value,
+                            test2: function () {
+                                return this.value;
+                            },
+                            value: 123
+                        }
+                    }
+                };
+                expect(pgp.as.format('${first.second.test1}', obj)).toBe('123');
+                expect(pgp.as.format('${first.second.test2}', obj)).toBe('123');
+            });
+        });
+
+        describe('for CTF', () => {
+            it('must represent the container', () => {
+                const obj = {
+                    first: {
+                        second: {
+                            test: {
+                                toPostgres: a => a.value,
+                                value: 456
+                            },
+                            toPostgres: function () {
+                                return this.value;
+                            },
+                            value: 123
+                        }
+                    }
+                };
+                expect(pgp.as.format('${first.second}', obj)).toBe('123');
+                expect(pgp.as.format('${first.second.test}', obj)).toBe('456');
+            });
+        });
+
+        describe('for default values', () => {
+            it('must represent the source object', () => {
+                const obj = {
+                    value: 1,
+                    one: {
+                        value: 2,
+                        two: {
+                            value: 3
+                        }
+                    }
+                };
+                expect(pgp.as.format('${one.two.three}', obj, {'default': (name, obj) => obj.value})).toBe('1');
+                expect(pgp.as.format('${one.two.three}', obj, {
+                    'default': function () {
+                        return this.value;
+                    }
+                })).toBe('1');
+            });
+            it('must pass in the full property name', () => {
+                expect(pgp.as.format('${one.two.three}', {}, {'default': name => name})).toBe('\'one.two.three\'');
+            });
         });
 
     });
