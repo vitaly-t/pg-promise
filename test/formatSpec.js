@@ -1070,6 +1070,18 @@ describe('Nested Named Parameters', () => {
         });
     });
 
+    describe('prototype variables', () => {
+        beforeEach(() => {
+            Number.prototype.msg = 'hello!';
+        });
+        afterEach(() => {
+            delete Number.prototype.msg;
+        });
+        it('must be discoverable', () => {
+            expect(pgp.as.format('${value.msg}', {value: 10})).toBe('\'hello!\'');
+        });
+    });
+
     describe('default values', () => {
         it('must be formatted correctly', () => {
             expect(pgp.as.format('${one.two.three}', {}, {'default': 123})).toBe('123');
