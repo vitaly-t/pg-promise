@@ -146,7 +146,7 @@ function formatCSV(values) {
 // Query formatting helpers;
 const formatAs = {
 
-    object: (query, obj, raw, options) => {
+    object(query, obj, raw, options) {
         options = options &amp;&amp; typeof options === 'object' ? options : {};
         return query.replace(npm.patterns.namedParameters, name => {
             const v = formatAs.stripName(name.replace(/^\$[{(&lt;[/]|[\s})>\]/]/g, ''), raw),
@@ -155,7 +155,7 @@ const formatAs = {
                 throw new Error('Invalid property name \'' + v.name + '\'.');
             }
             if (c.has) {
-                return formatValue(c.value, v.fm, obj);
+                return formatValue(c.value, v.fm, c.target);
             }
             if (v.name === 'this') {
                 return formatValue(obj, v.fm);
@@ -172,7 +172,7 @@ const formatAs = {
         });
     },
 
-    array: (query, array, raw, options) => {
+    array(query, array, raw, options) {
         options = options &amp;&amp; typeof options === 'object' ? options : {};
         return query.replace(npm.patterns.multipleValues, name => {
             const v = formatAs.stripName(name.substr(1), raw);
@@ -194,14 +194,14 @@ const formatAs = {
         });
     },
 
-    value: (query, value, raw) => {
+    value(query, value, raw) {
         return query.replace(npm.patterns.singleValue, name => {
             const v = formatAs.stripName(name, raw);
             return formatValue(value, v.fm);
         });
     },
 
-    stripName: (name, raw) => {
+    stripName(name, raw) {
         const mod = name.match(npm.patterns.hasValidModifier);
         if (mod) {
             return {
@@ -367,7 +367,7 @@ const $as = {
      *
      *  The result is not escaped, if `raw` was passed in as `true`.
      */
-    text: (value, raw) => {
+    text(value, raw) {
         value = resolveFunc(value);
         if (isNull(value)) {
             throwIfRaw(raw);
@@ -419,7 +419,7 @@ const $as = {
      * //=> INSERT INTO table("one","two") VALUES(1, 2)
      *
      */
-    name: name => {
+    name(name) {
         name = resolveFunc(name);
         if (name) {
             if (typeof name === 'string') {
@@ -467,7 +467,7 @@ const $as = {
      * {@link formatting.format format}
      *
      */
-    alias: name => {
+    alias(name) {
         name = resolveFunc(name);
         if (name &amp;&amp; typeof name === 'string') {
             return $formatSqlName(name);
@@ -493,7 +493,7 @@ const $as = {
      * @see {@link formatting.format format}
      *
      */
-    value: value => {
+    value(value) {
         value = resolveFunc(value);
         if (isNull(value)) {
             throw new TypeError('Open values cannot be null or undefined.');
@@ -516,7 +516,7 @@ const $as = {
      *
      * @returns {string}
      */
-    buffer: (obj, raw) => {
+    buffer(obj, raw) {
         obj = resolveFunc(obj);
         if (isNull(obj)) {
             throwIfRaw(raw);
@@ -538,7 +538,7 @@ const $as = {
      *
      * @returns {string}
      */
-    bool: value => {
+    bool(value) {
         value = resolveFunc(value);
         if (isNull(value)) {
             return 'null';
@@ -560,7 +560,7 @@ const $as = {
      *
      * @returns {string}
      */
-    date: (d, raw) => {
+    date(d, raw) {
         d = resolveFunc(d);
         if (isNull(d)) {
             throwIfRaw(raw);
@@ -583,7 +583,7 @@ const $as = {
      *
      * @returns {string}
      */
-    number: num => {
+    number(num) {
         num = resolveFunc(num);
         if (isNull(num)) {
             return 'null';
@@ -609,7 +609,7 @@ const $as = {
      *
      * @returns {string}
      */
-    array: arr => {
+    array(arr) {
         arr = resolveFunc(arr);
         if (isNull(arr)) {
             return 'null';
@@ -634,7 +634,9 @@ const $as = {
      *
      * @see {@link formatting.format format}
      */
-    csv: values => formatCSV(resolveFunc(values)),
+    csv(values) {
+        return formatCSV(resolveFunc(values));
+    },
 
     /**
      * @method formatting.json
@@ -654,7 +656,7 @@ const $as = {
      *
      * @see {@link formatting.format format}
      */
-    json: (data, raw) => {
+    json(data, raw) {
         data = resolveFunc(data);
         if (isNull(data)) {
             throwIfRaw(raw);
@@ -680,7 +682,7 @@ const $as = {
      *
      * @returns {string}
      */
-    func: (func, raw, cc) => {
+    func(func, raw, cc) {
         if (isNull(func)) {
             throwIfRaw(raw);
             return 'null';
@@ -765,7 +767,7 @@ const $as = {
      *
      * The function will throw an error, if any occurs during formatting.
      */
-    format: (query, values, options) => {
+    format(query, values, options) {
         if (isCTF(query)) {
             query = query.toPostgres.call(query, query);
         }
@@ -775,22 +777,26 @@ const $as = {
 
 /* Pre-parsed type formatting */
 const $to = {
-    array: arr => formatArray(arr),
-    bool: value => value ? 'true' : 'false',
-    buffer: (obj, raw) => {
+    array(arr) {
+        return formatArray(arr);
+    },
+    bool(value) {
+        return value ? 'true' : 'false';
+    },
+    buffer(obj, raw) {
         const s = '\\x' + obj.toString('hex');
         return raw ? s : wrapText(s);
     },
-    date: (d, raw) => {
+    date(d, raw) {
         const s = npm.pgUtils.prepareValue(d);
         return raw ? s : wrapText(s);
     },
-    json: (data, raw) => {
+    json(data, raw) {
         const s = JSON.stringify(data);
         return raw ? s : wrapText(safeText(s));
     },
-    number: num => {
-        if (isFinite(num)) {
+    number(num) {
+        if (Number.isFinite(num)) {
             return num.toString();
         }
         // Converting NaN/+Infinity/-Infinity according to Postgres documentation:
@@ -805,7 +811,9 @@ const $to = {
         }
         return wrapText('NaN');
     },
-    text: (value, raw) => raw ? value : wrapText(safeText(value))
+    text(value, raw) {
+        return raw ? value : wrapText(safeText(value));
+    }
 };
 
 Object.freeze($as);

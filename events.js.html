@@ -71,14 +71,14 @@ const $events = {
      *
      *     // pg-promise initialization options...
      *
-     *     connect: (client, dc, isFresh) => {
+     *     connect(client, dc, isFresh) {
      *         const cp = client.connectionParameters;
      *         console.log('Connected to database:', cp.database);
      *     }
      *
      * };
      */
-    connect: (ctx, client, isFresh) => {
+    connect(ctx, client, isFresh) {
         if (typeof ctx.options.connect === 'function') {
             try {
                 ctx.options.connect(client, ctx.dc, isFresh);
@@ -111,14 +111,14 @@ const $events = {
      *
      *     // pg-promise initialization options...
      *
-     *     disconnect: (client, dc) => {
+     *     disconnect(client, dc) {
      *        const cp = client.connectionParameters;
      *        console.log('Disconnecting from database:', cp.database);
      *     }
      *
      * };
      */
-    disconnect: (ctx, client) => {
+    disconnect(ctx, client) {
         if (typeof ctx.options.disconnect === 'function') {
             try {
                 ctx.options.disconnect(client, ctx.dc);
@@ -149,12 +149,12 @@ const $events = {
      *
      *     // pg-promise initialization options...
      *
-     *     query: e => {
+     *     query(e) {
      *         console.log('QUERY:', e.query);
      *     }
      * };
      */
-    query: (options, context) => {
+    query(options, context) {
         if (typeof options.query === 'function') {
             try {
                 options.query(context);
@@ -206,7 +206,7 @@ const $events = {
      *
      *     // pg-promise initialization options...
      *
-     *     receive: (data, result, e) => {
+     *     receive(data, result, e) {
      *         camelizeColumns(data);
      *     }
      * };
@@ -225,7 +225,7 @@ const $events = {
      *     }
      * }
      */
-    receive: (options, data, result, context) => {
+    receive(options, data, result, context) {
         if (typeof options.receive === 'function') {
             try {
                 options.receive(data, result, context);
@@ -253,7 +253,7 @@ const $events = {
      *
      *     // pg-promise initialization options...
      *
-     *     task: e => {
+     *     task(e) {
      *         if (e.ctx.finish) {
      *             // this is a task->finish event;
      *             console.log('Duration:', e.ctx.duration);
@@ -270,7 +270,7 @@ const $events = {
      * };
      *
      */
-    task: (options, context) => {
+    task(options, context) {
         if (typeof options.task === 'function') {
             try {
                 options.task(context);
@@ -297,7 +297,7 @@ const $events = {
      *
      *     // pg-promise initialization options...
      *
-     *     transact: e => {
+     *     transact(e) {
      *         if (e.ctx.finish) {
      *             // this is a transaction->finish event;
      *             console.log('Duration:', e.ctx.duration);
@@ -314,7 +314,7 @@ const $events = {
      * };
      *
      */
-    transact: (options, context) => {
+    transact(options, context) {
         if (typeof options.transact === 'function') {
             try {
                 options.transact(context);
@@ -343,7 +343,7 @@ const $events = {
      *
      *     // pg-promise initialization options...
      *
-     *     error: (err, e) => {
+     *     error(err, e) {
      *
      *         if (e.cn) {
      *             // this is a connection-related error
@@ -365,7 +365,7 @@ const $events = {
      * };
      *
      */
-    error: (options, err, context) => {
+    error(options, err, context) {
         if (typeof options.error === 'function') {
             try {
                 options.error(err, context);
@@ -412,7 +412,7 @@ const $events = {
      *
      *     // pg-promise initialization options...
      *
-     *     extend: (obj, dc) => {
+     *     extend(obj, dc) {
      *         // dc = database context;
      *         obj.addImage = data => {
      *             // adds a new image and resolves with its record id:
@@ -446,7 +446,7 @@ const $events = {
      *
      *     // pg-promise initialization options...
      *
-     *     extend: (obj, dc) => {
+     *     extend(obj, dc) {
      *         // dc = database context;
      *         obj.users = new UsersRepository(obj, pgp);
      *         // You can set different repositories based on `dc`
@@ -463,7 +463,7 @@ const $events = {
      *     });
      *
      */
-    extend: (options, obj, dc) => {
+    extend(options, obj, dc) {
         if (typeof options.extend === 'function') {
             try {
                 options.extend.call(obj, obj, dc);
@@ -482,7 +482,7 @@ const $events = {
      * @param {string|Error} e - unhandled error.
      * @private
      */
-    unexpected: (event, e) => {
+    unexpected(event, e) {
         // If you should ever get here, your app is definitely broken, and you need to fix
         // your event handler to prevent unhandled errors during event notifications.
         //

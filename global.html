@@ -1190,7 +1190,7 @@ with parameter <code>{direct: true}</code>).</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    connect: (client, dc, isFresh) => {        const cp = client.connectionParameters;        console.log('Connected to database:', cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    connect(client, dc, isFresh) {        const cp = client.connectionParameters;        console.log('Connected to database:', cp.database);    }};</code></pre>
 
 
 
@@ -1352,7 +1352,7 @@ with parameter <code>{direct: true}</code>).</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    disconnect: (client, dc) => {       const cp = client.connectionParameters;       console.log('Disconnecting from database:', cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    disconnect(client, dc) {       const cp = client.connectionParameters;       console.log('Disconnecting from database:', cp.database);    }};</code></pre>
 
 
 
@@ -1512,7 +1512,7 @@ with parameter <code>{direct: true}</code>).</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    error: (err, e) => {        if (e.cn) {            // this is a connection-related error            // cn = safe connection details passed into the library:            //      if password is present, it is masked by #        }        if (e.query) {            // query string is available            if (e.params) {                // query parameters are available            }        }        if (e.ctx) {            // occurred inside a task or transaction        }      }};</code></pre>
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    error(err, e) {        if (e.cn) {            // this is a connection-related error            // cn = safe connection details passed into the library:            //      if password is present, it is masked by #        }        if (e.query) {            // query string is available            if (e.params) {                // query parameters are available            }        }        if (e.ctx) {            // occurred inside a task or transaction        }      }};</code></pre>
 
 
 
@@ -1689,9 +1689,9 @@ if you try overriding them.</p>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// In the example below we extend the protocol with function `addImage`// that will insert one binary image and resolve with the new record id.const initOptions = {    // pg-promise initialization options...    extend: (obj, dc) => {        // dc = database context;        obj.addImage = data => {            // adds a new image and resolves with its record id:            return obj.one('INSERT INTO images(data) VALUES($1) RETURNING id', data, a => a.id);        }    }};</code></pre>
+    <pre class="prettyprint"><code>// In the example below we extend the protocol with function `addImage`// that will insert one binary image and resolve with the new record id.const initOptions = {    // pg-promise initialization options...    extend(obj, dc) {        // dc = database context;        obj.addImage = data => {            // adds a new image and resolves with its record id:            return obj.one('INSERT INTO images(data) VALUES($1) RETURNING id', data, a => a.id);        }    }};</code></pre>
 
-    <pre class="prettyprint"><code>// It is best to extend the protocol by adding whole entity repositories to it as shown in the following example.// For a comprehensive example see https://github.com/vitaly-t/pg-promise-democlass UsersRepository {    constructor(rep, pgp) {        this.rep = rep;        this.pgp = pgp;    }    add(name) {        return this.rep.one('INSERT INTO users(name) VALUES($1) RETURNING id', name, a => a.id);    }    remove(id) {        return this.rep.none('DELETE FROM users WHERE id = $1', id);    }}// Overriding 'extend' event;const initOptions = {    // pg-promise initialization options...    extend: (obj, dc) => {        // dc = database context;        obj.users = new UsersRepository(obj, pgp);        // You can set different repositories based on `dc`    }};// Usage example:db.users.add('John', true)    .then(id => {        // user added successfully, id = new user's id    })    .catch(error => {        // failed to add the user;    });</code></pre>
+    <pre class="prettyprint"><code>// It is best to extend the protocol by adding whole entity repositories to it as shown in the following example.// For a comprehensive example see https://github.com/vitaly-t/pg-promise-democlass UsersRepository {    constructor(rep, pgp) {        this.rep = rep;        this.pgp = pgp;    }    add(name) {        return this.rep.one('INSERT INTO users(name) VALUES($1) RETURNING id', name, a => a.id);    }    remove(id) {        return this.rep.none('DELETE FROM users WHERE id = $1', id);    }}// Overriding 'extend' event;const initOptions = {    // pg-promise initialization options...    extend(obj, dc) {        // dc = database context;        obj.users = new UsersRepository(obj, pgp);        // You can set different repositories based on `dc`    }};// Usage example:db.users.add('John', true)    .then(id => {        // user added successfully, id = new user's id    })    .catch(error => {        // failed to add the user;    });</code></pre>
 
 
 
@@ -1829,7 +1829,7 @@ will be rejected with that error.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    query: e => {        console.log('QUERY:', e.query);    }};</code></pre>
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    query(e) {        console.log('QUERY:', e.query);    }};</code></pre>
 
 
 
@@ -2030,7 +2030,7 @@ the <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize all column names:const initOptions = {    // pg-promise initialization options...    receive: (data, result, e) => {        camelizeColumns(data);    }};function camelizeColumns(data) {    const tmp = data[0];    for (let prop in tmp) {        const camel = pgp.utils.camelize(prop);        if (!(camel in tmp)) {            for (let i = 0; i &lt; data.length; i++) {                const d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
+    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize all column names:const initOptions = {    // pg-promise initialization options...    receive(data, result, e) {        camelizeColumns(data);    }};function camelizeColumns(data) {    const tmp = data[0];    for (let prop in tmp) {        const camel = pgp.utils.camelize(prop);        if (!(camel in tmp)) {            for (let i = 0; i &lt; data.length; i++) {                const d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
 
 
 
@@ -2167,7 +2167,7 @@ the <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    task: e => {        if (e.ctx.finish) {            // this is a task->finish event;            console.log('Duration:', e.ctx.duration);            if (e.ctx.success) {                // e.ctx.result = resolved data;            } else {                // e.ctx.result = error/rejection reason;            }        } else {            // this is a task->start event;            console.log('Start Time:', e.ctx.start);        }    }};</code></pre>
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    task(e) {        if (e.ctx.finish) {            // this is a task->finish event;            console.log('Duration:', e.ctx.duration);            if (e.ctx.success) {                // e.ctx.result = resolved data;            } else {                // e.ctx.result = error/rejection reason;            }        } else {            // this is a task->start event;            console.log('Start Time:', e.ctx.start);        }    }};</code></pre>
 
 
 
@@ -2304,7 +2304,7 @@ the <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    transact: e => {        if (e.ctx.finish) {            // this is a transaction->finish event;            console.log('Duration:', e.ctx.duration);            if (e.ctx.success) {                // e.ctx.result = resolved data;            } else {                // e.ctx.result = error/rejection reason;            }        } else {            // this is a transaction->start event;            console.log('Start Time:', e.ctx.start);        }    }};</code></pre>
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    transact(e) {        if (e.ctx.finish) {            // this is a transaction->finish event;            console.log('Duration:', e.ctx.duration);            if (e.ctx.success) {                // e.ctx.result = resolved data;            } else {                // e.ctx.result = error/rejection reason;            }        } else {            // this is a transaction->start event;            console.log('Start Time:', e.ctx.start);        }    }};</code></pre>
 
 
 
