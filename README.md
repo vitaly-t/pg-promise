@@ -377,7 +377,7 @@ Query-formatting engine then calls `toPostgres` to get the actual value, passing
 
 ```js
 const obj = {
-    toPostgres: function(self) {
+    toPostgres(self) {
         // self = this = obj
         
         // must return the actual value here
