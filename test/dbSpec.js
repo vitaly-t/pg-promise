@@ -1474,6 +1474,44 @@ describe('Method \'multiResult\'', () => {
 
 });
 
+describe('Method \'multi\'', () => {
+
+    describe('for a single query', () => {
+        let result;
+        beforeEach(done => {
+            db.multi('select 1 as one')
+                .then(data => {
+                    result = data;
+                    done();
+                });
+        });
+        it('must resolve with one-element array', () => {
+            expect(Array.isArray(result)).toBe(true);
+            expect(result.length).toBe(1);
+            expect(result[0]).toEqual([{one: 1}]);
+        });
+    });
+
+    describe('for a multi-query', () => {
+        let result;
+        beforeEach(done => {
+            db.multi('select 1 as one;select 2 as two;select * from users where id =- 1;')
+                .then(data => {
+                    result = data;
+                    done();
+                });
+        });
+        it('must resolve with an array of arrays', () => {
+            expect(Array.isArray(result)).toBe(true);
+            expect(result.length).toBe(3);
+            expect(result[0]).toEqual([{one: 1}]);
+            expect(result[1]).toEqual([{two: 2}]);
+            expect(result[2]).toEqual([]);
+        });
+    });
+
+});
+
 describe('Querying a function', function () {
 
     describe('that expects multiple rows', function () {

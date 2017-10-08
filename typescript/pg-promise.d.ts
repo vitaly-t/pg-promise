@@ -1,5 +1,5 @@
 /////////////////////////////////////////
-// Requires pg-promise v6.11.0 or later.
+// Requires pg-promise v7.0.0 or later.
 /////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -402,10 +402,13 @@ declare namespace pgPromise {
         any<T=any>(query: TQuery, values?: any): XPromise<T[]>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#result
-        result<T=pg.IResult>(query: TQuery, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T>
+        result<T=pg.IResult>(query: TQuery, values?: any, cb?: (value: pg.IResult) => T, thisArg?: any): XPromise<T>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#multiResult
-        multiResult<T=pg.IResult[]>(query: TQuery, values?: any): XPromise<T>
+        multiResult(query: TQuery, values?: any): XPromise<pg.IResult[]>
+
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#multi
+        multi<T=any>(query: TQuery, values?: any): XPromise<Array<T[]>>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#stream
         stream(qs: Object, init: (stream: NodeJS.ReadableStream) => void): XPromise<{ processed: number, duration: number }>

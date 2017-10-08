@@ -45,13 +45,17 @@ db.result('', [], r => {
     return r;
 }, 123)
     .then(data => {
-        const value = data.rows[0].name;
-        const d: number = data.duration;
+        const value = data.rows[0];
     });
 
 db.multiResult('', [])
     .then(data => {
-        const value = data[0].rows[0].name;
+        const tableID = data[0].fields[0].tableID;
+    });
+
+db.multi('', [])
+    .then(data => {
+        const length = data[0].length;
     });
 
 db.map('', null, row => {
