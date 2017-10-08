@@ -1402,25 +1402,76 @@ describe('Queries must not allow invalid QRM (Query Request Mask) combinations',
 
 });
 
-describe('result', function () {
+describe('Method \'result\'', function () {
 
-    it('must resolve with PG result instance', function () {
+    describe('for a single query', () => {
         let result;
-        db.result('select * from users')
-            .then(function (data) {
-                result = data;
-            }, function () {
-                result = null;
-            });
-        waitsFor(function () {
-            return result !== undefined;
-        }, 'Query timed out', 5000);
-        runs(function () {
-            if (!options.pgNative) {
-                expect(result instanceof pgResult).toBe(true);
-            }
+        beforeEach(done => {
+            db.result('select 1 as one')
+                .then(data => {
+                    result = data;
+                    done();
+                });
+        });
+        it('must resolve with a single Result object', () => {
+            expect(result instanceof pgResult).toBe(true);
+            expect(result.rows).toEqual([{one: 1}]);
         });
     });
+
+    describe('for a multi-query', () => {
+        let result;
+        beforeEach(done => {
+            db.result('select 1 as one;select 2 as two')
+                .then(data => {
+                    result = data;
+                    done();
+                });
+        });
+        it('must resolve with the last Result object', () => {
+            expect(result instanceof pgResult).toBe(true);
+            expect(result.rows).toEqual([{two: 2}]);
+        });
+    });
+
+});
+
+describe('Method \'multiResult\'', () => {
+
+    describe('for a single query', () => {
+        let result;
+        beforeEach(done => {
+            db.multiResult('select 1 as one')
+                .then(data => {
+                    result = data;
+                    done();
+                });
+        });
+        it('must resolve with one-element array of Result', () => {
+            expect(Array.isArray(result)).toBe(true);
+            expect(result.length).toBe(1);
+            expect(result[0].rows).toEqual([{one: 1}]);
+        });
+    });
+
+    describe('for a multi-query', () => {
+        let result;
+        beforeEach(done => {
+            db.multiResult('select 1 as one;select 2 as two;select * from users where id =- 1;')
+                .then(data => {
+                    result = data;
+                    done();
+                });
+        });
+        it('must resolve with an array of Results', () => {
+            expect(Array.isArray(result)).toBe(true);
+            expect(result.length).toBe(3);
+            expect(result[0].rows).toEqual([{one: 1}]);
+            expect(result[1].rows).toEqual([{two: 2}]);
+            expect(result[2].rows).toEqual([]);
+        });
+    });
+
 });
 
 describe('Querying a function', function () {

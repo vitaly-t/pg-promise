@@ -522,15 +522,50 @@ describe('Receive event', function () {
         });
     });
 
-    describe('query negative', function () {
+    describe('positive for multi-queries', () => {
+        const data = [];
+        beforeEach(done => {
+            options.receive = (d, r, e) => {
+                data.push({d, r, e});
+            };
+            db.multiResult('select 1 as one;select 2 as two')
+                .then(() => {
+                    done();
+                });
+        });
+        it('must send the event for each result', () => {
+            expect(data.length).toBe(2);
+            expect(data[0].d).toEqual([{one: 1}]);
+            expect(data[1].d).toEqual([{two: 2}]);
+        });
+    });
+
+    describe('negative for multi-queries', () => {
+        let result;
+        beforeEach(done => {
+            options.receive = () => {
+                throw new Error('Ops!');
+            };
+            db.multiResult('select 1 as one;select 2 as two')
+                .catch(error => {
+                    result = error;
+                    done();
+                });
+        });
+        it('must reject with the error', () => {
+            expect(result instanceof Error).toBe(true);
+        });
+    });
+
+    describe('query negative', () => {
         let result;
         const error = new Error('ops!');
-        beforeEach(function (done) {
-            options.receive = function () {
+        beforeEach(done => {
+            options.receive = () => {
                 throw error;
             };
             db.one('select $1 as value', [123])
-                .catch(function (reason) {
+                .catch(reason => {
                     result = reason;
                     done();
                 });
