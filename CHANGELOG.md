@@ -1,5 +1,6 @@
 ### Release History
 
+* 7.0.0 Adding methods [multi] and [multiResult] to support multi-query results. Released: Oct 08, 2017.
 * 6.10.0 Initial support for [Nested Named Parameters]. Released: Sept 27, 2017
 * 6.9.0 Upgrading to [spex] v2.0.0, with the updated protocol. Released: Sept 21, 2017
 * 6.8.0 Upgrading [QueryStream] support to use version 1.1.x or later. Released: Sept 20, 2017
@@ -132,3 +133,5 @@
 [spex.sequence]:https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
 [Result]:https://node-postgres.com/api/result
 [Custom Type Formatting]:https://github.com/vitaly-t/pg-promise#custom-type-formatting
+[multi]:http://vitaly-t.github.io/pg-promise/Database.html#multi
+[multiResult]:http://vitaly-t.github.io/pg-promise/Database.html#multiResult
