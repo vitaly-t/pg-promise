@@ -183,6 +183,9 @@ const $events = {
      * - When adding data pre-processing, you should consider possible performance penalty this may bring.
      * - If the event handler throws an error, the original request will be rejected with that error.
      *
+     * When executing methods {@link Database#multi Database.multi} or {@link Database#multiResult Database.multiResult},
+     * this event is called once for every non-empty result that's returned.
+     *
      * @param {array} data
      * A non-empty array of received data objects/rows.
      *

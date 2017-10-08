@@ -343,7 +343,7 @@ depending on the database context.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line341">line 341</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line343">line 343</a>
     </li></ul></dd>
     
 
@@ -437,7 +437,7 @@ depending on the database context.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line308">line 308</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line310">line 310</a>
     </li></ul></dd>
     
 
@@ -515,7 +515,7 @@ depending on the database context.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line353">line 353</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line355">line 355</a>
     </li></ul></dd>
     
 
@@ -600,7 +600,7 @@ to use this <a href="Database.html">Database</a> object, and each query method w
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line365">line 365</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line367">line 367</a>
     </li></ul></dd>
     
 
@@ -648,6 +648,7 @@ to use this <a href="Database.html">Database</a> object, and each query method w
 <div class="description">
     <p>Executes a query that expects any number of rows.
 This is simply a shorter alias for method <a href="Database.html#manyOrNone">manyOrNone</a>.</p>
+<p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
 
@@ -804,7 +805,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line679">line 679</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line689">line 689</a>
     </li></ul></dd>
     
 
@@ -1207,7 +1208,7 @@ set up on the connection's <code>client</code> object, you should remove them to
              // process the row
         });
         return data;
-    });</code></pre>
+    });</code></pre><p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
 
@@ -1433,7 +1434,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1054">line 1054</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1086">line 1086</a>
     </li></ul></dd>
     
 
@@ -1693,7 +1694,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line888">line 888</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line918">line 918</a>
     </li></ul></dd>
     
 
@@ -1760,8 +1761,8 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 <div class="description">
-    <p>Executes a query that expects one or more rows.
-When the query returns no rows, the method rejects.</p>
+    <p>Executes a query that expects one or more rows. When the query returns no rows, the method rejects.</p>
+<p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
 
@@ -1918,7 +1919,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line542">line 542</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line548">line 548</a>
     </li></ul></dd>
     
 
@@ -1987,6 +1988,7 @@ as an override for its internal <code>values</code>.</p></td>
 
 <div class="description">
     <p>Executes a query that expects any number of rows.</p>
+<p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
 
@@ -2143,7 +2145,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line640">line 640</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line648">line 648</a>
     </li></ul></dd>
     
 
@@ -2222,7 +2224,7 @@ resolved by method <a href="Database.html#any">any</a>.</p>
         return data.map((row, index, data) => {
              // return a new element
         });
-    });</code></pre>
+    });</code></pre><p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
 
@@ -2446,7 +2448,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line952">line 952</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line982">line 982</a>
     </li></ul></dd>
     
 
@@ -2683,12 +2685,19 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line818">line 818</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line835">line 835</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html#multiResult">multiResult</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -2724,6 +2733,11 @@ as an override for its internal <code>values</code>.</p></td>
 </dl>
 
     
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>db.multi('SELECT * FROM users;SELECT * FROM products')   .spread((users, products) => {       // we get data from all queries at once   })   .catch(error => {       // error   });</code></pre>
 
 
 
@@ -2900,12 +2914,19 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line782">line 782</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line796">line 796</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Database.html#multi">multi</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -2956,8 +2977,9 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 <div class="description">
-    <p>Executes a query that expects no data to be returned.
-If the query returns any kind of data, the method rejects.</p>
+    <p>Executes a query that expects no data to be returned. If the query returns any kind of data,
+the method rejects.</p>
+<p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
 
@@ -3114,7 +3136,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line436">line 436</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line438">line 438</a>
     </li></ul></dd>
     
 
@@ -3182,8 +3204,9 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 <div class="description">
-    <p>Executes a query that expects exactly one row of data.
-When 0 or more than 1 rows are returned, the method rejects.</p>
+    <p>Executes a query that expects exactly one row of data. When 0 or more than 1 rows are returned,
+the method rejects.</p>
+<p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
 
@@ -3408,7 +3431,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line472">line 472</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line476">line 476</a>
     </li></ul></dd>
     
 
@@ -3496,8 +3519,8 @@ When specified, the return value replaces the original resolved value.</p>
 
 
 <div class="description">
-    <p>Executes a query that expects 0 or 1 rows.
-When the query returns more than 1 row, the method rejects.</p>
+    <p>Executes a query that expects 0 or 1 rows. When the query returns more than 1 row, the method rejects.</p>
+<p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
 
@@ -3722,7 +3745,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line578">line 578</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line585">line 585</a>
     </li></ul></dd>
     
 
@@ -4013,7 +4036,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line913">line 913</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line943">line 943</a>
     </li></ul></dd>
     
 
@@ -4083,6 +4106,7 @@ and then returns the same result as method <a href="Database.html#oneOrNone">one
 
 <div class="description">
     <p>Executes a generic query request that expects the return data according to parameter <code>qrm</code>.</p>
+<p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
 
@@ -4350,6 +4374,7 @@ as an override for its internal <code>values</code>.</p></td>
 <div class="description">
     <p>Executes a query without any expectation for the return data, to resolve with the
 original <a href="https://node-postgres.com/api/result">Result</a> object when successful.</p>
+<p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
 
@@ -4574,7 +4599,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line719">line 719</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line731">line 731</a>
     </li></ul></dd>
     
 
@@ -4764,7 +4789,7 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line855">line 855</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line885">line 885</a>
     </li></ul></dd>
     
 
@@ -4985,7 +5010,7 @@ be passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1128">line 1128</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1162">line 1162</a>
     </li></ul></dd>
     
 
@@ -5215,7 +5240,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1202">line 1202</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1236">line 1236</a>
     </li></ul></dd>
     
 
@@ -5388,7 +5413,7 @@ passed in as the first parameter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1389">line 1389</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1423">line 1423</a>
     </li></ul></dd>
     
 

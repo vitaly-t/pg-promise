@@ -292,6 +292,8 @@ function Database(cn, dc, config) {
      * @description
      * Executes a generic query request that expects the return data according to parameter `qrm`.
      *
+     * When receiving a multi-query result, only the last result is processed, ignoring the rest.
+     *
      * @param {string|object} query
      * Query to be executed, which can any of the following types:
      * - A non-empty query string
@@ -465,8 +467,10 @@ function Database(cn, dc, config) {
         /**
          * @method Database#none
          * @description
-         * Executes a query that expects no data to be returned.
-         * If the query returns any kind of data, the method rejects.
+         * Executes a query that expects no data to be returned. If the query returns any kind of data,
+         * the method rejects.
+         *
+         * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
          * @param {string|object} query
          * Query to be executed, which can any of the following types:
@@ -501,8 +505,10 @@ function Database(cn, dc, config) {
         /**
          * @method Database#one
          * @description
-         * Executes a query that expects exactly one row of data.
-         * When 0 or more than 1 rows are returned, the method rejects.
+         * Executes a query that expects exactly one row of data. When 0 or more than 1 rows are returned,
+         * the method rejects.
+         *
+         * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
          * @param {string|object} query
          * Query to be executed, which can any of the following types:
@@ -571,8 +577,9 @@ function Database(cn, dc, config) {
         /**
          * @method Database#many
          * @description
-         * Executes a query that expects one or more rows.
-         * When the query returns no rows, the method rejects.
+         * Executes a query that expects one or more rows. When the query returns no rows, the method rejects.
+         *
+         * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
          * @param {string|object} query
          * Query to be executed, which can any of the following types:
@@ -607,8 +614,9 @@ function Database(cn, dc, config) {
         /**
          * @method Database#oneOrNone
          * @description
-         * Executes a query that expects 0 or 1 rows.
-         * When the query returns more than 1 row, the method rejects.
+         * Executes a query that expects 0 or 1 rows. When the query returns more than 1 row, the method rejects.
+         *
+         * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
          * @param {string|object} query
          * Query to be executed, which can any of the following types:
@@ -671,6 +679,8 @@ function Database(cn, dc, config) {
          * @description
          * Executes a query that expects any number of rows.
          *
+         * When receiving a multi-query result, only the last result is processed, ignoring the rest.
+         *
          * @param {string|object} query
          * Query to be executed, which can any of the following types:
          * - A non-empty query string
@@ -711,6 +721,8 @@ function Database(cn, dc, config) {
          * Executes a query that expects any number of rows.
          * This is simply a shorter alias for method {@link Database#manyOrNone manyOrNone}.
          *
+         * When receiving a multi-query result, only the last result is processed, ignoring the rest.
+         *
          * @param {string|object} query
          * Query to be executed, which can any of the following types:
          * - A non-empty query string
@@ -750,6 +762,8 @@ function Database(cn, dc, config) {
          * @description
          * Executes a query without any expectation for the return data, to resolve with the
          * original $[Result] object when successful.
+         *
+         * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
          * @param {string|object} query
          * Query to be executed, which can any of the following types:
@@ -839,6 +853,9 @@ function Database(cn, dc, config) {
          * as an override for its internal `values`.
          *
          * @returns {external:Promise&lt;external:Result[]>}
+         *
+         * @see {@link Database#multi multi}
+         *
          */
         obj.multiResult = function (query, values) {
             return obj.query.call(this, query, values, npm.special.cache.multiResultQuery);
@@ -875,6 +892,19 @@ function Database(cn, dc, config) {
          * as an override for its internal `values`.
          *
          * @returns {external:Promise&lt;Array&lt;Array>>}
+         *
+         * @see {@link Database#multiResult multiResult}
+         *
+         * @example
+         *
+         * db.multi('SELECT * FROM users;SELECT * FROM products')
+         *    .spread((users, products) => {
+         *        // we get data from all queries at once
+         *    })
+         *    .catch(error => {
+         *        // error
+         *    });
+         *
          */
         obj.multi = function (query, values) {
             return obj.query.call(this, query, values, npm.special.cache.multiResultQuery)
@@ -995,6 +1025,8 @@ function Database(cn, dc, config) {
          *     });
          * ```
          *
+         * When receiving a multi-query result, only the last result is processed, ignoring the rest.
+         *
          * @param {string|object} query
          * Query to be executed, which can any of the following types:
          * - A non-empty query string
@@ -1096,6 +1128,8 @@ function Database(cn, dc, config) {
          *         return data;
          *     });
          * ```
+         *
+         * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
          * @param {string|object} query
          * Query to be executed, which can any of the following types:
