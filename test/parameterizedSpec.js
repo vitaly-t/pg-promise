@@ -230,7 +230,7 @@ describe('Direct Parameterized Query', function () {
             db.many({
                 text: 'select * from somewhere'
             })
-                .then(dummy, function (reason) {
+                .catch(reason => {
                     result = reason;
                 })
                 .finally(function () {

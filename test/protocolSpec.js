@@ -148,6 +148,8 @@ describe('Database Protocol', function () {
         expect(typeof db.proc).toBe('function');
         expect(typeof db.map).toBe('function');
         expect(typeof db.each).toBe('function');
+        expect(typeof db.multi).toBe('function');
+        expect(typeof db.multiResult).toBe('function');
 
         // must not have task-level methods:
         expect(db.batch).toBeUndefined();
@@ -213,6 +215,8 @@ describe('Database Protocol', function () {
             expect(typeof connection.page).toBe('function');
             expect(typeof connection.sequence).toBe('function');
             expect(typeof connection.client).toBe('object');
+            expect(typeof connection.multi).toBe('function');
+            expect(typeof connection.multiResult).toBe('function');
 
             expect('$config' in connection).toBe(false);
             expect('$cn' in connection).toBe(false);
@@ -259,6 +263,8 @@ describe('Database Protocol', function () {
             expect(typeof protocol.sequence).toBe('function');
             expect(typeof protocol.map).toBe('function');
             expect(typeof protocol.each).toBe('function');
+            expect(typeof protocol.multi).toBe('function');
+            expect(typeof protocol.multiResult).toBe('function');
         });
     });
 
@@ -300,6 +306,8 @@ describe('Database Protocol', function () {
             expect(typeof(protocol.sequence)).toBe('function');
             expect(typeof(protocol.map)).toBe('function');
             expect(typeof(protocol.each)).toBe('function');
+            expect(typeof(protocol.multi)).toBe('function');
+            expect(typeof(protocol.multiResult)).toBe('function');
         });
     });
 

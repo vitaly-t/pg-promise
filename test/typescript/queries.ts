@@ -1,5 +1,4 @@
 import * as pgPromise from '../../typescript/pg-promise';
-import {IArrayExt} from '../../typescript/pg-promise';
 
 const pgp: pgPromise.IMain = pgPromise();
 
@@ -40,37 +39,43 @@ db.oneOrNone('')
 db.many('')
     .then(data => {
         const value = data[0].ops;
-        const d: number = data.duration;
     });
 
 db.result('', [], r => {
     return r;
 }, 123)
     .then(data => {
-        const value = data.rows[0].name;
-        const d: number = data.duration;
+        const value = data.rows[0];
+    });
+
+db.multiResult('', [])
+    .then(data => {
+        const tableID = data[0].fields[0].tableID;
+    });
+
+db.multi('', [])
+    .then(data => {
+        const length = data[0].length;
     });
 
 db.map('', null, row => {
     return row.value;
 })
-    .then((data: IArrayExt<any>) => {
-        const d: number = data.duration;
+    .then((data: any[]) => {
+        const d: number = data[0];
     });
 
 db.each('', null, row => {
     const v = row.value;
 })
-    .then((data: IArrayExt<any>) => {
-        const d: number = data.duration;
+    .then((data: any[]) => {
     });
 
 db.task(t => {
     return t.batch([
         t.one('')
     ])
-        .then((data: IArrayExt<any>) => {
-            const d: number = data.duration;
+        .then((data: any[]) => {
             return data;
         });
 })

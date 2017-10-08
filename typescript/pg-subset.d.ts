@@ -32,8 +32,6 @@ declare namespace pg {
         rows: any[]
         fields: IColumn[]
 
-        duration: number // pg-promise extension
-
         // properties below are not available within Native Bindings:
 
         rowAsArray: boolean
