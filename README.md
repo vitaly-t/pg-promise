@@ -102,43 +102,73 @@ For the latest SQL formatting support see the API: methods [query] and [as.forma
 
 ### SQL Names
 
-When a variable ends with `~` (tilde) or `:name`, it represents an SQL name or identifier, which must be a text
-string of at least 1 character long. Such name is then properly escaped and wrapped in double quotes.
+When a variable ends with `:name`, or shorter syntax `~` (tilde), it represents an SQL name or identifier,
+to be escaped accordingly, and then wrapped in double quotes.
+
+**Example**
 
 ```js
-query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
+db.query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
 //=> INSERT INTO "Table Name"("Column Name") VALUES(...)
-
-// A mixed example for a dynamic column list:
-const columns = ['id', 'message'];
-query('SELECT ${columns^} FROM ${table~}', {
-    columns: columns.map(pgp.as.name).join(),
-    table: 'Table Name'
-});
-//=> SELECT "id","message" FROM "Table Name"
 ```
 
-Version 5.2.1 and later supports extended syntax for `${this~}` and for method [as.name]:
+Typically, an SQL name variable is a text string, which must be at least 1 character long.
+However, an SQL name can also be any of the following:
+
+* A string that contains only `*` (asterisks) is automatically recognized as _all columns_:
+
+```js
+db.query('SELECT $1:name FROM $2:name', ['*', 'table']);
+//=> SELECT * FROM "table"
+```
+
+* An array of strings to represent column names:
+
+```js
+db.query('SELECT ${columns:name} FROM ${table:name}', {
+    columns: ['column1', 'column2'],
+    table: 'table'
+});
+//=> SELECT "column1","column2" FROM "table"
+```
+
+* Any object that's not an array gets its properties enumerated for column names:
 
 ```js
 const obj = {
     one: 1,
     two: 2
 };
+db.query('SELECT $1:name FROM $2:name', [obj, 'table']);
+//=> SELECT "one","two" FROM "table"
+```
 
-format('INSERT INTO table(${this~}) VALUES(${one}, ${two})', obj);
-//=>INSERT INTO table("one","two") VALUES(1, 2)
+In addition, the syntax supports `this` to enumerate column names from the formatting object:
+ 
+```js
+const obj = {
+    one: 1,
+    two: 2
+};
+db.query('INSERT INTO table(${this:name}) VALUES(${one}, ${two})', obj);
+//=> INSERT INTO table("one","two") VALUES(1, 2)
 ```
 
 Relying on this type of formatting for sql names and identifiers, along with regular variable formatting
 makes your application impervious to sql injection.
 
-See method [as.name] for the latest API.
+See also method [as.name] which implements SQL name formatting.
 
-**Version 5.9.0** added explicit support for SQL aliases, to keep them separate from the generic SQL Names,
-as they only allow a simple syntax. See method [as.alias].
+#### Aliases
 
-The formatting engine was extended with modifier `:alias`, which automatically calls method [as.alias].
+An alias is a lighter (simpler + faster) SQL name, which only supports a text string, and is used via `:alias`:
+
+```js
+db.query('SELECT $1:alias FROM $2:name', ['col', 'table']);
+//=> SELECT "col" FROM "table"
+```
+
+See also method [as.alias] which implements the formatting.
 
 ### Raw Text
 
