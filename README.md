@@ -155,13 +155,13 @@ db.query('INSERT INTO table(${this:name}) VALUES(${one}, ${two})', obj);
 ```
 
 Relying on this type of formatting for sql names and identifiers, along with regular variable formatting
-makes your application impervious to sql injection.
+makes your application impervious to [SQL injection].
 
 See also method [as.name] which implements SQL name formatting.
 
 #### Aliases
 
-An alias is a lighter (simpler + faster) SQL name, which only supports a text string, and is used via `:alias`:
+An alias is a lighter (simpler + faster) SQL name, which only supports a text string, and is used via the `:alias` filter:
 
 ```js
 db.query('SELECT $1:alias FROM $2:name', ['col', 'table']);
@@ -881,3 +881,4 @@ DEALINGS IN THE SOFTWARE.
 [spex.sequence]:http://vitaly-t.github.io/spex/global.html#sequence
 [Result]:https://node-postgres.com/api/result
 [Official Documentation]:http://vitaly-t.github.io/pg-promise/index.html
+[SQL injection]:https://en.wikipedia.org/wiki/SQL_injection
