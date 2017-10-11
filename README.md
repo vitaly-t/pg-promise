@@ -52,15 +52,16 @@ pg-promise
 # About
 
 Built on top of [node-postgres] and its connection pool, this library enhances the callback interface with promises,
-while extending the protocol to a higher level, with automated connections and transactions management.
+while extending the protocol to a higher level, with automated connections, and transactions management.
 
 In addition, the library provides:
 
-* its own, more flexible query formatting
+* a very flexible query formatting engine
+* automatic support for ES6 generators + ES7 `async/await`
 * events reporting for connectivity, errors, queries, etc.
-* support for all popular promise libraries + ES6 generators
 * declarative approach to controlling query results
 * extensive support for external SQL files
+* support for all popular promise libraries
 
 # Documentation
 
@@ -76,14 +77,42 @@ Please read the [Contribution Notes](https://github.com/vitaly-t/pg-promise/blob
 
 # Usage
 
-## Queries and Parameters
+Once you have created a [Database] object, according to the steps in the [Official Documentation],
+the object gives your access to methods that can be split into 4 categories, as documented below. 
 
-Every connection context of the library shares the same query protocol, starting with generic method [query],
-defined as shown below:
+## Methods 
 
-```js
-function query(query, values, qrm){}
-```
+All query methods of the library are based off generic method [query], which does the following:
+
+1. Formats and validates the query, according to the `values` passed into the method;
+2. For a root-level query (against the [Database] object), it requests a new connection from the pool;
+3. Executes the query;
+4. For a root-level query (against the [Database] object), it releases the connection back to the pool;
+5. Resolves/rejects, according to the data returned from the query, and parameter `qrm`.
+
+You should normally use only result-specific methods for executing queries, all of which are named according
+to how many rows of data the query is expected to return, so for each query you should pick the right method:
+[none], [one], [oneOrNone], [many], [manyOrNone] = [any]. Do not confuse the method name for the number of rows
+to be affected by the query, which is completely irrelevant.
+
+By relying on the result-specific methods you protect your code from an unexpected number of data rows,
+to be automatically rejected (treated as errors).  
+
+There are also more specific methods that you will often need:
+
+* [result], [multi], [multiResult] - for verbose and/or multi-query results
+* [map], [each] - for simpler/inline result pre-processing/re-mapping
+* [func], [proc] - to simplify executing SQL functions/procedures
+* [task], [tx] - to manage shared connections + automatic transactions; 
+* [stream] - to access rows from a query via a read stream;
+
+**IMPORTANT**
+ 
+The most important methods to understand from the beginning are [task] and [tx]. As explained above, the base
+method [query] acquires and releases the connection, which is not suitable for executing multiple queries at once.
+Therefore, [Chaining Queries] is an absolute must-read, to avoid writing the code that will be plagued by connectivity issues.
+
+## Query Formatting
 
 * `query` (required) - a string with support for three types of formatting, depending on the `values` passed:
    - format `$1` (single variable), if `values` is of type `string`, `boolean`, `number`, `Date`, `function`, `null` or [QueryFile];
