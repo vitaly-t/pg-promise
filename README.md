@@ -78,7 +78,7 @@ Please read the [Contribution Notes](https://github.com/vitaly-t/pg-promise/blob
 # Usage
 
 Once you have created a [Database] object, according to the steps in the [Official Documentation],
-the object gives your access to methods that can be split into 4 categories, as documented below. 
+you get access to the methods documented below. 
 
 ## Methods 
 
@@ -243,76 +243,6 @@ query('...WHERE name LIKE \'%${filter:value}\'', {filter: 'O\'Connor'});
 ```
 
 See also: method [as.value].
-
-## Query Result Mask
-
-In order to eliminate the chances of unexpected query results and thus make the code more robust,
-method [query] uses parameter `qrm` (Query Result Mask):
-
-```js
-///////////////////////////////////////////////////////
-// Query Result Mask flags;
-//
-// Any combination is supported, except for one + many.
-const queryResult = {
-    /** Single row is expected. */
-    one: 1,
-    /** One or more rows expected. */
-    many: 2,
-    /** Expecting no rows. */
-    none: 4,
-    /** many|none - any result is expected. */
-    any: 6
-};
-```
-
-In the following generic-query example we indicate that the call can return anything:
-
-```js
-db.query('select * from users');
-```
-
-which is equivalent to making one of the following calls:
-
-```js
-const qrm = pgp.queryResult;
-db.query('SELECT * FROM users', undefined, qrm.many | qrm.none);
-db.query('SELECT * FROM users', undefined, qrm.any);
-db.manyOrNone('SELECT * FROM users');
-db.any('SELECT * FROM users');
-```
-
-This usage pattern is facilitated through result-specific methods that can be used instead of the generic query:
-
-```js
-db.many(query, values); // expects one or more rows
-db.one(query, values); // expects a single row
-db.none(query, values); // expects no rows
-db.any(query, values); // expects anything, same as `manyOrNone`
-db.oneOrNone(query, values); // expects 1 or 0 rows
-db.manyOrNone(query, values); // expects anything, same as `any`
-```
-
-There is however one specific method [result](http://vitaly-t.github.io/pg-promise/Database.html#result) to bypass any result verification, and instead resolve
-with the original [Result] object passed from the [PG] library.
-
-You can also add your own methods and properties to this protocol via the [extend] event.  
-
-Each query function resolves its **data** according to the `qrm` that was used:
-
-* `none` - **data** is `null`. If the query returns any kind of data, it is rejected.
-* `one` - **data** is a single object. If the query returns no data or more than one row of data, it is rejected.
-* `many` - **data** is an array of objects. If the query returns no rows, it is rejected.
-* `one`|`none` - **data** is `null`, if no data was returned; or a single object, if one row was returned.
-    If the query returns more than one row of data, the query is rejected.
-* `many`|`none` - **data** is an array of objects. When no rows are returned, **data** is an empty array.
-
-If you try to specify `one`|`many` in the same query, such query will be rejected without executing it, telling you that such mask is invalid.
-
-If `qrm` is not specified when calling generic [query] method, it is assumed to be `many`|`none` = `any`, i.e. any kind of data expected.
-
-> This is all about writing robust code, when the client specifies what kind of data it is ready to handle on the declarative level,
-leaving the burden of all extra checks to the library.
 
 ## Named Parameters
 
