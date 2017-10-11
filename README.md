@@ -103,7 +103,7 @@ There are also more specific methods that you will often need:
 * [result], [multi], [multiResult] - for verbose and/or multi-query results
 * [map], [each] - for simpler/inline result pre-processing/re-mapping
 * [func], [proc] - to simplify executing SQL functions/procedures
-* [task], [tx] - to manage shared connections + automatic transactions; 
+* [task], [tx], [connect] - for shared connections + automatic transactions; 
 * [stream] - to access rows from a query via a read stream;
 
 **IMPORTANT**
@@ -792,14 +792,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+[query]:http://vitaly-t.github.io/pg-promise/Database.html#query
+[one]:http://vitaly-t.github.io/pg-promise/Database.html#one
+[oneOrNone]:http://vitaly-t.github.io/pg-promise/Database.html#oneOrNone
+[many]:http://vitaly-t.github.io/pg-promise/Database.html#many
+[manyOrNone]:http://vitaly-t.github.io/pg-promise/Database.html#manyOrNone
+[any]:http://vitaly-t.github.io/pg-promise/Database.html#any
+[result]:http://vitaly-t.github.io/pg-promise/Database.html#result
+[multi]:http://vitaly-t.github.io/pg-promise/Database.html#multi
+[multiResult]:http://vitaly-t.github.io/pg-promise/Database.html#multiResult
+[map]:http://vitaly-t.github.io/pg-promise/Database.html#map
+[each]:http://vitaly-t.github.io/pg-promise/Database.html#each
+[func]:http://vitaly-t.github.io/pg-promise/Database.html#func
+[proc]:http://vitaly-t.github.io/pg-promise/Database.html#proc
+[task]:http://vitaly-t.github.io/pg-promise/Database.html#task
+[tx]:http://vitaly-t.github.io/pg-promise/Database.html#tx
+[batch]:http://vitaly-t.github.io/pg-promise/Task.html#batch
+[sequence]:http://vitaly-t.github.io/pg-promise/Task.html#sequence
+[page]:http://vitaly-t.github.io/pg-promise/Task.html#page
+[connect]:http://vitaly-t.github.io/pg-promise/Task.html#connect
+
 [extent]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
 [Configuration Object]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object
 [Connection String]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#connection-string
-[query]:http://vitaly-t.github.io/pg-promise/Database.html#query
-[each]:http://vitaly-t.github.io/pg-promise/Database.html#each
-[map]:http://vitaly-t.github.io/pg-promise/Database.html#map
-[task]:http://vitaly-t.github.io/pg-promise/Database.html#task
-[tx]:http://vitaly-t.github.io/pg-promise/Database.html#tx
 [Connection Syntax]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax
 [helpers]:http://vitaly-t.github.io/pg-promise/helpers.html
 [QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
@@ -816,8 +831,6 @@ DEALINGS IN THE SOFTWARE.
 [as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
 [as.alias]:http://vitaly-t.github.io/pg-promise/formatting.html#.alias
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
-[batch]:http://vitaly-t.github.io/pg-promise/Task.html#batch
-[sequence]:http://vitaly-t.github.io/pg-promise/Task.html#sequence
 [Protocol API]:http://vitaly-t.github.io/pg-promise/index.html
 [API]:http://vitaly-t.github.io/pg-promise/index.html
 [API Documentation]:http://vitaly-t.github.io/pg-promise/index.html
