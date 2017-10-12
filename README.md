@@ -192,7 +192,7 @@ db.any('SELECT ${one.two.three} FROM table', obj);
 
 Please note, however, that this supports does not extend to the [helpers] namespace.
 
-## Formatting Filters
+### Formatting Filters
 
 By default, all values are formatted according to their JavaScript type. Formatting filters, aka formatting modifiers,
 change that, so the value is interpreted and formatted as something else. 
@@ -209,6 +209,17 @@ db.any('SELECT ${column:name} FROM ${table:name}', {
 });
 //=> SELECT "price" FROM "products"
 ```
+
+The following Formatting Filters are supported:
+
+* `:name` = `~`
+* `:raw` = `^`
+* `:value` = `#`
+* `:alias`
+* `:json`
+* `:csv`
+* 
+
 
 ### SQL Names
 
