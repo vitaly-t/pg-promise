@@ -114,20 +114,101 @@ Therefore, [Chaining Queries] is an absolute must-read, to avoid writing the cod
 
 ## Query Formatting
 
-* `query` (required) - a string with support for three types of formatting, depending on the `values` passed:
-   - format `$1` (single variable), if `values` is of type `string`, `boolean`, `number`, `Date`, `function`, `null` or [QueryFile];
-   - format `$1, $2, etc..`, if `values` is an array;
-   - format `$*propName*`, if `values` is an object (not `null` and not `Date`), where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`;
-* `values` (optional) - value/array/object to replace the variables in the query;
-* `qrm` - (optional) *Query Result Mask*, as explained below. When not passed, it defaults to `pgp.queryResult.any`.
+This library comes with embedded query-formatting engine that offers high-performance value escaping,
+flexibility and extensibility. It is used by default with all query methods, unless you decide to opt out
+of it entirely via option `pgFormatting` within [Initialization Options].  
 
-When a value/property inside array/object is an array, it is treated as a [PostgreSQL Array Type](http://www.postgresql.org/docs/9.4/static/arrays.html),
-converted into the array constructor format of `array[]`, the same as calling method `pgp.as.array()`.
+All formatting methods used internally are available from the [formatting] namespace, so they can also be used
+directly when needed. The main method there is [format], which is used by every query method to format the query. 
 
-When a value/property inside array/object is of type `object` (except for `null`, `Date` or `Buffer`), it is automatically
-serialized into JSON, the same as calling method `pgp.as.json()`, except the latter would convert anything to JSON.
+The formatting syntax is deducted from the type of `values` passed in:
 
-For the latest SQL formatting support see the API: methods [query] and [as.format].
+* [Index Variables] when `values` is an array or a single basic type;
+* [Named Parameters] when `values` is an object other than `Array` or `null`.
+
+### Index Variables
+
+The simplest (aka classic) formatting uses `$1, $2, ...` syntax to inject values into the query string,
+based on their index (starting with 1) in the array of values: 
+
+```js
+db.any('SELECT * FROM product WHERE price BETWEEN $1 AND $2', [1, 10])
+```
+
+The formatting engine also supports single-value parametrization for queries that use only a single `$1` variable: 
+
+```js
+db.any('SELECT * FROM users WHERE name = $1', 'John')
+```
+
+This however works only for basic types, such as `number`, `string`, `boolean`, `Date`, `null`, `undefined`, because
+types like `Array` and `Object` change the way parameters are interpreted. That's why passing in index variables
+within an array is advised as safer, to avoid ambiguities.
+
+
+### Named Parameters
+
+When a query method is parameterized with `values` as an object, the formatting engine expects the query to use
+the Named Parameter syntax `$*propName*`, with `*` being any of the following open-close pairs: `{}`, `()`, `<>`, `[]`, `//`.
+
+```js
+db.any('SELECT * FROM users WHERE name = ${name} AND active = $/active/', {
+    name: 'John',
+    active: true
+});
+```
+
+Valid variable names are limited to the syntax of an open-name JavaScript variable. 
+
+Keep in mind that while property values `null` and `undefined` are both formatted as `null`,
+an error is thrown when the property does not exist.
+
+**`this` reference**
+
+Property `this` refers to the formatting object itself, to be inserted as a JSON-formatted string.
+
+```js
+db.none('INSERT INTO documents(id, doc) VALUES(${id}, ${this})', {
+    id: 123,
+    body: 'some text'    
+})
+//=> INSERT INTO documents(id, doc) VALUES(123, '{"id":123,"body":"some text"}')
+```    
+
+#### Nested Named Parameters
+
+Starting from v6.10.0, the library supports Nested Named Parameters:
+
+```js
+const obj = {
+    one: {
+        two: {
+            three: 123
+        }
+    }
+};
+db.any('SELECT ${one.two.three} FROM table', obj);
+```
+
+Please note, however, that this supports does not extend to the [helpers] namespace.
+
+## Formatting Filters
+
+By default, all values are formatted according to their JavaScript type. Formatting filters, aka formatting modifiers,
+change that, so the value is interpreted and formatted as something else. 
+
+Filters use similar syntax for [Index Variables] and [Named Parameters]:
+
+```js
+db.any('SELECT $1:name FROM $2:name', ['price', 'products'])
+//=> SELECT "price" FROM "products"
+
+db.any('SELECT ${column:name} FROM ${table:name}', {
+    column: 'price',
+    table: 'products'    
+});
+//=> SELECT "price" FROM "products"
+```
 
 ### SQL Names
 
@@ -244,115 +325,6 @@ query('...WHERE name LIKE \'%${filter:value}\'', {filter: 'O\'Connor'});
 
 See also: method [as.value].
 
-## Named Parameters
-
-The library supports named parameters in query formatting, with the syntax of `$*propName*`, where `*` is any of the following open-close
-pairs: `{}`, `()`, `<>`, `[]`, `//`
-
-```js
-db.query('SELECT * FROM users WHERE name=${name} AND active=$/active/', {
-    name: 'John',
-    active: true
-});
-```
-
-The same goes for all types of query methods as well as method [as.format], where `values` can also be an object whose properties can be
-referred to by name from within the query.
-
-A valid property name consists of any combination of letters, digits, underscores or `$`, and they are case-sensitive.
-Leading and trailing spaces around property names are ignored.
-
-It is important to know that while property values `null` and `undefined` are both formatted as `null`,
-an error is thrown when the property doesn't exist at all (except for `partial` replacements - see below).
-
-You can also use `partial` replacements within method [as.format], to ignore variables that do not exist in the formatting object.
-
-#### `this` reference
-
-Property `this` is a reference to the formatting object itself, so it can be inserted as a JSON-formatted string, alongside its properties.
-
-* `${this}` - inserts the object itself as a JSON-formatted string;
-* `${this^}` - inserts the object itself as a raw-text JSON-formatted string.
-
-**example:**
-
-```js
-const doc = {
-    id: 123,
-    body: 'some text'
-};
-
-db.none('INSERT INTO documents(id, doc) VALUES(${id}, ${this})', doc)
-    .then(() => {
-        // success;
-    })
-    .catch(error => {
-        // error;
-    });
-```    
-
-which will execute:
-```sql
-INSERT INTO documents(id, doc) VALUES(123, '{"id":123,"body":"some text"}')
-```
-
-Modifier `:json` is an alternative to formatting the value as a JSON string.
-
-**NOTE:** Technically, it is possible in javascript, though not recommended, for an object to contain a property
-with name `this`. And in such cases the property's value will be used instead.
-
-#### Nested Named Parameters
-
-Starting from v6.10.0, the library supports Nested Named Parameters:
-
-```js
-const obj = {
-    one: {
-        two: 123
-    }
-};
-
-db.query('SELECT ${one.two}', obj);
-```
-
-Please note, however, that this supports does not extend to the [helpers] namespace.
-
-## Functions and Procedures
-
-In PostgreSQL stored procedures are just functions that usually do not return anything.
-
-Suppose we want to call function **findAudit** to find audit records by `user_id` and maximum timestamp.
-We can make such call as shown below:
-
-```js
-db.func('findAudit', [123, new Date()])
-    .then(data => {
-        console.log(data); // printing the data returned
-    })
-    .catch(error => {
-        console.log(error); // printing the error
-    });
-```
-
-We passed it `user_id = 123`, plus current Date/Time as the timestamp. We assume that the function signature matches
-the parameters that we passed. All values passed are serialized automatically to comply with PostgreSQL type formats.
-
-Method `func` accepts optional third parameter - `qrm` (Query Result Mask), the same as method [query].
-
-And when you are not expecting any return results, call `db.proc` instead. Both methods return a [Promise] object,
-but `db.proc` doesn't take a `qrm` parameter, always assuming it is `one`|`none`.
-
-Summary for supporting procedures and functions:
-
-* `func(query, values, qrm)` - expects the result according to `qrm`
-* `proc(query, values)` - calls `func(query, values, qrm.one | qrm.none)`
-
-## Conversion Helpers
-
-The library provides several helper functions to convert javascript types into their proper PostgreSQL presentation that can be passed
-directly into queries or functions as parameters. All of such helper functions are located within namespace [pgp.as], and each function
-returns a formatted string when successful or throws an error when it fails.
-
 ## Custom Type Formatting
 
 **IMPORTANT:** Support for this feature changed in [v6.5.0](https://github.com/vitaly-t/pg-promise/releases/tag/v.6.5.0).
@@ -400,6 +372,12 @@ Function `toPostgres` can return anything, including:
 * instance of another object that implements its own `toPostgres`
 * instance of a regular object, one without `toPostgres` in it
 * another function, with recursion of any depth
+
+## Conversion Helpers
+
+The library provides several helper functions to convert javascript types into their proper PostgreSQL presentation that can be passed
+directly into queries or functions as parameters. All of such helper functions are located within namespace [pgp.as], and each function
+returns a formatted string when successful or throws an error when it fails.
 
 ## Query Files
   
@@ -811,6 +789,7 @@ DEALINGS IN THE SOFTWARE.
 [sequence]:http://vitaly-t.github.io/pg-promise/Task.html#sequence
 [page]:http://vitaly-t.github.io/pg-promise/Task.html#page
 [connect]:http://vitaly-t.github.io/pg-promise/Task.html#connect
+[stream]:http://vitaly-t.github.io/pg-promise/Task.html#stream
 
 [extent]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
 [Configuration Object]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object
