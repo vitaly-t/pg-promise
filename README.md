@@ -24,16 +24,17 @@ pg-promise
 * [Documentation](#documentation)  
 * [Contributing](#contributing)    
 * [Usage](#usage)
-  - [Queries and Parameters](#queries-and-parameters)
+  - [Methods](#methods)
+  - [Query Formatting](#query-formatting)
+    - [Index Variables](#index-variables)  
+    - [Named Parameters](#named-parameters)
+  - [Formatting Filters](#formatting-filters)          
     - [SQL Names](#sql-names)  
     - [Raw Text](#raw-text)  
-    - [Open Values](#open-values)        
-  - [Query Result Mask](#query-result-mask)    
-  - [Named Parameters](#named-parameters)
-    - [`this` reference](#this-reference)
-    - [Nested Named Parameters](#nested-named-parameters)    
-  - [Conversion Helpers](#conversion-helpers)
-  - [Custom Type Formatting](#custom-type-formatting)  
+    - [Open Values](#open-values)
+    - [JSON Filter](#json-filter)
+    - [CSV Filter](#csv-filter)    
+  - [Custom Type Formatting](#custom-type-formatting)            
   - [Query Files](#query-files)    
   - [Tasks](#tasks)    
   - [Transactions](#transactions)
@@ -192,12 +193,12 @@ db.any('SELECT ${one.two.three} FROM table', obj);
 
 Please note, however, that this supports does not extend to the [helpers] namespace.
 
-### Formatting Filters
+## Formatting Filters
 
-By default, all values are formatted according to their JavaScript type. Formatting filters, aka formatting modifiers,
-change that, so the value is interpreted and formatted as something else. 
+By default, all values are formatted according to their JavaScript type. Formatting filters (or modifiers),
+change that, so the value is formatted differently. 
 
-Filters use similar syntax for [Index Variables] and [Named Parameters]:
+Filters use the same syntax for [Index Variables] and [Named Parameters], following the variable name:
 
 ```js
 db.any('SELECT $1:name FROM $2:name', ['price', 'products'])
@@ -210,16 +211,14 @@ db.any('SELECT ${column:name} FROM ${table:name}', {
 //=> SELECT "price" FROM "products"
 ```
 
-The following Formatting Filters are supported:
+The following filters are supported:
 
-* `:name` = `~`
-* `:raw` = `^`
-* `:value` = `#`
-* `:alias`
-* `:json`
-* `:csv`
-* 
-
+* `:name` / `~` - [SQL Names]
+* `:raw` / `^` - [Raw Text]
+* `:value` / `#` - [Open Values]
+* `:alias` - [Alias Filter]
+* `:json` - [JSON Filter]
+* `:csv` - [CSV Filter]
 
 ### SQL Names
 
@@ -280,12 +279,12 @@ makes your application impervious to [SQL injection].
 
 See also method [as.name] which implements SQL name formatting.
 
-#### Aliases
+#### Alias Filter
 
 An alias is a lighter (simpler + faster) SQL name, which only supports a text string, and is used via the `:alias` filter:
 
 ```js
-db.query('SELECT $1:alias FROM $2:name', ['col', 'table']);
+db.any('SELECT $1:alias FROM $2:name', ['col', 'table']);
 //=> SELECT "col" FROM "table"
 ```
 
@@ -293,59 +292,55 @@ See also method [as.alias] which implements the formatting.
 
 ### Raw Text
 
-Raw-text values can be injected by ending the variable name with `^` or `:raw`:
-`$1^, $2^, etc...`, `$*varName^*`, where `*` is any of the supported open-close pairs: `{}`, `()`, `<>`, `[]`, `//`
+When a variable ends with `:raw`, or shorter syntax `^`, the value is to be injected as raw text, without escaping.
 
-Raw text is injected without any pre-processing, which means:
+Such variables cannot be `null` or `undefined`, because of the ambiguous meaning in this case, and those values
+will throw error `Values null/undefined cannot be used as raw text.`
 
-* No proper escaping (replacing each single-quote symbol `'` with two);
-* No wrapping text into single quotes.
+```js
+const where = pgp.as.format('WHERE price BETWEEN $1 AND $2', [5, 10]); // pre-format WHERE condition
+db.any('SELECT * FROM products $1:raw', where);
+//=> SELECT * FROM products WHERE price BETWEEN 5 AND 10
+```
 
-Unlike regular variables, value for raw-text variables cannot be `null` or `undefined`, because of the ambiguous meaning
-in this case. If such values are passed in, the formatter will throw error `Values null/undefined cannot be used as raw text.` 
-
-Special syntax `this^` within the [Named Parameters](#named-parameters) refers to the formatting object itself, to be injected
-as a raw-text JSON-formatted string.
-
-For the latest SQL formatting support see method [as.format]
+Special syntax `this:raw` / `this^` is supported, to inject the formatting object as raw JSON string.
 
 ### Open Values
 
-Open values simplify concatenation of string values within a query, primarily for such special cases as `LIKE`/`ILIKE` filters.
+When a variable ends with `:value`, or shorter syntax `#`, it is escaped as usual, except when its type is a string,
+the trailing quotes are not added.
 
-Names for open-value variables end with either `:value` or symbol `#`, and it means that such a value is to be properly
-formatted and escaped, but not to be wrapped in quotes when it is a text.
+Open values are primarily to be able to compose complete `LIKE`/`ILIKE` dynamic statements in external SQL files,
+without having to generate them in the code.
 
-Similar to [raw-text](#raw-text) variables, open-value variables are also not allowed to be `null` or `undefined`, or they will throw
-error `Open values cannot be null or undefined.` And the difference is that [raw-text](#raw-text) variables are not escaped, while
-open-value variables are properly escaped.
-
-Below is an example of formatting `LIKE` filter that ends with a second name: 
+i.e. you can either generate a filter like this in your code:
 
 ```js
-// using $1# or $1:value syntax:
-query('...WHERE name LIKE \'%$1#\'', 'O\'Connor');
-query('...WHERE name LIKE \'%$1:value\'', 'O\'Connor');
-//=> ...WHERE name LIKE '%O''Connor'
-
-// using ${propName#} or ${propName:value} syntax:
-query('...WHERE name LIKE \'%${filter#}\'', {filter: 'O\'Connor'});
-query('...WHERE name LIKE \'%${filter:value}\'', {filter: 'O\'Connor'});
-//=> ...WHERE name LIKE '%O''Connor'
+const name = 'John';
+const filter = '%' + name + '%';
 ```
 
-See also: method [as.value].
+and then pass it in as a regular string variable, or you can pass in only `name`, and have your query use the
+open-value syntax to add the extra search logic:
+
+```sql
+SELECT * FROM table WHERE name LIKE '%$1:value%')
+```
+
+See also method [as.value].
+
+### JSON Filter
+
+Due to be written...
+
+### CSV Filter
+
+Due to be written...
 
 ## Custom Type Formatting
 
-**IMPORTANT:** Support for this feature changed in [v6.5.0](https://github.com/vitaly-t/pg-promise/releases/tag/v.6.5.0).
-
----
-
-Any value/object that has function `toPostgres` makes use of the _Custom Type Formatting_.
-
-Query-formatting engine then calls `toPostgres` to get the actual value, passing it the object via `this`, and as a single parameter
-(in case `toPostgres` is an ES6 arrow function):
+Any value/object that has function `toPostgres` is treated as a custom type. The function is called to get
+the actual value, passing it the value/object via `this` context, and as a single parameter (in case `toPostgres` is an ES6 arrow function):
 
 ```js
 const obj = {
@@ -357,15 +352,15 @@ const obj = {
 }
 ```
 
-The actual value returned from `toPostgres` is formatted/escaped according to its JavaScript type, unless the object contains
-property `_rawType` set to a truthy value, in which case the returned value is assumed to be pre-formatted, and thus injected directly,
-as a raw value.
+The actual value returned from `toPostgres` is then escaped according to its JavaScript type, unless the object also contains
+property `_rawType` set to a truthy value, in which case the returned value is considered pre-formatted, and thus injected directly,
+as [Raw Text].
 
 Example below implements a class that auto-formats `ST_MakePoint` from coordinates:
 
 ```js
 function STPoint(x, y) {
-    this._rawType = true; // do not escape the value from toPostgres()
+    this._rawType = true; // no escaping, because we return pre-formatted SQL
     this.toPostgres = () => pgp.as.format('ST_MakePoint($1, $2)', [x, y]);
 }
 ```
@@ -378,17 +373,7 @@ You can also use _Custom Type Formatting_ to override any standard type:
 Date.prototype.toPostgres = a => a.getTime();
 ```
 
-Function `toPostgres` can return anything, including:
-
-* instance of another object that implements its own `toPostgres`
-* instance of a regular object, one without `toPostgres` in it
-* another function, with recursion of any depth
-
-## Conversion Helpers
-
-The library provides several helper functions to convert javascript types into their proper PostgreSQL presentation that can be passed
-directly into queries or functions as parameters. All of such helper functions are located within namespace [pgp.as], and each function
-returns a formatted string when successful or throws an error when it fails.
+Function `toPostgres` can return anything, including another object with its own `toPostgres`.
 
 ## Query Files
   
