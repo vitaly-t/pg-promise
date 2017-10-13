@@ -766,7 +766,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+<!-- Internal Links -->
+
+[Index Variables]:#index-variables  
+[Named Parameters]:#named-parameters
+[Initialization Options]:#advanced
+[SQL Names]:#sql-names
+[Raw Text]:#raw-text
+[Open Values]:#open-values
+[Alias Filter]:#alias-filter
+[JSON Filter]:#json-filter
+[CSV Filter]:#csv-vilter
+
+<!-- Method Links -->
+
 [query]:http://vitaly-t.github.io/pg-promise/Database.html#query
+[none]:http://vitaly-t.github.io/pg-promise/Database.html#none
 [one]:http://vitaly-t.github.io/pg-promise/Database.html#one
 [oneOrNone]:http://vitaly-t.github.io/pg-promise/Database.html#oneOrNone
 [many]:http://vitaly-t.github.io/pg-promise/Database.html#many
@@ -787,6 +802,9 @@ DEALINGS IN THE SOFTWARE.
 [connect]:http://vitaly-t.github.io/pg-promise/Task.html#connect
 [stream]:http://vitaly-t.github.io/pg-promise/Task.html#stream
 
+<!-- API Links -->
+
+[Official Documentation]:http://vitaly-t.github.io/pg-promise/index.html
 [extent]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
 [Configuration Object]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object
 [Connection String]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#connection-string
@@ -798,8 +816,6 @@ DEALINGS IN THE SOFTWARE.
 [ParameterizedQuery]:http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
 [Database]:http://vitaly-t.github.io/pg-promise/Database.html
 [QueryResultError]:http://vitaly-t.github.io/pg-promise/QueryResultError.html
-[Native Bindings]:https://node-postgres.com/features/native
-[Initialization Options]:#advanced
 [pgp.end]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
 [pgp.as]:http://vitaly-t.github.io/pg-promise/formatting.html
 [as.value]:http://vitaly-t.github.io/pg-promise/formatting.html#.value
@@ -810,6 +826,10 @@ DEALINGS IN THE SOFTWARE.
 [API]:http://vitaly-t.github.io/pg-promise/index.html
 [API Documentation]:http://vitaly-t.github.io/pg-promise/index.html
 [Transaction Mode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
+
+<!-- External Links -->
+
+[Native Bindings]:https://node-postgres.com/features/native
 [pg-minify]:https://github.com/vitaly-t/pg-minify
 [pg-monitor]:https://github.com/vitaly-t/pg-monitor
 [pg-promise]:https://github.com/vitaly-t/pg-promise
@@ -827,5 +847,4 @@ DEALINGS IN THE SOFTWARE.
 [Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
 [spex.sequence]:http://vitaly-t.github.io/spex/global.html#sequence
 [Result]:https://node-postgres.com/api/result
-[Official Documentation]:http://vitaly-t.github.io/pg-promise/index.html
 [SQL injection]:https://en.wikipedia.org/wiki/SQL_injection
