@@ -23,7 +23,7 @@ pg-promise
 * [About](#about)
 * [Documentation](#documentation)  
 * [Contributing](#contributing)    
-* [Usage](#usage)
+* [Usage]
   - [Methods](#methods)
   - [Query Formatting](#query-formatting)
     - [Index Variables]  
@@ -52,25 +52,21 @@ pg-promise
 
 # About
 
-Built on top of [node-postgres] and its connection pool, this library enhances the callback interface with promises,
-while extending the protocol to a higher level, with automated connections, and transactions management.
+Built on top of [node-postgres], this library adds the following:
 
-In addition, the library provides:
-
-* a very flexible query formatting engine
-* automatic support for ES6 generators + ES7 `async/await`
-* events reporting for connectivity, errors, queries, etc.
-* declarative approach to controlling query results
-* extensive support for external SQL files
-* support for all popular promise libraries
+* Automatic connections
+* Automatic transactions
+* Powerful query-formatting engine
+* Support for ES6 generators and ES7 `async/await`
+* Declarative approach to handling query results
+* Global events reporting for central handling
+* Extensive support for external SQL files
+* Support for all promise libraries
 
 # Documentation
 
-See the [Official Documentation] to get started.
-
-Much of the documentation on this page below is either detailing some of the larger aspects of using the library,
-or the older API documentation, due to be refactored out. You should use the [Official Documentation] as the
-most up-to-date source.
+In the [Usage] chapter below you can find the basics that you need to know, while the [Official Documentation]
+gets you started, and provides links to all other resources.
 
 # Contributing
 
@@ -105,13 +101,13 @@ There are also more specific methods that you will often need:
 * [map], [each] - for simpler/inline result pre-processing/re-mapping
 * [func], [proc] - to simplify executing SQL functions/procedures
 * [task], [tx], [connect] - for shared connections + automatic transactions; 
-* [stream] - to access rows from a query via a read stream;
+* [stream] - to access rows from a query via a read stream.
 
 **IMPORTANT**
  
 The most important methods to understand from the beginning are [task] and [tx]. As explained above, the base
 method [query] acquires and releases the connection, which is not suitable for executing multiple queries at once.
-Therefore, [Chaining Queries] is an absolute must-read, to avoid writing the code that will be plagued by connectivity issues.
+This is why [Chaining Queries] is an absolute must-read, to avoid writing the code that will be plagued by connectivity issues.
 
 ## Query Formatting
 
@@ -125,12 +121,12 @@ directly when needed. The main method there is [format], which is used by every 
 The formatting syntax is decided from the type of `values` passed in:
 
 * [Index Variables] when `values` is an array or a single basic type;
-* [Named Parameters] when `values` is an object other than `Array` or `null`.
+* [Named Parameters] when `values` is an object (other than `Array` or `null`).
 
 ### Index Variables
 
 The simplest (aka classic) formatting uses `$1, $2, ...` syntax to inject values into the query string,
-based on their index (starting with 1) in the array of values: 
+based on their index (starting with 1) from the array of values: 
 
 ```js
 db.any('SELECT * FROM product WHERE price BETWEEN $1 AND $2', [1, 10])
@@ -145,7 +141,6 @@ db.any('SELECT * FROM users WHERE name = $1', 'John')
 This however works only for basic types, such as `number`, `string`, `boolean`, `Date`, `null`, `undefined`, because
 types like `Array` and `Object` change the way parameters are interpreted. That's why passing in index variables
 within an array is advised as safer, to avoid ambiguities.
-
 
 ### Named Parameters
 
@@ -777,6 +772,7 @@ DEALINGS IN THE SOFTWARE.
 [JSON Filter]:#json-filter
 [CSV Filter]:#csv-vilter
 [Initialization Options]:#advanced
+[Usage]:#usage
 
 <!-- Method Links -->
 
