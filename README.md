@@ -818,14 +818,22 @@ DEALINGS IN THE SOFTWARE.
 [QueryResultError]:http://vitaly-t.github.io/pg-promise/QueryResultError.html
 [pgp.end]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
 [pgp.as]:http://vitaly-t.github.io/pg-promise/formatting.html
+[formatting]:http://vitaly-t.github.io/pg-promise/formatting.html
 [as.value]:http://vitaly-t.github.io/pg-promise/formatting.html#.value
 [as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
+[format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
 [as.alias]:http://vitaly-t.github.io/pg-promise/formatting.html#.alias
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
 [Protocol API]:http://vitaly-t.github.io/pg-promise/index.html
 [API]:http://vitaly-t.github.io/pg-promise/index.html
 [API Documentation]:http://vitaly-t.github.io/pg-promise/index.html
 [Transaction Mode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
+
+<!-- WiKi Links -->
+
+[Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
+[Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
+[Chaining Queries]:https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries
 
 <!-- External Links -->
 
@@ -843,8 +851,6 @@ DEALINGS IN THE SOFTWARE.
 [Q]:https://github.com/kriskowal/q
 [RSVP]:https://github.com/tildeio/rsvp.js
 [Lie]:https://github.com/calvinmetcalf/lie
-[Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
-[Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
 [spex.sequence]:http://vitaly-t.github.io/spex/global.html#sequence
 [Result]:https://node-postgres.com/api/result
 [SQL injection]:https://en.wikipedia.org/wiki/SQL_injection
