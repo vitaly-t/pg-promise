@@ -26,14 +26,14 @@ pg-promise
 * [Usage](#usage)
   - [Methods](#methods)
   - [Query Formatting](#query-formatting)
-    - [Index Variables](#index-variables)  
-    - [Named Parameters](#named-parameters)
+    - [Index Variables]  
+    - [Named Parameters]
   - [Formatting Filters](#formatting-filters)          
-    - [SQL Names](#sql-names)  
-    - [Raw Text](#raw-text)  
-    - [Open Values](#open-values)
-    - [JSON Filter](#json-filter)
-    - [CSV Filter](#csv-filter)    
+    - [SQL Names]  
+    - [Raw Text]  
+    - [Open Values]
+    - [JSON Filter]
+    - [CSV Filter]    
   - [Custom Type Formatting](#custom-type-formatting)            
   - [Query Files](#query-files)    
   - [Tasks](#tasks)    
@@ -43,7 +43,7 @@ pg-promise
     - [Configurable Transactions](#configurable-transactions)
   - [Generators](#generators)
 * [Advanced](#advanced)
-  - [Initialization Options](#initialization-options)
+  - [Initialization Options]
   - [Library de-initialization](#library-de-initialization)
 * [History](#history)
 * [License](#license)
@@ -122,7 +122,7 @@ of it entirely via option `pgFormatting` within [Initialization Options].
 All formatting methods used internally are available from the [formatting] namespace, so they can also be used
 directly when needed. The main method there is [format], which is used by every query method to format the query. 
 
-The formatting syntax is deducted from the type of `values` passed in:
+The formatting syntax is decided from the type of `values` passed in:
 
 * [Index Variables] when `values` is an array or a single basic type;
 * [Named Parameters] when `values` is an object other than `Array` or `null`.
@@ -766,17 +766,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
-<!-- Internal Links -->
+<!-- Internal Menu Links -->
 
 [Index Variables]:#index-variables  
 [Named Parameters]:#named-parameters
-[Initialization Options]:#advanced
 [SQL Names]:#sql-names
 [Raw Text]:#raw-text
 [Open Values]:#open-values
 [Alias Filter]:#alias-filter
 [JSON Filter]:#json-filter
 [CSV Filter]:#csv-vilter
+[Initialization Options]:#advanced
 
 <!-- Method Links -->
 
