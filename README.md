@@ -34,7 +34,7 @@ pg-promise
     - [Open Values]
     - [JSON Filter]
     - [CSV Filter]    
-  - [Custom Type Formatting](#custom-type-formatting)            
+  - [Custom Type Formatting]            
   - [Query Files](#query-files)    
   - [Tasks](#tasks)    
   - [Transactions](#transactions)
@@ -701,7 +701,7 @@ For any further reference you should use documentation of the [PG] library.
 
 Below is just some of the query-formatting features implemented by [pg-promise] that are not in [node-postgres]:
 
-* [Custom Type Formatting](#custom-type-formatting)
+* [Custom Type Formatting]
 * Single-value formatting: [pg-promise] doesn't require use of an array when passing a single value;
 * [Raw-Text](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#raw-text) support: injecting raw/pre-formatted text values into the query;
 * Functions as formatting parameters, with the actual values returned from the callbacks;
@@ -788,6 +788,7 @@ DEALINGS IN THE SOFTWARE.
 [Alias Filter]:#alias-filter
 [JSON Filter]:#json-filter
 [CSV Filter]:#csv-vilter
+[Custom Type Formatting]:#custom-type-formatting
 [Initialization Options]:#advanced
 [Usage]:#usage
 
