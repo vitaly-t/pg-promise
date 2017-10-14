@@ -77,13 +77,7 @@ you get access to the methods documented below.
 
 ## Methods 
 
-All query methods of the library are based off generic method [query], which does the following:
-
-1. Formats and validates the query, according to the `values` passed into the method;
-2. For a root-level query (against the [Database] object), it requests a new connection from the pool;
-3. Executes the query;
-4. For a root-level query (against the [Database] object), it releases the connection back to the pool;
-5. Resolves/rejects, according to the data returned from the query, and parameter `qrm`.
+All query methods of the library are based off generic method [query].
 
 You should normally use only result-specific methods for executing queries, all of which are named according
 to how many rows of data the query is expected to return, so for each query you should pick the right method:
@@ -103,9 +97,9 @@ There are also more specific methods that you will often need:
 
 **IMPORTANT**
  
-The most important methods to understand from the beginning are [task] and [tx]. As explained above, the base
-method [query] acquires and releases the connection, which is not suitable for executing multiple queries at once.
-This is why [Chaining Queries] is an absolute must-read, to avoid writing the code that will be plagued by connectivity issues.
+The most important methods to understand from the beginning are [task] and [tx]. As documented for method [query],
+it acquires and releases the connection, which makes it a poor choice for executing multiple queries at once.
+This is why [Chaining Queries] is an absolute must-read, to avoid writing the code that will bottleneck over connections.
 
 ## Query Formatting
 
@@ -698,7 +692,7 @@ For the list of all changes see the [CHANGELOG](CHANGELOG.md).
 
 # License
 
-Copyright (c) 2017 Vitaly Tomilov (vitaly.tomilov@gmail.com)
+Copyright (c) 2017 Vitaly Tomilov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,

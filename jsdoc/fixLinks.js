@@ -29,7 +29,6 @@ const links = {
     'Prepared Statement': 'http://www.postgresql.org/docs/9.6/static/sql-prepare.html',
     'Prepared Statements': 'http://www.postgresql.org/docs/9.6/static/sql-prepare.html',
     'Custom Type Formatting': 'https://github.com/vitaly-t/pg-promise#custom-type-formatting',
-    '6.x': 'https://github.com/vitaly-t/pg-promise/tree/6.x',
     'SQL Names': 'https://github.com/vitaly-t/pg-promise#sql-names',
     'pg-promise-demo': 'https://github.com/vitaly-t/pg-promise-demo',
     'Robust Listeners': 'https://github.com/vitaly-t/pg-promise/wiki/Robust-Listeners',
