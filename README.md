@@ -220,7 +220,7 @@ db.query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
 ```
 
 Typically, an SQL name variable is a text string, which must be at least 1 character long.
-However, an SQL name can also be any of the following:
+However, `pg-promise` supports a variety of ways in which SQL names can be supplied:
 
 * A string that contains only `*` (asterisks) is automatically recognized as _all columns_:
 
