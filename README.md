@@ -73,13 +73,13 @@ Please read the [Contribution Notes](https://github.com/vitaly-t/pg-promise/blob
 # Usage
 
 Once you have created a [Database] object, according to the steps in the [Official Documentation],
-you get access to the methods documented below. 
+you get access to the methods documented below. And [Learn by Example] guide is very easy to follow. 
 
 ## Methods 
 
 All query methods of the library are based off generic method [query].
 
-You should normally use only result-specific methods for executing queries, all of which are named according
+You should normally use only the derived, result-specific methods for executing queries, all of which are named according
 to how many rows of data the query is expected to return, so for each query you should pick the right method:
 [none], [one], [oneOrNone], [many], [manyOrNone] = [any]. Do not confuse the method name for the number of rows
 to be affected by the query, which is completely irrelevant.
@@ -89,9 +89,9 @@ to be automatically rejected (treated as errors).
 
 There are also more specific methods that you will often need:
 
-* [result], [multi], [multiResult] - for verbose and/or multi-query results
-* [map], [each] - for simpler/inline result pre-processing/re-mapping
-* [func], [proc] - to simplify executing SQL functions/procedures
+* [result], [multi], [multiResult] - for verbose and/or multi-query results;
+* [map], [each] - for simpler/inline result pre-processing/re-mapping;
+* [func], [proc] - to simplify execution of SQL functions/procedures;
 * [task], [tx], [connect] - for shared connections + automatic transactions; 
 * [stream] - to access rows from a query via a read stream.
 
@@ -165,7 +165,7 @@ db.none('INSERT INTO documents(id, doc) VALUES(${id}, ${this})', {
 
 #### Nested Named Parameters
 
-Starting from v6.10.0, the library supports Nested Named Parameters:
+Starting from v6.10.0, the library supports _Nested Named Parameters_:
 
 ```js
 const obj = {
@@ -182,10 +182,10 @@ Please note, however, that this supports does not extend to the [helpers] namesp
 
 ## Formatting Filters
 
-By default, all values are formatted according to their JavaScript type. Formatting filters (or modifiers),
+By default, all values are formatted according to their JavaScript types. Formatting filters (or modifiers),
 change that, so the value is formatted differently. 
 
-Filters use the same syntax for [Index Variables] and [Named Parameters], following the variable name:
+Filters use the same syntax for [Index Variables] and [Named Parameters], following immediately the variable name:
 
 ```js
 db.any('SELECT $1:name FROM $2:name', ['price', 'products'])
@@ -386,8 +386,8 @@ Use of external SQL files (via [QueryFile]) offers many advantages:
 * Much cleaner JavaScript code, with all SQL kept in external files;
 * Much easier to write large and well-formatted SQL, with comments and whole revisions;
 * Changes in external SQL can be automatically re-loaded (option `debug`), without restarting the app;
-* Pre-formatting SQL upon loading (option `params`), making a two-step SQL formatting very easy;
-* Parsing and minifying SQL (options `minify`/`compress`), for early error detection and smaller queries.
+* Pre-formatting SQL upon loading (option `params`), making a two-step SQL formatting a breathe;
+* Parsing and minifying SQL (options `minify`/`compress`), for early error detection and compact queries.
 
 Example:
 
@@ -418,33 +418,19 @@ File `findUser.sql`:
 
 ```sql
 /*
-    multi-line comment
+    multi-line comments are supported
 */
-SELECT name, dob -- single-line comment
+SELECT name, dob -- single-line comments are supported
 FROM Users
 WHERE id = ${id}
 ```
 
 Every query method of the library can accept type [QueryFile] as its `query` parameter.
-The type never throws any error, leaving it for query methods to reject with [QueryFileError].
-
-**IMPORTANT**
-
-You should only create a single reusable instance of [QueryFile] per file, in order to avoid
-repeated file reads, as the IO is a very expensive resource.
-
-Notable features of [QueryFile]:
-
-* `debug` mode, to make every query request check if the file has changed since it was last read, and if so - read it afresh.
-  This way you can write sql queries and see immediate updates without having to restart your application.
-* Option `params` is for static SQL pre-formatting, to inject certain values only once, like a schema name or a
-  configurable table name.
-
-In version 5.2.0, support for type [QueryFile] was also integrated into the query formatting engine. See method [as.format].
+The type never throws any error, leaving it for query methods to gracefully reject with [QueryFileError].
 
 ## Tasks
 
-A [task] represents a shared connection to be used within a callback function:
+A [task] represents a shared connection for executing multiple queries:
 
 ```js
 db.task(t => {
@@ -458,16 +444,17 @@ db.task(t => {
     });
 ```
 
-The purpose of tasks is to provide a shared connection context for its callback function, and to be released when finished.
+Tasks provide a shared connection context for its callback function, to be released when finished.
+See also [Chaining Queries] to understand the importance of using tasks.
 
 ## Transactions
 
-A transaction (method [tx]) is a special type of [task] that automatically executes `BEGIN` + `COMMIT`/`ROLLBACK`:
+Transaction method [tx] is like [task] that also executes `BEGIN` + `COMMIT`/`ROLLBACK` when needed:
 
 ```js
 db.tx(t => {
     // creating a sequence of transaction queries:
-    const q1 = t.none('UPDATE users SET active=$1 WHERE id=$2', [true, 123]);
+    const q1 = t.none('UPDATE users SET active = $1 WHERE id = $2', [true, 123]);
     const q2 = t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id',
         ['users', 123]);
 
@@ -475,10 +462,10 @@ db.tx(t => {
     return t.batch([q1, q2]); // all of the queries are to be resolved;
 })
     .then(data => {
-        console.log(data); // printing successful transaction output;
+        console.log(data); // successful transaction output;
     })
     .catch(error => {
-        console.log(error); // printing the error;
+        console.log(error);
     });
 ```
 
@@ -516,7 +503,7 @@ db.tx(t => {
 
 ### Implementation details
 
-It is important to know that PostgreSQL doesn't have proper support for nested transactions, but it
+It is important to know that PostgreSQL does not support full/atomic nested transactions, it only
 supports [savepoints](http://www.postgresql.org/docs/9.4/static/sql-savepoint.html) inside
 transactions. Nested transactions and save-points are two ways to deal with *partial rollbacks*.
 Save-points are more general and allow this library to offer you nested transactions as an
@@ -551,49 +538,6 @@ This implementation of nested transactions has the following transactions
   transaction mode is locked for the whole transaction tree.
 
 See the implementation details above for more information.
-
-### Synchronous Transactions
-
-A regular task/transaction with a set of independent queries relies on method [batch] to resolve
-all queries asynchronously.
-
-However, when it comes to executing a significant number of queries during a bulk `INSERT` or `UPDATE`,
-such approach is no longer practical. For one thing, it implies that all requests have been created as promise objects,
-which isn't possible when dealing with a huge number of queries, due to memory limitations imposed by NodeJS.
-And for another, when one query fails, the rest will continue trying to execute, due to their promise nature,
-as being asynchronous.
-
-This is why within each task/transaction we have method [sequence], to be able to execute a strict
-sequence of queries one by one, and if one fails - the rest won't try to execute.
-
-```js
-function source(index, data, delay) {
-    // must create and return a promise object dynamically,
-    // based on the index of the sequence;
-    switch (index) {
-        case 0:
-            return this.query('SELECT 0');
-        case 1:
-            return this.query('SELECT 1');
-        case 2:
-            return this.query('SELECT 2');
-    }
-    // returning or resolving with undefined ends the sequence;
-    // throwing an error will result in a reject;
-}
-
-db.tx(t => {
-    return t.sequence(source);
-})
-    .then(data => {
-        console.log(data); // print result;
-    })
-    .catch(error => {
-        console.log(error); // print the error;
-    });
-```
-
-Sequence is based on implementation of [spex.sequence].
 
 ### Configurable Transactions
 
