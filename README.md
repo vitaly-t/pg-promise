@@ -272,7 +272,7 @@ db.query('INSERT INTO table(${this:name}) VALUES(${one}, ${two})', obj);
 Relying on this type of formatting for sql names and identifiers, along with regular variable formatting
 makes your application impervious to [SQL injection].
 
-See also method [as.name] which implements SQL name formatting.
+Method [as.name] implements the formatting.
 
 #### Alias Filter
 
@@ -283,7 +283,7 @@ db.any('SELECT $1:alias FROM $2:name', ['col', 'table']);
 //=> SELECT "col" FROM "table"
 ```
 
-See also method [as.alias] which implements the formatting.
+Method [as.alias] implements the formatting.
 
 ### Raw Text
 
@@ -322,19 +322,36 @@ open-value syntax to add the extra search logic:
 SELECT * FROM table WHERE name LIKE '%$1:value%')
 ```
 
-See also method [as.value].
+Method [as.value] implements the formatting.
 
 ### JSON Filter
 
-Due to be written...
+When a variable ends with `:json`, explicit JSON formatting is applied to the value.
+
+By default, any object that's not `Date`, `Array`, `null` or Custom-Type (see [Custom Type Formatting]),
+is automatically formatted as JSON.
+
+Method [as.json] implements the formatting.
 
 ### CSV Filter
 
-Due to be written...
+When a variable ends with `:csv`, it is formatted as a list of Comma-Separated Values, with each
+value formatted according to its type.
+ 
+Typically, you would use this for a value that's an array. However, when it is not an array, the single value
+is formatted as usual - like there is no filter specified. 
+
+```js
+const ids = [1, 2, 3];
+db.any('SELECT * FROM table WHERE id IN ($1:csv)', [ids])
+//=> SELECT * FROM table WHERE id IN (1,2,3)
+```
+
+Method [as.csv] implements the formatting.
 
 ## Custom Type Formatting
 
-Any value/object that has function `toPostgres` is treated as a custom type. The function is called to get
+Any value/object that has function `toPostgres` is treated as a custom formatting type. The function is called to get
 the actual value, passing it the value/object via `this` context, and as a single parameter (in case `toPostgres` is an ES6 arrow function):
 
 ```js
@@ -342,12 +359,12 @@ const obj = {
     toPostgres(self) {
         // self = this = obj
         
-        // must return the actual value here
+        // return the actual value here
     }
 }
 ```
 
-The actual value returned from `toPostgres` is then escaped according to its JavaScript type, unless the object also contains
+The value returned from `toPostgres` is escaped according to its JavaScript type, unless the object also contains
 property `_rawType` set to a truthy value, in which case the returned value is considered pre-formatted, and thus injected directly,
 as [Raw Text].
 
@@ -815,11 +832,13 @@ DEALINGS IN THE SOFTWARE.
 [pgp.end]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
 [pgp.as]:http://vitaly-t.github.io/pg-promise/formatting.html
 [formatting]:http://vitaly-t.github.io/pg-promise/formatting.html
-[as.value]:http://vitaly-t.github.io/pg-promise/formatting.html#.value
 [as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
 [format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
-[as.alias]:http://vitaly-t.github.io/pg-promise/formatting.html#.alias
+[as.value]:http://vitaly-t.github.io/pg-promise/formatting.html#.value
+[as.csv]:http://vitaly-t.github.io/pg-promise/formatting.html#.csv
+[as.json]:http://vitaly-t.github.io/pg-promise/formatting.html#.json
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
+[as.alias]:http://vitaly-t.github.io/pg-promise/formatting.html#.alias
 [Protocol API]:http://vitaly-t.github.io/pg-promise/index.html
 [API]:http://vitaly-t.github.io/pg-promise/index.html
 [API Documentation]:http://vitaly-t.github.io/pg-promise/index.html
