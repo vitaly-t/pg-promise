@@ -41,9 +41,7 @@ pg-promise
     - [Nested Transactions](#nested-transactions)
     - [Synchronous Transactions](#synchronous-transactions)    
     - [Configurable Transactions](#configurable-transactions)
-  - [Generators](#generators)
-* [Advanced](#advanced)
-  - [Initialization Options]
+  - [ES6 Generators](#es6-generators)
   - [Library de-initialization](#library-de-initialization)
 * [History](#history)
 * [License](#license)
@@ -336,7 +334,7 @@ Method [as.json] implements the formatting.
 ### CSV Filter
 
 When a variable ends with `:csv`, it is formatted as a list of Comma-Separated Values, with each
-value formatted according to its type.
+value formatted according to its JavaScript type.
  
 Typically, you would use this for a value that's an array. However, when it is not an array, the single value
 is formatted as usual - like there is no filter specified. 
@@ -659,7 +657,7 @@ Transaction Mode is set via property `txMode` on the transaction function.
 This is the most efficient and best-performing way of configuring transactions. In combination with
 *Transaction Snapshots* you can make the most out of transactions in terms of performance and concurrency.
 
-## Generators
+## ES6 Generators
 
 If you prefer writing asynchronous code in a synchronous manner, you can implement your tasks and transactions as generators. 
 
@@ -680,72 +678,6 @@ db.task(getUser)
 
 The library verifies whether the callback function is a generator, and executes it accordingly.
 
-# Advanced
-
-## Initialization Options
-
-When initializing the library, you can pass object `options` with a set of global properties.
-See [API / options](http://vitaly-t.github.io/pg-promise/module-pg-promise.html) for complete list of supported options.
-
----
-#### pgFormatting
-
-By default, **pg-promise** provides its own implementation of the query formatting,
-as explained in [Queries and Parameters](#queries-and-parameters).
-
-If, however, you want your queries formatted by the [PG] library, set parameter `pgFormatting`
-to be `true` when initializing the library, and every query formatting will redirect to the [PG]'s implementation.
-
-Although this has a huge implication to the library's functionality, it is not within the scope of this project to detail.
-For any further reference you should use documentation of the [PG] library.
-
-Below is just some of the query-formatting features implemented by [pg-promise] that are not in [node-postgres]:
-
-* [Custom Type Formatting]
-* Single-value formatting: [pg-promise] doesn't require use of an array when passing a single value;
-* [Raw-Text](https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#raw-text) support: injecting raw/pre-formatted text values into the query;
-* Functions as formatting parameters, with the actual values returned from the callbacks;
-* [PostgreSQL Array Constructors](http://www.postgresql.org/docs/9.1/static/arrays.html#ARRAYS-INPUT) are used when formatting arrays,
-not the old string syntax;
-* Automatic conversion of numeric `NaN`, `+Infinity` and `-Infinity` into their string presentation;
-* Support for [this reference](#this-reference);
-* Automatic [QueryFile] support
-
-**NOTE:** Formatting parameters for calling functions (methods `func` and `proc`) is not affected by this override.
-When needed, use the generic [query] instead to invoke functions with redirected query formatting.
-
----
-#### promiseLib
-
-By default, **pg-promise** uses ES6 Promise. If your version of NodeJS doesn't support ES6 Promise,
-or you want a different promise library to be used, set this property to the library's instance.
-
-Example of switching over to [Bluebird]:
-
-```js
-const promise = require('bluebird');
-const options = {
-    promiseLib: promise
-};
-const pgp = require('pg-promise')(options);
-```
-
-[Promises/A+] libraries that implement a recognizable promise signature and work automatically:
-
-* **ES6 Promise** - used by default, though it doesn't have `done()` or `finally()`.
-* [Bluebird] - best alternative all around, which includes the very important [Long Stack Traces](http://bluebirdjs.com/docs/api/promise.longstacktraces.html); 
-* [Promise] - very solid library;
-* [When] - quite old, not the best support;
-* [Q] - most widely used;
-* [RSVP] - doesn't have `done()`, use `finally/catch` instead
-* [Lie] - doesn't have `done()`. 
-
-If you pass in a library that doesn't implement a recognizable promise signature, **pg-promise** will
-throw error `Invalid promise library specified.` during initialization.
-
-For such libraries you can use [Promise Adapter] to make them compatible with **pg-promise**,
-mostly needed by smaller and simplified [Conformant Implementations](https://promisesaplus.com/implementations). 
-
 ## Library de-initialization
 
 When exiting your application, you can optionally call [pgp.end]:
@@ -755,7 +687,7 @@ pgp.end(); // shuts down all connection pools
 ```
 
 This will release all connection pools, to make sure the process can terminate without any delay.
-If you do not call it, your process may be waiting for 30 seconds (default for [poolIdleTimeout](https://github.com/brianc/node-postgres/blob/master/lib/defaults.js#L44)),
+If you do not call it, your process may be waiting for 30 seconds (default for [poolIdleTimeout](https://github.com/brianc/node-postgres/blob/master/lib/defaults.js#L46)),
 waiting for all connections to expire in every pool.
 
 If, however you normally exit your application by killing the NodeJS process, then you don't need to use it.
@@ -789,7 +721,6 @@ DEALINGS IN THE SOFTWARE.
 [JSON Filter]:#json-filter
 [CSV Filter]:#csv-vilter
 [Custom Type Formatting]:#custom-type-formatting
-[Initialization Options]:#advanced
 [Usage]:#usage
 
 <!-- Method Links -->
@@ -819,6 +750,7 @@ DEALINGS IN THE SOFTWARE.
 <!-- API Links -->
 
 [Official Documentation]:http://vitaly-t.github.io/pg-promise/index.html
+[Initialization Options]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html
 [extent]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
 [Configuration Object]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object
 [Connection String]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#connection-string
