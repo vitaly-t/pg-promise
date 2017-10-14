@@ -39,7 +39,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><h3>Initialization Options</h3><p>Below is the complete list of <em>Initialization Options</em> for the library that can be passed during
+            <div class="description"><h3>Initialization Options</h3><p>Below is the complete list of <em>Initialization Options</em> for the library that can be passed in during
 the library's initialization:</p>
 <pre class="prettyprint source lang-js"><code>const initOptions = {&#47;* options as documented below *&#47;};
 
@@ -176,9 +176,9 @@ const pgp = require('pg-promise')(initOptions);</code></pre></div>
 
             <td class="description last"><p>Redirects all query formatting to the <a href="https://github.com/brianc/node-postgres">pg</a> driver.</p>
 <p>By default (<code>false</code>), the library uses its own advanced query-formatting engine.
-If you pass in this option as <code>true</code>, query formatting will be done entirely by the
-<a href="https://github.com/brianc/node-postgres">pg</a> driver, and you won't be able to use any of the feature-rich query formatting
-that this library implements.</p>
+If you set this option to a truthy value, query formatting will be done entirely by the
+<a href="https://github.com/brianc/node-postgres">pg</a> driver, which means you won't be able to use any of the feature-rich query formatting
+that this library implements, restricting yourself to the very basic <code>$1, $2,...</code> syntax.</p>
 <p>This option is dynamic (can be set before or after initialization).</p></td>
         </tr>
 
@@ -262,13 +262,16 @@ be an error thrown: <a href="external-Error.html">Error</a> = <code>Failed to in
                 </td>
             
 
-            <td class="description last"><p>Overrides the default promise library (ES6 Promise).</p>
-<p><strong>example:</strong></p>
+            <td class="description last"><p>Overrides the default (ES6 Promise) promise library for its internal use.</p>
+<p>Example below sets to use <a href="https://github.com/petkaantonov/bluebird">Bluebird</a> - the best and recommended promise library. It is the fastest one,
+and supports <a href="http://bluebirdjs.com/docs/api/promise.config.html">Long Stack Traces</a>, essential for debugging promises.</p>
 <pre class="prettyprint source lang-js"><code>const Promise = require('bluebird');
 const initOptions = {
     promiseLib: Promise
 };
-const pgp = require('pg-promise')(initOptions);</code></pre><p>This is a static option (can only be set prior to initialization).</p></td>
+const pgp = require('pg-promise')(initOptions);</code></pre><p>All existing promise libraries are supported. The ones with recognizable signature are used automatically,
+while the rest can be configured via the <a href="https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter">Promise Adapter</a>.</p>
+<p>This is a static option (can only be set prior to initialization).</p></td>
         </tr>
 
     
@@ -861,7 +864,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line279">line 279</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line284">line 284</a>
     </li></ul></dd>
     
 
@@ -945,7 +948,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line226">line 226</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line231">line 231</a>
     </li></ul></dd>
     
 
@@ -1018,7 +1021,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line352">line 352</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line357">line 357</a>
     </li></ul></dd>
     
 
@@ -1091,7 +1094,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line244">line 244</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line249">line 249</a>
     </li></ul></dd>
     
 
@@ -1171,7 +1174,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line291">line 291</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line296">line 296</a>
     </li></ul></dd>
     
 
@@ -1244,7 +1247,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line321">line 321</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line326">line 326</a>
     </li></ul></dd>
     
 
@@ -1321,7 +1324,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line214">line 214</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line219">line 219</a>
     </li></ul></dd>
     
 
@@ -1394,7 +1397,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line331">line 331</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line336">line 336</a>
     </li></ul></dd>
     
 
@@ -1467,7 +1470,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line311">line 311</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line316">line 316</a>
     </li></ul></dd>
     
 
@@ -1540,7 +1543,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line341">line 341</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line346">line 346</a>
     </li></ul></dd>
     
 
@@ -1613,7 +1616,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line301">line 301</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line306">line 306</a>
     </li></ul></dd>
     
 
@@ -1686,7 +1689,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line256">line 256</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line261">line 261</a>
     </li></ul></dd>
     
 
@@ -1766,7 +1769,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line372">line 372</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line377">line 377</a>
     </li></ul></dd>
     
 
@@ -1839,7 +1842,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line362">line 362</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line367">line 367</a>
     </li></ul></dd>
     
 
