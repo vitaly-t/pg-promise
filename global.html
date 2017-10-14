@@ -103,10 +103,9 @@
 
 
 <div class="description">
-    <p><em>Query Result Mask.</em></p>
+    <p><strong>Query Result Mask</strong></p>
 <p>Binary mask that represents the result expected from queries.
-It is used in the generic <a href="Database.html#query">query</a> method,
-as well as method <a href="Database.html#func">func</a>.</p>
+It is used by the base <a href="Database.html#query">query</a> method, as well as method <a href="Database.html#func">func</a>.</p>
 <p>The mask is always the last optional parameter, which defaults to <code>queryResult.any</code>.</p>
 <p>Any combination of flags is supported, except for <code>one + many</code>.</p>
 <p>The type is available from the library's root: <code>pgp.queryResult</code>.</p>
@@ -170,7 +169,7 @@ as well as method <a href="Database.html#func">func</a>.</p>
 
             
 
-            <td class="description last"><p>Single row is expected.</p></td>
+            <td class="description last"><p>Single row is expected, to be resolved as a single row-object.</p></td>
         </tr>
 
     
@@ -193,7 +192,7 @@ as well as method <a href="Database.html#func">func</a>.</p>
 
             
 
-            <td class="description last"><p>One or more rows expected.</p></td>
+            <td class="description last"><p>One or more rows expected, to be resolved as an array with at least 1 row-object.</p></td>
         </tr>
 
     
@@ -216,7 +215,7 @@ as well as method <a href="Database.html#func">func</a>.</p>
 
             
 
-            <td class="description last"><p>Expecting no rows.</p></td>
+            <td class="description last"><p>Expecting no rows, to be resolved with <code>null</code>.</p></td>
         </tr>
 
     
@@ -239,7 +238,7 @@ as well as method <a href="Database.html#func">func</a>.</p>
 
             
 
-            <td class="description last"><p><code>many|none</code> - any result is expected.</p></td>
+            <td class="description last"><p><code>many|none</code> - any result is expected, to be resolved with an array of rows-objects.</p></td>
         </tr>
 
     
@@ -278,7 +277,7 @@ as well as method <a href="Database.html#func">func</a>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="result.js.html">result.js</a>, <a href="result.js.html#line22">line 22</a>
+        <a href="result.js.html">result.js</a>, <a href="result.js.html#line21">line 21</a>
     </li></ul></dd>
     
 
