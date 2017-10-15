@@ -5076,7 +5076,7 @@ be passed in as the first parameter.</p></td>
     
     <pre class="prettyprint"><code>db.task('my-task', t => {        // t.ctx = task context object                return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user => {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
 
-    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.task('my-task', function * (t) {        // t.ctx = task context object        let user = yield t.one('SELECT id FROM Users WHERE name = $1', 'John');        return yield t.any('SELECT * FROM Events WHERE userId = $1', user.id);    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.task('my-task', function * (t) {        // t.ctx = task context object        const user = yield t.one('SELECT id FROM Users WHERE name = $1', 'John');        return yield t.any('SELECT * FROM Events WHERE userId = $1', user.id);    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
 
 
 
@@ -5306,7 +5306,7 @@ passed in as the first parameter.</p></td>
     
     <pre class="prettyprint"><code>db.tx('my-transaction', t => {        // t.ctx = transaction context object                return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user=> {                return t.batch([                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']),                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'login'])                ]);            });    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
 
-    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.tx('my-transaction', function * (t) {        // t.ctx = transaction context object        let user = yield t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);        return yield t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.tx('my-transaction', function * (t) {        // t.ctx = transaction context object        const user = yield t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);        return yield t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
 
 
 
