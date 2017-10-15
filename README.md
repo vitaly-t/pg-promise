@@ -54,7 +54,7 @@ Built on top of [node-postgres], this library adds the following:
 
 # Documentation
 
-In the [Usage] chapter below you can find the basics that you need to know, while the [Official Documentation]
+Chapter [Usage] below explains the basics you need to know, while the [Official Documentation]
 gets you started, and provides links to all other resources.
 
 # Contributing
@@ -64,7 +64,7 @@ Please read the [Contribution Notes](https://github.com/vitaly-t/pg-promise/blob
 # Usage
 
 Once you have created a [Database] object, according to the steps in the [Official Documentation],
-you get access to the methods documented below. And [Learn by Example] guide is very easy to follow. 
+you get access to the methods documented below. 
 
 ## Methods 
 
@@ -86,11 +86,13 @@ There are also more specific methods that you will often need:
 * [task], [tx], [connect] - for shared connections + automatic transactions; 
 * [stream] - to access rows from a query via a read stream.
 
-**IMPORTANT**
- 
+**IMPORTANT:**
+
 The most important methods to understand from the beginning are [task] and [tx]. As documented for method [query],
 it acquires and releases the connection, which makes it a poor choice for executing multiple queries at once.
 This is why [Chaining Queries] is an absolute must-read, to avoid writing the code that will bottleneck over connections.
+
+At this point, it is best to follow the [Learn by Example] - example-based tutorial for an easy start.
 
 ## Query Formatting
 
