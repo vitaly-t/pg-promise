@@ -18,7 +18,7 @@ a new or existing `id` of the record.
  
 ```js
 function getInsertUserId(name) {
-    return db.task(t => {
+    return db.task('getInsertUserId', t => {
             return t.oneOrNone('SELECT id FROM Users WHERE name = $1', name, u => u && u.id)
                 .then(userId => {
                     return userId || t.one('INSERT INTO Users(name) VALUES($1) RETURNING id', name, u => u.id);
@@ -43,19 +43,19 @@ The same function `getInsertUserId`, using ES6 generators:
 
 ```js
 function getInsertUserId(name) {
-    return db.task(function *(t) {
-        let userId = yield t.oneOrNone('SELECT id FROM Users WHERE name = $1', name, u => u && u.id);
+    return db.task('getInsertUserId', function *(t) {
+        const userId = yield t.oneOrNone('SELECT id FROM Users WHERE name = $1', name, u => u && u.id);
         return yield userId || t.one('INSERT INTO Users(name) VALUES($1) RETURNING id', name, u => u.id);
     });
 }
 ```
 
-The same function `getInsertUserId`, using ES7 async clause:
+The same function `getInsertUserId`, using ES7 async syntax:
 
 ```js
 async function getInsertUserId(name) {
-    return await db.task(async (t) => {
-        let userId = await t.oneOrNone('SELECT id FROM Users WHERE name = $1', name, u => u && u.id);
+    return await db.task('getInsertUserId', async (t) => {
+        const userId = await t.oneOrNone('SELECT id FROM Users WHERE name = $1', name, u => u && u.id);
         return userId || await t.one('INSERT INTO Users(name) VALUES($1) RETURNING id', name, u => u.id);
     });
 }
@@ -72,7 +72,7 @@ It is possible to wrap the whole operation into a single query, which would offe
 performance, executing always just one query, and more importantly - proper data integrity,
 by making sure that a parallel request would not try to execute a second `INSERT`. 
 
-Implementing such a query however isn't trivial, and can vary based on whether it is for
+Implementing such a query however isn't trivial, and it can vary based on whether it is for
 PostgreSQL 9.5+ or an older version of the server.
 
 The following posts will help you get started writing your own single-query solution for this:

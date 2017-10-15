@@ -8,12 +8,12 @@
 
 const promise = require('bluebird'); // or any other Promise/A+ compatible library;
 
-const options = {
+const initOptions = {
     promiseLib: promise // overriding the default (ES6 Promise);
 };
 
-const pgp = require('pg-promise')(options);
-// See also: https://github.com/vitaly-t/pg-promise#initialization-options
+const pgp = require('pg-promise')(initOptions);
+// See also: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
 
 // Database connection details;
 const cn = {
