@@ -1315,7 +1315,7 @@ function Database(cn, dc, config) {
          *         // t.ctx = transaction context object
          *         
          *         return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])
-         *             .then(user=> {
+         *             .then(user => {
          *                 return t.batch([
          *                     t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']),
          *                     t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'login'])
