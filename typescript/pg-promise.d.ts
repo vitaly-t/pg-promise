@@ -320,7 +320,7 @@ declare namespace pgPromise {
     // API: http://vitaly-t.github.io/pg-promise/Database.html
     //
     // We export this interface only to be able to help IntelliSense cast extension types correctly,
-    // which doesn't always work, depending on the version of IntelliSense being used. 
+    // which doesn't always work, depending on the version of IntelliSense being used.
     interface IDatabase<Ext> extends IBaseProtocol<Ext> {
         connect(options?: TConnectionOptions): XPromise<IConnected<Ext>>
 
@@ -500,6 +500,8 @@ declare namespace pgPromise {
             query: string;
             values: any;
 
+            constructor(code: queryResultErrorCode, result: pg.IResult, query: string, values: any);
+
             // API: http://vitaly-t.github.io/pg-promise/errors.QueryResultError.html#toString
             toString(): string
         }
@@ -518,6 +520,8 @@ declare namespace pgPromise {
             options: TQueryFileOptions;
             error: pgMinify.SQLParsingError;
 
+            constructor(error: pgMinify.SQLParsingError, gf: {file: string, options: TQueryFileOptions});
+
             // API: http://vitaly-t.github.io/pg-promise/errors.QueryFileError.html#toString
             toString(level?: number): string
         }
@@ -534,6 +538,8 @@ declare namespace pgPromise {
             // extended properties:
             error: QueryFileError;
 
+            constructor(error: QueryFileError, ps: any);
+
             // API: http://vitaly-t.github.io/pg-promise/errors.PreparedStatementError.html#toString
             toString(level?: number): string
         }
@@ -549,6 +555,8 @@ declare namespace pgPromise {
 
             // extended properties:
             error: QueryFileError;
+
+            constructor(error: QueryFileError, ps: any);
 
             // API: http://vitaly-t.github.io/pg-promise/errors.ParameterizedQueryError.html#toString
             toString(level?: number): string
