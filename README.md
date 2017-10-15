@@ -90,9 +90,9 @@ There are also more specific methods that you will often need:
 
 The most important methods to understand from the beginning are [task] and [tx]. As documented for method [query],
 it acquires and releases the connection, which makes it a poor choice for executing multiple queries at once.
-This is why [Chaining Queries] is an absolute must-read, to avoid writing the code that will bottleneck over connections.
+For this reason, [Chaining Queries] is an absolute must-read, to avoid writing the code that misuses connections.
 
-At this point, it is best to follow the [Learn by Example] - example-based tutorial for an easy start.
+At this point, it is best to follow the [Learn by Example] tutorial, for an easy start.
 
 ## Query Formatting
 
@@ -110,7 +110,7 @@ The formatting syntax is decided from the type of `values` passed in:
 
 ### Index Variables
 
-The simplest (aka classic) formatting uses `$1, $2, ...` syntax to inject values into the query string,
+The simplest (classic) formatting uses `$1, $2, ...` syntax to inject values into the query string,
 based on their index (starting with 1) from the array of values: 
 
 ```js
@@ -203,9 +203,7 @@ The following filters are supported:
 ### SQL Names
 
 When a variable ends with `:name`, or shorter syntax `~` (tilde), it represents an SQL name or identifier,
-to be escaped accordingly, and then wrapped in double quotes.
-
-**Example**
+to be escaped accordingly, and then wrapped in double quotes:
 
 ```js
 db.query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
