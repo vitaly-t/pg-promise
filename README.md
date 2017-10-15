@@ -395,10 +395,10 @@ function sql(file) {
 const sqlFindUser = sql('./sql/findUser.sql');
 
 db.one(sqlFindUser, {id: 123})
-    .then(user=> {
+    .then(user => {
         console.log(user);
     })
-    .catch(error=> {
+    .catch(error => {
         if (error instanceof pgp.errors.QueryFileError) {
             // => the error is related to our QueryFile
         }
@@ -592,7 +592,7 @@ If you prefer writing asynchronous code in a synchronous manner, you can impleme
 
 ```js
 function * getUser(t) {
-    let user = yield t.oneOrNone('SELECT * FROM users WHERE id = $1', 123);
+    const user = yield t.oneOrNone('SELECT * FROM users WHERE id = $1', 123);
     return yield user || t.one('INSERT INTO users(name) VALUES($1) RETURNING *', 'John');
 }
 
