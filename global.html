@@ -697,8 +697,7 @@ this property is set with the context that was passed in. Otherwise, the propert
 
             
 
-            <td class="description last"><p><strong> Added in v6.2.0 </strong></p>
-<p>Number of milliseconds consumed by the operation.</p>
+            <td class="description last"><p>Number of milliseconds consumed by the operation.</p>
 <p>Set after the operation has finished, it is simply a shortcut for <code>finish - start</code>.</p></td>
         </tr>
 
@@ -722,8 +721,7 @@ this property is set with the context that was passed in. Otherwise, the propert
 
             
 
-            <td class="description last"><p><strong> Added in v6.2.0 </strong></p>
-<p>Task nesting level, starting from 0, counting both regular tasks and transactions.</p></td>
+            <td class="description last"><p>Task nesting level, starting from 0, counting both regular tasks and transactions.</p></td>
         </tr>
 
     
@@ -746,8 +744,7 @@ this property is set with the context that was passed in. Otherwise, the propert
 
             
 
-            <td class="description last"><p><strong> Added in v6.2.0 </strong></p>
-<p>Transaction nesting level, starting from 0. Transactions on level 0 use <code>BEGIN/COMMIT/ROLLBACK</code>,
+            <td class="description last"><p>Transaction nesting level, starting from 0. Transactions on level 0 use <code>BEGIN/COMMIT/ROLLBACK</code>,
 while transactions on nested levels use the corresponding <code>SAVEPOINT</code> commands.</p>
 <p>This property exists only within the context of a transaction (<code>isTX = true</code>).</p></td>
         </tr>
@@ -772,8 +769,7 @@ while transactions on nested levels use the corresponding <code>SAVEPOINT</code>
 
             
 
-            <td class="description last"><p><strong> Added in v6.2.1 </strong></p>
-<p>Parent task/transaction context, or <code>null</code> when it is top-level.</p></td>
+            <td class="description last"><p>Parent task/transaction context, or <code>null</code> when it is top-level.</p></td>
         </tr>
 
     
@@ -796,8 +792,7 @@ while transactions on nested levels use the corresponding <code>SAVEPOINT</code>
 
             
 
-            <td class="description last"><p><strong> Added in v6.2.1 </strong></p>
-<p>Indicates when the task/transaction acquired the connection on its own (<code>connected = true</code>), and will release it once
+            <td class="description last"><p>Indicates when the task/transaction acquired the connection on its own (<code>connected = true</code>), and will release it once
 the operation has finished. When the value is <code>false</code>, the operation is reusing an existing connection.</p></td>
         </tr>
 
