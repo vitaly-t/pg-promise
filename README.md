@@ -641,6 +641,7 @@ DEALINGS IN THE SOFTWARE.
 
 <!-- Internal Menu Links -->
 
+[Usage]:#usage
 [Index Variables]:#index-variables  
 [Named Parameters]:#named-parameters
 [SQL Names]:#sql-names
@@ -650,7 +651,6 @@ DEALINGS IN THE SOFTWARE.
 [JSON Filter]:#json-filter
 [CSV Filter]:#csv-vilter
 [Custom Type Formatting]:#custom-type-formatting
-[Usage]:#usage
 
 <!-- Method Links -->
 
@@ -668,31 +668,23 @@ DEALINGS IN THE SOFTWARE.
 [each]:http://vitaly-t.github.io/pg-promise/Database.html#each
 [func]:http://vitaly-t.github.io/pg-promise/Database.html#func
 [proc]:http://vitaly-t.github.io/pg-promise/Database.html#proc
+[stream]:http://vitaly-t.github.io/pg-promise/Database.html#stream
+[connect]:http://vitaly-t.github.io/pg-promise/Database.html#connect
 [task]:http://vitaly-t.github.io/pg-promise/Database.html#task
 [tx]:http://vitaly-t.github.io/pg-promise/Database.html#tx
 [batch]:http://vitaly-t.github.io/pg-promise/Task.html#batch
 [sequence]:http://vitaly-t.github.io/pg-promise/Task.html#sequence
 [page]:http://vitaly-t.github.io/pg-promise/Task.html#page
-[connect]:http://vitaly-t.github.io/pg-promise/Task.html#connect
-[stream]:http://vitaly-t.github.io/pg-promise/Task.html#stream
 
 <!-- API Links -->
 
 [Official Documentation]:http://vitaly-t.github.io/pg-promise/index.html
 [Initialization Options]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-[extent]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
-[Configuration Object]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object
-[Connection String]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#connection-string
-[Connection Syntax]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax
 [helpers]:http://vitaly-t.github.io/pg-promise/helpers.html
 [QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
 [QueryFileError]:http://vitaly-t.github.io/pg-promise/QueryFileError.html
-[PreparedStatement]:http://vitaly-t.github.io/pg-promise/PreparedStatement.html
-[ParameterizedQuery]:http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
 [Database]:http://vitaly-t.github.io/pg-promise/Database.html
-[QueryResultError]:http://vitaly-t.github.io/pg-promise/QueryResultError.html
 [pgp.end]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
-[pgp.as]:http://vitaly-t.github.io/pg-promise/formatting.html
 [formatting]:http://vitaly-t.github.io/pg-promise/formatting.html
 [as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
 [format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
@@ -701,33 +693,16 @@ DEALINGS IN THE SOFTWARE.
 [as.json]:http://vitaly-t.github.io/pg-promise/formatting.html#.json
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
 [as.alias]:http://vitaly-t.github.io/pg-promise/formatting.html#.alias
-[Protocol API]:http://vitaly-t.github.io/pg-promise/index.html
-[API]:http://vitaly-t.github.io/pg-promise/index.html
-[API Documentation]:http://vitaly-t.github.io/pg-promise/index.html
 [Transaction Mode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
 
 <!-- WiKi Links -->
 
 [Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
-[Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
 [Chaining Queries]:https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries
 
 <!-- External Links -->
 
-[Native Bindings]:https://node-postgres.com/features/native
-[pg-minify]:https://github.com/vitaly-t/pg-minify
-[pg-monitor]:https://github.com/vitaly-t/pg-monitor
-[pg-promise]:https://github.com/vitaly-t/pg-promise
-[PG]:https://github.com/brianc/node-postgres
-[pg]:https://github.com/brianc/node-postgres
 [node-postgres]:https://github.com/brianc/node-postgres
 [Promises/A+]:https://promisesaplus.com/
-[Promise]:https://github.com/then/promise
 [Bluebird]:https://github.com/petkaantonov/bluebird
-[When]:https://github.com/cujojs/when
-[Q]:https://github.com/kriskowal/q
-[RSVP]:https://github.com/tildeio/rsvp.js
-[Lie]:https://github.com/calvinmetcalf/lie
-[spex.sequence]:http://vitaly-t.github.io/spex/global.html#sequence
-[Result]:https://node-postgres.com/api/result
 [SQL injection]:https://en.wikipedia.org/wiki/SQL_injection
