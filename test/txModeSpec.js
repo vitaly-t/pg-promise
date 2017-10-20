@@ -1,6 +1,8 @@
 'use strict';
 
 const header = require('./db/header');
+const tools = require('./tools');
+
 const promise = header.defPromise;
 const options = {
     promiseLib: promise,
@@ -282,38 +284,45 @@ describe('Transaction Mode', function () {
             delete options.query;
         });
     });
-    /*
-     describe('with a combination', function () {
-     var queries = [], result;
-     beforeEach(function (done) {
 
-     options.query = function (e) {
-     queries.push(e.query);
-     };
+    describe('when deferrable is irrelevant', function () {
+        const queries = [];
+        let result;
+        beforeEach(function (done) {
 
-     function txNoParams() {
-     return promise.resolve('success');
-     }
+            options.query = function (e) {
+                queries.push(e.query);
+            };
 
-     var level = pgp.txMode.isolationLevel;
-     txNoParams.txMode = new pgp.txMode.TransactionMode(level.repeatableRead, true, false);
+            function txNoParams() {
+                return promise.resolve('success');
+            }
 
-     db.tx(txNoParams)
-     .then(function (data) {
-     result = data;
-     done();
-     });
-     });
-     it('must execute correct command', function () {
-     expect(result).toBe('success');
-     expect(queries.length).toBe(2);
-     expect(queries[0]).toBe('begin isolation level repeatable read read only not deferrable');
-     });
-     afterEach(function () {
-     delete options.query;
-     });
-     });
-     */
+            const level = pgp.txMode.isolationLevel;
+            txNoParams.txMode = new pgp.txMode.TransactionMode(level.repeatableRead, true, false);
+
+            db.tx(txNoParams)
+                .then(function (data) {
+                    result = data;
+                    done();
+                });
+        });
+        it('must execute correct command', function () {
+            expect(result).toBe('success');
+            expect(queries.length).toBe(2);
+            expect(queries[0]).toBe('begin isolation level repeatable read read only');
+        });
+        afterEach(function () {
+            delete options.query;
+        });
+    });
+
+    describe('inspection', () => {
+        const mode = new pgp.txMode.TransactionMode();
+        it('must return the same as method begin()', () => {
+            expect(mode.begin(true)).toBe(tools.inspect(mode));
+        });
+    });
 });
 
 if (jasmine.Runner) {
