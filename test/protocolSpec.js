@@ -2,6 +2,8 @@
 
 const PG = require('pg');
 const header = require('./db/header');
+const tools = require('./tools');
+
 const promise = header.defPromise;
 const options = {
     promiseLib: promise,
@@ -517,8 +519,8 @@ describe('Error protocol', function () {
     it('must return correctly formatted error body', function () {
         const error1 = new pgp.errors.QueryResultError(0, result, '');
         const error2 = new pgp.errors.QueryResultError(0, result, {name: 'name', text: 'text'}, []);
-        expect(error1.inspect()).toBe(error1.toString());
-        expect(error2.inspect()).toBe(error2.toString());
+        expect(tools.inspect(error1)).toBe(error1.toString());
+        expect(tools.inspect(error2)).toBe(error2.toString());
     });
 });
 

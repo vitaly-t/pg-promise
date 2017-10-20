@@ -4,6 +4,8 @@ const path = require('path');
 const fs = require('fs');
 const header = require('./db/header');
 const utils = require('../lib/utils');
+const tools = require('./tools');
+
 const promise = header.defPromise;
 const options = {
     promiseLib: promise,
@@ -153,7 +155,7 @@ describe('QueryFile / Positive:', function () {
     describe('inspect', function () {
         const qf = new QueryFile(sqlSimple, {noWarnings: true});
         it('must return the query', function () {
-            expect(qf.inspect()).toBe(qf.toString());
+            expect(tools.inspect(qf)).toBe(qf.toString());
         });
     });
 
@@ -215,9 +217,9 @@ describe('QueryFile / Negative:', function () {
     describe('inspect', function () {
         const qf = new QueryFile(sqlInvalid, {minify: true, noWarnings: true});
         it('must return the error', function () {
-            expect(qf.inspect() != qf.toString(1)).toBe(true);
+            expect(tools.inspect(qf) != qf.toString(1)).toBe(true);
             expect(qf.error instanceof QueryFileError).toBe(true);
-            expect(qf.error.inspect()).toBe(qf.error.toString());
+            expect(tools.inspect(qf.error)).toBe(qf.error.toString());
         });
     });
 

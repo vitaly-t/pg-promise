@@ -1,6 +1,8 @@
 'use strict';
 
 const header = require('./db/header');
+const tools = require('./tools');
+
 const promise = header.defPromise;
 const options = {
     promiseLib: promise,
@@ -288,7 +290,7 @@ describe('TableName', function () {
         it('must be formatted', function () {
             const t = new helpers.TableName({table: 'table', schema: 'schema'});
             expect(t.toString()).toBe('"schema"."table"');
-            expect(t.toString()).toBe(t.inspect());
+            expect(t.toString()).toBe(tools.inspect(t));
         });
     });
 
@@ -335,7 +337,7 @@ describe('Column', function () {
             expect(col.mod).toBe('^');
             expect(typeof col.init).toBe('function');
             expect(typeof col.skip).toBe('function');
-            expect(col.toString()).toBe(col.inspect());
+            expect(col.toString()).toBe(tools.inspect(col));
         });
     });
 
@@ -723,7 +725,7 @@ describe('ColumnSet', function () {
             expect(cs1.toString()).toContain('columns: [');
             expect(cs2.toString()).toContain('table: "table"');
             expect(cs3.toString()).toBe('ColumnSet {' + os.EOL + gap + 'columns: []' + os.EOL + '}');
-            expect(cs1.toString(1) !== cs1.inspect()).toBe(true);
+            expect(cs1.toString(1) !== tools.inspect(cs1)).toBe(true);
         });
     });
 
