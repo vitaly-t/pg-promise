@@ -117,9 +117,9 @@ PreparedStatementError.prototype.toString = function (level) {
     return lines.join(npm.os.EOL);
 };
 
-PreparedStatementError.prototype.inspect = function () {
+npm.utils.addInspection(PreparedStatementError, function () {
     return this.toString();
-};
+});
 
 module.exports = PreparedStatementError;
 </code></pre>

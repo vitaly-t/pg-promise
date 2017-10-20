@@ -29,6 +29,10 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
+const npm = {
+    utils: require('./utils')
+};
+
 /**
  * @enum {number}
  * @alias txMode.isolationLevel
@@ -196,6 +200,10 @@ function TransactionMode(tiLevel, readOnly, deferrable) {
         return cap ? capBegin : begin;
     };
 }
+
+npm.utils.addInspection(TransactionMode, function () {
+    return this.begin(true);
+});
 
 /**
  * @namespace txMode
