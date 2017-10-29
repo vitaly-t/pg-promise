@@ -294,16 +294,16 @@ describe('TableName', function () {
         });
     });
 
-    describe('custom-type formatting', function () {
+    describe('custom-type formatting', () => {
         const t = new helpers.TableName({table: 'table', schema: 'schema'});
-        it('must return the full name', function () {
-            expect(t.toPostgres(t)).toBe(t.name);
-            expect(t.toPostgres.call(null, t)).toBe(t.name);
-            expect(t.toPostgres()).toBe(t.name);
+        it('must return the full name', () => {
+            const toPostgres = pgp.as.ctf.toPostgres;
+            expect(t[toPostgres](t)).toBe(t.name);
+            expect(t[toPostgres].call(null, t)).toBe(t.name);
+            expect(t[toPostgres]()).toBe(t.name);
         });
     });
 });
-
 
 describe('Column', function () {
 

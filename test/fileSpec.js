@@ -161,10 +161,11 @@ describe('QueryFile / Positive:', function () {
 
     describe('custom-type formatting', function () {
         const qf = new QueryFile(sqlSimple, {noWarnings: true});
+        const toPostgres = pgp.as.ctf.toPostgres;
         it('must return the full name', function () {
-            expect(qf.toPostgres(qf)).toBe(qf.query);
-            expect(qf.toPostgres.call(null, qf)).toBe(qf.query);
-            expect(qf.toPostgres()).toBe(qf.query);
+            expect(qf[toPostgres](qf)).toBe(qf.query);
+            expect(qf[toPostgres].call(null, qf)).toBe(qf.query);
+            expect(qf[toPostgres]()).toBe(qf.query);
         });
     });
 

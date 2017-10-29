@@ -1347,6 +1347,12 @@ describe('Custom Type Formatting', function () {
         it('must recognize symbolic ctf', () => {
             expect(pgp.as.format('$1', {[ctf.toPostgres]: () => 'ok'})).toBe('\'ok\'');
         });
+        it('must recognize symbolic ctf for simple types', () => {
+            const value = 0;
+            Number.prototype[ctf.toPostgres] = () => 'ok';
+            expect(pgp.as.format('$1', value)).toBe('\'ok\'');
+            delete Number.prototype[ctf.toPostgres];
+        });
         it('must support rawType', () => {
             expect(pgp.as.format('$1', {[ctf.toPostgres]: () => 'ok', [ctf.rawType]: true})).toBe('ok');
         });

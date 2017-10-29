@@ -348,6 +348,9 @@ Method [as.csv] implements the formatting.
 
 ## Custom Type Formatting
 
+> Please note that version 7.1.0 added support for namespace [ctf] that offers a newer/cleaner approach to _Custom Type Formatting_
+via ES6 type [Symbol] that lets you keep your object/type signature intact.
+
 Any value/object that has function `toPostgres` is treated as a custom formatting type. The function is called to get
 the actual value, passing it the value/object via `this` context, and as a single parameter (in case `toPostgres` is an ES6 arrow function):
 
@@ -702,6 +705,7 @@ DEALINGS IN THE SOFTWARE.
 [Database]:http://vitaly-t.github.io/pg-promise/Database.html
 [pgp.end]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
 [formatting]:http://vitaly-t.github.io/pg-promise/formatting.html
+[ctf]:http://vitaly-t.github.io/pg-promise/formatting.ctf.html
 [as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
 [format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
 [as.value]:http://vitaly-t.github.io/pg-promise/formatting.html#.value
@@ -722,3 +726,5 @@ DEALINGS IN THE SOFTWARE.
 [Promises/A+]:https://promisesaplus.com/
 [Bluebird]:https://github.com/petkaantonov/bluebird
 [SQL injection]:https://en.wikipedia.org/wiki/SQL_injection
+[Symbol]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
+
