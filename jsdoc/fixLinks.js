@@ -34,7 +34,8 @@ const links = {
     'Robust Listeners': 'https://github.com/vitaly-t/pg-promise/wiki/Robust-Listeners',
     'Promise Adapter': 'https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter',
     'Bluebird': 'https://github.com/petkaantonov/bluebird',
-    'Long Stack Traces': 'http://bluebirdjs.com/docs/api/promise.config.html'
+    'Long Stack Traces': 'http://bluebirdjs.com/docs/api/promise.config.html',
+    'Symbol': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol'
 };
 
 function fixLinks(source) {

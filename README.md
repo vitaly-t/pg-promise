@@ -355,8 +355,18 @@ Any value/object that has function `toPostgres` is treated as a custom formattin
 the actual value, passing it the value/object via `this` context, and as a single parameter (in case `toPostgres` is an ES6 arrow function):
 
 ```js
+// Before v7.1.0:
 const obj = {
     toPostgres(self) {
+        // self = this = obj
+        
+        // return the actual value here
+    }
+}
+
+// After v7.1.0:
+const obj = {
+    [pgp.as.ctf.toPostgres](self) {
         // self = this = obj
         
         // return the actual value here
@@ -371,9 +381,18 @@ as [Raw Text].
 Example below implements a class that auto-formats `ST_MakePoint` from coordinates:
 
 ```js
+// Before v7.1.0:
 function STPoint(x, y) {
     this._rawType = true; // no escaping, because we return pre-formatted SQL
     this.toPostgres = () => pgp.as.format('ST_MakePoint($1, $2)', [x, y]);
+}
+
+// After v7.1.0:
+function STPoint(x, y) {
+    const ctf = pgp.as.ctf;
+    
+    this[ctf.rawType] = true; // no escaping, because we return pre-formatted SQL
+    this[ctf.toPostgres] = () => pgp.as.format('ST_MakePoint($1, $2)', [x, y]);
 }
 ```
 
@@ -382,7 +401,11 @@ With this class you can use `new STPoint(12, 34)` as a formatting value that wil
 You can also use _Custom Type Formatting_ to override any standard type:
 
 ```js
+// Before v7.1.0:
 Date.prototype.toPostgres = a => a.getTime();
+
+// After v7.1.0:
+Date.prototype[pgp.as.ctf.toPostgres] = a => a.getTime();
 ```
 
 Function `toPostgres` can return anything, including another object with its own `toPostgres` function, i.e. nested

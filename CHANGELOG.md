@@ -1,5 +1,6 @@
 ### Release History
 
+* 7.1.0 Adding support for symbols within [Custom Type Formatting]. Released: Oct 29, 2017.
 * 7.0.0 Adding methods [multi] and [multiResult] to support multi-query results. Released: Oct 08, 2017.
 * 6.10.0 Initial support for [Nested Named Parameters]. Released: Sept 27, 2017
 * 6.9.0 Upgrading to [spex] v2.0.0, with the updated protocol. Released: Sept 21, 2017
