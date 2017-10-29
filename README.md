@@ -22,6 +22,7 @@ pg-promise
     - [Named Parameters]
   - [Formatting Filters](#formatting-filters)          
     - [SQL Names]  
+      - [Alias Filter]    
     - [Raw Text]  
     - [Open Values]
     - [JSON Filter]
@@ -204,9 +205,9 @@ db.any('SELECT ${column:name} FROM ${table:name}', {
 The following filters are supported:
 
 * `:name` / `~` - [SQL Names]
+  - `:alias` - [Alias Filter]
 * `:raw` / `^` - [Raw Text]
 * `:value` / `#` - [Open Values]
-* `:alias` - [Alias Filter]
 * `:json` - [JSON Filter]
 * `:csv` - [CSV Filter]
 
