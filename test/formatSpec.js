@@ -768,65 +768,39 @@ describe('Method as.format', function () {
 
     });
 
-    it('must correctly reject invalid requests', function () {
+    it('must correctly reject invalid requests', () => {
 
         const errEmptyString = 'Parameter \'query\' must be a text string.';
 
-        expect(function () {
-            pgp.as.format();
-        }).toThrow(new Error(errEmptyString));
-
-        expect(function () {
-            pgp.as.format(null);
-        }).toThrow(new Error(errEmptyString));
-
-        expect(function () {
-            pgp.as.format(null, [1, 2, 3]);
-        }).toThrow(new Error(errEmptyString));
-
-        expect(function () {
-            pgp.as.format(123);
-        }).toThrow(new Error(errEmptyString));
-
-        expect(function () {
-            pgp.as.format(function () {
-                return '';
-            }, dummy);
-        }).toThrow(new Error(errEmptyString));
-
-        expect(function () {
-            pgp.as.format('$1^', null);
-        }).toThrow(new Error(errors.rawNull()));
-
-        expect(function () {
-            pgp.as.format('$1^', [null]);
-        }).toThrow(new Error(errors.rawNull()));
-
-        expect(function () {
-            pgp.as.format('$1^', [undefined]);
-        }).toThrow(new Error(errors.rawNull()));
-
-        expect(function () {
-            pgp.as.format('$1', []);
-        }).toThrow(new RangeError(errors.range('$1', 0)));
-
-        expect(function () {
-            pgp.as.format('$3', [1, 2]);
-        }).toThrow(new RangeError(errors.range('$3', 2)));
-
-        expect(function () {
-            pgp.as.format('$100001', []);
-        }).toThrow(new RangeError('Variable $100001 exceeds supported maximum of $100000'));
+        expect(() => pgp.as.format()).toThrow(new Error(errEmptyString));
+        expect(() => pgp.as.format(null)).toThrow(new Error(errEmptyString));
+        expect(() => pgp.as.format(null, [1, 2, 3])).toThrow(new Error(errEmptyString));
+        expect(() => pgp.as.format(123)).toThrow(new Error(errEmptyString));
+        expect(() => pgp.as.format(() => '', dummy)).toThrow(new Error(errEmptyString));
+        expect(() => pgp.as.format('$1^', null)).toThrow(new Error(errors.rawNull()));
+        expect(() => pgp.as.format('$1^', [null])).toThrow(new Error(errors.rawNull()));
+        expect(() => pgp.as.format('$1^', [undefined])).toThrow(new Error(errors.rawNull()));
+        expect(() => pgp.as.format('$1', [])).toThrow(new RangeError(errors.range('$1', 0)));
+        expect(() => pgp.as.format('$3', [1, 2])).toThrow(new RangeError(errors.range('$3', 2)));
+        expect(() => pgp.as.format('$100001', [])).toThrow(new RangeError('Variable $100001 exceeds supported maximum of $100000'));
     });
 
-    describe('formatting options', function () {
+    it('must throw on type Symbol', () => {
 
-        describe('partial', function () {
+        const value = Symbol('one.two');
+        const symbolError = new TypeError('Type Symbol has no corresponding PostgreSQL type: ' + value.toString());
+
+        expect(() => pgp.as.format('$1', value)).toThrow(symbolError);
+        expect(() => pgp.as.format('$1', [value])).toThrow(symbolError);
+    });
+
+    describe('formatting options', () => {
+
+        describe('partial', () => {
             it('must skip missing variables', function () {
                 expect(pgp.as.format('$1', [], {partial: true})).toBe('$1');
                 expect(pgp.as.format('$1^', [], {partial: true})).toBe('$1^');
                 expect(pgp.as.format('$1:raw', [], {partial: true})).toBe('$1:raw');
-
             });
         });
 
