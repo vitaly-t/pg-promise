@@ -78,7 +78,7 @@ to be affected by the query, which is completely irrelevant.
 By relying on the result-specific methods you protect your code from an unexpected number of data rows,
 to be automatically rejected (treated as errors).  
 
-There are also more specific methods that you will often need:
+There are also a few specific methods that you will often need:
 
 * [result], [multi], [multiResult] - for verbose and/or multi-query results;
 * [map], [each] - for simpler/inline result pre-processing/re-mapping;
@@ -88,44 +88,48 @@ There are also more specific methods that you will often need:
 
 **IMPORTANT:**
 
-The most important methods to understand from the beginning are [task] and [tx]. As documented for method [query],
+The most important methods to understand from start are [task] and [tx]. As documented for method [query],
 it acquires and releases the connection, which makes it a poor choice for executing multiple queries at once.
 For this reason, [Chaining Queries] is an absolute must-read, to avoid writing the code that misuses connections.
 
-At this point, it is best to follow the [Learn by Example] tutorial, for an easy start.
+[Learn by Example] is a beginner's tutorial based on examples.
 
 ## Query Formatting
 
 This library comes with embedded query-formatting engine that offers high-performance value escaping,
-flexibility and extensibility. It is used by default with all query methods, unless you decide to opt out
-of it entirely via option `pgFormatting` within [Initialization Options].  
+flexibility and extensibility. It is used by default with all query methods, unless you opt out of it entirely
+via option `pgFormatting` within [Initialization Options].  
 
 All formatting methods used internally are available from the [formatting] namespace, so they can also be used
-directly when needed. The main method there is [format], which is used by every query method to format the query. 
+directly when needed. The main method there is [format], used by every query method to format the query. 
 
-The formatting syntax is decided from the type of `values` passed in:
+The formatting syntax for variables is decided from the type of `values` passed in:
 
 * [Index Variables] when `values` is an array or a single basic type;
 * [Named Parameters] when `values` is an object (other than `Array` or `null`).
 
+**ATTENTION:** Never use ES6 template strings or manual concatenation to generate queries, as both
+can easily result in broken queries! Only this library's formatting engine knows how to properly escape
+variable values for PostgreSQL.
+
 ### Index Variables
 
 The simplest (classic) formatting uses `$1, $2, ...` syntax to inject values into the query string,
-based on their index (starting with 1) from the array of values: 
+based on their index (from `$1` to `$100000`) from the array of values: 
 
 ```js
 db.any('SELECT * FROM product WHERE price BETWEEN $1 AND $2', [1, 10])
 ```
 
-The formatting engine also supports single-value parametrization for queries that use only a single `$1` variable: 
+The formatting engine also supports single-value parametrization for queries that use only variable `$1`: 
 
 ```js
 db.any('SELECT * FROM users WHERE name = $1', 'John')
 ```
 
-This however works only for basic types, such as `number`, `string`, `boolean`, `Date`, `null`, `undefined`, because
-types like `Array` and `Object` change the way parameters are interpreted. That's why passing in index variables
-within an array is advised as safer, to avoid ambiguities.
+This however works only for types `number`, `string`, `boolean`, `Date` and `null`, because types like `Array`
+and `Object` change the way parameters are interpreted. That's why passing in index variables within an array
+is advised as safer, to avoid ambiguities.
 
 ### Named Parameters
 
@@ -139,7 +143,7 @@ db.any('SELECT * FROM users WHERE name = ${name} AND active = $/active/', {
 });
 ```
 
-Valid variable names are limited to the syntax of an open-name JavaScript variable. 
+Valid variable names are limited to the syntax of open-name JavaScript variables. 
 
 Keep in mind that while property values `null` and `undefined` are both formatted as `null`,
 an error is thrown when the property does not exist.
@@ -175,15 +179,21 @@ Please note, however, that this supports does not extend to the [helpers] namesp
 
 ## Formatting Filters
 
-By default, all values are formatted according to their JavaScript types. Formatting filters (or modifiers),
+By default, all values are formatted according to their JavaScript type. Formatting filters (or modifiers),
 change that, so the value is formatted differently. 
 
 Filters use the same syntax for [Index Variables] and [Named Parameters], following immediately the variable name:
 
+* For [Index Variables]
+
 ```js
 db.any('SELECT $1:name FROM $2:name', ['price', 'products'])
 //=> SELECT "price" FROM "products"
+```
 
+* For [Named Parameters]
+
+```js
 db.any('SELECT ${column:name} FROM ${table:name}', {
     column: 'price',
     table: 'products'    
@@ -368,7 +378,8 @@ You can also use _Custom Type Formatting_ to override any standard type:
 Date.prototype.toPostgres = a => a.getTime();
 ```
 
-Function `toPostgres` can return anything, including another object with its own `toPostgres`.
+Function `toPostgres` can return anything, including another object with its own `toPostgres` function, i.e. nested
+custom types are supported.
 
 ## Query Files
   
