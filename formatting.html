@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Namespace for all query-formatting functions, available from <code>pgp.as</code>, before and after initializing the library.</p></div>
+            <div class="description"><p>Namespace for all query-formatting functions, available from <code>pgp.as</code> before and after initializing the library.</p></div>
         
 
         
@@ -66,6 +66,29 @@
     </thead>
 
     <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ctf</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="formatting.ctf.html">formatting.ctf</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Namespace for symbols used by <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>.</p></td>
+        </tr>
+
     
 
         <tr>
@@ -355,7 +378,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line274">line 274</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line296">line 296</a>
     </li></ul></dd>
     
 
@@ -379,6 +402,13 @@
 
      
 
+    
+        <h3 class="subsection-title">Namespaces</h3>
+
+        <dl>
+            <dt><a href="formatting.ctf.html">ctf</a></dt>
+            <dd></dd>
+        </dl>
     
 
     
@@ -499,7 +529,7 @@ an SQL alias would be incorrect.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line415">line 415</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line473">line 473</a>
     </li></ul></dd>
     
 
@@ -665,7 +695,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line566">line 566</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line624">line 624</a>
     </li></ul></dd>
     
 
@@ -817,7 +847,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line500">line 500</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line558">line 558</a>
     </li></ul></dd>
     
 
@@ -1025,7 +1055,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line473">line 473</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line531">line 531</a>
     </li></ul></dd>
     
 
@@ -1181,7 +1211,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line592">line 592</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line650">line 650</a>
     </li></ul></dd>
     
 
@@ -1396,7 +1426,7 @@ wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line518">line 518</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line576">line 576</a>
     </li></ul></dd>
     
 
@@ -1800,7 +1830,7 @@ and to return the actual default value:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line666">line 666</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line724">line 724</a>
     </li></ul></dd>
     
 
@@ -2047,7 +2077,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line637">line 637</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line695">line 695</a>
     </li></ul></dd>
     
 
@@ -2253,7 +2283,7 @@ symbols fixed, unless flag <code>raw</code> is set.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line610">line 610</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line668">line 668</a>
     </li></ul></dd>
     
 
@@ -2428,7 +2458,7 @@ symbols fixed, unless flag <code>raw</code> is set.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line353">line 353</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line411">line 411</a>
     </li></ul></dd>
     
 
@@ -2597,7 +2627,7 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line544">line 544</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line602">line 602</a>
     </li></ul></dd>
     
 
@@ -2811,7 +2841,7 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line315">line 315</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line373">line 373</a>
     </li></ul></dd>
     
 
@@ -2975,7 +3005,7 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line447">line 447</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line505">line 505</a>
     </li></ul></dd>
     
 
