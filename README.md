@@ -649,7 +649,7 @@ DEALINGS IN THE SOFTWARE.
 [Open Values]:#open-values
 [Alias Filter]:#alias-filter
 [JSON Filter]:#json-filter
-[CSV Filter]:#csv-vilter
+[CSV Filter]:#csv-filter
 [Custom Type Formatting]:#custom-type-formatting
 
 <!-- Method Links -->
