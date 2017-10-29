@@ -22,6 +22,16 @@ const db = dbHeader.db;
 
 const $text = require('../lib/text');
 
+function isResult(value) {
+    if (options.pgNative) {
+        // Impossible to test, because pg-native fails to export the Result type;
+        // See this issue: https://github.com/brianc/node-pg-native/issues/63
+        // So we are forced to skip the test for now:
+        return true;
+    }
+    return value instanceof pgResult;
+}
+
 // empty function;
 const dummy = function () {
 };
@@ -516,9 +526,7 @@ describe('Receive event', function () {
             expect(data).toEqual([{
                 value: 123
             }]);
-            if (!options.pgNative) {
-                expect(res instanceof pgResult).toBe(true);
-            }
+            expect(isResult(res)).toBe(true);
         });
     });
 
