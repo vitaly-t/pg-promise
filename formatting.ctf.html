@@ -40,8 +40,11 @@
     
         
             <div class="description"><p><strong> Added in v7.1.0 </strong></p>
-<p>Namespace for symbols used by <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, available from <code>pgp.as.ctf</code> before and after initializing the library.</p>
-<p>It was added to avoid explicit extension of types that need to be used as formatting parameters, to keep their type signature intact.</p></div>
+<p>Namespace for ES6 symbols used by <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, available from <code>pgp.as.ctf</code> before and after initializing the library.</p>
+<p>It was added to avoid explicit/enumerable extension of types that need to be used as formatting parameters, to keep their type signature intact.</p>
+<p>Note that <code>rawType</code> does not have a leading underscore in its name, because with the old approach it was added for additional uniqueness of
+the property, should the properties be enumerated. And since ES6 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol">Symbol</a> is unique by definition, there is no more need for the
+underscore in the name.</p></div>
         
 
         
@@ -112,7 +115,7 @@
 
             
 
-            <td class="description last"><p>Property name for the <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a> flag <code>rawType</code>, plus legacy flag <code>_rawType</code>.</p></td>
+            <td class="description last"><p>Property name for the <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a> flag <code>rawType</code> (legacy flag <code>_rawType</code>).</p></td>
         </tr>
 
     
@@ -166,7 +169,7 @@
         
             <h3>Example</h3>
             
-    <pre class="prettyprint"><code>const ctf = pgp.as.ctf; // Custom Type Formatting symbolsclass MyType {    constructor() {        this[ctf.rawType] = true; // when you expect Raw Text return from toPostgres    }    [ctf.toPostgres](self) {        // self = this        // return the actual value here    }}</code></pre>
+    <pre class="prettyprint"><code>const ctf = pgp.as.ctf; // Custom Type Formatting symbolsclass MyType {    constructor() {        this[ctf.rawType] = true; // set it only when toPostgres returns a formatted result    }    [ctf.toPostgres](self) {        // self = this        // return the custom/actual value here    }}const a = new MyType();const s = pgp.as.format('$1', a); // will be custom-formatted</code></pre>
 
         
     

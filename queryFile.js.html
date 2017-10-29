@@ -36,7 +36,7 @@ const npm = {
     con: require('manakin').local,
     minify: require('pg-minify'),
     utils: require('./utils'),
-    format: require('./formatting').as.format,
+    formatting: require('./formatting'),
     QueryFileError: require('./errors/queryFile')
 };
 
@@ -170,7 +170,7 @@ function QueryFile(file, options) {
         }
     }
 
-    this._rawType = true; // do not format the content when used as a formatting value
+    this[npm.formatting.as.ctf.rawType] = true; // do not format the content when used as a formatting value
 
     /**
      * @method QueryFile#prepare
@@ -216,7 +216,7 @@ function QueryFile(file, options) {
                 sql = npm.minify(sql, {compress: opt.compress});
             }
             if (opt.params !== undefined) {
-                sql = npm.format(sql, opt.params, {partial: true});
+                sql = npm.formatting.as.format(sql, opt.params, {partial: true});
             }
             if (opt.minify &amp;&amp; after) {
                 sql = npm.minify(sql, {compress: opt.compress});
@@ -310,7 +310,7 @@ const usedPath = {};
  *
  * @returns {string}
  */
-QueryFile.prototype.toPostgres = function (self) {
+QueryFile.prototype[npm.formatting.as.ctf.toPostgres] = function (self) {
     self = this || self;
     self.prepare(true);
     return self.query;
