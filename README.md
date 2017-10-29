@@ -1,5 +1,5 @@
 pg-promise
-===========
+==========
 
 [Promises/A+] interface for PostgreSQL.
 

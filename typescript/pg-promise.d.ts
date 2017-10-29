@@ -1,5 +1,5 @@
 /////////////////////////////////////////
-// Requires pg-promise v7.0.0 or later.
+// Requires pg-promise v7.1.0 or later.
 /////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -614,9 +614,21 @@ declare namespace pgPromise {
         toPostgres: (a: any) => any
     }
 
+    // WARNING: Symbols are not yet fully supported by TypeScript!
+    // See the following issues:
+    // - https://github.com/Microsoft/TypeScript/issues/16432
+    // - https://github.com/Microsoft/TypeScript/pull/15473
+    interface ICustomTypeFormatting {
+        toPostgres: symbol
+        rawType: symbol
+    }
+
     // Query formatting namespace;
     // API: http://vitaly-t.github.io/pg-promise/formatting.html
     interface IFormatting {
+
+        // WARNING: It doesn't quite work in TypeScript, see the warning above
+        ctf: ICustomTypeFormatting,
 
         // API: http://vitaly-t.github.io/pg-promise/formatting.html#.alias
         alias(name: string | (() => string)): string

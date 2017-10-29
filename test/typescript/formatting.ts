@@ -14,11 +14,26 @@ let alias = pgp.as.alias('a');
 alias = pgp.as.alias(() => 'a');
 
 class CTF {
+
     toPostgres(a: any) {
 
     }
 
-    // _rawType:boolean;
+    _rawType: boolean;
+
+    // CTF symbols support:
+
+    [pgp.as.ctf.toPostgres](): any {
+        return 123;
+    };
+
+    // Ops! TypeScript doesn't support it yet!
+    // See these issues:
+    // - https://github.com/Microsoft/TypeScript/issues/16432
+    // - https://github.com/Microsoft/TypeScript/pull/15473
+    //
+    // [pgp.as.ctf.rawType]: boolean;
+
 }
 
 const ctf = new CTF();

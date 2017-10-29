@@ -804,8 +804,8 @@ describe('Method as.format', function () {
             });
         });
 
-        describe('default', function () {
-            it('must replace missing variables', function () {
+        describe('default', () => {
+            it('must replace missing variables', () => {
                 expect(pgp.as.format('$1, $2', [1], {default: undefined})).toBe('1, null');
                 expect(pgp.as.format('$1, $2', [1], {default: null})).toBe('1, null');
                 expect(pgp.as.format('${present}, ${missing}', {present: 1}, {default: 2})).toBe('1, 2');
@@ -837,8 +837,8 @@ describe('Method as.format', function () {
 
     });
 
-    describe('QueryFile - positive', function () {
-        it('must format the object', function () {
+    describe('QueryFile - positive', () => {
+        it('must format the object', () => {
             const qf = new pgp.QueryFile(sqlParams, {debug: false, minify: true, noWarnings: true});
             expect(pgp.as.format(qf, {
                 column: 'col',
@@ -856,8 +856,8 @@ describe('Method as.format', function () {
 
     });
 
-    describe('QueryFile - negative', function () {
-        it('must throw QueryFileError', function () {
+    describe('QueryFile - negative', () => {
+        it('must throw QueryFileError', () => {
             let error1, error2;
             const qf = new pgp.QueryFile('bla-bla');
             try {
@@ -1339,6 +1339,22 @@ describe('Custom Type Formatting', function () {
             expect(pgp.as.format('$1', a)).toBe('true');
             expect(pgp.as.format('$1', [a])).toBe('true');
             delete String.prototype.toPostgres;
+        });
+    });
+
+    describe('for ctf symbols', () => {
+        const ctf = pgp.as.ctf;
+        it('must recognize symbolic ctf', () => {
+            expect(pgp.as.format('$1', {[ctf.toPostgres]: () => 'ok'})).toBe('\'ok\'');
+        });
+        it('must support rawType', () => {
+            expect(pgp.as.format('$1', {[ctf.toPostgres]: () => 'ok', [ctf.rawType]: true})).toBe('ok');
+        });
+        it('must ignore _rawType for symbolic ctf', () => {
+            expect(pgp.as.format('$1', {[ctf.toPostgres]: () => 'ok', _rawType: true})).toBe('\'ok\'');
+        });
+        it('must ignore rawType for legacy ctf', () => {
+            expect(pgp.as.format('$1', {toPostgres: () => 'ok', [ctf.rawType]: true})).toBe('\'ok\'');
         });
     });
 });
