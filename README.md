@@ -84,8 +84,11 @@ There are also a few specific methods that you will often need:
 * [result], [multi], [multiResult] - for verbose and/or multi-query results;
 * [map], [each] - for simpler/inline result pre-processing/re-mapping;
 * [func], [proc] - to simplify execution of SQL functions/procedures;
-* [task], [tx], [connect] - for shared connections + automatic transactions; 
-* [stream] - to access rows from a query via a read stream.
+* [stream] - to access rows from a query via a read stream;
+* [connect], [task] + [tx] - for shared connections + automatic transactions, each exposing a connected protocol that
+  has additional methods [batch], [page] and [sequence].
+
+The protocol is fully customizable / extendable via event [extend].
 
 **IMPORTANT:**
 
@@ -687,6 +690,7 @@ DEALINGS IN THE SOFTWARE.
 [batch]:http://vitaly-t.github.io/pg-promise/Task.html#batch
 [sequence]:http://vitaly-t.github.io/pg-promise/Task.html#sequence
 [page]:http://vitaly-t.github.io/pg-promise/Task.html#page
+[extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
 
 <!-- API Links -->
 
