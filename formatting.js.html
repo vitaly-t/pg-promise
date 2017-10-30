@@ -243,7 +243,7 @@ function getCTF(value) {
         }
         // For backward compatibility:
         if (typeof value.toPostgres === 'function') {
-            return {toPostgres: value.toPostgres, rawType: !!value._rawType};
+            return {toPostgres: value.toPostgres, rawType: !!value.rawType};
         }
     }
     return null;
@@ -375,22 +375,18 @@ const $as = {
      *
      * It was added to avoid explicit/enumerable extension of types that need to be used as formatting parameters, to keep their type signature intact.
      *
-     * Note that `rawType` does not have a leading underscore in its name, because with the old approach it was added for additional uniqueness of
-     * the property, should the properties be enumerated. And since ES6 $[Symbol] is unique by definition, there is no more need for the
-     * underscore in the name.
-     *
      * @property {external:Symbol} toPostgres
      * Property name for the $[Custom Type Formatting] callback function `toPostgres`.
      *
      * @property {external:Symbol} rawType
-     * Property name for the $[Custom Type Formatting] flag `rawType` (legacy flag `_rawType`).
+     * Property name for the $[Custom Type Formatting] flag `rawType`.
      *
      * @example
      * const ctf = pgp.as.ctf; // Custom Type Formatting symbols
      *
      * class MyType {
      *     constructor() {
-     *         this[ctf.rawType] = true; // set it only when toPostgres returns a formatted result
+     *         this[ctf.rawType] = true; // set it only when toPostgres returns a pre-formatted result
      *     }
      *
      *     [ctf.toPostgres](self) {
