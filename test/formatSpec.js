@@ -1138,7 +1138,7 @@ describe('Format Modifiers', function () {
     }
 
     function RawValue() {
-        this._rawType = true;
+        this.rawType = true;
         this.toPostgres = function () {
             return 'experiment';
         };
@@ -1173,7 +1173,7 @@ describe('Format Modifiers', function () {
     }
 
     function RawArray() {
-        this._rawType = true;
+        this.rawType = true;
         this.toPostgres = function () {
             return [1, 'two'];
         };
@@ -1209,7 +1209,7 @@ describe('Custom Type Formatting', function () {
 
     function MyType1(v) {
         this.value = v;
-        this._rawType = true;
+        this.rawType = true;
         this.toPostgres = () => {
             return this.value.toFixed(4);
         };
@@ -1217,7 +1217,7 @@ describe('Custom Type Formatting', function () {
 
     function MyType2(v) {
         this.value = v;
-        this._rawType = true;
+        this.rawType = true;
         this.toPostgres = a => a.value.toFixed(2);
     }
 
@@ -1306,7 +1306,7 @@ describe('Custom Type Formatting', function () {
     describe('raw inheritance/mutation', function () {
         const obj = {
             // raw flag here must apply to every value of the array returned;
-            _rawType: true,
+            rawType: true,
             toPostgres: function () {
                 return ['first', 'second'];
             }
@@ -1327,11 +1327,11 @@ describe('Custom Type Formatting', function () {
         it('Number', () => {
             const a = 2;
             Number.prototype.toPostgres = self => (self + 3).toString();
-            Number.prototype._rawType = true;
+            Number.prototype.rawType = true;
             expect(pgp.as.format('$1', a)).toBe('5');
             expect(pgp.as.format('$1', [a])).toBe('5');
             delete Number.prototype.toPostgres;
-            delete Number.prototype._rawType;
+            delete Number.prototype.rawType;
         });
         it('String', () => {
             const a = 'true';
@@ -1356,8 +1356,8 @@ describe('Custom Type Formatting', function () {
         it('must support rawType', () => {
             expect(pgp.as.format('$1', {[ctf.toPostgres]: () => 'ok', [ctf.rawType]: true})).toBe('ok');
         });
-        it('must ignore _rawType for symbolic ctf', () => {
-            expect(pgp.as.format('$1', {[ctf.toPostgres]: () => 'ok', _rawType: true})).toBe('\'ok\'');
+        it('must ignore legacy rawType for symbolic ctf', () => {
+            expect(pgp.as.format('$1', {[ctf.toPostgres]: () => 'ok', rawType: true})).toBe('\'ok\'');
         });
         it('must ignore rawType for legacy ctf', () => {
             expect(pgp.as.format('$1', {toPostgres: () => 'ok', [ctf.rawType]: true})).toBe('\'ok\'');

@@ -27,7 +27,9 @@ pg-promise
     - [Open Values]
     - [JSON Filter]
     - [CSV Filter]    
-  - [Custom Type Formatting]            
+  - [Custom Type Formatting]
+    - [Explicit CTF]
+    - [Symbolic CTF]    
   - [Query Files](#query-files)    
   - [Tasks](#tasks)    
   - [Transactions](#transactions)
@@ -348,68 +350,98 @@ Method [as.csv] implements the formatting.
 
 ## Custom Type Formatting
 
-> Please note that version 7.1.0 added support for namespace [ctf] that offers a newer/cleaner approach to _Custom Type Formatting_
-via ES6 type [Symbol] that lets you keep your object/type signature intact.
+Starting from version 7.2.0, the library supports dual syntax for _CTF_ (Custom Type Formatting):
 
-Any value/object that has function `toPostgres` is treated as a custom formatting type. The function is called to get
-the actual value, passing it the value/object via `this` context, and as a single parameter (in case `toPostgres` is an ES6 arrow function):
+* [Explicit CTF] - extending the object/type directly, for ease of use, while changing its signature;
+* [Symbolic CTF] - extending the object/type via [Symbol] properties, without changing its signature.
+
+The library always first checks for the [Symbolic CTF], and if no such syntax is used, only then it checks for the [Explicit CTF].
+
+### Explicit CTF
+
+Any value/object that implements function `toPostgres` is treated as a custom formatting type. The function is then called to get the actual value,
+passing it the value/object via `this` context, and plus as a single parameter (in case `toPostgres` is an ES6 arrow function):
 
 ```js
-// Before v7.1.0:
 const obj = {
     toPostgres(self) {
         // self = this = obj
         
-        // return the actual value here
-    }
-}
-
-// After v7.1.0:
-const obj = {
-    [pgp.as.ctf.toPostgres](self) {
-        // self = this = obj
-        
-        // return the actual value here
+        // return a value that needs proper escaping
     }
 }
 ```
 
-The value returned from `toPostgres` is escaped according to its JavaScript type, unless the object also contains
-property `_rawType` set to a truthy value, in which case the returned value is considered pre-formatted, and thus injected directly,
-as [Raw Text].
+Function `toPostgres` can return anything, including another object with its own `toPostgres` function, i.e. nested custom types are supported.
+
+The value returned from `toPostgres` is escaped according to its JavaScript type, unless the object also contains property `rawType` set
+to a truthy value, in which case the returned value is considered pre-formatted, and thus injected directly, as [Raw Text]:
+
+```js
+const obj = {
+    toPostgres(self) {
+        // self = this = obj
+        
+        // return a pre-formatted value that does not need escaping
+    },
+    rawType: true // use result from toPostgres directly, as Raw Text
+}
+```
 
 Example below implements a class that auto-formats `ST_MakePoint` from coordinates:
 
 ```js
-// Before v7.1.0:
-function STPoint(x, y) {
-    this._rawType = true; // no escaping, because we return pre-formatted SQL
+// ES5:
+function STPoint(x, y) {    
     this.toPostgres = () => pgp.as.format('ST_MakePoint($1, $2)', [x, y]);
+    this.rawType = true; // no escaping, because we return pre-formatted SQL
 }
 
-// After v7.1.0:
-function STPoint(x, y) {
-    const ctf = pgp.as.ctf;
+// ES6:
+class STPoint {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.rawType = true; // no escaping, because we return pre-formatted SQL
+    }
     
-    this[ctf.rawType] = true; // no escaping, because we return pre-formatted SQL
-    this[ctf.toPostgres] = () => pgp.as.format('ST_MakePoint($1, $2)', [x, y]);
+    toPostgres(self) {
+        return pgp.as.format('ST_MakePoint($1, $2)', [this.x, this.y]);
+    }
 }
 ```
 
 With this class you can use `new STPoint(12, 34)` as a formatting value that will be injected correctly.  
 
-You can also use _Custom Type Formatting_ to override any standard type:
+You can also use _CTF_ to override any standard type:
 
 ```js
-// Before v7.1.0:
 Date.prototype.toPostgres = a => a.getTime();
-
-// After v7.1.0:
-Date.prototype[pgp.as.ctf.toPostgres] = a => a.getTime();
 ```
 
-Function `toPostgres` can return anything, including another object with its own `toPostgres` function, i.e. nested
-custom types are supported.
+### Symbolic CTF
+
+The only difference from [Explicit CTF] is that we set `toPostgres` and `rawType` as ES6 [Symbol] properties,
+defined in the [ctf] namespace: 
+
+```js
+const ctf = pgp.as.ctf; // CTF symbols
+
+const obj = {
+    [ctf.toPostgres](self) {
+        // self = this = obj
+        
+        // return a pre-formatted value that does not need escaping
+    },
+    [ctf.rawType]: true // use result from toPostgres directly, as Raw Text
+}
+```
+
+Other than that, it works exactly as the [Explicit CTF], but without changing the object's signature.
+
+If you do not know what it means, you should read the ES6 [Symbol] API and its use for unique property names.
+But in short, [Symbol] properties are not enumerated via `for(var a in obj)`, i.e. they are not generally visible within
+JavaScript, only through specific API such as `Object.getOwnPropertySymbols`.
 
 ## Query Files
   
@@ -692,6 +724,8 @@ DEALINGS IN THE SOFTWARE.
 [JSON Filter]:#json-filter
 [CSV Filter]:#csv-filter
 [Custom Type Formatting]:#custom-type-formatting
+[Explicit CTF]:#explicit-ctf
+[Symbolic CTF]:#symbolic-ctf
 
 <!-- Method Links -->
 
@@ -750,4 +784,3 @@ DEALINGS IN THE SOFTWARE.
 [Bluebird]:https://github.com/petkaantonov/bluebird
 [SQL injection]:https://en.wikipedia.org/wiki/SQL_injection
 [Symbol]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
-
