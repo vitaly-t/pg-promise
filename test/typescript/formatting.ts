@@ -19,7 +19,7 @@ class CTF {
 
     }
 
-    _rawType: boolean;
+    rawType: boolean;
 
     // CTF symbols support:
 
