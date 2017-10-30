@@ -433,7 +433,7 @@ const obj = {
 Other than that, it works exactly as the [Explicit CTF], but without changing the object's signature.
 
 If you do not know what it means, you should read the ES6 [Symbol] API and its use for unique property names.
-But in short, [Symbol] properties are not enumerated via `for(var a in obj)`, i.e. they are not generally visible within
+But in short, [Symbol] properties are not enumerated via `for(name in obj)`, i.e. they are not generally visible within
 JavaScript, only through specific API such as `Object.getOwnPropertySymbols`.
 
 ## Query Files

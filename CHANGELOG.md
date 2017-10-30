@@ -1,5 +1,6 @@
 ### Release History
 
+* 7.2.0 Renaming `_rawType` into `rawType` within [Custom Type Formatting]. Released: Oct 30, 2017.
 * 7.1.0 Adding support for symbols within [Custom Type Formatting]. Released: Oct 29, 2017.
 * 7.0.0 Adding methods [multi] and [multiResult] to support multi-query results. Released: Oct 08, 2017.
 * 6.10.0 Initial support for [Nested Named Parameters]. Released: Sept 27, 2017
