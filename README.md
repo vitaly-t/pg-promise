@@ -391,13 +391,6 @@ const obj = {
 Example below implements a class that auto-formats `ST_MakePoint` from coordinates:
 
 ```js
-// ES5:
-function STPoint(x, y) {    
-    this.toPostgres = () => pgp.as.format('ST_MakePoint($1, $2)', [x, y]);
-    this.rawType = true; // no escaping, because we return pre-formatted SQL
-}
-
-// ES6:
 class STPoint {
     constructor(x, y) {
         this.x = x;
