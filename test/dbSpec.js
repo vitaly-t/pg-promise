@@ -598,46 +598,73 @@ describe('Method \'each\'', function () {
     });
 });
 
-describe('Method \'none\'', function () {
+describe('Method \'none\'', () => {
 
-    it('must resolve with \'undefined\'', function () {
+    it('must resolve with \'null\'', () => {
         let result, error, finished;
-        db.none('select * from users where id=$1', 12345678)
-            .then(function (data) {
+        db.none('select * from users where id = $1', 12345678)
+            .then(data => {
                 result = data;
-                finished = true;
-            }, function (reason) {
+            })
+            .catch(reason => {
                 error = reason;
+            })
+            .finally(() => {
                 finished = true;
             });
-        waitsFor(function () {
-            return finished === true;
-        }, 'Query timed out', 5000);
-        runs(function () {
+        waitsFor(() => finished === true, 'Query timed out', 5000);
+        runs(() => {
             expect(error).toBeUndefined();
             expect(result).toBe(null);
         });
     });
 
-    it('must reject on any data returned', function () {
-        let result, error, finished;
-        db.none('select * from users')
-            .then(function (data) {
-                result = data;
-                finished = true;
-            }, function (reason) {
-                error = reason;
-                finished = true;
+    describe('when any data is returned', () => {
+
+        it('must reject for a single query', () => {
+            let result, error, finished;
+            db.none('select * from users')
+                .then(data => {
+                    result = data;
+                })
+                .catch(reason => {
+                    error = reason;
+                })
+                .finally(() => {
+                    finished = true;
+                });
+            waitsFor(() => finished === true, 'Query timed out', 5000);
+            runs(() => {
+                expect(result).toBeUndefined();
+                expect(error instanceof pgp.errors.QueryResultError).toBe(true);
+                expect(error.toString(1) != tools.inspect(error)).toBe(true);
+                expect(error.message).toBe($text.notEmpty);
+                expect(error.result.rows.length).toBeGreaterThan(0);
             });
-        waitsFor(function () {
-            return finished === true;
-        }, 'Query timed out', 5000);
-        runs(function () {
-            expect(result).toBeUndefined();
-            expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.toString(1) != tools.inspect(error)).toBe(true);
-            expect(error.message).toBe($text.notEmpty);
         });
+
+        it('must reject for multi-queries', () => {
+            let result, error, finished;
+            db.none('select 1;select * from users')
+                .then(data => {
+                    result = data;
+                })
+                .catch(reason => {
+                    error = reason;
+                })
+                .finally(() => {
+                    finished = true;
+                });
+            waitsFor(() => finished === true, 'Query timed out', 5000);
+            runs(() => {
+                expect(result).toBeUndefined();
+                expect(error instanceof pgp.errors.QueryResultError).toBe(true);
+                expect(error.toString(1) != tools.inspect(error)).toBe(true);
+                expect(error.message).toBe($text.notEmpty);
+                expect(error.result.rows.length).toBeGreaterThan(0);
+            });
+        });
+
     });
 
 });
@@ -682,45 +709,96 @@ describe('Method \'one\'', function () {
         });
     });
 
-    it('must reject when no data found', function () {
-        let result, error, finished;
-        db.one('select * from users where id=$1', 12345678)
-            .then(function (data) {
-                result = data;
-                finished = true;
-            }, function (reason) {
-                error = reason;
-                finished = true;
+    describe('when no data found', () => {
+
+        it('must reject for a single query', () => {
+            let result, error, finished;
+            db.one('select * from users where id = $1', 12345678)
+                .then(data => {
+                    result = data;
+                })
+                .catch(reason => {
+                    error = reason;
+                })
+                .finally(() => {
+                    finished = true;
+                });
+            waitsFor(() => finished === true, 'Query timed out', 5000);
+            runs(() => {
+                expect(result).toBeUndefined();
+                expect(error instanceof pgp.errors.QueryResultError).toBe(true);
+                expect(error.message).toBe($text.noData);
+                expect(error.result.rows).toEqual([]);
             });
-        waitsFor(function () {
-            return finished === true;
-        }, 'Query timed out', 5000);
-        runs(function () {
-            expect(result).toBeUndefined();
-            expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe($text.noData);
         });
+
+        it('must reject for a multi-query', () => {
+            let result, error, finished;
+            db.one('select 1;select * from users where id = $1', 12345678)
+                .then(data => {
+                    result = data;
+                })
+                .catch(reason => {
+                    error = reason;
+                })
+                .finally(() => {
+                    finished = true;
+                });
+            waitsFor(() => finished === true, 'Query timed out', 5000);
+            runs(() => {
+                expect(result).toBeUndefined();
+                expect(error instanceof pgp.errors.QueryResultError).toBe(true);
+                expect(error.message).toBe($text.noData);
+                expect(error.result.rows).toEqual([]);
+            });
+        });
+
     });
 
-    it('must reject when multiple rows are found', function () {
-        let result, error, finished;
-        db.one('select * from users')
-            .then(function (data) {
-                result = data;
-                finished = true;
-            }, function (reason) {
-                error = reason;
-                finished = true;
+    describe('When multiple rows are found', () => {
+        it('must reject for a single query', () => {
+            let result, error, finished;
+            db.one('select * from users')
+                .then(data => {
+                    result = data;
+                })
+                .catch(reason => {
+                    error = reason;
+                })
+                .finally(() => {
+                    finished = true;
+                });
+            waitsFor(() => finished === true, 'Query timed out', 5000);
+            runs(() => {
+                expect(result).toBeUndefined();
+                expect(error instanceof pgp.errors.QueryResultError).toBe(true);
+                expect(error.message).toBe($text.multiple);
+                expect(error.result.rows.length).toBeGreaterThan(0);
             });
-        waitsFor(function () {
-            return finished === true;
-        }, 'Query timed out', 5000);
-        runs(function () {
-            expect(result).toBeUndefined();
-            expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(error.message).toBe($text.multiple);
         });
+        it('must reject for a multi-query', () => {
+            let result, error, finished;
+            db.one('select 1;select * from users')
+                .then(data => {
+                    result = data;
+                })
+                .catch(reason => {
+                    error = reason;
+                })
+                .finally(() => {
+                    finished = true;
+                });
+            waitsFor(() => finished === true, 'Query timed out', 5000);
+            runs(() => {
+                expect(result).toBeUndefined();
+                expect(error instanceof pgp.errors.QueryResultError).toBe(true);
+                expect(error.message).toBe($text.multiple);
+                expect(error.result.rows.length).toBeGreaterThan(0);
+            });
+        });
+
     });
+
 });
 
 describe('Method \'oneOrNone\'', function () {

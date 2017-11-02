@@ -39,6 +39,12 @@ import {
     ITXMode,
     IUtils,
     IHelpers,
-    IGenericPromise
+    IGenericPromise,
+    ICustomTypeFormatting,
+    ILostContext,
+    TAssignOptions,
+    TPromiseConfig,
+    CTFObject,
+    TQueryFormat
 }
     from '../../typescript/pg-promise';

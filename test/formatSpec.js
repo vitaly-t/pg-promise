@@ -9,15 +9,9 @@ const dateSample = new Date();
 
 // common error messages;
 const errors = {
-    rawNull: () => {
-        return 'Values null/undefined cannot be used as raw text.';
-    },
-    range: function (variable, length) {
-        return 'Variable ' + variable + ' out of range. Parameters array length: ' + length;
-    },
-    buffer: function (value) {
-        return '\'' + value + '\' is not a Buffer object.';
-    }
+    rawNull: () => 'Values null/undefined cannot be used as raw text.',
+    range: (variable, length) => 'Variable ' + variable + ' out of range. Parameters array length: ' + length,
+    buffer: value => '\'' + value + '\' is not a Buffer object.'
 };
 
 const sqlSimple = getPath('./sql/simple.sql');
