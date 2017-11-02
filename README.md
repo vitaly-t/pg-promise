@@ -404,6 +404,15 @@ class STPoint {
 }
 ```
 
+And a classic syntax for such a class is even simpler:
+
+```js
+function STPoint(x, y){
+    this.rawType = true; // no escaping, because we return pre-formatted SQL
+    this.toPostgres = () => pgp.as.format('ST_MakePoint($1, $2)', [x, y]);
+}
+```
+
 With this class you can use `new STPoint(12, 34)` as a formatting value that will be injected correctly.  
 
 You can also use _CTF_ to override any standard type:
