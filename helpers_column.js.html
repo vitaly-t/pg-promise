@@ -98,7 +98,11 @@ const npm = {
  *
  * @returns {helpers.Column}
  *
- * @see {@link helpers.ColumnConfig ColumnConfig}
+ * @see
+ * {@link helpers.ColumnConfig ColumnConfig},
+ * {@link helpers.Column#castText castText},
+ * {@link helpers.Column#escapedName escapedName},
+ * {@link helpers.Column#variable variable}
  *
  * @example
  *
@@ -214,7 +218,23 @@ function Column(col) {
      * @type string
      * @readonly
      * @description
-     * Full-syntax formatting variable for use in query templates.
+     * Full-syntax formatting variable, ready for direct use in query templates.
+     *
+     * @example
+     *
+     * const cs = new pgp.helpers.ColumnSet([
+     *     'id',
+     *     'coordinate:json',
+     *     {
+     *         name: 'places',
+     *         mod: ':csv',
+     *         cast: 'int[]'
+     *     }
+     * ]);
+     *
+     * // cs.columns[0].variable = ${id}
+     * // cs.columns[1].variable = ${coordinate:json}
+     * // cs.columns[2].variable = ${places:csv}::int[]
      */
     Object.defineProperty(this, 'variable', {
         value: variable,
@@ -238,7 +258,8 @@ function Column(col) {
      * @type string
      * @readonly
      * @description
-     * Escaped name of the column.
+     * Escaped name of the column, ready to be injected into queries directly.
+     *
      */
     Object.defineProperty(this, 'escapedName', {
         value: escapedName,

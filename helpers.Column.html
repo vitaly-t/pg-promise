@@ -449,7 +449,7 @@ It is ignored when property <code>init</code> is set.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="helpers.html#.ColumnConfig">ColumnConfig</a></li>
+            <li><a href="helpers.html#.ColumnConfig">ColumnConfig</a>,<a href="helpers.Column.html#castText">castText</a>,<a href="helpers.Column.html#escapedName">escapedName</a>,<a href="helpers.Column.html#variable">variable</a></li>
         </ul>
     </dd>
     
@@ -567,7 +567,7 @@ It is ignored when property <code>init</code> is set.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line195">line 195</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line215">line 215</a>
     </li></ul></dd>
     
 
@@ -591,7 +591,7 @@ It is ignored when property <code>init</code> is set.</p></td>
 
 
 <div class="description">
-    <p>Escaped name of the column.</p>
+    <p>Escaped name of the column, ready to be injected into queries directly.</p>
 </div>
 
 
@@ -639,7 +639,7 @@ It is ignored when property <code>init</code> is set.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line207">line 207</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line227">line 227</a>
     </li></ul></dd>
     
 
@@ -663,7 +663,7 @@ It is ignored when property <code>init</code> is set.</p></td>
 
 
 <div class="description">
-    <p>Full-syntax formatting variable for use in query templates.</p>
+    <p>Full-syntax formatting variable, ready for direct use in query templates.</p>
 </div>
 
 
@@ -711,7 +711,7 @@ It is ignored when property <code>init</code> is set.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line183">line 183</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line187">line 187</a>
     </li></ul></dd>
     
 
@@ -724,6 +724,11 @@ It is ignored when property <code>init</code> is set.</p></td>
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const cs = new pgp.helpers.ColumnSet([    'id',    'coordinate:json',    {        name: 'places',        mod: ':csv',        cast: 'int[]'    }]);// cs.columns[0].variable = ${id}// cs.columns[1].variable = ${coordinate:json}// cs.columns[2].variable = ${places:csv}::int[]</code></pre>
 
 
 
@@ -859,7 +864,7 @@ It is ignored when property <code>init</code> is set.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line261">line 261</a>
+        <a href="helpers_column.js.html">helpers/column.js</a>, <a href="helpers_column.js.html#line282">line 282</a>
     </li></ul></dd>
     
 
