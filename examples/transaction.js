@@ -46,7 +46,7 @@ db.tx(t => {
     })
     .finally(() => {
         // If we do not close the connection pool when exiting the application,
-        // it may take 30 seconds (poolIdleTimeout) before the process terminates,
+        // it may take 30 seconds (idleTimeoutMillis) before the process terminates,
         // waiting for the connection to expire in the pool.
 
         // But if you normally just kill the process, then it doesn't matter.

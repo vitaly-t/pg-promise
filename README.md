@@ -693,7 +693,7 @@ pgp.end(); // shuts down all connection pools
 ```
 
 This will release all connection pools, to make sure the process can terminate without any delay.
-If you do not call it, your process may be waiting for 30 seconds (default for [poolIdleTimeout](https://github.com/brianc/node-postgres/blob/master/lib/defaults.js#L46)),
+If you do not call it, your process may be waiting for 30 seconds (default for [idleTimeoutMillis](https://github.com/brianc/node-postgres/blob/master/lib/defaults.js#L46)),
 waiting for all connections to expire in every pool.
 
 If, however you normally exit your application by killing the NodeJS process, then you don't need to use it.

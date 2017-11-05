@@ -4,7 +4,7 @@
 // Calling it 'pg-subset' to avoid a conflict in case the application also
 // includes the official 'pg' typings.
 //
-// Supported version of pg: 6.3.0 and later.
+// Supported version of pg: 7.4.0 and later.
 //
 // pg: https://github.com/brianc/node-postgres
 //////////////////////////////////////////////////////////////////////////////
@@ -68,12 +68,13 @@ declare namespace pg {
         poolSize?: number // is the same as `max` below
         max?: number // replaces `poolSize`
         min?: number
-        poolIdleTimeout?: number
+        idleTimeoutMillis?: number
         reapIntervalMillis?: number
         returnToHead?: boolean
         poolLog?: boolean | (() => void)
         parseInputDatesAsUTC?: boolean
         rows?: number
+        statement_timeout?: boolean | number
     }
 
     // Interface of 'pg-types' module;
@@ -114,7 +115,7 @@ declare namespace pg {
 
         //max milliseconds a client can go unused before it is removed
         //from the pool and destroyed
-        poolIdleTimeout: number
+        idleTimeoutMillis: number
 
         //frequency to check for idle clients within the client pool
         reapIntervalMillis: number
@@ -131,6 +132,8 @@ declare namespace pg {
         fallback_application_name: string
 
         parseInputDatesAsUTC: boolean
+
+        statement_timeout: boolean | number
     }
 
     class Connection {
