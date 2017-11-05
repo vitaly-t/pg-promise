@@ -1,5 +1,6 @@
 ### Release History
 
+* 7.3.0 Updating [as.alias] method, adding method [ColumnSet.assignColumns]. Released: Nov 05, 2017.
 * 7.2.0 Renaming `_rawType` into `rawType` within [Custom Type Formatting]. Released: Oct 30, 2017.
 * 7.1.0 Adding support for symbols within [Custom Type Formatting]. Released: Oct 29, 2017.
 * 7.0.0 Adding methods [multi] and [multiResult] to support multi-query results. Released: Oct 08, 2017.
@@ -112,6 +113,7 @@
 [as.value]:http://vitaly-t.github.io/pg-promise/formatting.html#.value
 [as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
+[as.alias]:http://vitaly-t.github.io/pg-promise/formatting.html#.alias
 [batch]:http://vitaly-t.github.io/pg-promise/Task.html#batch
 [sequence]:http://vitaly-t.github.io/pg-promise/Task.html#sequence
 [API]:http://vitaly-t.github.io/pg-promise/Database.html
@@ -137,3 +139,4 @@
 [Custom Type Formatting]:https://github.com/vitaly-t/pg-promise#custom-type-formatting
 [multi]:http://vitaly-t.github.io/pg-promise/Database.html#multi
 [multiResult]:http://vitaly-t.github.io/pg-promise/Database.html#multiResult
+[ColumnSet.assignColumns]:http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#assignColumns
