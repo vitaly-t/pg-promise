@@ -139,7 +139,7 @@ describe('UPDATE', function () {
                 expect(helpers.update(dataMulti, ['?id', 'val', {
                     name: 'msg',
                     cast: 'text'
-                }], 'table')).toBe('update "table" as "t" set "val"="v"."val","msg"="v"."msg" from (values(1,123,\'hello\'::text),(2,456,\'world\'::text)) as "v"("id","val","msg")');
+                }], 'table')).toBe('update "table" as t set "val"=v."val","msg"=v."msg" from (values(1,123,\'hello\'::text),(2,456,\'world\'::text)) as v("id","val","msg")');
             });
         });
     });
@@ -163,7 +163,7 @@ describe('UPDATE', function () {
             expect(helpers.update(dataSingle, cs)).toBe('UPDATE "table" SET "val"=123,"msg"=\'test\'');
         });
         it('must return a capitalized query for multi-row data', function () {
-            expect(helpers.update(dataMulti, cs)).toBe('UPDATE "table" AS "t" SET "val"="v"."val","msg"="v"."msg" FROM (VALUES(1,123,\'hello\'),(2,456,\'world\')) AS "v"("id","val","msg")');
+            expect(helpers.update(dataMulti, cs)).toBe('UPDATE "table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,\'hello\'),(2,456,\'world\')) AS v("id","val","msg")');
         });
         afterEach(function () {
             options.capSQL = false;
@@ -174,10 +174,10 @@ describe('UPDATE', function () {
         const cs = new helpers.ColumnSet(['?id', 'val', 'msg'], {table: 'table'});
         const opt = {tableAlias: 'X', valueAlias: 'Y'};
         it('must use the options', function () {
-            expect(helpers.update(dataMulti, cs, null, opt)).toBe('update "table" as "X" set "val"="Y"."val","msg"="Y"."msg" from (values(1,123,\'hello\'),(2,456,\'world\')) as "Y"("id","val","msg")');
+            expect(helpers.update(dataMulti, cs, null, opt)).toBe('update "table" as X set "val"=Y."val","msg"=Y."msg" from (values(1,123,\'hello\'),(2,456,\'world\')) as Y("id","val","msg")');
         });
         it('must ignore empty options', function () {
-            expect(helpers.update(dataMulti, cs, null, {})).toBe('update "table" as "t" set "val"="v"."val","msg"="v"."msg" from (values(1,123,\'hello\'),(2,456,\'world\')) as "v"("id","val","msg")');
+            expect(helpers.update(dataMulti, cs, null, {})).toBe('update "table" as t set "val"=v."val","msg"=v."msg" from (values(1,123,\'hello\'),(2,456,\'world\')) as v("id","val","msg")');
         });
     });
 
@@ -619,6 +619,43 @@ describe('ColumnSet', function () {
                     source: dataSingle,
                     prefix: 'a b c'
                 })).toBe('"a b c"."val"=${val},"a b c"."msg"=${msg}');
+            });
+        });
+    });
+
+    describe('method assignColumns', () => {
+        const cs = new helpers.ColumnSet(['id', 'name', 'title']);
+        describe('without options', () => {
+            it('must provide default processing', () => {
+                expect(cs.assignColumns()).toBe('"id"="id","name"="name","title"="title"');
+            });
+        });
+        describe('option "skip"', () => {
+            it('must skip the columns', () => {
+                expect(cs.assignColumns({skip: ''})).toBe('"id"="id","name"="name","title"="title"');
+                expect(cs.assignColumns({skip: 'id'})).toBe('"name"="name","title"="title"');
+                expect(cs.assignColumns({skip: ['id']})).toBe('"name"="name","title"="title"');
+            });
+        });
+        describe('option "from"', () => {
+            it('must append to the source columns', () => {
+                expect(cs.assignColumns({from: ''})).toBe('"id"="id","name"="name","title"="title"');
+                expect(cs.assignColumns({from: 'source'})).toBe('"id"=source."id","name"=source."name","title"=source."title"');
+            });
+        });
+        describe('option "to"', () => {
+            it('must append to the target columns', () => {
+                expect(cs.assignColumns({to: ''})).toBe('"id"="id","name"="name","title"="title"');
+                expect(cs.assignColumns({to: 'dest'})).toBe('dest."id"="id",dest."name"="name",dest."title"="title"');
+            });
+        });
+        describe('in a complex scenario', () => {
+            it('must allow all combinations', () => {
+                expect(cs.assignColumns({
+                    from: 'EXCLUDED',
+                    to: 'Target',
+                    skip: 'id'
+                })).toBe('"Target"."name"=EXCLUDED."name","Target"."title"=EXCLUDED."title"');
             });
         });
     });

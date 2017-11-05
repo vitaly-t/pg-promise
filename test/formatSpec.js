@@ -589,7 +589,11 @@ describe('Method as.alias', () => {
 
     describe('with regular names', () => {
         it('must return the right name', () => {
-            expect(pgp.as.alias('a')).toBe('"a"');
+            expect(pgp.as.alias('a')).toBe('a');
+            expect(pgp.as.alias('A')).toBe('A');
+            expect(pgp.as.alias('Aa')).toBe('"Aa"');
+            expect(pgp.as.alias('1a')).toBe('"1a"');
+            expect(pgp.as.alias('a1')).toBe('a1');
             expect(pgp.as.alias(' ')).toBe('" "');
             expect(pgp.as.alias('\t')).toBe('"\t"');
             expect(pgp.as.alias('"')).toBe('""""');
@@ -603,7 +607,7 @@ describe('Method as.alias', () => {
         }
 
         it('must support the function value', () => {
-            expect(pgp.as.alias(getName)).toBe('"name"');
+            expect(pgp.as.alias(getName)).toBe('name');
         });
     });
 
@@ -1138,9 +1142,9 @@ describe('Format Modifiers', function () {
 
     describe('alias modifier', () => {
         it('must replace any value correctly', () => {
-            expect(pgp.as.format('$1:alias', 'name')).toBe('"name"');
+            expect(pgp.as.format('$1:alias', 'name')).toBe('name');
             expect(pgp.as.format('$1:alias', '*')).toBe('"*"');
-            expect(pgp.as.format('${name:alias}', {name: 'hello'})).toBe('"hello"');
+            expect(pgp.as.format('${name:alias}', {name: 'hello'})).toBe('hello');
         });
     });
 });
