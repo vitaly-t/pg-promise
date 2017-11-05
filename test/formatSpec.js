@@ -592,6 +592,8 @@ describe('Method as.alias', () => {
             expect(pgp.as.alias('a')).toBe('a');
             expect(pgp.as.alias('A')).toBe('A');
             expect(pgp.as.alias('Aa')).toBe('"Aa"');
+            expect(pgp.as.alias('1a')).toBe('"1a"');
+            expect(pgp.as.alias('a1')).toBe('a1');
             expect(pgp.as.alias(' ')).toBe('" "');
             expect(pgp.as.alias('\t')).toBe('"\t"');
             expect(pgp.as.alias('"')).toBe('""""');
