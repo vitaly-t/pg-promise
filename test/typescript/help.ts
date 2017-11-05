@@ -80,3 +80,9 @@ const c2: string = pgp.helpers.concat(['first', new pgp.QueryFile(''), {
     values: 123,
     options: {partial: true}
 }]);
+
+cs1.assignColumns();
+cs1.assignColumns({});
+cs1.assignColumns({from: 'source'});
+cs1.assignColumns({to: 'target', skip: 'one'});
+cs1.assignColumns({skip: ['one', 'two']});

@@ -1,5 +1,5 @@
 /////////////////////////////////////////
-// Requires pg-promise v7.1.0 or later.
+// Requires pg-promise v7.3.0 or later.
 /////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -45,6 +45,12 @@ declare namespace pgPromise {
     type TAssignOptions = {
         source?: Object
         prefix?: string
+    };
+
+    type TAssignColumnsOptions = {
+        from?: string
+        to?: string
+        skip?: string | string[]
     };
 
     type TPreparedBasic = {
@@ -203,8 +209,11 @@ declare namespace pgPromise {
         // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#variables
         readonly variables: string;
 
-        // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#prepare
+        // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#assign
         assign(source?: TAssignOptions): string
+
+        // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#assignColumns
+        assignColumns(options?: TAssignColumnsOptions): string
 
         // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#extend
         extend(columns: Column | ColumnSet | Array<string | TColumnConfig | Column>): ColumnSet
