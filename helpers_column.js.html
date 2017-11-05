@@ -211,7 +211,7 @@ function Column(col) {
 
     const variable = '${' + (this.prop || this.name) + (this.mod || '') + '}',
         castText = this.cast ? ('::' + this.cast) : '',
-        escapedName = npm.formatting.as.alias(this.name);
+        escapedName = npm.formatting.as.name(this.name);
 
     /**
      * @name helpers.Column#variable
