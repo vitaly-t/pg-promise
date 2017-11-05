@@ -1167,6 +1167,9 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
 |
 
 <span class="param-type">Array.&lt;string></span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -1186,8 +1189,9 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
 
             
 
-            <td class="description last"><p>Name(s) of the column(s) to be skipped (case-sensitive).</p>
-<p>It can be either a single string or an array of strings.</p></td>
+            <td class="description last"><p>Name(s) of the column(s) to be skipped (case-sensitive). It can be either a single string or an array of strings.</p>
+<p>It can also be a function - iterator, to be called for every column, passing in <a href="helpers.Column.html">Column</a> as <code>this</code> context,
+and plus as a single parameter. The function would return a truthy value for every column that needs to be skipped.</p></td>
         </tr>
 
     
@@ -1282,9 +1286,11 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
     
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
     <pre class="prettyprint"><code>const cs = new pgp.helpers.ColumnSet(['id', 'city', 'street']);cs.assignColumns({from: 'EXCLUDED', skip: 'id'})//=> "city"=EXCLUDED."city","street"=EXCLUDED."street"</code></pre>
+
+    <pre class="prettyprint"><code>const cs = new pgp.helpers.ColumnSet(['?id', 'city', 'street']);cs.assignColumns({from: 'source', to: 'target', skip: c => c.cnd})//=> target."city"=source."city",target."street"=source."street"</code></pre>
 
 
 
@@ -1404,7 +1410,7 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line398">line 398</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line404">line 404</a>
     </li></ul></dd>
     
 
@@ -1580,7 +1586,7 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line462">line 462</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line468">line 468</a>
     </li></ul></dd>
     
 
@@ -1749,7 +1755,7 @@ intended primarily for internal use by the library.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line542">line 542</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line548">line 548</a>
     </li></ul></dd>
     
 
@@ -1925,7 +1931,7 @@ with all properties and values set according to the columns configuration.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line597">line 597</a>
+        <a href="helpers_columnSet.js.html">helpers/columnSet.js</a>, <a href="helpers_columnSet.js.html#line603">line 603</a>
     </li></ul></dd>
     
 

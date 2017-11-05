@@ -431,8 +431,12 @@
     <p>Simpler (non-verbose) version of method <a href="formatting.html#.name">name</a>, to handle only a regular string-identifier
 that's used as an SQL alias, i.e. it doesn't support <code>*</code> or an array/object of names, which in the context of
 an SQL alias would be incorrect.</p>
-<p><strong>Added in v7.3.0:</strong> The surrounding double quotes are not added when the alias is a same-case single word, even if it
-contains digits (but no leading digits).</p>
+<p><strong>Added in v7.3.0</strong> The surrounding double quotes are not added when the alias uses a simple syntax:</p>
+<ul>
+<li>it is a same-case single word, without spaces</li>
+<li>it can contain underscores, and can start with one</li>
+<li>it can contain digits and $, but cannot start with those</li>
+</ul>
 <p>When formatting a query, a variable makes use of this method via modifier <code>:alias</code>. See method <a href="formatting.html#.format">format</a>.</p>
 </div>
 
@@ -697,7 +701,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line634">line 634</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line636">line 636</a>
     </li></ul></dd>
     
 
@@ -849,7 +853,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line568">line 568</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line570">line 570</a>
     </li></ul></dd>
     
 
@@ -1057,7 +1061,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line541">line 541</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line543">line 543</a>
     </li></ul></dd>
     
 
@@ -1213,7 +1217,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line660">line 660</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line662">line 662</a>
     </li></ul></dd>
     
 
@@ -1428,7 +1432,7 @@ wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line586">line 586</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line588">line 588</a>
     </li></ul></dd>
     
 
@@ -1832,7 +1836,7 @@ and to return the actual default value:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line734">line 734</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line736">line 736</a>
     </li></ul></dd>
     
 
@@ -2079,7 +2083,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line705">line 705</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line707">line 707</a>
     </li></ul></dd>
     
 
@@ -2285,7 +2289,7 @@ symbols fixed, unless flag <code>raw</code> is set.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line678">line 678</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line680">line 680</a>
     </li></ul></dd>
     
 
@@ -2629,7 +2633,7 @@ with support for <code>NaN</code>, <code>+Infinity</code> and <code>-Infinity</c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line612">line 612</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line614">line 614</a>
     </li></ul></dd>
     
 
@@ -3007,7 +3011,7 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line515">line 515</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line517">line 517</a>
     </li></ul></dd>
     
 
