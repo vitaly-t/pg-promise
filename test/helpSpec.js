@@ -624,7 +624,7 @@ describe('ColumnSet', function () {
     });
 
     describe('method assignColumns', () => {
-        const cs = new helpers.ColumnSet(['id', 'name', 'title']);
+        const cs = new helpers.ColumnSet(['?id', 'name', 'title']);
         describe('without options', () => {
             it('must provide default processing', () => {
                 expect(cs.assignColumns()).toBe('"id"="id","name"="name","title"="title"');
@@ -635,6 +635,7 @@ describe('ColumnSet', function () {
                 expect(cs.assignColumns({skip: ''})).toBe('"id"="id","name"="name","title"="title"');
                 expect(cs.assignColumns({skip: 'id'})).toBe('"name"="name","title"="title"');
                 expect(cs.assignColumns({skip: ['id']})).toBe('"name"="name","title"="title"');
+                expect(cs.assignColumns({skip: c => c.cnd})).toBe('"name"="name","title"="title"');
             });
         });
         describe('option "from"', () => {
