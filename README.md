@@ -275,14 +275,16 @@ Method [as.name] implements the formatting.
 
 #### Alias Filter
 
-An alias is a lighter (simpler + faster) SQL name, which only supports a text string, and is used via the `:alias` filter:
+An alias is a lighter/simpler version of [SQL Names], which only supports a text string, and is used via the `:alias` filter.
+
+For example, it will skip adding surrounding double quotes when the name is a same-case single word:
 
 ```js
-db.any('SELECT $1:alias FROM $2:name', ['col', 'table']);
-//=> SELECT "col" FROM "table"
+db.any('SELECT full_name as $1:alias FROM $2:name', ['name', 'table']);
+//=> SELECT full_name as name FROM "table"
 ```
 
-Method [as.alias] implements the formatting.
+For more details see method [as.alias] that implements the formatting.
 
 ### Raw Text
 
