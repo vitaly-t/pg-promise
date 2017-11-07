@@ -997,7 +997,7 @@ and the rules defined in the <a href="helpers.ColumnSet.html">ColumnSet</a>. If,
 
 
 <div class="description">
-    <p><strong> Added in v7.3.0 </strong></p>
+    <p><strong> v7.3.0 </strong></p>
 <p>Generates assignments for all columns in the set, with support for aliases and column-skipping logic.
 Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</p>
 </div>
@@ -1190,8 +1190,8 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
             
 
             <td class="description last"><p>Name(s) of the column(s) to be skipped (case-sensitive). It can be either a single string or an array of strings.</p>
-<p>It can also be a function - iterator, to be called for every column, passing in <a href="helpers.Column.html">Column</a> as <code>this</code> context,
-and plus as a single parameter. The function would return a truthy value for every column that needs to be skipped.</p></td>
+<p><strong>v7.3.1:</strong> It can also be a function - iterator, to be called for every column, passing in <a href="helpers.Column.html">Column</a> as
+<code>this</code> context, and plus as a single parameter. The function would return a truthy value for every column that needs to be skipped.</p></td>
         </tr>
 
     
@@ -1266,7 +1266,7 @@ and plus as a single parameter. The function would return a truthy value for eve
 
         
 <div class="param-desc">
-    <p>Comma-separated assignments of excluded columns.</p>
+    <p>Comma-separated column assignments.</p>
 </div>
 
 

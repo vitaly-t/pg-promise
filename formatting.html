@@ -431,7 +431,7 @@
     <p>Simpler (non-verbose) version of method <a href="formatting.html#.name">name</a>, to handle only a regular string-identifier
 that's used as an SQL alias, i.e. it doesn't support <code>*</code> or an array/object of names, which in the context of
 an SQL alias would be incorrect.</p>
-<p><strong>Added in v7.3.0</strong> The surrounding double quotes are not added when the alias uses a simple syntax:</p>
+<p><strong>v7.3.0</strong> The surrounding double quotes are not added when the alias uses a simple syntax:</p>
 <ul>
 <li>it is a same-case single word, without spaces</li>
 <li>it can contain underscores, and can start with one</li>
@@ -603,7 +603,7 @@ an SQL alias would be incorrect.</p>
 
 <div class="description">
     <p>Converts an array of values into its PostgreSQL presentation as an Array-Type constructor string: <code>array[]</code>.</p>
-<p><strong> Added in v6.7.1 </strong></p>
+<p><strong> v6.7.1 </strong></p>
 <p>Top-level empty arrays are formatted as literal '{}' to avoid the necessity of explicit type casting,
 as the server cannot automatically infer type of an empty non-literal array.</p>
 </div>
