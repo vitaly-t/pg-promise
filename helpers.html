@@ -344,10 +344,12 @@
 
 
 <div class="description">
-    <p>Concatenates multiple queries into a single query string.</p>
+    <p>Formats and concatenates multiple queries into a single query string.</p>
+<p>Before joining the queries, the method does the following:</p>
 <ul>
-<li>Before joining each query, the method removes from it all leading and trailing spaces, tabs and semi-colons.</li>
-<li>Empty queries are skipped automatically.</li>
+<li>Formats each query, if <code>values</code> are provided;</li>
+<li>Removes all leading and trailing spaces, tabs and semi-colons;</li>
+<li>Automatically skips all empty queries.</li>
 </ul>
 </div>
 
@@ -2338,7 +2340,8 @@ It is ignored when property <code>init</code> is set.</p></td>
 
 
 <div class="description">
-    <p>A simple structure of parameters to be passed into method <a href="formatting.html#.format">as.format</a> exactly as they are.</p>
+    <p>A simple structure of parameters to be passed into method <a href="formatting.html#.format">as.format</a> exactly as they are,
+used by <a href="helpers.html#.concat">helpers.concat</a>.</p>
 </div>
 
 
@@ -2440,7 +2443,7 @@ It is ignored when property <code>init</code> is set.</p></td>
 
             
 
-            <td class="description last"><p>Optional formatting parameters for the query.</p></td>
+            <td class="description last"><p>Query-formatting values.</p></td>
         </tr>
 
     
@@ -2471,7 +2474,7 @@ It is ignored when property <code>init</code> is set.</p></td>
 
             
 
-            <td class="description last"><p>Query formatting options, as supported by method <a href="formatting.html#.format">as.format</a>.</p></td>
+            <td class="description last"><p>Query-formatting options, as supported by method <a href="formatting.html#.format">as.format</a>.</p></td>
         </tr>
 
     
@@ -2510,7 +2513,7 @@ It is ignored when property <code>init</code> is set.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_methods_concat.js.html">helpers/methods/concat.js</a>, <a href="helpers_methods_concat.js.html#line73">line 73</a>
+        <a href="helpers_methods_concat.js.html">helpers/methods/concat.js</a>, <a href="helpers_methods_concat.js.html#line75">line 75</a>
     </li></ul></dd>
     
 
