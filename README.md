@@ -20,6 +20,7 @@ pg-promise
   - [Query Formatting](#query-formatting)
     - [Index Variables]  
     - [Named Parameters]
+      - [Nested Named Parameters]
   - [Formatting Filters](#formatting-filters)          
     - [SQL Names]  
       - [Alias Filter]    
@@ -181,7 +182,11 @@ const obj = {
 db.any('SELECT ${one.two.three} FROM table', obj);
 ```
 
-Please note, however, that this supports does not extend to the [helpers] namespace.
+And the last name in the resolution (like `three` above) can also be a function that returns the actual value,
+to be called with `this` + single parameter pointing at the containing object (`two` in the example), or it can be
+a [Custom Type Formatting] object, and so on, i.e. any type, and of any depth of nesting.
+
+Please note, however, that nested parameters are not supported within the [helpers] namespace.
 
 ## Formatting Filters
 
@@ -495,6 +500,10 @@ WHERE id = ${id}
 
 Every query method of the library can accept type [QueryFile] as its `query` parameter.
 The type never throws any error, leaving it for query methods to gracefully reject with [QueryFileError].
+
+Use of [Named Parameters] withing external SQL files is recommended over the [Index Variables], because it makes the SQL
+much easier to read and understand, and because it also allows [Nested Named Variables], so variables in a large
+and complex SQL file can be grouped in namespaces for even easier visual separation.
 
 ## Tasks
 
