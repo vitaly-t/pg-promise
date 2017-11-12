@@ -502,7 +502,7 @@ Every query method of the library can accept type [QueryFile] as its `query` par
 The type never throws any error, leaving it for query methods to gracefully reject with [QueryFileError].
 
 Use of [Named Parameters] withing external SQL files is recommended over the [Index Variables], because it makes the SQL
-much easier to read and understand, and because it also allows [Nested Named Variables], so variables in a large
+much easier to read and understand, and because it also allows [Nested Named Parameters], so variables in a large
 and complex SQL file can be grouped in namespaces for even easier visual separation.
 
 ## Tasks
