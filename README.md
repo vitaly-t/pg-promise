@@ -730,6 +730,7 @@ DEALINGS IN THE SOFTWARE.
 [Usage]:#usage
 [Index Variables]:#index-variables  
 [Named Parameters]:#named-parameters
+[Nested Named Parameters]:#nested-named-parameters
 [SQL Names]:#sql-names
 [Raw Text]:#raw-text
 [Open Values]:#open-values
