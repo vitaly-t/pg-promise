@@ -413,7 +413,9 @@ function Database(cn, dc, config) {
      * to use this {@link Database} object, and each query method will be rejecting with {@link external:Error Error} =
      * `Connection pool of the database object has been destroyed.`
      *
-     * You can also use this object to selectively shut down one connection pool, as opposed to all of them, which {@link module:pg-promise~end pgp.end} does.
+     * You can also use this object to shut down the pool, by calling `$pool.end()`.
+     *
+     * For more details see $[Library de-initialization].
      *
      * @see
      * {@link Database}

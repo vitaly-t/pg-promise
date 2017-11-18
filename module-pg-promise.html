@@ -865,7 +865,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line285">line 285</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line286">line 286</a>
     </li></ul></dd>
     
 
@@ -896,12 +896,13 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
 
 
 <div class="description">
-    <p>Shuts down all connection pools currently allocated, so the process can terminate without delay.
+    <p>Shuts down all connection pools created in the process, so it can terminate without delay.
 It is available as <code>pgp.end</code>, after initializing the library.</p>
-<p>All <a href="Database.html">Database</a> objects created previously can no longer be used, throwing
-<a href="external-Error.html">Error</a> = <code>Connection pool of the database object has been destroyed.</code></p>
+<p>All <a href="Database.html">Database</a> objects created previously can no longer be used, and their query methods will be rejecting
+with <a href="external-Error.html">Error</a> = <code>Connection pool of the database object has been destroyed.</code></p>
 <p>And if you want to shut down only a specific connection pool, you do so via the <a href="Database.html">Database</a>
 object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.html#$pool">Database.$pool</a>).</p>
+<p>For more details see <a href="https://github.com/vitaly-t/pg-promise#library-de-initialization">Library de-initialization</a>.</p>
 </div>
 
 
@@ -1022,7 +1023,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line358">line 358</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line359">line 359</a>
     </li></ul></dd>
     
 
@@ -1095,7 +1096,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line250">line 250</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line251">line 251</a>
     </li></ul></dd>
     
 
@@ -1175,7 +1176,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line297">line 297</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line298">line 298</a>
     </li></ul></dd>
     
 
@@ -1248,7 +1249,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line327">line 327</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line328">line 328</a>
     </li></ul></dd>
     
 
@@ -1398,7 +1399,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line337">line 337</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line338">line 338</a>
     </li></ul></dd>
     
 
@@ -1471,7 +1472,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line317">line 317</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line318">line 318</a>
     </li></ul></dd>
     
 
@@ -1544,7 +1545,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line347">line 347</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line348">line 348</a>
     </li></ul></dd>
     
 
@@ -1617,7 +1618,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line307">line 307</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line308">line 308</a>
     </li></ul></dd>
     
 
@@ -1690,7 +1691,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line262">line 262</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line263">line 263</a>
     </li></ul></dd>
     
 
@@ -1770,7 +1771,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line378">line 378</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line379">line 379</a>
     </li></ul></dd>
     
 
@@ -1843,7 +1844,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line368">line 368</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line369">line 369</a>
     </li></ul></dd>
     
 

@@ -233,7 +233,7 @@ function QueryFile(file, options) {
     };
 
     /**
-     * @name QueryFile#$query
+     * @name QueryFile#Symbol(QueryFile.$query)
      * @type {string}
      * @default undefined
      * @readonly
@@ -245,7 +245,7 @@ function QueryFile(file, options) {
      * **IMPORTANT:** This property is for internal use by the library only, never use this
      * property directly from your code.
      */
-    Object.defineProperty(this, '$query', {
+    Object.defineProperty(this, QueryFile.$query, {
         get() {
             return sql;
         }
@@ -298,6 +298,10 @@ function QueryFile(file, options) {
     this.prepare();
 }
 
+// Hiding the query as a symbol within the type,
+// to make it even more difficult to misuse it:
+QueryFile.$query = Symbol('QueryFile.query');
+
 const usedPath = {};
 
 /**
@@ -313,7 +317,7 @@ const usedPath = {};
 QueryFile.prototype[npm.formatting.as.ctf.toPostgres] = function (self) {
     self = this || self;
     self.prepare(true);
-    return self.$query;
+    return self[QueryFile.$query];
 };
 
 /**
@@ -340,7 +344,7 @@ QueryFile.prototype.toString = function (level) {
     if (this.error) {
         lines.push(gap + 'error: ' + this.error.toString(level + 1));
     } else {
-        lines.push(gap + 'query: "' + this.$query + '"');
+        lines.push(gap + 'query: "' + this[QueryFile.$query] + '"');
     }
     lines.push(npm.utils.messageGap(level) + '}');
     return lines.join(npm.os.EOL);
