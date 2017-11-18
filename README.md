@@ -695,7 +695,7 @@ The library verifies whether the callback function is a generator, and executes 
 
 ## Library de-initialization
 
-All database connections this library manages via the [connection pool], which internally caches them.
+This library manages all database connections via the [connection pool], which internally caches them.
 
 Connections in the cache expire due to inactivity after [idleTimeoutMillis] number of milliseconds, which you
 can adjust when creating the [Database] object, or override the default via `pgp.pg.defaults.idleTimeoutMillis`
@@ -734,7 +734,7 @@ or promise-chained to the last query block in the process:
 ``` 
 
 Once you have shut down the pool associated with your [Database] object, you can longer use the object, and any of its query methods
-will be throwing error `Connection pool of the database object has been destroyed`.
+will be rejecting with [Error] = `Connection pool of the database object has been destroyed`.
 
 See the relevant API: [pgp.end], [Database.$pool]
  
@@ -832,3 +832,4 @@ DEALINGS IN THE SOFTWARE.
 [Symbol]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
 [idleTimeoutMillis]:https://github.com/brianc/node-postgres/blob/master/lib/defaults.js#L46
 [connection pool]:https://github.com/brianc/node-pg-pool
+[Error]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
