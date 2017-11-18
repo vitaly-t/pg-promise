@@ -695,18 +695,49 @@ The library verifies whether the callback function is a generator, and executes 
 
 ## Library de-initialization
 
-When exiting your application, you can optionally call [pgp.end]:
+All database connections this library manages via the [connection pool], which internally caches them.
+
+Connections in the cache expire due to inactivity after [idleTimeoutMillis] number of milliseconds, which you
+can adjust when creating the [Database] object, or override the default via `pgp.pg.defaults.idleTimeoutMillis`
+before creating the [Database] object. 
+
+While there is a single open connection in the pool, the process cannot terminate by itself, only via `process.exit()`. 
+If you want the process to finish by itself, without waiting for all connections in the pool to expire, you need
+to force the pool to shut down all the connections it holds:
 
 ```js
-pgp.end(); // shuts down all connection pools
+db.$pool.end() // shuts down the connection pool associated with the Database object
+``` 
+
+For example, if you are using the [Bluebird] library, you can chain the last promise like this:
+
+```js
+.finally(db.$pool.end)
+``` 
+
+**IMPORTANT:** Note that if your app is an HTTP services, or generally an application that does not feature any exit points,
+then you should not do any de-initialization at all. It is only if your app is a run-through process/utility, then you
+might want to use it, so the process ends without delays.  
+
+In applications that either use multiple databases or execute a multi-pool strategy for balanced query loads, you would end up
+with multiple [Database] objects, each with its own connection pool. In this scenario, in order to exit the process normally,
+at a particular point, you can call [pgp.end] to shut down all connection pools at once:
+
+```js
+pgp.end() // shuts down all connection pools created in the process
 ```
 
-This will release all connection pools, to make sure the process can terminate without any delay.
-If you do not call it, your process may be waiting for 30 seconds (default for [idleTimeoutMillis](https://github.com/brianc/node-postgres/blob/master/lib/defaults.js#L46)),
-waiting for all connections to expire in every pool.
+or promise-chained to the last query block in the process:
 
-If, however you normally exit your application by killing the NodeJS process, then you don't need to use it.
+```js
+.finally(pgp.end)
+``` 
 
+Once you have shut down the pool associated with your [Database] object, you can longer use the object, and any of its query methods
+will be throwing error `Connection pool of the database object has been destroyed`.
+
+See the relevant API: [pgp.end], [Database.$pool]
+ 
 # History
 
 For the list of all changes see the [CHANGELOG](CHANGELOG.md).
@@ -774,6 +805,7 @@ DEALINGS IN THE SOFTWARE.
 [QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
 [QueryFileError]:http://vitaly-t.github.io/pg-promise/QueryFileError.html
 [Database]:http://vitaly-t.github.io/pg-promise/Database.html
+[Database.$pool]:http://vitaly-t.github.io/pg-promise/Database.html
 [pgp.end]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
 [formatting]:http://vitaly-t.github.io/pg-promise/formatting.html
 [ctf]:http://vitaly-t.github.io/pg-promise/formatting.ctf.html
@@ -798,3 +830,5 @@ DEALINGS IN THE SOFTWARE.
 [Bluebird]:https://github.com/petkaantonov/bluebird
 [SQL injection]:https://en.wikipedia.org/wiki/SQL_injection
 [Symbol]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
+[idleTimeoutMillis]:https://github.com/brianc/node-postgres/blob/master/lib/defaults.js#L46
+[connection pool]:https://github.com/brianc/node-pg-pool

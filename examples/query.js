@@ -38,16 +38,5 @@ db.any('select * from users where active = $1', [true])
     .catch(error => {
         console.log('ERROR:', error); // print the error;
     })
-    .finally(() => {
-        // If we do not close the connection pool when exiting the application,
-        // it may take 30 seconds (idleTimeoutMillis) before the process terminates,
-        // waiting for the connection to expire in the pool.
-
-        // But if you normally just kill the process, then it doesn't matter.
-
-        pgp.end(); // For immediate app exit, shutting down all connection pools
-                   // See API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
-
-        // See also:
-        // https://github.com/vitaly-t/pg-promise#library-de-initialization
-    });
+    .finally(db.$pool.end); // For immediate app exit, shutting down the connection pool
+// For details see: https://github.com/vitaly-t/pg-promise#library-de-initialization

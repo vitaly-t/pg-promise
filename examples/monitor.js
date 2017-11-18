@@ -8,9 +8,8 @@
 //
 // a) override the default promise library;
 // b) use pg-monitor to output all the query events;
-// c) change the default theme for pg-monitor.
-// d) add log handler to pg-monitor, to log events
-//    into a file or elsewhere.
+// c) change the default theme for pg-monitor;
+// d) add log handler to pg-monitor, to log events into a file or elsewhere.
 //
 // Packages used: pg-promise, pg-monitor, bluebird.
 ////////////////////////////////////////////////////
@@ -58,5 +57,5 @@ db.any('select * from users where active = $1', [true])
     .catch(error => {
         console.log('ERROR:', error);
     })
-    .finally(pgp.end); // For immediate app exit, shutting down all connection pools
-                       // See API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
+    .finally(db.$pool.end); // For immediate app exit, shutting down the connection pool
+// For details see: https://github.com/vitaly-t/pg-promise#library-de-initialization
