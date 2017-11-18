@@ -706,16 +706,16 @@ If you want the process to finish by itself, without waiting for all connections
 to force the pool to shut down all the connections it holds:
 
 ```js
-db.$pool.end() // shuts down the connection pool associated with the Database object
+db.$pool.end(); // shuts down the connection pool associated with the Database object
 ``` 
 
-For example, if you are using the [Bluebird] library, you can chain the last promise like this:
+For example, if you are using the [Bluebird] library, you can chain the last promise in the process like this:
 
 ```js
-.finally(db.$pool.end)
+.finally(db.$pool.end);
 ``` 
 
-**IMPORTANT:** Note that if your app is an HTTP services, or generally an application that does not feature any exit points,
+**IMPORTANT:** Note that if your app is an HTTP service, or generally an application that does not feature any exit point,
 then you should not do any de-initialization at all. It is only if your app is a run-through process/utility, then you
 might want to use it, so the process ends without delays.  
 
@@ -724,13 +724,13 @@ with multiple [Database] objects, each with its own connection pool. In this sce
 at a particular point, you can call [pgp.end] to shut down all connection pools at once:
 
 ```js
-pgp.end() // shuts down all connection pools created in the process
+pgp.end(); // shuts down all connection pools created in the process
 ```
 
 or promise-chained to the last query block in the process:
 
 ```js
-.finally(pgp.end)
+.finally(pgp.end);
 ``` 
 
 Once you have shut down the pool associated with your [Database] object, you can longer use the object, and any of its query methods
@@ -805,7 +805,7 @@ DEALINGS IN THE SOFTWARE.
 [QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
 [QueryFileError]:http://vitaly-t.github.io/pg-promise/QueryFileError.html
 [Database]:http://vitaly-t.github.io/pg-promise/Database.html
-[Database.$pool]:http://vitaly-t.github.io/pg-promise/Database.html
+[Database.$pool]:http://vitaly-t.github.io/pg-promise/Database.html#$pool
 [pgp.end]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
 [formatting]:http://vitaly-t.github.io/pg-promise/formatting.html
 [ctf]:http://vitaly-t.github.io/pg-promise/formatting.ctf.html
