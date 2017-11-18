@@ -733,7 +733,7 @@ or promise-chained to the last query block in the process:
 .finally(pgp.end);
 ``` 
 
-Once you have shut down the pool associated with your [Database] object, you can longer use the object, and any of its query methods
+Once you have shut down the pool associated with your [Database] object, you can no longer use the object, and any of its query methods
 will be rejecting with [Error] = `Connection pool of the database object has been destroyed`.
 
 See the relevant API: [pgp.end], [Database.$pool]
