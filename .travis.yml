@@ -4,6 +4,7 @@ node_js:
   - "4"
   - "6"
   - "8"
+  - "9"
 addons:
   postgresql: "9.6"
 script: "npm run travis"
