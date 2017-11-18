@@ -41,14 +41,14 @@ describe('QueryFile / Positive:', function () {
     describe('without options', function () {
         const qf = new QueryFile(sqlSimple, {noWarnings: true});
         it('must not minify', function () {
-            expect(qf.$query).toBe('select 1; --comment');
+            expect(qf[QueryFile.$query]).toBe('select 1; --comment');
         });
     });
 
     describe('with minify=true && debug=true', function () {
         const qf = new QueryFile(sqlUsers, {debug: true, minify: true, noWarnings: true});
         it('must return minified query', function () {
-            expect(qf.$query).toBe('select * from users');
+            expect(qf[QueryFile.$query]).toBe('select * from users');
         });
     });
 
@@ -59,7 +59,7 @@ describe('QueryFile / Positive:', function () {
         };
         const qf = new QueryFile(sqlParams, {minify: true, params, noWarnings: true});
         it('must return pre-formatted query', function () {
-            expect(qf.$query).toBe('SELECT ${column~} FROM "public"."users"');
+            expect(qf[QueryFile.$query]).toBe('SELECT ${column~} FROM "public"."users"');
         });
     });
 
@@ -71,11 +71,11 @@ describe('QueryFile / Positive:', function () {
         };
         const qf1 = new QueryFile(sqlParams, {minify: true, compress: true, params, noWarnings: true});
         it('must return uncompressed replacements by default', function () {
-            expect(qf1.$query).toBe('SELECT "col" FROM "public"."users"');
+            expect(qf1[QueryFile.$query]).toBe('SELECT "col" FROM "public"."users"');
         });
         const qf2 = new QueryFile(sqlParams, {minify: 'after', compress: true, params, noWarnings: true});
         it('must return compressed replacements for \'after\'', function () {
-            expect(qf2.$query).toBe('SELECT"col"FROM"public"."users"');
+            expect(qf2[QueryFile.$query]).toBe('SELECT"col"FROM"public"."users"');
         });
     });
 
@@ -120,7 +120,7 @@ describe('QueryFile / Positive:', function () {
                 });
         });
         it('must resolve with data', function () {
-            expect(sql.$query).toBe('select*from users');
+            expect(sql[QueryFile.$query]).toBe('select*from users');
             expect(result instanceof Array).toBe(true);
             expect(result.length > 0).toBe(true);
         });
@@ -163,9 +163,9 @@ describe('QueryFile / Positive:', function () {
         const qf = new QueryFile(sqlSimple, {noWarnings: true});
         const toPostgres = pgp.as.ctf.toPostgres;
         it('must return the full name', function () {
-            expect(qf[toPostgres](qf)).toBe(qf.$query);
-            expect(qf[toPostgres].call(null, qf)).toBe(qf.$query);
-            expect(qf[toPostgres]()).toBe(qf.$query);
+            expect(qf[toPostgres](qf)).toBe(qf[QueryFile.$query]);
+            expect(qf[toPostgres].call(null, qf)).toBe(qf[QueryFile.$query]);
+            expect(qf[toPostgres]()).toBe(qf[QueryFile.$query]);
         });
     });
 
@@ -175,7 +175,7 @@ describe('QueryFile / Positive:', function () {
         it('must be read again', function () {
             fs.writeFileSync(sqlTemp, q1);
             const qf = new QueryFile(sqlTemp, {debug: true});
-            expect(qf.$query).toBe(q1);
+            expect(qf[QueryFile.$query]).toBe(q1);
             expect(qf.error).toBeUndefined();
 
             fs.writeFileSync(sqlTemp, q2);
@@ -183,7 +183,7 @@ describe('QueryFile / Positive:', function () {
             t.setTime(t.getTime() + 60 * 60 * 1000);
             fs.utimesSync(sqlTemp, t, t);
             qf.prepare();
-            expect(qf.$query).toBe(q2);
+            expect(qf[QueryFile.$query]).toBe(q2);
             expect(qf.error).toBeUndefined();
         });
     });
@@ -194,7 +194,7 @@ describe('QueryFile / Positive:', function () {
             const qf = new QueryFile(sqlSimple, {debug: false, minify: true, noWarnings: true});
             qf.prepare();
             qf.prepare();
-            expect(qf.$query).toBe('select 1;');
+            expect(qf[QueryFile.$query]).toBe('select 1;');
         });
     });
 });
@@ -230,7 +230,7 @@ describe('QueryFile / Negative:', function () {
         it('must result in error once deleted', function () {
             fs.writeFileSync(sqlTemp, query);
             const qf = new QueryFile(sqlTemp, {debug: true, noWarnings: true});
-            expect(qf.$query).toBe(query);
+            expect(qf[QueryFile.$query]).toBe(query);
             expect(qf.error).toBeUndefined();
             fs.unlinkSync(sqlTemp);
             qf.prepare();
@@ -241,7 +241,7 @@ describe('QueryFile / Negative:', function () {
         it('must throw when preparing', function () {
             fs.writeFileSync(sqlTemp, query);
             const qf = new QueryFile(sqlTemp, {debug: true, noWarnings: true});
-            expect(qf.$query).toBe(query);
+            expect(qf[QueryFile.$query]).toBe(query);
             expect(qf.error).toBeUndefined();
             fs.unlinkSync(sqlTemp);
             try {
