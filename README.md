@@ -514,10 +514,10 @@ db.task(t => {
     // execute a chain of queries;
 })
     .then(data => {
-        // success;
+        // success
     })
     .catch(error => {
-        // failed;    
+        // failed    
     });
 ```
 
@@ -550,8 +550,6 @@ db.tx(t => {
 
 Nested transactions automatically share the connection between all levels.
 This library sets no limitation as to the depth (nesting levels) of transactions supported.
-
-Example:
 
 ```js
 db.tx(t => {
@@ -667,14 +665,14 @@ Instead of the default `BEGIN`, such transaction will initiate with the followin
 BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE
 ```
 
-Transaction Mode is set via property `txMode` on the transaction function.
+_Transaction Mode_ is set via property `txMode` on the transaction function.
 
 This is the most efficient and best-performing way of configuring transactions. In combination with
 *Transaction Snapshots* you can make the most out of transactions in terms of performance and concurrency.
 
 ## ES6 Generators
 
-If you prefer writing asynchronous code in a synchronous manner, you can implement your tasks and transactions as generators. 
+If you prefer writing asynchronous code in a synchronous manner, you can implement your tasks and transactions as generators: 
 
 ```js
 function * getUser(t) {
@@ -684,10 +682,10 @@ function * getUser(t) {
 
 db.task(getUser)
     .then(user => {
-        // success;
+        // success
     })
     .catch(error => {
-        // error;
+        // error
     });
 ```
 
