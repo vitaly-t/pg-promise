@@ -546,6 +546,9 @@ db.tx(t => {
     });
 ```
 
+If the callback function returns a rejected promise or throws an error, the method will automatically execute `ROLLBACK` at the end. 
+In all other cases the transaction will be automatically followed by `COMMIT`.
+
 ### Nested Transactions
 
 Nested transactions automatically share the connection between all levels.
