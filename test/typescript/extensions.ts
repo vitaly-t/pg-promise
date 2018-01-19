@@ -50,7 +50,7 @@ dbExt3.task(t => {
     });
 
 dbExt3.tx<number>(t => {
-    return 123;
+    return Promise.resolve(123);
 })
     .then(data => {
         const a: number = data;
