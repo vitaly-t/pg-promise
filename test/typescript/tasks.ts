@@ -26,3 +26,15 @@ db.tx(t => {
 db.tx('with a name', t => {
     const d: Date = t.ctx.start;
 });
+
+db.task<number>(t => {
+    return 123;
+})
+    .then(data => {
+    });
+
+db.task<number>(t => {
+    return Promise.resolve(123);
+})
+    .then(data => {
+    });
