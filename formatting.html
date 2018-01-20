@@ -435,7 +435,7 @@ an SQL alias would be incorrect.</p>
 <ul>
 <li>it is a same-case single word, without spaces</li>
 <li>it can contain underscores, and can even start with them</li>
-<li>it can contain digits and $, but cannot start with those</li>
+<li>it can contain digits and <code>$</code>, but cannot start with those</li>
 </ul>
 <p>When formatting a query, a variable makes use of this method via modifier <code>:alias</code>. See method <a href="formatting.html#.format">format</a>.</p>
 </div>
@@ -603,8 +603,7 @@ an SQL alias would be incorrect.</p>
 
 <div class="description">
     <p>Converts an array of values into its PostgreSQL presentation as an Array-Type constructor string: <code>array[]</code>.</p>
-<p><strong> v6.7.1 </strong></p>
-<p>Top-level empty arrays are formatted as literal '{}' to avoid the necessity of explicit type casting,
+<p>Top-level empty arrays are formatted as literal <code>{}</code> to avoid the necessity of explicit type casting,
 as the server cannot automatically infer type of an empty non-literal array.</p>
 </div>
 
@@ -1217,7 +1216,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line662">line 662</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line660">line 660</a>
     </li></ul></dd>
     
 
@@ -1836,7 +1835,7 @@ and to return the actual default value:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line736">line 736</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line734">line 734</a>
     </li></ul></dd>
     
 
@@ -2083,7 +2082,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line707">line 707</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line705">line 705</a>
     </li></ul></dd>
     
 
@@ -2289,7 +2288,7 @@ symbols fixed, unless flag <code>raw</code> is set.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line680">line 680</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line678">line 678</a>
     </li></ul></dd>
     
 
