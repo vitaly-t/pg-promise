@@ -431,10 +431,10 @@
     <p>Simpler (non-verbose) version of method <a href="formatting.html#.name">name</a>, to handle only a regular string-identifier
 that's used as an SQL alias, i.e. it doesn't support <code>*</code> or an array/object of names, which in the context of
 an SQL alias would be incorrect.</p>
-<p><strong>v7.3.0</strong> The surrounding double quotes are not added when the alias uses a simple syntax:</p>
+<p>The surrounding double quotes are not added when the alias uses a simple syntax:</p>
 <ul>
 <li>it is a same-case single word, without spaces</li>
-<li>it can contain underscores, and can start with one</li>
+<li>it can contain underscores, and can even start with them</li>
 <li>it can contain digits and $, but cannot start with those</li>
 </ul>
 <p>When formatting a query, a variable makes use of this method via modifier <code>:alias</code>. See method <a href="formatting.html#.format">format</a>.</p>
