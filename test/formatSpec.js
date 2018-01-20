@@ -1331,6 +1331,24 @@ describe('Custom Type Formatting', function () {
             expect(pgp.as.format('$1', {toPostgres: () => 'ok', [ctf.rawType]: true})).toBe('\'ok\'');
         });
     });
+
+    describe('for asynchronous functions', () => {
+        const errMsg = 'CTF does not support asynchronous toPostgres functions.';
+        it('must throw an error', () => {
+            expect(() => {
+                pgp.as.format('$1', {
+                    toPostgres: function* () {
+                    }
+                });
+            }).toThrow(errMsg);
+            expect(() => {
+                pgp.as.format('$1', {
+                    [pgp.as.ctf.toPostgres]: function* () {
+                    }
+                });
+            }).toThrow(errMsg);
+        });
+    });
 });
 
 describe('SQL Names', function () {
