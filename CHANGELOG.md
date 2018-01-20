@@ -1,5 +1,6 @@
 ### Release History
 
+* 7.4.0 This project is now sponsored by [Lisk]. Released: Jan 20, 2018
 * 7.3.0 Updating [as.alias] method, adding method [ColumnSet.assignColumns]. Released: Nov 05, 2017.
 * 7.2.0 Renaming `_rawType` into `rawType` within [Custom Type Formatting]. Released: Oct 30, 2017.
 * 7.1.0 Adding support for symbols within [Custom Type Formatting]. Released: Oct 29, 2017.
@@ -140,3 +141,4 @@
 [multi]:http://vitaly-t.github.io/pg-promise/Database.html#multi
 [multiResult]:http://vitaly-t.github.io/pg-promise/Database.html#multiResult
 [ColumnSet.assignColumns]:http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#assignColumns
+[Lisk]:https://lisk.io/

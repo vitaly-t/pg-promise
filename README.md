@@ -57,7 +57,7 @@ Built on top of [node-postgres], this library adds the following:
 
 # Support & Sponsorship  
 
-<a href='https://lisk.io' alt='LISK' style='outline : none;' target='_blank'>![lisk](https://user-images.githubusercontent.com/5108906/35188739-863a8e40-fe33-11e7-8ec4-f3fe13f43ca7.jpg)</a>
+<a href="https://lisk.io" alt="LISK" style="outline : none;" target="_blank">![lisk](https://user-images.githubusercontent.com/5108906/35188739-863a8e40-fe33-11e7-8ec4-f3fe13f43ca7.jpg)</a>
 
 If you like what we do, and would like to see it continue, then please consider donating:
 
@@ -754,7 +754,7 @@ For the list of all changes see the [CHANGELOG](CHANGELOG.md).
 
 # License
 
-Copyright (c) 2017 Vitaly Tomilov
+Copyright (c) 2018 Vitaly Tomilov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
