@@ -148,19 +148,23 @@ describe('Method as.number', () => {
                 };
             };
         })).toBe('123');
-
     });
 
-    it('must correctly reject invalid values', () => {
+    it('must reject for invalid parameters', () => {
 
         const err = ' is not a number.';
         expect(() => {
             pgp.as.number('');
-        }).toThrow(new Error('\'\'' + err));
+        }).toThrow('\'\'' + err);
 
         expect(() => {
             pgp.as.number([1, 2]);
-        }).toThrow(new Error('\'1,2\'' + err));
+        }).toThrow('\'1,2\'' + err);
+
+        expect(() => {
+            pgp.as.number(function* () {
+            });
+        }).toThrow('Cannot use asynchronous functions with query formatting.');
 
     });
 
@@ -595,6 +599,10 @@ describe('Method as.alias', () => {
             expect(pgp.as.alias('\t')).toBe('"\t"');
             expect(pgp.as.alias('"')).toBe('""""');
             expect(pgp.as.alias('""')).toBe('""""""');
+            expect(pgp.as.alias('1')).toBe('"1"');
+            expect(pgp.as.alias('0A')).toBe('"0A"');
+            expect(pgp.as.alias('0abc')).toBe('"0abc"');
+            expect(pgp.as.alias('$')).toBe('"$"');
         });
         it('must skip quotes for simple names', () => {
             expect(pgp.as.alias('a')).toBe('a');
@@ -602,7 +610,7 @@ describe('Method as.alias', () => {
             expect(pgp.as.alias('A')).toBe('A');
             expect(pgp.as.alias('AAA')).toBe('AAA');
             expect(pgp.as.alias('a1')).toBe('a1');
-            expect(pgp.as.alias('a123')).toBe('a123');
+            expect(pgp.as.alias('a_123_$')).toBe('a_123_$');
             expect(pgp.as.alias('_')).toBe('_');
             expect(pgp.as.alias('___')).toBe('___');
             expect(pgp.as.alias('_a_')).toBe('_a_');
@@ -612,6 +620,8 @@ describe('Method as.alias', () => {
             expect(pgp.as.alias('a$')).toBe('a$');
             expect(pgp.as.alias('_0')).toBe('_0');
             expect(pgp.as.alias('___0')).toBe('___0');
+            expect(pgp.as.alias('_$')).toBe('_$');
+            expect(pgp.as.alias('_0$_')).toBe('_0$_');
         });
     });
 
@@ -746,7 +756,7 @@ describe('Method as.format', () => {
     it('must throw on type Symbol', () => {
 
         const value = Symbol('one.two');
-        const symbolError = new TypeError('Type Symbol has no corresponding PostgreSQL type: ' + value.toString());
+        const symbolError = new TypeError('Type Symbol has no meaning for PostgreSQL: ' + value.toString());
 
         expect(() => pgp.as.format('$1', value)).toThrow(symbolError);
         expect(() => pgp.as.format('$1', [value])).toThrow(symbolError);
