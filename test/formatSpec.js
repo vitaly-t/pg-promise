@@ -598,11 +598,20 @@ describe('Method as.alias', () => {
         });
         it('must skip quotes for simple names', () => {
             expect(pgp.as.alias('a')).toBe('a');
+            expect(pgp.as.alias('aaa')).toBe('aaa');
             expect(pgp.as.alias('A')).toBe('A');
+            expect(pgp.as.alias('AAA')).toBe('AAA');
             expect(pgp.as.alias('a1')).toBe('a1');
+            expect(pgp.as.alias('a123')).toBe('a123');
             expect(pgp.as.alias('_')).toBe('_');
+            expect(pgp.as.alias('___')).toBe('___');
+            expect(pgp.as.alias('_a_')).toBe('_a_');
+            expect(pgp.as.alias('__a_b__')).toBe('__a_b__');
+            expect(pgp.as.alias('_A_')).toBe('_A_');
+            expect(pgp.as.alias('__A_B__')).toBe('__A_B__');
             expect(pgp.as.alias('a$')).toBe('a$');
             expect(pgp.as.alias('_0')).toBe('_0');
+            expect(pgp.as.alias('___0')).toBe('___0');
         });
     });
 
