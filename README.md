@@ -11,7 +11,7 @@ pg-promise
 ---
 
 * [About](#about)
-* [Support & Sponsorship](support-amp-sponsorship)
+* [Support & Sponsorship](support--sponsorship)
 * [Documentation](#documentation)
 * [Contributing](#contributing) 
 * [Usage]
