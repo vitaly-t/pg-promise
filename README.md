@@ -10,11 +10,10 @@ pg-promise
 
 ---
 
-<a href='https://pledgie.com/campaigns/32367'><img alt='Click here to lend your support to: pg-promise and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/32367.png?skin_name=chrome' border='0' ></a> <a href='https://www.paypal.me/VitalyTomilov'><img alt='Click here to lend your support to: pg-promise and make a donation at PayPal.com !' src='https://github.com/vitaly-t/pg-promise/raw/master/jsdoc/paypal.png' border='0' ></a>
-
 * [About](#about)
-* [Documentation](#documentation)  
-* [Contributing](#contributing)    
+* [Support & Sponsorship](support-amp-sponsorship)
+* [Documentation](#documentation)
+* [Contributing](#contributing) 
 * [Usage]
   - [Methods](#methods)
   - [Query Formatting](#query-formatting)
@@ -55,6 +54,16 @@ Built on top of [node-postgres], this library adds the following:
 * Global events reporting for central handling
 * Extensive support for external SQL files
 * Support for all promise libraries
+
+# Support & Sponsorship  
+
+![lisk](https://user-images.githubusercontent.com/5108906/35188739-863a8e40-fe33-11e7-8ec4-f3fe13f43ca7.jpg)
+
+If you like what we do, and would like to see it continue, then please consider donating:
+
+<a href='https://pledgie.com/campaigns/32367'><img alt='Click here to lend your support to: pg-promise and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/32367.png?skin_name=chrome' border='0' ></a> <a href='https://www.paypal.me/VitalyTomilov'><img alt='Click here to lend your support to: pg-promise and make a donation at PayPal.com !' src='https://github.com/vitaly-t/pg-promise/raw/master/jsdoc/paypal.png' border='0' ></a>
+
+Lisk: `17030494873278665829L`, Bitcoin: `1yki7MXMkuDw8qqe5icVdh1GJZSQSzKZp`
 
 # Documentation
 
