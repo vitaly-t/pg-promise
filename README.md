@@ -198,8 +198,9 @@ const obj = {
                     toPostgres: a => {
                         // Custom Type Formatting
                         // a = obj.one.two.three.value4
-                        return 'custom';
-                    }
+                        return a.text;
+                    },
+                    text: 'custom'
                 }                
             }
         }
@@ -218,7 +219,7 @@ The last name in the resolution can be:
   - the actual value
   - another function
   - a [Custom Type Formatting] object
-* a [Custom Type Formatting] object that returns
+* a [Custom Type Formatting] object that returns:
   - the actual value
   - another [Custom Type Formatting] object
   - a function

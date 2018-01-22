@@ -297,7 +297,7 @@ describe('isPathAbsolute', () => {
 describe('Nested Named Parameters', () => {
     let tmp, result, duration;
     beforeEach(() => {
-        const obj = {}, depth = 10000;
+        const obj = {}, depth = 1000;
         let varPath = '';
         tmp = obj;
         for (let i = 1; i < depth; i++) {
