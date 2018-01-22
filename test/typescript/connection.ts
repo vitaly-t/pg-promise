@@ -10,6 +10,8 @@ r.ssl = {
     ca: ''
 };
 
+r.keepAlive = true;
+
 const db2 = pgp({
     binary: true
 });

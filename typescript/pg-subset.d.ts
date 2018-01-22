@@ -75,6 +75,7 @@ declare namespace pg {
         parseInputDatesAsUTC?: boolean
         rows?: number
         statement_timeout?: boolean | number
+        keepAlive?: boolean
     }
 
     // Interface of 'pg-types' module;
