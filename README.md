@@ -178,22 +178,52 @@ db.none('INSERT INTO documents(id, doc) VALUES(${id}, ${this})', {
 
 #### Nested Named Parameters
 
-Starting from v6.10.0, the library supports _Nested Named Parameters_:
+[Named Parameters] can be nested to any depth level:
 
 ```js
 const obj = {
     one: {
         two: {
-            three: 123
+            three: {
+                value1: 123,
+                value2: a => {
+                    // a = obj.one.two.three
+                    return 'hello';
+                },
+                value3: function(a) {
+                    // a = this = obj.one.two.three
+                    return 'world';
+                },
+                value4: {
+                    toPostgres: a => {
+                        // Custom Type Formatting
+                        // a = obj.one.two.three.value4
+                        return 'custom';
+                    }
+                }                
+            }
         }
     }
 };
-db.any('SELECT ${one.two.three} FROM table', obj);
+db.one('SELECT ${one.two.three.value1}', obj); //=> SELECT 123
+db.one('SELECT ${one.two.three.value2}', obj); //=> SELECT 'hello'
+db.one('SELECT ${one.two.three.value3}', obj); //=> SELECT 'world'
+db.one('SELECT ${one.two.three.value4}', obj); //=> SELECT 'custom'
 ```
 
-And the last name in the resolution (like `three` above) can also be a function that returns the actual value,
-to be called with `this` + single parameter pointing at the containing object (`two` in the example), or it can be
-a [Custom Type Formatting] object, and so on, i.e. any type, and of any depth of nesting.
+The last name in the resolution can be:
+
+* the actual value (basic JavaScript type)
+* a function that returns:
+  - the actual value
+  - another function
+  - a [Custom Type Formatting] object
+* a [Custom Type Formatting] object that returns
+  - the actual value
+  - another [Custom Type Formatting] object
+  - a function
+
+i.e. the resolution chain is infinitely flexible, and supports recursion without limits.
 
 Please note, however, that nested parameters are not supported within the [helpers] namespace.
 

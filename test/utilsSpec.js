@@ -293,3 +293,32 @@ describe('isPathAbsolute', () => {
         });
     });
 });
+
+describe('Nested Named Parameters', () => {
+    let tmp, result, duration;
+    beforeEach(() => {
+        const obj = {}, depth = 10000;
+        let varPath = '';
+        tmp = obj;
+        for (let i = 1; i < depth; i++) {
+            if (varPath) {
+                varPath += '.' + i;
+            } else {
+                varPath = i;
+            }
+            const newObj = {};
+            tmp[i] = newObj;
+            tmp = newObj;
+        }
+        tmp.value = 123;
+        const start = Date.now();
+        result = $u.getIfHas(obj, varPath + '.value');
+        duration = Date.now() - start;
+    });
+    it('must support any depth level', () => {
+        expect(result).toEqual({valid: true, has: true, target: tmp, value: 123});
+    });
+    it('must be fast', () => {
+        expect(duration).toBeLessThan(10); // it must be fast, even for 10,000 levels
+    });
+});
