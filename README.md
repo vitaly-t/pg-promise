@@ -212,7 +212,7 @@ db.one('SELECT ${one.two.three.value3}', obj); //=> SELECT 'world'
 db.one('SELECT ${one.two.three.value4}', obj); //=> SELECT 'custom'
 ```
 
-The last name in the resolution can be:
+The last name in the resolution can be anything, including:
 
 * the actual value (basic JavaScript type)
 * a function that returns:

@@ -297,7 +297,7 @@ describe('isPathAbsolute', () => {
 describe('Nested Named Parameters', () => {
     let tmp, result, duration;
     beforeEach(() => {
-        const obj = {}, depth = 1000;
+        const obj = {}, depth = 10000;
         let varPath = '';
         tmp = obj;
         for (let i = 1; i < depth; i++) {
@@ -319,6 +319,9 @@ describe('Nested Named Parameters', () => {
         expect(result).toEqual({valid: true, has: true, target: tmp, value: 123});
     });
     it('must be fast', () => {
-        expect(duration).toBeLessThan(10); // it must be fast, even for 10,000 levels
+        // In reality, it is very fast, i.e. way under 10ms for 10,000 levels;
+        // However, Travis CI test environment is too slow to test it properly,
+        // so the expectation here is significantly lowered for that reason:
+        expect(duration).toBeLessThan(100);
     });
 });
