@@ -43,7 +43,7 @@ declare namespace pgPromise {
     };
 
     type TAssignOptions = {
-        source?: Object
+        source?: object
         prefix?: string
     };
 
@@ -193,7 +193,7 @@ declare namespace pgPromise {
     class ColumnSet {
         constructor(columns: Column, options?: TColumnSetOptions)
         constructor(columns: Array<string | TColumnConfig | Column>, options?: TColumnSetOptions)
-        constructor(columns: Object, options?: TColumnSetOptions)
+        constructor(columns: object, options?: TColumnSetOptions)
 
         // these are all read-only:
 
@@ -222,7 +222,7 @@ declare namespace pgPromise {
         merge(columns: Column | ColumnSet | Array<string | TColumnConfig | Column>): ColumnSet
 
         // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#prepare
-        prepare(obj: Object): Object
+        prepare(obj: object): object
 
         // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#toString
         toString(level?: number): string
@@ -420,7 +420,7 @@ declare namespace pgPromise {
         multi<T=any>(query: TQuery, values?: any): XPromise<Array<T[]>>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#stream
-        stream(qs: Object, init: (stream: NodeJS.ReadableStream) => void): XPromise<{ processed: number, duration: number }>
+        stream(qs: object, init: (stream: NodeJS.ReadableStream) => void): XPromise<{ processed: number, duration: number }>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#func
         func<T=any>(funcName: string, values?: any, qrm?: queryResult): XPromise<T>
@@ -650,7 +650,7 @@ declare namespace pgPromise {
         bool(value: any | (() => any)): string
 
         // API: http://vitaly-t.github.io/pg-promise/formatting.html#.buffer
-        buffer(obj: Object | (() => Object), raw?: boolean): string
+        buffer(obj: object | (() => object), raw?: boolean): string
 
         // API: http://vitaly-t.github.io/pg-promise/formatting.html#.csv
         csv(values: any | (() => any)): string
@@ -707,13 +707,13 @@ declare namespace pgPromise {
 
         concat(queries: Array<string | TQueryFormat | QueryFile>): string
 
-        insert(data: Object | Object[], columns?: TQueryColumns, table?: string | TTable | TableName): string
+        insert(data: object | object[], columns?: TQueryColumns, table?: string | TTable | TableName): string
 
-        update(data: Object | Object[], columns?: TQueryColumns, table?: string | TTable | TableName, options?: TUpdateOptions): any
+        update(data: object | object[], columns?: TQueryColumns, table?: string | TTable | TableName, options?: TUpdateOptions): any
 
-        values(data: Object | Object[], columns?: TQueryColumns): string
+        values(data: object | object[], columns?: TQueryColumns): string
 
-        sets(data: Object, columns?: TQueryColumns): string
+        sets(data: object, columns?: TQueryColumns): string
 
         Column: typeof Column
         ColumnSet: typeof ColumnSet

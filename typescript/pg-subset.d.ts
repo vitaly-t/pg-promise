@@ -44,7 +44,7 @@ declare namespace pg {
         ca?: string | string[] | Buffer | Buffer[]
         pfx?: string | Buffer
         cert?: string | string[] | Buffer | Buffer[]
-        key?: string | string[] | Buffer | Object[]
+        key?: string | string[] | Buffer | object[]
         passphrase?: string
         rejectUnauthorized?: boolean
         NPNProtocols?: string[] | Buffer
