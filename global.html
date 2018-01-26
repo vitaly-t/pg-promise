@@ -753,6 +753,33 @@ while transactions on nested levels use the corresponding <code>SAVEPOINT</code>
 
         <tr>
             
+                <td class="name"><code>inTransaction</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><strong>Added in v7.4.1</strong></p>
+<p>Available in both tasks and transactions, it simplifies checking when there is a transaction
+going on either on this level or above.</p>
+<p>For example, when you want to check for a containing transaction while inside a task, and
+only start a transaction when there is none yet.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>parent</code></td>
             
 
@@ -974,7 +1001,7 @@ the operation has finished. When the value is <code>false</code>, the operation 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line320">line 320</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line321">line 321</a>
     </li></ul></dd>
     
 

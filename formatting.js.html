@@ -113,7 +113,7 @@ function formatValue(value, fm, cc) {
         case 'number':
             return $to.number(value);
         case 'symbol':
-            throw new TypeError('Type Symbol has no corresponding PostgreSQL type: ' + value.toString());
+            throw new TypeError('Type Symbol has no meaning for PostgreSQL: ' + value.toString());
         default:
             if (value instanceof Date) {
                 return $to.date(value, isRaw);
@@ -239,14 +239,24 @@ function getCTF(value) {
     if (!isNull(value)) {
         const toPostgres = value[ctfSymbols.toPostgres];
         if (typeof toPostgres === 'function') {
+            verifyCTF(toPostgres);
             return {toPostgres, rawType: !!value[ctfSymbols.rawType]};
         }
         // For backward compatibility:
         if (typeof value.toPostgres === 'function') {
+            verifyCTF(value.toPostgres);
             return {toPostgres: value.toPostgres, rawType: !!value.rawType};
         }
     }
     return null;
+}
+
+////////////////////////////////////
+// Validates CTF callback function;
+function verifyCTF(f) {
+    if (f.constructor.name !== 'Function') {
+        throw new Error('CTF does not support asynchronous toPostgres functions.');
+    }
 }
 
 /////////////////////////////////////////
@@ -270,11 +280,16 @@ function throwIfRaw(raw) {
     }
 }
 
-////////////////////////////////////////////
-// Recursively resolves parameter-function,
-// with the optional Calling Context.
+/////////////////////////////////////////////////////////////////////////////
+// Recursively resolves parameter-function, with an optional Calling Context.
 function resolveFunc(value, cc) {
     while (typeof value === 'function') {
+        if (value.constructor.name !== 'Function') {
+            // Constructor name for asynchronous functions have different names:
+            // - 'GeneratorFunction' for ES6 generators;
+            // - 'AsyncFunction' for ES7 async functions
+            throw new Error('Cannot use asynchronous functions with query formatting.');
+        }
         value = value.call(cc, cc);
     }
     return value;
@@ -644,7 +659,7 @@ const $as = {
      * @method formatting.number
      * @description
      * Converts a numeric value into its PostgreSQL number presentation,
-     * with support for `NaN`, `+Infinity` and `-Infinity`.
+     * with support for special values `NaN`, `+Infinity` and `-Infinity`.
      *
      * @param {number|function} num
      * Number to be converted, or a function that returns one.
@@ -667,7 +682,7 @@ const $as = {
      * @description
      * Converts an array of values into its PostgreSQL presentation as an Array-Type constructor string: `array[]`.
      *
-     * Top-level empty arrays are formatted as literal `{}` to avoid the necessity of explicit type casting,
+     * Top-level empty arrays are formatted as literal `{}`, to avoid the necessity of explicit type casting,
      * as the server cannot automatically infer type of an empty non-literal array.
      *
      * @param {Array|function} arr
