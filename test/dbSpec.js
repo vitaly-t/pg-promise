@@ -1171,6 +1171,8 @@ describe('Transactions', function () {
             expect(THIS1 === context1).toBe(true);
             expect(THIS2 === context2).toBe(true);
             expect(THIS1 !== THIS2).toBe(true);
+            expect(THIS1.ctx.inTransaction).toBe(true);
+            expect(THIS2.ctx.inTransaction).toBe(true);
             expect(nestError instanceof Error).toBe(true);
             expect(nestError.message).toContain('relation "unknowntable" does not exist');
             expect(result instanceof Array).toBe(true);
@@ -1301,6 +1303,7 @@ describe('Transactions', function () {
             expect(result).toEqual([{word: 'Hello'}, {word: 'World!'}]);
             for (let i = 0; i < 10; i++) {
                 expect(ctx[i].tag).toBe(i);
+                expect(ctx[i].inTransaction).toBe(true);
                 if (i) {
                     expect(ctx[i].connected).toBe(false);
                     expect(ctx[i].parent).not.toBeNull();
@@ -1775,6 +1778,24 @@ describe('Task', function () {
             expect(tsk.ctx.level).toBe(0);
             expect(tsk.ctx.parent).toBeNull();
             expect(tsk.ctx.connected).toBe(true);
+            expect(tsk.ctx.inTransaction).toBe(false);
+        });
+    });
+
+    describe('inside a transaction', function () {
+        let context;
+        beforeEach(done => {
+            db.tx(tx => {
+                return tx.task(t => {
+                    context = t;
+                });
+            })
+                .finally(() => {
+                    done();
+                });
+        });
+        it('must know it is in transaction', () => {
+            expect(context.ctx.inTransaction).toBe(true);
         });
     });
 
