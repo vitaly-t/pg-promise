@@ -1,5 +1,5 @@
 /////////////////////////////////////////
-// Requires pg-promise v7.3.0 or later.
+// Requires pg-promise v7.4.1 or later.
 /////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -463,6 +463,7 @@ declare namespace pgPromise {
         readonly context: any
         readonly parent: ITaskContext | null
         readonly connected: boolean
+        readonly inTransaction: boolean
         readonly level: number
         readonly isFresh: boolean
         readonly isTX: boolean
