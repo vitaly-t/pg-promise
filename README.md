@@ -33,7 +33,7 @@ pg-promise
   - [Query Files](#query-files)    
   - [Tasks](#tasks)    
   - [Transactions](#transactions)
-    - [Nested Transactions](#nested-transactions)   
+    - [Limitations](#limitations)   
     - [Configurable Transactions](#configurable-transactions)
   - [ES6 Generators](#es6-generators)
   - [Library de-initialization](#library-de-initialization)
@@ -619,66 +619,21 @@ db.tx(t => {
     });
 ```
 
-### Implementation details
-
-It is important to know that PostgreSQL does not support full/atomic nested transactions, it only
-supports [savepoints](http://www.postgresql.org/docs/9.4/static/sql-savepoint.html) inside
-transactions. Nested transactions and save-points are two ways to deal with *partial rollbacks*.
-Save-points are more general and allow this library to offer you nested transactions as an
-abstraction.
-
-Save-points allow you to rollback to any previous state since the beginning of the (only) top-level
-transaction. Nested transactions allow you to only rollback to the state at the beginning of
-the current transaction. Proper support for nested transactions means that the result of a
-successful sub-transaction or query is rolled back when its parent transaction is rolled back.
-
-From a practical point of view, it means that when using nested transactions, a rollback knows
-automatically which state to restore but when using save-points you must specify which previous
-save-point to use.
-This library tracks the save-points for you so you can work as if nested transactions were
-supported by Postgres.
-
-It is important to note that when using either save-points or "real" nested transactions (which are
-tools for partial rollbacks), data is finally written only when the top level transaction is
-committed.
-
-Also, Postgres uses `BEGIN` amd `COMMIT / ROLLBACK` for the top transaction and `SAVEPOINT pointName`
-and `ROLLBACK TO pointName` for inner save-points. This library automatically provides a transaction
-on the top level, and save-points for all sub-transactions.
-
 ### Limitations
 
-This implementation of nested transactions has the following transactions
-- The `txMode` property of sub-transactions is ignored. The transaction mode is only applied for
-  `BEGIN` statements, so only for top-level transactions.
-- `SET TRANSACTION` statements are only effective if they are called before any query of the
-  real Postgres transaction. This means that once any nested transaction does a query, the
-  transaction mode is locked for the whole transaction tree.
+It is important to know that PostgreSQL does not support full/atomic nested transactions, it only
+supports [savepoints](http://www.postgresql.org/docs/9.6/static/sql-savepoint.html) inside top-level
+transactions, to allow *partial rollbacks*.
 
-See the implementation details above for more information.
+Postgres uses `BEGIN` and `COMMIT / ROLLBACK` for the top-level transaction, and it uses `SAVEPOINT pointName`
+and `RELEASE / ROLLBACK TO pointName` for inner save-points.
+
+This library automatically executes all the right transaction and savepoint commands, with unique
+savepoint names, based on the transaction level.
 
 ### Configurable Transactions
 
-In order to be able to fine-tune database requests in a highly asynchronous environment,
-PostgreSQL supports *Transaction Snapshots*, plus 3 ways of configuring a transaction:
-
-* [SET TRANSACTION](http://www.postgresql.org/docs/9.4/static/sql-set-transaction.html), to configure the current transaction,
-which your can execute as the very first query in your transaction function;
-* `SET SESSION CHARACTERISTICS AS TRANSACTION` - setting default transaction properties for the entire session; 
-* [BEGIN](http://www.postgresql.org/docs/9.4/static/sql-begin.html) + `Transaction Mode` - initiates a pre-configured transaction.
-
-The first method is quite usable, but that means you have to start every transaction with
-an initial query to configure the transaction, which can be a bit awkward.
-
-The second approach isn't very usable within a database framework as this one, which relies
-on a connection pool, so you don't really know when a new connection is created.
-
-The last method is not usable, because transactions in this library are automatic, executing `BEGIN`
-without your control, or so it was until [Transaction Mode] type was added (read further).
-
----  
-
-[Transaction Mode] extends the `BEGIN` command in your transaction with a complete set of configuration parameters.
+[TransactionMode] type can extend your `BEGIN` command with configuration parameters:
 
 ```js
 const TransactionMode = pgp.txMode.TransactionMode;
@@ -857,7 +812,7 @@ DEALINGS IN THE SOFTWARE.
 [as.json]:http://vitaly-t.github.io/pg-promise/formatting.html#.json
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
 [as.alias]:http://vitaly-t.github.io/pg-promise/formatting.html#.alias
-[Transaction Mode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
+[TransactionMode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
 
 <!-- WiKi Links -->
 
