@@ -625,15 +625,15 @@ It is important to know that PostgreSQL does not support full/atomic nested tran
 supports [savepoints](http://www.postgresql.org/docs/9.6/static/sql-savepoint.html) inside top-level
 transactions, to allow *partial rollbacks*.
 
-Postgres uses `BEGIN` and `COMMIT / ROLLBACK` for the top-level transaction, and it uses `SAVEPOINT pointName`
-and `RELEASE / ROLLBACK TO pointName` for inner save-points.
+Postgres uses `BEGIN` with `COMMIT / ROLLBACK` for top-level transactions, and `SAVEPOINT name`
+with `RELEASE / ROLLBACK TO name` for inner save-points.
 
-This library automatically executes all the right transaction and savepoint commands, with unique
+This library automatically executes all such transaction and savepoint commands, with unique
 savepoint names, based on the transaction level.
 
 ### Configurable Transactions
 
-[TransactionMode] type can extend your `BEGIN` command with configuration parameters:
+[TransactionMode] type can extend your `BEGIN` command with transaction configuration:
 
 ```js
 const TransactionMode = pgp.txMode.TransactionMode;
@@ -658,7 +658,7 @@ db.tx(myTransaction)
     });
 ```
 
-Instead of the default `BEGIN`, such transaction will initiate with the following command:
+Instead of the default `BEGIN`, such transaction will open with the following command:
 ```
 BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE
 ```
