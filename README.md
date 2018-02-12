@@ -396,7 +396,11 @@ From v7.5.1 you also get alias `:list`, plus automatic enumeration of object pro
 
 ```js
 const obj = {first: 123, second: 'text'};
+
 db.none('INSERT INTO table($1:name) VALUES($1:csv)', [obj])
+//=> INSERT INTO table("first","second") VALUES(123,'text')
+
+db.none('INSERT INTO table(${this:name}) VALUES(${this:csv})', obj)
 //=> INSERT INTO table("first","second") VALUES(123,'text')
 ```
 
