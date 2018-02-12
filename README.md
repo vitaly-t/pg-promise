@@ -383,14 +383,21 @@ Method [as.json] implements the formatting.
 
 When a variable ends with `:csv`, it is formatted as a list of Comma-Separated Values, with each
 value formatted according to its JavaScript type.
- 
-Typically, you would use this for a value that's an array. However, when it is not an array, the single value
-is formatted as usual - like there is no filter specified. 
+
+Typically, you would use this for a value that's an array, though it works for single values also.
 
 ```js
 const ids = [1, 2, 3];
 db.any('SELECT * FROM table WHERE id IN ($1:csv)', [ids])
 //=> SELECT * FROM table WHERE id IN (1,2,3)
+```
+
+Version 7.5.0 added automatic enumeration of object properties:
+
+```js
+const obj = {first: 123, second: 'text'};
+db.none('INSERT INTO table($1:name) VALUES($1:csv)', [obj])
+//=> INSERT INTO table("first","second") VALUES(123,'text')
 ```
 
 Method [as.csv] implements the formatting.

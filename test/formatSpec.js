@@ -319,8 +319,10 @@ describe('Method as.csv', () => {
 
     it('must correctly convert any parameters into CSV', () => {
 
-        ////////////////////////////////
-        // positive tests;
+        const obj = {
+            first: 123,
+            second: 'test'
+        };
 
         expect(pgp.as.csv()).toBe(''); // test undefined;
         expect(pgp.as.csv([])).toBe(''); // test empty array;
@@ -359,6 +361,8 @@ describe('Method as.csv', () => {
         // test array-type as a parameter;
         expect(pgp.as.csv([1, [2, 3], 4])).toBe('1,array[2,3],4');
         expect(pgp.as.csv([1, [['two'], ['three']], 4])).toBe('1,array[[\'two\'],[\'three\']],4');
+
+        expect(pgp.as.csv(obj)).toBe('123,\'test\'');
     });
 
     it('must correctly resolve functions', () => {

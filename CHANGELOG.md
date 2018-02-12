@@ -1,5 +1,6 @@
 ### Release History
 
+* 7.5.0 Extending [CSV Filter]. Released: Feb 12, 2018
 * 7.4.1 Added `inTransaction` flag into [TaskContext]. Released: Jan 26, 2018
 * 7.4.0 This project is now sponsored by [Lisk]. Released: Jan 20, 2018
 * 7.3.0 Updating [as.alias] method, adding method [ColumnSet.assignColumns]. Released: Nov 05, 2017.
@@ -144,4 +145,5 @@
 [ColumnSet.assignColumns]:http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html#assignColumns
 [Lisk]:https://lisk.io/
 [TaskContext]:http://vitaly-t.github.io/pg-promise/global.html#TaskContext
+[CSV Filter]:https://github.com/vitaly-t/pg-promise#csv-filter
 
