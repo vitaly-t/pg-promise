@@ -497,6 +497,15 @@ const obj = {
 }
 ```
 
+Version 7.5.2 made CTF symbols global, to let you configure CTF objects outside of this library:
+
+```js
+const ctf = {
+    toPostgres: Symbol.for('ctf.toPostgres'),
+    rawType: Symbol.for('ctf.rawType')
+};
+```
+
 Other than that, it works exactly as the [Explicit CTF], but without changing the object's signature.
 
 If you do not know what it means, you should read the ES6 [Symbol] API and its use for unique property names.
