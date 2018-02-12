@@ -1168,6 +1168,23 @@ describe('Format Modifiers', function () {
         });
     });
 
+    describe('list modifier', function () {
+        it('must replace any value with list', function () {
+            expect(pgp.as.format('$1:list', 'hello')).toBe('\'hello\'');
+            expect(pgp.as.format('${data:list}', {data: [1, 'two']})).toBe('1,\'two\'');
+        });
+        it('must ignore invalid flags', function () {
+            expect(pgp.as.format('$1 :list', 'hello')).toBe('\'hello\' :list');
+            expect(pgp.as.format('$1: list', 'hello')).toBe('\'hello\': list');
+        });
+        it('must resolve custom types', function () {
+            expect(pgp.as.format('$1:list', [new SimpleArray()])).toBe('1,\'two\'');
+        });
+        it('must resolve custom raw types', function () {
+            expect(pgp.as.format('$1:list', [new RawArray()])).toBe('1,\'two\'');
+        });
+    });
+
     describe('alias modifier', () => {
         it('must replace any value correctly', () => {
             expect(pgp.as.format('$1:alias', 'name')).toBe('name');

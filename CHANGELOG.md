@@ -1,5 +1,6 @@
 ### Release History
 
+* 7.5.1 Added alias `:list` to [CSV Filter]. Released: Feb 12, 2018
 * 7.5.0 Extending [CSV Filter]. Released: Feb 12, 2018
 * 7.4.1 Added `inTransaction` flag into [TaskContext]. Released: Jan 26, 2018
 * 7.4.0 This project is now sponsored by [Lisk]. Released: Jan 20, 2018

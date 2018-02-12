@@ -381,7 +381,7 @@ Method [as.json] implements the formatting.
 
 ### CSV Filter
 
-When a variable ends with `:csv`, it is formatted as a list of Comma-Separated Values, with each
+When a variable ends with `:csv` or `:list`, it is formatted as a list of Comma-Separated Values, with each
 value formatted according to its JavaScript type.
 
 Typically, you would use this for a value that's an array, though it works for single values also.
@@ -392,7 +392,7 @@ db.any('SELECT * FROM table WHERE id IN ($1:csv)', [ids])
 //=> SELECT * FROM table WHERE id IN (1,2,3)
 ```
 
-Version 7.5.0 added automatic enumeration of object properties:
+From v7.5.1 you also get alias `:list`, plus automatic enumeration of object properties:
 
 ```js
 const obj = {first: 123, second: 'text'};
