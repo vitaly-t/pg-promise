@@ -1,5 +1,6 @@
 ### Release History
 
+* 7.5.2 Makes Symbolic CTF within [Custom Type Formatting] global. Released: Feb 12, 2018
 * 7.5.1 Added alias `:list` to [CSV Filter]. Released: Feb 12, 2018
 * 7.5.0 Extending [CSV Filter]. Released: Feb 12, 2018
 * 7.4.1 Added `inTransaction` flag into [TaskContext]. Released: Jan 26, 2018

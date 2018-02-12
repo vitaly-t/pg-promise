@@ -1331,7 +1331,7 @@ describe('Custom Type Formatting', function () {
         });
     });
 
-    describe('for ctf symbols', () => {
+    describe('for pre-defined ctf symbols', () => {
         const ctf = pgp.as.ctf;
         it('must recognize symbolic ctf', () => {
             expect(pgp.as.format('$1', {[ctf.toPostgres]: () => 'ok'})).toBe('\'ok\'');
@@ -1350,6 +1350,14 @@ describe('Custom Type Formatting', function () {
         });
         it('must ignore symbolic rawType for explicit ctf', () => {
             expect(pgp.as.format('$1', {toPostgres: () => 'ok', [ctf.rawType]: true})).toBe('\'ok\'');
+        });
+    });
+
+    describe('for global ctf symbols', () => {
+        const ctf = pgp.as.ctf;
+        it('must be equal the pre-defined symbols', () => {
+            expect(Symbol.for('ctf.toPostgres')).toBe(ctf.toPostgres);
+            expect(Symbol.for('ctf.rawType')).toBe(ctf.rawType);
         });
     });
 

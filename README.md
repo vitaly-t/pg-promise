@@ -494,10 +494,10 @@ const obj = {
         // return a pre-formatted value that does not need escaping
     },
     [ctf.rawType]: true // use result from toPostgres directly, as Raw Text
-}
+};
 ```
 
-Version 7.5.2 made CTF symbols global, to let you configure CTF objects outside of this library:
+Version 7.5.2 made CTF symbols global, to let you configure objects independently of this library:
 
 ```js
 const ctf = {
@@ -508,9 +508,9 @@ const ctf = {
 
 Other than that, it works exactly as the [Explicit CTF], but without changing the object's signature.
 
-If you do not know what it means, you should read the ES6 [Symbol] API and its use for unique property names.
-But in short, [Symbol] properties are not enumerated via `for(name in obj)`, i.e. they are not generally visible within
-JavaScript, only through specific API such as `Object.getOwnPropertySymbols`.
+If you do not know what it means, read the ES6 [Symbol] API and its use for unique property names.
+But in short, [Symbol] properties are not enumerated via `for(name in obj)`, i.e. they are not generally
+visible within JavaScript, only through specific API `Object.getOwnPropertySymbols`.
 
 ## Query Files
   
