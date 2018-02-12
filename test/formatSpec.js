@@ -64,7 +64,7 @@ describe('Method as.buffer', () => {
         it('must work in any other context', () => {
             const input = [23, new Buffer([1, 2, 3]), 'Hello'], output = '23,\'\\x010203\',\'Hello\'',
                 simple = new Buffer([1, 2, 3]);
-            expect(pgp.as.csv(simple)).toBe('\'\\x010203\'');
+            expect(pgp.as.csv(simple)).toBe('1,2,3');
             expect(pgp.as.format('$1:json', [simple])).toEqual('\'' + JSON.stringify(simple) + '\'');
             expect(pgp.as.csv(input)).toBe(output);
             expect(pgp.as.format('$1,$2,$3', input)).toBe(output);
@@ -347,7 +347,7 @@ describe('Method as.csv', () => {
         expect(pgp.as.csv('don\'t break')).toBe('\'don\'\'t break\''); // text with one single-quote symbol;
         expect(pgp.as.csv('test \'\'')).toBe('\'test \'\'\'\'\''); // text with two single-quote symbols;
 
-        expect(pgp.as.csv(dateSample)).toBe('\'' + $pgUtils.prepareValue(dateSample) + '\''); // test date;
+        expect(pgp.as.csv(dateSample)).toBe(''); // test date;
         expect(pgp.as.csv([dateSample])).toBe('\'' + $pgUtils.prepareValue(dateSample) + '\''); // test date in array;
 
         expect(pgp.as.csv([userObj])).toBe(pgp.as.text(JSON.stringify(userObj)));
