@@ -64,7 +64,7 @@ describe('Method as.buffer', () => {
         it('must work in any other context', () => {
             const input = [23, new Buffer([1, 2, 3]), 'Hello'], output = '23,\'\\x010203\',\'Hello\'',
                 simple = new Buffer([1, 2, 3]);
-            expect(pgp.as.csv(simple)).toBe('\'\\x010203\'');
+            expect(pgp.as.csv(simple)).toBe('1,2,3');
             expect(pgp.as.format('$1:json', [simple])).toEqual('\'' + JSON.stringify(simple) + '\'');
             expect(pgp.as.csv(input)).toBe(output);
             expect(pgp.as.format('$1,$2,$3', input)).toBe(output);
@@ -319,8 +319,10 @@ describe('Method as.csv', () => {
 
     it('must correctly convert any parameters into CSV', () => {
 
-        ////////////////////////////////
-        // positive tests;
+        const obj = {
+            first: 123,
+            second: 'test'
+        };
 
         expect(pgp.as.csv()).toBe(''); // test undefined;
         expect(pgp.as.csv([])).toBe(''); // test empty array;
@@ -347,7 +349,7 @@ describe('Method as.csv', () => {
         expect(pgp.as.csv('don\'t break')).toBe('\'don\'\'t break\''); // text with one single-quote symbol;
         expect(pgp.as.csv('test \'\'')).toBe('\'test \'\'\'\'\''); // text with two single-quote symbols;
 
-        expect(pgp.as.csv(dateSample)).toBe('\'' + $pgUtils.prepareValue(dateSample) + '\''); // test date;
+        expect(pgp.as.csv(dateSample)).toBe(''); // test date;
         expect(pgp.as.csv([dateSample])).toBe('\'' + $pgUtils.prepareValue(dateSample) + '\''); // test date in array;
 
         expect(pgp.as.csv([userObj])).toBe(pgp.as.text(JSON.stringify(userObj)));
@@ -359,6 +361,8 @@ describe('Method as.csv', () => {
         // test array-type as a parameter;
         expect(pgp.as.csv([1, [2, 3], 4])).toBe('1,array[2,3],4');
         expect(pgp.as.csv([1, [['two'], ['three']], 4])).toBe('1,array[[\'two\'],[\'three\']],4');
+
+        expect(pgp.as.csv(obj)).toBe('123,\'test\'');
     });
 
     it('must correctly resolve functions', () => {
