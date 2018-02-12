@@ -54,6 +54,7 @@ const fmMap = {
     ':name': fmFlags.name,
     ':json': fmFlags.json,
     ':csv': fmFlags.csv,
+    ':list': fmFlags.csv,
     ':value': fmFlags.value,
     '#': fmFlags.value
 };
@@ -708,9 +709,7 @@ const $as = {
      * Converts a single value or an array of values into a CSV (comma-separated values) string, with all values formatted
      * according to their JavaScript type.
      *
-     * When formatting a query, a variable makes use of this method via modifier `:csv`. See method {@link formatting.format format}.
-     *
-     * **Added in v7.5.0**
+     * When formatting a query, a variable makes use of this method via modifier `:csv`, with alias `:list` supported from v7.5.1
      *
      * When `values` is an object that's not `null` or `Array`, its properties are enumerated for the actual values.
      *
@@ -795,7 +794,8 @@ const $as = {
      * `Date`, `Buffer`, {@link QueryFile} or `null`. Special property name `this` refers to the formatting object itself,
      *   to be injected as a JSON string. When referencing a property that doesn't exist in the formatting object, it throws
      *   {@link external:Error Error} = `Property 'PropName' doesn't exist`, unless option `partial` is used.
-     * - **Version 6.10.0** added support for $[Nested Named Parameters].
+     *
+     * - Support for $[Nested Named Parameters] was added in v6.10.0
      *
      * By default, each variable is automatically formatted according to its type, unless it is a special variable:
      *
@@ -813,11 +813,11 @@ const $as = {
      *   - `$1:name`, `$2:name`,..., and `$*propName:name*` (see `*` above)
      *   - `$1~`, `$2~`,..., and `$*propName~*` (see `*` above)
      *
-     * - **Version 5.9.0** added support for modifier `:alias` - non-verbose $[SQL Names] escaping.
+     * - Modifier `:alias` - non-verbose $[SQL Names] escaping.
      *
      * - JSON override ends with `:json` to format the value of any type as a JSON string
      *
-     * - CSV override ends with `:csv` to format an array as a properly escaped comma-separated list of values.
+     * - CSV override ends with `:csv` or `:list` to format an array as a properly escaped comma-separated list of values.
      *
      * @param {string|QueryFile|object} query
      * A query string, a {@link QueryFile} or any object that implements $[Custom Type Formatting], to be formatted according to `values`.
