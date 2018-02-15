@@ -309,12 +309,12 @@ const obj = {
     one: 1,
     two: 2
 };
-db.query('INSERT INTO table(${this:name}) VALUES(${one}, ${two})', obj);
+db.query('INSERT INTO table(${this:name}) VALUES(${this:csv})', obj);
 //=> INSERT INTO table("one","two") VALUES(1, 2)
 ```
 
 Relying on this type of formatting for sql names and identifiers, along with regular variable formatting
-makes your application impervious to [SQL injection].
+protects your application from [SQL injection].
 
 Method [as.name] implements the formatting.
 
@@ -417,8 +417,8 @@ The library always first checks for the [Symbolic CTF], and if no such syntax is
 
 ### Explicit CTF
 
-Any value/object that implements function `toPostgres` is treated as a custom formatting type. The function is then called to get the actual value,
-passing it the value/object via `this` context, and plus as a single parameter (in case `toPostgres` is an ES6 arrow function):
+Any value/object that implements function `toPostgres` is treated as a custom-formatting type. The function is then called to get the actual value,
+passing it the object via `this` context, and plus as a single parameter (in case `toPostgres` is an ES6 arrow function):
 
 ```js
 const obj = {
@@ -485,7 +485,7 @@ The only difference from [Explicit CTF] is that we set `toPostgres` and `rawType
 defined in the [ctf] namespace: 
 
 ```js
-const ctf = pgp.as.ctf; // CTF symbols
+const ctf = pgp.as.ctf; // Global CTF symbols
 
 const obj = {
     [ctf.toPostgres](self) {
@@ -517,12 +517,10 @@ visible within JavaScript, only through specific API `Object.getOwnPropertySymbo
 Use of external SQL files (via [QueryFile]) offers many advantages:
 
 * Much cleaner JavaScript code, with all SQL kept in external files;
-* Much easier to write large and well-formatted SQL, with comments and whole revisions;
+* Much easier to write large and well-formatted SQL, with many comments and whole revisions;
 * Changes in external SQL can be automatically re-loaded (option `debug`), without restarting the app;
-* Pre-formatting SQL upon loading (option `params`), making a two-step SQL formatting a breathe;
-* Parsing and minifying SQL (options `minify`/`compress`), for early error detection and compact queries.
-
-Example:
+* Pre-formatting SQL upon loading (option `params`), automating two-step SQL formatting;
+* Parsing and minifying SQL (options `minify` + `compress`), for early error detection and compact queries.
 
 ```js
 const path = require('path');
@@ -561,7 +559,7 @@ WHERE id = ${id}
 Every query method of the library can accept type [QueryFile] as its `query` parameter.
 The type never throws any error, leaving it for query methods to gracefully reject with [QueryFileError].
 
-Use of [Named Parameters] withing external SQL files is recommended over the [Index Variables], because it makes the SQL
+Use of [Named Parameters] within external SQL files is recommended over the [Index Variables], because it makes the SQL
 much easier to read and understand, and because it also allows [Nested Named Parameters], so variables in a large
 and complex SQL file can be grouped in namespaces for even easier visual separation.
 
@@ -581,19 +579,19 @@ db.task(t => {
     });
 ```
 
-Tasks provide a shared connection context for its callback function, to be released when finished.
-See also [Chaining Queries] to understand the importance of using tasks.
+Tasks provide a shared connection context for its callback function, to be released when finished, and
+they must be used whenever executing more than one query at a time. See also [Chaining Queries] to understand
+the importance of using tasks.
 
 ## Transactions
 
-Transaction method [tx] is like [task] that also executes `BEGIN` + `COMMIT`/`ROLLBACK` when needed:
+Transaction method [tx] is like [task], which also executes `BEGIN` + `COMMIT`/`ROLLBACK` as required:
 
 ```js
 db.tx(t => {
     // creating a sequence of transaction queries:
     const q1 = t.none('UPDATE users SET active = $1 WHERE id = $2', [true, 123]);
-    const q2 = t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id',
-        ['users', 123]);
+    const q2 = t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id', ['users', 123]);
 
     // returning a promise that determines a successful transaction:
     return t.batch([q1, q2]); // all of the queries are to be resolved;
