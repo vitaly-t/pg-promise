@@ -684,7 +684,7 @@ db.task('get-event-logs', async t => {
 
 ## Transactions
 
-Transaction method [tx] is like [task], which also executes `BEGIN` + `COMMIT`/`ROLLBACK` as required:
+Transaction method [tx] is like [task], which also executes `BEGIN` + `COMMIT`/`ROLLBACK`:
 
 ```js
 db.tx(t => {
@@ -704,7 +704,7 @@ db.tx(t => {
 ```
 
 If the callback function returns a rejected promise or throws an error, the method will automatically execute `ROLLBACK` at the end. 
-In all other cases the transaction will be automatically followed by `COMMIT`.
+In all other cases the transaction will be automatically closed by `COMMIT`.
 
 The same as tasks, transactions support [Tags], ES6 generators and ES7 async:
 
