@@ -712,7 +712,7 @@ The same as tasks, transactions support [Tags], ES6 generators and ES7 async:
 <summary><b>With ES6 generator</b></summary>
 
 ```js
-db.tx(t => {
+db.tx(function * (t) {
     yield t.none('UPDATE users SET active = $1 WHERE id = $2', [true, 123]);
     yield t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id', ['users', 123]);
 })
@@ -730,7 +730,7 @@ db.tx(t => {
 <summary><b>With ES6 generator + tag</b></summary>
 
 ```js
-db.tx('update-user', t => {
+db.tx('update-user', function * (t) {
     yield t.none('UPDATE users SET active = $1 WHERE id = $2', [true, 123]);
     yield t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id', ['users', 123]);
 })
