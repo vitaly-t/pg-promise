@@ -35,7 +35,6 @@ pg-promise
   - [Transactions](#transactions)
     - [Limitations](#limitations)   
     - [Configurable Transactions](#configurable-transactions)
-  - [ES6 Generators](#es6-generators)
   - [Library de-initialization](#library-de-initialization)
 * [History](#history)
 * [License](#license)
@@ -593,10 +592,10 @@ Tasks provide a shared connection context for its callback function, to be relea
 they must be used whenever executing more than one query at a time. See also [Chaining Queries] to understand
 the importance of using tasks.
 
-You can optionally tag tasks, see [Tags], and use either ES6 generators or ES7 async syntax:
+You can optionally tag tasks (see [Tags]), and use either ES6 generators or ES7 async syntax:
 
 <details>
-  <summary>**With ES6 Generators**</summary>
+  <summary><b>With ES6 Generators</b></summary>
   
 ```js
 db.task(function * (t) {
@@ -617,7 +616,7 @@ db.task(function * (t) {
 </details>
 
 <details>
-  <summary>**With ES7 Async**</summary>
+  <summary><b>With ES7 Async</b></summary>
   
 ```js
 db.task(async t => {
@@ -659,7 +658,7 @@ db.tx(t => {
 ```
 
 <details>
-<summary>**With ES6 Generators**</summary>
+<summary><b>With ES6 Generators</b></summary>
 
 ```js
 db.tx(t => {
@@ -675,8 +674,8 @@ db.tx(t => {
 ```
 </details>
 
-<datails>
-<summary>**Using ES7 Async**</summary>
+<details>
+<summary><b>Using ES7 Async</b></summary>
 
 ```js
 db.tx(async t => {
@@ -773,27 +772,6 @@ _Transaction Mode_ is set via property `txMode` on the transaction function.
 
 This is the most efficient and best-performing way of configuring transactions. In combination with
 *Transaction Snapshots* you can make the most out of transactions in terms of performance and concurrency.
-
-## ES6 Generators
-
-If you prefer writing asynchronous code in a synchronous manner, you can implement your tasks and transactions as generators: 
-
-```js
-function * getUser(t) {
-    const user = yield t.oneOrNone('SELECT * FROM users WHERE id = $1', 123);
-    return yield user || t.one('INSERT INTO users(name) VALUES($1) RETURNING *', 'John');
-}
-
-db.task(getUser)
-    .then(user => {
-        // success
-    })
-    .catch(error => {
-        // error
-    });
-```
-
-The library verifies whether the callback function is a generator, and executes it accordingly.
 
 ## Library de-initialization
 
