@@ -31,8 +31,8 @@ pg-promise
     - [Explicit CTF]
     - [Symbolic CTF]    
   - [Query Files](#query-files)    
-  - [Tasks](#tasks)    
-  - [Transactions](#transactions)
+  - [Tasks]    
+  - [Transactions]
     - [Limitations](#limitations)   
     - [Configurable Transactions](#configurable-transactions)
   - [Library de-initialization](#library-de-initialization)
@@ -937,6 +937,8 @@ DEALINGS IN THE SOFTWARE.
 [Custom Type Formatting]:#custom-type-formatting
 [Explicit CTF]:#explicit-ctf
 [Symbolic CTF]:#symbolic-ctf
+[Tasks]:#tasks    
+[Transactions]:#transactions
 
 <!-- Method Links -->
 
