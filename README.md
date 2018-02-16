@@ -595,7 +595,7 @@ the importance of using tasks.
 You can optionally tag tasks (see [Tags]), and use either ES6 generators or ES7 async syntax:
 
 <details>
-  <summary><b>With ES6 Generators</b></summary>
+  <summary><b>With ES6 generator</b></summary>
   
 ```js
 db.task(function * (t) {
@@ -613,10 +613,33 @@ db.task(function * (t) {
         // failed    
     });
 ```
+
 </details>
 
 <details>
-  <summary><b>With ES7 Async</b></summary>
+  <summary><b>With ES6 generator + tag</b></summary>
+  
+```js
+db.task('get-event-logs', function * (t) {
+    const count = yield t.one('SELECT count(*) FROM events WHERE id = $1', 123, a => +a.count);
+    if(count > 0) {
+        const logs = yield t.any('SELECT * FROM log WHERE event_id = $1', 123);
+        return {count, logs};
+    }
+    return {count};
+})
+    .then(data => {
+        // success, data = either {count} or {count, logs}
+    })
+    .catch(error => {
+        // failed    
+    });
+```
+
+</details>
+
+<details>
+  <summary><b>With ES7 async</b></summary>
   
 ```js
 db.task(async t => {
@@ -634,6 +657,29 @@ db.task(async t => {
         // failed    
     });
 ```
+
+</details>
+
+<details>
+  <summary><b>With ES7 async + tag</b></summary>
+  
+```js
+db.task('get-event-logs', async t => {
+    const count = await t.one('SELECT count(*) FROM events WHERE id = $1', 123, a => +a.count);
+    if(count > 0) {
+        const logs = await t.any('SELECT * FROM log WHERE event_id = $1', 123);
+        return {count, logs};
+    }
+    return {count};
+})
+    .then(data => {
+        // success, data = either {count} or {count, logs}
+    })
+    .catch(error => {
+        // failed    
+    });
+```
+
 </details>
 
 ## Transactions
@@ -657,10 +703,13 @@ db.tx(t => {
     });
 ```
 
+If the callback function returns a rejected promise or throws an error, the method will automatically execute `ROLLBACK` at the end. 
+In all other cases the transaction will be automatically followed by `COMMIT`.
+
 The same as tasks, transactions support [Tags], ES6 generators and ES7 async:
 
 <details>
-<summary><b>With ES6 Generators</b></summary>
+<summary><b>With ES6 generator</b></summary>
 
 ```js
 db.tx(t => {
@@ -674,10 +723,29 @@ db.tx(t => {
         // failure, ROLLBACK was executed
     });
 ```
+
 </details>
 
 <details>
-<summary><b>Using ES7 Async</b></summary>
+<summary><b>With ES6 generator + tag</b></summary>
+
+```js
+db.tx('update-user', t => {
+    yield t.none('UPDATE users SET active = $1 WHERE id = $2', [true, 123]);
+    yield t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id', ['users', 123]);
+})
+    .then(data => {
+        // success, COMMIT was executed
+    })
+    .catch(error => {
+        // failure, ROLLBACK was executed
+    });
+```
+
+</details>
+
+<details>
+<summary><b>Using ES7 async</b></summary>
 
 ```js
 db.tx(async t => {
@@ -691,11 +759,26 @@ db.tx(async t => {
         // failure, ROLLBACK was executed
     });
 ```
+
 </details>
 
+<details>
+<summary><b>Using ES7 async + tag</b></summary>
 
-If the callback function returns a rejected promise or throws an error, the method will automatically execute `ROLLBACK` at the end. 
-In all other cases the transaction will be automatically followed by `COMMIT`.
+```js
+db.tx('update-user', async t => {
+    await t.none('UPDATE users SET active = $1 WHERE id = $2', [true, 123]);
+    await t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id', ['users', 123]);
+})
+    .then(data => {
+        // success, COMMIT was executed
+    })
+    .catch(error => {
+        // failure, ROLLBACK was executed
+    });
+```
+
+</details>
 
 ### Nested Transactions
 
