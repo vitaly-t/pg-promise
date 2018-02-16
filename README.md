@@ -596,7 +596,8 @@ the importance of using tasks.
 You can optionally tag tasks, see [Tags], and use either ES6 generators or ES7 async syntax:
 
 <details>
-  <summary>With ES6 Generators</summary>
+  <summary>**With ES6 Generators**</summary>
+  
 ```js
 db.task(function * (t) {
     const count = yield t.one('SELECT count(*) FROM events WHERE id = $1', 123, a => +a.count);
@@ -616,7 +617,8 @@ db.task(function * (t) {
 </details>
 
 <details>
-  <summary>With ES7 Async</summary>
+  <summary>**With ES7 Async**</summary>
+  
 ```js
 db.task(async t => {
     const count = await t.one('SELECT count(*) FROM events WHERE id = $1', 123, a => +a.count);
@@ -656,7 +658,8 @@ db.tx(t => {
     });
 ```
 
-**Using ES6 Generators**
+<details>
+<summary>**With ES6 Generators**</summary>
 
 ```js
 db.tx(t => {
@@ -670,8 +673,10 @@ db.tx(t => {
         // failure, ROLLBACK was executed
     });
 ```
+</details>
 
-**Using ES7 Async**
+<datails>
+<summary>**Using ES7 Async**</summary>
 
 ```js
 db.tx(async t => {
@@ -685,6 +690,7 @@ db.tx(async t => {
         // failure, ROLLBACK was executed
     });
 ```
+</details>
 
 If the callback function returns a rejected promise or throws an error, the method will automatically execute `ROLLBACK` at the end. 
 In all other cases the transaction will be automatically followed by `COMMIT`.
