@@ -569,10 +569,20 @@ A [task] represents a shared connection for executing multiple queries:
 
 ```js
 db.task(t => {
-    // execute a chain of queries;
+    // execute a chain of queries against the task context, and return the result:
+    return t.one('SELECT count(*) FROM events WHERE id = $1', 123, a => +a.count)
+        .then(count => {
+            if(count > 0) {
+                return t.any('SELECT * FROM log WHERE event_id = $1', 123)
+                    .then(logs => {
+                        return {count, logs};
+                    })
+            }
+            return {count};
+        });    
 })
     .then(data => {
-        // success
+        // success, data = either {count} or {count, logs}
     })
     .catch(error => {
         // failed    
@@ -582,6 +592,48 @@ db.task(t => {
 Tasks provide a shared connection context for its callback function, to be released when finished, and
 they must be used whenever executing more than one query at a time. See also [Chaining Queries] to understand
 the importance of using tasks.
+
+You can optionally tag tasks, see [Tags], and use either ES6 generators or ES7 async syntax:
+
+<details>
+  <summary>With ES6 Generators</summary>
+```js
+db.task(function * (t) {
+    const count = yield t.one('SELECT count(*) FROM events WHERE id = $1', 123, a => +a.count);
+    if(count > 0) {
+        const logs = yield t.any('SELECT * FROM log WHERE event_id = $1', 123);
+        return {count, logs};
+    }
+    return {count};
+})
+    .then(data => {
+        // success, data = either {count} or {count, logs}
+    })
+    .catch(error => {
+        // failed    
+    });
+```
+</details>
+
+<details>
+  <summary>With ES7 Async</summary>
+```js
+db.task(async t => {
+    const count = await t.one('SELECT count(*) FROM events WHERE id = $1', 123, a => +a.count);
+    if(count > 0) {
+        const logs = await t.any('SELECT * FROM log WHERE event_id = $1', 123);
+        return {count, logs};
+    }
+    return {count};
+})
+    .then(data => {
+        // success, data = either {count} or {count, logs}
+    })
+    .catch(error => {
+        // failed    
+    });
+```
+</details>
 
 ## Transactions
 
@@ -597,10 +649,40 @@ db.tx(t => {
     return t.batch([q1, q2]); // all of the queries are to be resolved;
 })
     .then(data => {
-        console.log(data); // successful transaction output;
+        // success, COMMIT was executed
     })
     .catch(error => {
-        console.log(error);
+        // failure, ROLLBACK was executed
+    });
+```
+
+**Using ES6 Generators**
+
+```js
+db.tx(t => {
+    yield t.none('UPDATE users SET active = $1 WHERE id = $2', [true, 123]);
+    yield t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id', ['users', 123]);
+})
+    .then(data => {
+        // success, COMMIT was executed
+    })
+    .catch(error => {
+        // failure, ROLLBACK was executed
+    });
+```
+
+**Using ES7 Async**
+
+```js
+db.tx(async t => {
+    await t.none('UPDATE users SET active = $1 WHERE id = $2', [true, 123]);
+    await t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id', ['users', 123]);
+})
+    .then(data => {
+        // success, COMMIT was executed
+    })
+    .catch(error => {
+        // failure, ROLLBACK was executed
     });
 ```
 
@@ -836,6 +918,7 @@ DEALINGS IN THE SOFTWARE.
 
 [Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
 [Chaining Queries]:https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries
+[Tags]:https://github.com/vitaly-t/pg-promise/wiki/Tags
 
 <!-- External Links -->
 
