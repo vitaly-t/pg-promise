@@ -103,9 +103,9 @@ The protocol is fully customizable / extendable via event [extend].
 
 **IMPORTANT:**
 
-The most important methods to understand from start are [task] and [tx]. As documented for method [query],
-it acquires and releases the connection, which makes it a poor choice for executing multiple queries at once.
-For this reason, [Chaining Queries] is an absolute must-read, to avoid writing the code that misuses connections.
+The most important methods to understand from start are [task] and [tx] (see [Tasks] and [Transactions]).
+As documented for method [query], it acquires and releases the connection, which makes it a poor choice for executing
+multiple queries at once. For this reason, [Chaining Queries] is a must-read, to avoid writing the code that misuses connections.
 
 [Learn by Example] is a beginner's tutorial based on examples.
 
