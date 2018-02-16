@@ -657,6 +657,8 @@ db.tx(t => {
     });
 ```
 
+The same as tasks, transactions support [Tags], ES6 generators and ES7 async:
+
 <details>
 <summary><b>With ES6 Generators</b></summary>
 
@@ -690,6 +692,7 @@ db.tx(async t => {
     });
 ```
 </details>
+
 
 If the callback function returns a rejected promise or throws an error, the method will automatically execute `ROLLBACK` at the end. 
 In all other cases the transaction will be automatically followed by `COMMIT`.
