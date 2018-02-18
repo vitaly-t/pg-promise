@@ -1229,7 +1229,7 @@ describe('Transactions', function () {
             });
             it('must reject', function () {
                 expect(error instanceof TypeError).toBe(true);
-                expect(error.message).toBe('Callback function is required for the transaction.');
+                expect(error.message).toBe('Callback function is required.');
             });
         });
         describe('for a task', function () {
@@ -1245,7 +1245,7 @@ describe('Transactions', function () {
             });
             it('must reject', function () {
                 expect(error instanceof TypeError).toBe(true);
-                expect(error.message).toBe('Callback function is required for the task.');
+                expect(error.message).toBe('Callback function is required.');
             });
         });
 
@@ -1940,8 +1940,7 @@ describe('Task', function () {
                 return promise.resolve('success');
             }
 
-            myTask.tag = 'testTag';
-            db.task(myTask)
+            db.task('testTag', myTask)
                 .then(function (data) {
                     result = data;
                     done();

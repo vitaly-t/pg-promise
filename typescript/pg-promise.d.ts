@@ -438,7 +438,7 @@ declare namespace pgPromise {
         // API: http://vitaly-t.github.io/pg-promise/Database.html#task
         task<T=any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        task<T=any>(tag: string, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        task<T=any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         task<T=any>(options: { tag?: any }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
@@ -446,14 +446,14 @@ declare namespace pgPromise {
         // API: http://vitaly-t.github.io/pg-promise/Database.html#tx
         tx<T=any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        tx<T=any>(tag: string, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        tx<T=any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         tx<T=any>(options: { tag?: any, mode?: ITXMode }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Conditional Transactions;
         txIf<T=any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        txIf<T=any>(tag: string, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        txIf<T=any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         txIf<T=any>(options: { tag?: any, mode?: ITXMode, cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
     }
