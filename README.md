@@ -745,7 +745,7 @@ db.tx('update-user', function * (t) {
 </details>
 
 <details>
-<summary><b>Using ES7 async</b></summary>
+<summary><b>With ES7 async</b></summary>
 
 ```js
 db.tx(async t => {
@@ -763,7 +763,7 @@ db.tx(async t => {
 </details>
 
 <details>
-<summary><b>Using ES7 async + tag</b></summary>
+<summary><b>With ES7 async + tag</b></summary>
 
 ```js
 db.tx('update-user', async t => {
