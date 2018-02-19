@@ -1321,6 +1321,55 @@ describe('Transactions', function () {
         });
     });
 
+    describe('Closing after a regular issue', () => {
+        let error, query;
+        beforeEach(done => {
+            options.query = e => {
+                query = e.query;
+            };
+            db.tx(() => {
+                throw {
+                    code: 'something'
+                };
+            })
+                .catch(e => {
+                    error = e;
+                    done();
+                });
+        });
+        it('Must end with ROLLBACK', () => {
+            expect(error).toEqual({code: 'something'});
+            expect(query).toBe('rollback');
+        });
+        afterEach(() => {
+            delete options.query;
+        });
+    });
+
+    describe('Closing after a connectivity issue', () => {
+        let error, query;
+        beforeEach(done => {
+            options.query = e => {
+                query = e.query;
+            };
+            db.tx(() => {
+                throw {
+                    code: 'ECONNRESET'
+                };
+            })
+                .catch(e => {
+                    error = e;
+                    done();
+                });
+        });
+        it('Must not execute ROLLBACK', () => {
+            expect(error).toEqual({code: 'ECONNRESET'});
+            expect(query).toBe('begin');
+        });
+        afterEach(() => {
+            delete options.query;
+        });
+    });
 });
 
 describe('Conditional Transaction', () => {
