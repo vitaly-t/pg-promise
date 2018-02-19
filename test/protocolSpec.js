@@ -139,6 +139,7 @@ describe('Database Protocol', function () {
         expect(typeof db.query).toBe('function');
         expect(typeof db.result).toBe('function');
         expect(typeof db.tx).toBe('function');
+        expect(typeof db.txIf).toBe('function');
         expect(typeof db.one).toBe('function');
         expect(typeof db.many).toBe('function');
         expect(typeof db.any).toBe('function');
@@ -199,8 +200,9 @@ describe('Database Protocol', function () {
             expect(connection.connect).toBeUndefined();
             expect(typeof connection.query).toBe('function');
             expect(typeof connection.result).toBe('function');
+            expect(typeof connection.task).toBe('function');
             expect(typeof connection.tx).toBe('function');
-            expect(typeof connection.tx).toBe('function');
+            expect(typeof connection.txIf).toBe('function');
             expect(typeof connection.one).toBe('function');
             expect(typeof connection.many).toBe('function');
             expect(typeof connection.any).toBe('function');
@@ -251,6 +253,7 @@ describe('Database Protocol', function () {
             expect(typeof protocol.result).toBe('function');
             expect(typeof protocol.task).toBe('function');
             expect(typeof protocol.tx).toBe('function');
+            expect(typeof protocol.txIf).toBe('function');
             expect(typeof protocol.one).toBe('function');
             expect(typeof protocol.many).toBe('function');
             expect(typeof protocol.any).toBe('function');
@@ -285,15 +288,16 @@ describe('Database Protocol', function () {
                 });
         });
 
-        it('must have all the required methods', function () {
+        it('must have all the required methods', () => {
             expect(protocol && typeof(protocol) === 'object').toBe(true);
             expect(protocol.connect).toBeUndefined();
             expect(protocol.client).toBeUndefined();
             expect(protocol.$config).toBeUndefined();
             expect(typeof(protocol.query)).toBe('function');
             expect(typeof(protocol.result)).toBe('function');
-            expect(typeof(protocol.tx)).toBe('function');
             expect(typeof(protocol.task)).toBe('function');
+            expect(typeof(protocol.tx)).toBe('function');
+            expect(typeof(protocol.txIf)).toBe('function');
             expect(typeof(protocol.one)).toBe('function');
             expect(typeof(protocol.many)).toBe('function');
             expect(typeof(protocol.any)).toBe('function');
