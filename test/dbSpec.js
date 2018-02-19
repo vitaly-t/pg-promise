@@ -1372,6 +1372,58 @@ describe('Transactions', function () {
     });
 });
 
+describe('Conditional Transaction', () => {
+    describe('with default parameters', () => {
+        let firstCtx, secondCtx;
+        beforeEach(done => {
+            db.txIf(t => {
+                firstCtx = t.ctx;
+                t.txIf(t2 => {
+                    secondCtx = t2.ctx;
+                });
+            })
+                .finally(done);
+        });
+        it('must execute a transaction on the top level', () => {
+            expect(firstCtx.isTX).toBe(true);
+        });
+        it('must execute a task on lower levels', () => {
+            expect(secondCtx.isTX).toBe(false);
+        });
+    });
+    describe('with condition simple override', () => {
+        let firstCtx, secondCtx;
+        beforeEach(done => {
+            db.txIf({cnd: false}, t => {
+                firstCtx = t.ctx;
+                t.txIf(t2 => {
+                    secondCtx = t2.ctx;
+                });
+            })
+                .finally(done);
+        });
+        it('must change the nested transaction logic', () => {
+            expect(firstCtx.isTX).toBe(false);
+            expect(secondCtx.isTX).toBe(true);
+        });
+    });
+    describe('with condition-function override', () => {
+        let firstCtx, secondCtx;
+        beforeEach(done => {
+            db.txIf({cnd: () => false}, t => {
+                firstCtx = t.ctx;
+                t.txIf({cnd: a => !a.ctx.inTransaction}, t2 => {
+                    secondCtx = t2.ctx;
+                });
+            })
+                .finally(done);
+        });
+        it('must change the nested transaction logic', () => {
+            expect(firstCtx.isTX).toBe(false);
+            expect(secondCtx.isTX).toBe(true);
+        });
+    });
+});
 
 describe('Return data from a query must match the request type', function () {
 

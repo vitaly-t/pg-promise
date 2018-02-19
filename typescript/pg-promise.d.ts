@@ -451,6 +451,7 @@ declare namespace pgPromise {
         tx<T=any>(options: { tag?: any, mode?: ITXMode }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Conditional Transactions;
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#txIf
         txIf<T=any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         txIf<T=any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
