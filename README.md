@@ -32,9 +32,11 @@ pg-promise
     - [Symbolic CTF]    
   - [Query Files](#query-files)    
   - [Tasks]    
-  - [Transactions]
-    - [Limitations](#limitations)   
+  - [Transactions]    
+    - [Nested Transactions](#nested-transactions)    
+      - [Limitations](#limitations)   
     - [Configurable Transactions](#configurable-transactions)
+    - [Conditional Transactions](#conditional-transactions)    
   - [Library de-initialization](#library-de-initialization)
 * [History](#history)
 * [License](#license)
@@ -810,7 +812,7 @@ db.tx(t => {
     });
 ```
 
-### Limitations
+#### Limitations
 
 It is important to know that PostgreSQL does not support full/atomic nested transactions, it only
 supports [savepoints](http://www.postgresql.org/docs/9.6/static/sql-savepoint.html) inside top-level
@@ -857,6 +859,59 @@ _Transaction Mode_ is set via option `mode`, preceding the the callback function
 
 This is the most efficient and best-performing way of configuring transactions. In combination with
 *Transaction Snapshots* you can make the most out of transactions in terms of performance and concurrency.
+
+### Conditional Transactions
+
+Method [txIf] executes a transaction / [tx] when a specified condition is met, or else it executes a [task]. 
+
+When no condition is specified, the default is to start a transaction, if currently not in one, or else it starts a task.
+
+<details>
+<summary><b>With default condition</b></summary>
+ 
+```js
+db.txIf(t => {
+    // transaction is started, as there is none on the top level
+    return t.txIf(t2 => {
+        // a task is started, because there is a parent transaction        
+    });
+})
+```
+</details>
+
+<details>
+<summary><b>With a custom condition - value</b></summary>
+
+```js
+db.txIf({cnd: someValue}, t => {
+    // if condition is truthy, a transaction is started
+    return t.txIf(t2 => {
+        // a task is started, if the parent is a transaction
+        // a transaction is started, if the parent is a task
+    });
+})
+```
+</details>
+
+<details>
+<summary><b>With a custom condition - callback</b></summary>
+
+```js
+const cnd = c => {
+    // c.ctx - task/transaction context (not available on the top level)
+    // default condition: return !c.ctx || !c.ctx.inTransaction;
+    return someValue;
+};
+
+db.txIf({cnd}, t => {
+    // if condition is truthy, a transaction is started
+    return t.txIf(t2 => {
+        // a task is started, if the parent is a transaction
+        // a transaction is started, if the parent is a task
+    });
+})
+```
+</details>
 
 ## Library de-initialization
 
