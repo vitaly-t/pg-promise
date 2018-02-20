@@ -278,7 +278,7 @@ When a variable ends with `:name`, or shorter syntax `~` (tilde), it represents 
 to be escaped accordingly, and then wrapped in double quotes:
 
 <details>
-<summary><b>With ~ filter</b></summary>
+<summary><b>Using ~ filter</b></summary>
 
 ```js
 db.query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
@@ -287,13 +287,14 @@ db.query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
 </details>
 
 <details>
-<summary><b>With :name filter</b></summary>
+<summary><b>Using :name filter</b></summary>
 
 ```js
 db.query('INSERT INTO $1:name($2:name) VALUES(...)', ['Table Name', 'Column Name']);
 //=> INSERT INTO "Table Name"("Column Name") VALUES(...)
 ```
 </details>
+<br/>
 
 Typically, an SQL name variable is a text string, which must be at least 1 character long.
 However, `pg-promise` supports a variety of ways in which SQL names can be supplied:
@@ -411,7 +412,7 @@ value formatted according to its JavaScript type.
 Typically, you would use this for a value that's an array, though it works for single values also. See the examples below.
 
 <details>
-<summary><b>With :csv filter</b></summary>
+<summary><b>Using :csv filter</b></summary>
 
 ```js
 const ids = [1, 2, 3];
@@ -421,7 +422,7 @@ db.any('SELECT * FROM table WHERE id IN ($1:csv)', [ids])
 </details>
 
 <details>
-<summary><b>With :list filter</b></summary>
+<summary><b>Using :list filter</b></summary>
 
 ```js
 const ids = [1, 2, 3];
@@ -555,7 +556,7 @@ const obj = {
 };
 ```
 
-Version 7.5.2 made CTF symbols global, to let you configure objects independently of this library:
+As CTF symbols are global, you can also configure objects independently of this library:
 
 ```js
 const ctf = {
