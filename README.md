@@ -393,7 +393,7 @@ value formatted according to its JavaScript type.
 Typically, you would use this for a value that's an array, though it works for single values also. See the examples below.
 
 <details>
-<summary><b>With `:csv` filter</b></summary>
+<summary><b>With :csv filter</b></summary>
 
 ```js
 const ids = [1, 2, 3];
@@ -403,7 +403,7 @@ db.any('SELECT * FROM table WHERE id IN ($1:csv)', [ids])
 </details>
 
 <details>
-<summary><b>With `:list` filter</b></summary>
+<summary><b>With :list filter</b></summary>
 
 ```js
 const ids = [1, 2, 3];
@@ -413,10 +413,10 @@ db.any('SELECT * FROM table WHERE id IN ($1:list)', [ids])
 </details>
 <br/>
 
-Using automatic property enumeration.
+Using automatic property enumeration:
 
 <details>
-<summary><b>Enumeration with `:csv` filter</b></summary> 
+<summary><b>Enumeration with :csv filter</b></summary> 
 
 ```js
 const obj = {first: 123, second: 'text'};
@@ -430,7 +430,7 @@ db.none('INSERT INTO table(${this:name}) VALUES(${this:csv})', obj)
 </details>
 
 <details>
-<summary><b>Enumeration with `:list` filter</b></summary> 
+<summary><b>Enumeration with :list filter</b></summary> 
 
 ```js
 const obj = {first: 123, second: 'text'};
@@ -448,7 +448,7 @@ Method [as.csv] implements the formatting.
 
 ## Custom Type Formatting
 
-Starting from version 7.2.0, the library supports dual syntax for _CTF_ (Custom Type Formatting):
+The library supports dual syntax for _CTF_ (Custom Type Formatting):
 
 * [Explicit CTF] - extending the object/type directly, for ease of use, while changing its signature;
 * [Symbolic CTF] - extending the object/type via [Symbol] properties, without changing its signature.
