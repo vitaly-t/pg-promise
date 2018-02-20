@@ -241,14 +241,17 @@ change that, so the value is formatted differently.
 
 Filters use the same syntax for [Index Variables] and [Named Parameters], following immediately the variable name:
 
-* For [Index Variables]
+<details>
+<summary><b>With Index Variables</b></summary>
 
 ```js
 db.any('SELECT $1:name FROM $2:name', ['price', 'products'])
 //=> SELECT "price" FROM "products"
 ```
+</details>
 
-* For [Named Parameters]
+<details>
+<summary><b>With Named Parameters</b></summary>
 
 ```js
 db.any('SELECT ${column:name} FROM ${table:name}', {
@@ -257,6 +260,8 @@ db.any('SELECT ${column:name} FROM ${table:name}', {
 });
 //=> SELECT "price" FROM "products"
 ```
+</details>
+<br/>
 
 The following filters are supported:
 
@@ -272,10 +277,23 @@ The following filters are supported:
 When a variable ends with `:name`, or shorter syntax `~` (tilde), it represents an SQL name or identifier,
 to be escaped accordingly, and then wrapped in double quotes:
 
+<details>
+<summary><b>With ~ filter</b></summary>
+
 ```js
 db.query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
 //=> INSERT INTO "Table Name"("Column Name") VALUES(...)
 ```
+</details>
+
+<details>
+<summary><b>With :name filter</b></summary>
+
+```js
+db.query('INSERT INTO $1:name($2:name) VALUES(...)', ['Table Name', 'Column Name']);
+//=> INSERT INTO "Table Name"("Column Name") VALUES(...)
+```
+</details>
 
 Typically, an SQL name variable is a text string, which must be at least 1 character long.
 However, `pg-promise` supports a variety of ways in which SQL names can be supplied:
@@ -562,6 +580,9 @@ Use of external SQL files (via [QueryFile]) offers many advantages:
 * Pre-formatting SQL upon loading (option `params`), automating two-step SQL formatting;
 * Parsing and minifying SQL (options `minify` + `compress`), for early error detection and compact queries.
 
+<details>
+<summary><b>Example</b></summary>
+
 ```js
 const path = require('path');
 
@@ -595,6 +616,8 @@ SELECT name, dob -- single-line comments are supported
 FROM Users
 WHERE id = ${id}
 ```
+</details>
+<br/>
 
 Every query method of the library can accept type [QueryFile] as its `query` parameter.
 The type never throws any error, leaving it for query methods to gracefully reject with [QueryFileError].
