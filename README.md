@@ -33,11 +33,11 @@ pg-promise
   - [Query Files](#query-files)    
   - [Tasks]    
   - [Transactions]    
-    - [Nested Transactions](#nested-transactions)    
-      - [Limitations](#limitations)   
-    - [Configurable Transactions](#configurable-transactions)
-    - [Conditional Transactions](#conditional-transactions)    
-  - [Library de-initialization](#library-de-initialization)
+    - [Nested Transactions]    
+      - [Limitations]   
+    - [Configurable Transactions]
+    - [Conditional Transactions]    
+  - [Library de-initialization]
 * [History](#history)
 * [License](#license)
 
@@ -787,6 +787,9 @@ db.tx('update-user', async t => {
 Nested transactions automatically share the connection between all levels.
 This library sets no limitation as to the depth (nesting levels) of transactions supported.
 
+<details>
+<summary><b>Example:</b></summary>
+
 ```js
 db.tx(t => {
     const queries = [
@@ -805,12 +808,15 @@ db.tx(t => {
     return t.batch(queries);
 })
     .then(data => {
-        console.log(data); // printing transaction result;
+        // success
     })
     .catch(error => {
-        console.log(error); // printing the error;
+        // failure
     });
 ```
+</details>
+
+If you want to avoid automatic occurrence of nested transactions, see [Conditional Transactions].
 
 #### Limitations
 
@@ -865,6 +871,7 @@ This is the most efficient and best-performing way of configuring transactions. 
 Method [txIf] executes a transaction / [tx] when a specified condition is met, or else it executes a [task]. 
 
 When no condition is specified, the default is to start a transaction, if currently not in one, or else it starts a task.
+It is useful when you want to avoid [Nested Transactions] - savepoints.
 
 <details>
 <summary><b>With default condition</b></summary>
@@ -993,6 +1000,11 @@ DEALINGS IN THE SOFTWARE.
 [Symbolic CTF]:#symbolic-ctf
 [Tasks]:#tasks    
 [Transactions]:#transactions
+[Nested Transactions]:#nested-transactions    
+[Limitations]:#limitations   
+[Configurable Transactions]:#configurable-transactions
+[Conditional Transactions]:#conditional-transactions    
+[Library de-initialization]:#library-de-initialization
 
 <!-- Database Method Links -->
 

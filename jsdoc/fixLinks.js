@@ -36,7 +36,8 @@ const links = {
     'Bluebird': 'https://github.com/petkaantonov/bluebird',
     'Long Stack Traces': 'http://bluebirdjs.com/docs/api/promise.config.html',
     'Symbol': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol',
-    'Library de-initialization': 'https://github.com/vitaly-t/pg-promise#library-de-initialization'
+    'Library de-initialization': 'https://github.com/vitaly-t/pg-promise#library-de-initialization',
+    'Nested Transactions': 'https://github.com/vitaly-t/pg-promise#nested-transactions'
 };
 
 function fixLinks(source) {
