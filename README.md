@@ -831,21 +831,20 @@ const TransactionMode = pgp.txMode.TransactionMode;
 const isolationLevel = pgp.txMode.isolationLevel;
  
 // Create a reusable transaction mode (serializable + read-only + deferrable):
-const tmSRD = new TransactionMode({
+const mode = new TransactionMode({
     tiLevel: isolationLevel.serializable,
     readOnly: true,
     deferrable: true
 });
 
-function myTransaction() {
-    return this.query('SELECT * FROM table');
-}
-
-myTransaction.txMode = tmSRD; // assign transaction mode;
-
-db.tx(myTransaction)
+db.tx({mode}, t => {
+    return t.any('SELECT 123'); // do transaction queries
+})
     .then(() => {
         // success;
+    })
+    .catch(error => {
+        // failure    
     });
 ```
 
@@ -854,7 +853,7 @@ Instead of the default `BEGIN`, such transaction will open with the following co
 BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE
 ```
 
-_Transaction Mode_ is set via property `txMode` on the transaction function.
+_Transaction Mode_ is set via option `mode`, preceding the the callback function. See methods [tx] and [txIf].
 
 This is the most efficient and best-performing way of configuring transactions. In combination with
 *Transaction Snapshots* you can make the most out of transactions in terms of performance and concurrency.
@@ -940,7 +939,7 @@ DEALINGS IN THE SOFTWARE.
 [Tasks]:#tasks    
 [Transactions]:#transactions
 
-<!-- Method Links -->
+<!-- Database Method Links -->
 
 [query]:http://vitaly-t.github.io/pg-promise/Database.html#query
 [none]:http://vitaly-t.github.io/pg-promise/Database.html#none
@@ -960,6 +959,7 @@ DEALINGS IN THE SOFTWARE.
 [connect]:http://vitaly-t.github.io/pg-promise/Database.html#connect
 [task]:http://vitaly-t.github.io/pg-promise/Database.html#task
 [tx]:http://vitaly-t.github.io/pg-promise/Database.html#tx
+[txIf]:http://vitaly-t.github.io/pg-promise/Database.html#txIf
 [batch]:http://vitaly-t.github.io/pg-promise/Task.html#batch
 [sequence]:http://vitaly-t.github.io/pg-promise/Task.html#sequence
 [page]:http://vitaly-t.github.io/pg-promise/Task.html#page
