@@ -98,14 +98,14 @@ There are also a few specific methods that you will often need:
 * [map], [each] - for simpler/inline result pre-processing/re-mapping;
 * [func], [proc] - to simplify execution of SQL functions/procedures;
 * [stream] - to access rows from a query via a read stream;
-* [connect], [task] + [tx] - for shared connections + automatic transactions, each exposing a connected protocol that
-  has additional methods [batch], [page] and [sequence].
+* [connect], [task], [tx] + [txIf] - for shared connections + automatic transactions, each exposing a connected protocol
+  that has additional methods [batch], [page] and [sequence].
 
 The protocol is fully customizable / extendable via event [extend].
 
 **IMPORTANT:**
 
-The most important methods to understand from start are [task] and [tx] (see [Tasks] and [Transactions]).
+The most important methods to understand from start are [task] and [tx]/[txIf] (see [Tasks] and [Transactions]).
 As documented for method [query], it acquires and releases the connection, which makes it a poor choice for executing
 multiple queries at once. For this reason, [Chaining Queries] is a must-read, to avoid writing the code that misuses connections.
 
@@ -179,7 +179,10 @@ db.none('INSERT INTO documents(id, doc) VALUES(${id}, ${this})', {
 
 #### Nested Named Parameters
 
-[Named Parameters] can be nested to any depth level:
+[Named Parameters] support property name nesting of any depth.
+
+<details>
+<summary><b>Example</b></summary>
 
 ```js
 const obj = {
@@ -212,6 +215,8 @@ db.one('SELECT ${one.two.three.value2}', obj); //=> SELECT 'hello'
 db.one('SELECT ${one.two.three.value3}', obj); //=> SELECT 'world'
 db.one('SELECT ${one.two.three.value4}', obj); //=> SELECT 'custom'
 ```
+</details>
+<br/>
 
 The last name in the resolution can be anything, including:
 
@@ -385,15 +390,33 @@ Method [as.json] implements the formatting.
 When a variable ends with `:csv` or `:list`, it is formatted as a list of Comma-Separated Values, with each
 value formatted according to its JavaScript type.
 
-Typically, you would use this for a value that's an array, though it works for single values also.
+Typically, you would use this for a value that's an array, though it works for single values also. See the examples below.
+
+<details>
+<summary><b>With `:csv` filter</b></summary>
 
 ```js
 const ids = [1, 2, 3];
 db.any('SELECT * FROM table WHERE id IN ($1:csv)', [ids])
 //=> SELECT * FROM table WHERE id IN (1,2,3)
 ```
+</details>
 
-From v7.5.1 you also get alias `:list`, plus automatic enumeration of object properties:
+<details>
+<summary><b>With `:list` filter</b></summary>
+
+```js
+const ids = [1, 2, 3];
+db.any('SELECT * FROM table WHERE id IN ($1:list)', [ids])
+//=> SELECT * FROM table WHERE id IN (1,2,3)
+```
+</details>
+<br/>
+
+Using automatic property enumeration.
+
+<details>
+<summary><b>Enumeration with `:csv` filter</b></summary> 
 
 ```js
 const obj = {first: 123, second: 'text'};
@@ -404,6 +427,22 @@ db.none('INSERT INTO table($1:name) VALUES($1:csv)', [obj])
 db.none('INSERT INTO table(${this:name}) VALUES(${this:csv})', obj)
 //=> INSERT INTO table("first","second") VALUES(123,'text')
 ```
+</details>
+
+<details>
+<summary><b>Enumeration with `:list` filter</b></summary> 
+
+```js
+const obj = {first: 123, second: 'text'};
+
+db.none('INSERT INTO table($1:name) VALUES($1:list)', [obj])
+//=> INSERT INTO table("first","second") VALUES(123,'text')
+
+db.none('INSERT INTO table(${this:name}) VALUES(${this:list})', obj)
+//=> INSERT INTO table("first","second") VALUES(123,'text')
+```
+</details>
+<br/>
 
 Method [as.csv] implements the formatting.
 
@@ -788,7 +827,7 @@ Nested transactions automatically share the connection between all levels.
 This library sets no limitation as to the depth (nesting levels) of transactions supported.
 
 <details>
-<summary><b>Example:</b></summary>
+<summary><b>Example</b></summary>
 
 ```js
 db.tx(t => {
@@ -815,6 +854,7 @@ db.tx(t => {
     });
 ```
 </details>
+<br/>
 
 If you want to avoid automatic occurrence of nested transactions, see [Conditional Transactions].
 
