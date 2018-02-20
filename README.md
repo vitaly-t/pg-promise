@@ -910,7 +910,7 @@ const mode = new TransactionMode({
 });
 
 db.tx({mode}, t => {
-    return t.any('SELECT 123'); // do transaction queries
+    // do transaction queries here
 })
     .then(() => {
         // success;
@@ -942,7 +942,7 @@ It is useful when you want to avoid [Nested Transactions] - savepoints.
  
 ```js
 db.txIf(t => {
-    // transaction is started, as there is none on the top level
+    // transaction is started, as the top level doesn't have one
     return t.txIf(t2 => {
         // a task is started, because there is a parent transaction        
     });
