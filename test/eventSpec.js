@@ -430,42 +430,24 @@ describe('Error event', function () {
 
     if (!options.pgNative) {
         describe('for loose stream requests', () => {
-            /*
-            let error, r, context, counter = 0;
+            let r;
             beforeEach(done => {
-                options.error = (err, e) => {
-                    counter++;
-                    error = err;
-                    context = e;
-                };
-                const qs = new QueryStream('select $1::int', [123]);
-                db.connect()
+                const qs = new QueryStream('select bla');
+                db.task(t => t)
                     .then(obj => {
-                        const query = obj.stream(qs, s => {
+                        return obj.stream(qs, s => {
                             s.pipe(JSONStream.stringify());
                         });
-                        obj.done();
-                        return query;
-                    })
-                    .then(() => {
-                        // TODO: This one is currently called by error
                     })
                     .catch(reason => {
                         r = reason;
-                    })
-                    .finally(done);
+                        done();
+                    });
             });
             it('must notify with correct error', () => {
-                expect(error instanceof Error).toBe(true);
                 expect(r instanceof Error).toBe(true);
-                expect(error.message).toBe($text.looseQuery);
                 expect(r.message).toBe($text.looseQuery);
-                expect(context.query).toBe('select $1::int');
-                expect(context.client).toBeUndefined();
-                expect(context.params).toEqual(['123']);
-                expect(counter).toBe(1);
             });
-            */
         });
     }
 
