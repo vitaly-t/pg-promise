@@ -430,16 +430,20 @@ describe('Error event', function () {
 
     if (!options.pgNative) {
         describe('for loose stream requests', () => {
-            let r;
+            let r, sco;
             beforeEach(done => {
-                const qs = new QueryStream('select bla');
-                db.task(t => t)
+                const qs = new QueryStream('select * from users');
+                db.connect()
                     .then(obj => {
-                        return obj.stream(qs, s => {
+                        sco = obj;
+                        return sco.stream(qs, s => {
                             s.pipe(JSONStream.stringify());
+                            obj.done();
+                            throw new Error('Something went wrong here');
                         });
                     })
                     .catch(reason => {
+                        //sco.done();
                         r = reason;
                         done();
                     });
