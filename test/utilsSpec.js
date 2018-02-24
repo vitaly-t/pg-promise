@@ -269,9 +269,20 @@ describe('isDev', function () {
 });
 
 describe('getSafeConnection', () => {
-    const cn = 'postgres://postgres:password@localhost:5432/invalidDB';
-    it('must obscure passwords', () => {
-        expect(internal.getSafeConnection(cn)).toBe('postgres://postgres:########@localhost:5432/invalidDB');
+    const cn1 = 'postgres://postgres:password@localhost:5432/invalidDB';
+    const cn2 = {connectionString: 'postgres://postgres:password@localhost:5432/invalidDB'};
+    const cn3 = {password: 'hello', connectionString: 'postgres://postgres:password@localhost:5432/invalidDB'};
+    it('must obscure direct passwords', () => {
+        expect(internal.getSafeConnection(cn1)).toBe('postgres://postgres:########@localhost:5432/invalidDB');
+    });
+    it('must obscure indirect passwords', () => {
+        expect(internal.getSafeConnection(cn2)).toEqual({connectionString: 'postgres://postgres:########@localhost:5432/invalidDB'});
+    });
+    it('must obscure all passwords', () => {
+        expect(internal.getSafeConnection(cn3)).toEqual({
+            password: '#####',
+            connectionString: 'postgres://postgres:########@localhost:5432/invalidDB'
+        });
     });
 });
 
