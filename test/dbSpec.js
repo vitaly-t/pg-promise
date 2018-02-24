@@ -326,29 +326,24 @@ describe('Connection', function () {
         });
         it('must throw the right error', function () {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe($text.doneDisconnected);
+            expect(error.message).toBe($text.looseQuery);
         });
     });
 
-    describe('when executing a disconnected query', function () {
+    describe('when executing a disconnected query', () => {
         let error;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.connect()
-                .then(function (obj) {
+                .then(obj => {
                     obj.done(); // disconnecting;
-                    try {
-                        obj.query(); // invalid disconnected query;
-                    } catch (err) {
-                        error = err;
-                    }
-                }, function (err) {
+                    return obj.query(); // invalid disconnected query;
+                })
+                .catch(err => {
                     error = err;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must throw the right error', function () {
+        it('must throw the right error', () => {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe($text.queryDisconnected);
         });
@@ -1109,29 +1104,22 @@ describe('Transactions', function () {
         });
     });
 
-    describe('Detached Transaction', function () {
-        let error, tx;
-        beforeEach(function (done) {
-            db.tx(function () {
-                tx = this;
-                return promise.resolve();
+    describe('Detached Transaction', () => {
+        let error;
+        beforeEach(done => {
+            db.tx(t => {
+                return t;
             })
-                .then(function () {
-                    try {
-                        // cannot use transaction context
-                        // outside of transaction callback;
-                        tx.query('select \'test\'');
-                    } catch (err) {
-                        error = err;
-                    }
-                }, function (reason) {
-                    error = reason;
+                .then(obj => {
+                    // cannot use transaction context outside of transaction callback:
+                    return obj.query('select 123');
                 })
-                .finally(function () {
-                    done();
-                });
+                .catch(err => {
+                    error = err;
+                })
+                .finally(done);
         });
-        it('must throw an error on any query request', function () {
+        it('must reject when querying after the callback', function () {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe($text.looseQuery);
         });
