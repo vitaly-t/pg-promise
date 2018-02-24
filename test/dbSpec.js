@@ -107,23 +107,25 @@ describe('Connection', function () {
         });
     });
 
-    describe('for raw queries', function () {
+    describe('for raw queries', () => {
         let result, sco;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.connect()
-                .then(function (obj) {
+                .then(obj => {
                     sco = obj;
                     return sco.result('select * from users');
-                }, function (reason) {
+                })
+                .catch(reason => {
                     result = null;
                     return promise.reject(reason);
                 })
-                .then(function (data) {
+                .then(data => {
                     result = data;
-                }, function () {
+                })
+                .catch(() => {
                     result = null;
                 })
-                .finally(function () {
+                .finally(() => {
                     if (sco) {
                         sco.done();
                     }
@@ -134,6 +136,7 @@ describe('Connection', function () {
             expect(isResult(result)).toBe(true);
             expect(result.rows.length > 0).toBe(true);
             expect(typeof(result.rowCount)).toBe('number');
+            expect(typeof(result.duration)).toBe('number');
             expect(result.rows.length === result.rowCount).toBe(true);
         });
     });
@@ -1558,6 +1561,7 @@ describe('Method \'result\'', function () {
         it('must resolve with a single Result object', () => {
             expect(isResult(result)).toBe(true);
             expect(result.rows).toEqual([{one: 1}]);
+            expect(typeof result.duration).toBe('number');
         });
     });
 
@@ -1573,6 +1577,7 @@ describe('Method \'result\'', function () {
         it('must resolve with the last Result object', () => {
             expect(isResult(result)).toBe(true);
             expect(result.rows).toEqual([{two: 2}]);
+            expect('duration' in result).toBe(false); // must be present in multi-query results
         });
     });
 
