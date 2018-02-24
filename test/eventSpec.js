@@ -527,6 +527,7 @@ describe('Receive event', function () {
                 value: 123
             }]);
             expect(isResult(res)).toBe(true);
+            expect(typeof res.duration).toBe('number');
         });
     });
 
@@ -551,6 +552,7 @@ describe('Receive event', function () {
             expect(ctx.dc).toBe(testDC);
             expect(data).toEqual([]);
             expect(isResult(res)).toBe(true);
+            expect(typeof res.duration).toBe('number');
         });
     });
 

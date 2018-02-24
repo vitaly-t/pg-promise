@@ -350,6 +350,13 @@ declare namespace pgPromise {
         readonly $pool: any
     }
 
+    interface IResultExt extends pg.IResult {
+        // Property 'duration' exists only in the following context:
+        //  - for single-query events 'receive'
+        //  - for method Database.result
+        duration?: number;
+    }
+
     type TConfig = pg.TConnectionParameters
 
     // Post-initialization interface;
@@ -411,7 +418,7 @@ declare namespace pgPromise {
         any<T=any>(query: TQuery, values?: any): XPromise<T[]>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#result
-        result<T=pg.IResult>(query: TQuery, values?: any, cb?: (value: pg.IResult) => T, thisArg?: any): XPromise<T>
+        result<T=IResultExt>(query: TQuery, values?: any, cb?: (value: IResultExt) => T, thisArg?: any): XPromise<T>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#multiResult
         multiResult(query: TQuery, values?: any): XPromise<pg.IResult[]>
@@ -600,7 +607,7 @@ declare namespace pgPromise {
         connect?: (client: pg.Client, dc: any, fresh: boolean) => void
         disconnect?: (client: pg.Client, dc: any) => void
         query?: (e: IEventContext) => void
-        receive?: (data: any[], result: pg.IResult, e: IEventContext) => void
+        receive?: (data: any[], result: IResultExt, e: IEventContext) => void
         task?: (e: IEventContext) => void
         transact?: (e: IEventContext) => void
         error?: (err: any, e: IEventContext) => void
