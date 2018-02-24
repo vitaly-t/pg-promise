@@ -326,7 +326,7 @@ describe('Connection', function () {
         });
         it('must throw the right error', function () {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe($text.doneDisconnected);
+            expect(error.message).toBe($text.looseQuery);
         });
     });
 
