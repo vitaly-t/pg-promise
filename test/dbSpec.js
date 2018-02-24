@@ -454,21 +454,31 @@ describe('Masked Connection Log', function () {
         });
     });
 
-    /* Doesn't work with pg v6.2, probably due to this issue: https://github.com/brianc/node-postgres/issues/1141
-    describe('as a string', function () {
-        var connection = 'postgres://postgres:password@localhost:123/unknown';
-        beforeEach(function (done) {
-            var errDB = pgp(connection);
+    describe('as a string', () => {
+        beforeEach(done => {
+            const errDB = pgp('postgres://postgres:password@localhost:123/unknown');
             errDB.connect()
-                .catch(function () {
+                .catch(() => {
                     done();
                 });
         });
-        it('must report the password masked correctly', function () {
+        it('must report the password masked correctly', () => {
             expect(cn).toBe('postgres://postgres:########@localhost:123/unknown');
         });
     });
-    */
+
+    describe('as a config string', () => {
+        beforeEach(done => {
+            const errDB = pgp({connectionString: 'postgres://postgres:password@localhost:123/unknown'});
+            errDB.connect()
+                .catch(() => {
+                    done();
+                });
+        });
+        it('must report the password masked correctly', () => {
+            expect(cn).toEqual({connectionString: 'postgres://postgres:########@localhost:123/unknown'});
+        });
+    });
 
     afterEach(function () {
         delete options.error;
