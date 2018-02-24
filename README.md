@@ -32,10 +32,12 @@ pg-promise
     - [Symbolic CTF]    
   - [Query Files](#query-files)    
   - [Tasks]    
-  - [Transactions]
-    - [Limitations](#limitations)   
-    - [Configurable Transactions](#configurable-transactions)
-  - [Library de-initialization](#library-de-initialization)
+  - [Transactions]    
+    - [Nested Transactions]    
+      - [Limitations]   
+    - [Configurable Transactions]
+    - [Conditional Transactions]    
+  - [Library de-initialization]
 * [History](#history)
 * [License](#license)
 
@@ -96,14 +98,14 @@ There are also a few specific methods that you will often need:
 * [map], [each] - for simpler/inline result pre-processing/re-mapping;
 * [func], [proc] - to simplify execution of SQL functions/procedures;
 * [stream] - to access rows from a query via a read stream;
-* [connect], [task] + [tx] - for shared connections + automatic transactions, each exposing a connected protocol that
-  has additional methods [batch], [page] and [sequence].
+* [connect], [task], [tx] + [txIf] - for shared connections + automatic transactions, each exposing a connected protocol
+  that has additional methods [batch], [page] and [sequence].
 
 The protocol is fully customizable / extendable via event [extend].
 
 **IMPORTANT:**
 
-The most important methods to understand from start are [task] and [tx] (see [Tasks] and [Transactions]).
+The most important methods to understand from start are [task] and [tx]/[txIf] (see [Tasks] and [Transactions]).
 As documented for method [query], it acquires and releases the connection, which makes it a poor choice for executing
 multiple queries at once. For this reason, [Chaining Queries] is a must-read, to avoid writing the code that misuses connections.
 
@@ -177,7 +179,10 @@ db.none('INSERT INTO documents(id, doc) VALUES(${id}, ${this})', {
 
 #### Nested Named Parameters
 
-[Named Parameters] can be nested to any depth level:
+[Named Parameters] support property name nesting of any depth.
+
+<details>
+<summary><b>Example</b></summary>
 
 ```js
 const obj = {
@@ -210,6 +215,8 @@ db.one('SELECT ${one.two.three.value2}', obj); //=> SELECT 'hello'
 db.one('SELECT ${one.two.three.value3}', obj); //=> SELECT 'world'
 db.one('SELECT ${one.two.three.value4}', obj); //=> SELECT 'custom'
 ```
+</details>
+<br/>
 
 The last name in the resolution can be anything, including:
 
@@ -234,14 +241,17 @@ change that, so the value is formatted differently.
 
 Filters use the same syntax for [Index Variables] and [Named Parameters], following immediately the variable name:
 
-* For [Index Variables]
+<details>
+<summary><b>With Index Variables</b></summary>
 
 ```js
 db.any('SELECT $1:name FROM $2:name', ['price', 'products'])
 //=> SELECT "price" FROM "products"
 ```
+</details>
 
-* For [Named Parameters]
+<details>
+<summary><b>With Named Parameters</b></summary>
 
 ```js
 db.any('SELECT ${column:name} FROM ${table:name}', {
@@ -250,6 +260,8 @@ db.any('SELECT ${column:name} FROM ${table:name}', {
 });
 //=> SELECT "price" FROM "products"
 ```
+</details>
+<br/>
 
 The following filters are supported:
 
@@ -265,10 +277,24 @@ The following filters are supported:
 When a variable ends with `:name`, or shorter syntax `~` (tilde), it represents an SQL name or identifier,
 to be escaped accordingly, and then wrapped in double quotes:
 
+<details>
+<summary><b>Using ~ filter</b></summary>
+
 ```js
 db.query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
 //=> INSERT INTO "Table Name"("Column Name") VALUES(...)
 ```
+</details>
+
+<details>
+<summary><b>Using :name filter</b></summary>
+
+```js
+db.query('INSERT INTO $1:name($2:name) VALUES(...)', ['Table Name', 'Column Name']);
+//=> INSERT INTO "Table Name"("Column Name") VALUES(...)
+```
+</details>
+<br/>
 
 Typically, an SQL name variable is a text string, which must be at least 1 character long.
 However, `pg-promise` supports a variety of ways in which SQL names can be supplied:
@@ -383,15 +409,33 @@ Method [as.json] implements the formatting.
 When a variable ends with `:csv` or `:list`, it is formatted as a list of Comma-Separated Values, with each
 value formatted according to its JavaScript type.
 
-Typically, you would use this for a value that's an array, though it works for single values also.
+Typically, you would use this for a value that's an array, though it works for single values also. See the examples below.
+
+<details>
+<summary><b>Using :csv filter</b></summary>
 
 ```js
 const ids = [1, 2, 3];
 db.any('SELECT * FROM table WHERE id IN ($1:csv)', [ids])
 //=> SELECT * FROM table WHERE id IN (1,2,3)
 ```
+</details>
 
-From v7.5.1 you also get alias `:list`, plus automatic enumeration of object properties:
+<details>
+<summary><b>Using :list filter</b></summary>
+
+```js
+const ids = [1, 2, 3];
+db.any('SELECT * FROM table WHERE id IN ($1:list)', [ids])
+//=> SELECT * FROM table WHERE id IN (1,2,3)
+```
+</details>
+<br/>
+
+Using automatic property enumeration:
+
+<details>
+<summary><b>Enumeration with :csv filter</b></summary> 
 
 ```js
 const obj = {first: 123, second: 'text'};
@@ -402,12 +446,28 @@ db.none('INSERT INTO table($1:name) VALUES($1:csv)', [obj])
 db.none('INSERT INTO table(${this:name}) VALUES(${this:csv})', obj)
 //=> INSERT INTO table("first","second") VALUES(123,'text')
 ```
+</details>
+
+<details>
+<summary><b>Enumeration with :list filter</b></summary> 
+
+```js
+const obj = {first: 123, second: 'text'};
+
+db.none('INSERT INTO table($1:name) VALUES($1:list)', [obj])
+//=> INSERT INTO table("first","second") VALUES(123,'text')
+
+db.none('INSERT INTO table(${this:name}) VALUES(${this:list})', obj)
+//=> INSERT INTO table("first","second") VALUES(123,'text')
+```
+</details>
+<br/>
 
 Method [as.csv] implements the formatting.
 
 ## Custom Type Formatting
 
-Starting from version 7.2.0, the library supports dual syntax for _CTF_ (Custom Type Formatting):
+The library supports dual syntax for _CTF_ (Custom Type Formatting):
 
 * [Explicit CTF] - extending the object/type directly, for ease of use, while changing its signature;
 * [Symbolic CTF] - extending the object/type via [Symbol] properties, without changing its signature.
@@ -496,7 +556,7 @@ const obj = {
 };
 ```
 
-Version 7.5.2 made CTF symbols global, to let you configure objects independently of this library:
+As CTF symbols are global, you can also configure objects independently of this library:
 
 ```js
 const ctf = {
@@ -520,6 +580,9 @@ Use of external SQL files (via [QueryFile]) offers many advantages:
 * Changes in external SQL can be automatically re-loaded (option `debug`), without restarting the app;
 * Pre-formatting SQL upon loading (option `params`), automating two-step SQL formatting;
 * Parsing and minifying SQL (options `minify` + `compress`), for early error detection and compact queries.
+
+<details>
+<summary><b>Example</b></summary>
 
 ```js
 const path = require('path');
@@ -554,6 +617,8 @@ SELECT name, dob -- single-line comments are supported
 FROM Users
 WHERE id = ${id}
 ```
+</details>
+<br/>
 
 Every query method of the library can accept type [QueryFile] as its `query` parameter.
 The type never throws any error, leaving it for query methods to gracefully reject with [QueryFileError].
@@ -785,6 +850,9 @@ db.tx('update-user', async t => {
 Nested transactions automatically share the connection between all levels.
 This library sets no limitation as to the depth (nesting levels) of transactions supported.
 
+<details>
+<summary><b>Example</b></summary>
+
 ```js
 db.tx(t => {
     const queries = [
@@ -803,14 +871,18 @@ db.tx(t => {
     return t.batch(queries);
 })
     .then(data => {
-        console.log(data); // printing transaction result;
+        // success
     })
     .catch(error => {
-        console.log(error); // printing the error;
+        // failure
     });
 ```
+</details>
+<br/>
 
-### Limitations
+If you want to avoid automatic occurrence of nested transactions, see [Conditional Transactions].
+
+#### Limitations
 
 It is important to know that PostgreSQL does not support full/atomic nested transactions, it only
 supports [savepoints](http://www.postgresql.org/docs/9.6/static/sql-savepoint.html) inside top-level
@@ -831,21 +903,20 @@ const TransactionMode = pgp.txMode.TransactionMode;
 const isolationLevel = pgp.txMode.isolationLevel;
  
 // Create a reusable transaction mode (serializable + read-only + deferrable):
-const tmSRD = new TransactionMode({
+const mode = new TransactionMode({
     tiLevel: isolationLevel.serializable,
     readOnly: true,
     deferrable: true
 });
 
-function myTransaction() {
-    return this.query('SELECT * FROM table');
-}
-
-myTransaction.txMode = tmSRD; // assign transaction mode;
-
-db.tx(myTransaction)
+db.tx({mode}, t => {
+    // do transaction queries here
+})
     .then(() => {
         // success;
+    })
+    .catch(error => {
+        // failure    
     });
 ```
 
@@ -854,10 +925,64 @@ Instead of the default `BEGIN`, such transaction will open with the following co
 BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE
 ```
 
-_Transaction Mode_ is set via property `txMode` on the transaction function.
+_Transaction Mode_ is set via option `mode`, preceding the the callback function. See methods [tx] and [txIf].
 
 This is the most efficient and best-performing way of configuring transactions. In combination with
 *Transaction Snapshots* you can make the most out of transactions in terms of performance and concurrency.
+
+### Conditional Transactions
+
+Method [txIf] executes a transaction / [tx] when a specified condition is met, or else it executes a [task]. 
+
+When no condition is specified, the default is to start a transaction, if currently not in one, or else it starts a task.
+It is useful when you want to avoid [Nested Transactions] - savepoints.
+
+<details>
+<summary><b>With default condition</b></summary>
+ 
+```js
+db.txIf(t => {
+    // transaction is started, as the top level doesn't have one
+    return t.txIf(t2 => {
+        // a task is started, because there is a parent transaction        
+    });
+})
+```
+</details>
+
+<details>
+<summary><b>With a custom condition - value</b></summary>
+
+```js
+db.txIf({cnd: someValue}, t => {
+    // if condition is truthy, a transaction is started
+    return t.txIf(t2 => {
+        // a task is started, if the parent is a transaction
+        // a transaction is started, if the parent is a task
+    });
+})
+```
+</details>
+
+<details>
+<summary><b>With a custom condition - callback</b></summary>
+
+```js
+const cnd = c => {
+    // c.ctx - task/transaction context (not available on the top level)
+    // default condition: return !c.ctx || !c.ctx.inTransaction;
+    return someValue;
+};
+
+db.txIf({cnd}, t => {
+    // if condition is truthy, a transaction is started
+    return t.txIf(t2 => {
+        // a task is started, if the parent is a transaction
+        // a transaction is started, if the parent is a task
+    });
+})
+```
+</details>
 
 ## Library de-initialization
 
@@ -939,8 +1064,13 @@ DEALINGS IN THE SOFTWARE.
 [Symbolic CTF]:#symbolic-ctf
 [Tasks]:#tasks    
 [Transactions]:#transactions
+[Nested Transactions]:#nested-transactions    
+[Limitations]:#limitations   
+[Configurable Transactions]:#configurable-transactions
+[Conditional Transactions]:#conditional-transactions    
+[Library de-initialization]:#library-de-initialization
 
-<!-- Method Links -->
+<!-- Database Method Links -->
 
 [query]:http://vitaly-t.github.io/pg-promise/Database.html#query
 [none]:http://vitaly-t.github.io/pg-promise/Database.html#none
@@ -960,6 +1090,7 @@ DEALINGS IN THE SOFTWARE.
 [connect]:http://vitaly-t.github.io/pg-promise/Database.html#connect
 [task]:http://vitaly-t.github.io/pg-promise/Database.html#task
 [tx]:http://vitaly-t.github.io/pg-promise/Database.html#tx
+[txIf]:http://vitaly-t.github.io/pg-promise/Database.html#txIf
 [batch]:http://vitaly-t.github.io/pg-promise/Task.html#batch
 [sequence]:http://vitaly-t.github.io/pg-promise/Task.html#sequence
 [page]:http://vitaly-t.github.io/pg-promise/Task.html#page

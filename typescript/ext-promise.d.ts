@@ -1,7 +1,5 @@
 /*
 
- // TODO: Support for promises hasn't been updated for TypeScript 2.0 yet!
-
  External Promise Provider.
 
  The purpose of this module is to make it possible to enable declarations of a custom promise library
@@ -20,16 +18,16 @@
  import * as promise from 'bluebird';
  export=promise;
 
- // TODO: The following considerations need to be updated for TypeScript 2.0:
+ Unfortunately, as of today (TypeScript 2.7.2), it is still impossible to use custom promises
+ as TypeScript generics, and this is why we still have this file here, so it can be manually patched,
+ in order to provide access to the custom API of a third-party promise library.
 
- Unfortunately, as of today it is impossible to use custom promises as TypeScript generics,
- and this is why we have this file here, so it can be manually patched.
- You can find research details on this matter from the following link:  
+ You can find research details on this matter from the following link:
  http://stackoverflow.com/questions/36593087/using-a-custom-promise-as-a-generic-type
 
- In the meantime, if you do not want to get these settings overridden during an update or deployment,
- it may be a good idea to copy all of the *.ts files into your own project, and use them from there.
+ In the meantime, if you do not want to get changes here overridden during an update or deployment,
+ it may be a good idea to copy all of the *.ts files into your own project, and use them locally.
 
  */
 
-export = Promise; // Using ES6 Promise by default
+export = Promise; // Using ES6 Promise declarative syntax by default

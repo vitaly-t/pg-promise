@@ -24,7 +24,7 @@ const links = {
     'Nested Named Parameters': 'https://github.com/vitaly-t/pg-promise#nested-named-parameters',
     'tags': 'https://github.com/vitaly-t/pg-promise/wiki/tags',
     'Chaining Queries': 'https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries',
-    'ES6 generator': 'https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function*',
+    'ES6 generator': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator',
     'Performance Boost': 'https://github.com/vitaly-t/pg-promise/wiki/Performance-Boost',
     'Prepared Statement': 'http://www.postgresql.org/docs/9.6/static/sql-prepare.html',
     'Prepared Statements': 'http://www.postgresql.org/docs/9.6/static/sql-prepare.html',
@@ -36,7 +36,8 @@ const links = {
     'Bluebird': 'https://github.com/petkaantonov/bluebird',
     'Long Stack Traces': 'http://bluebirdjs.com/docs/api/promise.config.html',
     'Symbol': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol',
-    'Library de-initialization': 'https://github.com/vitaly-t/pg-promise#library-de-initialization'
+    'Library de-initialization': 'https://github.com/vitaly-t/pg-promise#library-de-initialization',
+    'Nested Transactions': 'https://github.com/vitaly-t/pg-promise#nested-transactions'
 };
 
 function fixLinks(source) {

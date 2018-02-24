@@ -15,27 +15,23 @@ describe('Generators - Positive', function () {
 
     let result, tag, query;
 
-    const tmTest = new pgp.txMode.TransactionMode({
+    const mode = new pgp.txMode.TransactionMode({
         tiLevel: pgp.txMode.isolationLevel.serializable
     });
 
-    function* myTX(t) {
-        return yield t.one('select 123 as value');
-    }
-
-    myTX.txMode = tmTest;
-
-    beforeEach(function (done) {
-        options.transact = function (e) {
+    beforeEach(done => {
+        options.transact = e => {
             tag = e.ctx.tag;
         };
-        options.query = function (e) {
+        options.query = e => {
             if (!query) {
                 query = e.query;
             }
         };
-        db.tx('Custom', myTX)
-            .then(function (data) {
+        db.tx({tag: 'Custom', mode}, function* (t) {
+            return yield t.one('select 123 as value');
+        })
+            .then(data => {
                 result = data;
                 done();
             });
@@ -87,13 +83,11 @@ describe('Generators - Negative', function () {
             throw 123;
         }
 
-        myTask.tag = 'myTag';
-
         beforeEach(function (done) {
             options.task = function (e) {
                 tag = e.ctx.tag;
             };
-            db.task(myTask)
+            db.task('myTag', myTask)
                 .catch(function (error) {
                     result = error;
                     done();
