@@ -54,6 +54,7 @@ declare namespace pg {
     // 1) https://github.com/brianc/node-postgres/blob/master/lib/defaults.js
     // 2) https://github.com/brianc/node-pg-pool
     type TConnectionParameters = {
+        connectionString?: string
         database?: string
         user?: string
         password?: string
@@ -87,6 +88,10 @@ declare namespace pg {
     }
 
     interface IDefaults {
+
+        // connection string for overriding defaults
+        connectionString: string
+
         // database host. defaults to localhost
         host: string
 
@@ -97,7 +102,7 @@ declare namespace pg {
         database: string
 
         //database user's password
-        password?: string
+        password: string
 
         //database port
         port: number

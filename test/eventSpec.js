@@ -513,6 +513,32 @@ describe('Receive event', function () {
                 value: 123
             }]);
             expect(isResult(res)).toBe(true);
+            expect(typeof res.duration).toBe('number');
+        });
+    });
+
+    describe('for empty queries', function () {
+        let ctx, data, res, counter = 0;
+        beforeEach(function (done) {
+            options.receive = function (d, r, e) {
+                counter++;
+                data = d;
+                res = r;
+                ctx = e;
+            };
+            db.none('delete from users where id = $1', 1234567890)
+                .then(function () {
+                    done();
+                });
+        });
+        it('must pass in correct empty data and context', function () {
+            expect(counter).toBe(1);
+            expect(ctx.query).toBe('delete from users where id = 1234567890');
+            expect(ctx.params).toBeUndefined();
+            expect(ctx.dc).toBe(testDC);
+            expect(data).toEqual([]);
+            expect(isResult(res)).toBe(true);
+            expect(typeof res.duration).toBe('number');
         });
     });
 

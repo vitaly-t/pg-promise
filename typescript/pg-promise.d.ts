@@ -1,5 +1,5 @@
 /////////////////////////////////////////
-// Requires pg-promise v7.4.1 or later.
+// Requires pg-promise v8.0.0 or later.
 /////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -350,6 +350,13 @@ declare namespace pgPromise {
         readonly $pool: any
     }
 
+    interface IResultExt extends pg.IResult {
+        // Property 'duration' exists only in the following context:
+        //  - for single-query events 'receive'
+        //  - for method Database.result
+        duration?: number;
+    }
+
     type TConfig = pg.TConnectionParameters
 
     // Post-initialization interface;
@@ -411,7 +418,7 @@ declare namespace pgPromise {
         any<T=any>(query: TQuery, values?: any): XPromise<T[]>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#result
-        result<T=pg.IResult>(query: TQuery, values?: any, cb?: (value: pg.IResult) => T, thisArg?: any): XPromise<T>
+        result<T=IResultExt>(query: TQuery, values?: any, cb?: (value: IResultExt) => T, thisArg?: any): XPromise<T>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#multiResult
         multiResult(query: TQuery, values?: any): XPromise<pg.IResult[]>
@@ -434,18 +441,29 @@ declare namespace pgPromise {
         // API: http://vitaly-t.github.io/pg-promise/Database.html#each
         each<T=any>(query: TQuery, values: any, cb: (row: any, index: number, data: any[]) => void, thisArg?: any): XPromise<T[]>
 
-        // Tasks
+        // Tasks;
         // API: http://vitaly-t.github.io/pg-promise/Database.html#task
         task<T=any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        task<T=any>(tag: any, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        task<T=any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        // Transactions
+        task<T=any>(options: { tag?: any }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+
+        // Transactions;
         // API: http://vitaly-t.github.io/pg-promise/Database.html#tx
         tx<T=any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        tx<T=any>(tag: any, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        tx<T=any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
+        tx<T=any>(options: { tag?: any, mode?: ITXMode }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+
+        // Conditional Transactions;
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#txIf
+        txIf<T=any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+
+        txIf<T=any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+
+        txIf<T=any>(options: { tag?: any, mode?: ITXMode, cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
     }
 
     // Database object in connected state;
@@ -600,7 +618,7 @@ declare namespace pgPromise {
         connect?: (client: pg.Client, dc: any, fresh: boolean) => void
         disconnect?: (client: pg.Client, dc: any) => void
         query?: (e: IEventContext) => void
-        receive?: (data: any[], result: pg.IResult, e: IEventContext) => void
+        receive?: (data: any[], result: IResultExt, e: IEventContext) => void
         task?: (e: IEventContext) => void
         transact?: (e: IEventContext) => void
         error?: (err: any, e: IEventContext) => void

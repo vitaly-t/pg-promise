@@ -107,23 +107,25 @@ describe('Connection', function () {
         });
     });
 
-    describe('for raw queries', function () {
+    describe('for raw queries', () => {
         let result, sco;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.connect()
-                .then(function (obj) {
+                .then(obj => {
                     sco = obj;
                     return sco.result('select * from users');
-                }, function (reason) {
+                })
+                .catch(reason => {
                     result = null;
                     return promise.reject(reason);
                 })
-                .then(function (data) {
+                .then(data => {
                     result = data;
-                }, function () {
+                })
+                .catch(() => {
                     result = null;
                 })
-                .finally(function () {
+                .finally(() => {
                     if (sco) {
                         sco.done();
                     }
@@ -134,6 +136,7 @@ describe('Connection', function () {
             expect(isResult(result)).toBe(true);
             expect(result.rows.length > 0).toBe(true);
             expect(typeof(result.rowCount)).toBe('number');
+            expect(typeof(result.duration)).toBe('number');
             expect(result.rows.length === result.rowCount).toBe(true);
         });
     });
@@ -170,17 +173,15 @@ describe('Connection', function () {
 
             });
         });
-        describe('with transaction connection', function () {
-            beforeEach(function (done) {
+        describe('with transaction connection', () => {
+            beforeEach(done => {
                 dbErr.tx(dummy)
-                    .then(dummy, function (error) {
+                    .catch(error => {
                         result = error;
                     })
-                    .finally(function () {
-                        done();
-                    });
+                    .finally(done);
             });
-            it('must report the right error', function () {
+            it('must report the right error', () => {
                 expect(result instanceof Error).toBe(true);
                 if (options.pgNative) {
                     expect(result.message).toContain('could not connect to server');
@@ -189,28 +190,24 @@ describe('Connection', function () {
                 }
             });
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.error;
         });
     });
 
-    describe('for an invalid port', function () {
+    describe('for an invalid port', () => {
         const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
         errCN.port = '12345';
         const dbErr = pgp(errCN);
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             dbErr.connect()
-                .then(function () {
-                    result = null;
-                }, function (error) {
+                .catch(error => {
                     result = error;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must report the right error', function () {
+        it('must report the right error', () => {
             expect(result instanceof Error).toBe(true);
             if (options.pgNative) {
                 expect(result.message).toContain('could not connect to server');
@@ -220,132 +217,96 @@ describe('Connection', function () {
         });
     });
 
-    describe('direct end() call', function () {
+    describe('direct end() call', () => {
         let txt;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.connect()
                 .then(function (obj) {
                     const c = capture();
                     obj.client.end(true);
                     txt = c();
                     obj.done();
-                    done();
-                });
+                })
+                .finally(done);
         });
-        it('must be reported into the console', function () {
+        it('must be reported into the console', () => {
             expect(txt).toContain($text.clientEnd);
         });
     });
 
-    /*
-     The following three tests cannot pass because of a bug in node-postgres:
-     https://github.com/brianc/node-postgres/issues/746
-     Once the issue has been resolved, these tests should be able to pass.
-     In the meantime, they cause an unhandled error that kills the test framework.
-     */
-
-    /*
-     it('must report the right error on invalid connection', function () {
-     var dbErr = pgp('bla-bla'), result;
-     dbErr.connect()
-     .then(function () {
-     result = null;
-     }, function (error) {
-     result = error;
-     });
-     waitsFor(function () {
-     return result !== undefined;
-     }, 'Connection timed out', 5000);
-     runs(function () {
-     expect(result instanceof Error).toBe(true);
-     expect(result.message).toBe('password authentication failed for user "' + pgp.pg.defaults.user + '"');
-     });
-     });
-
-     it('must report the right error on invalid user name', function () {
-     var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-     errCN.user = 'somebody';
-     var dbErr = pgp(errCN), result;
-     dbErr.connect()
-     .then(function () {
-     result = null;
-     }, function (error) {
-     result = error;
-
-     });
-     waitsFor(function () {
-     return result !== undefined;
-     }, 'Connection timed out', 60000);
-     runs(function () {
-     expect(result instanceof Error).toBe(true);
-     expect(result.message).toBe('password authentication failed for user "somebody"');
-     });
-     });
-
-     it('must report the right error on invalid password', function () {
-     var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-     errCN.password = 'invalid';
-     var dbErr = pgp(errCN), result;
-     dbErr.connect()
-     .then(function () {
-     result = null;
-     }, function (error) {
-     result = error;
-
-     });
-     waitsFor(function () {
-     return result !== undefined;
-     }, 'Connection timed out', 60000);
-     runs(function () {
-     expect(result instanceof Error).toBe(true);
-     expect(result.message).toBe('password authentication failed for user "postgres"');
-     });
-     });
-     */
-
-    describe('on repeated disconnection', function () {
+    describe('for invalid connection', () => {
+        const dbErr = pgp('bla-bla');
         let error;
-        beforeEach(function (done) {
+        beforeEach(done => {
+            dbErr.connect()
+                .catch(err => {
+                    error = err;
+                })
+                .finally(done);
+        });
+        it('must report the right error', () => {
+            const oldStyleError = 'database "bla-bla" does not exist'; // Before PostgreSQL v.10
+            const newStyleError = 'role ' + JSON.stringify(pgp.pg.defaults.user) + ' does not exist';
+            expect(error instanceof Error).toBe(true);
+            expect(error.message === oldStyleError || error.message === newStyleError).toBe(true);
+        });
+    });
+
+    describe('for invalid user name', () => {
+        const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+        errCN.user = 'somebody';
+        const dbErr = pgp(errCN);
+        let error;
+        beforeEach(done => {
+            dbErr.connect()
+                .catch(err => {
+                    error = err;
+                })
+                .finally(done);
+        });
+        it('must report the right error', () => {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe('role "somebody" does not exist');
+        });
+    });
+
+    describe('on repeated disconnection', () => {
+        let error;
+        beforeEach(done => {
             db.connect()
-                .then(function (obj) {
+                .then(obj => {
                     obj.done(); // disconnecting;
                     try {
                         obj.done(); // invalid disconnect;
                     } catch (err) {
                         error = err;
                     }
-                }, function (err) {
+                })
+                .catch(err => {
                     error = err;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must throw the right error', function () {
+        it('must throw the right error', () => {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe($text.doneDisconnected);
+            expect(error.message).toBe($text.looseQuery);
         });
     });
 
-    describe('when executing a disconnected query', function () {
+    describe('when executing a disconnected query', () => {
         let error;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.connect()
-                .then(function (obj) {
+                .then(obj => {
                     obj.done(); // disconnecting;
-                    try {
-                        obj.query(); // invalid disconnected query;
-                    } catch (err) {
-                        error = err;
-                    }
-                }, function (err) {
+                    return obj.query(); // invalid disconnected query;
+                })
+                .catch(err => {
                     error = err;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must throw the right error', function () {
+        it('must throw the right error', () => {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe($text.queryDisconnected);
         });
@@ -456,21 +417,31 @@ describe('Masked Connection Log', function () {
         });
     });
 
-    /* Doesn't work with pg v6.2, probably due to this issue: https://github.com/brianc/node-postgres/issues/1141
-    describe('as a string', function () {
-        var connection = 'postgres://postgres:password@localhost:123/unknown';
-        beforeEach(function (done) {
-            var errDB = pgp(connection);
+    describe('as a string', () => {
+        beforeEach(done => {
+            const errDB = pgp('postgres://postgres:password@localhost:123/unknown');
             errDB.connect()
-                .catch(function () {
+                .catch(() => {
                     done();
                 });
         });
-        it('must report the password masked correctly', function () {
+        it('must report the password masked correctly', () => {
             expect(cn).toBe('postgres://postgres:########@localhost:123/unknown');
         });
     });
-    */
+
+    describe('as a config string', () => {
+        beforeEach(done => {
+            const errDB = pgp({connectionString: 'postgres://postgres:password@localhost:123/unknown'});
+            errDB.connect()
+                .catch(() => {
+                    done();
+                });
+        });
+        it('must report the password masked correctly', () => {
+            expect(cn).toEqual({connectionString: 'postgres://postgres:########@localhost:123/unknown'});
+        });
+    });
 
     afterEach(function () {
         delete options.error;
@@ -1106,29 +1077,22 @@ describe('Transactions', function () {
         });
     });
 
-    describe('Detached Transaction', function () {
-        let error, tx;
-        beforeEach(function (done) {
-            db.tx(function () {
-                tx = this;
-                return promise.resolve();
+    describe('Detached Transaction', () => {
+        let error;
+        beforeEach(done => {
+            db.tx(t => {
+                return t;
             })
-                .then(function () {
-                    try {
-                        // cannot use transaction context
-                        // outside of transaction callback;
-                        tx.query('select \'test\'');
-                    } catch (err) {
-                        error = err;
-                    }
-                }, function (reason) {
-                    error = reason;
+                .then(obj => {
+                    // cannot use transaction context outside of transaction callback:
+                    return obj.query('select 123');
                 })
-                .finally(function () {
-                    done();
-                });
+                .catch(err => {
+                    error = err;
+                })
+                .finally(done);
         });
-        it('must throw an error on any query request', function () {
+        it('must reject when querying after the callback', function () {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe($text.looseQuery);
         });
@@ -1229,7 +1193,7 @@ describe('Transactions', function () {
             });
             it('must reject', function () {
                 expect(error instanceof TypeError).toBe(true);
-                expect(error.message).toBe('Callback function is required for the transaction.');
+                expect(error.message).toBe('Callback function is required.');
             });
         });
         describe('for a task', function () {
@@ -1245,7 +1209,7 @@ describe('Transactions', function () {
             });
             it('must reject', function () {
                 expect(error instanceof TypeError).toBe(true);
-                expect(error.message).toBe('Callback function is required for the task.');
+                expect(error.message).toBe('Callback function is required.');
             });
         });
 
@@ -1372,6 +1336,58 @@ describe('Transactions', function () {
     });
 });
 
+describe('Conditional Transaction', () => {
+    describe('with default parameters', () => {
+        let firstCtx, secondCtx;
+        beforeEach(done => {
+            db.txIf(t => {
+                firstCtx = t.ctx;
+                t.txIf(t2 => {
+                    secondCtx = t2.ctx;
+                });
+            })
+                .finally(done);
+        });
+        it('must execute a transaction on the top level', () => {
+            expect(firstCtx.isTX).toBe(true);
+        });
+        it('must execute a task on lower levels', () => {
+            expect(secondCtx.isTX).toBe(false);
+        });
+    });
+    describe('with condition simple override', () => {
+        let firstCtx, secondCtx;
+        beforeEach(done => {
+            db.txIf({cnd: false}, t => {
+                firstCtx = t.ctx;
+                t.txIf(t2 => {
+                    secondCtx = t2.ctx;
+                });
+            })
+                .finally(done);
+        });
+        it('must change the nested transaction logic', () => {
+            expect(firstCtx.isTX).toBe(false);
+            expect(secondCtx.isTX).toBe(true);
+        });
+    });
+    describe('with condition-function override', () => {
+        let firstCtx, secondCtx;
+        beforeEach(done => {
+            db.txIf({cnd: () => false}, t => {
+                firstCtx = t.ctx;
+                t.txIf({cnd: a => !a.ctx.inTransaction}, t2 => {
+                    secondCtx = t2.ctx;
+                });
+            })
+                .finally(done);
+        });
+        it('must change the nested transaction logic', () => {
+            expect(firstCtx.isTX).toBe(false);
+            expect(secondCtx.isTX).toBe(true);
+        });
+    });
+});
 
 describe('Return data from a query must match the request type', function () {
 
@@ -1558,6 +1574,7 @@ describe('Method \'result\'', function () {
         it('must resolve with a single Result object', () => {
             expect(isResult(result)).toBe(true);
             expect(result.rows).toEqual([{one: 1}]);
+            expect(typeof result.duration).toBe('number');
         });
     });
 
@@ -1573,6 +1590,7 @@ describe('Method \'result\'', function () {
         it('must resolve with the last Result object', () => {
             expect(isResult(result)).toBe(true);
             expect(result.rows).toEqual([{two: 2}]);
+            expect('duration' in result).toBe(false); // must be present in multi-query results
         });
     });
 
@@ -1940,8 +1958,7 @@ describe('Task', function () {
                 return promise.resolve('success');
             }
 
-            myTask.tag = 'testTag';
-            db.task(myTask)
+            db.task('testTag', myTask)
                 .then(function (data) {
                     result = data;
                     done();
@@ -2046,7 +2063,6 @@ describe('Multi-result queries', () => {
         expect(result).toEqual({two: 2});
     });
 });
-
 
 if (jasmine.Runner) {
     const _finishCallback = jasmine.Runner.prototype.finishCallback;
