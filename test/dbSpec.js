@@ -173,17 +173,15 @@ describe('Connection', function () {
 
             });
         });
-        describe('with transaction connection', function () {
-            beforeEach(function (done) {
+        describe('with transaction connection', () => {
+            beforeEach(done => {
                 dbErr.tx(dummy)
-                    .then(dummy, function (error) {
+                    .catch(error => {
                         result = error;
                     })
-                    .finally(function () {
-                        done();
-                    });
+                    .finally(done);
             });
-            it('must report the right error', function () {
+            it('must report the right error', () => {
                 expect(result instanceof Error).toBe(true);
                 if (options.pgNative) {
                     expect(result.message).toContain('could not connect to server');
@@ -192,28 +190,24 @@ describe('Connection', function () {
                 }
             });
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.error;
         });
     });
 
-    describe('for an invalid port', function () {
+    describe('for an invalid port', () => {
         const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
         errCN.port = '12345';
         const dbErr = pgp(errCN);
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             dbErr.connect()
-                .then(function () {
-                    result = null;
-                }, function (error) {
+                .catch(error => {
                     result = error;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must report the right error', function () {
+        it('must report the right error', () => {
             expect(result instanceof Error).toBe(true);
             if (options.pgNative) {
                 expect(result.message).toContain('could not connect to server');
@@ -223,31 +217,22 @@ describe('Connection', function () {
         });
     });
 
-    describe('direct end() call', function () {
+    describe('direct end() call', () => {
         let txt;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.connect()
                 .then(function (obj) {
                     const c = capture();
                     obj.client.end(true);
                     txt = c();
                     obj.done();
-                    done();
-                });
+                })
+                .finally(done);
         });
-        it('must be reported into the console', function () {
+        it('must be reported into the console', () => {
             expect(txt).toContain($text.clientEnd);
         });
     });
-
-    /*
-     The following three tests cannot pass because of a bug in node-postgres:
-     https://github.com/brianc/node-postgres/issues/746
-     Once the issue has been resolved, these tests should be able to pass.
-     In the meantime, they cause an unhandled error that kills the test framework.
-     */
-
-    //////////////////////////////////////////
 
     describe('for invalid connection', () => {
         const dbErr = pgp('bla-bla');
@@ -260,8 +245,10 @@ describe('Connection', function () {
                 .finally(done);
         });
         it('must report the right error', () => {
+            const oldStyleError = 'database "bla-bla" does not exist'; // Before PostgreSQL v.10
+            const newStyleError = 'role ' + JSON.stringify(pgp.pg.defaults.user) + ' does not exist';
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('role ' + JSON.stringify(pgp.pg.defaults.user) + ' does not exist');
+            expect(error.message === oldStyleError || error.message === newStyleError).toBe(true);
         });
     });
 
@@ -283,45 +270,24 @@ describe('Connection', function () {
         });
     });
 
-    describe('for invalid password', () => {
-        const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-        errCN.password = 'invalid';
-        const dbErr = pgp(errCN);
+    describe('on repeated disconnection', () => {
         let error;
         beforeEach(done => {
-            dbErr.connect()
-                .catch(err => {
-                    error = err;
-                })
-                .finally(done);
-        });
-        it('must report the right error', () => {
-            expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('password authentication failed for user "postgres"');
-        });
-    });
-
-    /////////////////////////////////////////
-
-    describe('on repeated disconnection', function () {
-        let error;
-        beforeEach(function (done) {
             db.connect()
-                .then(function (obj) {
+                .then(obj => {
                     obj.done(); // disconnecting;
                     try {
                         obj.done(); // invalid disconnect;
                     } catch (err) {
                         error = err;
                     }
-                }, function (err) {
+                })
+                .catch(err => {
                     error = err;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must throw the right error', function () {
+        it('must throw the right error', () => {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe($text.looseQuery);
         });
@@ -2097,7 +2063,6 @@ describe('Multi-result queries', () => {
         expect(result).toEqual({two: 2});
     });
 });
-
 
 if (jasmine.Runner) {
     const _finishCallback = jasmine.Runner.prototype.finishCallback;
