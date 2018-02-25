@@ -38,8 +38,9 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Extends <a href="Database.html">Database</a> for an automatic connection session, with methods for executing multiple database queries.
-The type isn't available directly, it can only be created via methods <a href="Database.html#task">Database.task</a> and <a href="Database.html#tx">Database.tx</a>.</p>
+            <div class="description"><p>Extends <a href="Database.html">Database</a> for an automatic connection session, with methods for executing multiple database queries.</p>
+<p>The type isn't available directly, it can only be created via methods <a href="Database.html#task">Database.task</a>, <a href="Database.html#tx">Database.tx</a>
+and <a href="Database.html#txIf">Database.txIf</a>.</p>
 <p>When executing more than one request at a time, one should allocate and release the connection only once,
 while executing all the required queries within the same connection session. More importantly, a transaction
 can only work within a single connection.</p>
@@ -179,7 +180,7 @@ However, when invoked inside another task or transaction, the method reuses the 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line55">line 55</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line59">line 59</a>
     </li></ul></dd>
     
 
@@ -425,7 +426,7 @@ However, when invoked inside another task or transaction, the method reuses the 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line109">line 109</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line113">line 113</a>
     </li></ul></dd>
     
 
@@ -724,7 +725,7 @@ However, when invoked inside another task or transaction, the method reuses the 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line127">line 127</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line131">line 131</a>
     </li></ul></dd>
     
 
@@ -1062,7 +1063,7 @@ However, when invoked inside another task or transaction, the method reuses the 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line146">line 146</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line150">line 150</a>
     </li></ul></dd>
     
 

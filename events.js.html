@@ -171,39 +171,40 @@ const $events = {
      * @description
      * Global notification of any data received from the database, coming from a regular query or from a stream.
      *
-     * The event is fired before the data reaches the client, and only when receiving 1 or more records.
-     *
-     * This event notification serves two purposes:
+     * The event is fired before the data reaches the client, and it serves two purposes:
      *  - Providing selective data logging for debugging;
      *  - Pre-processing data before it reaches the client.
      *
      * **NOTES:**
      * - If you alter the size of `data` directly or through the `result` object, it may affect `QueryResultMask`
-     *   validation for regular queries, which is executed right after this notification.
-     * - When adding data pre-processing, you should consider possible performance penalty this may bring.
+     *   validation for regular queries, which is executed right after.
+     * - Any data pre-processing needs to be fast here, to avoid performance penalties.
      * - If the event handler throws an error, the original request will be rejected with that error.
      *
-     * When executing methods {@link Database#multi Database.multi} or {@link Database#multiResult Database.multiResult},
-     * this event is called once for every non-empty result that's returned.
+     * For methods {@link Database#multi Database.multi} and {@link Database#multiResult Database.multiResult},
+     * this event is called for every result that's returned.
      *
-     * @param {array} data
-     * A non-empty array of received data objects/rows.
+     * @param {Array&lt;Object>} data
+     * Array of received objects/rows.
      *
      * If any of those objects are modified during notification, the client will receive the modified data.
      *
-     * From v6.8.0 onwards, maximum number of rows within `data` equals to the `batchSize` value within
-     * the $[QueryStream] object.
+     * For method {@link Database#stream Database.stream}, the maximum number of rows equals the `batchSize`
+     * value within the $[QueryStream] object.
      *
-     * @param {object} result
-     * - original $[Result] object, if the data comes from a regular query, in which case `data = result.rows`.
-     * - `undefined` when the data comes from a stream.
+     * @param {external:Result} result
+     * - Original $[Result] object, if the data is from a non-stream query, in which case `data = result.rows`.
+     *   For single-query requests, $[Result] object is extended with property `duration` - number of milliseconds
+     *   it took to send the query, execute it and get the result back.
+     * - It is `undefined` when the data comes from a stream (method {@link Database#stream Database.stream}).
      *
      * @param {EventContext} e
      * Event Context Object.
      *
      * @example
      *
-     * // Example below shows the fastest way to camelize all column names:
+     * // Example below shows the fastest way to camelize all column names.
+     * // NOTE: The example does not do processing for nested JSON objects.
      *
      * const initOptions = {
      *
@@ -216,7 +217,7 @@ const $events = {
      *
      * function camelizeColumns(data) {
      *     const tmp = data[0];
-     *     for (let prop in tmp) {
+     *     for (const prop in tmp) {
      *         const camel = pgp.utils.camelize(prop);
      *         if (!(camel in tmp)) {
      *             for (let i = 0; i &lt; data.length; i++) {
@@ -287,7 +288,8 @@ const $events = {
     /**
      * @event transact
      * @description
-     * Global notification of a transaction start / finish events, as executed via {@link Database#tx Database.tx}.
+     * Global notification of a transaction start / finish events, as executed via {@link Database#tx Database.tx}
+     * or {@link Database#txIf Database.txIf}.
      *
      * The library will suppress any error thrown by the handler and write it into the console.
      *

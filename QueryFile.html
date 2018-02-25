@@ -55,8 +55,8 @@ The SQL can be of any complexity, with both single and multi-line comments.</p>
 and <a href="ParameterizedQuery.html">ParameterizedQuery</a>.</p>
 <p>It never throws any error, leaving it for query methods to reject with <a href="errors.QueryFileError.html">QueryFileError</a>.</p>
 <p><strong>IMPORTANT:</strong> You should only create a single reusable object per file, in order to avoid repeated file reads,
-as the IO is a very expensive resource. Starting from version 5.8.0, if you do not follow it, you will be seeing the following
-warning: <code>Creating a duplicate QueryFile object for the same file</code>, which signals a bad-use pattern.</p>
+as the IO is a very expensive resource. If you do not follow it, you will be seeing the following warning:
+<code>Creating a duplicate QueryFile object for the same file</code>, which signals a bad-use pattern.</p>
 </div>
 
 

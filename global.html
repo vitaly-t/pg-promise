@@ -550,7 +550,7 @@ inside a task or transaction.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line476">line 476</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line478">line 478</a>
     </li></ul></dd>
     
 
@@ -574,7 +574,8 @@ inside a task or transaction.</p></td>
 
 
 <div class="description">
-    <p>Task/Transaction Context used via property <a href="Task.html#ctx">ctx</a> inside tasks (method <a href="Database.html#task">Database.task</a>) and transactions (method <a href="Database.html#tx">Database.tx</a>).</p>
+    <p>Task/Transaction Context used via property <a href="Task.html#ctx">ctx</a> inside tasks (method <a href="Database.html#task">Database.task</a>) and transactions
+(methods <a href="Database.html#tx">Database.tx</a> and <a href="Database.html#txIf">Database.txIf</a>).</p>
 <p>Properties <code>context</code>, <code>connected</code>, <code>parent</code>, <code>level</code>, <code>dc</code>, <code>isTX</code>, <code>tag</code>, <code>start</code> and <code>isFresh</code> are set just before the operation has started,
 while properties <code>finish</code>, <code>duration</code>, <code>success</code> and <code>result</code> are set immediately after the operation has finished.</p>
 </div>
@@ -1000,7 +1001,7 @@ the operation has finished. When the value is <code>false</code>, the operation 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line321">line 321</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line329">line 329</a>
     </li></ul></dd>
     
 
@@ -1505,7 +1506,7 @@ with parameter <code>{direct: true}</code>).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line302">line 302</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line304">line 304</a>
     </li></ul></dd>
     
 
@@ -1675,7 +1676,7 @@ if you try overriding them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line355">line 355</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line357">line 357</a>
     </li></ul></dd>
     
 
@@ -1866,8 +1867,7 @@ will be rejected with that error.</p>
 
 <div class="description">
     <p>Global notification of any data received from the database, coming from a regular query or from a stream.</p>
-<p>The event is fired before the data reaches the client, and only when receiving 1 or more records.</p>
-<p>This event notification serves two purposes:</p>
+<p>The event is fired before the data reaches the client, and it serves two purposes:</p>
 <ul>
 <li>Providing selective data logging for debugging;</li>
 <li>Pre-processing data before it reaches the client.</li>
@@ -1875,12 +1875,12 @@ will be rejected with that error.</p>
 <p><strong>NOTES:</strong></p>
 <ul>
 <li>If you alter the size of <code>data</code> directly or through the <code>result</code> object, it may affect <code>QueryResultMask</code>
-validation for regular queries, which is executed right after this notification.</li>
-<li>When adding data pre-processing, you should consider possible performance penalty this may bring.</li>
+validation for regular queries, which is executed right after.</li>
+<li>Any data pre-processing needs to be fast here, to avoid performance penalties.</li>
 <li>If the event handler throws an error, the original request will be rejected with that error.</li>
 </ul>
-<p>When executing methods <a href="Database.html#multi">Database.multi</a> or <a href="Database.html#multiResult">Database.multiResult</a>,
-this event is called once for every non-empty result that's returned.</p>
+<p>For methods <a href="Database.html#multi">Database.multi</a> and <a href="Database.html#multiResult">Database.multiResult</a>,
+this event is called for every result that's returned.</p>
 </div>
 
 
@@ -1922,7 +1922,7 @@ this event is called once for every non-empty result that's returned.</p>
             <td class="type">
             
                 
-<span class="param-type">array</span>
+<span class="param-type">Array.&lt;Object></span>
 
 
             
@@ -1932,10 +1932,10 @@ this event is called once for every non-empty result that's returned.</p>
 
             
 
-            <td class="description last"><p>A non-empty array of received data objects/rows.</p>
+            <td class="description last"><p>Array of received objects/rows.</p>
 <p>If any of those objects are modified during notification, the client will receive the modified data.</p>
-<p>From v6.8.0 onwards, maximum number of rows within <code>data</code> equals to the <code>batchSize</code> value within
-the <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js#L5">QueryStream</a> object.</p></td>
+<p>For method <a href="Database.html#stream">Database.stream</a>, the maximum number of rows equals the <code>batchSize</code>
+value within the <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js#L5">QueryStream</a> object.</p></td>
         </tr>
 
     
@@ -1948,7 +1948,7 @@ the <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type"><a href="external-Result.html">external:Result</a></span>
 
 
             
@@ -1959,8 +1959,10 @@ the <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js
             
 
             <td class="description last"><ul>
-<li>original <a href="https://node-postgres.com/api/result">Result</a> object, if the data comes from a regular query, in which case <code>data = result.rows</code>.</li>
-<li><code>undefined</code> when the data comes from a stream.</li>
+<li>Original <a href="https://node-postgres.com/api/result">Result</a> object, if the data is from a non-stream query, in which case <code>data = result.rows</code>.
+For single-query requests, <a href="https://node-postgres.com/api/result">Result</a> object is extended with property <code>duration</code> - number of milliseconds
+it took to send the query, execute it and get the result back.</li>
+<li>It is <code>undefined</code> when the data comes from a stream (method <a href="Database.html#stream">Database.stream</a>).</li>
 </ul></td>
         </tr>
 
@@ -2052,7 +2054,7 @@ the <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize all column names:const initOptions = {    // pg-promise initialization options...    receive(data, result, e) {        camelizeColumns(data);    }};function camelizeColumns(data) {    const tmp = data[0];    for (let prop in tmp) {        const camel = pgp.utils.camelize(prop);        if (!(camel in tmp)) {            for (let i = 0; i &lt; data.length; i++) {                const d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
+    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize all column names.// NOTE: The example does not do processing for nested JSON objects.const initOptions = {    // pg-promise initialization options...    receive(data, result, e) {        camelizeColumns(data);    }};function camelizeColumns(data) {    const tmp = data[0];    for (const prop in tmp) {        const camel = pgp.utils.camelize(prop);        if (!(camel in tmp)) {            for (let i = 0; i &lt; data.length; i++) {                const d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
 
 
 
@@ -2162,7 +2164,7 @@ the <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line214">line 214</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line215">line 215</a>
     </li></ul></dd>
     
 
@@ -2205,7 +2207,8 @@ the <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js
 
 
 <div class="description">
-    <p>Global notification of a transaction start / finish events, as executed via <a href="Database.html#tx">Database.tx</a>.</p>
+    <p>Global notification of a transaction start / finish events, as executed via <a href="Database.html#tx">Database.tx</a>
+or <a href="Database.html#txIf">Database.txIf</a>.</p>
 <p>The library will suppress any error thrown by the handler and write it into the console.</p>
 </div>
 
@@ -2299,7 +2302,7 @@ the <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line258">line 258</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line259">line 259</a>
     </li></ul></dd>
     
 

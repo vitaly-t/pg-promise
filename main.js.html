@@ -200,7 +200,7 @@ function $main(options) {
             'connect', 'disconnect', 'query', 'receive', 'task', 'transact', 'error', 'extend'];
 
         if (!options.noWarnings) {
-            for (let prop in options) {
+            for (const prop in options) {
                 if (validOptions.indexOf(prop) === -1) {
                     npm.con.warn('WARNING: Invalid property \'%s\' in initialization options.\n%s\n', prop, npm.utils.getLocalStack(3));
                     break;

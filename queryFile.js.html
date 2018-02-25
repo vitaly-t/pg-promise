@@ -55,8 +55,8 @@ const npm = {
  * It never throws any error, leaving it for query methods to reject with {@link errors.QueryFileError QueryFileError}.
  *
  * **IMPORTANT:** You should only create a single reusable object per file, in order to avoid repeated file reads,
- * as the IO is a very expensive resource. Starting from version 5.8.0, if you do not follow it, you will be seeing the following
- * warning: `Creating a duplicate QueryFile object for the same file`, which signals a bad-use pattern.
+ * as the IO is a very expensive resource. If you do not follow it, you will be seeing the following warning:
+ * `Creating a duplicate QueryFile object for the same file`, which signals a bad-use pattern.
  *
  * @param {string} file
  * Path to the SQL file with the query, either absolute or relative to the application's entry point file.

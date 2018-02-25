@@ -43,7 +43,9 @@ const npm = {
  * @interface Task
  * @description
  * Extends {@link Database} for an automatic connection session, with methods for executing multiple database queries.
- * The type isn't available directly, it can only be created via methods {@link Database#task Database.task} and {@link Database#tx Database.tx}.
+ *
+ * The type isn't available directly, it can only be created via methods {@link Database#task Database.task}, {@link Database#tx Database.tx}
+ * and {@link Database#txIf Database.txIf}.
  *
  * When executing more than one request at a time, one should allocate and release the connection only once,
  * while executing all the required queries within the same connection session. More importantly, a transaction
@@ -80,6 +82,8 @@ const npm = {
  *
  */
 function Task(ctx, tag, isTX, config) {
+
+    const $p = config.promise;
 
     /**
      * @member {TaskContext} Task#ctx
@@ -130,7 +134,7 @@ function Task(ctx, tag, isTX, config) {
     // generic query method;
     this.query = function (query, values, qrm) {
         if (!ctx.db) {
-            throw new Error(npm.text.looseQuery);
+            return $p.reject(new Error(npm.text.looseQuery));
         }
         return config.$npm.query.call(this, ctx, query, values, qrm);
     };
@@ -266,8 +270,12 @@ const execute = (ctx, obj, isTX, config) => {
                     cbData = data; // save callback data;
                     success = true;
                     return commit();
-                }, reason => {
-                    cbReason = reason; // save callback failure reason;
+                }, err => {
+                    if (npm.utils.isConnectivityError(err)) {
+                        // Cannot execute ROLLBACK after a connectivity error:
+                        return $p.reject(err);
+                    }
+                    cbReason = err; // save callback failure reason;
                     return rollback();
                 })
                 .then(() => {
@@ -278,27 +286,27 @@ const execute = (ctx, obj, isTX, config) => {
                     update(false, false, cbReason);
                     return $p.reject(cbReason);
                 },
-                reason => {
+                err => {
                     // either COMMIT or ROLLBACK has failed, which is impossible
                     // to replicate in a test environment, so skipping from the test;
                     // istanbul ignore next:
-                    update(false, false, reason);
+                    update(false, false, err);
                     // istanbul ignore next:
-                    return $p.reject(reason);
+                    return $p.reject(err);
                 }),
-            reason => {
+            err => {
                 // BEGIN has failed, which is impossible to replicate in a test
                 // environment, so skipping the whole block from the test;
                 // istanbul ignore next:
-                update(false, false, reason);
+                update(false, false, err);
                 // istanbul ignore next:
-                return $p.reject(reason);
+                return $p.reject(err);
             });
     }
 
     function begin() {
-        if (!ctx.txLevel &amp;&amp; ctx.cb.txMode instanceof npm.mode.TransactionMode) {
-            return exec(ctx.cb.txMode.begin(capSQL), 'savepoint');
+        if (!ctx.txLevel &amp;&amp; ctx.mode instanceof npm.mode.TransactionMode) {
+            return exec(ctx.mode.begin(capSQL), 'savepoint');
         }
         return exec('begin', 'savepoint');
     }
@@ -350,7 +358,8 @@ module.exports = config => {
 /**
  * @typedef TaskContext
  * @description
- * Task/Transaction Context used via property {@link Task#ctx ctx} inside tasks (method {@link Database#task Database.task}) and transactions (method {@link Database#tx Database.tx}).
+ * Task/Transaction Context used via property {@link Task#ctx ctx} inside tasks (method {@link Database#task Database.task}) and transactions
+ * (methods {@link Database#tx Database.tx} and {@link Database#txIf Database.txIf}).
  *
  * Properties `context`, `connected`, `parent`, `level`, `dc`, `isTX`, `tag`, `start` and `isFresh` are set just before the operation has started,
  * while properties `finish`, `duration`, `success` and `result` are set immediately after the operation has finished.

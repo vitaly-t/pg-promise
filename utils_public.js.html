@@ -338,7 +338,7 @@ function objectToCode(obj, cb) {
     function generate(obj, level) {
         let code = '', idx = 0;
         const gap = npm.utils.messageGap(level);
-        for (let prop in obj) {
+        for (const prop in obj) {
             const value = obj[prop];
             if (idx) {
                 code += ',';
