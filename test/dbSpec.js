@@ -247,64 +247,61 @@ describe('Connection', function () {
      In the meantime, they cause an unhandled error that kills the test framework.
      */
 
-    /*
-     it('must report the right error on invalid connection', function () {
-     var dbErr = pgp('bla-bla'), result;
-     dbErr.connect()
-     .then(function () {
-     result = null;
-     }, function (error) {
-     result = error;
-     });
-     waitsFor(function () {
-     return result !== undefined;
-     }, 'Connection timed out', 5000);
-     runs(function () {
-     expect(result instanceof Error).toBe(true);
-     expect(result.message).toBe('password authentication failed for user "' + pgp.pg.defaults.user + '"');
-     });
-     });
+    //////////////////////////////////////////
 
-     it('must report the right error on invalid user name', function () {
-     var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-     errCN.user = 'somebody';
-     var dbErr = pgp(errCN), result;
-     dbErr.connect()
-     .then(function () {
-     result = null;
-     }, function (error) {
-     result = error;
+    describe('for invalid connection', () => {
+        const dbErr = pgp('bla-bla');
+        let error;
+        beforeEach(done => {
+            dbErr.connect()
+                .catch(err => {
+                    error = err;
+                })
+                .finally(done);
+        });
+        it('must report the right error', () => {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe('role ' + JSON.stringify(pgp.pg.defaults.user) + ' does not exist');
+        });
+    });
 
-     });
-     waitsFor(function () {
-     return result !== undefined;
-     }, 'Connection timed out', 60000);
-     runs(function () {
-     expect(result instanceof Error).toBe(true);
-     expect(result.message).toBe('password authentication failed for user "somebody"');
-     });
-     });
+    describe('for invalid user name', () => {
+        const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+        errCN.user = 'somebody';
+        const dbErr = pgp(errCN);
+        let error;
+        beforeEach(done => {
+            dbErr.connect()
+                .catch(err => {
+                    error = err;
+                })
+                .finally(done);
+        });
+        it('must report the right error', () => {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe('role "somebody" does not exist');
+        });
+    });
 
-     it('must report the right error on invalid password', function () {
-     var errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-     errCN.password = 'invalid';
-     var dbErr = pgp(errCN), result;
-     dbErr.connect()
-     .then(function () {
-     result = null;
-     }, function (error) {
-     result = error;
+    describe('for invalid password', () => {
+        const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+        errCN.password = 'invalid';
+        const dbErr = pgp(errCN);
+        let error;
+        beforeEach(done => {
+            dbErr.connect()
+                .catch(err => {
+                    error = err;
+                })
+                .finally(done);
+        });
+        it('must report the right error', () => {
+            expect(error instanceof Error).toBe(true);
+            expect(error.message).toBe('password authentication failed for user "postgres"');
+        });
+    });
 
-     });
-     waitsFor(function () {
-     return result !== undefined;
-     }, 'Connection timed out', 60000);
-     runs(function () {
-     expect(result instanceof Error).toBe(true);
-     expect(result.message).toBe('password authentication failed for user "postgres"');
-     });
-     });
-     */
+    /////////////////////////////////////////
 
     describe('on repeated disconnection', function () {
         let error;
