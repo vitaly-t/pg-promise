@@ -39,7 +39,6 @@
     
         
             <div class="description"><p>Namespace for general-purpose static functions, available as <code>pgp.utils</code>, before and after initializing the library.</p>
-<p>Its main purpose is to simplify developing projects with either large or dynamic number of SQL files.</p>
 <p>See also:</p>
 <ul>
 <li><a href="https://github.com/vitaly-t/pg-promise/issues/153">Automatic SQL Trees</a></li>
@@ -188,6 +187,29 @@
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>taskArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="utils.html#.taskArgs">taskArgs</a> - prepares arguments for tasks and transactions</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -223,7 +245,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line503">line 503</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line598">line 598</a>
     </li></ul></dd>
     
 
@@ -1383,6 +1405,171 @@ non-existing directory.</p></td>
     <pre class="prettyprint"><code>// generated code example (file sql.js)const load = require('./loadSql');module.exports = {    events: {        add: load("../sql/events/add.sql"),        delete: load("../sql/events/delete.sql"),        find: load("../sql/events/find.sql"),        update: load("../sql/events/update.sql")    },    products: {        add: load("../sql/products/add.sql"),        delete: load("../sql/products/delete.sql"),        find: load("../sql/products/find.sql"),        update: load("../sql/products/update.sql")    },    users: {        add: load("../sql/users/add.sql"),        delete: load("../sql/users/delete.sql"),        find: load("../sql/users/find.sql"),        update: load("../sql/users/update.sql")    },    create: load("../sql/create.sql"),    init: load("../sql/init.sql"),    drop: load("../sql/drop.sql")};</code></pre>
 
     <pre class="prettyprint"><code>// loadSql.js module exampleconst QueryFile = require('pg-promise').QueryFile;module.exports = file => {    return new QueryFile(file, {minify: true});};</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".taskArgs"><span class="type-signature">(static) </span>taskArgs<span class="signature">(args)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p><strong> Added in v8.1.0 </strong></p>
+<p>Normalizes/prepares arguments for tasks and transactions.</p>
+<p>Its main purpose is to simplify adding custom methods <a href="Database.html#task">task</a>, <a href="Database.html#tx">tx</a>
+and <a href="Database.html#txIf">txIf</a> within event <a href="global.html#event:extend">extend</a>, as the those methods use fairly
+complex logic for parsing inputs.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array-like object of <code>arguments</code> that was passed into the method. It is expected that the <code>arguments</code>
+is always made of two parameters - <code>(options, cb)</code>, same as all the default task/transaction methods.</p>
+<p>And if your custom method needs additional parameters, they should be passed in as extra properties within <code>options</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line502">line 502</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Array of arguments that can be passed into a task or transaction.</p>
+<p>It is extended with properties <code>options</code> and <code>cb</code> to access the corresponding array elements <code>[0]</code> and <code>[1]</code> by name.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Registering a custom transaction method that assigns a default Transaction Mode:const initOptions = {    extend: obj => {        obj.myTx = function(options, cb) {            const args = pgp.utils.taskArgs(arguments); // prepare arguments            if (!args.options.mode) {                // set default transaction mode, if none was specified:                args.options.mode = myTxModeObject; // of type pgp.txMode.TransactionMode            }            return obj.tx.apply(this, args);            // or explicitly, if needed:            // return obj.tx.call(obj, args.options, args.cb);        }    }};</code></pre>
 
 
 

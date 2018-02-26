@@ -528,14 +528,107 @@ function buildSqlModule(config) {
     return code;
 }
 
+/**
+ * @method utils.taskArgs
+ * @description
+ * ** Added in v8.1.0 **
+ *
+ * Normalizes/prepares arguments for tasks and transactions.
+ *
+ * Its main purpose is to simplify adding custom methods {@link Database#task task}, {@link Database#tx tx}
+ * and {@link Database#txIf txIf} within event {@link event:extend extend}, as the those methods use fairly
+ * complex logic for parsing inputs.
+ *
+ * @param args {Object}
+ * Array-like object of `arguments` that was passed into the method. It is expected that the `arguments`
+ * is always made of two parameters - `(options, cb)`, same as all the default task/transaction methods.
+ *
+ * And if your custom method needs additional parameters, they should be passed in as extra properties within `options`.
+ *
+ * @returns {Array}
+ * Array of arguments that can be passed into a task or transaction.
+ *
+ * It is extended with properties `options` and `cb` to access the corresponding array elements `[0]` and `[1]` by name.
+ *
+ * @example
+ *
+ * // Registering a custom transaction method that assigns a default Transaction Mode:
+ *
+ * const initOptions = {
+ *     extend: obj => {
+ *         obj.myTx = function(options, cb) {
+ *             const args = pgp.utils.taskArgs(arguments); // prepare arguments
+ *
+ *             if (!args.options.mode) {
+ *                 // set default transaction mode, if none was specified:
+ *                 args.options.mode = myTxModeObject; // of type pgp.txMode.TransactionMode
+ *             }
+ *
+ *             return obj.tx.apply(this, args);
+ *             // or explicitly, if needed:
+ *             // return obj.tx.call(obj, args.options, args.cb);
+ *         }
+ *     }
+ * };
+ *
+ */
+function taskArgs(args) {
+
+    if (!args || typeof args.length !== 'number') {
+        throw new TypeError('Parameter "args" must be an array-like object of arguments.');
+    }
+
+    let options = args[0], cb;
+    if (typeof options === 'function') {
+        cb = options;
+        options = {};
+        if (cb.name) {
+            options.tag = cb.name;
+        }
+    } else {
+        if (typeof args[1] === 'function') {
+            cb = args[1];
+        }
+        if (typeof options === 'string' || typeof options === 'number') {
+            options = {tag: options};
+        } else {
+            options = (typeof options === 'object' &amp;&amp; options) || {};
+            if (!('tag' in options) &amp;&amp; cb &amp;&amp; cb.name) {
+                options.tag = cb.name;
+            }
+        }
+    }
+
+    const res = [options, cb];
+
+    Object.defineProperty(res, 'options', {
+        get: function () {
+            return this[0];
+        },
+        set: function (newValue) {
+            return this[0] = newValue;
+        },
+        enumerable: true
+    });
+
+    Object.defineProperty(res, 'cb', {
+        get: function () {
+            return this[1];
+        },
+        set: function (newValue) {
+            return this[1] = newValue;
+        },
+        enumerable: true
+    });
+
+    return res;
+}
 
 /**
  * @namespace utils
  *
  * @description
  * Namespace for general-purpose static functions, available as `pgp.utils`, before and after initializing the library.
- *
- * Its main purpose is to simplify developing projects with either large or dynamic number of SQL files.
  *
  * See also:
  * - [Automatic SQL Trees](https://github.com/vitaly-t/pg-promise/issues/153)
@@ -556,13 +649,16 @@ function buildSqlModule(config) {
  * @property {function} buildSqlModule
  * {@link utils.buildSqlModule buildSqlModule} - generates a complete Node.js module
  *
+ * @property {function} taskArgs
+ * {@link utils.taskArgs taskArgs} - prepares arguments for tasks and transactions
  */
 module.exports = {
     camelize,
     camelizeVar,
     enumSql,
     objectToCode,
-    buildSqlModule
+    buildSqlModule,
+    taskArgs
 };
 
 Object.freeze(module.exports);
