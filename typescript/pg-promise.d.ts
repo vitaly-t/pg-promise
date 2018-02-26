@@ -707,8 +707,8 @@ declare namespace pgPromise {
     }
 
     interface ITaskArguments<T> extends IArguments {
-        options?: { tag?: any, cnd?: any, mode?: TransactionMode } & T
-        cb?: () => any
+        options: { tag?: any, cnd?: any, mode?: TransactionMode } & T
+        cb: () => any
     }
 
     // General-purpose functions

@@ -10,6 +10,20 @@ const path = require('path');
 function dummy() {
 }
 
+describe('taskArgs', () => {
+    describe('with invalid arguments', () => {
+        const error = 'Parameter "args" must be an array-like object of arguments.';
+        it('must throw error', () => {
+            expect(() => {
+                utils.taskArgs();
+            }).toThrow(error);
+            expect(() => {
+                utils.taskArgs(123);
+            }).toThrow(error);
+        });
+    });
+});
+
 describe('camelize', function () {
 
     it('must keep leading digits', function () {
