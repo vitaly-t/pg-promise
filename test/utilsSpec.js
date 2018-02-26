@@ -22,6 +22,117 @@ describe('taskArgs', () => {
             }).toThrow(error);
         });
     });
+    describe('without options', () => {
+        describe('with empty arguments', () => {
+            const emptyResult = [{}, undefined];
+            emptyResult.options = emptyResult[0];
+            emptyResult.cb = emptyResult[1];
+            it('must return empty result', () => {
+                expect(utils.taskArgs([])).toEqual(emptyResult);
+            });
+        });
+        describe('with a function', () => {
+            it('must detect as the first argument', () => {
+                const args = [() => {
+                }];
+                const result = [{}, args[0]];
+                result.options = result[0];
+                result.cb = result[1];
+                expect(utils.taskArgs(args)).toEqual(result);
+            });
+            it('must detect as the second argument', () => {
+                const args = [undefined, () => {
+                }];
+                const result = [{}, args[1]];
+                result.options = result[0];
+                result.cb = result[1];
+                expect(utils.taskArgs(args)).toEqual(result);
+            });
+            it('must ignore as the third argument', () => {
+                const args = [undefined, undefined, () => {
+                }];
+                const result = [{}, undefined];
+                result.options = result[0];
+                result.cb = result[1];
+                expect(utils.taskArgs(args)).toEqual(result);
+            });
+            it('must allow overrides', () => {
+                const args = utils.taskArgs([]);
+                args.cb = 123;
+                const result = [{}, 123];
+                result.options = {};
+                result.cb = 123;
+                expect(args.cb).toBe(123);
+                expect(args).toEqual(result);
+            });
+        });
+    });
+    describe('with options', () => {
+        it('must support random options', () => {
+            const result = [{first: 1, second: 'hello'}, undefined];
+            result.options = result[0];
+            expect(utils.taskArgs([{first: 1, second: 'hello'}])).toEqual(result);
+        });
+        it('must allow overrides', () => {
+            const args = utils.taskArgs([]);
+            args.options = 123;
+            const result = [123, undefined];
+            result.options = 123;
+            expect(args.options).toBe(123);
+            expect(args).toEqual(result);
+        });
+    });
+    describe('direct tag', () => {
+        it('must support strings', () => {
+            const result = [{tag: 'hello'}, undefined];
+            result.options = result[0];
+            expect(utils.taskArgs(['hello'])).toEqual(result);
+        });
+        it('must support empty strings', () => {
+            const result = [{tag: ''}, undefined];
+            result.options = result[0];
+            expect(utils.taskArgs([''])).toEqual(result);
+        });
+        it('must support numbers', () => {
+            const result = [{tag: 123}, undefined];
+            result.options = result[0];
+            expect(utils.taskArgs([123])).toEqual(result);
+        });
+    });
+    describe('indirect tag', () => {
+        it('must support numbers', () => {
+            const result = [{tag: 123}, undefined];
+            result.options = result[0];
+            expect(utils.taskArgs([{tag: 123}])).toEqual(result);
+        });
+        it('must support strings', () => {
+            const result = [{tag: 'hello'}, undefined];
+            result.options = result[0];
+            expect(utils.taskArgs([{tag: 'hello'}])).toEqual(result);
+        });
+        it('must use callback name when without tag', () => {
+            function tst() {
+            }
+
+            const result = [{tag: 'tst'}, tst];
+            result.options = result[0];
+            result.cb = result[1];
+            expect(utils.taskArgs([tst])).toEqual(result);
+            expect(utils.taskArgs([{}, tst])).toEqual(result);
+        });
+        it('must skip callback name when with tag', () => {
+            function tst() {
+            }
+
+            const result = [{tag: 'hello'}, tst];
+            result.options = result[0];
+            result.cb = result[1];
+            expect(utils.taskArgs([{tag: 'hello'}, tst])).toEqual(result);
+            expect(utils.taskArgs(['hello', tst])).toEqual(result);
+        });
+
+    });
+
 });
 
 describe('camelize', function () {
