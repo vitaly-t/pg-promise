@@ -1,5 +1,5 @@
 /////////////////////////////////////////
-// Requires pg-promise v8.0.0 or later.
+// Requires pg-promise v8.1.0 or later.
 /////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -706,6 +706,11 @@ declare namespace pgPromise {
         TransactionMode: typeof TransactionMode
     }
 
+    interface ITaskArguments<T> extends IArguments {
+        options?: { tag?: any, cnd?: any, mode?: TransactionMode } & T
+        cb?: () => any
+    }
+
     // General-purpose functions
     // API: http://vitaly-t.github.io/pg-promise/utils.html
     interface IUtils {
@@ -718,6 +723,8 @@ declare namespace pgPromise {
         enumSql(dir: string, options?: { recursive?: boolean, ignoreErrors?: boolean }, cb?: (file: string, name: string, path: string) => any): any
 
         buildSqlModule(config?: string | TSqlBuildConfig): string
+
+        taskArgs<T={}>(args: IArguments): ITaskArguments<T>
     }
 
     // Query Formatting Helpers

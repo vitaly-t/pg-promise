@@ -36,16 +36,7 @@ db.one('');
 
 db.one(new pgPromise.QueryFile(''));
 
-const txMode: any = new pgPromise.txMode.TransactionMode();
-
-function myTransaction(t: any) {
-}
-
-const txFunc: any = myTransaction;
-txFunc['txMode'] = txMode;
-txFunc.txMode = txMode;
-
-db.tx(function (t) {
+db.tx({tag: 123}, function (t) {
     const w = t.one('');
     const q = t.hello;
 });
