@@ -1569,7 +1569,7 @@ is always made of two parameters - <code>(options, cb)</code>, same as all the d
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Registering a custom transaction method that assigns a default Transaction Mode:const initOptions = {    extend: obj => {        obj.myTx = function(options, cb) {            const args = pgp.utils.taskArgs(arguments); // prepare arguments            if (!args.options.mode) {                // set default transaction mode, if none was specified:                args.options.mode = myTxModeObject; // of type pgp.txMode.TransactionMode            }            return obj.tx.apply(this, args);            // or explicitly, if needed:            // return obj.tx.call(this, args.options, args.cb);        }    }};</code></pre>
+    <pre class="prettyprint"><code>// Registering a custom transaction method that assigns a default Transaction Mode:const initOptions = {    extend: obj => {        obj.myTx = function(options, cb) {            const args = pgp.utils.taskArgs(arguments); // prepare arguments            if (!('mode' in args.options)) {                // if no 'mode' was specified, set default for transaction mode:                args.options.mode = myTxModeObject; // of type pgp.txMode.TransactionMode            }            return obj.tx.apply(this, args);            // or explicitly, if needed:            // return obj.tx.call(this, args.options, args.cb);        }    }};</code></pre>
 
 
 

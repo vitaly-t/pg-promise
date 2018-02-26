@@ -559,8 +559,8 @@ function buildSqlModule(config) {
  *         obj.myTx = function(options, cb) {
  *             const args = pgp.utils.taskArgs(arguments); // prepare arguments
  *
- *             if (!args.options.mode) {
- *                 // set default transaction mode, if none was specified:
+ *             if (!('mode' in args.options)) {
+ *                 // if no 'mode' was specified, set default for transaction mode:
  *                 args.options.mode = myTxModeObject; // of type pgp.txMode.TransactionMode
  *             }
  *
