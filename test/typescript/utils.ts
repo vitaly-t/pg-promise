@@ -1,4 +1,6 @@
 import * as pgPromise from '../../typescript/pg-promise';
+import {TSqlBuildConfig} from "../../typescript/pg-promise";
+import {TransactionMode} from "../../typescript/pg-promise";
 
 const utils = pgPromise.utils;
 
@@ -36,3 +38,15 @@ utils.buildSqlModule({
         path: ''
     }
 });
+
+function testTaskArgs() {
+    const args = utils.taskArgs<{ first: string, second: boolean }>(arguments);
+    args.options.tag = 123;
+    args.options.mode = null;
+    args.options.cnd = new Error();
+
+    args.options.first = '';
+    args.options.second = true;
+}
+
+testTaskArgs();
