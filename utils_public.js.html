@@ -566,7 +566,7 @@ function buildSqlModule(config) {
  *
  *             return obj.tx.apply(this, args);
  *             // or explicitly, if needed:
- *             // return obj.tx.call(obj, args.options, args.cb);
+ *             // return obj.tx.call(this, args.options, args.cb);
  *         }
  *     }
  * };
