@@ -381,7 +381,7 @@ depending on the database context.</p>
 <li><code>options</code> - the library's <a href="module-pg-promise.html">Initialization Options</a> object</li>
 <li><code>promiseLib</code> - instance of the promise library that's used</li>
 <li><code>promise</code> - generic promise interface that uses <code>promiseLib</code> via 4 basic methods:<ul>
-<li><code>promise((resolve, reject)=&gt;{})</code> - to create a new promise</li>
+<li><code>promise((resolve, reject) =&gt; {})</code> - to create a new promise</li>
 <li><code>promise.resolve(value)</code> - to resolve with a value</li>
 <li><code>promise.reject(reason)</code> - to reject with a reason</li>
 <li><code>promise.all(iterable)</code> - to resolve an iterable list of promises</li>
@@ -1489,7 +1489,7 @@ as an override for its internal <code>values</code>.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>db.each('SELECT id, code, name FROM Events', [], row => {    row.code = +row.code; // leading `+` is short for `parseInt()`})    .then(data => {        // data = array of events, with 'code' converted into integer    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>db.each('SELECT id, code, name FROM Events', [], row => {    row.code = parseInt(row.code);})    .then(data => {        // data = array of events, with 'code' converted into integer    })    .catch(error => {        // error    });</code></pre>
 
 
 

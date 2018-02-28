@@ -30,6 +30,7 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 const npm = {
+    utils: require('../utils'),
     concat: require('./methods/concat'),
     insert: require('./methods/insert'),
     update: require('./methods/update'),
@@ -90,7 +91,7 @@ module.exports = config => {
         ColumnSet: npm.ColumnSet,
         Column: npm.Column
     };
-    Object.freeze(res);
+    npm.utils.lock(res, true, config.options);
     return res;
 };
 </code></pre>

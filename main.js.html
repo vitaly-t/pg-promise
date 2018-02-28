@@ -305,7 +305,7 @@ function $main(options) {
     npm.utils.addReadProp(inst, 'spex', config.$npm.spex);
 
     config.pgp = inst;
-    Object.freeze(config);
+    npm.utils.lock(config, true, options);
 
     return inst;
 }
