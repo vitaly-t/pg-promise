@@ -399,7 +399,7 @@ Method [as.value] implements the formatting.
 
 When a variable ends with `:json`, explicit JSON formatting is applied to the value.
 
-By default, any object that's not `Date`, `Array`, `null` or Custom-Type (see [Custom Type Formatting]),
+By default, any object that's not `Date`, `Array`, `Buffer`, `null` or Custom-Type (see [Custom Type Formatting]),
 is automatically formatted as JSON.
 
 Method [as.json] implements the formatting.
