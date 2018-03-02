@@ -925,7 +925,7 @@ Instead of the default `BEGIN`, such transaction will open with the following co
 BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE
 ```
 
-_Transaction Mode_ is set via option `mode`, preceding the the callback function. See methods [tx] and [txIf].
+_Transaction Mode_ is set via option `mode`, preceding the callback function. See methods [tx] and [txIf].
 
 This is the most efficient and best-performing way of configuring transactions. In combination with
 *Transaction Snapshots* you can make the most out of transactions in terms of performance and concurrency.
