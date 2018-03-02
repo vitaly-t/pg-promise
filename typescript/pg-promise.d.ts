@@ -364,8 +364,6 @@ declare namespace pgPromise {
     interface IMain {
         <T>(cn: string | TConfig, dc?: any): IDatabase<T> & T
 
-        (cn: string | TConfig, dc?: any): IDatabase<IEmptyExt>
-
         readonly PromiseAdapter: typeof PromiseAdapter
         readonly PreparedStatement: typeof PreparedStatement
         readonly ParameterizedQuery: typeof ParameterizedQuery
