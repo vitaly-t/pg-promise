@@ -362,8 +362,6 @@ declare namespace pgPromise {
     // Post-initialization interface;
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface IMain {
-        (cn: string | TConfig, dc?: any): IDatabase<IEmptyExt>
-
         <T>(cn: string | TConfig, dc?: any): IDatabase<T> & T
 
         readonly PromiseAdapter: typeof PromiseAdapter
