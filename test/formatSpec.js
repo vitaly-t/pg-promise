@@ -76,15 +76,15 @@ describe('Method as.buffer', () => {
         it('must throw error on invalid data', () => {
             expect(() => {
                 pgp.as.buffer(123);
-            }).toThrow(new TypeError(errors.buffer(123)));
+            }).toThrow(errors.buffer(123));
 
             expect(() => {
                 pgp.as.buffer(null, true);
-            }).toThrow(new Error(errors.rawNull()));
+            }).toThrow(errors.rawNull());
 
             expect(() => {
                 pgp.as.buffer(undefined, true);
-            }).toThrow(new Error(errors.rawNull()));
+            }).toThrow(errors.rawNull());
 
         });
 
@@ -224,11 +224,11 @@ describe('Method as.text', () => {
     it('must correctly respond to invalid raw-text requests', () => {
         expect(() => {
             pgp.as.text(undefined, true);
-        }).toThrow(new Error(errors.rawNull()));
+        }).toThrow(errors.rawNull());
 
         expect(() => {
             pgp.as.text(null, true);
-        }).toThrow(new Error(errors.rawNull()));
+        }).toThrow(errors.rawNull());
 
     });
 
@@ -254,15 +254,15 @@ describe('Method as.value', () => {
         const err = 'Open values cannot be null or undefined.';
         expect(() => {
             pgp.as.value();
-        }).toThrow(new TypeError(err));
+        }).toThrow(err);
 
         expect(() => {
             pgp.as.format('$1#', [null]);
-        }).toThrow(new TypeError(err));
+        }).toThrow(err);
 
         expect(() => {
             pgp.as.format('$1#', [undefined]);
-        }).toThrow(new TypeError(err));
+        }).toThrow(err);
     });
 
 });
@@ -285,31 +285,31 @@ describe('Method as.date', () => {
 
         expect(() => {
             pgp.as.date(undefined, true);
-        }).toThrow(new Error(errors.rawNull()));
+        }).toThrow(errors.rawNull());
 
         expect(() => {
             pgp.as.date(null, true);
-        }).toThrow(new Error(errors.rawNull()));
+        }).toThrow(errors.rawNull());
 
         expect(() => {
             pgp.as.date('');
-        }).toThrow(new Error('\'\' is not a Date object.'));
+        }).toThrow('\'\' is not a Date object.');
 
         expect(() => {
             pgp.as.date('bla-bla');
-        }).toThrow(new Error('\'bla-bla\' is not a Date object.'));
+        }).toThrow('\'bla-bla\' is not a Date object.');
 
         expect(() => {
             pgp.as.date(123);
-        }).toThrow(new Error('\'123\' is not a Date object.'));
+        }).toThrow('\'123\' is not a Date object.');
 
         expect(() => {
             pgp.as.date([]);
-        }).toThrow(new Error('\'\' is not a Date object.'));
+        }).toThrow('\'\' is not a Date object.');
 
         expect(() => {
             pgp.as.date({});
-        }).toThrow(new Error('\'[object Object]\' is not a Date object.'));
+        }).toThrow('\'[object Object]\' is not a Date object.');
 
     });
 
@@ -396,10 +396,10 @@ describe('Method as.json', () => {
     it('must correctly reject invalid requests', () => {
         expect(() => {
             pgp.as.json(null, true);
-        }).toThrow(new Error(errors.rawNull()));
+        }).toThrow(errors.rawNull());
         expect(() => {
             pgp.as.json(undefined, true);
-        }).toThrow(new Error(errors.rawNull()));
+        }).toThrow(errors.rawNull());
     });
 });
 
@@ -434,11 +434,11 @@ describe('Method as.array', () => {
         const err = ' is not an Array object.';
         expect(() => {
             pgp.as.array(123);
-        }).toThrow(new Error('\'123\'' + err));
+        }).toThrow('\'123\'' + err);
 
         expect(() => {
             pgp.as.array('');
-        }).toThrow(new Error('\'\'' + err));
+        }).toThrow('\'\'' + err);
 
     });
 
@@ -509,15 +509,15 @@ describe('Method as.func', () => {
 
         expect(() => {
             pgp.as.func(1);
-        }).toThrow(new Error('\'1\' is not a function.'));
+        }).toThrow('\'1\' is not a function.');
 
         expect(() => {
             pgp.as.func(undefined, true);
-        }).toThrow(new Error('Values null/undefined cannot be used as raw text.'));
+        }).toThrow('Values null/undefined cannot be used as raw text.');
 
         expect(() => {
             pgp.as.func(null, true);
-        }).toThrow(new Error('Values null/undefined cannot be used as raw text.'));
+        }).toThrow('Values null/undefined cannot be used as raw text.');
 
         expect(() => {
             pgp.as.func(() => {
@@ -534,16 +534,16 @@ describe('Method as.name', () => {
         it('must throw na error', () => {
             expect(() => {
                 pgp.as.name();
-            }).toThrow(new TypeError('Invalid sql name: undefined'));
+            }).toThrow('Invalid sql name: undefined');
             expect(() => {
                 pgp.as.name(null);
-            }).toThrow(new TypeError('Invalid sql name: null'));
+            }).toThrow('Invalid sql name: null');
             expect(() => {
                 pgp.as.name(123);
-            }).toThrow(new TypeError('Invalid sql name: 123'));
+            }).toThrow('Invalid sql name: 123');
             expect(() => {
                 pgp.as.name('');
-            }).toThrow(new TypeError('Invalid sql name: ""'));
+            }).toThrow('Invalid sql name: ""');
         });
     });
 
@@ -582,16 +582,16 @@ describe('Method as.alias', () => {
         it('must throw na error', () => {
             expect(() => {
                 pgp.as.alias();
-            }).toThrow(new TypeError('Invalid sql alias: undefined'));
+            }).toThrow('Invalid sql alias: undefined');
             expect(() => {
                 pgp.as.alias(null);
-            }).toThrow(new TypeError('Invalid sql alias: null'));
+            }).toThrow('Invalid sql alias: null');
             expect(() => {
                 pgp.as.alias(123);
-            }).toThrow(new TypeError('Invalid sql alias: 123'));
+            }).toThrow('Invalid sql alias: 123');
             expect(() => {
                 pgp.as.alias('');
-            }).toThrow(new TypeError('Invalid sql alias: ""'));
+            }).toThrow('Invalid sql alias: ""');
         });
     });
 
@@ -744,23 +744,23 @@ describe('Method as.format', () => {
 
         const errEmptyString = 'Parameter \'query\' must be a text string.';
 
-        expect(() => pgp.as.format()).toThrow(new Error(errEmptyString));
-        expect(() => pgp.as.format(null)).toThrow(new Error(errEmptyString));
-        expect(() => pgp.as.format(null, [1, 2, 3])).toThrow(new Error(errEmptyString));
-        expect(() => pgp.as.format(123)).toThrow(new Error(errEmptyString));
-        expect(() => pgp.as.format(() => '', dummy)).toThrow(new Error(errEmptyString));
-        expect(() => pgp.as.format('$1^', null)).toThrow(new Error(errors.rawNull()));
-        expect(() => pgp.as.format('$1^', [null])).toThrow(new Error(errors.rawNull()));
-        expect(() => pgp.as.format('$1^', [undefined])).toThrow(new Error(errors.rawNull()));
-        expect(() => pgp.as.format('$1', [])).toThrow(new RangeError(errors.range('$1', 0)));
-        expect(() => pgp.as.format('$3', [1, 2])).toThrow(new RangeError(errors.range('$3', 2)));
-        expect(() => pgp.as.format('$100001', [])).toThrow(new RangeError('Variable $100001 exceeds supported maximum of $100000'));
+        expect(() => pgp.as.format()).toThrow(errEmptyString);
+        expect(() => pgp.as.format(null)).toThrow(errEmptyString);
+        expect(() => pgp.as.format(null, [1, 2, 3])).toThrow(errEmptyString);
+        expect(() => pgp.as.format(123)).toThrow(errEmptyString);
+        expect(() => pgp.as.format(() => '', dummy)).toThrow(errEmptyString);
+        expect(() => pgp.as.format('$1^', null)).toThrow(errors.rawNull());
+        expect(() => pgp.as.format('$1^', [null])).toThrow(errors.rawNull());
+        expect(() => pgp.as.format('$1^', [undefined])).toThrow(errors.rawNull());
+        expect(() => pgp.as.format('$1', [])).toThrow(errors.range('$1', 0));
+        expect(() => pgp.as.format('$3', [1, 2])).toThrow(errors.range('$3', 2));
+        expect(() => pgp.as.format('$100001', [])).toThrow('Variable $100001 exceeds supported maximum of $100000');
     });
 
     it('must throw on type Symbol', () => {
 
         const value = Symbol('one.two');
-        const symbolError = new TypeError('Type Symbol has no meaning for PostgreSQL: ' + value.toString());
+        const symbolError = 'Type Symbol has no meaning for PostgreSQL: ' + value.toString();
 
         expect(() => pgp.as.format('$1', value)).toThrow(symbolError);
         expect(() => pgp.as.format('$1', [value])).toThrow(symbolError);
@@ -921,7 +921,7 @@ describe('Named Parameters', () => {
             pgp.as.format('$/propName/$(PropName)', {
                 propName: undefined
             });
-        }).toThrow(new Error('Property \'PropName\' doesn\'t exist.'));
+        }).toThrow('Property \'PropName\' doesn\'t exist.');
 
     });
 
@@ -964,13 +964,13 @@ describe('Named Parameters', () => {
     });
 
     it('must throw error when property doesn\'t exist', () => {
-        const err = name => new Error('Property \'' + name + '\' doesn\'t exist.');
+        const err = name => 'Property \'' + name + '\' doesn\'t exist.';
         expect(() => pgp.as.format('${abc}', {})).toThrow(err('abc'));
         expect(() => pgp.as.format('${a.b}', {a: {}})).toThrow(err('a.b'));
     });
 
     it('must throw error for invalid properties', () => {
-        const err = name => new Error('Invalid property name \'' + name + '\'.');
+        const err = name => 'Invalid property name \'' + name + '\'.';
         expect(() => pgp.as.format('${.}', {})).toThrow(err('.'));
         expect(() => pgp.as.format('${ a. }', {})).toThrow(err('a.'));
         expect(() => pgp.as.format('${.b}', {})).toThrow(err('.b'));
@@ -1101,86 +1101,86 @@ describe('Nested Named Parameters', () => {
 
 });
 
-describe('Format Modifiers', function () {
+describe('Format Modifiers', () => {
 
     function SimpleValue() {
-        this.toPostgres = function () {
+        this.toPostgres = () => {
             return 'hello';
         };
     }
 
     function RawValue() {
         this.rawType = true;
-        this.toPostgres = function () {
+        this.toPostgres = () => {
             return 'experiment';
         };
     }
 
-    describe('json modifier', function () {
-        it('must replace any value with json', function () {
+    describe('json modifier', () => {
+        it('must replace any value with json', () => {
             expect(pgp.as.format('$1:json', 'hello')).toBe('\'"hello"\'');
             expect(pgp.as.format('$1:json', ['hello'])).toBe('\'"hello"\'');
             expect(pgp.as.format('${data:json}', {data: [1, 'two']})).toBe('\'[1,"two"]\'');
         });
-        it('must ignore invalid flags', function () {
+        it('must ignore invalid flags', () => {
             expect(pgp.as.format('$1 :json', 'hello')).toBe('\'hello\' :json');
             expect(pgp.as.format('$1: json', 'hello')).toBe('\'hello\': json');
         });
-        it('must resolve custom types', function () {
+        it('must resolve custom types', () => {
             expect(pgp.as.format('$1:json', [new SimpleValue()])).toBe('\'"hello"\'');
         });
-        it('must resolve custom raw types inside array', function () {
+        it('must resolve custom raw types inside array', () => {
             expect(pgp.as.format('$1:json', [new RawValue()])).toBe('"experiment"');
         });
-        it('must resolve custom raw types directly', function () {
+        it('must resolve custom raw types directly', () => {
             expect(pgp.as.format('$1:json', new RawValue())).toBe('"experiment"');
         });
 
     });
 
     function SimpleArray() {
-        this.toPostgres = function () {
+        this.toPostgres = () => {
             return [1, 'two'];
         };
     }
 
     function RawArray() {
         this.rawType = true;
-        this.toPostgres = function () {
+        this.toPostgres = () => {
             return [1, 'two'];
         };
     }
 
-    describe('csv modifier', function () {
-        it('must replace any value with csv', function () {
+    describe('csv modifier', () => {
+        it('must replace any value with csv', () => {
             expect(pgp.as.format('$1:csv', 'hello')).toBe('\'hello\'');
             expect(pgp.as.format('${data:csv}', {data: [1, 'two']})).toBe('1,\'two\'');
         });
-        it('must ignore invalid flags', function () {
+        it('must ignore invalid flags', () => {
             expect(pgp.as.format('$1 :csv', 'hello')).toBe('\'hello\' :csv');
             expect(pgp.as.format('$1: csv', 'hello')).toBe('\'hello\': csv');
         });
-        it('must resolve custom types', function () {
+        it('must resolve custom types', () => {
             expect(pgp.as.format('$1:csv', [new SimpleArray()])).toBe('1,\'two\'');
         });
-        it('must resolve custom raw types', function () {
+        it('must resolve custom raw types', () => {
             expect(pgp.as.format('$1:csv', [new RawArray()])).toBe('1,\'two\'');
         });
     });
 
-    describe('list modifier', function () {
-        it('must replace any value with list', function () {
+    describe('list modifier', () => {
+        it('must replace any value with list', () => {
             expect(pgp.as.format('$1:list', 'hello')).toBe('\'hello\'');
             expect(pgp.as.format('${data:list}', {data: [1, 'two']})).toBe('1,\'two\'');
         });
-        it('must ignore invalid flags', function () {
+        it('must ignore invalid flags', () => {
             expect(pgp.as.format('$1 :list', 'hello')).toBe('\'hello\' :list');
             expect(pgp.as.format('$1: list', 'hello')).toBe('\'hello\': list');
         });
-        it('must resolve custom types', function () {
+        it('must resolve custom types', () => {
             expect(pgp.as.format('$1:list', [new SimpleArray()])).toBe('1,\'two\'');
         });
-        it('must resolve custom raw types', function () {
+        it('must resolve custom raw types', () => {
             expect(pgp.as.format('$1:list', [new RawArray()])).toBe('1,\'two\'');
         });
     });
@@ -1194,7 +1194,7 @@ describe('Format Modifiers', function () {
     });
 });
 
-describe('Custom Type Formatting', function () {
+describe('Custom Type Formatting', () => {
 
     function MyType1(v) {
         this.value = v;
@@ -1213,28 +1213,28 @@ describe('Custom Type Formatting', function () {
     const test1 = new MyType1(12.3);
     const test2 = new MyType2(56.7);
 
-    describe('as formatting type', function () {
-        it('must pass the values in correctly', function () {
+    describe('as formatting type', () => {
+        it('must pass the values in correctly', () => {
             expect(pgp.as.format(test2)).toBe('56.70');
         });
     });
 
-    describe('as array value', function () {
-        it('must convert correctly', function () {
+    describe('as array value', () => {
+        it('must convert correctly', () => {
             expect(pgp.as.format('$1', [test1])).toBe('12.3000');
             expect(pgp.as.format('$1', [test2])).toBe('56.70');
         });
     });
 
-    describe('as one value', function () {
-        it('must covert correctly', function () {
+    describe('as one value', () => {
+        it('must covert correctly', () => {
             expect(pgp.as.format('$1', test1)).toBe('12.3000');
             expect(pgp.as.format('$1', test2)).toBe('56.70');
         });
     });
 
-    describe('for Date override', function () {
-        beforeEach(function () {
+    describe('for Date override', () => {
+        beforeEach(() => {
             Date.prototype.toPostgres = () => {
                 function subLevel() {
                     return this.getFullYear();
@@ -1244,29 +1244,29 @@ describe('Custom Type Formatting', function () {
             };
         });
         const today = new Date();
-        it('must covert correctly', function () {
+        it('must covert correctly', () => {
             expect(pgp.as.format('$1', today)).toBe(today.getFullYear().toString());
         });
-        afterEach(function () {
+        afterEach(() => {
             delete Date.prototype.toPostgres;
         });
     });
 
-    describe('for Array override', function () {
-        beforeEach(function () {
+    describe('for Array override', () => {
+        beforeEach(() => {
             Array.prototype.toPostgres = () => {
                 return new MyType1(88); // testing recursive conversion;
             };
         });
-        it('must covert correctly', function () {
+        it('must covert correctly', () => {
             expect(pgp.as.format('$1^', [1, 2, 3])).toBe('88.0000');
         });
-        afterEach(function () {
+        afterEach(() => {
             delete Array.prototype.toPostgres;
         });
     });
 
-    describe('with custom object - formatter', function () {
+    describe('with custom object - formatter', () => {
         const values = {
             test: 'hello'
         };
@@ -1277,30 +1277,30 @@ describe('Custom Type Formatting', function () {
             };
         }
 
-        it('must redirect to named formatting', function () {
+        it('must redirect to named formatting', () => {
             expect(pgp.as.format('${test}', new CustomFormatter())).toBe('\'hello\'');
         });
     });
 
-    describe('with a simple value', function () {
+    describe('with a simple value', () => {
         function SimpleFormatter() {
             this.toPostgres = () => 'value';
         }
 
-        it('must return the simple value', function () {
+        it('must return the simple value', () => {
             expect(pgp.as.format('$1', [new SimpleFormatter()])).toBe('\'value\'');
         });
     });
 
-    describe('raw inheritance/mutation', function () {
+    describe('raw inheritance/mutation', () => {
         const obj = {
             // raw flag here must apply to every value of the array returned;
             rawType: true,
-            toPostgres: function () {
+            toPostgres: () => {
                 return ['first', 'second'];
             }
         };
-        it('must work', function () {
+        it('must work', () => {
             expect(pgp.as.format('$1, $2', obj)).toBe('first, second');
         });
     });
@@ -1380,27 +1380,27 @@ describe('Custom Type Formatting', function () {
     });
 });
 
-describe('SQL Names', function () {
+describe('SQL Names', () => {
 
-    describe('direct', function () {
-        it('must format correctly', function () {
+    describe('direct', () => {
+        it('must format correctly', () => {
             expect(pgp.as.format('$1~', 'name')).toBe('"name"');
             expect(pgp.as.format('$1~', '"name"')).toBe('"""name"""');
             expect(pgp.as.format('${name~}', {name: 'hello'})).toBe('"hello"');
         });
     });
 
-    describe('from a function', function () {
+    describe('from a function', () => {
         function getName() {
             return 'hello';
         }
 
-        it('must use the function result', function () {
+        it('must use the function result', () => {
             expect(pgp.as.format('$1:name', getName)).toBe('"hello"');
         });
     });
 
-    describe('from a mixed type', function () {
+    describe('from a mixed type', () => {
 
         function CS(name) {
             this.name = name;
@@ -1415,68 +1415,68 @@ describe('SQL Names', function () {
             return csTest;
         }
 
-        it('must resolve the mixed type', function () {
+        it('must resolve the mixed type', () => {
             expect(pgp.as.format('$1~', getName)).toBe('"customType"');
         });
     });
 
-    describe('with an object', function () {
-        it('must enumerate properties', function () {
+    describe('with an object', () => {
+        it('must enumerate properties', () => {
             expect(pgp.as.format('$1~', [{one: 1, two: 2}])).toBe('"one","two"');
         });
     });
 
-    describe('with an array', function () {
-        it('must enumerate properties', function () {
+    describe('with an array', () => {
+        it('must enumerate properties', () => {
             expect(pgp.as.format('$1~', [['one', 'two']])).toBe('"one","two"');
         });
     });
 
-    describe('Negative', function () {
+    describe('Negative', () => {
 
-        describe('with the wrong object type', function () {
-            it('must reject the object with an error', function () {
-                expect(function () {
+        describe('with the wrong object type', () => {
+            it('must reject the object with an error', () => {
+                expect(() => {
                     pgp.as.format('$1~', [123]);
-                }).toThrow(new TypeError('Invalid sql name: 123'));
-                expect(function () {
+                }).toThrow('Invalid sql name: 123');
+                expect(() => {
                     pgp.as.format('$1~', [true]);
-                }).toThrow(new TypeError('Invalid sql name: true'));
-                expect(function () {
+                }).toThrow('Invalid sql name: true');
+                expect(() => {
                     pgp.as.format('$1~', ['']);
-                }).toThrow(new TypeError('Invalid sql name: ""'));
+                }).toThrow('Invalid sql name: ""');
             });
         });
 
-        describe('with an empty object', function () {
-            it('must reject the object with an error', function () {
-                expect(function () {
+        describe('with an empty object', () => {
+            it('must reject the object with an error', () => {
+                expect(() => {
                     pgp.as.format('$1~', [{}]);
-                }).toThrow(new TypeError('Cannot retrieve sql names from an empty array/object.'));
+                }).toThrow('Cannot retrieve sql names from an empty array/object.');
             });
         });
 
-        describe('with an empty array', function () {
-            it('must reject the array with an error', function () {
-                expect(function () {
+        describe('with an empty array', () => {
+            it('must reject the array with an error', () => {
+                expect(() => {
                     pgp.as.format('$1~', [[]]);
-                }).toThrow(new TypeError('Cannot retrieve sql names from an empty array/object.'));
+                }).toThrow('Cannot retrieve sql names from an empty array/object.');
             });
         });
 
-        describe('with invalid property', function () {
-            it('must reject the property', function () {
-                expect(function () {
+        describe('with invalid property', () => {
+            it('must reject the property', () => {
+                expect(() => {
                     pgp.as.format('$1~', [{'': 1}]);
-                }).toThrow(new TypeError('Invalid sql name: ""'));
+                }).toThrow('Invalid sql name: ""');
             });
         });
 
-        describe('with invalid array value', function () {
-            it('must reject the value', function () {
-                expect(function () {
+        describe('with invalid array value', () => {
+            it('must reject the value', () => {
+                expect(() => {
                     pgp.as.format('$1~', [[1]]);
-                }).toThrow(new TypeError('Invalid sql name: 1'));
+                }).toThrow('Invalid sql name: 1');
             });
         });
 
