@@ -7,6 +7,10 @@
 const pgpLib = require('../../lib/index');
 const defPromise = require('bluebird'); // default promise library;
 
+defPromise.config({
+    warnings: false
+});
+
 // Either match your local database configuration according to the details below,
 // or the other way round - change the details to match your local configuration.
 const cn = {
