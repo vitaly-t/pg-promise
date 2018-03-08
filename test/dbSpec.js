@@ -248,7 +248,7 @@ describe('Connection', function () {
             const oldStyleError = 'database "bla-bla" does not exist'; // Before PostgreSQL v.10
             const newStyleError = 'role ' + JSON.stringify(pgp.pg.defaults.user) + ' does not exist';
             expect(error instanceof Error).toBe(true);
-            expect(error.message === oldStyleError || error.message === newStyleError).toBe(true);
+            expect(error.message.indexOf(oldStyleError) >= 0 || error.message.indexOf(newStyleError) >= 0).toBe(true);
         });
     });
 
@@ -266,7 +266,7 @@ describe('Connection', function () {
         });
         it('must report the right error', () => {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('role "somebody" does not exist');
+            expect(error.message).toContain('role "somebody" does not exist');
         });
     });
 
