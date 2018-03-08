@@ -83,3 +83,19 @@ db.task(t => {
         const d1 = data.value;
         const d2 = data[0].value;
     });
+
+function getQuery() {
+    return getNested;
+}
+
+function getNested(): string {
+    return 'SELECT 123;';
+}
+
+db.any(getQuery, 123);
+
+function getOne() {
+    return {text: ''};
+}
+
+db.one(getOne);

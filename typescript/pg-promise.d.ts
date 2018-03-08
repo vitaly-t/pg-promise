@@ -1,5 +1,5 @@
 /////////////////////////////////////////
-// Requires pg-promise v8.1.0 or later.
+// Requires pg-promise v8.2.0 or later.
 /////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -85,7 +85,16 @@ declare namespace pgPromise {
         rowMode?: string
     };
 
-    type TQuery = string | QueryFile | TPrepared | TParameterized | PreparedStatement | ParameterizedQuery
+    type TVirtualQuery = (values?: any) => TQuery
+
+    type TQuery =
+        string
+        | QueryFile
+        | TPrepared
+        | TParameterized
+        | PreparedStatement
+        | ParameterizedQuery
+        | TVirtualQuery
 
     type TColumnDescriptor = {
         source: any
