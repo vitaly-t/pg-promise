@@ -12,13 +12,13 @@ const dbHeader = header(options);
 const pgp = dbHeader.pgp;
 const db = dbHeader.db;
 
-describe('Transaction Mode', function () {
+describe('Transaction Mode', () => {
 
-    describe('without parameters, capitalized', function () {
+    describe('without parameters, capitalized', () => {
         const queries = [];
         let result, ctx;
         const context = {};
-        beforeEach(function (done) {
+        beforeEach(done => {
 
             options.capSQL = true;
             options.query = function (e) {
@@ -33,29 +33,29 @@ describe('Transaction Mode', function () {
             txNoParams.txMode = new pgp.txMode.TransactionMode();
 
             db.tx.call(context, txNoParams)
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must execute default transaction opening', function () {
+        it('must execute default transaction opening', () => {
             expect(result).toBe('success');
             expect(queries.length).toBe(2);
             expect(queries[0]).toBe('BEGIN');
             expect(ctx).toBe(context);
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.query;
             delete options.capSQL;
         });
     });
 
-    describe('initialized without new', function () {
+    describe('initialized without new', () => {
         const queries = [];
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
 
-            options.query = function (e) {
+            options.query = e => {
                 queries.push(e.query);
             };
 
@@ -67,27 +67,27 @@ describe('Transaction Mode', function () {
             txNoParams.txMode = pgp.txMode.TransactionMode();
 
             db.tx(txNoParams)
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must execute default transaction opening', function () {
+        it('must execute default transaction opening', () => {
             expect(result).toBe('success');
             expect(queries.length).toBe(2);
             expect(queries[0]).toBe('begin');
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.query;
         });
     });
 
-    describe('with isolation level', function () {
+    describe('with isolation level', () => {
         const queries = [];
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
 
-            options.query = function (e) {
+            options.query = e => {
                 queries.push(e.query);
             };
 
@@ -96,27 +96,27 @@ describe('Transaction Mode', function () {
             db.tx({mode}, () => {
                 return promise.resolve('success');
             })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must execute correct command', function () {
+        it('must execute correct command', () => {
             expect(result).toBe('success');
             expect(queries.length).toBe(2);
             expect(queries[0]).toBe('begin isolation level serializable');
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.query;
         });
     });
 
-    describe('with access mode = read only', function () {
+    describe('with access mode = read only', () => {
         const queries = [];
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
 
-            options.query = function (e) {
+            options.query = e => {
                 queries.push(e.query);
             };
 
@@ -125,27 +125,27 @@ describe('Transaction Mode', function () {
             db.tx({mode}, () => {
                 return promise.resolve('success');
             })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must execute correct command', function () {
+        it('must execute correct command', () => {
             expect(result).toBe('success');
             expect(queries.length).toBe(2);
             expect(queries[0]).toBe('begin read only');
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.query;
         });
     });
 
-    describe('with access mode = read/write', function () {
+    describe('with access mode = read/write', () => {
         const queries = [];
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
 
-            options.query = function (e) {
+            options.query = e => {
                 queries.push(e.query);
             };
 
@@ -154,27 +154,27 @@ describe('Transaction Mode', function () {
             db.tx({mode}, () => {
                 return promise.resolve('success');
             })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must execute correct command', function () {
+        it('must execute correct command', () => {
             expect(result).toBe('success');
             expect(queries.length).toBe(2);
             expect(queries[0]).toBe('begin read write');
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.query;
         });
     });
 
-    describe('with serializable and read-only', function () {
+    describe('with serializable and read-only', () => {
         const queries = [];
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
 
-            options.query = function (e) {
+            options.query = e => {
                 queries.push(e.query);
             };
 
@@ -188,27 +188,27 @@ describe('Transaction Mode', function () {
             db.tx({mode}, () => {
                 return promise.resolve('success');
             })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must execute correct command', function () {
+        it('must execute correct command', () => {
             expect(result).toBe('success');
             expect(queries.length).toBe(2);
             expect(queries[0]).toBe('begin isolation level serializable read only');
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.query;
         });
     });
 
-    describe('with deferrable', function () {
+    describe('with deferrable', () => {
         const queries = [];
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
 
-            options.query = function (e) {
+            options.query = e => {
                 queries.push(e.query);
             };
 
@@ -223,27 +223,27 @@ describe('Transaction Mode', function () {
             db.tx({mode}, () => {
                 return promise.resolve('success');
             })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must execute correct command', function () {
+        it('must execute correct command', () => {
             expect(result).toBe('success');
             expect(queries.length).toBe(2);
             expect(queries[0]).toBe('begin isolation level serializable read only deferrable');
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.query;
         });
     });
 
-    describe('with not deferrable', function () {
+    describe('with not deferrable', () => {
         const queries = [];
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
 
-            options.query = function (e) {
+            options.query = e => {
                 queries.push(e.query);
             };
 
@@ -258,27 +258,27 @@ describe('Transaction Mode', function () {
             db.tx({mode}, () => {
                 return promise.resolve('success');
             })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must execute correct command', function () {
+        it('must execute correct command', () => {
             expect(result).toBe('success');
             expect(queries.length).toBe(2);
             expect(queries[0]).toBe('begin isolation level serializable read only not deferrable');
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.query;
         });
     });
 
-    describe('when deferrable is irrelevant', function () {
+    describe('when deferrable is irrelevant', () => {
         const queries = [];
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
 
-            options.query = function (e) {
+            options.query = e => {
                 queries.push(e.query);
             };
 
@@ -288,17 +288,17 @@ describe('Transaction Mode', function () {
             db.tx({mode}, () => {
                 return promise.resolve('success');
             })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must execute correct command', function () {
+        it('must execute correct command', () => {
             expect(result).toBe('success');
             expect(queries.length).toBe(2);
             expect(queries[0]).toBe('begin isolation level repeatable read read only');
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.query;
         });
     });
