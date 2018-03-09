@@ -1428,7 +1428,7 @@ describe('Conditional Transaction', () => {
         beforeEach(done => {
             db.txIf(t => {
                 firstCtx = t.ctx;
-                t.txIf(t2 => {
+                return t.txIf(t2 => {
                     secondCtx = t2.ctx;
                 });
             })
@@ -1446,7 +1446,7 @@ describe('Conditional Transaction', () => {
         beforeEach(done => {
             db.txIf({cnd: false}, t => {
                 firstCtx = t.ctx;
-                t.txIf(t2 => {
+                return t.txIf(t2 => {
                     secondCtx = t2.ctx;
                 });
             })
@@ -1462,7 +1462,7 @@ describe('Conditional Transaction', () => {
         beforeEach(done => {
             db.txIf({cnd: () => false}, t => {
                 firstCtx = t.ctx;
-                t.txIf({cnd: a => !a.ctx.inTransaction}, t2 => {
+                return t.txIf({cnd: a => !a.ctx.inTransaction}, t2 => {
                     secondCtx = t2.ctx;
                 });
             })
@@ -1557,6 +1557,58 @@ describe('Reusable Transaction', () => {
             db.tx(t => {
                 return t.txIf({reusable: getReusable}, () => {
                 });
+            })
+                .catch(err => {
+                    error = err;
+                })
+                .finally(done);
+        });
+        it('must reject with the right error', () => {
+            expect(error.message).toBe('Ops!');
+        });
+    });
+});
+
+describe('Conditional Task', () => {
+    describe('with default parameters', () => {
+        let firstCtx, secondCtx;
+        beforeEach(done => {
+            db.taskIf(t => {
+                firstCtx = t.ctx;
+                return t.taskIf(t2 => {
+                    secondCtx = t2.ctx;
+                });
+            })
+                .finally(done);
+        });
+        it('must reuse the task', () => {
+            expect(secondCtx).toBe(firstCtx);
+        });
+    });
+    describe('with successful condition-function override', () => {
+        let firstCtx, secondCtx;
+        beforeEach(done => {
+            db.taskIf({cnd: true}, t1 => {
+                firstCtx = t1.ctx;
+                return t1.taskIf({cnd: () => false}, t2 => {
+                    secondCtx = t2.ctx;
+                });
+            })
+                .finally(done);
+        });
+        it('must create new task as required', () => {
+            expect(firstCtx).toBe(secondCtx);
+        });
+    });
+
+    describe('with error condition-function override', () => {
+        function errorCondition() {
+            throw new Error('Ops!');
+        }
+
+        let error;
+        beforeEach(done => {
+            db.taskIf({cnd: errorCondition}, () => {
             })
                 .catch(err => {
                     error = err;

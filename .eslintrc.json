@@ -8,7 +8,7 @@
   "parserOptions": {
   },
   "rules": {
-    "prefer-arrow-callback": "off",
+    "prefer-arrow-callback": "warn",
     "no-else-return": "error",
     "no-multi-spaces": "error",
     "no-whitespace-before-property": "error",

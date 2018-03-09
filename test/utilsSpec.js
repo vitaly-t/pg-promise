@@ -135,31 +135,31 @@ describe('taskArgs', () => {
 
 });
 
-describe('camelize', function () {
+describe('camelize', () => {
 
-    it('must keep leading digits', function () {
+    it('must keep leading digits', () => {
         expect(utils.camelize(' 123 name 456')).toBe('123Name456');
     });
 
-    it('must replace all gaps correctly', function () {
+    it('must replace all gaps correctly', () => {
         expect(utils.camelize(' one two - three _ four ')).toBe('oneTwoThreeFour');
         expect(utils.camelize('one.two-three_four')).toBe('oneTwoThreeFour');
     });
 
 });
 
-describe('camelizeVar', function () {
-    it('must remove leading digits and white spaces', function () {
+describe('camelizeVar', () => {
+    it('must remove leading digits and white spaces', () => {
         expect(utils.camelizeVar(' 123 name 456')).toBe('name456');
     });
-    it('must handle all special symbols', function () {
+    it('must handle all special symbols', () => {
         expect(utils.camelizeVar('-123_ 456.78.one.two . three.8')).toBe('oneTwoThree8');
     });
 });
 
-describe('enumSql', function () {
+describe('enumSql', () => {
 
-    it('must list all sql files in a folder', function () {
+    it('must list all sql files in a folder', () => {
         const sql = utils.enumSql('./test/sql');
         expect(sql.allUsers).toContain('allUsers.sql');
         expect(sql.invalid).toContain('invalid.sql');
@@ -168,7 +168,7 @@ describe('enumSql', function () {
         expect('sub' in sql).toBe(false);
     });
 
-    it('must list sql files in sub-folders', function () {
+    it('must list sql files in sub-folders', () => {
         const sql = utils.enumSql('./test/sql', {recursive: true}, dummy);
         expect(sql.allUsers).toContain('allUsers.sql');
         expect(sql.invalid).toContain('invalid.sql');
@@ -179,8 +179,8 @@ describe('enumSql', function () {
         expect('third' in sql.sub).toBe(false);
     });
 
-    it('must set values correctly', function () {
-        const sql = utils.enumSql('./test/sql', {recursive: true}, function (file, name, path) {
+    it('must set values correctly', () => {
+        const sql = utils.enumSql('./test/sql', {recursive: true}, (file, name, path) => {
             return path;
         });
         expect(sql.allUsers).toBe('allUsers');
@@ -192,43 +192,43 @@ describe('enumSql', function () {
         expect(sql.sub.oneTwoThree).toContain('sub.oneTwoThree');
     });
 
-    it('must be able to ignore duplicate folders', function () {
+    it('must be able to ignore duplicate folders', () => {
         let tree = utils.enumSql('./test/sql-special/dup-folders', {
             recursive: true,
             ignoreErrors: true
-        }, function (file, name, path) {
+        }, (file, name, path) => {
             return path;
         });
         expect(tree && typeof tree === 'object').toBeTruthy();
         expect(tree.sub.first).toBe('sub.first');
     });
 
-    it('must be able to ignore duplicate files', function () {
+    it('must be able to ignore duplicate files', () => {
         let tree = utils.enumSql('./test/sql-special/dup-files', {
             recursive: true,
             ignoreErrors: true
-        }, function (file, name, path) {
+        }, (file, name, path) => {
             return path;
         });
         expect(tree && typeof tree === 'object').toBeTruthy();
         expect(tree.one).toBe('one');
     });
 
-    describe('negative', function () {
-        it('must throw on invalid or empty directory', function () {
+    describe('negative', () => {
+        it('must throw on invalid or empty directory', () => {
             const errMsg = 'Parameter \'dir\' must be a non-empty text string.';
-            expect(function () {
+            expect(() => {
                 utils.enumSql();
             }).toThrow(errMsg);
-            expect(function () {
+            expect(() => {
                 utils.enumSql(null);
             }).toThrow(errMsg);
-            expect(function () {
+            expect(() => {
                 utils.enumSql('');
             }).toThrow(errMsg);
         });
 
-        it('must throw on duplicate folder', function () {
+        it('must throw on duplicate folder', () => {
             let err;
             try {
                 utils.enumSql('./test/sql-special/dup-folders', {recursive: true});
@@ -239,7 +239,7 @@ describe('enumSql', function () {
             expect(err.message).toContain('Empty or duplicate camelized folder name:');
         });
 
-        it('must throw on a duplicate file', function () {
+        it('must throw on a duplicate file', () => {
             let err;
             try {
                 utils.enumSql('./test/sql-special/dup-files', {recursive: true});
@@ -253,56 +253,56 @@ describe('enumSql', function () {
     });
 });
 
-describe('objectToCode', function () {
+describe('objectToCode', () => {
 
-    it('must allow an empty tree', function () {
+    it('must allow an empty tree', () => {
         expect(utils.objectToCode({})).toBe('{' + EOL + '}');
     });
 
-    it('must format correctly', function () {
+    it('must format correctly', () => {
         const gap = $u.messageGap(1);
         expect(utils.objectToCode({one: 1})).toBe('{' + EOL + gap + 'one: 1' + EOL + '}');
     });
 
-    it('must convert a full tree correctly', function () {
+    it('must convert a full tree correctly', () => {
         const tree = utils.enumSql('./test/sql', {recursive: true});
         expect(utils.objectToCode(tree).length > 100).toBe(true);
     });
 
-    it('must allow callback values', function () {
+    it('must allow callback values', () => {
         const tree = utils.enumSql('./test/sql', {recursive: true});
         expect(utils.objectToCode(tree, dummy).length > 100).toBe(true);
     });
 
-    it('must cover folders first', function () {
+    it('must cover folders first', () => {
         const gap = $u.messageGap(1);
-        const tree = utils.enumSql('./test/sql-special/folders-only', {recursive: true}, function (file, name, path) {
+        const tree = utils.enumSql('./test/sql-special/folders-only', {recursive: true}, (file, name, path) => {
             return path;
         });
-        expect(utils.objectToCode(tree, function (value) {
+        expect(utils.objectToCode(tree, value => {
             return value;
         })).toBe('{' + EOL + gap + 'one: {' + EOL + gap + gap + 'first: one.first' + EOL + gap + '},' + EOL + gap + 'two: {' + EOL + gap + gap + 'first: two.first' + EOL + gap + '}' + EOL + '}');
     });
 
-    describe('negative', function () {
-        it('must throw on invalid object', function () {
+    describe('negative', () => {
+        it('must throw on invalid object', () => {
             const err = new TypeError('Parameter \'obj\' must be a non-null object.');
-            expect(function () {
+            expect(() => {
                 utils.objectToCode();
             }).toThrow(err);
-            expect(function () {
+            expect(() => {
                 utils.objectToCode(null);
             }).toThrow(err);
-            expect(function () {
+            expect(() => {
                 utils.objectToCode(123);
             }).toThrow(err);
         });
     });
 });
 
-describe('buildSqlModule', function () {
+describe('buildSqlModule', () => {
 
-    it('must succeed for a valid configurator', function () {
+    it('must succeed for a valid configurator', () => {
         let code1 = utils.buildSqlModule({dir: './test/sql'});
         let code2 = utils.buildSqlModule({dir: './test/sql', output: path.join(__dirname, '../generated.js')});
         expect(typeof code1).toBe('string');
@@ -311,7 +311,7 @@ describe('buildSqlModule', function () {
         expect(code2.length > 100).toBe(true);
     });
 
-    it('must succeed for valid configuration files', function () {
+    it('must succeed for valid configuration files', () => {
         let code1 = utils.buildSqlModule(path.join(__dirname, './sql-special/sql-config.json'));
         let code2 = utils.buildSqlModule(path.join(__dirname, './sql-special/sql-simple.json'));
         expect(typeof code1).toBe('string');
@@ -320,8 +320,8 @@ describe('buildSqlModule', function () {
         expect(code2.length > 100).toBe(true);
     });
 
-    describe('negative', function () {
-        it('must fail without any configuration', function () {
+    describe('negative', () => {
+        it('must fail without any configuration', () => {
             let err;
             try {
                 utils.buildSqlModule();
@@ -332,47 +332,47 @@ describe('buildSqlModule', function () {
             expect(err.message).toContain('Default SQL configuration file not found:');
         });
 
-        it('must throw on missing \'dir\'', function () {
+        it('must throw on missing \'dir\'', () => {
             const err = new Error('Property \'dir\' must be a non-empty string.');
-            expect(function () {
+            expect(() => {
                 utils.buildSqlModule(path.join(__dirname, './sql-special/sql-invalid.json'));
             }).toThrow(err);
         });
 
-        it('must throw on invalid \'config\' parameter', function () {
+        it('must throw on invalid \'config\' parameter', () => {
             const err = new TypeError('Invalid parameter \'config\' specified.');
-            expect(function () {
+            expect(() => {
                 utils.buildSqlModule(123);
             }).toThrow(err);
-            expect(function () {
+            expect(() => {
                 utils.buildSqlModule(0);
             }).toThrow(err);
-            expect(function () {
+            expect(() => {
                 utils.buildSqlModule('');
             }).toThrow(err);
-            expect(function () {
+            expect(() => {
                 utils.buildSqlModule('    ');
             }).toThrow(err);
         });
 
-        it('must throw in invalid config file path', function () {
+        it('must throw in invalid config file path', () => {
             // this one is mainly for coverage:
-            expect(function () {
+            expect(() => {
                 utils.buildSqlModule('./sql-special/non-existent.json');
             }).toThrow();
         });
     });
 });
 
-describe('isDev', function () {
+describe('isDev', () => {
     const env = process.env.NODE_ENV;
 
-    it('must detect the default environment', function () {
+    it('must detect the default environment', () => {
         delete process.env.NODE_ENV;
         expect(internal.isDev()).toBe(false);
     });
 
-    it('must detect a dev environment', function () {
+    it('must detect a dev environment', () => {
         process.env.NODE_ENV = 'development';
         expect(internal.isDev()).toBe(true);
 
@@ -383,12 +383,12 @@ describe('isDev', function () {
         expect(internal.isDev()).toBe(true);
     });
 
-    it('must detect a non-dev environment', function () {
+    it('must detect a non-dev environment', () => {
         process.env.NODE_ENV = 'production';
         expect(internal.isDev()).toBe(false);
     });
 
-    afterEach(function () {
+    afterEach(() => {
         process.env.NODE_ENV = env;
     });
 });
