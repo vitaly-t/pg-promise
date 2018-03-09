@@ -1371,7 +1371,7 @@ describe('Conditional Transaction', () => {
             expect(secondCtx.isTX).toBe(true);
         });
     });
-    describe('with condition-function override', () => {
+    describe('with successful condition-function override', () => {
         let firstCtx, secondCtx;
         beforeEach(done => {
             db.txIf({cnd: () => false}, t => {
@@ -1385,6 +1385,82 @@ describe('Conditional Transaction', () => {
         it('must change the nested transaction logic', () => {
             expect(firstCtx.isTX).toBe(false);
             expect(secondCtx.isTX).toBe(true);
+        });
+    });
+
+    describe('with error condition-function override', () => {
+        function errorCondition() {
+            throw new Error('Ops!');
+        }
+
+        let error;
+        beforeEach(done => {
+            db.txIf({cnd: errorCondition}, () => {
+            })
+                .catch(err => {
+                    error = err;
+                })
+                .finally(done);
+        });
+        it('must reject with the right error', () => {
+            expect(error.message).toBe('Ops!');
+        });
+    });
+});
+
+describe('Reusable Transaction', () => {
+    describe('as value', () => {
+        let ctx1, ctx2;
+        beforeEach(done => {
+            db.tx(t1 => {
+                ctx1 = t1.ctx;
+                return t1.txIf({reusable: true}, t2 => {
+                    ctx2 = t2.ctx;
+                });
+            })
+                .finally(done);
+        });
+        it('must reuse context', () => {
+            expect(ctx1).toBe(ctx2);
+        });
+    });
+    describe('as successful function', () => {
+        function getReusable() {
+            return true;
+        }
+
+        let ctx1, ctx2;
+        beforeEach(done => {
+            db.tx(t1 => {
+                ctx1 = t1.ctx;
+                return t1.txIf({reusable: getReusable}, t2 => {
+                    ctx2 = t2.ctx;
+                });
+            })
+                .finally(done);
+        });
+        it('must reuse context', () => {
+            expect(ctx1).toBe(ctx2);
+        });
+    });
+    describe('as error function', () => {
+        function getReusable() {
+            throw new Error('Ops!');
+        }
+
+        let error;
+        beforeEach(done => {
+            db.tx(t => {
+                return t.txIf({reusable: getReusable}, () => {
+                });
+            })
+                .catch(err => {
+                    error = err;
+                })
+                .finally(done);
+        });
+        it('must reject with the right error', () => {
+            expect(error.message).toBe('Ops!');
         });
     });
 });
