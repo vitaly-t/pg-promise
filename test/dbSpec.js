@@ -1,5 +1,9 @@
 'use strict';
 
+const npm = {
+    util: require('util')
+};
+
 const capture = require('./db/capture');
 const pgResult = require('pg/lib/result');
 const header = require('./db/header');
@@ -1028,11 +1032,17 @@ describe('Executing method query', () => {
             });
         });
         describe('for error-throwing functions', () => {
-            let error;
+            function throwError() {
+                throw new Error('Ops!');
+            }
+
+            let error, query, params;
             beforeEach(done => {
-                db.query(() => {
-                    throw new Error('Ops!');
-                })
+                options.error = (err, e) => {
+                    query = e.query;
+                    params = e.params;
+                };
+                db.query(throwError, 123)
                     .catch(err => {
                         error = err;
                     })
@@ -1041,12 +1051,25 @@ describe('Executing method query', () => {
             it('must reject with the error', () => {
                 expect(error.message).toBe('Ops!');
             });
+            it('must notify with the right query and params', () => {
+                expect(query).toBe(npm.util.inspect(throwError));
+                expect(params).toBe(123);
+            });
+            afterEach(() => {
+                delete options.error;
+            });
         });
         describe('for async functions', () => {
-            let error;
+            function* invalidFunc() {
+            }
+
+            let error, query, params;
             beforeEach(done => {
-                db.query(function* () {
-                })
+                options.error = (err, e) => {
+                    query = e.query;
+                    params = e.params;
+                };
+                db.query(invalidFunc, 123)
                     .catch(err => {
                         error = err;
                     })
@@ -1054,6 +1077,13 @@ describe('Executing method query', () => {
             });
             it('must reject with the right error', () => {
                 expect(error.message).toBe('Cannot use asynchronous functions with query formatting.');
+            });
+            it('must notify with the right query and params', () => {
+                expect(query).toBe(npm.util.inspect(invalidFunc));
+                expect(params).toBe(123);
+            });
+            afterEach(() => {
+                delete options.error;
             });
         });
     });
