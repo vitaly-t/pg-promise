@@ -1409,7 +1409,7 @@ describe('Conditional Transaction', () => {
 });
 
 describe('Reusable Transaction', () => {
-    describe('as value', () => {
+    describe('as value with default condition', () => {
         let ctx1, ctx2;
         beforeEach(done => {
             db.tx(t1 => {
@@ -1424,6 +1424,24 @@ describe('Reusable Transaction', () => {
             expect(ctx1).toBe(ctx2);
         });
     });
+    describe('as value with true condition', () => {
+        let ctx1, ctx2;
+        beforeEach(done => {
+            db.tx('first', t1 => {
+                ctx1 = t1.ctx;
+                return t1.txIf({tag: 'second', cnd: true, reusable: false}, t2 => {
+                    ctx2 = t2.ctx;
+                });
+            })
+                .finally(done);
+        });
+        it('must create a new sub-transaction context', () => {
+            expect(ctx1).not.toBe(ctx2);
+            expect(ctx1.tag).toBe('first');
+            expect(ctx2.tag).toBe('second');
+        });
+    });
+
     describe('as successful function', () => {
         function getReusable() {
             return true;
