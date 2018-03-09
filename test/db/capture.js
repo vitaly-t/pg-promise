@@ -7,13 +7,13 @@ function hookConsole(callback) {
         oldOutWrite = stdout.write,
         oldErrWrite = stderr.write;
 
-    stdout.write = (function () {
+    stdout.write = (() => {
         return string => {
             callback(string);
         };
     })(stdout.write);
 
-    stderr.write = (function () {
+    stderr.write = (() => {
         return string => {
             callback(string);
         };
@@ -33,12 +33,12 @@ function removeColors(text) {
 
 function capture() {
     let text = '';
-    const hook = hookConsole(function (s) {
+    const hook = hookConsole(s => {
         if (!text) {
             text = s;
         }
     });
-    return function () {
+    return () => {
         hook();
         return removeColors(text);
     };
