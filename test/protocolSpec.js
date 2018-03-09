@@ -136,6 +136,7 @@ describe('Database Protocol', function () {
     it('must have all the root-level methods', function () {
         expect(typeof db.connect).toBe('function');
         expect(typeof db.task).toBe('function');
+        expect(typeof db.taskIf).toBe('function');
         expect(typeof db.query).toBe('function');
         expect(typeof db.result).toBe('function');
         expect(typeof db.tx).toBe('function');
@@ -201,6 +202,7 @@ describe('Database Protocol', function () {
             expect(typeof connection.query).toBe('function');
             expect(typeof connection.result).toBe('function');
             expect(typeof connection.task).toBe('function');
+            expect(typeof connection.taskIf).toBe('function');
             expect(typeof connection.tx).toBe('function');
             expect(typeof connection.txIf).toBe('function');
             expect(typeof connection.one).toBe('function');
@@ -252,6 +254,7 @@ describe('Database Protocol', function () {
             expect(typeof protocol.query).toBe('function');
             expect(typeof protocol.result).toBe('function');
             expect(typeof protocol.task).toBe('function');
+            expect(typeof protocol.taskIf).toBe('function');
             expect(typeof protocol.tx).toBe('function');
             expect(typeof protocol.txIf).toBe('function');
             expect(typeof protocol.one).toBe('function');
@@ -296,6 +299,7 @@ describe('Database Protocol', function () {
             expect(typeof(protocol.query)).toBe('function');
             expect(typeof(protocol.result)).toBe('function');
             expect(typeof(protocol.task)).toBe('function');
+            expect(typeof(protocol.taskIf)).toBe('function');
             expect(typeof(protocol.tx)).toBe('function');
             expect(typeof(protocol.txIf)).toBe('function');
             expect(typeof(protocol.one)).toBe('function');

@@ -456,6 +456,14 @@ declare namespace pgPromise {
 
         task<T=any>(options: { tag?: any }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
+        // Conditional Tasks;
+        // API: http://vitaly-t.github.io/pg-promise/Database.html#taskIf
+        taskIf<T=any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+
+        taskIf<T=any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+
+        taskIf<T=any>(options: { tag?: any, cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+
         // Transactions;
         // API: http://vitaly-t.github.io/pg-promise/Database.html#tx
         tx<T=any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
