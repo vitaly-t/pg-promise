@@ -1,5 +1,6 @@
 ### Release History
 
+* 8.2.0 Adding [Conditional Tasks], plus query callbacks. Released: March 10, 2018.
 * 8.1.0 Adding new method [utils.taskArgs]. Released: Feb 26, 2018
 * 8.0.0 Major changes for task and transaction interfaces. Released: Feb 24, 2018
 * 7.5.2 Makes Symbolic CTF within [Custom Type Formatting] global. Released: Feb 12, 2018
@@ -151,3 +152,4 @@
 [TaskContext]:http://vitaly-t.github.io/pg-promise/global.html#TaskContext
 [CSV Filter]:https://github.com/vitaly-t/pg-promise#csv-filter
 [utils.taskArgs]:http://vitaly-t.github.io/pg-promise/utils.html#.taskArgs
+[Conditional Tasks]:https://github.com/vitaly-t/pg-promise#conditional-tasks

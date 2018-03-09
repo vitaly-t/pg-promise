@@ -32,6 +32,7 @@ pg-promise
     - [Symbolic CTF]    
   - [Query Files](#query-files)    
   - [Tasks]    
+    - [Conditional Tasks]  
   - [Transactions]    
     - [Nested Transactions]    
       - [Limitations]   
@@ -747,6 +748,61 @@ db.task('get-event-logs', async t => {
 
 </details>
 
+### Conditional Tasks
+
+Method [taskIf] was added in v8.2.0, to create a new task only when required, according to the condition. 
+
+The default condition is to start a new task only when necessary, such as on the top level.
+
+<details>
+<summary><b>With default condition</b></summary>
+ 
+```js
+db.taskIf(t1 => {
+    // new task has started, as the top level doesn't have one
+    return t1.taskIf(t2 => {
+        // Task t1 is being used, according to the default condition
+        // t2 = t1
+    });
+})
+```
+</details><br/>
+
+<details>
+<summary><b>With a custom condition - value</b></summary>
+ 
+```js
+db.taskIf({cnd: false}, t1 => {
+    // new task is created, i.e. option cnd is ignored here,
+    // because the task is required on the top level
+    return t1.taskIf({cnd: true}, t2 => {
+        // new task created, because we specified that we want one;
+        // t2 != t1
+    });
+})
+```
+</details><br/>
+
+<details>
+<summary><b>With a custom condition - callback</b></summary>
+ 
+```js
+const cnd = c => {
+    // c.ctx - task/tx context (not available on the top level)
+    // default condition: return !c.ctx;
+    return someValue;
+};
+
+db.taskIf({cnd}, t1 => {
+    // new task is always created, because it is required on the top level
+    return t1.taskIf({cnd}, t2 => {
+        // if someValue is truthy, a new task is created (t2 != t1);
+        // otherwise, we continue with the containing task (t2 = t1).
+    });
+})
+```
+</details><br/>
+
 ## Transactions
 
 Transaction method [tx] is like [task], which also executes `BEGIN` + `COMMIT`/`ROLLBACK`:
@@ -1067,7 +1123,8 @@ DEALINGS IN THE SOFTWARE.
 [Nested Transactions]:#nested-transactions    
 [Limitations]:#limitations   
 [Configurable Transactions]:#configurable-transactions
-[Conditional Transactions]:#conditional-transactions    
+[Conditional Tasks]:#conditional-tasks
+[Conditional Transactions]:#conditional-transactions  
 [Library de-initialization]:#library-de-initialization
 
 <!-- Database Method Links -->
@@ -1089,6 +1146,7 @@ DEALINGS IN THE SOFTWARE.
 [stream]:http://vitaly-t.github.io/pg-promise/Database.html#stream
 [connect]:http://vitaly-t.github.io/pg-promise/Database.html#connect
 [task]:http://vitaly-t.github.io/pg-promise/Database.html#task
+[taskIf]:http://vitaly-t.github.io/pg-promise/Database.html#taskIf
 [tx]:http://vitaly-t.github.io/pg-promise/Database.html#tx
 [txIf]:http://vitaly-t.github.io/pg-promise/Database.html#txIf
 [batch]:http://vitaly-t.github.io/pg-promise/Task.html#batch
