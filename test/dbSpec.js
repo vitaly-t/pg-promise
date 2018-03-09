@@ -1,5 +1,9 @@
 'use strict';
 
+const npm = {
+    util: require('util')
+};
+
 const capture = require('./db/capture');
 const pgResult = require('pg/lib/result');
 const header = require('./db/header');
@@ -30,23 +34,23 @@ function isResult(value) {
 
 const $text = require('../lib/text');
 
-describe('Database Instantiation', function () {
-    it('must throw an invalid connection passed', function () {
+describe('Database Instantiation', () => {
+    it('must throw an invalid connection passed', () => {
         const errBody = 'Invalid connection details: ';
-        expect(pgp).toThrow(new TypeError(errBody + 'undefined'));
+        expect(pgp).toThrow(errBody + 'undefined');
 
         expect(() => {
             pgp(null);
-        }).toThrow(new TypeError(errBody + 'null'));
+        }).toThrow(errBody + 'null');
         expect(() => {
             pgp('');
-        }).toThrow(new TypeError(errBody + '""'));
+        }).toThrow(errBody + '""');
         expect(() => {
             pgp('   ');
-        }).toThrow(new TypeError(errBody + '"   "'));
+        }).toThrow(errBody + '"   "');
         expect(() => {
             pgp(123);
-        }).toThrow(new TypeError(errBody + '123'));
+        }).toThrow(errBody + '123');
     });
 });
 
@@ -939,27 +943,24 @@ describe('Method \'manyOrNone\'', function () {
 
 });
 
-describe('Executing method query', function () {
+describe('Executing method query', () => {
 
-    it('with invalid query as parameter must throw an error', function () {
-        let finished, result;
-        promise.any([
-            db.query(),
-            db.query(''),
-            db.query('   '),
-            db.query({}),
-            db.query(1),
-            db.query(null)])
-            .then(function () {
-                finished = true;
-            }, function (reason) {
-                result = reason;
-                finished = true;
-            });
-        waitsFor(function () {
-            return finished;
-        }, 'Query timed out', 5000);
-        runs(function () {
+    describe('with invalid query as parameter', () => {
+        let result;
+        beforeEach(done => {
+            promise.any([
+                db.query(),
+                db.query(''),
+                db.query('   '),
+                db.query({}),
+                db.query(1),
+                db.query(null)])
+                .catch(err => {
+                    result = err;
+                })
+                .finally(done);
+        });
+        it('must throw an error', () => {
             expect(result.length).toBe(6);
             expect(result[0].message).toBe($text.invalidQuery); // reject to an undefined query;
             expect(result[1].message).toBe($text.invalidQuery); // reject to an empty-string query;
@@ -970,29 +971,26 @@ describe('Executing method query', function () {
         });
     });
 
-    it('with invalid qrm as parameter must throw an error', function () {
-        let finished, result;
-        const error = 'Invalid Query Result Mask specified.';
-        promise.any([
-            db.query('something', undefined, ''),
-            db.query('something', undefined, '2'),
-            db.query('something', undefined, -1),
-            db.query('something', undefined, 0),
-            db.query('something', undefined, 100),
-            db.query('something', undefined, NaN),
-            db.query('something', undefined, 1 / 0),
-            db.query('something', undefined, -1 / 0),
-            db.query('something', undefined, 2.45)])
-            .then(function () {
-                finished = true;
-            }, function (reason) {
-                result = reason;
-                finished = true;
-            });
-        waitsFor(function () {
-            return finished;
-        }, 'Query timed out', 5000);
-        runs(function () {
+    describe('with invalid qrm as parameter', () => {
+        let result;
+        beforeEach(done => {
+            promise.any([
+                db.query('something', undefined, ''),
+                db.query('something', undefined, '2'),
+                db.query('something', undefined, -1),
+                db.query('something', undefined, 0),
+                db.query('something', undefined, 100),
+                db.query('something', undefined, NaN),
+                db.query('something', undefined, 1 / 0),
+                db.query('something', undefined, -1 / 0),
+                db.query('something', undefined, 2.45)])
+                .catch(err => {
+                    result = err;
+                })
+                .finally(done);
+        });
+        it('must throw an error', () => {
+            const error = 'Invalid Query Result Mask specified.';
             expect(result.length).toBe(9);
             for (let i = 0; i < 9; i++) {
                 expect(result[i] instanceof TypeError).toBe(true);
@@ -1001,6 +999,94 @@ describe('Executing method query', function () {
         });
     });
 
+    describe('with query as function', () => {
+        describe('for normal functions', () => {
+            const context = [];
+            const getQuery1 = () => 'select 123 as value';
+
+            function getQuery2(values) {
+                context.push(this);
+                return pgp.as.format('select $1 as value', values);
+            }
+
+            const getQuery3 = () => getQuery2;
+
+            let result;
+
+            beforeEach(done => {
+                promise.all([
+                    db.query(getQuery1, [], pgp.queryResult.one),
+                    db.query(getQuery2, 456, pgp.queryResult.one),
+                    db.query(getQuery3, 789, pgp.queryResult.one)
+                ])
+                    .then(data => {
+                        result = data;
+                    })
+                    .finally(done);
+            });
+            it('must return the right result', () => {
+                expect(result[0]).toEqual({value: 123});
+                expect(result[1]).toEqual({value: 456}); // test that values are passing in correctly;
+                expect(result[2]).toEqual({value: 789});// must pass values through recursive functions
+                expect(context).toEqual([456, 789]); // this context must be passed in correctly
+            });
+        });
+        describe('for error-throwing functions', () => {
+            function throwError() {
+                throw new Error('Ops!');
+            }
+
+            let error, query, params;
+            beforeEach(done => {
+                options.error = (err, e) => {
+                    query = e.query;
+                    params = e.params;
+                };
+                db.query(throwError, 123)
+                    .catch(err => {
+                        error = err;
+                    })
+                    .finally(done);
+            });
+            it('must reject with the error', () => {
+                expect(error.message).toBe('Ops!');
+            });
+            it('must notify with the right query and params', () => {
+                expect(query).toBe(npm.util.inspect(throwError));
+                expect(params).toBe(123);
+            });
+            afterEach(() => {
+                delete options.error;
+            });
+        });
+        describe('for async functions', () => {
+            function* invalidFunc() {
+            }
+
+            let error, query, params;
+            beforeEach(done => {
+                options.error = (err, e) => {
+                    query = e.query;
+                    params = e.params;
+                };
+                db.query(invalidFunc, 123)
+                    .catch(err => {
+                        error = err;
+                    })
+                    .finally(done);
+            });
+            it('must reject with the right error', () => {
+                expect(error.message).toBe('Cannot use asynchronous functions with query formatting.');
+            });
+            it('must notify with the right query and params', () => {
+                expect(query).toBe(npm.util.inspect(invalidFunc));
+                expect(params).toBe(123);
+            });
+            afterEach(() => {
+                delete options.error;
+            });
+        });
+    });
 });
 
 describe('Transactions', function () {

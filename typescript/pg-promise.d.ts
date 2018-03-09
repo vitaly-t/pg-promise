@@ -85,7 +85,16 @@ declare namespace pgPromise {
         rowMode?: string
     };
 
-    type TQuery = string | QueryFile | TPrepared | TParameterized | PreparedStatement | ParameterizedQuery
+    type TVirtualQuery = (values?: any) => TQuery
+
+    type TQuery =
+        string
+        | QueryFile
+        | TPrepared
+        | TParameterized
+        | PreparedStatement
+        | ParameterizedQuery
+        | TVirtualQuery
 
     type TColumnDescriptor = {
         source: any
