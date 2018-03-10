@@ -38,3 +38,11 @@ db.task<number>(t => {
 })
     .then(data => {
     });
+
+db.taskIf<boolean>({cnd: true, tag: 123}, t => {
+    return true;
+});
+
+db.txIf<boolean>({cnd: true, tag: 123, mode: null, reusable: true}, t => {
+    return true;
+});
