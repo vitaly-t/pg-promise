@@ -221,7 +221,7 @@ depending on the database context.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#query">query</a>,<a href="Database.html#none">none</a>,<a href="Database.html#one">one</a>,<a href="Database.html#oneOrNone">oneOrNone</a>,<a href="Database.html#many">many</a>,<a href="Database.html#manyOrNone">manyOrNone</a>,<a href="Database.html#any">any</a>,<a href="Database.html#func">func</a>,<a href="Database.html#proc">proc</a>,<a href="Database.html#result">result</a>,<a href="Database.html#multiResult">multiResult</a>,<a href="Database.html#multi">multi</a>,<a href="Database.html#map">map</a>,<a href="Database.html#each">each</a>,<a href="Database.html#stream">stream</a>,<a href="Database.html#task">task</a>,<a href="Database.html#tx">tx</a>,<a href="Database.html#txIf">txIf</a>,<a href="Database.html#connect">connect</a>,<a href="Database.html#$config">$config</a>,<a href="Database.html#$cn">$cn</a>,<a href="Database.html#$dc">$dc</a>,<a href="Database.html#$pool">$pool</a>,<a href="global.html#event:extend">extend</a></li>
+            <li><a href="Database.html#query">query</a>,<a href="Database.html#none">none</a>,<a href="Database.html#one">one</a>,<a href="Database.html#oneOrNone">oneOrNone</a>,<a href="Database.html#many">many</a>,<a href="Database.html#manyOrNone">manyOrNone</a>,<a href="Database.html#any">any</a>,<a href="Database.html#func">func</a>,<a href="Database.html#proc">proc</a>,<a href="Database.html#result">result</a>,<a href="Database.html#multiResult">multiResult</a>,<a href="Database.html#multi">multi</a>,<a href="Database.html#map">map</a>,<a href="Database.html#each">each</a>,<a href="Database.html#stream">stream</a>,<a href="Database.html#task">task</a>,<a href="Database.html#taskIf">taskIf</a>,<a href="Database.html#tx">tx</a>,<a href="Database.html#txIf">txIf</a>,<a href="Database.html#connect">connect</a>,<a href="Database.html#$config">$config</a>,<a href="Database.html#$cn">$cn</a>,<a href="Database.html#$dc">$dc</a>,<a href="Database.html#$pool">$pool</a>,<a href="global.html#event:extend">extend</a></li>
         </ul>
     </dd>
     
@@ -343,7 +343,7 @@ depending on the database context.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line355">line 355</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line359">line 359</a>
     </li></ul></dd>
     
 
@@ -437,7 +437,7 @@ depending on the database context.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line322">line 322</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line326">line 326</a>
     </li></ul></dd>
     
 
@@ -515,7 +515,7 @@ depending on the database context.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line367">line 367</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line371">line 371</a>
     </li></ul></dd>
     
 
@@ -600,7 +600,7 @@ to use this <a href="Database.html">Database</a> object, and each query method w
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line379">line 379</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line383">line 383</a>
     </li></ul></dd>
     
 
@@ -695,6 +695,9 @@ This is simply a shorter alias for method <a href="Database.html#manyOrNone">man
 <span class="param-type">string</span>
 |
 
+<span class="param-type">function</span>
+|
+
 <span class="param-type">object</span>
 
 
@@ -716,6 +719,8 @@ This is simply a shorter alias for method <a href="Database.html#manyOrNone">man
             <td class="description last"><p>Query to be executed, which can be any of the following types:</p>
 <ul>
 <li>A non-empty query string</li>
+<li>A function that returns a query string or another function, i.e. recursive resolution
+is supported, passing in <code>values</code> as <code>this</code>, and as the first parameter.</li>
 <li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
 <li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
@@ -805,7 +810,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line701">line 701</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line715">line 715</a>
     </li></ul></dd>
     
 
@@ -1118,7 +1123,7 @@ set up on the connection's <code>client</code> object, you should remove them to
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line127">line 127</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line128">line 128</a>
     </li></ul></dd>
     
 
@@ -1128,7 +1133,7 @@ set up on the connection's <code>client</code> object, you should remove them to
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#task">Database.task</a>,<a href="Database.html#tx">Database.tx</a>,<a href="Database.html#txIf">Database.txIf</a></li>
+            <li><a href="Database.html#task">Database.task</a>,<a href="Database.html#taskIf">Database.taskIf</a>,<a href="Database.html#tx">Database.tx</a>,<a href="Database.html#txIf">Database.txIf</a></li>
         </ul>
     </dd>
     
@@ -1254,6 +1259,9 @@ set up on the connection's <code>client</code> object, you should remove them to
 <span class="param-type">string</span>
 |
 
+<span class="param-type">function</span>
+|
+
 <span class="param-type">object</span>
 
 
@@ -1275,6 +1283,8 @@ set up on the connection's <code>client</code> object, you should remove them to
             <td class="description last"><p>Query to be executed, which can be any of the following types:</p>
 <ul>
 <li>A non-empty query string</li>
+<li>A function that returns a query string or another function, i.e. recursive resolution
+is supported, passing in <code>values</code> as <code>this</code>, and as the first parameter.</li>
 <li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
 <li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
@@ -1433,7 +1443,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1094">line 1094</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1118">line 1118</a>
     </li></ul></dd>
     
 
@@ -1693,7 +1703,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line926">line 926</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line948">line 948</a>
     </li></ul></dd>
     
 
@@ -1808,6 +1818,9 @@ as an override for its internal <code>values</code>.</p></td>
 <span class="param-type">string</span>
 |
 
+<span class="param-type">function</span>
+|
+
 <span class="param-type">object</span>
 
 
@@ -1829,6 +1842,8 @@ as an override for its internal <code>values</code>.</p></td>
             <td class="description last"><p>Query to be executed, which can be any of the following types:</p>
 <ul>
 <li>A non-empty query string</li>
+<li>A function that returns a query string or another function, i.e. recursive resolution
+is supported, passing in <code>values</code> as <code>this</code>, and as the first parameter.</li>
 <li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
 <li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
@@ -1918,7 +1933,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line560">line 560</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line568">line 568</a>
     </li></ul></dd>
     
 
@@ -2034,6 +2049,9 @@ as an override for its internal <code>values</code>.</p></td>
 <span class="param-type">string</span>
 |
 
+<span class="param-type">function</span>
+|
+
 <span class="param-type">object</span>
 
 
@@ -2055,6 +2073,8 @@ as an override for its internal <code>values</code>.</p></td>
             <td class="description last"><p>Query to be executed, which can be any of the following types:</p>
 <ul>
 <li>A non-empty query string</li>
+<li>A function that returns a query string or another function, i.e. recursive resolution
+is supported, passing in <code>values</code> as <code>this</code>, and as the first parameter.</li>
 <li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
 <li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
@@ -2144,7 +2164,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line660">line 660</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line672">line 672</a>
     </li></ul></dd>
     
 
@@ -2270,6 +2290,9 @@ resolved by method <a href="Database.html#any">any</a>.</p>
 <span class="param-type">string</span>
 |
 
+<span class="param-type">function</span>
+|
+
 <span class="param-type">object</span>
 
 
@@ -2291,6 +2314,8 @@ resolved by method <a href="Database.html#any">any</a>.</p>
             <td class="description last"><p>Query to be executed, which can be any of the following types:</p>
 <ul>
 <li>A non-empty query string</li>
+<li>A function that returns a query string or another function, i.e. recursive resolution
+is supported, passing in <code>values</code> as <code>this</code>, and as the first parameter.</li>
 <li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
 <li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
@@ -2447,7 +2472,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line990">line 990</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1012">line 1012</a>
     </li></ul></dd>
     
 
@@ -2573,6 +2598,9 @@ by the <a href="https://github.com/brianc/node-postgres">pg</a> driver from vers
 <span class="param-type">string</span>
 |
 
+<span class="param-type">function</span>
+|
+
 <span class="param-type">object</span>
 
 
@@ -2594,6 +2622,8 @@ by the <a href="https://github.com/brianc/node-postgres">pg</a> driver from vers
             <td class="description last"><p>Multi-query string to be executed, which can be any of the following types:</p>
 <ul>
 <li>A non-empty string that can contain any number of queries</li>
+<li>A function that returns a query string or another function, i.e. recursive resolution
+is supported, passing in <code>values</code> as <code>this</code>, and as the first parameter.</li>
 <li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
 <li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
@@ -2683,7 +2713,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line845">line 845</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line865">line 865</a>
     </li></ul></dd>
     
 
@@ -2801,6 +2831,9 @@ by the <a href="https://github.com/brianc/node-postgres">pg</a> driver from vers
 <span class="param-type">string</span>
 |
 
+<span class="param-type">function</span>
+|
+
 <span class="param-type">object</span>
 
 
@@ -2822,6 +2855,8 @@ by the <a href="https://github.com/brianc/node-postgres">pg</a> driver from vers
             <td class="description last"><p>Multi-query string to be executed, which can be any of the following types:</p>
 <ul>
 <li>A non-empty string that can contain any number of queries</li>
+<li>A function that returns a query string or another function, i.e. recursive resolution
+is supported, passing in <code>values</code> as <code>this</code>, and as the first parameter.</li>
 <li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
 <li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
@@ -2911,7 +2946,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line808">line 808</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line826">line 826</a>
     </li></ul></dd>
     
 
@@ -3023,6 +3058,9 @@ the method rejects.</p>
 <span class="param-type">string</span>
 |
 
+<span class="param-type">function</span>
+|
+
 <span class="param-type">object</span>
 
 
@@ -3044,6 +3082,8 @@ the method rejects.</p>
             <td class="description last"><p>Query to be executed, which can be any of the following types:</p>
 <ul>
 <li>A non-empty query string</li>
+<li>A function that returns a query string or another function, i.e. recursive resolution
+is supported, passing in <code>values</code> as <code>this</code>, and as the first parameter.</li>
 <li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
 <li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
@@ -3133,7 +3173,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line450">line 450</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line454">line 454</a>
     </li></ul></dd>
     
 
@@ -3250,6 +3290,9 @@ the method rejects.</p>
 <span class="param-type">string</span>
 |
 
+<span class="param-type">function</span>
+|
+
 <span class="param-type">object</span>
 
 
@@ -3271,6 +3314,8 @@ the method rejects.</p>
             <td class="description last"><p>Query to be executed, which can be any of the following types:</p>
 <ul>
 <li>A non-empty query string</li>
+<li>A function that returns a query string or another function, i.e. recursive resolution
+is supported, passing in <code>values</code> as <code>this</code>, and as the first parameter.</li>
 <li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
 <li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
@@ -3428,7 +3473,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line488">line 488</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line494">line 494</a>
     </li></ul></dd>
     
 
@@ -3564,6 +3609,9 @@ When specified, the return value replaces the original resolved value.</p>
 <span class="param-type">string</span>
 |
 
+<span class="param-type">function</span>
+|
+
 <span class="param-type">object</span>
 
 
@@ -3585,6 +3633,8 @@ When specified, the return value replaces the original resolved value.</p>
             <td class="description last"><p>Query to be executed, which can be any of the following types:</p>
 <ul>
 <li>A non-empty query string</li>
+<li>A function that returns a query string or another function, i.e. recursive resolution
+is supported, passing in <code>values</code> as <code>this</code>, and as the first parameter.</li>
 <li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
 <li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
@@ -3742,7 +3792,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line597">line 597</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line607">line 607</a>
     </li></ul></dd>
     
 
@@ -4033,7 +4083,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line951">line 951</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line973">line 973</a>
     </li></ul></dd>
     
 
@@ -4162,6 +4212,9 @@ through either task or transaction context, see <a href="https://github.com/vita
 <span class="param-type">string</span>
 |
 
+<span class="param-type">function</span>
+|
+
 <span class="param-type">object</span>
 
 
@@ -4187,6 +4240,8 @@ through either task or transaction context, see <a href="https://github.com/vita
             <td class="description last"><p>Query to be executed, which can be any of the following types:</p>
 <ul>
 <li>A non-empty query string</li>
+<li>A function that returns a query string or another function, i.e. recursive resolution
+is supported, passing in <code>values</code> as <code>this</code>, and as the first parameter.</li>
 <li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
 <li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
@@ -4319,7 +4374,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line261">line 261</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line263">line 263</a>
     </li></ul></dd>
     
 
@@ -4428,6 +4483,9 @@ original <a href="https://node-postgres.com/api/result">Result</a> object when s
 <span class="param-type">string</span>
 |
 
+<span class="param-type">function</span>
+|
+
 <span class="param-type">object</span>
 
 
@@ -4449,6 +4507,8 @@ original <a href="https://node-postgres.com/api/result">Result</a> object when s
             <td class="description last"><p>Query to be executed, which can be any of the following types:</p>
 <ul>
 <li>A non-empty query string</li>
+<li>A function that returns a query string or another function, i.e. recursive resolution
+is supported, passing in <code>values</code> as <code>this</code>, and as the first parameter.</li>
 <li>Prepared Statement <code>{name, text, values, ...}</code> or <a href="PreparedStatement.html">PreparedStatement</a> object</li>
 <li>Parameterized Query <code>{text, values, ...}</code> or <a href="ParameterizedQuery.html">ParameterizedQuery</a> object</li>
 <li><a href="QueryFile.html">QueryFile</a> object</li>
@@ -4606,7 +4666,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line743">line 743</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line759">line 759</a>
     </li></ul></dd>
     
 
@@ -4796,7 +4856,7 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line893">line 893</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line915">line 915</a>
     </li></ul></dd>
     
 
@@ -5081,7 +5141,7 @@ it is expected to be an object with options as listed below.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1170">line 1170</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1196">line 1196</a>
     </li></ul></dd>
     
 
@@ -5091,7 +5151,7 @@ it is expected to be an object with options as listed below.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Task.html">Task</a>,<a href="Database.html#tx">tx</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a></li>
+            <li><a href="Task.html">Task</a>,<a href="Database.html#taskIf">taskIf</a>,<a href="Database.html#tx">tx</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a></li>
         </ul>
     </dd>
     
@@ -5140,6 +5200,321 @@ it is expected to be an object with options as listed below.</p>
     <pre class="prettyprint"><code>db.task('my-task', t => {        // t.ctx = task context object                return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user => {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
 
     <pre class="prettyprint"><code>// using an ES6 generator for the callback:db.task('my-task', function * (t) {        // t.ctx = task context object        const user = yield t.one('SELECT id FROM Users WHERE name = $1', 'John');        return yield t.any('SELECT * FROM Events WHERE userId = $1', user.id);    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="taskIf"><span class="type-signature"></span>taskIf<span class="signature">(options<span class="signature-attributes">opt</span>, cb)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Executes a conditional task that results in an actual new <a href="Database.html#task">task</a>, if condition is met,
+or else it reuses the current connection context.</p>
+<p>The default condition is <code>not in task or transaction</code>, to start a task only if currently not inside another task or transaction,
+which is the same as calling the following:</p>
+<pre class="prettyprint source lang-js"><code>db.taskIf({cnd: t => !t.ctx}, cb => {})</code></pre><p>It can be useful, if you want to simplify/reduce the task + log events footprint, by creating new task context only when necessary.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>This parameter is optional, and presumed skipped when the first parameter is a function (<code>cb</code> parameter).</p>
+<p>When it is of type <code>string</code> or <code>number</code>, it is assumed to be option <code>tag</code> passed in directly. Otherwise,
+it is expected to be an object with options as listed below.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tag</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Traceable context for the task/transaction (see <a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cnd</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Condition for creating a (<a href="Database.html#task">task</a>), if it is met.
+It can be either a simple boolean, or a callback function that takes the task context as <code>this</code> and as the first parameter.</p>
+<p>Default condition (when it is not specified):</p>
+<pre class="prettyprint source lang-js"><code>{cnd: t => !t.ctx}</code></pre></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+|
+
+<span class="param-type">generator</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Task callback function, to return the result that will determine either success or failure for the operation.</p>
+<p>The function can be either the first or the second parameter passed into the method.</p>
+<p>It also can be an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator">ES6 generator</a> or an ES7 <code>async</code> function.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1278">line 1278</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Task.html">Task</a>,<a href="Database.html#task">Database.task</a>,<a href="Database.html#tx">Database.tx</a>,<a href="Database.html#txIf">Database.txIf</a>,<a href="global.html#TaskContext">TaskContext</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise object with the result from the callback function.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -5408,7 +5783,7 @@ it is expected to be an object with options as listed below.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1251">line 1251</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1347">line 1347</a>
     </li></ul></dd>
     
 
@@ -5418,7 +5793,7 @@ it is expected to be an object with options as listed below.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Task.html">Task</a>,<a href="Database.html#task">Database.task</a>,<a href="global.html#TaskContext">TaskContext</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a></li>
+            <li><a href="Task.html">Task</a>,<a href="Database.html#task">Database.task</a>,<a href="Database.html#taskIf">Database.taskIf</a>,<a href="global.html#TaskContext">TaskContext</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>,<a href="https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries">Chaining Queries</a></li>
         </ul>
     </dd>
     
@@ -5576,6 +5951,8 @@ it is expected to be an object with options as listed below.</p>
         
 
         
+        <th>Default</th>
+        
 
         <th class="last">Description</th>
     </tr>
@@ -5605,6 +5982,10 @@ it is expected to be an object with options as listed below.</p>
                 </td>
             
 
+            
+                <td class="default">
+                
+                </td>
             
 
             <td class="description last"><p>Traceable context for the task/transaction (see <a href="https://github.com/vitaly-t/pg-promise/wiki/tags">tags</a>).</p></td>
@@ -5638,6 +6019,10 @@ it is expected to be an object with options as listed below.</p>
                 </td>
             
 
+            
+                <td class="default">
+                
+                </td>
             
 
             <td class="description last"><p>Transaction Configuration Mode - extends the transaction-opening command with additional configuration.</p></td>
@@ -5675,11 +6060,64 @@ it is expected to be an object with options as listed below.</p>
             
 
             
+                <td class="default">
+                
+                </td>
+            
 
             <td class="description last"><p>Condition for opening a transaction (<a href="Database.html#tx">tx</a>), if it is met, or a <a href="Database.html#task">task</a> when the condition is not met.
 It can be either a simple boolean, or a callback function that takes the task/tx context as <code>this</code> and as the first parameter.</p>
 <p>Default condition (when it is not specified):</p>
 <pre class="prettyprint source lang-js"><code>{cnd: t => !t.ctx || !t.ctx.inTransaction}</code></pre></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>reusable</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p><strong>Added in v8.2.0</strong></p>
+<p>When <code>cnd</code> is/returns false, reuse context of the current task/transaction, if one exists.
+It can be either a simple boolean, or a callback function that takes the task/tx context as <code>this</code>
+and as the first parameter.</p>
+<p>By default, when <code>cnd</code> is/returns false, the method creates a new task. This option tells
+the method to reuse the current task/transaction context, and not create a new task.</p>
+<p>This option is ignored when executing against the top level of the protocol, because on
+that level, if no transaction is suddenly needed, a new task becomes necessary.</p></td>
         </tr>
 
     
@@ -5722,7 +6160,7 @@ It can be either a simple boolean, or a callback function that takes the task/tx
 
             <td class="description last"><p>Transaction/task callback function, to return the result that will determine either
 success or failure for the operation.</p>
-<p>The function can be either the first of the second parameter passed into the method.</p>
+<p>The function can be either the first or the second parameter passed into the method.</p>
 <p>It also can be an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator">ES6 generator</a> or an ES7 <code>async</code> function.</p></td>
         </tr>
 
@@ -5764,7 +6202,7 @@ success or failure for the operation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1345">line 1345</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1442">line 1442</a>
     </li></ul></dd>
     
 
@@ -5774,7 +6212,7 @@ success or failure for the operation.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#task">Database.task</a>,<a href="Database.html#tx">Database.tx</a>,<a href="global.html#TaskContext">TaskContext</a></li>
+            <li><a href="Task.html">Task</a>,<a href="Database.html#task">Database.task</a>,<a href="Database.html#taskIf">Database.taskIf</a>,<a href="Database.html#tx">Database.tx</a>,<a href="global.html#TaskContext">TaskContext</a></li>
         </ul>
     </dd>
     
@@ -5930,7 +6368,7 @@ success or failure for the operation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1489">line 1489</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1613">line 1613</a>
     </li></ul></dd>
     
 

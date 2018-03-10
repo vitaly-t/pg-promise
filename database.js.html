@@ -109,6 +109,7 @@ const npm = {
  * {@link Database#each each},
  * {@link Database#stream stream},
  * {@link Database#task task},
+ * {@link Database#taskIf taskIf},
  * {@link Database#tx tx},
  * {@link Database#txIf txIf},
  * {@link Database#connect connect},
@@ -218,6 +219,7 @@ function Database(cn, dc, config) {
      *
      * @see
      * {@link Database#task Database.task},
+     * {@link Database#taskIf Database.taskIf},
      * {@link Database#tx Database.tx},
      * {@link Database#txIf Database.txIf}
      *
@@ -306,9 +308,11 @@ function Database(cn, dc, config) {
      *
      * When receiving a multi-query result, only the last result is processed, ignoring the rest.
      *
-     * @param {string|object} query
+     * @param {string|function|object} query
      * Query to be executed, which can be any of the following types:
      * - A non-empty query string
+     * - A function that returns a query string or another function, i.e. recursive resolution
+     *   is supported, passing in `values` as `this`, and as the first parameter.
      * - Prepared Statement `{name, text, values, ...}` or {@link PreparedStatement} object
      * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
      * - {@link QueryFile} object
@@ -484,9 +488,11 @@ function Database(cn, dc, config) {
          *
          * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
-         * @param {string|object} query
+         * @param {string|function|object} query
          * Query to be executed, which can be any of the following types:
          * - A non-empty query string
+         * - A function that returns a query string or another function, i.e. recursive resolution
+         *   is supported, passing in `values` as `this`, and as the first parameter.
          * - Prepared Statement `{name, text, values, ...}` or {@link PreparedStatement} object
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
@@ -522,9 +528,11 @@ function Database(cn, dc, config) {
          *
          * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
-         * @param {string|object} query
+         * @param {string|function|object} query
          * Query to be executed, which can be any of the following types:
          * - A non-empty query string
+         * - A function that returns a query string or another function, i.e. recursive resolution
+         *   is supported, passing in `values` as `this`, and as the first parameter.
          * - Prepared Statement `{name, text, values, ...}` or {@link PreparedStatement} object
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
@@ -593,9 +601,11 @@ function Database(cn, dc, config) {
          *
          * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
-         * @param {string|object} query
+         * @param {string|function|object} query
          * Query to be executed, which can be any of the following types:
          * - A non-empty query string
+         * - A function that returns a query string or another function, i.e. recursive resolution
+         *   is supported, passing in `values` as `this`, and as the first parameter.
          * - Prepared Statement `{name, text, values, ...}` or {@link PreparedStatement} object
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
@@ -630,9 +640,11 @@ function Database(cn, dc, config) {
          *
          * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
-         * @param {string|object} query
+         * @param {string|function|object} query
          * Query to be executed, which can be any of the following types:
          * - A non-empty query string
+         * - A function that returns a query string or another function, i.e. recursive resolution
+         *   is supported, passing in `values` as `this`, and as the first parameter.
          * - Prepared Statement `{name, text, values, ...}` or {@link PreparedStatement} object
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
@@ -693,9 +705,11 @@ function Database(cn, dc, config) {
          *
          * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
-         * @param {string|object} query
+         * @param {string|function|object} query
          * Query to be executed, which can be any of the following types:
          * - A non-empty query string
+         * - A function that returns a query string or another function, i.e. recursive resolution
+         *   is supported, passing in `values` as `this`, and as the first parameter.
          * - Prepared Statement `{name, text, values, ...}` or {@link PreparedStatement} object
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
@@ -735,9 +749,11 @@ function Database(cn, dc, config) {
          *
          * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
-         * @param {string|object} query
+         * @param {string|function|object} query
          * Query to be executed, which can be any of the following types:
          * - A non-empty query string
+         * - A function that returns a query string or another function, i.e. recursive resolution
+         *   is supported, passing in `values` as `this`, and as the first parameter.
          * - Prepared Statement `{name, text, values, ...}` or {@link PreparedStatement} object
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
@@ -777,9 +793,11 @@ function Database(cn, dc, config) {
          *
          * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
-         * @param {string|object} query
+         * @param {string|function|object} query
          * Query to be executed, which can be any of the following types:
          * - A non-empty query string
+         * - A function that returns a query string or another function, i.e. recursive resolution
+         *   is supported, passing in `values` as `this`, and as the first parameter.
          * - Prepared Statement `{name, text, values, ...}` or {@link PreparedStatement} object
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
@@ -843,9 +861,11 @@ function Database(cn, dc, config) {
          * This method was added specifically to give access to multi-query results supported
          * by the $[pg] driver from version 7.x onwards.
          *
-         * @param {string|object} query
+         * @param {string|function|object} query
          * Multi-query string to be executed, which can be any of the following types:
          * - A non-empty string that can contain any number of queries
+         * - A function that returns a query string or another function, i.e. recursive resolution
+         *   is supported, passing in `values` as `this`, and as the first parameter.
          * - Prepared Statement `{name, text, values, ...}` or {@link PreparedStatement} object
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
@@ -880,9 +900,11 @@ function Database(cn, dc, config) {
          * This method was added specifically to give access to multi-query results supported
          * by the $[pg] driver from version 7.x onwards.
          *
-         * @param {string|object} query
+         * @param {string|function|object} query
          * Multi-query string to be executed, which can be any of the following types:
          * - A non-empty string that can contain any number of queries
+         * - A function that returns a query string or another function, i.e. recursive resolution
+         *   is supported, passing in `values` as `this`, and as the first parameter.
          * - Prepared Statement `{name, text, values, ...}` or {@link PreparedStatement} object
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
@@ -1035,9 +1057,11 @@ function Database(cn, dc, config) {
          *
          * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
-         * @param {string|object} query
+         * @param {string|function|object} query
          * Query to be executed, which can be any of the following types:
          * - A non-empty query string
+         * - A function that returns a query string or another function, i.e. recursive resolution
+         *   is supported, passing in `values` as `this`, and as the first parameter.
          * - Prepared Statement `{name, text, values, ...}` or {@link PreparedStatement} object
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
@@ -1139,9 +1163,11 @@ function Database(cn, dc, config) {
          *
          * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *
-         * @param {string|object} query
+         * @param {string|function|object} query
          * Query to be executed, which can be any of the following types:
          * - A non-empty query string
+         * - A function that returns a query string or another function, i.e. recursive resolution
+         *   is supported, passing in `values` as `this`, and as the first parameter.
          * - Prepared Statement `{name, text, values, ...}` or {@link PreparedStatement} object
          * - Parameterized Query `{text, values, ...}` or {@link ParameterizedQuery} object
          * - {@link QueryFile} object
@@ -1233,6 +1259,7 @@ function Database(cn, dc, config) {
          *
          * @see
          * {@link Task},
+         * {@link Database#taskIf taskIf},
          * {@link Database#tx tx},
          * $[tags],
          * $[Chaining Queries]
@@ -1275,6 +1302,75 @@ function Database(cn, dc, config) {
          */
         obj.task = function () {
             return taskProcessor.call(this, npm.pubUtils.taskArgs(arguments), false);
+        };
+
+        /**
+         * @method Database#taskIf
+         * @description
+         * Executes a conditional task that results in an actual new {@link Database#task task}, if condition is met,
+         * or else it reuses the current connection context.
+         *
+         * The default condition is `not in task or transaction`, to start a task only if currently not inside another task or transaction,
+         * which is the same as calling the following:
+         *
+         * ```js
+         * db.taskIf({cnd: t => !t.ctx}, cb => {})
+         * ```
+         *
+         * It can be useful, if you want to simplify/reduce the task + log events footprint, by creating new task context only when necessary.
+         *
+         * @param {string|number|Object} [options]
+         * This parameter is optional, and presumed skipped when the first parameter is a function (`cb` parameter).
+         *
+         * When it is of type `string` or `number`, it is assumed to be option `tag` passed in directly. Otherwise,
+         * it is expected to be an object with options as listed below.
+         *
+         * @param {} [options.tag]
+         * Traceable context for the task/transaction (see $[tags]).
+         *
+         * @param {boolean|function} [options.cnd]
+         * Condition for creating a ({@link Database#task task}), if it is met.
+         * It can be either a simple boolean, or a callback function that takes the task context as `this` and as the first parameter.
+         *
+         * Default condition (when it is not specified):
+         *
+         * ```js
+         * {cnd: t => !t.ctx}
+         * ```
+         *
+         * @param {function|generator} cb
+         * Task callback function, to return the result that will determine either success or failure for the operation.
+         *
+         * The function can be either the first or the second parameter passed into the method.
+         *
+         * It also can be an $[ES6 generator] or an ES7 `async` function.
+         *
+         * @returns {external:Promise}
+         * A promise object with the result from the callback function.
+         *
+         * @see
+         * {@link Task},
+         * {@link Database#task Database.task},
+         * {@link Database#tx Database.tx},
+         * {@link Database#txIf Database.txIf},
+         * {@link TaskContext}
+         *
+         */
+        obj.taskIf = function () {
+            const args = npm.pubUtils.taskArgs(arguments);
+            try {
+                let cnd = args.options.cnd;
+                if ('cnd' in args.options) {
+                    cnd = typeof cnd === 'function' ? cnd.call(obj, obj) : !!cnd;
+                } else {
+                    cnd = !obj.ctx; // create task, if it is the top level
+                }
+                // reusable only if condition fails, and not top-level:
+                args.options.reusable = !cnd &amp;&amp; !!obj.ctx;
+            } catch (e) {
+                return $p.reject(e);
+            }
+            return taskProcessor.call(this, args, false);
         };
 
         /**
@@ -1324,6 +1420,7 @@ function Database(cn, dc, config) {
          * @see
          * {@link Task},
          * {@link Database#task Database.task},
+         * {@link Database#taskIf Database.taskIf},
          * {@link TaskContext},
          * $[tags],
          * $[Chaining Queries]
@@ -1408,11 +1505,24 @@ function Database(cn, dc, config) {
          * {cnd: t => !t.ctx || !t.ctx.inTransaction}
          * ```
          *
+         * @param {boolean|function} [options.reusable=false]
+         * **Added in v8.2.0**
+         *
+         * When `cnd` is/returns false, reuse context of the current task/transaction, if one exists.
+         * It can be either a simple boolean, or a callback function that takes the task/tx context as `this`
+         * and as the first parameter.
+         *
+         * By default, when `cnd` is/returns false, the method creates a new task. This option tells
+         * the method to reuse the current task/transaction context, and not create a new task.
+         *
+         * This option is ignored when executing against the top level of the protocol, because on
+         * that level, if no transaction is suddenly needed, a new task becomes necessary.
+         *
          * @param {function|generator} cb
          * Transaction/task callback function, to return the result that will determine either
          * success or failure for the operation.
          *
-         * The function can be either the first of the second parameter passed into the method.
+         * The function can be either the first or the second parameter passed into the method.
          *
          * It also can be an $[ES6 generator] or an ES7 `async` function.
          *
@@ -1420,18 +1530,28 @@ function Database(cn, dc, config) {
          * A promise object with the result from the callback function.
          *
          * @see
+         * {@link Task},
          * {@link Database#task Database.task},
+         * {@link Database#taskIf Database.taskIf},
          * {@link Database#tx Database.tx},
          * {@link TaskContext}
          *
          */
         obj.txIf = function () {
             const args = npm.pubUtils.taskArgs(arguments);
-            if ('cnd' in args.options) {
-                const cnd = args.options.cnd;
-                args.options.cnd = typeof cnd === 'function' ? cnd.call(obj, obj) : !!cnd;
-            } else {
-                args.options.cnd = !obj.ctx || !obj.ctx.inTransaction;
+            try {
+                let cnd;
+                if ('cnd' in args.options) {
+                    cnd = args.options.cnd;
+                    cnd = typeof cnd === 'function' ? cnd.call(obj, obj) : !!cnd;
+                } else {
+                    cnd = !obj.ctx || !obj.ctx.inTransaction;
+                }
+                args.options.cnd = cnd;
+                const reusable = args.options.reusable;
+                args.options.reusable = !cnd &amp;&amp; obj.ctx &amp;&amp; typeof reusable === 'function' ? reusable.call(obj, obj) : !!reusable;
+            } catch (e) {
+                return $p.reject(e);
             }
             return taskProcessor.call(this, args, args.options.cnd);
         };
@@ -1442,6 +1562,10 @@ function Database(cn, dc, config) {
 
             if (typeof params.cb !== 'function') {
                 return $p.reject(new TypeError('Callback function is required.'));
+            }
+
+            if (params.options.reusable) {
+                return config.$npm.task.callback(obj.ctx, obj, params.cb, config);
             }
 
             const taskCtx = ctx.clone(); // task context object;

@@ -245,7 +245,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line598">line 598</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line596">line 596</a>
     </li></ul></dd>
     
 
@@ -1420,10 +1420,9 @@ non-existing directory.</p></td>
 
 
 <div class="description">
-    <p><strong> Added in v8.1.0 </strong></p>
-<p>Normalizes/prepares arguments for tasks and transactions.</p>
-<p>Its main purpose is to simplify adding custom methods <a href="Database.html#task">task</a>, <a href="Database.html#tx">tx</a>
-and <a href="Database.html#txIf">txIf</a> within event <a href="global.html#event:extend">extend</a>, as the those methods use fairly
+    <p>Normalizes/prepares arguments for tasks and transactions.</p>
+<p>Its main purpose is to simplify adding custom methods <a href="Database.html#task">task</a>, <a href="Database.html#taskIf">taskIf</a>,
+<a href="Database.html#tx">tx</a> and <a href="Database.html#txIf">txIf</a> within event <a href="global.html#event:extend">extend</a>, as the those methods use fairly
 complex logic for parsing inputs.</p>
 </div>
 
@@ -1477,7 +1476,7 @@ complex logic for parsing inputs.</p>
             
 
             <td class="description last"><p>Array-like object of <code>arguments</code> that was passed into the method. It is expected that the <code>arguments</code>
-is always made of two parameters - <code>(options, cb)</code>, same as all the default task/transaction methods.</p>
+are always made of two parameters - <code>(options, cb)</code>, same as all the default task/transaction methods.</p>
 <p>And if your custom method needs additional parameters, they should be passed in as extra properties within <code>options</code>.</p></td>
         </tr>
 
