@@ -15,30 +15,26 @@ const db = dbHeader.db;
 
 const ParameterizedQueryError = pgp.errors.ParameterizedQueryError;
 
-function dummy() {
-    // dummy/empty function;
-}
+describe('ParameterizedQuery', () => {
 
-describe('ParameterizedQuery', function () {
-
-    describe('non-class initialization', function () {
-        it('must return a new object', function () {
+    describe('non-class initialization', () => {
+        it('must return a new object', () => {
             /* eslint new-cap: 0 */
             const pq = pgp.ParameterizedQuery('test-query');
             expect(pq instanceof pgp.ParameterizedQuery).toBe(true);
         });
     });
 
-    describe('parameter-object initialization', function () {
-        it('must initialize correctly', function () {
+    describe('parameter-object initialization', () => {
+        it('must initialize correctly', () => {
             const pq = new pgp.ParameterizedQuery({text: 'test-query', values: [123]});
             expect(pq.parse()).toEqual({text: 'test-query', values: [123]});
         });
     });
 
-    describe('property values', function () {
+    describe('property values', () => {
         const values = [1, 2, 3];
-        it('must get correctly', function () {
+        it('must get correctly', () => {
             const pq = new pgp.ParameterizedQuery({
                 text: 'original-sql',
                 values,
@@ -51,7 +47,7 @@ describe('ParameterizedQuery', function () {
             expect(pq.rowMode).toBe('array');
             expect(tools.inspect(pq)).toBe(pq.toString());
         });
-        it('must keep original object when set to the same value', function () {
+        it('must keep original object when set to the same value', () => {
             const pq = new pgp.ParameterizedQuery({
                 text: 'original-sql',
                 values,
@@ -67,7 +63,7 @@ describe('ParameterizedQuery', function () {
             expect(obj1 === obj2).toBe(true);
             expect(tools.inspect(pq)).toBe(pq.toString());
         });
-        it('must create a new object when changed', function () {
+        it('must create a new object when changed', () => {
             const pq = new pgp.ParameterizedQuery({
                 text: 'original-sql',
                 values,
@@ -88,9 +84,9 @@ describe('ParameterizedQuery', function () {
         });
     });
 
-    describe('parameters', function () {
+    describe('parameters', () => {
         const pq = new pgp.ParameterizedQuery({text: 'test-query', values: [123], binary: true, rowMode: 'array'});
-        it('must expose the values correctly', function () {
+        it('must expose the values correctly', () => {
             expect(pq.text).toBe('test-query');
             expect(pq.values).toEqual([123]);
             expect(pq.binary).toBe(true);
@@ -98,71 +94,65 @@ describe('ParameterizedQuery', function () {
         });
     });
 
-    describe('valid, without parameters', function () {
+    describe('valid, without parameters', () => {
         let result;
         const pq = new pgp.ParameterizedQuery('select 1 as value');
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.one(pq)
-                .then(function (data) {
+                .then(data => {
                     result = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must return the right value', function () {
+        it('must return the right value', () => {
             expect(result && result.value === 1).toBeTruthy();
         });
     });
 
-    describe('valid, with parameters', function () {
+    describe('valid, with parameters', () => {
         let result;
         const pq = new pgp.ParameterizedQuery('select count(*) from users where login = $1', ['non-existing']);
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.one(pq)
-                .then(function (data) {
+                .then(data => {
                     result = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must return the right value', function () {
+        it('must return the right value', () => {
             expect(result && typeof result === 'object').toBeTruthy();
             expect(result.count).toBe('0');
         });
     });
 
-    describe('valid, with parameters override', function () {
+    describe('valid, with parameters override', () => {
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.one({
                 text: 'select * from users where id=$1'
             }, 1)
-                .then(function (data) {
+                .then(data => {
                     result = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must return one user', function () {
+        it('must return one user', () => {
             expect(result && typeof(result) === 'object').toBeTruthy();
         });
     });
 
-    describe('object inspection', function () {
+    describe('object inspection', () => {
         const pq1 = new pgp.ParameterizedQuery('test-query $1');
         const pq2 = new pgp.ParameterizedQuery('test-query $1', []);
-        it('must stringify all values', function () {
+        it('must stringify all values', () => {
             expect(tools.inspect(pq1)).toBe(pq1.toString());
             expect(tools.inspect(pq2)).toBe(pq2.toString());
         });
     });
 
-    describe('with QueryFile', function () {
+    describe('with QueryFile', () => {
 
-        describe('successful', function () {
+        describe('successful', () => {
             const f = path.join(__dirname, './sql/simple.sql');
             const qf = new pgp.QueryFile(f, {compress: true, noWarnings: true});
             const pq = new pgp.ParameterizedQuery(qf);
@@ -172,7 +162,7 @@ describe('ParameterizedQuery', function () {
             expect(pq.toString()).toBe(tools.inspect(pq));
         });
 
-        describe('with an error', function () {
+        describe('with an error', () => {
             const qf = new pgp.QueryFile('./invalid.sql');
             const pq = new pgp.ParameterizedQuery(qf);
             const result = pq.parse();
@@ -186,79 +176,71 @@ describe('ParameterizedQuery', function () {
 
 });
 
-describe('Direct Parameterized Query', function () {
+describe('Direct Parameterized Query', () => {
 
-    describe('valid, without parameters', function () {
+    describe('valid, without parameters', () => {
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.many({
                 text: 'select * from users'
             })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must return all users', function () {
+        it('must return all users', () => {
             expect(result instanceof Array).toBe(true);
             expect(result.length > 0).toBe(true);
         });
     });
 
-    describe('valid, with parameters', function () {
+    describe('valid, with parameters', () => {
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.one({
                 text: 'select * from users where id=$1',
                 values: [1]
             })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must return all users', function () {
+        it('must return all users', () => {
             expect(result && typeof(result) === 'object').toBeTruthy();
         });
     });
 
-    describe('with invalid query', function () {
+    describe('with invalid query', () => {
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.many({
                 text: 'select * from somewhere'
             })
                 .catch(reason => {
                     result = reason;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must return an error', function () {
+        it('must return an error', () => {
             expect(result instanceof Error).toBe(true);
             expect(result.message).toContain('relation "somewhere" does not exist');
         });
     });
 
-    describe('with an empty \'text\'', function () {
+    describe('with an empty \'text\'', () => {
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.query({
                 text: null
             })
-                .then(dummy, function (reason) {
+                .catch(reason => {
                     result = reason;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must return an error', function () {
+        it('must return an error', () => {
             expect(result instanceof pgp.errors.ParameterizedQueryError).toBe(true);
             expect(result.toString()).toBe(tools.inspect(result));
         });
