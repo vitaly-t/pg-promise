@@ -18,9 +18,9 @@ const dbHeader = header(options);
 const pgp = dbHeader.pgp;
 const db = dbHeader.db;
 
-function dummy() {
+const dummy = () => {
     // dummy/empty function;
-}
+};
 
 function isResult(value) {
     if (options.pgNative) {
@@ -54,57 +54,57 @@ describe('Database Instantiation', () => {
     });
 });
 
-describe('Connection', function () {
+describe('Connection', () => {
 
-    describe('with default parameters', function () {
+    describe('with default parameters', () => {
         let status = 'connecting', error;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.connect()
-                .then(function (obj) {
+                .then(obj => {
                     status = 'success';
                     obj.done(); // release connection;
-                }, function (reason) {
+                }, reason => {
                     error = reason;
                     status = 'failed';//reason.error;
                 })
-                .catch(function (err) {
+                .catch(err => {
                     error = err;
                     status = 'exception';
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must be successful', function () {
+        it('must be successful', () => {
             expect(status).toBe('success');
             expect(error).toBeUndefined();
         });
     });
 
-    describe('for regular queries', function () {
+    describe('for regular queries', () => {
         let result, sco;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.connect()
-                .then(function (obj) {
+                .then(obj => {
                     sco = obj;
                     return sco.one('select count(*) from users');
-                }, function (reason) {
+                })
+                .catch(reason => {
                     result = null;
                     return promise.reject(reason);
                 })
-                .then(function (data) {
+                .then(data => {
                     result = data;
-                }, function () {
+                })
+                .catch(() => {
                     result = null;
                 })
-                .finally(function () {
+                .finally(() => {
                     if (sco) {
                         sco.done();
                     }
                     done();
                 });
         });
-        it('must provide functioning context', function () {
+        it('must provide functioning context', () => {
             expect(result).toBeDefined();
             expect(result.count > 0).toBe(true);
             expect(typeof(sco.tx)).toBe('function'); // just a protocol check;
@@ -136,7 +136,7 @@ describe('Connection', function () {
                     done();
                 });
         });
-        it('must provide functioning context', function () {
+        it('must provide functioning context', () => {
             expect(isResult(result)).toBe(true);
             expect(result.rows.length > 0).toBe(true);
             expect(typeof(result.rowCount)).toBe('number');
@@ -145,9 +145,9 @@ describe('Connection', function () {
         });
     });
 
-    describe('for invalid port', function () {
+    describe('for invalid port', () => {
         let errCN, dbErr, result, log;
-        beforeEach(function () {
+        beforeEach(() => {
             errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
             errCN.port = 9999;
             dbErr = pgp(errCN);
@@ -155,17 +155,15 @@ describe('Connection', function () {
                 log = {err, e};
             };
         });
-        describe('using connect()', function () {
-            beforeEach(function (done) {
+        describe('using connect()', () => {
+            beforeEach(done => {
                 dbErr.connect()
-                    .then(dummy, function (error) {
+                    .catch(error => {
                         result = error;
                     })
-                    .finally(function () {
-                        done();
-                    });
+                    .finally(done);
             });
-            it('must report the right error', function () {
+            it('must report the right error', () => {
                 expect(log.e.cn).toEqual(errCN);
                 expect(result instanceof Error).toBe(true);
 
@@ -225,7 +223,7 @@ describe('Connection', function () {
         let txt;
         beforeEach(done => {
             db.connect()
-                .then(function (obj) {
+                .then(obj => {
                     const c = capture();
                     obj.client.end(true);
                     txt = c();
@@ -333,56 +331,55 @@ describe('Connection', function () {
     });
 });
 
-describe('Direct Connection', function () {
+describe('Direct Connection', () => {
 
-    describe('successful connection', function () {
+    describe('successful connection', () => {
         let sco;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.connect({direct: true})
-                .then(function (obj) {
+                .then(obj => {
                     sco = obj;
                     sco.done();
                     done();
                 });
         });
-        it('must connect correctly', function () {
+        it('must connect correctly', () => {
             expect(typeof sco).toBe('object');
         });
     });
 
-    describe('direct end() call', function () {
+    describe('direct end() call', () => {
         let txt;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.connect({direct: true})
-                .then(function (obj) {
+                .then(obj => {
                     const c = capture();
                     obj.client.end();
                     txt = c();
                     done();
                 });
         });
-        it('must be reported into the console', function () {
+        it('must be reported into the console', () => {
             expect(txt).toContain($text.clientEnd);
         });
     });
 
-    describe('for an invalid port', function () {
+    describe('for an invalid port', () => {
         const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
         errCN.port = '12345';
         const dbErr = pgp(errCN);
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             dbErr.connect({direct: true})
-                .then(function () {
+                .then(() => {
                     result = null;
-                }, function (error) {
+                })
+                .catch(error => {
                     result = error;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must report the right error', function () {
+        it('must report the right error', () => {
             expect(result instanceof Error).toBe(true);
             if (options.pgNative) {
                 expect(result.message).toContain('could not connect to server');
@@ -394,29 +391,29 @@ describe('Direct Connection', function () {
 
 });
 
-describe('Masked Connection Log', function () {
+describe('Masked Connection Log', () => {
 
     let cn;
-    beforeEach(function () {
-        options.error = function (err, e) {
+    beforeEach(() => {
+        options.error = (err, e) => {
             cn = e.cn;
         };
     });
-    describe('as an object', function () {
+    describe('as an object', () => {
         const connection = {
             host: 'localhost',
             port: 123,
             user: 'unknown',
             password: '123'
         };
-        beforeEach(function (done) {
+        beforeEach(done => {
             const errDB = pgp(connection);
             errDB.connect()
-                .catch(function () {
+                .catch(() => {
                     done();
                 });
         });
-        it('must report the password masked correctly', function () {
+        it('must report the password masked correctly', () => {
             expect(cn.password).toEqual('###');
         });
     });
@@ -447,29 +444,29 @@ describe('Masked Connection Log', function () {
         });
     });
 
-    afterEach(function () {
+    afterEach(() => {
         delete options.error;
         cn = undefined;
     });
 });
 
-describe('Method \'map\'', function () {
+describe('Method \'map\'', () => {
 
-    describe('positive:', function () {
+    describe('positive:', () => {
         let pValue, pIndex, pArr, pData;
-        beforeEach(function (done) {
-            db.map('SELECT 1 as value', null, function (value, index, arr) {
+        beforeEach(done => {
+            db.map('SELECT 1 as value', null, (value, index, arr) => {
                 pValue = value;
                 pIndex = index;
                 pArr = arr;
                 return {newVal: 2};
             })
-                .then(function (data) {
+                .then(data => {
                     pData = data;
                     done();
                 });
         });
-        it('must resolve with the right value', function () {
+        it('must resolve with the right value', () => {
             expect(pValue).toEqual({value: 1});
             expect(pIndex).toBe(0);
             expect(pArr).toEqual([{value: 1}]);
@@ -477,35 +474,35 @@ describe('Method \'map\'', function () {
         });
     });
 
-    describe('negative:', function () {
+    describe('negative:', () => {
 
-        describe('with invalid parameters', function () {
+        describe('with invalid parameters', () => {
             let err;
-            beforeEach(function (done) {
+            beforeEach(done => {
                 db.map('SELECT 1')
-                    .catch(function (error) {
+                    .catch(error => {
                         err = error;
-                        done();
-                    });
+                    })
+                    .finally(done);
             });
-            it('must reject with an error', function () {
+            it('must reject with an error', () => {
                 expect(err instanceof TypeError).toBe(true);
                 expect(err.message).toContain('is not a function');
             });
         });
 
-        describe('with error thrown inside the callback', function () {
+        describe('with error thrown inside the callback', () => {
             let err;
-            beforeEach(function (done) {
-                db.map('SELECT 1', null, function () {
+            beforeEach(done => {
+                db.map('SELECT 1', null, () => {
                     throw new Error('Ops!');
                 })
-                    .catch(function (error) {
+                    .catch(error => {
                         err = error;
-                        done();
-                    });
+                    })
+                    .finally(done);
             });
-            it('must reject with an error', function () {
+            it('must reject with an error', () => {
                 expect(err).toEqual(new Error('Ops!'));
             });
         });
@@ -513,23 +510,23 @@ describe('Method \'map\'', function () {
     });
 });
 
-describe('Method \'each\'', function () {
+describe('Method \'each\'', () => {
 
-    describe('positive:', function () {
+    describe('positive:', () => {
         let pValue, pIndex, pArr, pData;
-        beforeEach(function (done) {
-            db.each('SELECT 1 as value', null, function (value, index, arr) {
+        beforeEach(done => {
+            db.each('SELECT 1 as value', null, (value, index, arr) => {
                 pValue = value;
                 pIndex = index;
                 pArr = arr;
                 value.value = 2;
             })
-                .then(function (data) {
+                .then(data => {
                     pData = data;
                     done();
                 });
         });
-        it('must resolve with the right value', function () {
+        it('must resolve with the right value', () => {
             expect(pValue).toEqual({value: 2});
             expect(pIndex).toBe(0);
             expect(pArr).toEqual([{value: 2}]);
@@ -537,35 +534,35 @@ describe('Method \'each\'', function () {
         });
     });
 
-    describe('negative:', function () {
+    describe('negative:', () => {
 
-        describe('with invalid parameters', function () {
+        describe('with invalid parameters', () => {
             let err;
-            beforeEach(function (done) {
+            beforeEach(done => {
                 db.each('SELECT 1')
-                    .catch(function (error) {
+                    .catch(error => {
                         err = error;
                         done();
                     });
             });
-            it('must reject with an error', function () {
+            it('must reject with an error', () => {
                 expect(err instanceof TypeError).toBe(true);
                 expect(err.message).toContain('is not a function');
             });
         });
 
-        describe('with error thrown inside the callback', function () {
+        describe('with error thrown inside the callback', () => {
             let err;
-            beforeEach(function (done) {
-                db.each('SELECT 1', null, function () {
+            beforeEach(done => {
+                db.each('SELECT 1', null, () => {
                     throw new Error('Ops!');
                 })
-                    .catch(function (error) {
+                    .catch(error => {
                         err = error;
-                        done();
-                    });
+                    })
+                    .finally(done);
             });
-            it('must reject with an error', function () {
+            it('must reject with an error', () => {
                 expect(err).toEqual(new Error('Ops!'));
             });
         });
@@ -644,40 +641,41 @@ describe('Method \'none\'', () => {
 
 });
 
-describe('Method \'one\'', function () {
+describe('Method \'one\'', () => {
 
-    it('must resolve with one object', function () {
+    it('must resolve with one object', () => {
         let result, error;
         db.one('select 123 as value')
-            .then(function (data) {
+            .then(data => {
                 result = data;
-            }, function (reason) {
+            })
+            .catch(reason => {
                 error = reason;
                 result = null;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return result !== undefined;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(error).toBeUndefined();
             expect(typeof(result)).toBe('object');
             expect(result.value).toBe(123);
         });
     });
 
-    describe('value transformation', function () {
+    describe('value transformation', () => {
         let result, context;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.one('select count(*) from users', null, function (value) {
                 context = this;
                 return parseInt(value.count);
             }, 123)
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must resolve with the new value', function () {
+        it('must resolve with the new value', () => {
             expect(typeof result).toBe('number');
             expect(result > 0).toBe(true);
             expect(context).toBe(123);
@@ -776,79 +774,80 @@ describe('Method \'one\'', function () {
 
 });
 
-describe('Method \'oneOrNone\'', function () {
+describe('Method \'oneOrNone\'', () => {
 
-    it('must resolve with one object when found', function () {
+    it('must resolve with one object when found', () => {
         let result, error;
         db.oneOrNone('select * from users where id=$1', 1)
-            .then(function (data) {
+            .then(data => {
                 result = data;
-            }, function (reason) {
+            })
+            .catch(reason => {
                 error = reason;
                 result = null;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return result !== undefined;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(error).toBeUndefined();
             expect(typeof(result)).toBe('object');
             expect(result.id).toBe(1);
         });
     });
 
-    it('must resolve with null when no data found', function () {
+    it('must resolve with null when no data found', () => {
         let result, error, finished;
         db.oneOrNone('select * from users where id=$1', 12345678)
-            .then(function (data) {
+            .then(data => {
                 result = data;
                 finished = true;
-            }, function (reason) {
+            }, reason => {
                 error = reason;
                 finished = true;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return finished === true;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(error).toBeUndefined();
             expect(result).toBeNull();
         });
     });
 
-    describe('value transformation', function () {
+    describe('value transformation', () => {
         let result, context;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.oneOrNone('select count(*) from users', null, function (value) {
                 context = this;
                 return parseInt(value.count);
             }, 123)
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must resolve with the new value', function () {
+        it('must resolve with the new value', () => {
             expect(typeof result).toBe('number');
             expect(result > 0).toBe(true);
             expect(context).toBe(123);
         });
     });
 
-    it('must reject when multiple rows are found', function () {
+    it('must reject when multiple rows are found', () => {
         let result, error, finished;
         db.oneOrNone('select * from users')
-            .then(function (data) {
+            .then(data => {
                 result = data;
                 finished = true;
-            }, function (reason) {
+            }, reason => {
                 error = reason;
                 finished = true;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return finished === true;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.message).toBe($text.multiple);
@@ -857,41 +856,41 @@ describe('Method \'oneOrNone\'', function () {
 
 });
 
-describe('Method \'many\'', function () {
+describe('Method \'many\'', () => {
 
-    it('must resolve with array of objects', function () {
+    it('must resolve with array of objects', () => {
         let result, error;
         db.many('select * from users')
-            .then(function (data) {
+            .then(data => {
                 result = data;
-            }, function (reason) {
+            }, reason => {
                 error = reason;
                 result = null;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return result !== undefined;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
             expect(result.length > 0).toBe(true);
         });
     });
 
-    it('must reject when no data found', function () {
+    it('must reject when no data found', () => {
         let result, error, finished;
         db.many('select * from users where id=$1', 12345678)
-            .then(function (data) {
+            .then(data => {
                 result = data;
                 finished = true;
-            }, function (reason) {
+            }, reason => {
                 error = reason;
                 finished = true;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return finished === true;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.message).toBe($text.noData);
@@ -900,41 +899,41 @@ describe('Method \'many\'', function () {
 
 });
 
-describe('Method \'manyOrNone\'', function () {
+describe('Method \'manyOrNone\'', () => {
 
-    it('must resolve with array of objects', function () {
+    it('must resolve with array of objects', () => {
         let result, error;
         db.manyOrNone('select * from users')
-            .then(function (data) {
+            .then(data => {
                 result = data;
-            }, function (reason) {
+            }, reason => {
                 error = reason;
                 result = null;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return result !== undefined;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
             expect(result.length > 0).toBe(true);
         });
     });
 
-    it('must resolve with an empty array when no data found', function () {
+    it('must resolve with an empty array when no data found', () => {
         let result, error, finished;
         db.manyOrNone('select * from users where id=$1', 12345678)
-            .then(function (data) {
+            .then(data => {
                 result = data;
                 finished = true;
-            }, function (reason) {
+            }, reason => {
                 error = reason;
                 finished = true;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return finished === true;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(0);
@@ -1089,16 +1088,16 @@ describe('Executing method query', () => {
     });
 });
 
-describe('Transactions', function () {
+describe('Transactions', () => {
 
     // NOTE: The same test for 100,000 inserts works also the same.
     // Inserting just 10,000 records to avoid exceeding memory quota on the test server.
     // Also, the client shouldn't execute more than 10,000 queries within a single transaction,
     // huge transactions should  be throttled into smaller chunks.
-    describe('A complex transaction with 10,000 inserts', function () {
+    describe('A complex transaction with 10,000 inserts', () => {
 
         let result, error, context, THIS, tag;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.tx('complex', function (t) {
                 tag = t.ctx.tag;
                 THIS = this;
@@ -1113,13 +1112,13 @@ describe('Transactions', function () {
                 queries.push(this.one('select count(*) from test'));
                 return this.batch(queries);
             })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
 
-        it('must not fail', function () {
+        it('must not fail', () => {
             expect(THIS === context).toBe(true);
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
@@ -1131,9 +1130,9 @@ describe('Transactions', function () {
         });
     });
 
-    describe('When a nested transaction fails', function () {
+    describe('When a nested transaction fails', () => {
         let error, THIS, context, ctx;
-        beforeEach(function (done) {
+        beforeEach(done => {
             options.capSQL = true;
             db.tx(function (t) {
                 THIS = this;
@@ -1146,19 +1145,19 @@ describe('Transactions', function () {
                     })
                 ]);
             })
-                .catch(function (reason) {
+                .catch(reason => {
                     error = reason.data[1].result;
-                    done();
-                });
+                })
+                .finally(done);
         });
-        it('must return error from the nested transaction', function () {
+        it('must return error from the nested transaction', () => {
             expect(THIS === context).toBe(true);
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe('Nested TX failure');
             expect(ctx.level).toBe(1);
             expect(ctx.txLevel).toBe(1);
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.capSQL;
         });
     });
@@ -1178,15 +1177,15 @@ describe('Transactions', function () {
                 })
                 .finally(done);
         });
-        it('must reject when querying after the callback', function () {
+        it('must reject when querying after the callback', () => {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe($text.looseQuery);
         });
     });
 
-    describe('bottom-level failure', function () {
+    describe('bottom-level failure', () => {
         let result, nestError, THIS1, THIS2, context1, context2;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.tx(function (t1) {
                 THIS1 = this;
                 context1 = t1;
@@ -1202,21 +1201,19 @@ describe('Transactions', function () {
                     })
                 ]);
             })
-                .then(dummy, function (reason) {
+                .then(dummy, reason => {
                     nestError = reason.data[1].result.data[1].result;
                     return promise.all([
                         db.one('select count(*) from users where login=$1', 'External'), // 0 is expected;
                         db.one('select count(*) from users where login=$1', 'Internal') // 0 is expected;
                     ]);
                 })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must rollback everything', function () {
+        it('must rollback everything', () => {
             expect(THIS1 && THIS2 && context1 && context2).toBeTruthy();
             expect(THIS1 === context1).toBe(true);
             expect(THIS2 === context2).toBe(true);
@@ -1232,9 +1229,9 @@ describe('Transactions', function () {
         });
     });
 
-    describe('top-level failure', function () {
+    describe('top-level failure', () => {
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.tx(function () {
                 return this.batch([
                     this.none('update users set login=$1 where id=1', 'Test'),
@@ -1242,22 +1239,22 @@ describe('Transactions', function () {
                         return this.none('update person set name=$1 where id=1', 'Test');
                     })
                 ])
-                    .then(function () {
+                    .then(() => {
                         return promise.reject(new Error('ops!'));
                     });
             })
-                .then(dummy, function () {
+                .then(dummy, () => {
                     return promise.all([
                         db.one('select count(*) from users where login=$1', 'Test'), // 0 is expected;
                         db.one('select count(*) from person where name=$1', 'Test') // 0 is expected;
                     ]);
                 })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must rollback everything', function () {
+        it('must rollback everything', () => {
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(2);
             expect(result[0].count).toBe('0'); // no changes within parent transaction;
@@ -1265,35 +1262,31 @@ describe('Transactions', function () {
         });
     });
 
-    describe('Calling without a callback', function () {
-        describe('for a transaction', function () {
+    describe('Calling without a callback', () => {
+        describe('for a transaction', () => {
             let error;
-            beforeEach(function (done) {
+            beforeEach(done => {
                 db.tx()
-                    .catch(function (reason) {
+                    .catch(reason => {
                         error = reason;
                     })
-                    .finally(function () {
-                        done();
-                    });
+                    .finally(done);
             });
-            it('must reject', function () {
+            it('must reject', () => {
                 expect(error instanceof TypeError).toBe(true);
                 expect(error.message).toBe('Callback function is required.');
             });
         });
-        describe('for a task', function () {
+        describe('for a task', () => {
             let error;
-            beforeEach(function (done) {
+            beforeEach(done => {
                 db.task()
-                    .catch(function (reason) {
+                    .catch(reason => {
                         error = reason;
                     })
-                    .finally(function () {
-                        done();
-                    });
+                    .finally(done);
             });
-            it('must reject', function () {
+            it('must reject', () => {
                 expect(error instanceof TypeError).toBe(true);
                 expect(error.message).toBe('Callback function is required.');
             });
@@ -1301,10 +1294,10 @@ describe('Transactions', function () {
 
     });
 
-    describe('A nested transaction (10 levels)', function () {
+    describe('A nested transaction (10 levels)', () => {
         let result, THIS, context;
         const ctx = [];
-        beforeEach(function (done) {
+        beforeEach(done => {
             options.capSQL = true;
             db.tx(0, function () {
                 ctx.push(this.ctx);
@@ -1342,12 +1335,12 @@ describe('Transactions', function () {
                     });
                 });
             })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must work the same no matter how many levels', function () {
+        it('must work the same no matter how many levels', () => {
             expect(THIS && context && THIS === context).toBeTruthy();
             expect(result instanceof Array).toBe(true);
             expect(result).toEqual([{word: 'Hello'}, {word: 'World!'}]);
@@ -1366,7 +1359,7 @@ describe('Transactions', function () {
             expect(THIS.ctx.level).toBe(9);
             expect(THIS.ctx.txLevel).toBe(9);
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.capSQL;
         });
     });
@@ -1621,92 +1614,92 @@ describe('Conditional Task', () => {
     });
 });
 
-describe('Return data from a query must match the request type', function () {
+describe('Return data from a query must match the request type', () => {
 
-    describe('when no data returned', function () {
+    describe('when no data returned', () => {
         let error;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.none('select * from person where name=$1', 'John')
-                .catch(function (err) {
+                .catch(err => {
                     error = err;
                     done();
                 });
         });
-        it('method \'none\' must return an error', function () {
+        it('method \'none\' must return an error', () => {
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.message).toBe($text.notEmpty);
         });
     });
 
-    it('method \'one\' must throw an error when there was no data returned', function () {
+    it('method \'one\' must throw an error when there was no data returned', () => {
         let result, error;
         db.one('select * from person where name=$1', 'Unknown')
-            .then(function (data) {
+            .then(data => {
                 result = data;
-            }, function (reason) {
+            }, reason => {
                 result = null;
                 error = reason;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return result !== undefined;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(result).toBeNull();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.message).toBe($text.noData);
         });
     });
 
-    it('method \'one\' must throw an error when more than one row was returned', function () {
+    it('method \'one\' must throw an error when more than one row was returned', () => {
         let result, error;
         db.one('select * from person')
-            .then(function (data) {
+            .then(data => {
                 result = data;
-            }, function (reason) {
+            }, reason => {
                 result = null;
                 error = reason;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return result !== undefined;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(result).toBeNull();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.message).toBe($text.multiple);
         });
     });
 
-    it('method \'oneOrNone\' must resolve into null when no data returned', function () {
+    it('method \'oneOrNone\' must resolve into null when no data returned', () => {
         let result, error;
         db.oneOrNone('select * from person where name=$1', 'Unknown')
-            .then(function (data) {
+            .then(data => {
                 result = data;
-            }, function (reason) {
+            }, reason => {
                 result = 'whatever';
                 error = reason;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return result !== undefined;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(error).toBeUndefined();
             expect(result).toBeNull();
         });
     });
 
-    it('method \'any\' must return an empty array when no records found', function () {
+    it('method \'any\' must return an empty array when no records found', () => {
         let result, error;
         db.any('select * from person where name=\'Unknown\'')
-            .then(function (data) {
+            .then(data => {
                 result = data;
-            }, function (reason) {
+            }, reason => {
                 result = null;
                 error = reason;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return result !== undefined;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(0);
@@ -1715,75 +1708,77 @@ describe('Return data from a query must match the request type', function () {
 
 });
 
-describe('Queries must not allow invalid QRM (Query Request Mask) combinations', function () {
-    it('method \'query\' must throw an error when mask is one+many', function () {
+describe('Queries must not allow invalid QRM (Query Request Mask) combinations', () => {
+    it('method \'query\' must throw an error when mask is one+many', () => {
         let result, error;
         db.query('select * from person', undefined, pgp.queryResult.one | pgp.queryResult.many)
-            .then(function (data) {
+            .then(data => {
                 result = data;
-            }, function (reason) {
+            }, reason => {
                 result = null;
                 error = reason;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return result !== undefined;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(result).toBeNull();
             expect(error instanceof TypeError).toBe(true);
             expect(error.message).toBe('Invalid Query Result Mask specified.');
         });
     });
-    it('method \'query\' must throw an error when QRM is > 6', function () {
+    it('method \'query\' must throw an error when QRM is > 6', () => {
         let result, error;
         db.query('select * from person', undefined, 7)
-            .then(function (data) {
+            .then(data => {
                 result = data;
-            }, function (reason) {
+            }, reason => {
                 result = null;
                 error = reason;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return result !== undefined;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(result).toBeNull();
             expect(error instanceof TypeError).toBe(true);
             expect(error.message).toBe('Invalid Query Result Mask specified.');
         });
     });
-    it('method \'query\' must throw an error when QRM is < 1', function () {
+    it('method \'query\' must throw an error when QRM is < 1', () => {
         let result, error;
         db.query('select * from person', undefined, 0)
-            .then(function (data) {
+            .then(data => {
                 result = data;
-            }, function (reason) {
+            })
+            .catch(reason => {
                 result = null;
                 error = reason;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return result !== undefined;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(result).toBeNull();
             expect(error instanceof TypeError).toBe(true);
             expect(error.message).toBe('Invalid Query Result Mask specified.');
         });
     });
 
-    it('method \'query\' must throw an error when QRM is of the wrong type', function () {
+    it('method \'query\' must throw an error when QRM is of the wrong type', () => {
         let result, error;
         db.query('select * from person', undefined, 'wrong qrm')
-            .then(function (data) {
+            .then(data => {
                 result = data;
-            }, function (reason) {
+            })
+            .catch(reason => {
                 result = null;
                 error = reason;
             });
-        waitsFor(function () {
+        waitsFor(() => {
             return result !== undefined;
         }, 'Query timed out', 5000);
-        runs(function () {
+        runs(() => {
             expect(result).toBeNull();
             expect(error instanceof TypeError).toBe(true);
             expect(error.message).toBe('Invalid Query Result Mask specified.');
@@ -1792,7 +1787,7 @@ describe('Queries must not allow invalid QRM (Query Request Mask) combinations',
 
 });
 
-describe('Method \'result\'', function () {
+describe('Method \'result\'', () => {
 
     describe('for a single query', () => {
         let result;
@@ -1904,118 +1899,111 @@ describe('Method \'multi\'', () => {
 
 });
 
-describe('Querying a function', function () {
+describe('Querying a function', () => {
 
-    describe('that expects multiple rows', function () {
+    describe('that expects multiple rows', () => {
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             options.capSQL = true;
             db.func('getUsers')
-                .then(function (data) {
+                .then(data => {
                     result = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must return correctly', function () {
+        it('must return correctly', () => {
             expect(result instanceof Array).toBe(true);
             expect(result.length >= 4).toBe(true);
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.capSQL;
         });
     });
 
-    describe('that expects a single row', function () {
+    describe('that expects a single row', () => {
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.proc('findUser', 1)
-                .then(function (data) {
+                .then(data => {
                     result = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must return correctly', function () {
+        it('must return correctly', () => {
             expect(typeof(result)).toBe('object');
             expect('id' in result && 'login' in result && 'active' in result).toBe(true);
         });
     });
 
-    describe('value transformation', function () {
+    describe('value transformation', () => {
         let result, context;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.proc('findUser', 1, function (value) {
                 context = this;
                 return value.id;
             }, 123)
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must resolve with the new value', function () {
+        it('must resolve with the new value', () => {
             expect(typeof result).toBe('number');
             expect(result > 0).toBe(true);
             expect(context).toBe(123);
         });
     });
 
-    describe('with function-parameter that throws an error', function () {
+    describe('with function-parameter that throws an error', () => {
         let result, errCtx;
-        beforeEach(function (done) {
+        beforeEach(done => {
             options.error = function (err, e) {
                 errCtx = e;
             };
-            db.proc('findUser', [function () {
+            db.proc('findUser', [() => {
                 throw new Error('format failed');
             }])
-                .then(function () {
-                }, function (reason) {
+                .catch(reason => {
                     result = reason;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must throw an error', function () {
+        it('must throw an error', () => {
             expect(result instanceof Error).toBe(true);
             expect(result.message).toBe('format failed');
             expect(errCtx.query).toBe('select * from findUser(...)');
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.error;
         });
     });
 
-    describe('with function-parameter that throws an error + capitalized', function () {
+    describe('with function-parameter that throws an error + capitalized', () => {
         let errCtx;
-        beforeEach(function (done) {
+        beforeEach(done => {
             options.capSQL = true;
             options.error = function (err, e) {
                 errCtx = e;
             };
-            db.func('findUser', [function () {
+            db.func('findUser', [() => {
                 throw new Error('1');
             }])
-                .catch(function () {
+                .catch(() => {
                     done();
                 });
         });
-        it('must throw an error', function () {
+        it('must throw an error', () => {
             expect(errCtx.query).toBe('SELECT * FROM findUser(...)');
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.error;
             delete options.capSQL;
         });
     });
 
-    describe('with invalid parameters', function () {
+    describe('with invalid parameters', () => {
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             promise.any([
                 db.func(), // undefined function name;
                 db.func(''), // empty-string function name;
@@ -2033,15 +2021,12 @@ describe('Querying a function', function () {
                     funcName: '   '
                 })
             ])
-                .then(function () {
-                }, function (reason) {
+                .catch(reason => {
                     result = reason;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must reject with the right error', function () {
+        it('must reject with the right error', () => {
             expect(result.length).toBe(8);
             for (let i = 0; i < result.length; i++) {
                 expect(result[i] instanceof Error).toBe(true);
@@ -2051,27 +2036,25 @@ describe('Querying a function', function () {
     });
 });
 
-describe('Task', function () {
+describe('Task', () => {
 
-    describe('with detached connection', function () {
+    describe('with detached connection', () => {
         let error, tsk;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.task(function () {
                 tsk = this;
                 return promise.resolve();
             })
-                .then(function () {
+                .then(() => {
                     // try use the task connection context outside of the task callback;
                     return tsk.query('select \'test\'');
                 })
-                .catch(function (err) {
+                .catch(err => {
                     error = err;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must throw an error on any query request', function () {
+        it('must throw an error on any query request', () => {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe($text.looseQuery);
             expect(tsk.ctx.level).toBe(0);
@@ -2081,7 +2064,7 @@ describe('Task', function () {
         });
     });
 
-    describe('inside a transaction', function () {
+    describe('inside a transaction', () => {
         let context;
         beforeEach(done => {
             db.tx(tx => {
@@ -2098,86 +2081,78 @@ describe('Task', function () {
         });
     });
 
-    describe('with a callback that returns nothing', function () {
+    describe('with a callback that returns nothing', () => {
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.task(dummy)
-                .then(function (data) {
+                .then(data => {
                     result = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must resolve with undefined', function () {
+        it('must resolve with undefined', () => {
             expect(result).toBeUndefined();
         });
     });
 
-    describe('with a callback that returns a value', function () {
+    describe('with a callback that returns a value', () => {
         let result;
-        beforeEach(function (done) {
-            db.task(function () {
+        beforeEach(done => {
+            db.task(() => {
                 return 123;
             })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must resolve with the value', function () {
+        it('must resolve with the value', () => {
             expect(result).toBe(123);
         });
     });
 
-    describe('with the callback throwing an error', function () {
+    describe('with the callback throwing an error', () => {
         let result;
-        beforeEach(function (done) {
-            db.task(function () {
+        beforeEach(done => {
+            db.task(() => {
                 throw new Error('test');
             })
-                .then(dummy, function (reason) {
+                .catch(reason => {
                     result = reason;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must reject with the error thrown', function () {
+        it('must reject with the error thrown', () => {
             expect(result instanceof Error).toBe(true);
             expect(result.message).toBe('test');
         });
     });
 
-    describe('with a simple promise result', function () {
+    describe('with a simple promise result', () => {
         let result, context, THIS;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.task(function (t) {
                 THIS = this;
                 context = t;
                 return promise.resolve('Ok');
             })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must resolve with that result', function () {
+        it('must resolve with that result', () => {
             expect(result).toBe('Ok');
         });
-        it('must provide correct connection context', function () {
+        it('must provide correct connection context', () => {
             expect(context && typeof context === 'object').toBeTruthy();
             expect(context === THIS).toBe(true);
         });
     });
 
-    describe('with a notification error', function () {
+    describe('with a notification error', () => {
         let result, event, counter = 0;
-        beforeEach(function (done) {
+        beforeEach(done => {
             options.task = function (e) {
                 if (counter) {
                     throw 'ops!';
@@ -2191,15 +2166,15 @@ describe('Task', function () {
             }
 
             db.task('testTag', myTask)
-                .then(function (data) {
+                .then(data => {
                     result = data;
                     done();
                 });
         });
-        afterEach(function () {
+        afterEach(() => {
             delete options.task;
         });
-        it('that must be ignored', function () {
+        it('that must be ignored', () => {
             expect(result).toBe('success');
             expect(counter).toBe(1); // successful notification 'Start', failed for 'Finish';
             expect(event && event.ctx && typeof event.ctx === 'object').toBeTruthy();
@@ -2209,69 +2184,69 @@ describe('Task', function () {
 
 });
 
-describe('negative query formatting', function () {
+describe('negative query formatting', () => {
 
-    describe('with invalid property name', function () {
+    describe('with invalid property name', () => {
         let error;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.one('select ${invalid}', {})
-                .catch(function (e) {
+                .catch(e => {
                     error = e;
-                    done();
-                });
+                })
+                .finally(done);
         });
-        it('must reject with correct error', function () {
+        it('must reject with correct error', () => {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe('Property \'invalid\' doesn\'t exist.');
         });
     });
 
-    describe('with invalid variable index', function () {
+    describe('with invalid variable index', () => {
         let error;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.one('select $1', [])
-                .catch(function (e) {
+                .catch(e => {
                     error = e;
-                    done();
-                });
+                })
+                .finally(done);
         });
-        it('must reject with correct error', function () {
+        it('must reject with correct error', () => {
             expect(error instanceof RangeError).toBe(true);
             expect(error.message).toBe('Variable $1 out of range. Parameters array length: 0');
         });
     });
 
-    describe('with formatting parameter throwing error', function () {
+    describe('with formatting parameter throwing error', () => {
         let error;
         const err = new Error('ops!');
-        beforeEach(function (done) {
-            db.one('select $1', [function () {
+        beforeEach(done => {
+            db.one('select $1', [() => {
                 throw err;
             }])
-                .catch(function (e) {
+                .catch(e => {
                     error = e;
-                    done();
-                });
+                })
+                .finally(done);
         });
-        it('must reject with correct error', function () {
+        it('must reject with correct error', () => {
             expect(error instanceof Error).toBe(true);
             expect(error).toBe(err);
         });
     });
 
-    describe('with formatting parameter throwing a non-error', function () {
+    describe('with formatting parameter throwing a non-error', () => {
         let error;
         const err = 'ops!';
-        beforeEach(function (done) {
-            db.one('select $1', [function () {
+        beforeEach(done => {
+            db.one('select $1', [() => {
                 throw err;
             }])
-                .catch(function (e) {
+                .catch(e => {
                     error = e;
-                    done();
-                });
+                })
+                .finally(done);
         });
-        it('must reject with correct error', function () {
+        it('must reject with correct error', () => {
             expect(error instanceof Error).toBe(false);
             expect(error).toBe(err);
         });

@@ -19,22 +19,22 @@ const BatchError = pgp.spex.errors.BatchError;
 function dummy() {
 }
 
-describe('Library entry function', function () {
+describe('Library entry function', () => {
 
-    describe('without any promise override', function () {
-        it('must return a valid library object', function () {
+    describe('without any promise override', () => {
+        it('must return a valid library object', () => {
             if (supportsPromise) {
                 const lib = header({noWarnings: true});
                 expect(typeof(lib.pgp)).toBe('function');
             } else {
-                expect(function () {
+                expect(() => {
                     header();
                 }).toThrow('Promise library must be specified.');
             }
         });
     });
 
-    describe('with PromiseAdapter override', function () {
+    describe('with PromiseAdapter override', () => {
         const P = header.defPromise;
 
         function create(func) {
@@ -54,7 +54,7 @@ describe('Library entry function', function () {
         }
 
         const adapter = new PromiseAdapter({create, resolve, reject, all});
-        it('must accept custom promise', function () {
+        it('must accept custom promise', () => {
             const lib = header({
                 promiseLib: adapter,
                 noWarnings: true
@@ -62,44 +62,44 @@ describe('Library entry function', function () {
             expect(lib.pgp instanceof Function).toBe(true);
         });
 
-        describe('using PromiseAdapter', function () {
+        describe('using PromiseAdapter', () => {
             let result;
-            beforeEach(function (done) {
+            beforeEach(done => {
                 const lib = header({
                     promiseLib: adapter,
                     noWarnings: true
                 });
                 lib.db.one('select 1 as value')
-                    .then(function (data) {
+                    .then(data => {
                         result = data;
-                        done();
-                    });
+                    })
+                    .finally(done);
             });
-            it('must return successfully', function () {
+            it('must return successfully', () => {
                 expect(result.value).toBe(1);
             });
         });
     });
 
     if (supportsPromise) {
-        describe('without any options', function () {
+        describe('without any options', () => {
             let result;
-            beforeEach(function (done) {
-                const db = header({noWarnings: true}).db;
+            beforeEach(done => {
+                const db = header({noWarnings: true, promiseLib: promise}).db;
                 db.query('select * from users')
-                    .then(function (data) {
+                    .then(data => {
                         result = data;
-                        done();
-                    });
+                    })
+                    .finally(done);
             });
-            it('must be able to execute queries', function () {
+            it('must be able to execute queries', () => {
                 expect(result instanceof Array).toBe(true);
             });
         });
     }
 
-    describe('with a valid promise library-object override', function () {
-        it('must return a valid library object', function () {
+    describe('with a valid promise library-object override', () => {
+        it('must return a valid library object', () => {
             const lib = header(
                 {
                     promiseLib: {
@@ -113,8 +113,8 @@ describe('Library entry function', function () {
         });
     });
 
-    describe('with a valid promise library-function override', function () {
-        it('must return a valid library object', function () {
+    describe('with a valid promise library-function override', () => {
+        it('must return a valid library object', () => {
             function fakePromiseLib() {
             }
 
@@ -129,16 +129,16 @@ describe('Library entry function', function () {
         });
     });
 
-    describe('with invalid promise override', function () {
+    describe('with invalid promise override', () => {
         const error = 'Invalid promise library specified.';
-        it('must throw the correct error', function () {
-            expect(function () {
+        it('must throw the correct error', () => {
+            expect(() => {
                 header({
                     promiseLib: 'test'
                 });
             })
                 .toThrow(error);
-            expect(function () {
+            expect(() => {
                 header({
                     promiseLib: dummy
                 });
@@ -147,33 +147,32 @@ describe('Library entry function', function () {
         });
     });
 
-    describe('with invalid options parameter', function () {
+    describe('with invalid options parameter', () => {
         const errBody = 'Invalid initialization options: ';
-        it('must throw an error', function () {
+        it('must throw an error', () => {
             expect(() => {
                 header(123);
-            }).toThrow(new TypeError(errBody + '123'));
+            }).toThrow(errBody + '123');
             expect(() => {
                 header('hello');
-            }).toThrow(new TypeError(errBody + '"hello"'));
+            }).toThrow(errBody + '"hello"');
         });
     });
 
-    describe('with invalid options', function () {
+    describe('with invalid options', () => {
         let txt;
-        beforeEach(function (done) {
+        beforeEach(() => {
             const c = capture();
             header({test: 123});
             txt = c();
-            done();
         });
 
-        it('must throw an error', function () {
+        it('must throw an error', () => {
             expect(txt).toContain('WARNING: Invalid property \'test\' in initialization options.');
         });
     });
 
-    describe('multi-init', function () {
+    describe('multi-init', () => {
 
         const PromiseOne = {
             create: cb => new promise.Promise(cb),
@@ -193,7 +192,7 @@ describe('Library entry function', function () {
         const two = new PromiseAdapter(PromiseTwo);
         let result;
 
-        beforeEach(function (done) {
+        beforeEach(done => {
             const pg1 = header({promiseLib: one, noWarnings: true}), db1 = pg1.db;
             const pg2 = header({promiseLib: two, noWarnings: true}), db2 = pg2.db;
             db.task(t => {
@@ -207,7 +206,7 @@ describe('Library entry function', function () {
                 });
         });
 
-        it('must be supported', function () {
+        it('must be supported', () => {
             expect(result instanceof BatchError).toBe(true);
             expect(result.data).toEqual([
                 {
@@ -222,8 +221,8 @@ describe('Library entry function', function () {
         });
     });
 
-    describe('Taking no initialization options', function () {
-        it('must be supported', function () {
+    describe('Taking no initialization options', () => {
+        it('must be supported', () => {
             expect(typeof dbHeader.pgpLib()).toBe('function');
         });
     });
