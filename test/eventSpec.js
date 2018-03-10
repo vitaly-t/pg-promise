@@ -421,10 +421,9 @@ describe('Error event', () => {
                         });
                     })
                     .catch(reason => {
-                        //sco.done();
                         r = reason;
-                        done();
-                    });
+                    })
+                    .finally(done);
             });
             it('must notify with correct error', () => {
                 expect(r instanceof Error).toBe(true);
@@ -541,8 +540,8 @@ describe('Receive event', () => {
             db.multiResult('select 1 as one;select 2 as two')
                 .catch(error => {
                     result = error;
-                    done();
-                });
+                })
+                .finally(done);
         });
         it('must reject with the error', () => {
             expect(result instanceof Error).toBe(true);
@@ -551,7 +550,7 @@ describe('Receive event', () => {
 
     describe('query negative', () => {
         let result;
-        const error = new Error('ops!');
+        const error = 'ops!';
         beforeEach(done => {
             options.receive = () => {
                 throw error;
@@ -559,8 +558,8 @@ describe('Receive event', () => {
             db.one('select $1 as value', [123])
                 .catch(reason => {
                     result = reason;
-                    done();
-                });
+                })
+                .finally(done);
         });
         it('must reject with the right error', () => {
             expect(result).toBe(error);

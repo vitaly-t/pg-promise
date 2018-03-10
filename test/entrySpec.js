@@ -202,8 +202,8 @@ describe('Library entry function', () => {
             })
                 .catch(error => {
                     result = error;
-                    done();
-                });
+                })
+                .finally(done);
         });
 
         it('must be supported', () => {

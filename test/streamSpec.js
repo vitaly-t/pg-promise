@@ -119,8 +119,8 @@ describe('Method stream', () => {
                 db.stream(new QueryStream(), dummy)
                     .catch(error => {
                         result = error;
-                        done();
-                    });
+                    })
+                    .finally(done);
             });
             it('must reject with the same error', () => {
                 expect(result instanceof Error).toBe(false);

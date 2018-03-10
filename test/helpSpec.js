@@ -74,7 +74,7 @@ describe('INSERT', () => {
 
     describe('negative', () => {
         it('must throw on invalid data', () => {
-            const error = new TypeError('Invalid parameter \'data\' specified.');
+            const error = 'Invalid parameter \'data\' specified.';
             expect(() => {
                 helpers.insert();
             }).toThrow(error);
@@ -83,31 +83,31 @@ describe('INSERT', () => {
             }).toThrow(error);
         });
         it('must throw on an empty array', () => {
-            const error = new TypeError('Cannot generate an INSERT from an empty array.');
+            const error = 'Cannot generate an INSERT from an empty array.';
             expect(() => {
                 helpers.insert([]);
             }).toThrow(error);
         });
         it('must throw for an array without columns specified', () => {
-            const error = new TypeError('Parameter \'columns\' is required when inserting multiple records.');
+            const error = 'Parameter \'columns\' is required when inserting multiple records.';
             expect(() => {
                 helpers.insert([{}]);
             }).toThrow(error);
         });
         it('must throw for an empty column set', () => {
-            const error = new TypeError('Cannot generate an INSERT without any columns.');
+            const error = 'Cannot generate an INSERT without any columns.';
             expect(() => {
                 helpers.insert({}, []);
             }).toThrow(error);
         });
         it('must throw when table is not specified', () => {
-            const error = new TypeError('Table name is unknown.');
+            const error = 'Table name is unknown.';
             expect(() => {
                 helpers.insert({}, ['test']);
             }).toThrow(error);
         });
         it('must throw on invalid array data', () => {
-            const error = new TypeError('Invalid insert object at index 0.');
+            const error = 'Invalid insert object at index 0.';
             expect(() => {
                 helpers.insert([null], ['test'], 'table');
             }).toThrow(error);
@@ -191,7 +191,7 @@ describe('UPDATE', () => {
 
     describe('negative', () => {
         it('must throw on invalid data', () => {
-            const error = new TypeError('Invalid parameter \'data\' specified.');
+            const error = 'Invalid parameter \'data\' specified.';
             expect(() => {
                 helpers.update();
             }).toThrow(error);
@@ -200,32 +200,32 @@ describe('UPDATE', () => {
             }).toThrow(error);
         });
         it('must throw on an empty array', () => {
-            const error = new TypeError('Cannot generate an UPDATE from an empty array.');
+            const error = 'Cannot generate an UPDATE from an empty array.';
             expect(() => {
                 helpers.update([]);
             }).toThrow(error);
         });
         it('must throw for an array without columns specified', () => {
-            const error = new TypeError('Parameter \'columns\' is required when updating multiple records.');
+            const error = 'Parameter \'columns\' is required when updating multiple records.';
             expect(() => {
                 helpers.update([{}]);
             }).toThrow(error);
         });
         it('must throw for an empty column set', () => {
-            const error = new TypeError('Cannot generate an UPDATE without any columns.');
+            const error = 'Cannot generate an UPDATE without any columns.';
             expect(() => {
                 helpers.update({}, []);
             }).toThrow(error);
         });
         it('must throw when table is not specified for an array', () => {
-            const error = new TypeError('Table name is unknown.');
+            const error = 'Table name is unknown.';
             expect(() => {
                 helpers.update({}, ['test']);
                 helpers.update([{}], ['test']);
             }).toThrow(error);
         });
         it('must throw on invalid array data', () => {
-            const error = new TypeError('Invalid update object at index 0.');
+            const error = 'Invalid update object at index 0.';
             expect(() => {
                 helpers.update([null], ['test'], 'table');
             }).toThrow(error);
@@ -247,7 +247,7 @@ describe('TableName', () => {
     describe('Negative', () => {
 
         describe('invalid \'table\' parameter', () => {
-            const error = new TypeError('Table name must be a non-empty text string.');
+            const error = 'Table name must be a non-empty text string.';
             it('must throw an error', () => {
                 expect(() => {
                     new helpers.TableName();
@@ -265,7 +265,7 @@ describe('TableName', () => {
         });
 
         describe('invalid \'schema\' parameter', () => {
-            const error = new TypeError('Invalid schema name.');
+            const error = 'Invalid schema name.';
             it('must throw an error', () => {
                 expect(() => {
                     new helpers.TableName('table', 123);
@@ -396,7 +396,7 @@ describe('Column', () => {
             expect(() => new helpers.Column({
                 name: 'name',
                 prop: '-test'
-            })).toThrow(new TypeError('Invalid \'prop\' syntax: "-test".'));
+            })).toThrow('Invalid \'prop\' syntax: "-test".');
         });
     });
 
@@ -417,7 +417,7 @@ describe('Column', () => {
 
     describe('Negative', () => {
         it('must throw on invalid construction', () => {
-            const error = new TypeError('Invalid column details.');
+            const error = 'Invalid column details.';
             expect(() => {
                 new helpers.Column();
             }).toThrow(error);
@@ -428,63 +428,63 @@ describe('Column', () => {
         it('must throw on invalid input name', () => {
             expect(() => {
                 new helpers.Column('');
-            }).toThrow(new TypeError('Invalid column syntax: "".'));
+            }).toThrow('Invalid column syntax: "".');
             expect(() => {
                 new helpers.Column('  ');
-            }).toThrow(new TypeError('Invalid column syntax: "  ".'));
+            }).toThrow('Invalid column syntax: "  ".');
             expect(() => {
                 new helpers.Column('name.bla');
-            }).toThrow(new TypeError('Invalid column syntax: "name.bla".'));
+            }).toThrow('Invalid column syntax: "name.bla".');
         });
         it('must throw on invalid property \'name\'', () => {
             expect(() => {
                 new helpers.Column({name: ''});
-            }).toThrow(new TypeError('Invalid \'name\' value: "". A non-empty string was expected.'));
+            }).toThrow('Invalid \'name\' value: "". A non-empty string was expected.');
             expect(() => {
                 new helpers.Column({name: '  '});
-            }).toThrow(new TypeError('Invalid \'name\' value: "  ". A non-empty string was expected.'));
+            }).toThrow('Invalid \'name\' value: "  ". A non-empty string was expected.');
             expect(() => {
                 new helpers.Column({name: 123});
-            }).toThrow(new TypeError('Invalid \'name\' value: 123. A non-empty string was expected.'));
+            }).toThrow('Invalid \'name\' value: 123. A non-empty string was expected.');
             expect(() => {
                 new helpers.Column({name: 'name.first'});
-            }).toThrow(new TypeError('Invalid \'name\' syntax: "name.first".'));
+            }).toThrow('Invalid \'name\' syntax: "name.first".');
         });
         it('must throw on invalid property \'prop\'', () => {
             expect(() => {
                 new helpers.Column({name: 'name', prop: 123});
-            }).toThrow(new TypeError('Invalid \'prop\' value: 123. A non-empty string was expected.'));
+            }).toThrow('Invalid \'prop\' value: 123. A non-empty string was expected.');
             expect(() => {
                 new helpers.Column({name: 'name', prop: ''});
-            }).toThrow(new TypeError('Invalid \'prop\' value: "". A non-empty string was expected.'));
+            }).toThrow('Invalid \'prop\' value: "". A non-empty string was expected.');
             expect(() => {
                 new helpers.Column({name: 'name', prop: '  '});
-            }).toThrow(new TypeError('Invalid \'prop\' value: "  ". A non-empty string was expected.'));
+            }).toThrow('Invalid \'prop\' value: "  ". A non-empty string was expected.');
             expect(() => {
                 new helpers.Column({name: 'name', prop: 'one.two'});
-            }).toThrow(new TypeError('Invalid \'prop\' syntax: "one.two".'));
+            }).toThrow('Invalid \'prop\' syntax: "one.two".');
         });
         it('must throw on invalid property \'cast\'', () => {
             expect(() => {
                 new helpers.Column({name: 'name', cast: 123});
-            }).toThrow(new TypeError('Invalid \'cast\' value: 123.'));
+            }).toThrow('Invalid \'cast\' value: 123.');
             expect(() => {
                 new helpers.Column({name: 'name', cast: ''});
-            }).toThrow(new TypeError('Invalid \'cast\' value: "".'));
+            }).toThrow('Invalid \'cast\' value: "".');
             expect(() => {
                 new helpers.Column({name: 'name', cast: '  '});
-            }).toThrow(new TypeError('Invalid \'cast\' value: "  ".'));
+            }).toThrow('Invalid \'cast\' value: "  ".');
         });
         it('must throw on invalid property \'mod\'', () => {
             expect(() => {
                 new helpers.Column({name: 'name', mod: 123});
-            }).toThrow(new TypeError('Invalid \'mod\' value: 123.'));
+            }).toThrow('Invalid \'mod\' value: 123.');
             expect(() => {
                 new helpers.Column({name: 'name', mod: ''});
-            }).toThrow(new TypeError('Invalid \'mod\' value: "".'));
+            }).toThrow('Invalid \'mod\' value: "".');
             expect(() => {
                 new helpers.Column({name: 'name', mod: '  '});
-            }).toThrow(new TypeError('Invalid \'mod\' value: "  ".'));
+            }).toThrow('Invalid \'mod\' value: "  ".');
         });
     });
 
@@ -712,7 +712,7 @@ describe('ColumnSet', () => {
             const cs = new helpers.ColumnSet(['one', 'two']);
             expect(() => {
                 cs.extend(['two']);
-            }).toThrow(new Error('Duplicate column name "two".'));
+            }).toThrow('Duplicate column name "two".');
         });
     });
 
@@ -732,7 +732,7 @@ describe('ColumnSet', () => {
 
     describe('Negative', () => {
         it('must throw on invalid columns', () => {
-            const error = new TypeError('Invalid parameter \'columns\' specified.');
+            const error = 'Invalid parameter \'columns\' specified.';
             expect(() => {
                 new helpers.ColumnSet();
             }).toThrow(error);
@@ -743,11 +743,11 @@ describe('ColumnSet', () => {
         it('must throw on duplicate columns', () => {
             expect(() => {
                 new helpers.ColumnSet(['one', 'one']);
-            }).toThrow(new Error('Duplicate column name "one".'));
+            }).toThrow('Duplicate column name "one".');
         });
 
         it('must throw on invalid options', () => {
-            const error = new TypeError('Invalid parameter \'options\' specified.');
+            const error = 'Invalid parameter \'options\' specified.';
             expect(() => {
                 new helpers.ColumnSet({}, 123);
             }).toThrow(error);
@@ -805,7 +805,7 @@ describe('method \'sets\'', () => {
     });
 
     describe('Negative', () => {
-        const error = new TypeError('Invalid parameter \'data\' specified.');
+        const error = 'Invalid parameter \'data\' specified.';
         it('must throw when \'data\' is not an object', () => {
             expect(() => {
                 helpers.sets();
@@ -866,7 +866,7 @@ describe('method \'values\'', () => {
 
     describe('Negative', () => {
         it('must throw when \'data\' is not valid', () => {
-            const error = new TypeError('Invalid parameter \'data\' specified.');
+            const error = 'Invalid parameter \'data\' specified.';
             expect(() => {
                 helpers.values();
             }).toThrow(error);
@@ -878,19 +878,19 @@ describe('method \'values\'', () => {
             }).toThrow(error);
         });
         it('must throw when there are no columns', () => {
-            const error = new TypeError('Cannot generate values without any columns.');
+            const error = 'Cannot generate values without any columns.';
             expect(() => {
                 helpers.values(dataSingle, []);
             }).toThrow(error);
         });
         it('must throw when no columns for an array', () => {
-            const error = new TypeError('Parameter \'columns\' is required when generating multi-row values.');
+            const error = 'Parameter \'columns\' is required when generating multi-row values.';
             expect(() => {
                 helpers.values([{}]);
             }).toThrow(error);
         });
         it('must throw on invalid data object', () => {
-            const error = new TypeError('Invalid object at index 0.');
+            const error = 'Invalid object at index 0.';
             expect(() => {
                 helpers.values([null], ['val']);
             }).toThrow(error);
@@ -904,7 +904,7 @@ describe('method \'values\'', () => {
 describe('method \'concat\'', () => {
     describe('Negative', () => {
         it('must throw on a non-array input', () => {
-            const error = new TypeError('Parameter \'queries\' must be an array.');
+            const error = 'Parameter \'queries\' must be an array.';
             expect(() => {
                 helpers.concat();
             }).toThrow(error);

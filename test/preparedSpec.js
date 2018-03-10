@@ -126,9 +126,7 @@ describe('PreparedStatement', () => {
                 .then(data => {
                     result = data;
                 })
-                .finally(() => {
-                    done();
-                });
+                .finally(done);
         });
         it('must return the right value', () => {
             expect(result && result.value === 1).toBeTruthy();

@@ -322,8 +322,8 @@ describe('Connection', () => {
             tmpDB.connect()
                 .catch(e => {
                     error = e;
-                    done();
-                });
+                })
+                .finally(done);
         });
         it('must be handled', () => {
             expect(error).toEqual(new Error($text.poolDestroyed));
@@ -542,8 +542,8 @@ describe('Method \'each\'', () => {
                 db.each('SELECT 1')
                     .catch(error => {
                         err = error;
-                        done();
-                    });
+                    })
+                    .finally(done);
             });
             it('must reject with an error', () => {
                 expect(err instanceof TypeError).toBe(true);
@@ -2072,9 +2072,7 @@ describe('Task', () => {
                     context = t;
                 });
             })
-                .finally(() => {
-                    done();
-                });
+                .finally(done);
         });
         it('must know it is in transaction', () => {
             expect(context.ctx.inTransaction).toBe(true);
@@ -2153,7 +2151,7 @@ describe('Task', () => {
     describe('with a notification error', () => {
         let result, event, counter = 0;
         beforeEach(done => {
-            options.task = function (e) {
+            options.task = e => {
                 if (counter) {
                     throw 'ops!';
                 }
@@ -2168,8 +2166,8 @@ describe('Task', () => {
             db.task('testTag', myTask)
                 .then(data => {
                     result = data;
-                    done();
-                });
+                })
+                .finally(done);
         });
         afterEach(() => {
             delete options.task;
@@ -2260,11 +2258,8 @@ describe('Multi-result queries', () => {
         db.one('select 1 as one;select 2 as two')
             .then(data => {
                 result = data;
-                done();
             })
-            .catch(() => {
-                done();
-            });
+            .finally(done);
     });
     it('must return the first result', () => {
         expect(result).toEqual({two: 2});

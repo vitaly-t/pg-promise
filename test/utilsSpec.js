@@ -286,7 +286,7 @@ describe('objectToCode', () => {
 
     describe('negative', () => {
         it('must throw on invalid object', () => {
-            const err = new TypeError('Parameter \'obj\' must be a non-null object.');
+            const err = 'Parameter \'obj\' must be a non-null object.';
             expect(() => {
                 utils.objectToCode();
             }).toThrow(err);
@@ -340,7 +340,7 @@ describe('buildSqlModule', () => {
         });
 
         it('must throw on invalid \'config\' parameter', () => {
-            const err = new TypeError('Invalid parameter \'config\' specified.');
+            const err = 'Invalid parameter \'config\' specified.';
             expect(() => {
                 utils.buildSqlModule(123);
             }).toThrow(err);
