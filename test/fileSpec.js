@@ -18,6 +18,10 @@ const db = dbHeader.db;
 const QueryFileError = pgp.errors.QueryFileError;
 const QueryFile = pgp.QueryFile;
 
+const getPath = file => {
+    return path.join(__dirname, file);
+};
+
 const sqlSimple = getPath('./sql/simple.sql');
 const sqlUsers = getPath('./sql/allUsers.sql');
 const sqlUnknown = getPath('./sql/unknown.sql');
@@ -25,11 +29,7 @@ const sqlInvalid = getPath('./sql/invalid.sql');
 const sqlParams = getPath('./sql/params.sql');
 const sqlTemp = getPath('./sql/temp.sql');
 
-function getPath(file) {
-    return path.join(__dirname, file);
-}
-
-describe('QueryFile / Positive:', function () {
+describe('QueryFile / Positive:', () => {
 
     describe('function-style call', () => {
         it('must return an object', () => {
@@ -38,95 +38,95 @@ describe('QueryFile / Positive:', function () {
         });
     });
 
-    describe('without options', function () {
+    describe('without options', () => {
         const qf = new QueryFile(sqlSimple, {noWarnings: true});
-        it('must not minify', function () {
+        it('must not minify', () => {
             expect(qf[QueryFile.$query]).toBe('select 1; --comment');
         });
     });
 
-    describe('with minify=true && debug=true', function () {
+    describe('with minify=true && debug=true', () => {
         const qf = new QueryFile(sqlUsers, {debug: true, minify: true, noWarnings: true});
-        it('must return minified query', function () {
+        it('must return minified query', () => {
             expect(qf[QueryFile.$query]).toBe('select * from users');
         });
     });
 
-    describe('default with params', function () {
+    describe('default with params', () => {
         const params = {
             schema: 'public',
             table: 'users'
         };
         const qf = new QueryFile(sqlParams, {minify: true, params, noWarnings: true});
-        it('must return pre-formatted query', function () {
+        it('must return pre-formatted query', () => {
             expect(qf[QueryFile.$query]).toBe('SELECT ${column~} FROM "public"."users"');
         });
     });
 
-    describe('compression with params', function () {
+    describe('compression with params', () => {
         const params = {
             schema: 'public',
             table: 'users',
             column: 'col'
         };
         const qf1 = new QueryFile(sqlParams, {minify: true, compress: true, params, noWarnings: true});
-        it('must return uncompressed replacements by default', function () {
+        it('must return uncompressed replacements by default', () => {
             expect(qf1[QueryFile.$query]).toBe('SELECT "col" FROM "public"."users"');
         });
         const qf2 = new QueryFile(sqlParams, {minify: 'after', compress: true, params, noWarnings: true});
-        it('must return compressed replacements for \'after\'', function () {
+        it('must return compressed replacements for \'after\'', () => {
             expect(qf2[QueryFile.$query]).toBe('SELECT"col"FROM"public"."users"');
         });
     });
 
-    describe('non-minified query', function () {
+    describe('non-minified query', () => {
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.query(new QueryFile(sqlUsers, {noWarnings: true}))
-                .then(function (data) {
+                .then(data => {
                     result = data;
-                    done();
-                });
+                })
+                .finally(done);
         });
-        it('must resolve with data', function () {
+        it('must resolve with data', () => {
             expect(result instanceof Array).toBe(true);
             expect(result.length > 0).toBe(true);
         });
     });
 
-    describe('minified query', function () {
+    describe('minified query', () => {
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.query(new QueryFile(sqlUsers, {minify: true, noWarnings: true}))
-                .then(function (data) {
+                .then(data => {
                     result = data;
-                    done();
-                });
+                })
+                .finally(done);
         });
-        it('must resolve with data', function () {
+        it('must resolve with data', () => {
             expect(result instanceof Array).toBe(true);
             expect(result.length > 0).toBe(true);
         });
     });
 
-    describe('compressed query', function () {
+    describe('compressed query', () => {
         let result, sql;
-        beforeEach(function (done) {
+        beforeEach(done => {
             sql = new QueryFile(sqlUsers, {compress: true, noWarnings: true});
             db.query(sql)
-                .then(function (data) {
+                .then(data => {
                     result = data;
-                    done();
-                });
+                })
+                .finally(done);
         });
-        it('must resolve with data', function () {
+        it('must resolve with data', () => {
             expect(sql[QueryFile.$query]).toBe('select*from users');
             expect(result instanceof Array).toBe(true);
             expect(result.length > 0).toBe(true);
         });
     });
 
-    describe('property options', function () {
+    describe('property options', () => {
         const options1 = {
                 debug: utils.isDev(),
                 minify: false,
@@ -146,33 +146,33 @@ describe('QueryFile / Positive:', function () {
             };
         Object.freeze(options1);
         Object.freeze(options3);
-        it('must be consistent with the settings', function () {
+        it('must be consistent with the settings', () => {
             expect(new QueryFile(sqlSimple, {noWarnings: true}).options).toEqual(options1);
             expect(new QueryFile(sqlSimple, options2).options).toEqual(options3);
         });
     });
 
-    describe('inspect', function () {
+    describe('inspect', () => {
         const qf = new QueryFile(sqlSimple, {noWarnings: true});
-        it('must return the query', function () {
+        it('must return the query', () => {
             expect(tools.inspect(qf)).toBe(qf.toString());
         });
     });
 
-    describe('custom-type formatting', function () {
+    describe('custom-type formatting', () => {
         const qf = new QueryFile(sqlSimple, {noWarnings: true});
         const toPostgres = pgp.as.ctf.toPostgres;
-        it('must return the full name', function () {
+        it('must return the full name', () => {
             expect(qf[toPostgres](qf)).toBe(qf[QueryFile.$query]);
             expect(qf[toPostgres].call(null, qf)).toBe(qf[QueryFile.$query]);
             expect(qf[toPostgres]()).toBe(qf[QueryFile.$query]);
         });
     });
 
-    describe('modified file', function () {
+    describe('modified file', () => {
         const q1 = 'select 1';
         const q2 = 'select 2';
-        it('must be read again', function () {
+        it('must be read again', () => {
             fs.writeFileSync(sqlTemp, q1);
             const qf = new QueryFile(sqlTemp, {debug: true});
             expect(qf[QueryFile.$query]).toBe(q1);
@@ -188,9 +188,9 @@ describe('QueryFile / Positive:', function () {
         });
     });
 
-    describe('repeated read', function () {
+    describe('repeated read', () => {
         // this is just for code coverage;
-        it('must not read again', function () {
+        it('must not read again', () => {
             const qf = new QueryFile(sqlSimple, {debug: false, minify: true, noWarnings: true});
             qf.prepare();
             qf.prepare();
@@ -199,35 +199,35 @@ describe('QueryFile / Positive:', function () {
     });
 });
 
-describe('QueryFile / Negative:', function () {
+describe('QueryFile / Negative:', () => {
 
-    describe('non-minified query', function () {
+    describe('non-minified query', () => {
         let error;
-        beforeEach(function (done) {
+        beforeEach(done => {
             db.query(new QueryFile(sqlUnknown))
-                .catch(function (err) {
+                .catch(err => {
                     error = err;
-                    done();
-                });
+                })
+                .finally(done);
         });
-        it('must reject with an error', function () {
+        it('must reject with an error', () => {
             expect(error instanceof Error).toBe(true);
         });
     });
 
-    describe('inspect', function () {
+    describe('inspect', () => {
         const qf = new QueryFile(sqlInvalid, {minify: true, noWarnings: true});
-        it('must return the error', function () {
+        it('must return the error', () => {
             expect(tools.inspect(qf) != qf.toString(1)).toBe(true);
             expect(qf.error instanceof QueryFileError).toBe(true);
             expect(tools.inspect(qf.error)).toBe(qf.error.toString());
         });
     });
 
-    describe('accessing a temporary file', function () {
+    describe('accessing a temporary file', () => {
         let error;
         const query = 'select 123 as value';
-        it('must result in error once deleted', function () {
+        it('must result in error once deleted', () => {
             fs.writeFileSync(sqlTemp, query);
             const qf = new QueryFile(sqlTemp, {debug: true, noWarnings: true});
             expect(qf[QueryFile.$query]).toBe(query);
@@ -238,7 +238,7 @@ describe('QueryFile / Negative:', function () {
             expect(qf.error instanceof Error).toBe(true);
         });
 
-        it('must throw when preparing', function () {
+        it('must throw when preparing', () => {
             fs.writeFileSync(sqlTemp, query);
             const qf = new QueryFile(sqlTemp, {debug: true, noWarnings: true});
             expect(qf[QueryFile.$query]).toBe(query);
@@ -255,8 +255,8 @@ describe('QueryFile / Negative:', function () {
 
     });
 
-    describe('invalid sql', function () {
-        it('must throw an error', function () {
+    describe('invalid sql', () => {
+        it('must throw an error', () => {
             const qf = new QueryFile(sqlInvalid, {minify: true, noWarnings: true});
             expect(qf.error instanceof QueryFileError).toBe(true);
             expect(qf.error.file).toBe(sqlInvalid);

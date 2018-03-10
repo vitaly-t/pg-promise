@@ -32,94 +32,94 @@ const dataMulti = [{
     msg: 'world'
 }];
 
-describe('INSERT', function () {
+describe('INSERT', () => {
 
-    describe('single:', function () {
-        describe('direct data', function () {
-            it('must return all data properties as columns', function () {
+    describe('single:', () => {
+        describe('direct data', () => {
+            it('must return all data properties as columns', () => {
                 expect(helpers.insert(dataSingle, null, 'table')).toBe('insert into "table"("val","msg") values(123,\'test\')');
             });
         });
     });
 
-    describe('multi:', function () {
-        describe('direct data', function () {
-            it('must return all data columns', function () {
+    describe('multi:', () => {
+        describe('direct data', () => {
+            it('must return all data columns', () => {
                 expect(helpers.insert(dataMulti, ['val', 'msg'], 'table')).toBe('insert into "table"("val","msg") values(123,\'hello\'),(456,\'world\')');
             });
         });
     });
 
-    describe('setting table name', function () {
+    describe('setting table name', () => {
         const cs = new helpers.ColumnSet(dataSingle, {table: 'external'});
-        it('must use its own table when specified', function () {
+        it('must use its own table when specified', () => {
             expect(helpers.insert(dataSingle, cs, 'internal')).toBe('insert into "internal"("val","msg") values(123,\'test\')');
         });
-        it('must use ColumnSet table when not locally specified', function () {
+        it('must use ColumnSet table when not locally specified', () => {
             expect(helpers.insert(dataSingle, cs)).toBe('insert into "external"("val","msg") values(123,\'test\')');
         });
     });
 
-    describe('generating sql in upper case', function () {
-        beforeEach(function () {
+    describe('generating sql in upper case', () => {
+        beforeEach(() => {
             options.capSQL = true;
         });
-        it('must return a capitalized query', function () {
+        it('must return a capitalized query', () => {
             expect(helpers.insert(dataSingle, null, 'table')).toBe('INSERT INTO "table"("val","msg") VALUES(123,\'test\')');
         });
-        afterEach(function () {
+        afterEach(() => {
             options.capSQL = false;
         });
     });
 
-    describe('negative', function () {
-        it('must throw on invalid data', function () {
+    describe('negative', () => {
+        it('must throw on invalid data', () => {
             const error = new TypeError('Invalid parameter \'data\' specified.');
-            expect(function () {
+            expect(() => {
                 helpers.insert();
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 helpers.insert(123);
             }).toThrow(error);
         });
-        it('must throw on an empty array', function () {
+        it('must throw on an empty array', () => {
             const error = new TypeError('Cannot generate an INSERT from an empty array.');
-            expect(function () {
+            expect(() => {
                 helpers.insert([]);
             }).toThrow(error);
         });
-        it('must throw for an array without columns specified', function () {
+        it('must throw for an array without columns specified', () => {
             const error = new TypeError('Parameter \'columns\' is required when inserting multiple records.');
-            expect(function () {
+            expect(() => {
                 helpers.insert([{}]);
             }).toThrow(error);
         });
-        it('must throw for an empty column set', function () {
+        it('must throw for an empty column set', () => {
             const error = new TypeError('Cannot generate an INSERT without any columns.');
-            expect(function () {
+            expect(() => {
                 helpers.insert({}, []);
             }).toThrow(error);
         });
-        it('must throw when table is not specified', function () {
+        it('must throw when table is not specified', () => {
             const error = new TypeError('Table name is unknown.');
-            expect(function () {
+            expect(() => {
                 helpers.insert({}, ['test']);
             }).toThrow(error);
         });
-        it('must throw on invalid array data', function () {
+        it('must throw on invalid array data', () => {
             const error = new TypeError('Invalid insert object at index 0.');
-            expect(function () {
+            expect(() => {
                 helpers.insert([null], ['test'], 'table');
             }).toThrow(error);
         });
     });
 });
 
-describe('UPDATE', function () {
+describe('UPDATE', () => {
 
-    describe('single:', function () {
-        describe('direct data', function () {
-            it('must return all properties correctly', function () {
+    describe('single:', () => {
+        describe('direct data', () => {
+            it('must return all properties correctly', () => {
                 const cs = ['?val', {name: 'msg', cast: 'text'}, {name: 'extra', def: 555}];
                 expect(helpers.update(dataSingle, cs, 'table')).toBe('update "table" set "msg"=\'test\'::text,"extra"=555');
                 expect(helpers.update(dataSingle, null, 'table')).toBe('update "table" set "val"=123,"msg"=\'test\'');
@@ -133,9 +133,9 @@ describe('UPDATE', function () {
         });
     });
 
-    describe('multi:', function () {
-        describe('direct data', function () {
-            it('must return all data columns', function () {
+    describe('multi:', () => {
+        describe('direct data', () => {
+            it('must return all data columns', () => {
                 expect(helpers.update(dataMulti, ['?id', 'val', {
                     name: 'msg',
                     cast: 'text'
@@ -144,89 +144,89 @@ describe('UPDATE', function () {
         });
     });
 
-    describe('setting table name', function () {
+    describe('setting table name', () => {
         const cs = new helpers.ColumnSet(dataSingle, {table: 'external'});
-        it('must use its own table when specified', function () {
+        it('must use its own table when specified', () => {
             expect(helpers.update(dataSingle, cs, 'internal')).toBe('update "internal" set "val"=123,"msg"=\'test\'');
         });
-        it('must use ColumnSet table when not locally specified', function () {
+        it('must use ColumnSet table when not locally specified', () => {
             expect(helpers.update(dataSingle, cs)).toBe('update "external" set "val"=123,"msg"=\'test\'');
         });
     });
 
-    describe('generating sql in upper case', function () {
+    describe('generating sql in upper case', () => {
         const cs = new helpers.ColumnSet(['?id', 'val', 'msg'], {table: 'table'});
-        beforeEach(function () {
+        beforeEach(() => {
             options.capSQL = true;
         });
-        it('must return a capitalized query for a single data', function () {
+        it('must return a capitalized query for a single data', () => {
             expect(helpers.update(dataSingle, cs)).toBe('UPDATE "table" SET "val"=123,"msg"=\'test\'');
         });
-        it('must return a capitalized query for multi-row data', function () {
+        it('must return a capitalized query for multi-row data', () => {
             expect(helpers.update(dataMulti, cs)).toBe('UPDATE "table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,\'hello\'),(2,456,\'world\')) AS v("id","val","msg")');
         });
-        afterEach(function () {
+        afterEach(() => {
             options.capSQL = false;
         });
     });
 
-    describe('options', function () {
+    describe('options', () => {
         const cs = new helpers.ColumnSet(['?id', 'val', 'msg'], {table: 'table'});
         const opt = {tableAlias: 'X', valueAlias: 'Y'};
-        it('must use the options', function () {
+        it('must use the options', () => {
             expect(helpers.update(dataMulti, cs, null, opt)).toBe('update "table" as X set "val"=Y."val","msg"=Y."msg" from (values(1,123,\'hello\'),(2,456,\'world\')) as Y("id","val","msg")');
         });
-        it('must ignore empty options', function () {
+        it('must ignore empty options', () => {
             expect(helpers.update(dataMulti, cs, null, {})).toBe('update "table" as t set "val"=v."val","msg"=v."msg" from (values(1,123,\'hello\'),(2,456,\'world\')) as v("id","val","msg")');
         });
     });
 
-    describe('emptyUpdate', function () {
+    describe('emptyUpdate', () => {
         const cs = new helpers.ColumnSet(['?id', '?val', '?msg'], {table: 'table'});
-        it('must return the option value', function () {
+        it('must return the option value', () => {
             expect(helpers.update(dataSingle, cs, null, {emptyUpdate: 123})).toBe(123);
             expect(helpers.update(dataMulti, cs, null, {emptyUpdate: 123})).toBe(123);
         });
     });
 
-    describe('negative', function () {
-        it('must throw on invalid data', function () {
+    describe('negative', () => {
+        it('must throw on invalid data', () => {
             const error = new TypeError('Invalid parameter \'data\' specified.');
-            expect(function () {
+            expect(() => {
                 helpers.update();
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 helpers.update(123);
             }).toThrow(error);
         });
-        it('must throw on an empty array', function () {
+        it('must throw on an empty array', () => {
             const error = new TypeError('Cannot generate an UPDATE from an empty array.');
-            expect(function () {
+            expect(() => {
                 helpers.update([]);
             }).toThrow(error);
         });
-        it('must throw for an array without columns specified', function () {
+        it('must throw for an array without columns specified', () => {
             const error = new TypeError('Parameter \'columns\' is required when updating multiple records.');
-            expect(function () {
+            expect(() => {
                 helpers.update([{}]);
             }).toThrow(error);
         });
-        it('must throw for an empty column set', function () {
+        it('must throw for an empty column set', () => {
             const error = new TypeError('Cannot generate an UPDATE without any columns.');
-            expect(function () {
+            expect(() => {
                 helpers.update({}, []);
             }).toThrow(error);
         });
-        it('must throw when table is not specified for an array', function () {
+        it('must throw when table is not specified for an array', () => {
             const error = new TypeError('Table name is unknown.');
-            expect(function () {
+            expect(() => {
                 helpers.update({}, ['test']);
                 helpers.update([{}], ['test']);
             }).toThrow(error);
         });
-        it('must throw on invalid array data', function () {
+        it('must throw on invalid array data', () => {
             const error = new TypeError('Invalid update object at index 0.');
-            expect(function () {
+            expect(() => {
                 helpers.update([null], ['test'], 'table');
             }).toThrow(error);
         });
@@ -234,60 +234,60 @@ describe('UPDATE', function () {
 
 });
 
-describe('TableName', function () {
+describe('TableName', () => {
 
-    describe('Function call', function () {
-        it('must return a new object', function () {
+    describe('Function call', () => {
+        it('must return a new object', () => {
             // eslint-disable-next-line
             const obj = helpers.TableName('table');
             expect(obj instanceof helpers.TableName).toBe(true);
         });
     });
 
-    describe('Negative', function () {
+    describe('Negative', () => {
 
-        describe('invalid \'table\' parameter', function () {
+        describe('invalid \'table\' parameter', () => {
             const error = new TypeError('Table name must be a non-empty text string.');
-            it('must throw an error', function () {
-                expect(function () {
+            it('must throw an error', () => {
+                expect(() => {
                     new helpers.TableName();
                 }).toThrow(error);
-                expect(function () {
+                expect(() => {
                     new helpers.TableName(123);
                 }).toThrow(error);
-                expect(function () {
+                expect(() => {
                     new helpers.TableName('');
                 }).toThrow(error);
-                expect(function () {
+                expect(() => {
                     new helpers.TableName('   ');
                 }).toThrow(error);
             });
         });
 
-        describe('invalid \'schema\' parameter', function () {
+        describe('invalid \'schema\' parameter', () => {
             const error = new TypeError('Invalid schema name.');
-            it('must throw an error', function () {
-                expect(function () {
+            it('must throw an error', () => {
+                expect(() => {
                     new helpers.TableName('table', 123);
                 }).toThrow(error);
             });
         });
     });
 
-    describe('options', function () {
-        it('must find the options correctly', function () {
+    describe('options', () => {
+        it('must find the options correctly', () => {
             const t = new helpers.TableName({table: 'table', schema: 'schema'});
             expect(t.table).toBe('table');
             expect(t.schema).toBe('schema');
         });
-        it('must skip an empty schema', function () {
+        it('must skip an empty schema', () => {
             const t = new helpers.TableName({table: 'table', schema: ''});
             expect('schema' in t).toBe(false);
         });
     });
 
-    describe('console output', function () {
-        it('must be formatted', function () {
+    describe('console output', () => {
+        it('must be formatted', () => {
             const t = new helpers.TableName({table: 'table', schema: 'schema'});
             expect(t.toString()).toBe('"schema"."table"');
             expect(t.toString()).toBe(tools.inspect(t));
@@ -305,18 +305,18 @@ describe('TableName', function () {
     });
 });
 
-describe('Column', function () {
+describe('Column', () => {
 
-    describe('Function call', function () {
-        it('must return a new object', function () {
+    describe('Function call', () => {
+        it('must return a new object', () => {
             // eslint-disable-next-line
             const obj = helpers.Column('col');
             expect(obj instanceof helpers.Column).toBe(true);
         });
     });
 
-    describe('set all', function () {
-        it('must set all values', function () {
+    describe('set all', () => {
+        it('must set all values', () => {
             const col = new helpers.Column({
                 name: '_colName',
                 prop: '$propName01',
@@ -324,9 +324,9 @@ describe('Column', function () {
                 cnd: true,
                 cast: 'int',
                 mod: '^',
-                init: function () {
+                init: () => {
                 },
-                skip: function () {
+                skip: () => {
                 }
             });
             expect(col.name).toBe('_colName');
@@ -341,8 +341,8 @@ describe('Column', function () {
         });
     });
 
-    describe('set defaults', function () {
-        it('must set all values', function () {
+    describe('set defaults', () => {
+        it('must set all values', () => {
             const col = new helpers.Column({
                 name: 'name',
                 prop: null,
@@ -356,7 +356,7 @@ describe('Column', function () {
         });
     });
 
-    describe('cast', function () {
+    describe('cast', () => {
         const cols = [
             new helpers.Column({
                 name: 'name',
@@ -375,7 +375,7 @@ describe('Column', function () {
                 cast: ':a:'
             })
         ];
-        it('must strip the cast', function () {
+        it('must strip the cast', () => {
             expect(cols[0].cast).toBe('int');
             expect(cols[1].cast).toBe('int');
             expect(cols[2].cast).toBe('int: \t:');
@@ -400,13 +400,13 @@ describe('Column', function () {
         });
     });
 
-    describe('mod', function () {
-        it('must strip the mod', function () {
+    describe('mod', () => {
+        it('must strip the mod', () => {
             const col = new helpers.Column('name^');
             expect(col.name).toBe('name');
             expect(col.mod).toBe('^');
         });
-        it('must set the mod', function () {
+        it('must set the mod', () => {
             const col = new helpers.Column({
                 name: 'name',
                 mod: '^'
@@ -415,74 +415,74 @@ describe('Column', function () {
         });
     });
 
-    describe('Negative', function () {
-        it('must throw on invalid construction', function () {
+    describe('Negative', () => {
+        it('must throw on invalid construction', () => {
             const error = new TypeError('Invalid column details.');
-            expect(function () {
+            expect(() => {
                 new helpers.Column();
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 new helpers.Column(123);
             }).toThrow(error);
         });
-        it('must throw on invalid input name', function () {
-            expect(function () {
+        it('must throw on invalid input name', () => {
+            expect(() => {
                 new helpers.Column('');
             }).toThrow(new TypeError('Invalid column syntax: "".'));
-            expect(function () {
+            expect(() => {
                 new helpers.Column('  ');
             }).toThrow(new TypeError('Invalid column syntax: "  ".'));
-            expect(function () {
+            expect(() => {
                 new helpers.Column('name.bla');
             }).toThrow(new TypeError('Invalid column syntax: "name.bla".'));
         });
-        it('must throw on invalid property \'name\'', function () {
-            expect(function () {
+        it('must throw on invalid property \'name\'', () => {
+            expect(() => {
                 new helpers.Column({name: ''});
             }).toThrow(new TypeError('Invalid \'name\' value: "". A non-empty string was expected.'));
-            expect(function () {
+            expect(() => {
                 new helpers.Column({name: '  '});
             }).toThrow(new TypeError('Invalid \'name\' value: "  ". A non-empty string was expected.'));
-            expect(function () {
+            expect(() => {
                 new helpers.Column({name: 123});
             }).toThrow(new TypeError('Invalid \'name\' value: 123. A non-empty string was expected.'));
-            expect(function () {
+            expect(() => {
                 new helpers.Column({name: 'name.first'});
             }).toThrow(new TypeError('Invalid \'name\' syntax: "name.first".'));
         });
-        it('must throw on invalid property \'prop\'', function () {
-            expect(function () {
+        it('must throw on invalid property \'prop\'', () => {
+            expect(() => {
                 new helpers.Column({name: 'name', prop: 123});
             }).toThrow(new TypeError('Invalid \'prop\' value: 123. A non-empty string was expected.'));
-            expect(function () {
+            expect(() => {
                 new helpers.Column({name: 'name', prop: ''});
             }).toThrow(new TypeError('Invalid \'prop\' value: "". A non-empty string was expected.'));
-            expect(function () {
+            expect(() => {
                 new helpers.Column({name: 'name', prop: '  '});
             }).toThrow(new TypeError('Invalid \'prop\' value: "  ". A non-empty string was expected.'));
-            expect(function () {
+            expect(() => {
                 new helpers.Column({name: 'name', prop: 'one.two'});
             }).toThrow(new TypeError('Invalid \'prop\' syntax: "one.two".'));
         });
-        it('must throw on invalid property \'cast\'', function () {
-            expect(function () {
+        it('must throw on invalid property \'cast\'', () => {
+            expect(() => {
                 new helpers.Column({name: 'name', cast: 123});
             }).toThrow(new TypeError('Invalid \'cast\' value: 123.'));
-            expect(function () {
+            expect(() => {
                 new helpers.Column({name: 'name', cast: ''});
             }).toThrow(new TypeError('Invalid \'cast\' value: "".'));
-            expect(function () {
+            expect(() => {
                 new helpers.Column({name: 'name', cast: '  '});
             }).toThrow(new TypeError('Invalid \'cast\' value: "  ".'));
         });
-        it('must throw on invalid property \'mod\'', function () {
-            expect(function () {
+        it('must throw on invalid property \'mod\'', () => {
+            expect(() => {
                 new helpers.Column({name: 'name', mod: 123});
             }).toThrow(new TypeError('Invalid \'mod\' value: 123.'));
-            expect(function () {
+            expect(() => {
                 new helpers.Column({name: 'name', mod: ''});
             }).toThrow(new TypeError('Invalid \'mod\' value: "".'));
-            expect(function () {
+            expect(() => {
                 new helpers.Column({name: 'name', mod: '  '});
             }).toThrow(new TypeError('Invalid \'mod\' value: "  ".'));
         });
@@ -490,27 +490,27 @@ describe('Column', function () {
 
 });
 
-describe('ColumnSet', function () {
+describe('ColumnSet', () => {
 
-    describe('Function call', function () {
-        it('must return a new object', function () {
+    describe('Function call', () => {
+        it('must return a new object', () => {
             // eslint-disable-next-line
             const obj = helpers.ColumnSet(['colName']);
             expect(obj instanceof helpers.ColumnSet).toBe(true);
         });
     });
 
-    describe('options', function () {
-        it('must ignore empty options', function () {
+    describe('options', () => {
+        it('must ignore empty options', () => {
             const cs = new helpers.ColumnSet(['nameName'], {});
             expect('table' in cs).toBe(false);
         });
-        it('must set table correctly', function () {
+        it('must set table correctly', () => {
             const t = new helpers.TableName('table');
             const cs = new helpers.ColumnSet(['name'], {table: t});
             expect(cs.table.toString()).toBe('"table"');
         });
-        it('must support inherited properties', function () {
+        it('must support inherited properties', () => {
             function A() {
             }
 
@@ -535,20 +535,20 @@ describe('ColumnSet', function () {
         });
     });
 
-    describe('initialization', function () {
-        it('must accept a Column directly', function () {
+    describe('initialization', () => {
+        it('must accept a Column directly', () => {
             const col = new helpers.Column('colName');
             const cs = new helpers.ColumnSet(col);
             expect(cs.columns.length).toBe(1);
             expect(cs.columns[0]).toBe(col);
         });
-        it('must accept a Column from array directly', function () {
+        it('must accept a Column from array directly', () => {
             const col = new helpers.Column('colName');
             const cs = new helpers.ColumnSet([col]);
             expect(cs.columns.length).toBe(1);
             expect(cs.columns[0]).toBe(col);
         });
-        it('must enumerate an object properties', function () {
+        it('must enumerate an object properties', () => {
             const cs = new helpers.ColumnSet(dataSingle);
             expect(cs.columns.length).toBe(2);
             expect(cs.columns[0].name).toBe('val');
@@ -556,54 +556,54 @@ describe('ColumnSet', function () {
         });
     });
 
-    describe('property \'names\'', function () {
+    describe('property \'names\'', () => {
         const cs = new helpers.ColumnSet(['name1', 'name2']);
         const csEmpty = new helpers.ColumnSet([]);
-        it('must return the right string', function () {
+        it('must return the right string', () => {
             expect(cs.names).toBe('"name1","name2"');
             expect(csEmpty.names).toBe('');
         });
-        it('must reuse the data', function () {
+        it('must reuse the data', () => {
             expect(cs.names).toBe('"name1","name2"');
         });
     });
 
-    describe('property \'variables\'', function () {
+    describe('property \'variables\'', () => {
         const cs = new helpers.ColumnSet(['id^', {name: 'cells', cast: 'int[]'}, 'doc:json']);
         const csEmpty = new helpers.ColumnSet([]);
-        it('must return the right string', function () {
+        it('must return the right string', () => {
             expect(cs.variables).toBe('${id^},${cells}::int[],${doc:json}');
             expect(csEmpty.variables).toBe('');
         });
-        it('must reuse the data', function () {
+        it('must reuse the data', () => {
             expect(cs.variables).toBe('${id^},${cells}::int[],${doc:json}');
         });
     });
 
-    describe('method \'assign\'', function () {
+    describe('method \'assign\'', () => {
         const cs = new helpers.ColumnSet(dataSingle);
         const csEmpty = new helpers.ColumnSet([]);
-        it('must return the right update string', function () {
+        it('must return the right update string', () => {
             expect(cs.assign({source: dataSingle})).toBe('"val"=${val},"msg"=${msg}');
             expect(csEmpty.assign({source: dataSingle})).toBe('');
         });
-        it('must return the right string without source', function () {
+        it('must return the right string without source', () => {
             const specialCS = new helpers.ColumnSet([{name: 'val', skip: () => false}, 'msg']);
             expect(specialCS.assign()).toBe('"val"=${val},"msg"=${msg}');
             expect(specialCS.assign(null)).toBe('"val"=${val},"msg"=${msg}');
             expect(specialCS.assign(123)).toBe('"val"=${val},"msg"=${msg}');
         });
-        it('must reuse the data', function () {
+        it('must reuse the data', () => {
             expect(cs.assign({source: dataSingle})).toBe('"val"=${val},"msg"=${msg}');
         });
-        it('must handle cnd and skip', function () {
+        it('must handle cnd and skip', () => {
             const cs1 = new helpers.ColumnSet(['?val', 'msg']);
             const cs2 = new helpers.ColumnSet(['val', {
-                name: 'msg', skip: function () {
+                name: 'msg', skip: () => {
                 }
             }]);
             const cs3 = new helpers.ColumnSet(['val', {
-                name: 'msg', skip: function () {
+                name: 'msg', skip: () => {
                     return true;
                 }
             }]);
@@ -661,17 +661,17 @@ describe('ColumnSet', function () {
         });
     });
 
-    describe('method \'prepare\'', function () {
-        it('must replicate full objects', function () {
+    describe('method \'prepare\'', () => {
+        it('must replicate full objects', () => {
             const cs = new helpers.ColumnSet(dataSingle);
             const obj = cs.prepare(dataSingle);
             expect(obj).toEqual(dataSingle);
         });
-        it('must set defaults for missing properties', function () {
+        it('must set defaults for missing properties', () => {
             const cs = new helpers.ColumnSet(['val',
                 {
                     name: 'msg',
-                    init: function (col) {
+                    init: col => {
                         return col.value + '-init';
                     }
                 },
@@ -681,7 +681,7 @@ describe('ColumnSet', function () {
                 },
                 {
                     name: 'first',
-                    init: function () {
+                    init: () => {
                         return 'init-test';
                     }
                 },
@@ -696,8 +696,8 @@ describe('ColumnSet', function () {
         });
     });
 
-    describe('method \'extend\'', function () {
-        it('must extend columns', function () {
+    describe('method \'extend\'', () => {
+        it('must extend columns', () => {
             const first = new helpers.ColumnSet(['one', 'two'], {table: 'my-table'});
             const second = new helpers.ColumnSet(['three', 'four']);
             const result = new helpers.ColumnSet(['one', 'two', 'three', 'four'], {table: 'my-table'});
@@ -708,16 +708,16 @@ describe('ColumnSet', function () {
             expect(dest1.toString()).toBe(result.toString());
             expect(dest2.toString()).toBe(result.toString());
         });
-        it('must throw on duplicate columns names', function () {
+        it('must throw on duplicate columns names', () => {
             const cs = new helpers.ColumnSet(['one', 'two']);
-            expect(function () {
+            expect(() => {
                 cs.extend(['two']);
             }).toThrow(new Error('Duplicate column name "two".'));
         });
     });
 
-    describe('method \'merge\'', function () {
-        it('must merge all columns', function () {
+    describe('method \'merge\'', () => {
+        it('must merge all columns', () => {
             const first = new helpers.ColumnSet(['one', 'two'], {table: 'my-table'});
             const second = new helpers.ColumnSet(['two', 'three']);
             const result = new helpers.ColumnSet(['one', 'two', 'three'], {table: 'my-table'});
@@ -730,36 +730,36 @@ describe('ColumnSet', function () {
         });
     });
 
-    describe('Negative', function () {
-        it('must throw on invalid columns', function () {
+    describe('Negative', () => {
+        it('must throw on invalid columns', () => {
             const error = new TypeError('Invalid parameter \'columns\' specified.');
-            expect(function () {
+            expect(() => {
                 new helpers.ColumnSet();
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 new helpers.ColumnSet(123);
             }).toThrow(error);
         });
-        it('must throw on duplicate columns', function () {
-            expect(function () {
+        it('must throw on duplicate columns', () => {
+            expect(() => {
                 new helpers.ColumnSet(['one', 'one']);
             }).toThrow(new Error('Duplicate column name "one".'));
         });
 
-        it('must throw on invalid options', function () {
+        it('must throw on invalid options', () => {
             const error = new TypeError('Invalid parameter \'options\' specified.');
-            expect(function () {
+            expect(() => {
                 new helpers.ColumnSet({}, 123);
             }).toThrow(error);
         });
     });
 
-    describe('console coverage', function () {
+    describe('console coverage', () => {
         const cs1 = new helpers.ColumnSet(['name']);
         const cs2 = new helpers.ColumnSet(['name'], {table: 'table'});
         const cs3 = new helpers.ColumnSet([]);
         const gap = utils.messageGap(1);
-        it('must cover all lines', function () {
+        it('must cover all lines', () => {
             expect(cs1.toString()).toContain('columns: [');
             expect(cs2.toString()).toContain('table: "table"');
             expect(cs3.toString()).toBe('ColumnSet {' + os.EOL + gap + 'columns: []' + os.EOL + '}');
@@ -769,87 +769,87 @@ describe('ColumnSet', function () {
 
 });
 
-describe('method \'sets\'', function () {
+describe('method \'sets\'', () => {
 
-    describe('with a ColumnSet', function () {
-        it('must reuse the ColumnSet', function () {
+    describe('with a ColumnSet', () => {
+        it('must reuse the ColumnSet', () => {
             const cs = new helpers.ColumnSet(dataSingle);
             expect(helpers.sets(dataSingle, cs)).toBe('"val"=123,"msg"=\'test\'');
         });
-        it('must skip conditional columns', function () {
+        it('must skip conditional columns', () => {
             const cs = new helpers.ColumnSet(['?val', 'msg']);
             expect(helpers.sets(dataSingle, cs)).toBe('"msg"=\'test\'');
         });
-        it('must skip dynamic columns correctly', function () {
+        it('must skip dynamic columns correctly', () => {
             const cs = new helpers.ColumnSet(['val', {name: 'msg', skip: () => true}]);
             expect(helpers.sets(dataSingle, cs)).toBe('"val"=123');
         });
-        it('must apply sql casting correctly', function () {
+        it('must apply sql casting correctly', () => {
             const cs = new helpers.ColumnSet([{name: 'msg', cast: 'text'}]);
             expect(helpers.sets(dataSingle, cs)).toBe('"msg"=\'test\'::text');
         });
     });
 
-    describe('without a ColumnSet', function () {
-        it('must create local ColumnSet', function () {
+    describe('without a ColumnSet', () => {
+        it('must create local ColumnSet', () => {
             expect(helpers.sets(dataSingle)).toBe('"val"=123,"msg"=\'test\'');
         });
     });
 
-    describe('without columns', function () {
-        it('must return an empty string', function () {
+    describe('without columns', () => {
+        it('must return an empty string', () => {
             const cs = new helpers.ColumnSet(['?val', '?msg']);
             expect(helpers.sets(dataSingle, cs)).toBe('');
             expect(helpers.sets(dataSingle, [])).toBe('');
         });
     });
 
-    describe('Negative', function () {
+    describe('Negative', () => {
         const error = new TypeError('Invalid parameter \'data\' specified.');
-        it('must throw when \'data\' is not an object', function () {
-            expect(function () {
+        it('must throw when \'data\' is not an object', () => {
+            expect(() => {
                 helpers.sets();
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 helpers.sets(null);
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 helpers.sets(123);
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 helpers.sets([]);
             }).toThrow(error);
         });
     });
 });
 
-describe('method \'values\'', function () {
+describe('method \'values\'', () => {
 
-    describe('with a ColumnSet', function () {
-        it('must reuse the ColumnSet', function () {
+    describe('with a ColumnSet', () => {
+        it('must reuse the ColumnSet', () => {
             const cs = new helpers.ColumnSet(dataSingle);
             expect(helpers.values(dataSingle, cs)).toBe('(123,\'test\')');
         });
-        it('must apply sql casting', function () {
+        it('must apply sql casting', () => {
             const cs = new helpers.ColumnSet(['val', {name: 'msg', cast: 'text'}]);
             expect(helpers.values(dataSingle, cs)).toBe('(123,\'test\'::text)');
         });
     });
 
-    describe('without a ColumnSet', function () {
-        it('must create local ColumnSet', function () {
+    describe('without a ColumnSet', () => {
+        it('must create local ColumnSet', () => {
             expect(helpers.values(dataSingle)).toBe('(123,\'test\')');
         });
     });
 
-    describe('with an array of data', function () {
-        it('must return query for a single object', function () {
+    describe('with an array of data', () => {
+        it('must return query for a single object', () => {
             expect(helpers.values(dataSingle)).toBe('(123,\'test\')');
         });
-        it('must return query for multiple objects', function () {
+        it('must return query for multiple objects', () => {
             expect(helpers.values(dataMulti, ['val', 'msg'])).toBe('(123,\'hello\'),(456,\'world\')');
         });
-        it('must apply casting correctly', function () {
+        it('must apply casting correctly', () => {
             expect(helpers.values(dataMulti, ['val', {
                 name: 'msg',
                 cast: 'text'
@@ -857,91 +857,91 @@ describe('method \'values\'', function () {
         });
     });
 
-    describe('with an empty data array', function () {
-        it('must return an empty string', function () {
+    describe('with an empty data array', () => {
+        it('must return an empty string', () => {
             const cs = new helpers.ColumnSet(dataSingle);
             expect(helpers.values([], cs)).toBe('');
         });
     });
 
-    describe('Negative', function () {
-        it('must throw when \'data\' is not valid', function () {
+    describe('Negative', () => {
+        it('must throw when \'data\' is not valid', () => {
             const error = new TypeError('Invalid parameter \'data\' specified.');
-            expect(function () {
+            expect(() => {
                 helpers.values();
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 helpers.values(null);
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 helpers.values(123);
             }).toThrow(error);
         });
-        it('must throw when there are no columns', function () {
+        it('must throw when there are no columns', () => {
             const error = new TypeError('Cannot generate values without any columns.');
-            expect(function () {
+            expect(() => {
                 helpers.values(dataSingle, []);
             }).toThrow(error);
         });
-        it('must throw when no columns for an array', function () {
+        it('must throw when no columns for an array', () => {
             const error = new TypeError('Parameter \'columns\' is required when generating multi-row values.');
-            expect(function () {
+            expect(() => {
                 helpers.values([{}]);
             }).toThrow(error);
         });
-        it('must throw on invalid data object', function () {
+        it('must throw on invalid data object', () => {
             const error = new TypeError('Invalid object at index 0.');
-            expect(function () {
+            expect(() => {
                 helpers.values([null], ['val']);
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 helpers.values([123], ['val']);
             }).toThrow(error);
         });
     });
 });
 
-describe('method \'concat\'', function () {
-    describe('Negative', function () {
-        it('must throw on a non-array input', function () {
+describe('method \'concat\'', () => {
+    describe('Negative', () => {
+        it('must throw on a non-array input', () => {
             const error = new TypeError('Parameter \'queries\' must be an array.');
-            expect(function () {
+            expect(() => {
                 helpers.concat();
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 helpers.concat(123);
             }).toThrow(error);
         });
-        it('must throw on invalid elements inside array', function () {
+        it('must throw on invalid elements inside array', () => {
             const error = new Error('Invalid query element at index 0.');
-            expect(function () {
+            expect(() => {
                 helpers.concat([1]);
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 helpers.concat([{}]);
             }).toThrow(error);
         });
     });
 
-    describe('Positive', function () {
-        describe('with simple strings', function () {
-            it('must allow an empty array', function () {
+    describe('Positive', () => {
+        describe('with simple strings', () => {
+            it('must allow an empty array', () => {
                 expect(helpers.concat([])).toBe('');
             });
-            it('must remove symbols correctly', function () {
+            it('must remove symbols correctly', () => {
                 expect(helpers.concat(['one', 'two'])).toBe('one;two'); // normal
                 expect(helpers.concat(['\t;;one;\t;', '  two ;;\t\t'])).toBe('one;two');
                 expect(helpers.concat(['\t;;one;\t;here ', '  two ;;\t\t'])).toBe('one;\t;here;two');
             });
         });
-        describe('with QueryFile', function () {
-            it('must support mixed types correctly', function () {
+        describe('with QueryFile', () => {
+            it('must support mixed types correctly', () => {
                 const qf = new QueryFile(path.join(__dirname, './sql/allUsers.sql'), {minify: true, noWarnings: true});
                 expect(helpers.concat(['one', {query: 'two'}, qf])).toBe('one;two;select * from users');
             });
         });
-        describe('with formatting options', function () {
-            it('must format parameters correctly', function () {
+        describe('with formatting options', () => {
+            it('must format parameters correctly', () => {
                 expect(helpers.concat([{
                     query: '$1^, $2^, $3^',
                     values: ['a', 'b'],
@@ -951,8 +951,8 @@ describe('method \'concat\'', function () {
                 }])).toBe('a, b, $3^');
             });
         });
-        describe('with empty queries', function () {
-            it('must skip them', function () {
+        describe('with empty queries', () => {
+            it('must skip them', () => {
                 expect(helpers.concat(['', '', ''])).toBe('');
 
                 expect(helpers.concat([';\t\t;;;', {
