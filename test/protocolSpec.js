@@ -20,17 +20,17 @@ function dummy() {
 
 }
 
-describe('Library instance', function () {
+describe('Library instance', () => {
 
-    it('must NOT have property \'pg\'', function () {
+    it('must NOT have property \'pg\'', () => {
         expect(pgpLib.pg).toBeUndefined();
     });
 
-    it('must NOT have function \'end\'', function () {
+    it('must NOT have function \'end\'', () => {
         expect(pgpLib.end).toBeUndefined();
     });
 
-    it('must have valid property \'as\'', function () {
+    it('must have valid property \'as\'', () => {
         expect(pgpLib.as && typeof pgpLib.as === 'object').toBeTruthy();
         expect(pgpLib.as.text instanceof Function).toBe(true);
         expect(pgpLib.as.bool instanceof Function).toBe(true);
@@ -47,7 +47,7 @@ describe('Library instance', function () {
         expect(pgpLib.as.buffer instanceof Function).toBe(true);
     });
 
-    it('must have all error types', function () {
+    it('must have all error types', () => {
         expect(pgp.errors && pgp.errors instanceof Object).toBeTruthy();
         expect(pgpLib.errors.QueryResultError instanceof Function).toBe(true);
         expect(pgpLib.errors.queryResultErrorCode instanceof Object).toBe(true);
@@ -55,23 +55,23 @@ describe('Library instance', function () {
         expect(pgpLib.errors.ParameterizedQueryError instanceof Function).toBe(true);
     });
 
-    it('must have function \'PromiseAdapter\'', function () {
+    it('must have function \'PromiseAdapter\'', () => {
         expect(pgpLib.PromiseAdapter instanceof Function).toBe(true);
     });
 
-    it('must have function \'PreparedStatement\'', function () {
+    it('must have function \'PreparedStatement\'', () => {
         expect(pgpLib.PreparedStatement instanceof Function).toBe(true);
     });
 
-    it('must have function \'ParameterizedQuery\'', function () {
+    it('must have function \'ParameterizedQuery\'', () => {
         expect(pgpLib.ParameterizedQuery instanceof Function).toBe(true);
     });
 
-    it('must have function \'minify\'', function () {
+    it('must have function \'minify\'', () => {
         expect(pgpLib.minify instanceof Function).toBe(true);
     });
 
-    it('must have valid property \'queryResult\'', function () {
+    it('must have valid property \'queryResult\'', () => {
         expect(pgpLib.queryResult && typeof pgpLib.queryResult === 'object').toBeTruthy();
         expect(pgpLib.queryResult.one).toBe(1);
         expect(pgpLib.queryResult.many).toBe(2);
@@ -81,9 +81,9 @@ describe('Library instance', function () {
 
 });
 
-describe('Initialized instance', function () {
+describe('Initialized instance', () => {
 
-    it('must have valid property \'pg\'', function () {
+    it('must have valid property \'pg\'', () => {
         if (options.pgNative) {
             expect(typeof pgp.pg).toBe('object');
         } else {
@@ -91,16 +91,16 @@ describe('Initialized instance', function () {
         }
     });
 
-    it('must have function \'end\'', function () {
+    it('must have function \'end\'', () => {
         expect(pgp.end instanceof Function).toBe(true);
     });
 
-    it('must have valid property \'as\'', function () {
+    it('must have valid property \'as\'', () => {
         expect(pgp.as && typeof pgp.as === 'object').toBeTruthy();
         expect(pgp.as).toBe(pgpLib.as);
     });
 
-    it('must have all error types', function () {
+    it('must have all error types', () => {
         expect(pgp.errors && pgp.errors instanceof Object).toBeTruthy();
         expect(pgp.errors.QueryResultError instanceof Function).toBe(true);
         expect(pgp.errors.queryResultErrorCode instanceof Object).toBe(true);
@@ -108,32 +108,32 @@ describe('Initialized instance', function () {
         expect(pgp.errors.ParameterizedQueryError instanceof Function).toBe(true);
     });
 
-    it('must have function \'PromiseAdapter\'', function () {
+    it('must have function \'PromiseAdapter\'', () => {
         expect(pgp.PromiseAdapter instanceof Function).toBe(true);
     });
 
-    it('must have function \'PreparedStatement\'', function () {
+    it('must have function \'PreparedStatement\'', () => {
         expect(pgp.PreparedStatement instanceof Function).toBe(true);
     });
 
-    it('must have function \'ParameterizedQuery\'', function () {
+    it('must have function \'ParameterizedQuery\'', () => {
         expect(pgp.ParameterizedQuery instanceof Function).toBe(true);
     });
 
-    it('must have function \'minify\'', function () {
+    it('must have function \'minify\'', () => {
         expect(pgp.minify instanceof Function).toBe(true);
     });
 
-    it('must have valid property \'queryResult\'', function () {
+    it('must have valid property \'queryResult\'', () => {
         expect(pgp.queryResult && typeof pgp.queryResult === 'object').toBeTruthy();
         expect(pgp.queryResult).toBe(pgpLib.queryResult);
     });
 
 });
 
-describe('Database Protocol', function () {
+describe('Database Protocol', () => {
 
-    it('must have all the root-level methods', function () {
+    it('must have all the root-level methods', () => {
         expect(typeof db.connect).toBe('function');
         expect(typeof db.task).toBe('function');
         expect(typeof db.taskIf).toBe('function');
@@ -180,23 +180,23 @@ describe('Database Protocol', function () {
         expect(db.$pool && db.$pool.constructor && db.$pool.constructor.name).toBe('Pool');
     });
 
-    describe('on connection level', function () {
+    describe('on connection level', () => {
 
         let connection;
-        beforeEach(function (done) {
-            db.connect(function (t) {
+        beforeEach(done => {
+            db.connect(t => {
                 return promise.resolve(t);
             })
-                .then(function (obj) {
+                .then(obj => {
                     connection = obj;
                 })
-                .finally(function () {
+                .finally(() => {
                     connection.done();
                     done();
                 });
         });
 
-        it('must have all the required methods', function () {
+        it('must have all the required methods', () => {
             expect(connection && typeof(connection) === 'object').toBe(true);
             expect(connection.connect).toBeUndefined();
             expect(typeof connection.query).toBe('function');
@@ -231,22 +231,20 @@ describe('Database Protocol', function () {
         });
     });
 
-    describe('on transaction level', function () {
+    describe('on transaction level', () => {
 
         let protocol;
-        beforeEach(function (done) {
-            db.tx(function (t) {
+        beforeEach(done => {
+            db.tx(t => {
                 return promise.resolve(t);
             })
-                .then(function (data) {
+                .then(data => {
                     protocol = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
 
-        it('must have all the required methods', function () {
+        it('must have all the required methods', () => {
             expect(protocol && typeof(protocol) === 'object').toBe(true);
             expect(protocol.connect).toBeUndefined();
             expect(protocol.client).toBeUndefined();
@@ -276,19 +274,17 @@ describe('Database Protocol', function () {
         });
     });
 
-    describe('on task level', function () {
+    describe('on task level', () => {
 
         let protocol;
-        beforeEach(function (done) {
-            db.task(function (t) {
+        beforeEach(done => {
+            db.task(t => {
                 return promise.resolve(t);
             })
-                .then(function (data) {
+                .then(data => {
                     protocol = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
 
         it('must have all the required methods', () => {
@@ -323,9 +319,9 @@ describe('Database Protocol', function () {
 
 });
 
-describe('Protocol Extension', function () {
+describe('Protocol Extension', () => {
 
-    describe('on database level', function () {
+    describe('on database level', () => {
         let result, dcParam, THIS, ctx, counter = 0;
         const pgpTest = header({
             promiseLib: header.defPromise,
@@ -341,16 +337,14 @@ describe('Protocol Extension', function () {
                 throw new Error('### Testing error output in \'extend\'. Please ignore. ###');
             }
         }, testDC);
-        beforeEach(function (done) {
+        beforeEach(done => {
             pgpTest.db.getOne('select \'hello\' as msg')
-                .then(function (data) {
+                .then(data => {
                     result = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
-        it('must allow custom properties', function () {
+        it('must allow custom properties', () => {
             expect(THIS && ctx && THIS === ctx).toBeTruthy();
             expect(counter).toBe(1);
             expect(result.msg).toBe('hello');
@@ -358,7 +352,7 @@ describe('Protocol Extension', function () {
         });
     });
 
-    describe('on transaction level', function () {
+    describe('on transaction level', () => {
         let result, THIS, ctx, counter = 0;
         const pgpTest = header({
             promiseLib: header.defPromise,
@@ -370,26 +364,24 @@ describe('Protocol Extension', function () {
                     // and into the `extend` for the transaction;
                     THIS = this;
                     ctx = obj;
-                    obj.getOne = function (query, values) {
+                    obj.getOne = (query, values) => {
                         return obj.one(query, values);
                     };
                 }
             }
         });
 
-        beforeEach(function (done) {
-            pgpTest.db.tx(function (t) {
+        beforeEach(done => {
+            pgpTest.db.tx(t => {
                 return t.getOne('select \'hello\' as msg');
             })
-                .then(function (data) {
+                .then(data => {
                     result = data;
                 })
-                .finally(function () {
-                    done();
-                });
+                .finally(done);
         });
 
-        it('must allow custom properties', function () {
+        it('must allow custom properties', () => {
             expect(THIS && ctx && THIS === ctx).toBeTruthy();
             expect(counter).toBe(2);
             expect(result && typeof(result) === 'object').toBe(true);
@@ -401,7 +393,7 @@ describe('Protocol Extension', function () {
 
 // SPEX tests are just for coverage, because the actual methods
 // are properly tested within the spex library itself.
-describe('spex', function () {
+describe('spex', () => {
 
     describe('batch', () => {
         describe('in tasks', () => {
@@ -439,7 +431,7 @@ describe('spex', function () {
         });
     });
 
-    describe('page', function () {
+    describe('page', () => {
         describe('in tasks', () => {
             let result;
             beforeEach(done => {
@@ -479,7 +471,7 @@ describe('spex', function () {
         });
     });
 
-    describe('sequence', function () {
+    describe('sequence', () => {
         describe('in tasks', () => {
             let result;
             beforeEach(done => {
@@ -519,12 +511,12 @@ describe('spex', function () {
 });
 
 // This one is just for coverage;
-describe('Error protocol', function () {
+describe('Error protocol', () => {
 
     const result = {
         rows: []
     };
-    it('must return correctly formatted error body', function () {
+    it('must return correctly formatted error body', () => {
         const error1 = new pgp.errors.QueryResultError(0, result, '');
         const error2 = new pgp.errors.QueryResultError(0, result, {name: 'name', text: 'text'}, []);
         expect(tools.inspect(error1)).toBe(error1.toString());

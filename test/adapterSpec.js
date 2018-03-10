@@ -3,63 +3,63 @@
 const pgp = require('../lib/index');
 const PromiseAdapter = pgp.PromiseAdapter;
 
-const dummy = function () {
+const dummy = () => {
 };
 
-describe('Adapter', function () {
+describe('Adapter', () => {
 
-    describe('with invalid parameters', function () {
-        const error = new TypeError('Adapter requires an api configuration object.');
-        it('must throw an error', function () {
-            expect(function () {
+    describe('with invalid parameters', () => {
+        const error = 'Adapter requires an api configuration object.';
+        it('must throw an error', () => {
+            expect(() => {
                 new PromiseAdapter();
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 new PromiseAdapter(null);
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 new PromiseAdapter(123);
             }).toThrow(error);
-            expect(function () {
+            expect(() => {
                 new PromiseAdapter('test');
             }).toThrow(error);
         });
     });
 
-    describe('with invalid \'create\'', function () {
-        it('must throw an error', function () {
-            expect(function () {
+    describe('with invalid \'create\'', () => {
+        it('must throw an error', () => {
+            expect(() => {
                 new PromiseAdapter({});
             }).toThrow('Function \'create\' must be specified.');
         });
     });
 
-    describe('with invalid \'resolve\'', function () {
-        it('must throw an error', function () {
-            expect(function () {
+    describe('with invalid \'resolve\'', () => {
+        it('must throw an error', () => {
+            expect(() => {
                 new PromiseAdapter({create: dummy});
             }).toThrow('Function \'resolve\' must be specified.');
         });
     });
 
-    describe('with invalid \'reject\'', function () {
-        it('must throw an error', function () {
-            expect(function () {
+    describe('with invalid \'reject\'', () => {
+        it('must throw an error', () => {
+            expect(() => {
                 new PromiseAdapter({create: dummy, resolve: dummy});
             }).toThrow('Function \'reject\' must be specified.');
         });
     });
 
-    describe('with invalid \'all\'', function () {
-        it('must throw an error', function () {
-            expect(function () {
+    describe('with invalid \'all\'', () => {
+        it('must throw an error', () => {
+            expect(() => {
                 new PromiseAdapter({create: dummy, resolve: dummy, reject: dummy});
             }).toThrow('Function \'all\' must be specified.');
         });
     });
 
-    describe('with all valid parameters', function () {
-        it('must be successful', function () {
+    describe('with all valid parameters', () => {
+        it('must be successful', () => {
             const adapter = new PromiseAdapter({create: dummy, resolve: dummy, reject: dummy, all: dummy});
             expect(adapter instanceof PromiseAdapter).toBe(true);
         });

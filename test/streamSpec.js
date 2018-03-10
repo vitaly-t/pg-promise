@@ -20,26 +20,26 @@ if (options.pgNative) {
 
 const $text = require('../lib/text');
 
-function dummy() {
+const dummy = () => {
     // dummy/empty function;
-}
+};
 
-describe('Method stream', function () {
-    describe('with invalid stream object', function () {
+describe('Method stream', () => {
+    describe('with invalid stream object', () => {
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             promise.any([
                 db.stream(),
                 db.stream(null),
                 db.stream('test'),
                 db.stream({})
             ])
-                .then(dummy, function (reason) {
+                .catch(reason => {
                     result = reason;
-                    done();
-                });
+                })
+                .finally(done);
         });
-        it('must throw an error', function () {
+        it('must throw an error', () => {
             expect(result.length).toBe(4);
             for (let i = 0; i < result.length; i++) {
                 expect(result[i] instanceof TypeError).toBe(true);
@@ -47,9 +47,9 @@ describe('Method stream', function () {
             }
         });
     });
-    describe('with invalid stream state', function () {
+    describe('with invalid stream state', () => {
         let result;
-        beforeEach(function (done) {
+        beforeEach(done => {
             const stream1 = new QueryStream('select 1');
             stream1._reading = true;
             const stream2 = new QueryStream('select 2');
@@ -60,10 +60,10 @@ describe('Method stream', function () {
             ])
                 .catch(reason => {
                     result = reason;
-                    done();
-                });
+                })
+                .finally(done);
         });
-        it('must throw an error', function () {
+        it('must throw an error', () => {
             expect(result.length).toBe(2);
             for (let i = 0; i < result.length; i++) {
                 expect(result[i] instanceof Error).toBe(true);
@@ -82,8 +82,8 @@ describe('Method stream', function () {
                 ])
                     .catch(reason => {
                         result = reason;
-                        done();
-                    });
+                    })
+                    .finally(done);
             });
             it('must throw an error', () => {
                 expect(result.length).toBe(4);
@@ -93,7 +93,7 @@ describe('Method stream', function () {
                 }
             });
         });
-        describe('with initialization callback throwing error', function () {
+        describe('with initialization callback throwing error', () => {
             let result;
             beforeEach(done => {
                 db.stream(new QueryStream('select 1'), () => {
@@ -101,8 +101,8 @@ describe('Method stream', function () {
                 })
                     .catch(reason => {
                         result = reason;
-                        done();
-                    });
+                    })
+                    .finally(done);
             });
             it('must throw an error', () => {
                 expect(result instanceof Error);
@@ -131,11 +131,11 @@ describe('Method stream', function () {
             });
         });
 
-        describe('with a valid request', function () {
+        describe('with a valid request', () => {
             let result, count = 0, context, initCtx;
             const qs = new QueryStream('select * from users where id=$1', [1]);
-            beforeEach(function (done) {
-                options.query = function (e) {
+            beforeEach(done => {
+                options.query = e => {
                     context = e;
                     count++;
                 };
@@ -143,14 +143,12 @@ describe('Method stream', function () {
                     initCtx = this;
                     stream.pipe(JSONStream.stringify());
                 })
-                    .then(function (data) {
+                    .then(data => {
                         result = data;
-                    }, dummy)
-                    .finally(function () {
-                        done();
-                    });
+                    })
+                    .finally(done);
             });
-            it('must return the correct data and provide notification', function () {
+            it('must return the correct data and provide notification', () => {
                 expect(typeof(result)).toBe('object');
                 expect(result.processed).toBe(1);
                 expect(result.duration >= 0).toBe(true);
@@ -159,31 +157,29 @@ describe('Method stream', function () {
                 expect(JSON.stringify(context.params)).toBe('["1"]');
                 expect(initCtx).toBe(qs);
             });
-            afterEach(function () {
+            afterEach(() => {
                 options.query = null;
             });
         });
 
-        describe('with invalid request', function () {
+        describe('with invalid request', () => {
             let result, err, context, count = 0;
-            beforeEach(function (done) {
-                options.error = function (error, e) {
+            beforeEach(done => {
+                options.error = (error, e) => {
                     err = error;
                     context = e;
                     count++;
                 };
                 const qs = new QueryStream('select * from unknown where id=$1', [1]);
-                db.stream(qs, function (stream) {
+                db.stream(qs, stream => {
                     stream.pipe(JSONStream.stringify());
                 })
-                    .then(dummy, function (reason) {
+                    .catch(reason => {
                         result = reason;
                     })
-                    .finally(function () {
-                        done();
-                    });
+                    .finally(done);
             });
-            it('must return the correct data and provide notification', function () {
+            it('must return the correct data and provide notification', () => {
                 expect(result instanceof Error).toBe(true);
                 expect(result.message).toBe('relation "unknown" does not exist');
                 expect(count).toBe(1);
@@ -192,7 +188,7 @@ describe('Method stream', function () {
                 expect(err instanceof Error).toBe(true);
                 expect(err.message).toBe('relation "unknown" does not exist');
             });
-            afterEach(function () {
+            afterEach(() => {
                 options.error = null;
             });
         });
