@@ -1307,8 +1307,8 @@ function Database(cn, dc, config) {
         /**
          * @method Database#taskIf
          * @description
-         * Executes a conditional task that results in an actual new {@link Database#task task}, if condition is met,
-         * or else it reuses the current connection context.
+         * Executes a conditional task that results in an actual new {@link Database#task task}, if either condition is met or
+         * when it is necessary (on the top level), or else it reuses the current connection context.
          *
          * The default condition is `not in task or transaction`, to start a task only if currently not inside another task or transaction,
          * which is the same as calling the following:
@@ -1317,7 +1317,7 @@ function Database(cn, dc, config) {
          * db.taskIf({cnd: t => !t.ctx}, cb => {})
          * ```
          *
-         * It can be useful, if you want to simplify/reduce the task + log events footprint, by creating new task context only when necessary.
+         * It can be useful, if you want to simplify/reduce the task + log events footprint, by creating new tasks only when necessary.
          *
          * @param {string|number|Object} [options]
          * This parameter is optional, and presumed skipped when the first parameter is a function (`cb` parameter).

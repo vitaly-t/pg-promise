@@ -5215,11 +5215,11 @@ it is expected to be an object with options as listed below.</p>
 
 
 <div class="description">
-    <p>Executes a conditional task that results in an actual new <a href="Database.html#task">task</a>, if condition is met,
-or else it reuses the current connection context.</p>
+    <p>Executes a conditional task that results in an actual new <a href="Database.html#task">task</a>, if either condition is met or
+when it is necessary (on the top level), or else it reuses the current connection context.</p>
 <p>The default condition is <code>not in task or transaction</code>, to start a task only if currently not inside another task or transaction,
 which is the same as calling the following:</p>
-<pre class="prettyprint source lang-js"><code>db.taskIf({cnd: t => !t.ctx}, cb => {})</code></pre><p>It can be useful, if you want to simplify/reduce the task + log events footprint, by creating new task context only when necessary.</p>
+<pre class="prettyprint source lang-js"><code>db.taskIf({cnd: t => !t.ctx}, cb => {})</code></pre><p>It can be useful, if you want to simplify/reduce the task + log events footprint, by creating new tasks only when necessary.</p>
 </div>
 
 
