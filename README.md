@@ -766,7 +766,7 @@ db.taskIf(t1 => {
     });
 })
 ```
-</details><br/>
+</details>
 
 <details>
 <summary><b>With a custom condition - value</b></summary>
@@ -781,7 +781,7 @@ db.taskIf({cnd: false}, t1 => {
     });
 })
 ```
-</details><br/>
+</details>
 
 <details>
 <summary><b>With a custom condition - callback</b></summary>
@@ -801,7 +801,7 @@ db.taskIf({cnd}, t1 => {
     });
 })
 ```
-</details><br/>
+</details>
 
 ## Transactions
 
