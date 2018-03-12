@@ -27,7 +27,16 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>'use strict';
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright (c) 2015-present, Vitaly Tomilov
+ *
+ * See the LICENSE file at the top-level directory of this distribution
+ * for licensing information.
+ *
+ * Removal or modification of this copyright notice is prohibited.
+ */
+
+'use strict';
 
 const npm = {
     utils: require('./utils')
@@ -104,19 +113,15 @@ Object.freeze(isolationLevel);
  * const isolationLevel = pgp.txMode.isolationLevel;
  *
  * // Create a reusable transaction mode (serializable + read-only + deferrable):
- * const tmSRD = new TransactionMode({
+ * const mode = new TransactionMode({
  *     tiLevel: isolationLevel.serializable,
  *     readOnly: true,
  *     deferrable: true
  * });
  *
- * const myTransaction = t => {
+ * db.tx({mode}, t => {
  *     return t.any('SELECT * FROM table');
- * }
- *
- * myTransaction.txMode = tmSRD; // assign transaction mode;
- *
- * db.tx(myTransaction)
+ * })
  *     .then(data => {
  *         // success;
  *     })
