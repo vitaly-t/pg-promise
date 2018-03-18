@@ -73,7 +73,7 @@ gets you started, and provides links to all other resources.
 
 # Contributing
 
-Please read the [Contribution Notes](https://github.com/vitaly-t/pg-promise/blob/master/CONTRIBUTING.md) before opening any new issue or PR.
+Please read the [Contribution Notes](https://github.com/vitaly-t/pg-promise/blob/master/.github/CONTRIBUTING.md) before opening any new issue or PR.
 
 # Usage
 
