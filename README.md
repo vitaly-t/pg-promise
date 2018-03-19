@@ -1112,7 +1112,7 @@ For the list of all changes see the [CHANGELOG].
 [Conditional Transactions]:#conditional-transactions  
 [Library de-initialization]:#library-de-initialization
 
-<-- Internal Page Links -->
+<!-- Internal Page Links -->
 
 [Contribution Notes]:.github/CONTRIBUTING.md
 [CHANGELOG]:.github/CHANGELOG.md
