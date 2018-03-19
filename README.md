@@ -73,7 +73,7 @@ gets you started, and provides links to all other resources.
 
 # Contributing
 
-Please read the [Contribution Notes](https://github.com/vitaly-t/pg-promise/blob/master/CONTRIBUTING.md) before opening any new issue or PR.
+Please read the [Contribution Notes] before opening any new issue or PR.
 
 # Usage
 
@@ -1086,7 +1086,7 @@ See the relevant API: [pgp.end], [Database.$pool]
  
 # History
 
-For the list of all changes see the [CHANGELOG](CHANGELOG.md).
+For the list of all changes see the [CHANGELOG].
 
 <!-- Internal Menu Links -->
 
@@ -1111,6 +1111,11 @@ For the list of all changes see the [CHANGELOG](CHANGELOG.md).
 [Conditional Tasks]:#conditional-tasks
 [Conditional Transactions]:#conditional-transactions  
 [Library de-initialization]:#library-de-initialization
+
+<-- Internal Page Links -->
+
+[Contribution Notes]:.github/CONTRIBUTING.md
+[CHANGELOG]:.github/CHANGELOG.md
 
 <!-- Database Method Links -->
 
