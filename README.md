@@ -1086,7 +1086,8 @@ See the relevant API: [pgp.end], [Database.$pool]
  
 # History
 
-For the list of all changes see the [CHANGELOG].
+Although this project formally maintains a [CHANGELOG], for a short list of the top-level changes,
+for detailed changes between versions you should see the corresponding release notes.
 
 <!-- Internal Menu Links -->
 
