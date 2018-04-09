@@ -479,7 +479,7 @@ declare namespace pgPromise {
 
         tx<T=any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        tx<T=any>(options: { tag?: any, mode?: ITXMode }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        tx<T=any>(options: { tag?: any, mode?: TransactionMode }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Conditional Transactions;
         // API: http://vitaly-t.github.io/pg-promise/Database.html#txIf
@@ -487,7 +487,7 @@ declare namespace pgPromise {
 
         txIf<T=any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        txIf<T=any>(options: { tag?: any, mode?: ITXMode, reusable?: boolean | ((t: ITask<Ext> & Ext) => boolean), cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        txIf<T=any>(options: { tag?: any, mode?: TransactionMode, reusable?: boolean | ((t: ITask<Ext> & Ext) => boolean), cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
     }
 
     // Database object in connected state;
@@ -630,6 +630,8 @@ declare namespace pgPromise {
     class TransactionMode {
         constructor(tiLevel?: isolationLevel, readOnly?: boolean, deferrable?: boolean)
         constructor(options: { tiLevel?: isolationLevel, readOnly?: boolean, deferrable?: boolean })
+
+        begin: (cap?: boolean) => string
     }
 
     // Library's Initialization Options
