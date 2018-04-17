@@ -2266,6 +2266,38 @@ describe('Multi-result queries', () => {
     });
 });
 
+describe('Dynamic Schema', () => {
+    describe('for a single schema', () => {
+        let result;
+        beforeEach(done => {
+            const innerDb = header({schema: 'test', noWarnings: true, promiseLib: promise}).db;
+            innerDb.any('select * from users')
+                .catch(error => {
+                    result = error;
+                })
+                .finally(done);
+        });
+        it('must change the default schema', () => {
+            expect(result && result.message).toBe('relation "users" does not exist');
+        });
+    });
+    describe('for multiple schemas', () => {
+        let result;
+        beforeEach(done => {
+            const innerDb = header({schema: ['first', 'second', 'public'], noWarnings: true, promiseLib: promise}).db;
+            innerDb.any('select * from users')
+                .then(data => {
+                    result = data;
+                })
+                .finally(done);
+        });
+        it('must change the default schemas', () => {
+            expect(result && result.length).toBeGreaterThan(0);
+        });
+    });
+
+});
+
 if (jasmine.Runner) {
     const _finishCallback = jasmine.Runner.prototype.finishCallback;
     jasmine.Runner.prototype.finishCallback = function () {
