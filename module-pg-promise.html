@@ -367,6 +367,52 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
 
         <tr>
             
+                <td class="name"><code>schema</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p><strong>Added in v8.3.0</strong></p>
+<p>Forces change of the default database schema(s) for every fresh connection, i.e.
+the library will execute <code>SET search_path TO schema_1, schema_2, ...</code> in the background
+whenever a fresh physical connection is allocated.</p>
+<p>Normally, one changes the default schema(s) by <a href="https://stackoverflow.com/questions/2875610/permanently-set-postgresql-schema-path">changing the database or the role</a>, but sometimes you
+may want to switch the default schema(s) without persisting the change, and use this option instead.</p>
+<p>This option is dynamic (can be set before or after initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>noWarnings</code></td>
             
 
@@ -865,7 +911,7 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line295">line 295</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line307">line 307</a>
     </li></ul></dd>
     
 
@@ -950,7 +996,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line241">line 241</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line253">line 253</a>
     </li></ul></dd>
     
 
@@ -1023,7 +1069,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line368">line 368</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line380">line 380</a>
     </li></ul></dd>
     
 
@@ -1096,7 +1142,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line260">line 260</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line272">line 272</a>
     </li></ul></dd>
     
 
@@ -1176,7 +1222,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line307">line 307</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line319">line 319</a>
     </li></ul></dd>
     
 
@@ -1249,7 +1295,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line337">line 337</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line349">line 349</a>
     </li></ul></dd>
     
 
@@ -1326,7 +1372,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line229">line 229</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line241">line 241</a>
     </li></ul></dd>
     
 
@@ -1399,7 +1445,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line347">line 347</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line359">line 359</a>
     </li></ul></dd>
     
 
@@ -1472,7 +1518,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line327">line 327</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line339">line 339</a>
     </li></ul></dd>
     
 
@@ -1545,7 +1591,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line357">line 357</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line369">line 369</a>
     </li></ul></dd>
     
 
@@ -1618,7 +1664,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line317">line 317</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line329">line 329</a>
     </li></ul></dd>
     
 
@@ -1691,7 +1737,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line272">line 272</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line284">line 284</a>
     </li></ul></dd>
     
 
@@ -1771,7 +1817,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line388">line 388</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line400">line 400</a>
     </li></ul></dd>
     
 
@@ -1844,7 +1890,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line378">line 378</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line390">line 390</a>
     </li></ul></dd>
     
 
