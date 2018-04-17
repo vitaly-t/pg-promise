@@ -37,7 +37,8 @@ const links = {
     'Long Stack Traces': 'http://bluebirdjs.com/docs/api/promise.config.html',
     'Symbol': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol',
     'Library de-initialization': 'https://github.com/vitaly-t/pg-promise#library-de-initialization',
-    'Nested Transactions': 'https://github.com/vitaly-t/pg-promise#nested-transactions'
+    'Nested Transactions': 'https://github.com/vitaly-t/pg-promise#nested-transactions',
+    'changing the database or the role': 'https://stackoverflow.com/questions/2875610/permanently-set-postgresql-schema-path'
 };
 
 function fixLinks(source) {
