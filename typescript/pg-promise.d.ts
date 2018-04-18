@@ -8,7 +8,7 @@
  */
 
 /////////////////////////////////////////
-// Requires pg-promise v8.2.0 or later.
+// Requires pg-promise v8.4.0 or later.
 /////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -507,7 +507,7 @@ declare namespace pgPromise {
         readonly connected: boolean
         readonly inTransaction: boolean
         readonly level: number
-        readonly isFresh: boolean
+        readonly useCount: number
         readonly isTX: boolean
         readonly start: Date
         readonly tag: any
@@ -643,7 +643,7 @@ declare namespace pgPromise {
         pgFormatting?: boolean
         pgNative?: boolean
         promiseLib?: any
-        connect?: (client: pg.Client, dc: any, fresh: boolean) => void
+        connect?: (client: pg.Client, dc: any, useCount: number) => void
         disconnect?: (client: pg.Client, dc: any) => void
         query?: (e: IEventContext) => void
         receive?: (data: any[], result: IResultExt, e: IEventContext) => void

@@ -1,5 +1,6 @@
 ### Release History
 
+* 8.4.0 Replacing `isFresh` with `useCount` everywhere. Released: April 18, 2018.
 * 8.3.0 Adding initialization option `schema` for dynamic schema change. Released: April 17, 2018.
 * 8.2.0 Adding [Conditional Tasks], plus query callbacks. Released: March 10, 2018.
 * 8.1.0 Adding new method [utils.taskArgs]. Released: Feb 26, 2018

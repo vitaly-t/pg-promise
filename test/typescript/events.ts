@@ -1,7 +1,7 @@
 import * as pgPromise from '../../typescript/pg-promise';
 
 const pgp: pgPromise.IMain = pgPromise({
-    connect: (bla1: any, dc: any, fresh: boolean) => {
+    connect: (bla1: any, dc: any, useCount: number) => {
     },
     receive: (data: any, result: any, e: any) => {
         const dc = e.dc;
@@ -28,6 +28,7 @@ const db = pgp('connection');
 
 db.task(t => {
     const dc = t.ctx.dc;
+    const useCount = t.ctx.useCount;
     return t.batch([
         t.one('query'),
         t.none('query')

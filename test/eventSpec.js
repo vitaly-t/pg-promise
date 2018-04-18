@@ -39,17 +39,18 @@ const dummy = () => {
 describe('Connect/Disconnect events', () => {
 
     describe('during a query', () => {
-        let p1, p2, dc1, dc2, connect = 0, disconnect = 0;
+        let ctx1 = {}, ctx2 = {}, connect = 0, disconnect = 0;
         beforeEach(done => {
-            options.connect = function (client, dc) {
-                dc1 = dc;
-                p1 = client;
+            options.connect = (client, dc, useCount) => {
+                ctx1.dc = dc;
+                ctx1.client = client;
+                ctx1.useCount = useCount;
                 connect++;
                 throw new Error('### Testing error output in \'connect\'. Please ignore. ###');
             };
-            options.disconnect = function (client, dc) {
-                dc2 = dc;
-                p2 = client;
+            options.disconnect = (client, dc) => {
+                ctx2.dc = dc;
+                ctx2.client = client;
                 disconnect++;
                 throw new Error('### Testing error output in \'disconnect\'. Please ignore. ###');
             };
@@ -65,25 +66,28 @@ describe('Connect/Disconnect events', () => {
             expect(connect).toBe(1);
             expect(disconnect).toBe(1);
             if (!options.pgNative) {
-                expect(p1 instanceof pgClient).toBe(true);
-                expect(p2 instanceof pgClient).toBe(true);
+                expect(ctx1.client instanceof pgClient).toBe(true);
+                expect(ctx2.client instanceof pgClient).toBe(true);
             }
-            expect(dc1).toBe(testDC);
-            expect(dc2).toBe(testDC);
+            expect(ctx1.dc).toBe(testDC);
+            expect(typeof ctx1.useCount).toBe('number');
+            expect(ctx1.useCount >= 0).toBe(true);
+            expect(ctx2.dc).toBe(testDC);
         });
     });
 
     describe('during a transaction', () => {
-        let p1, p2, dc1, dc2, ctx, connect = 0, disconnect = 0;
+        let obj1 = {}, obj2 = {}, ctx, connect = 0, disconnect = 0;
         beforeEach(done => {
-            options.connect = function (client, dc) {
-                dc1 = dc;
-                p1 = client;
+            options.connect = (client, dc, useCount) => {
+                obj1.dc = dc;
+                obj1.client = client;
+                obj1.useCount = useCount;
                 connect++;
             };
-            options.disconnect = function (client, dc) {
-                dc2 = dc;
-                p2 = client;
+            options.disconnect = (client, dc) => {
+                obj2.client = client;
+                obj2.dc = dc;
                 disconnect++;
             };
             db.tx(function (t) {
@@ -105,11 +109,11 @@ describe('Connect/Disconnect events', () => {
             expect(connect).toBe(1);
             expect(disconnect).toBe(1);
             if (!options.pgNative) {
-                expect(p1 instanceof pgClient).toBe(true);
-                expect(p2 instanceof pgClient).toBe(true);
+                expect(obj1.client instanceof pgClient).toBe(true);
+                expect(obj2.client instanceof pgClient).toBe(true);
             }
-            expect(dc1).toBe(testDC);
-            expect(dc2).toBe(testDC);
+            expect(obj1.dc).toBe(testDC);
+            expect(obj2.dc).toBe(testDC);
             expect(ctx.dc).toBe(testDC);
         });
     });
@@ -120,7 +124,7 @@ describe('Query event', () => {
     describe('positive', () => {
         let param, counter = 0;
         beforeEach(done => {
-            options.query = function (e) {
+            options.query = e => {
                 counter++;
                 param = e;
             };
