@@ -1,6 +1,14 @@
 import * as pgPromise from '../../typescript/pg-promise';
 
-const pgp: pgPromise.IMain = pgPromise();
+const pgp: pgPromise.IMain = pgPromise({
+    schema: ['public', 'mine'],
+    capSQL: true,
+    noLocking: true,
+    pgNative: true,
+    pgFormatting: true,
+    noWarnings: true
+});
+
 const db = pgp('connection');
 
 type t = pgPromise.TConfig;
