@@ -2295,6 +2295,21 @@ describe('Dynamic Schema', () => {
             expect(result && result.length).toBeGreaterThan(0);
         });
     });
+    describe('for a callback', () => {
+        let result;
+        beforeEach(done => {
+            const schema = () => ['first', 'second', 'public'];
+            const innerDb = header({schema, noWarnings: true, promiseLib: promise}).db;
+            innerDb.any('select * from users')
+                .then(data => {
+                    result = data;
+                })
+                .finally(done);
+        });
+        it('must change the default schemas', () => {
+            expect(result && result.length).toBeGreaterThan(0);
+        });
+    });
 
 });
 

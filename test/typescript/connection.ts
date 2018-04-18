@@ -9,6 +9,17 @@ const pgp: pgPromise.IMain = pgPromise({
     noWarnings: true
 });
 
+const pgp2: pgPromise.IMain = pgPromise({
+    schema: () => {
+    }
+});
+
+const pgp3: pgPromise.IMain = pgPromise({
+    schema: (dc: any) => {
+        return ['one', 'two'];
+    }
+});
+
 const db = pgp('connection');
 
 type t = pgPromise.TConfig;
