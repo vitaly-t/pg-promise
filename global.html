@@ -550,7 +550,7 @@ inside a task or transaction.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line488">line 488</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line487">line 487</a>
     </li></ul></dd>
     
 
@@ -576,7 +576,7 @@ inside a task or transaction.</p></td>
 <div class="description">
     <p>Task/Transaction Context used via property <a href="Task.html#ctx">ctx</a> inside tasks (methods <a href="Database.html#task">Database.task</a> and <a href="Database.html#taskIf">Database.taskIf</a>)
 and transactions (methods <a href="Database.html#tx">Database.tx</a> and <a href="Database.html#txIf">Database.txIf</a>).</p>
-<p>Properties <code>context</code>, <code>connected</code>, <code>parent</code>, <code>level</code>, <code>dc</code>, <code>isTX</code>, <code>tag</code>, <code>start</code> and <code>isFresh</code> are set just before the operation has started,
+<p>Properties <code>context</code>, <code>connected</code>, <code>parent</code>, <code>level</code>, <code>dc</code>, <code>isTX</code>, <code>tag</code>, <code>start</code> and <code>useCount</code> are set just before the operation has started,
 while properties <code>finish</code>, <code>duration</code>, <code>success</code> and <code>result</code> are set immediately after the operation has finished.</p>
 </div>
 
@@ -873,13 +873,13 @@ the operation has finished. When the value is <code>false</code>, the operation 
 
         <tr>
             
-                <td class="name"><code>isFresh</code></td>
+                <td class="name"><code>useCount</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type">number</span>
 
 
             
@@ -889,7 +889,8 @@ the operation has finished. When the value is <code>false</code>, the operation 
 
             
 
-            <td class="description last"><p>Indicates when a fresh physical connection is being used.</p></td>
+            <td class="description last"><p>Number of times the connection has been previously used, starting with 0 for a freshly
+allocated physical connection.</p></td>
         </tr>
 
     
@@ -1035,7 +1036,8 @@ the operation has finished. When the value is <code>false</code>, the operation 
 
 
 <div class="description">
-    <p>Global notification of acquiring a new database connection from the connection pool, i.e. a virtual connection.</p>
+    <p><strong>Updated in v8.4.0</strong></p>
+<p>Global notification of acquiring a new database connection from the connection pool, i.e. a virtual connection.</p>
 <p>However, for direct calls to method <a href="Database.html#connect">Database.connect</a> with parameter <code>{direct: true}</code>,
 this event represents a physical connection.</p>
 <p>The library will suppress any error thrown by the handler and write it into the console.</p>
@@ -1120,13 +1122,13 @@ this event represents a physical connection.</p>
 
         <tr>
             
-                <td class="name"><code>isFresh</code></td>
+                <td class="name"><code>useCount</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type">number</span>
 
 
             
@@ -1136,13 +1138,9 @@ this event represents a physical connection.</p>
 
             
 
-            <td class="description last"><p>It indicates when it is a fresh physical connection:</p>
-<ul>
-<li><code>true</code> - the physical connection just has been allocated</li>
-<li><code>false</code> - the connection has been used previously</li>
-</ul>
-<p><strong>NOTE:</strong></p>
-<p>This parameter is always <code>true</code> for direct connections (created by calling <a href="Database.html#connect">Database.connect</a>
+            <td class="description last"><p>Number of times the connection has been previously used, starting with 0 for a freshly
+allocated physical connection.</p>
+<p>This parameter is always 0 for direct connections (created by calling <a href="Database.html#connect">Database.connect</a>
 with parameter <code>{direct: true}</code>).</p></td>
         </tr>
 
@@ -1211,7 +1209,7 @@ with parameter <code>{direct: true}</code>).</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    connect(client, dc, isFresh) {        const cp = client.connectionParameters;        console.log('Connected to database:', cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    connect(client, dc, useCount) {        const cp = client.connectionParameters;        console.log('Connected to database:', cp.database);    }};</code></pre>
 
 
 
@@ -1346,7 +1344,7 @@ with parameter <code>{direct: true}</code>).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line74">line 74</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line73">line 73</a>
     </li></ul></dd>
     
 
@@ -1506,7 +1504,7 @@ with parameter <code>{direct: true}</code>).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line314">line 314</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line313">line 313</a>
     </li></ul></dd>
     
 
@@ -1676,7 +1674,7 @@ if you try overriding them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line367">line 367</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line366">line 366</a>
     </li></ul></dd>
     
 
@@ -1823,7 +1821,7 @@ will be rejected with that error.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line114">line 114</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line113">line 113</a>
     </li></ul></dd>
     
 
@@ -2027,7 +2025,7 @@ it took to send the query, execute it and get the result back.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line149">line 149</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line148">line 148</a>
     </li></ul></dd>
     
 
@@ -2165,7 +2163,7 @@ it took to send the query, execute it and get the result back.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line224">line 224</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line223">line 223</a>
     </li></ul></dd>
     
 
@@ -2303,7 +2301,7 @@ or <a href="Database.html#txIf">Database.txIf</a>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line269">line 269</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line268">line 268</a>
     </li></ul></dd>
     
 

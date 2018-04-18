@@ -50,7 +50,7 @@ const npm = {
 class DatabasePool {
 
     constructor() {
-        this.dbMap = {}; // map of used database connections
+        this.dbMap = {}; // map of used database context keys (connection + dc)
         this.dbs = []; // all database objects
     }
 
@@ -65,7 +65,8 @@ class DatabasePool {
      * @param {Database} db - The new Database object being registered.
      */
     register(db) {
-        const cnKey = DatabasePool.normalizeConnection(db.$cn);
+        const cnKey = DatabasePool.createContextKey(db);
+        npm.utils.addReadProp(db, '$cnKey', cnKey, true);
         if (cnKey in this.dbMap) {
             this.dbMap[cnKey]++;
             if (!db.$config.options.noWarnings) {
@@ -83,7 +84,7 @@ class DatabasePool {
      * @param db
      */
     unregister(db) {
-        const cnKey = DatabasePool.normalizeConnection(db.$cn);
+        const cnKey = db.$cnKey;
         if (!--this.dbMap[cnKey]) {
             delete this.dbMap[cnKey];
         }
@@ -102,16 +103,17 @@ class DatabasePool {
     }
 
     /**
-     * @method DatabasePool.normalizeConnection
+     * @method DatabasePool.createContextKey
      * @static
      * @private
      * @description
      * For connections that are objects it reorders the keys alphabetically,
      * and then serializes the result into a JSON string.
      *
-     * @param {string|object} cn - connection string or object
+     * @param {Database} db - Database instance.
      */
-    static normalizeConnection(cn) {
+    static createContextKey(db) {
+        let cn = db.$cn;
         if (typeof cn === 'object') {
             const obj = {}, keys = Object.keys(cn).sort();
             keys.forEach(name => {
@@ -119,7 +121,7 @@ class DatabasePool {
             });
             cn = obj;
         }
-        return JSON.stringify(cn);
+        return JSON.stringify(npm.utils.getSafeConnection(cn)) + JSON.stringify(db.$dc);
     }
 }
 
