@@ -634,6 +634,8 @@ declare namespace pgPromise {
         begin: (cap?: boolean) => string
     }
 
+    type ValidSchema = string | string[] | null | void;
+
     // Library's Initialization Options
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface IOptions<Ext> {
@@ -651,7 +653,7 @@ declare namespace pgPromise {
         extend?: (obj: IDatabase<Ext> & Ext, dc: any) => void
         noLocking?: boolean
         capSQL?: boolean
-        schema?: string | string[] | ((dc: any) => string | string[] | null | void)
+        schema?: ValidSchema | ((dc: any) => ValidSchema)
     }
 
     // API: http://vitaly-t.github.io/pg-promise/Database.html#$config
