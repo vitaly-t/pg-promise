@@ -621,7 +621,7 @@ WHERE id = ${id}
 <br/>
 
 Every query method of the library can accept type [QueryFile] as its `query` parameter.
-The type never throws any error, leaving it for query methods to gracefully reject with [QueryFileError].
+Type [QueryFile] never throws any error, leaving it for query methods to gracefully reject with [QueryFileError].
 
 Use of [Named Parameters] within external SQL files is recommended over the [Index Variables], because it makes the SQL
 much easier to read and understand, and because it also allows [Nested Named Parameters], so variables in a large
@@ -1151,7 +1151,7 @@ for detailed changes between versions you should see the corresponding release n
 [Initialization Options]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html
 [helpers]:http://vitaly-t.github.io/pg-promise/helpers.html
 [QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
-[QueryFileError]:http://vitaly-t.github.io/pg-promise/QueryFileError.html
+[QueryFileError]:http://vitaly-t.github.io/pg-promise/errors.QueryFileError.html
 [Database]:http://vitaly-t.github.io/pg-promise/Database.html
 [Database.$pool]:http://vitaly-t.github.io/pg-promise/Database.html#$pool
 [pgp.end]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
