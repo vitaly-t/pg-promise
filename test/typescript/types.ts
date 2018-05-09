@@ -44,7 +44,7 @@ import {
     ILostContext,
     TAssignOptions,
     TPromiseConfig,
-    CTFObject,
+    ICTFObject,
     TQueryFormat
 }
     from '../../typescript/pg-promise';
