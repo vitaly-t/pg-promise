@@ -668,7 +668,7 @@ declare namespace pgPromise {
 
     // Custom-Type Formatting object
     // API: https://github.com/vitaly-t/pg-promise#custom-type-formatting
-    interface CTFObject {
+    interface ICTFObject {
         toPostgres: (a: any) => any
     }
 
@@ -707,7 +707,7 @@ declare namespace pgPromise {
         date(d: Date | (() => Date), raw?: boolean): string
 
         // API: http://vitaly-t.github.io/pg-promise/formatting.html#.format
-        format(query: string | QueryFile | CTFObject, values?: any, options?: TFormattingOptions): string
+        format(query: string | QueryFile | ICTFObject, values?: any, options?: TFormattingOptions): string
 
         // API: http://vitaly-t.github.io/pg-promise/formatting.html#.func
         func(func: (cc: any) => any, raw?: boolean, cc?: any): string

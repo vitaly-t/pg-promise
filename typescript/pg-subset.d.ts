@@ -19,7 +19,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 import {EventEmitter} from 'events';
-import {checkServerIdentity} from 'tls';
+import { checkServerIdentity } from 'tls';
 
 declare namespace pg {
 
@@ -57,7 +57,7 @@ declare namespace pg {
         key?: string | Buffer | Array<Buffer | object>
         passphrase?: string
         rejectUnauthorized?: boolean
-        checkServerIdentity?: typeof checkServerIdentity;
+        checkServerIdentity?: typeof checkServerIdentity
         NPNProtocols?: string[] | Buffer | Buffer[] | Uint8Array | Uint8Array[]
     }
 
@@ -74,7 +74,7 @@ declare namespace pg {
         ssl?: boolean | TSSLConfig
         binary?: boolean
         client_encoding?: string
-        encoding?: string;
+        encoding?: string
         application_name?: string
         fallback_application_name?: string
         isDomainSocket?: boolean
