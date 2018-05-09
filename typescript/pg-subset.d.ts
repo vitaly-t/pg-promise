@@ -13,12 +13,13 @@
 // Calling it 'pg-subset' to avoid a conflict in case the application also
 // includes the official 'pg' typings.
 //
-// Supported version of pg: 7.4.0 and later.
+// Supported version of pg: 7.4.3 and later.
 //
 // pg: https://github.com/brianc/node-postgres
 //////////////////////////////////////////////////////////////////////////////
 
 import {EventEmitter} from 'events';
+import {checkServerIdentity} from 'tls';
 
 declare namespace pg {
 
@@ -50,13 +51,14 @@ declare namespace pg {
     // For property types and documentation see:
     // http://nodejs.org/api/tls.html#tls_tls_connect_options_callback
     type TSSLConfig = {
-        ca?: string | string[] | Buffer | Buffer[]
-        pfx?: string | Buffer
-        cert?: string | string[] | Buffer | Buffer[]
-        key?: string | string[] | Buffer | object[]
+        ca?: string | Buffer | Array<string | Buffer>
+        pfx?: string | Buffer | Array<string | Buffer | object>
+        cert?: string | Buffer | Array<string | Buffer>
+        key?: string | Buffer | Array<Buffer | object>
         passphrase?: string
         rejectUnauthorized?: boolean
-        NPNProtocols?: string[] | Buffer
+        checkServerIdentity?: typeof checkServerIdentity;
+        NPNProtocols?: string[] | Buffer | Buffer[] | Uint8Array | Uint8Array[]
     }
 
     // See:
@@ -72,6 +74,7 @@ declare namespace pg {
         ssl?: boolean | TSSLConfig
         binary?: boolean
         client_encoding?: string
+        encoding?: string;
         application_name?: string
         fallback_application_name?: string
         isDomainSocket?: boolean
