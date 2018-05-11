@@ -33,7 +33,7 @@ const userObj = {
 describe('Method as.buffer', () => {
 
     describe('Positive:', () => {
-        const data = new Buffer([1, 2, 3]);
+        const data = Buffer.from([1, 2, 3]);
         const hex = '\\x010203';
 
         it('must hex-format data', () => {
@@ -62,8 +62,8 @@ describe('Method as.buffer', () => {
         });
 
         it('must work in any other context', () => {
-            const input = [23, new Buffer([1, 2, 3]), 'Hello'], output = '23,\'\\x010203\',\'Hello\'',
-                simple = new Buffer([1, 2, 3]);
+            const input = [23, Buffer.from([1, 2, 3]), 'Hello'], output = '23,\'\\x010203\',\'Hello\'',
+                simple = Buffer.from([1, 2, 3]);
             expect(pgp.as.csv(simple)).toBe('1,2,3');
             expect(pgp.as.format('$1:json', [simple])).toEqual('\'' + JSON.stringify(simple) + '\'');
             expect(pgp.as.csv(input)).toBe(output);

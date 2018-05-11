@@ -74,12 +74,14 @@ It is best to initialize the library and create [Database] in its own module, se
 ### Namespaces
 
 * [formatting] - the library's query formatting engine
+* [ctf] - ES6 symbols used by [Custom Type Formatting]
 * [helpers] - for automatic query generation
 * [utils] - simplifies the use of external SQL files
 * [errors] - custom error types supported by the library
 * [txMode] - types for configuring a transaction
 
 [formatting]:http://vitaly-t.github.io/pg-promise/formatting.html
+[ctf]:http://vitaly-t.github.io/pg-promise/formatting.ctf.html
 [helpers]:http://vitaly-t.github.io/pg-promise/helpers.html
 [utils]:http://vitaly-t.github.io/pg-promise/utils.html
 [errors]:http://vitaly-t.github.io/pg-promise/errors.html
@@ -111,4 +113,5 @@ It is best to initialize the library and create [Database] in its own module, se
 [Where should I initialize pg-promise]:https://stackoverflow.com/questions/34382796/where-should-i-initialize-pg-promise
 [Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
 [WiKi]:https://github.com/vitaly-t/pg-promise/wiki
+[Custom Type Formatting]:https://github.com/vitaly-t/pg-promise#custom-type-formatting
 
