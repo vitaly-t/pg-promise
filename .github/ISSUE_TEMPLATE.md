@@ -10,5 +10,5 @@
 ### Environment
 
 * Version of pg-promise:
-* OS type Linux/Windows/Mac:
+* OS type (Linux/Windows/Mac):
 * Version of Node.js:

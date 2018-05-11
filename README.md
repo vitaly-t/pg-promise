@@ -275,7 +275,7 @@ The following filters are supported:
 ### SQL Names
 
 When a variable ends with `:name`, or shorter syntax `~` (tilde), it represents an SQL name or identifier,
-to be escaped accordingly, and then wrapped in double quotes:
+to be escaped accordingly:
 
 <details>
 <summary><b>Using ~ filter</b></summary>
