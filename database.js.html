@@ -648,8 +648,8 @@ function Database(cn, dc, config) {
         /**
          * @method Database#oneOrNone
          * @description
-         * Executes a query that expects 0 or 1 rows, to resolve with the row-object when found,
-         * and with `null` when not found. When the query returns more than 1 row, the method rejects.
+         * Executes a query that expects 0 or 1 rows, to resolve with the row-object when 1 row is returned,
+         * and with `null` when nothing is returned. When the query returns more than 1 row, the method rejects.
          *
          * When receiving a multi-query result, only the last result is processed, ignoring the rest.
          *

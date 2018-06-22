@@ -3563,8 +3563,8 @@ When specified, the return value replaces the original resolved value.</p>
 
 
 <div class="description">
-    <p>Executes a query that expects 0 or 1 rows, to resolve with the row-object when found,
-and with <code>null</code> when not found. When the query returns more than 1 row, the method rejects.</p>
+    <p>Executes a query that expects 0 or 1 rows, to resolve with the row-object when 1 row is returned,
+and with <code>null</code> when nothing is returned. When the query returns more than 1 row, the method rejects.</p>
 <p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
