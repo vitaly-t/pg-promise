@@ -105,8 +105,8 @@ describe('PreparedStatement', () => {
             expect(ps.text).toBe('test-query');
             expect(ps.values).toEqual([123]);
             // setting to the same values, for coverage:
-            ps.name = ps.name;
-            ps.text = ps.text;
+            ps.name = ps.name; // eslint-disable-line
+            ps.text = ps.text; // eslint-disable-line
         });
         it('must set the values correctly', () => {
             ps.name = 'new-name';
