@@ -1,14 +1,17 @@
 language: node_js
 sudo: required
-node_js:
-  - "4"
-  - "6"
-  - "8"
-  - "9"
-  - "10"
+matrix:
+  include:
+    - node_js: "4"
+      script: "npm test"
+    - node_js: "6"
+      script: "npm run travis"
+    - node_js: "8"
+      script: "npm run travis"
+    - node_js: "10"
+      script: "npm run travis"
 addons:
   postgresql: "9.6"
-script: "npm run travis"
 before_script:
   - psql -c 'create database pg_promise_test;' -U postgres
   - node test/db/init.js
