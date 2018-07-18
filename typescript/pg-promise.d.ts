@@ -59,7 +59,7 @@ declare namespace pgPromise {
     type TAssignColumnsOptions = {
         from?: string
         to?: string
-        skip?: string | string[]
+        skip?: string | string[] | ((c: Column) => boolean)
     };
 
     type TPreparedBasic = {
