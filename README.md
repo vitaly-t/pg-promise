@@ -269,8 +269,8 @@ The following filters are supported:
   - `:alias` - [Alias Filter]
 * `:raw` / `^` - [Raw Text]
 * `:value` / `#` - [Open Values]
+* `:csv` / `:list` - [CSV Filter]
 * `:json` - [JSON Filter]
-* `:csv` - [CSV Filter]
 
 ### SQL Names
 
