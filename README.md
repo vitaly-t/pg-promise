@@ -160,10 +160,14 @@ db.any('SELECT * FROM users WHERE name = ${name} AND active = $/active/', {
 });
 ```
 
-Valid variable names are limited to the syntax of open-name JavaScript variables. 
+**WARNING:** Never use `${}` syntax inside ES6 template strings, as those have no knowledge of how to format values
+for PostgreSQL. Inside ES6 template strings you can only use one of the 4 alternatives - `$()`, `$<>`, `$[]` or `$//`,
+whichever you like.
 
-Keep in mind that while property values `null` and `undefined` are both formatted as `null`,
-an error is thrown when the property does not exist.
+Valid variable names are limited to the syntax of open-name JavaScript variables.
+
+Keep in mind that while property values `null` and `undefined` are both formatted as `null`, an error is thrown when the
+property does not exist.
 
 **`this` reference**
 
