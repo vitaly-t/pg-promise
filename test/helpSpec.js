@@ -613,9 +613,9 @@ describe('ColumnSet', () => {
         });
 
         describe('with prefix', () => {
-            const cs = new helpers.ColumnSet(['val', 'msg']);
+            const cs1 = new helpers.ColumnSet(['val', 'msg']);
             it('must correctly escape as alias', () => {
-                expect(cs.assign({
+                expect(cs1.assign({
                     source: dataSingle,
                     prefix: 'a b c'
                 })).toBe('"a b c"."val"=${val},"a b c"."msg"=${msg}');

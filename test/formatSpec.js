@@ -1085,7 +1085,7 @@ describe('Nested Named Parameters', () => {
                         }
                     }
                 };
-                expect(pgp.as.format('${one.two.three}', obj, {'default': (name, obj) => obj.value})).toBe('1');
+                expect(pgp.as.format('${one.two.three}', obj, {'default': (name, o) => o.value})).toBe('1');
                 expect(pgp.as.format('${one.two.three}', obj, {
                     'default': function () {
                         return this.value;

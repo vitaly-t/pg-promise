@@ -71,7 +71,7 @@ describe('Method stream', () => {
             }
         });
         describe('with invalid initialization callback', () => {
-            let result;
+            let res;
             beforeEach(done => {
                 const stream = new QueryStream('select 1');
                 promise.any([
@@ -81,50 +81,50 @@ describe('Method stream', () => {
                     db.stream(stream, {})
                 ])
                     .catch(reason => {
-                        result = reason;
+                        res = reason;
                     })
                     .finally(done);
             });
             it('must throw an error', () => {
-                expect(result.length).toBe(4);
-                for (let i = 0; i < result.length; i++) {
-                    expect(result[i] instanceof TypeError).toBe(true);
-                    expect(result[i].message).toBe($text.invalidStreamCB);
+                expect(res.length).toBe(4);
+                for (let i = 0; i < res.length; i++) {
+                    expect(res[i] instanceof TypeError).toBe(true);
+                    expect(res[i].message).toBe($text.invalidStreamCB);
                 }
             });
         });
         describe('with initialization callback throwing error', () => {
-            let result;
+            let res;
             beforeEach(done => {
                 db.stream(new QueryStream('select 1'), () => {
                     throw new Error('initialization error');
                 })
                     .catch(reason => {
-                        result = reason;
+                        res = reason;
                     })
                     .finally(done);
             });
             it('must throw an error', () => {
-                expect(result instanceof Error);
-                expect(result.message).toBe('initialization error');
+                expect(res instanceof Error);
+                expect(res.message).toBe('initialization error');
             });
         });
 
         describe('throwing error during query notification', () => {
-            let result;
+            let res;
             beforeEach(done => {
                 options.query = () => {
                     throw 'query notification error';
                 };
                 db.stream(new QueryStream(), dummy)
                     .catch(error => {
-                        result = error;
+                        res = error;
                     })
                     .finally(done);
             });
             it('must reject with the same error', () => {
-                expect(result instanceof Error).toBe(false);
-                expect(result).toBe('query notification error');
+                expect(res instanceof Error).toBe(false);
+                expect(res).toBe('query notification error');
             });
             afterEach(() => {
                 options.query = null;
@@ -132,7 +132,7 @@ describe('Method stream', () => {
         });
 
         describe('with a valid request', () => {
-            let result, count = 0, context, initCtx;
+            let res, count = 0, context, initCtx;
             const qs = new QueryStream('select * from users where id=$1', [1]);
             beforeEach(done => {
                 options.query = e => {
@@ -144,14 +144,14 @@ describe('Method stream', () => {
                     stream.pipe(JSONStream.stringify());
                 })
                     .then(data => {
-                        result = data;
+                        res = data;
                     })
                     .finally(done);
             });
             it('must return the correct data and provide notification', () => {
-                expect(typeof(result)).toBe('object');
-                expect(result.processed).toBe(1);
-                expect(result.duration >= 0).toBe(true);
+                expect(typeof(res)).toBe('object');
+                expect(res.processed).toBe(1);
+                expect(res.duration >= 0).toBe(true);
                 expect(count).toBe(1);
                 expect(context.query).toBe('select * from users where id=$1');
                 expect(JSON.stringify(context.params)).toBe('["1"]');
@@ -163,7 +163,7 @@ describe('Method stream', () => {
         });
 
         describe('with invalid request', () => {
-            let result, err, context, count = 0;
+            let res, err, context, count = 0;
             beforeEach(done => {
                 options.error = (error, e) => {
                     err = error;
@@ -175,13 +175,13 @@ describe('Method stream', () => {
                     stream.pipe(JSONStream.stringify());
                 })
                     .catch(reason => {
-                        result = reason;
+                        res = reason;
                     })
                     .finally(done);
             });
             it('must return the correct data and provide notification', () => {
-                expect(result instanceof Error).toBe(true);
-                expect(result.message).toBe('relation "unknown" does not exist');
+                expect(res instanceof Error).toBe(true);
+                expect(res.message).toBe('relation "unknown" does not exist');
                 expect(count).toBe(1);
                 expect(context.query).toBe('select * from unknown where id=$1');
                 expect(JSON.stringify(context.params)).toBe('["1"]');

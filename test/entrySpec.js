@@ -85,8 +85,8 @@ describe('Library entry function', () => {
         describe('without any options', () => {
             let result;
             beforeEach(done => {
-                const db = header({noWarnings: true, promiseLib: promise}).db;
-                db.query('select * from users')
+                const db1 = header({noWarnings: true, promiseLib: promise}).db;
+                db1.query('select * from users')
                     .then(data => {
                         result = data;
                     })

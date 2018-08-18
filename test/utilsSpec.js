@@ -180,8 +180,8 @@ describe('enumSql', () => {
     });
 
     it('must set values correctly', () => {
-        const sql = utils.enumSql('./test/sql', {recursive: true}, (file, name, path) => {
-            return path;
+        const sql = utils.enumSql('./test/sql', {recursive: true}, (file, name, p) => {
+            return p;
         });
         expect(sql.allUsers).toBe('allUsers');
         expect(sql.invalid).toBe('invalid');
@@ -196,8 +196,8 @@ describe('enumSql', () => {
         let tree = utils.enumSql('./test/sql-special/dup-folders', {
             recursive: true,
             ignoreErrors: true
-        }, (file, name, path) => {
-            return path;
+        }, (file, name, p) => {
+            return p;
         });
         expect(tree && typeof tree === 'object').toBeTruthy();
         expect(tree.sub.first).toBe('sub.first');
@@ -207,8 +207,8 @@ describe('enumSql', () => {
         let tree = utils.enumSql('./test/sql-special/dup-files', {
             recursive: true,
             ignoreErrors: true
-        }, (file, name, path) => {
-            return path;
+        }, (file, name, p) => {
+            return p;
         });
         expect(tree && typeof tree === 'object').toBeTruthy();
         expect(tree.one).toBe('one');
@@ -276,8 +276,8 @@ describe('objectToCode', () => {
 
     it('must cover folders first', () => {
         const gap = $u.messageGap(1);
-        const tree = utils.enumSql('./test/sql-special/folders-only', {recursive: true}, (file, name, path) => {
-            return path;
+        const tree = utils.enumSql('./test/sql-special/folders-only', {recursive: true}, (file, name, p) => {
+            return p;
         });
         expect(utils.objectToCode(tree, value => {
             return value;
