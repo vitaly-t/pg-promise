@@ -2550,10 +2550,10 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 <div class="description">
-    <p>Executes a multi-query string without any expectation for the return data, to resolve
-with an array of arrays of rows when successful.</p>
-<p>This method was added specifically to give access to multi-query results supported
-by the <a href="https://github.com/brianc/node-postgres">pg</a> driver from version 7.x onwards.</p>
+    <p>Executes a multi-query string without any expectation for the return data, to resolve with an array
+of arrays of rows when successful.</p>
+<p>The operation is atomic, i.e. all queries are executed in a single transaction, unless there are explicit
+<code>BEGIN/COMMIT</code> commands included in the query string to divide it into multiple transactions.</p>
 </div>
 
 
@@ -2783,10 +2783,10 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 <div class="description">
-    <p>Executes a multi-query string without any expectation for the return data, to resolve
-with an array of the original <a href="https://node-postgres.com/api/result">Result</a> objects when successful.</p>
-<p>This method was added specifically to give access to multi-query results supported
-by the <a href="https://github.com/brianc/node-postgres">pg</a> driver from version 7.x onwards.</p>
+    <p>Executes a multi-query string, without any expectation for the return data, to resolve with an array
+of the original <a href="https://node-postgres.com/api/result">Result</a> objects when successful.</p>
+<p>The operation is atomic, i.e. all queries are executed in a single transaction, unless there are explicit
+<code>BEGIN/COMMIT</code> commands included in the query string to divide it into multiple transactions.</p>
 </div>
 
 

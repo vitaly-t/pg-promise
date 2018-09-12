@@ -281,14 +281,14 @@ function Database(cn, dc, config) {
                 }
                 ctx.disconnect();
             },
-            batch(values, options) {
-                return config.$npm.spex.batch.call(this, values, options);
+            batch(values, opt) {
+                return config.$npm.spex.batch.call(this, values, opt);
             },
-            page(source, options) {
-                return config.$npm.spex.page.call(this, source, options);
+            page(source, opt) {
+                return config.$npm.spex.page.call(this, source, opt);
             },
-            sequence(source, options) {
-                return config.$npm.spex.sequence.call(this, source, options);
+            sequence(source, opt) {
+                return config.$npm.spex.sequence.call(this, source, opt);
             }
         };
         const connection = options.direct ? config.$npm.connect.direct(ctx) : config.$npm.connect.pool(ctx, dbThis);
@@ -868,11 +868,11 @@ function Database(cn, dc, config) {
         /**
          * @method Database#multiResult
          * @description
-         * Executes a multi-query string without any expectation for the return data, to resolve
-         * with an array of the original $[Result] objects when successful.
+         * Executes a multi-query string, without any expectation for the return data, to resolve with an array
+         * of the original $[Result] objects when successful.
          *
-         * This method was added specifically to give access to multi-query results supported
-         * by the $[pg] driver from version 7.x onwards.
+         * The operation is atomic, i.e. all queries are executed in a single transaction, unless there are explicit
+         * `BEGIN/COMMIT` commands included in the query string to divide it into multiple transactions.
          *
          * @param {string|function|object} query
          * Multi-query string to be executed, which can be any of the following types:
@@ -907,11 +907,11 @@ function Database(cn, dc, config) {
         /**
          * @method Database#multi
          * @description
-         * Executes a multi-query string without any expectation for the return data, to resolve
-         * with an array of arrays of rows when successful.
+         * Executes a multi-query string without any expectation for the return data, to resolve with an array
+         * of arrays of rows when successful.
          *
-         * This method was added specifically to give access to multi-query results supported
-         * by the $[pg] driver from version 7.x onwards.
+         * The operation is atomic, i.e. all queries are executed in a single transaction, unless there are explicit
+         * `BEGIN/COMMIT` commands included in the query string to divide it into multiple transactions.
          *
          * @param {string|function|object} query
          * Multi-query string to be executed, which can be any of the following types:
