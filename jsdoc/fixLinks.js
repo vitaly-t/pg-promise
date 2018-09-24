@@ -29,6 +29,7 @@ const links = {
     'Prepared Statement': 'http://www.postgresql.org/docs/9.6/static/sql-prepare.html',
     'Prepared Statements': 'http://www.postgresql.org/docs/9.6/static/sql-prepare.html',
     'Custom Type Formatting': 'https://github.com/vitaly-t/pg-promise#custom-type-formatting',
+    'Symbolic CTF': 'https://github.com/vitaly-t/pg-promise#symbolic-ctf',
     'SQL Names': 'https://github.com/vitaly-t/pg-promise#sql-names',
     'pg-promise-demo': 'https://github.com/vitaly-t/pg-promise-demo',
     'Robust Listeners': 'https://github.com/vitaly-t/pg-promise/wiki/Robust-Listeners',
