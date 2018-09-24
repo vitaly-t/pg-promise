@@ -203,7 +203,7 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="errors.QueryFileError.html">QueryFileError</a>,<a href="utils.html">utils</a></li>
+            <li><a href="errors.QueryFileError.html">QueryFileError</a>,<a href="QueryFile.html#toPostgres">toPostgres</a></li>
         </ul>
     </dd>
     
@@ -663,7 +663,12 @@ to the parameters passed into the constructor.</p>
 
 
 <div class="description">
-    <p><a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>.</p>
+    <p><a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, based on <a href="https://github.com/vitaly-t/pg-promise#symbolic-ctf">Symbolic CTF</a>, i.e. the actual method is available only via <a href="external-Symbol.html">Symbol</a>:</p>
+<pre class="prettyprint source lang-js"><code>const ctf = pgp.as.ctf; // Custom Type Formatting symbols namespace
+const query = qf[ctf.toPostgres]; // qf = an object of type QueryFile</code></pre><p>This is a raw formatting type (<code>rawType = true</code>), i.e. when used as a query-formatting parameter, type <code>QueryFile</code> injects SQL as raw text.</p>
+<p>If you need to support type <code>QueryFile</code> outside of query methods, this is the only safe way to get the most current SQL.
+And you would want to use this method dynamically, as it reloads the SQL automatically, if option <code>debug</code> is set.
+See <a href="QueryFile.html#.Options">Options</a>.</p>
 </div>
 
 
@@ -938,7 +943,7 @@ to the parameters passed into the constructor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line303">line 303</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line314">line 314</a>
     </li></ul></dd>
     
 
@@ -1239,7 +1244,7 @@ that may require it.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line339">line 339</a>
+        <a href="queryFile.js.html">queryFile.js</a>, <a href="queryFile.js.html#line350">line 350</a>
     </li></ul></dd>
     
 

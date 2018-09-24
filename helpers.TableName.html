@@ -303,6 +303,13 @@ parameter, without specifying any escaping.</p>
     
 
     
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="helpers.TableName.html#toPostgres">toPostgres</a></li>
+        </ul>
+    </dd>
+    
 
     
 </dl>
@@ -375,7 +382,10 @@ parameter, without specifying any escaping.</p>
 
 
 <div class="description">
-    <p><a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>.</p>
+    <p><a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, based on <a href="https://github.com/vitaly-t/pg-promise#symbolic-ctf">Symbolic CTF</a>, i.e. the actual method is available only via <a href="external-Symbol.html">Symbol</a>:</p>
+<pre class="prettyprint source lang-js"><code>const ctf = pgp.as.ctf; // Custom Type Formatting symbols namespace
+const fullName = tn[ctf.toPostgres]; // tn = an object of type TableName</code></pre><p>This is a raw formatting type (<code>rawType = true</code>), i.e. when used as a query-formatting parameter, type <code>TableName</code>
+injects full table name as raw text.</p>
 </div>
 
 
@@ -480,7 +490,7 @@ parameter, without specifying any escaping.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_tableName.js.html">helpers/tableName.js</a>, <a href="helpers_tableName.js.html#line101">line 101</a>
+        <a href="helpers_tableName.js.html">helpers/tableName.js</a>, <a href="helpers_tableName.js.html#line104">line 104</a>
     </li></ul></dd>
     
 
@@ -581,7 +591,7 @@ parameter, without specifying any escaping.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_tableName.js.html">helpers/tableName.js</a>, <a href="helpers_tableName.js.html#line116">line 116</a>
+        <a href="helpers_tableName.js.html">helpers/tableName.js</a>, <a href="helpers_tableName.js.html#line127">line 127</a>
     </li></ul></dd>
     
 
