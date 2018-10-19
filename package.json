@@ -41,9 +41,9 @@
     "npm": ">=2.15"
   },
   "dependencies": {
-    "manakin": "0.5.1",
+    "manakin": "0.5.2",
     "pg": "7.5.0",
-    "pg-minify": "0.5.4",
+    "pg-minify": "0.5.5",
     "spex": "2.1.0"
   },
   "devDependencies": {
