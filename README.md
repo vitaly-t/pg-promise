@@ -160,7 +160,7 @@ db.any('SELECT * FROM users WHERE name = ${name} AND active = $/active/', {
 });
 ```
 
-**WARNING:** Never use `${}` syntax inside ES6 template strings, as those have no knowledge of how to format values
+**IMPORTANT:** Never use the reserved `${}` syntax inside ES6 template strings, as those have no knowledge of how to format values
 for PostgreSQL. Inside ES6 template strings you can only use one of the 4 alternatives - `$()`, `$<>`, `$[]` or `$//`.
 
 Valid variable names are limited to the syntax of open-name JavaScript variables.
