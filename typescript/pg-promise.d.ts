@@ -380,7 +380,7 @@ declare namespace pgPromise {
         one<T = any>(query: TQuery, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#oneOrNone
-        oneOrNone<T = any>(query: TQuery, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T>
+        oneOrNone<T = any>(query: TQuery, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T | null>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#many
         many<T = any>(query: TQuery, values?: any): XPromise<T[]>
