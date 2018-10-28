@@ -248,26 +248,19 @@ function isNull(value) {
 // to return {toPostgres, rawType}, if it does, or null otherwise.
 function getCTF(value) {
     if (!isNull(value)) {
-        const toPostgres = value[ctfSymbols.toPostgres];
-        if (typeof toPostgres === 'function') {
-            verifyCTF(toPostgres);
-            return {toPostgres, rawType: !!value[ctfSymbols.rawType]};
+        let toPostgres = value[ctfSymbols.toPostgres], rawType = !!value[ctfSymbols.rawType];
+        if (typeof toPostgres !== 'function') {
+            toPostgres = value.toPostgres;
+            rawType = !!value.rawType;
         }
-        // For backward compatibility:
-        if (typeof value.toPostgres === 'function') {
-            verifyCTF(value.toPostgres);
-            return {toPostgres: value.toPostgres, rawType: !!value.rawType};
+        if (typeof toPostgres === 'function') {
+            if (toPostgres.constructor.name !== 'Function') {
+                throw new Error('CTF does not support asynchronous toPostgres functions.');
+            }
+            return {toPostgres, rawType};
         }
     }
     return null;
-}
-
-////////////////////////////////////
-// Validates CTF callback function;
-function verifyCTF(f) {
-    if (f.constructor.name !== 'Function') {
-        throw new Error('CTF does not support asynchronous toPostgres functions.');
-    }
 }
 
 /////////////////////////////////////////
@@ -852,9 +845,9 @@ const $as = {
      *   - `name` - name of the property missing in the formatting object
      *   - `obj` - the formatting object, and is the same as `this` context
      *
-     * - Regular variable formatting:
-     *   - `index` - element's index that's outside of the formatting array's range
-     *   - `arr` - the formatting array, and is the same as `this` context
+     * - Index Variables formatting:
+     *   - `index` - element's index (starts with 1) outside of the input array
+     *   - `arr` - the formatting/input array, and is the same as `this` context
      *
      * @returns {string}
      * Formatted query string.
