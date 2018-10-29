@@ -175,9 +175,9 @@ function Database(cn, dc, config) {
      * This method creates a shared connection for executing a chain of queries against it. The connection must be released
      * in the end of the chain by calling method `done()` on the connection object.
      *
-     * This is an obsolete, low-level approach to chaining queries on the same connection. A newer and safer approach is via
-     * methods {@link Database#task task} and {@link Database#tx tx} (for transactions), which allocate and release a shared
-     * connection automatically.
+     * It should not be used just for chaining queries on the same connection, methods {@link Database#task task} and
+     * {@link Database#tx tx} (for transactions) are to be used for that. This method is primarily for special cases, like
+     * `LISTEN` notifications.
      *
      * **NOTE:** Even though this method exposes a {@link external:Client Client} object via property `client`,
      * you cannot call `client.end()` directly, or it will print an error into the console:
@@ -188,15 +188,15 @@ function Database(cn, dc, config) {
      * Connection Options.
      *
      * @param {boolean} [options.direct=false]
-     * Creates a new connection directly, through the {@link external:Client Client}, bypassing the connection pool.
+     * Creates a new connection directly, as a stand-alone {@link external:Client Client} object, bypassing the connection pool.
      *
-     * By default, all connections are acquired from the connection pool. If you set this option however, the library will instead
+     * By default, all connections are acquired from the connection pool. But if you set this option, the library will instead
      * create a new {@link external:Client Client} object directly (separately from the pool), and then call its `connect` method.
      *
      * **WARNING:**
      *
-     * Do not use this option for regular query execution, because it exclusively occupies one physical connection,
-     * and therefore cannot scale. This option is only suitable for global connection usage, such as event listeners.
+     * Do not use this option for regular query execution, because it exclusively occupies one physical channel, and it cannot scale.
+     * This option is only suitable for global connection usage, such as event listeners.
      *
      * @param {function} [options.onLost]
      * Notification callback of the lost/broken connection, called with the following parameters:
