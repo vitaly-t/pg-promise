@@ -13,13 +13,13 @@
 // Calling it 'pg-subset' to avoid a conflict in case the application also
 // includes the official 'pg' typings.
 //
-// Supported version of pg: 7.4.3 and later.
+// Supported version of pg: 7.7.1 and later.
 //
 // pg: https://github.com/brianc/node-postgres
 //////////////////////////////////////////////////////////////////////////////
 
 import {EventEmitter} from 'events';
-import { checkServerIdentity } from 'tls';
+import {checkServerIdentity} from 'tls';
 
 declare namespace pg {
 
@@ -88,6 +88,7 @@ declare namespace pg {
         parseInputDatesAsUTC?: boolean
         rows?: number
         statement_timeout?: boolean | number
+        query_timeout?: boolean | number
         keepAlive?: boolean
     }
 
@@ -152,6 +153,8 @@ declare namespace pg {
         parseInputDatesAsUTC: boolean
 
         statement_timeout: boolean | number
+
+        query_timeout: boolean | number
     }
 
     class Connection {
