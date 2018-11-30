@@ -27,7 +27,7 @@
  import * as promise from 'bluebird';
  export=promise;
 
- Unfortunately, as of today (TypeScript 2.7.2), it is still impossible to use custom promises
+ Unfortunately, as of today (TypeScript 3.2.1), it is still impossible to use custom promises
  as TypeScript generics, and this is why we still have this file here, so it can be manually patched,
  in order to provide access to the custom API of a third-party promise library.
 
