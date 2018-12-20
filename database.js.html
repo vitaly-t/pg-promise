@@ -941,13 +941,12 @@ function Database(cn, dc, config) {
          * @example
          *
          * db.multi('SELECT * FROM users;SELECT * FROM products')
-         *    .then([users, products]) => {
+         *    .then(([users, products]) => {
          *        // we get data from all queries at once
          *    })
          *    .catch(error => {
          *        // error
          *    });
-         *
          */
         obj.multi = function (query, values) {
             return obj.query.call(this, query, values, npm.special.cache.multiResultQuery)
