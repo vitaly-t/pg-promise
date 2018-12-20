@@ -2767,7 +2767,7 @@ as an override for its internal <code>values</code>.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>db.multi('SELECT * FROM users;SELECT * FROM products')   .spread((users, products) => {       // we get data from all queries at once   })   .catch(error => {       // error   });</code></pre>
+    <pre class="prettyprint"><code>db.multi('SELECT * FROM users;SELECT * FROM products')   .then([users, products]) => {       // we get data from all queries at once   })   .catch(error => {       // error   });</code></pre>
 
 
 
