@@ -28,8 +28,8 @@ const cn = {
 
 const db = pgp(cn); // database instance;
 
-// NOTE: The default ES6 Promise doesn't have methods `.spread` and `.finally`,
-// but they are available within Bluebird library used here as an example.
+// NOTE: The default ES6 Promise doesn't have method `.finally`,
+// but it is available within Bluebird library used here.
 
 db.tx(t => {
     return t.batch([
@@ -37,7 +37,7 @@ db.tx(t => {
         t.one('insert into events(code) values($1) returning id', 123)
     ]);
 })
-    .spread((user, event) => {
+    .then(([user, event]) => {
         // print new user id + new event id;
         console.log('DATA:', user.id, event.id);
     })
