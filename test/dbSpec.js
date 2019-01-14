@@ -329,6 +329,64 @@ describe('Connection', () => {
             expect(error).toEqual(new Error($text.poolDestroyed));
         });
     });
+
+    describe('db side closing of the connection pool', () => {
+        const singleCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+        singleCN.max = 1;
+        const dbSingleCN = pgp(singleCN);
+
+        let error;
+
+        beforeEach(done => {
+            dbSingleCN.connect()
+                .then(obj => {
+
+                    const q = obj.any('SELECT pg_sleep(1);');
+
+                    // Terminate all connections after a short delay
+                    promise.delay(100).then(() => {
+                        return db.query(
+                            'SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid();'
+                        );
+                    })
+                        .then(() => {
+                            return q;
+                        })
+                        .catch(reason => {
+                            error = reason;
+                        })
+                        .finally(() => {
+                            obj.done();
+                            done();
+                        });
+                });
+        });
+        it('returns the postgres error', () => {
+            expect(error instanceof Error).toBe(true);
+            expect(error.code).toEqual('57P01');
+            expect(error.message).toEqual('terminating connection due to administrator command');
+        });
+
+        it('releases the client from the pool', (done) => {
+            let result;
+
+            dbSingleCN.query('SELECT \'1\';')
+                .then((data) => {
+                    result = data;
+                })
+                .catch(reason => {
+                    error = reason;
+                })
+                .then(() => {
+                    expect(error).toBeNull();
+                    expect(isResult(result)).toBe(true);
+                    expect(result.rows.length > 0).toBe(true);
+
+                    done();
+                });
+
+        });
+    });
 });
 
 describe('Direct Connection', () => {
