@@ -343,17 +343,22 @@ describe('Connection', () => {
 
                     const q = obj.any('SELECT pg_sleep(1);');
 
+                    let killQuery;
+
                     // Terminate all connections after a short delay
-                    promise.delay(100).then(() => {
-                        return db.query(
+                    promise.delay(500).then(() => {
+                        killQuery = db.query(
                             'SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid();'
                         );
+
+                        return q;
                     })
-                        .then(() => {
-                            return q;
-                        })
                         .catch(reason => {
                             error = reason;
+                        })
+                        .then(() => {
+                            // Wait for the kill query to return
+                            return killQuery;
                         })
                         .finally(() => {
                             obj.done();
@@ -368,19 +373,18 @@ describe('Connection', () => {
         });
 
         it('releases the client from the pool', (done) => {
-            let result;
+            let result, singleError;
 
-            dbSingleCN.query('SELECT \'1\';')
+            dbSingleCN.query('SELECT \'1\' as test;')
                 .then((data) => {
                     result = data;
                 })
                 .catch(reason => {
-                    error = reason;
+                    singleError = reason;
                 })
                 .then(() => {
-                    expect(error).toBeNull();
-                    expect(isResult(result)).toBe(true);
-                    expect(result.rows.length > 0).toBe(true);
+                    expect(singleError).not.toBeDefined();
+                    expect(result).toEqual([{ test: '1' }]);
 
                     done();
                 });
