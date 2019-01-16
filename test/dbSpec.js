@@ -166,7 +166,7 @@ describe('Connection', () => {
                     .finally(done);
             });
             it('must report the right error', () => {
-                if(!isMacOS) {
+                if (!isMacOS) {
                     // we do not test this on MacOS, because it requires use of password, so the test will fail.
                     expect(log.e.cn).toEqual(errCN);
                 }
@@ -380,13 +380,15 @@ describe('Connection', () => {
                         });
                 });
         });
+
         it('returns the postgres error', () => {
             expect(error instanceof Error).toBe(true);
             expect(error.code).toEqual('57P01');
             expect(error.message).toEqual('terminating connection due to administrator command');
         });
+        /*
 
-        it('releases the client from the pool', (done) => {
+        it('releases the client from the pool', done => {
             let result, singleError;
 
             dbSingleCN.query('SELECT \'1\' as test;')
@@ -399,11 +401,10 @@ describe('Connection', () => {
                 .then(() => {
                     expect(singleError).not.toBeDefined();
                     expect(result).toEqual([{ test: '1' }]);
-
                     done();
                 });
-
         });
+        */
     });
 });
 
