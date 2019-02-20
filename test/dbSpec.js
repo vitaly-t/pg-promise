@@ -343,69 +343,6 @@ describe('Connection', () => {
             expect(error).toEqual(new Error($text.poolDestroyed));
         });
     });
-
-    describe('db side closing of the connection pool', () => {
-        const singleCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-        singleCN.max = 1;
-        const dbSingleCN = pgp(singleCN);
-
-        let error;
-
-        beforeEach(done => {
-            dbSingleCN.connect()
-                .then(obj => {
-
-                    const q = obj.any('SELECT pg_sleep(1);');
-
-                    let killQuery;
-
-                    // Terminate all connections after a short delay
-                    promise.delay(500).then(() => {
-                        killQuery = db.query(
-                            'SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid();'
-                        );
-
-                        return q;
-                    })
-                        .catch(reason => {
-                            error = reason;
-                        })
-                        .then(() => {
-                            // Wait for the kill query to return
-                            return killQuery;
-                        })
-                        .finally(() => {
-                            obj.done();
-                            done();
-                        });
-                });
-        });
-
-        it('returns the postgres error', () => {
-            expect(error instanceof Error).toBe(true);
-            expect(error.code).toEqual('57P01');
-            expect(error.message).toEqual('terminating connection due to administrator command');
-        });
-        /*
-
-        it('releases the client from the pool', done => {
-            let result, singleError;
-
-            dbSingleCN.query('SELECT \'1\' as test;')
-                .then((data) => {
-                    result = data;
-                })
-                .catch(reason => {
-                    singleError = reason;
-                })
-                .then(() => {
-                    expect(singleError).not.toBeDefined();
-                    expect(result).toEqual([{ test: '1' }]);
-                    done();
-                });
-        });
-        */
-    });
 });
 
 describe('Direct Connection', () => {
