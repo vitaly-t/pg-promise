@@ -254,7 +254,7 @@ describe('TableName', () => {
                 }).toThrow(error);
                 expect(() => {
                     new helpers.TableName(123);
-                }).toThrow(error);
+                }).toThrow('Invalid "options" parameter: 123');
                 expect(() => {
                     new helpers.TableName('');
                 }).toThrow(error);
@@ -423,7 +423,7 @@ describe('Column', () => {
             }).toThrow(error);
             expect(() => {
                 new helpers.Column(123);
-            }).toThrow(error);
+            }).toThrow('Invalid "options" parameter: 123');
         });
         it('must throw on invalid input name', () => {
             expect(() => {
@@ -747,10 +747,9 @@ describe('ColumnSet', () => {
         });
 
         it('must throw on invalid options', () => {
-            const error = 'Invalid parameter \'options\' specified.';
             expect(() => {
                 new helpers.ColumnSet({}, 123);
-            }).toThrow(error);
+            }).toThrow('Invalid "options" parameter: 123');
         });
     });
 
