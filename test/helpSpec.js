@@ -423,7 +423,7 @@ describe('Column', () => {
             }).toThrow(error);
             expect(() => {
                 new helpers.Column(123);
-            }).toThrow(error);
+            }).toThrow('Invalid "options" parameter: 123');
         });
         it('must throw on invalid input name', () => {
             expect(() => {
