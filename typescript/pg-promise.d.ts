@@ -8,7 +8,7 @@
  */
 
 /////////////////////////////////////////
-// Requires pg-promise v8.5.3 or later.
+// Requires pg-promise v8.6.0 or later.
 /////////////////////////////////////////
 
 import * as XPromise from './ext-promise'; // External Promise Provider
@@ -36,7 +36,7 @@ declare namespace pgPromise {
 
     type TFormattingOptions = {
         partial?: boolean
-        default?: any
+        def?: any
     };
 
     interface ILostContext {

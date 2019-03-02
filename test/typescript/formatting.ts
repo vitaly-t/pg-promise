@@ -38,7 +38,7 @@ class CTF {
 
 const ctf = new CTF();
 
-const testCTF = pgp.as.format(ctf);
+const testCTF = pgp.as.format(ctf, null, {def: 1});
 
 const testFunc1 = pgp.as.func(() => {
 });

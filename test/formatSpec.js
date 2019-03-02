@@ -778,9 +778,9 @@ describe('Method as.format', () => {
 
         describe('default', () => {
             it('must replace missing variables', () => {
-                expect(pgp.as.format('$1, $2', [1], {default: undefined})).toBe('1, null');
-                expect(pgp.as.format('$1, $2', [1], {default: null})).toBe('1, null');
-                expect(pgp.as.format('${present}, ${missing}', {present: 1}, {default: 2})).toBe('1, 2');
+                expect(pgp.as.format('$1, $2', [1], {def: undefined})).toBe('1, null');
+                expect(pgp.as.format('$1, $2', [1], {def: null})).toBe('1, null');
+                expect(pgp.as.format('${present}, ${missing}', {present: 1}, {def: 2})).toBe('1, 2');
             });
             it('must invoke a callback correctly', () => {
                 let value, context, param;
@@ -793,13 +793,13 @@ describe('Method as.format', () => {
                 }
 
                 const arr = ['hi'];
-                expect(pgp.as.format('$1, $2', arr, {default: cb})).toBe('\'hi\', 123');
+                expect(pgp.as.format('$1, $2', arr, {def: cb})).toBe('\'hi\', 123');
                 expect(context === arr).toBe(true);
                 expect(param === arr).toBe(true);
                 expect(value).toBe(1);
 
                 const obj = {first: 'f'};
-                expect(pgp.as.format('${first}, ${  second^ \t}', obj, {default: cb})).toBe('\'f\', 123');
+                expect(pgp.as.format('${first}, ${  second^ \t}', obj, {def: cb})).toBe('\'f\', 123');
                 expect(context === obj).toBe(true);
                 expect(param === obj).toBe(true);
                 expect(value).toBe('second');
@@ -1030,7 +1030,7 @@ describe('Nested Named Parameters', () => {
 
     describe('default values', () => {
         it('must be formatted correctly', () => {
-            expect(pgp.as.format('${one.two.three}', {}, {'default': 123})).toBe('123');
+            expect(pgp.as.format('${one.two.three}', {}, {def: 123})).toBe('123');
         });
     });
 
@@ -1074,7 +1074,7 @@ describe('Nested Named Parameters', () => {
             });
         });
 
-        describe('for default values', () => {
+        describe('for "def" values', () => {
             it('must represent the source object', () => {
                 const obj = {
                     value: 1,
@@ -1085,15 +1085,15 @@ describe('Nested Named Parameters', () => {
                         }
                     }
                 };
-                expect(pgp.as.format('${one.two.three}', obj, {'default': (name, o) => o.value})).toBe('1');
+                expect(pgp.as.format('${one.two.three}', obj, {def: (name, o) => o.value})).toBe('1');
                 expect(pgp.as.format('${one.two.three}', obj, {
-                    'default': function () {
+                    def: function () {
                         return this.value;
                     }
                 })).toBe('1');
             });
             it('must pass in the full property name', () => {
-                expect(pgp.as.format('${one.two.three}', {}, {'default': name => name})).toBe('\'one.two.three\'');
+                expect(pgp.as.format('${one.two.three}', {}, {def: name => name})).toBe('\'one.two.three\'');
             });
         });
 

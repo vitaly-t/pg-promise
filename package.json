@@ -58,6 +58,6 @@
     "jasmine-node": "1.16.2",
     "jsdoc": "3.5.5",
     "pg-query-stream": "2.0.0",
-    "typescript": "3.3.3"
+    "typescript": "3.3.3333"
   }
 }
