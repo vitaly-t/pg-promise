@@ -148,7 +148,7 @@ describe('Library entry function', () => {
     });
 
     describe('with invalid options parameter', () => {
-        const errBody = 'Invalid initialization options: ';
+        const errBody = 'Invalid "options" parameter: ';
         it('must throw an error', () => {
             expect(() => {
                 header(123);
@@ -156,19 +156,6 @@ describe('Library entry function', () => {
             expect(() => {
                 header('hello');
             }).toThrow(errBody + '"hello"');
-        });
-    });
-
-    describe('with invalid options', () => {
-        let txt;
-        beforeEach(() => {
-            const c = capture();
-            header({test: 123});
-            txt = c();
-        });
-
-        it('must throw an error', () => {
-            expect(txt).toContain('WARNING: Invalid property \'test\' in initialization options.');
         });
     });
 
