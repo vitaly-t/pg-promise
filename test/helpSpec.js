@@ -254,7 +254,7 @@ describe('TableName', () => {
                 }).toThrow(error);
                 expect(() => {
                     new helpers.TableName(123);
-                }).toThrow(error);
+                }).toThrow('Invalid "options" parameter: 123');
                 expect(() => {
                     new helpers.TableName('');
                 }).toThrow(error);
