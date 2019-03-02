@@ -1,6 +1,5 @@
 'use strict';
 
-const capture = require('./db/capture');
 const PromiseAdapter = require('../lib/index').PromiseAdapter;
 const supportsPromise = typeof(Promise) !== 'undefined';
 
