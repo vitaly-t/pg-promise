@@ -747,10 +747,9 @@ describe('ColumnSet', () => {
         });
 
         it('must throw on invalid options', () => {
-            const error = 'Invalid parameter \'options\' specified.';
             expect(() => {
                 new helpers.ColumnSet({}, 123);
-            }).toThrow(error);
+            }).toThrow('Invalid "options" parameter: 123');
         });
     });
 
