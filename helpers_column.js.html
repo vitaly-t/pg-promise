@@ -39,6 +39,7 @@
 'use strict';
 
 const npm = {
+    assertOptions: require('assert-options'),
     os: require('os'),
     utils: require('../utils'),
     formatting: require('../formatting'),
@@ -171,7 +172,8 @@ function Column(col) {
             this.cnd = info.cnd;
         }
     } else {
-        if (col &amp;&amp; typeof col === 'object' &amp;&amp; 'name' in col) {
+        col = npm.assertOptions(col, ['name', 'prop', 'mod', 'cast', 'cnd', 'def', 'init', 'skip']);
+        if ('name' in col) {
             if (!npm.utils.isText(col.name)) {
                 throw new TypeError('Invalid \'name\' value: ' + JSON.stringify(col.name) + '. A non-empty string was expected.');
             }

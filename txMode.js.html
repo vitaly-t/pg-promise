@@ -39,6 +39,7 @@
 'use strict';
 
 const npm = {
+    assertOptions: require('assert-options'),
     utils: require('./utils')
 };
 
@@ -141,6 +142,7 @@ function TransactionMode(tiLevel, readOnly, deferrable) {
     }
 
     if (tiLevel &amp;&amp; typeof tiLevel === 'object') {
+        npm.assertOptions(tiLevel, ['tiLevel', 'deferrable', 'readOnly']);
         readOnly = tiLevel.readOnly;
         deferrable = tiLevel.deferrable;
         tiLevel = tiLevel.tiLevel;

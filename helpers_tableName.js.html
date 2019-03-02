@@ -39,6 +39,7 @@
 'use strict';
 
 const npm = {
+    assertOptions: require('assert-options'),
     utils: require('../utils'),
     formatting: require('../formatting')
 };
@@ -100,7 +101,8 @@ function TableName(table, schema) {
         return new TableName(table, schema);
     }
 
-    if (table &amp;&amp; typeof table === 'object' &amp;&amp; 'table' in table) {
+    if (typeof table !== 'string') {
+        table = npm.assertOptions(table, ['table', 'schema']);
         schema = table.schema;
         table = table.table;
     }

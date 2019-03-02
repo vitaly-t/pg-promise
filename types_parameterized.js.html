@@ -39,6 +39,7 @@
 'use strict';
 
 const npm = {
+    assertOptions: require('assert-options'),
     os: require('os'),
     utils: require('../utils'),
     errors: require('../errors'),
@@ -133,6 +134,16 @@ function ParameterizedQuery(text, values) {
         rowMode: undefined
     };
 
+    if (text &amp;&amp; typeof text === 'object' &amp;&amp; 'text' in text) {
+        text = npm.assertOptions(text, ['text', 'values', 'binary', 'rowMode']);
+        state.text = text.text;
+        state.binary = text.binary;
+        state.rowMode = text.rowMode;
+        setValues(text.values);
+    } else {
+        setValues(values);
+    }
+
     function setValues(v) {
         if (Array.isArray(v)) {
             if (v.length) {
@@ -148,8 +159,6 @@ function ParameterizedQuery(text, values) {
             }
         }
     }
-
-    setValues(values);
 
     /**
      * @name ParameterizedQuery#text
@@ -246,13 +255,6 @@ function ParameterizedQuery(text, values) {
             return currentError;
         }
     });
-
-    if (npm.utils.isObject(text, ['text'])) {
-        state.text = text.text;
-        state.binary = text.binary;
-        state.rowMode = text.rowMode;
-        setValues(text.values);
-    }
 
     /**
      * @method ParameterizedQuery#parse

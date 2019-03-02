@@ -39,6 +39,7 @@
 'use strict';
 
 const npm = {
+    assertOptions: require('assert-options'),
     os: require('os'),
     utils: require('../utils'),
     errors: require('../errors'),
@@ -139,6 +140,18 @@ function PreparedStatement(name, text, values) {
         rows: undefined
     };
 
+    if (name &amp;&amp; typeof name === 'object' &amp;&amp; 'name' in name) {
+        name = npm.assertOptions(name, ['name', 'text', 'binary', 'rowMode', 'rows', 'values']);
+        state.name = name.name;
+        state.text = name.text;
+        state.binary = name.binary;
+        state.rowMode = name.rowMode;
+        state.rows = name.rows;
+        setValues(name.values);
+    } else {
+        setValues(values);
+    }
+
     function setValues(v) {
         if (Array.isArray(v)) {
             if (v.length) {
@@ -154,8 +167,6 @@ function PreparedStatement(name, text, values) {
             }
         }
     }
-
-    setValues(values);
 
     /**
      * @name PreparedStatement#name
@@ -292,15 +303,6 @@ function PreparedStatement(name, text, values) {
             return currentError;
         }
     });
-
-    if (npm.utils.isObject(name, ['name'])) {
-        state.name = name.name;
-        state.text = name.text;
-        state.binary = name.binary;
-        state.rowMode = name.rowMode;
-        state.rows = name.rows;
-        setValues(name.values);
-    }
 
     /**
      * @method PreparedStatement#parse

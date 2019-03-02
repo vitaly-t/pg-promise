@@ -39,6 +39,7 @@
 'use strict';
 
 const npm = {
+    assertOptions: require('assert-options'),
     result: require('./result'),
     special: require('./special'),
     Context: require('./cnContext'),
@@ -360,6 +361,7 @@ function Database(cn, dc, config) {
             })
             .catch(error => {
                 ctx.disconnect();
+
                 return $p.reject(error);
             });
     };
@@ -1281,7 +1283,7 @@ function Database(cn, dc, config) {
          *
          * db.task('my-task', t => {
          *         // t.ctx = task context object
-         *         
+         *
          *         return t.one('SELECT id FROM Users WHERE name = $1', 'John')
          *             .then(user => {
          *                 return t.any('SELECT * FROM Events WHERE userId = $1', user.id);
@@ -1314,7 +1316,9 @@ function Database(cn, dc, config) {
          *
          */
         obj.task = function () {
-            return taskProcessor.call(this, npm.pubUtils.taskArgs(arguments), false);
+            const args = npm.pubUtils.taskArgs(arguments);
+            npm.assertOptions(args.options, ['tag']);
+            return taskProcessor.call(this, args, false);
         };
 
         /**
@@ -1371,6 +1375,7 @@ function Database(cn, dc, config) {
          */
         obj.taskIf = function () {
             const args = npm.pubUtils.taskArgs(arguments);
+            npm.assertOptions(args.options, ['tag', 'cnd']);
             try {
                 let cnd = args.options.cnd;
                 if ('cnd' in args.options) {
@@ -1442,7 +1447,7 @@ function Database(cn, dc, config) {
          *
          * db.tx('my-transaction', t => {
          *         // t.ctx = transaction context object
-         *         
+         *
          *         return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])
          *             .then(user => {
          *                 return t.batch([
@@ -1478,7 +1483,9 @@ function Database(cn, dc, config) {
          *
          */
         obj.tx = function () {
-            return taskProcessor.call(this, npm.pubUtils.taskArgs(arguments), true);
+            const args = npm.pubUtils.taskArgs(arguments);
+            npm.assertOptions(args.options, ['tag', 'mode']);
+            return taskProcessor.call(this, args, true);
         };
 
         /**
@@ -1550,6 +1557,7 @@ function Database(cn, dc, config) {
          */
         obj.txIf = function () {
             const args = npm.pubUtils.taskArgs(arguments);
+            npm.assertOptions(args.options, ['tag', 'mode', 'cnd', 'reusable']);
             try {
                 let cnd;
                 if ('cnd' in args.options) {
