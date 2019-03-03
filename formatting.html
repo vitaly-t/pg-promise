@@ -1739,7 +1739,7 @@ not allowed to be <code>null</code> or <code>undefined</code>, or the method wil
 
             <td class="description last"><p>Indicates that we intend to do only a partial replacement, i.e. throw no error when encountering a variable or
 property name that's missing within the formatting parameters.</p>
-<p>This option has no meaning when option <code>def</code> is present.</p></td>
+<p><strong>NOTE:</strong> This option has no meaning when option <code>def</code> is used.</p></td>
         </tr>
 
     
@@ -1776,22 +1776,23 @@ property name that's missing within the formatting parameters.</p>
                 </td>
             
 
-            <td class="description last"><p>Sets a default value for every variable that's missing, consequently preventing errors when encountering a variable
+            <td class="description last"><p>Sets default value for every variable that's missing, consequently preventing errors when encountering a variable
 or property name that's missing within the formatting parameters.</p>
 <p>It can also be set to a function, to be called with two parameters that depend on the type of formatting being used,
 and to return the actual default value:</p>
 <ul>
-<li><p>Named Parameters formatting:</p>
+<li><p>For <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting:</p>
 <ul>
 <li><code>name</code> - name of the property missing in the formatting object</li>
 <li><code>obj</code> - the formatting object, and is the same as <code>this</code> context</li>
 </ul>
 </li>
-<li><p>Index Variables formatting:</p>
+<li><p>For <a href="https://github.com/vitaly-t/pg-promise#index-variables">Index Variables</a> formatting:</p>
 <ul>
-<li><code>index</code> - element's index (starts with 1) outside of the input array</li>
+<li><code>index</code> - element's index (starts with 1) that's outside of the input array</li>
 <li><code>arr</code> - the formatting/input array, and is the same as <code>this</code> context</li>
 </ul>
+<p>You can tell which type of call it is by checking the type of the first parameter.</p>
 </li>
 </ul></td>
         </tr>
