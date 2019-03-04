@@ -129,8 +129,6 @@ describe('QueryFile / Positive:', () => {
     describe('property options', () => {
         const options1 = {
                 debug: utils.isDev(),
-                minify: false,
-                compress: false,
                 noWarnings: true
             },
             options2 = {
