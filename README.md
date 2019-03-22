@@ -376,8 +376,9 @@ db.any('SELECT * FROM products $1:raw', where);
 
 Special syntax `this:raw` / `this^` is supported, to inject the formatting object as raw JSON string.
 
-**WARNING:**<br/>
+**WARNING:**<br/><span style="color:red;">
 This filter is unsafe, and should not be used for values that come from the user input, as it may result in [SQL injection].
+</span>
 
 ### Open Values
 
@@ -401,8 +402,9 @@ open-value syntax to add the extra search logic:
 SELECT * FROM table WHERE name LIKE '%$1:value%')
 ```
 
-**WARNING:**<br/>
+**WARNING:**<br/><span style="color:red;">
 This filter is unsafe, and should not be used for values that come from the user input, as it may result in [SQL injection].
+</span>
 
 Method [as.value] implements the formatting.
 
