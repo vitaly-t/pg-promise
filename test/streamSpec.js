@@ -4,6 +4,8 @@ const QueryStream = require('pg-query-stream');
 const JSONStream = require('JSONStream');
 const header = require('./db/header');
 const promise = header.defPromise;
+const Transform = require('stream').Transform;
+const pump = require('pump');
 
 const options = {
     promiseLib: promise,
@@ -193,6 +195,58 @@ describe('Method stream', () => {
             });
         });
 
+    });
+
+    describe('with a downstream error through pump', ()=>{
+        let res, streamError;
+        const qs = new QueryStream('select * from users');
+        beforeEach(done => {
+            db.stream.call(qs, qs, (stream) => {
+                const errorOnItemStream = new Transform({
+                    objectMode: true,
+                    transform: function(chunk, encoding, callback) {
+                        callback(new Error('Intentional Error'));
+                    }
+                });
+
+                pump(
+                    stream,
+                    errorOnItemStream,
+                    err => streamError = err
+                );
+            })
+                .then(data => {
+                    res = data;
+                })
+                .finally(done);
+        });
+        it('must return the correct data', () => {
+            expect(typeof(res)).toBe('object');
+            expect(res.processed).toBeGreaterThan(-1);
+            expect(res.duration >= 0).toBe(true);
+            expect(streamError.message).toBe('Intentional Error');
+        });
+        afterEach(() => {
+            options.query = null;
+        });
+    });
+
+    describe('with initialization closing the stream', () => {
+        let res;
+        beforeEach(done => {
+            db.stream(new QueryStream('select * from users'), (stream) => {
+                stream.close();
+            })
+                .then(data => {
+                    res = data;
+                })
+                .finally(done);
+        });
+        it('must return with zero processed', () => {
+            expect(typeof(res)).toBe('object');
+            expect(res.processed).toBe(0);
+            expect(res.duration >= 0).toBe(true);
+        });
     });
 });
 
