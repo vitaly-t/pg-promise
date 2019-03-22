@@ -376,6 +376,9 @@ db.any('SELECT * FROM products $1:raw', where);
 
 Special syntax `this:raw` / `this^` is supported, to inject the formatting object as raw JSON string.
 
+**WARNING:** This filter is unsafe, and caution is advised not to use it for values that come from the user input,
+as it may result in SQL injection.
+
 ### Open Values
 
 When a variable ends with `:value`, or shorter syntax `#`, it is escaped as usual, except when its type is a string,
@@ -397,6 +400,9 @@ open-value syntax to add the extra search logic:
 ```sql
 SELECT * FROM table WHERE name LIKE '%$1:value%')
 ```
+
+**WARNING:** This filter is unsafe, and caution is advised not to use it for values that come from the user input,
+as it may result in SQL injection.
 
 Method [as.value] implements the formatting.
 
