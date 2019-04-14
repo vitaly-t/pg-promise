@@ -11,7 +11,7 @@ const col1: Column = new pgp.helpers.Column({
     def: 888,
     cast: '',
     cnd: true,
-    init: (col) => {
+    init: function (col) {
         const e = col.exists;
         return this.test;
     },
