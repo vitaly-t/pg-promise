@@ -343,6 +343,62 @@ describe('Connection', () => {
             expect(error).toEqual(new Error($text.poolDestroyed));
         });
     });
+
+    describe('db side closing of the connection pool', () => {
+        const singleCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+        singleCN.max = 1;
+        const dbSingleCN = pgp(singleCN);
+
+        let error;
+
+        beforeEach(done => {
+            dbSingleCN.connect()
+                .then(obj => {
+                    obj.any('SELECT pg_backend_pid()').then((res) => {
+                        const pid = res[0].pg_backend_pid;
+                        return promise.all([
+                            obj.any('SELECT pg_sleep(2);').catch(reason => {
+                                error = reason;
+                            }),
+                            // Terminate connection after a short delay, before the query finishes
+                            promise.delay(1000).then(() => {
+                                return db.query(
+                                    'SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid
+                                );
+                            })
+                        ]).finally(() => {
+                            obj.done(error);
+                            done();
+                        });
+                    });
+                });
+        });
+
+        it('returns the postgres error', () => {
+            expect(error instanceof Error).toBe(true);
+            expect(error.code).toEqual('57P01');
+            expect(error.message).toEqual('terminating connection due to administrator command');
+        });
+
+        it('releases the client from the pool', (done) => {
+            let result, singleError;
+
+            dbSingleCN.query('SELECT \'1\' as test;')
+                .then((data) => {
+                    result = data;
+                })
+                .catch(reason => {
+                    singleError = reason;
+                })
+                .then(() => {
+                    expect(singleError).not.toBeDefined();
+                    expect(result).toEqual([{ test: '1' }]);
+
+                    done();
+                });
+
+        });
+    });
 });
 
 describe('Direct Connection', () => {
@@ -1130,7 +1186,7 @@ describe('Transactions', () => {
                     result = data;
                     done();
                 });
-        });
+        }, 20000);
 
         it('must not fail', () => {
             expect(THIS === context).toBe(true);
@@ -1425,6 +1481,50 @@ describe('Transactions', () => {
         });
         afterEach(() => {
             delete options.query;
+        });
+    });
+
+    describe('db side closing of the connection during slow-verify', () => {
+        // dumb connection cloning;
+        const singleCN = JSON.parse(JSON.stringify(dbHeader.cn));
+        singleCN.max = 1;
+        // simulate a slow verify call;
+        singleCN.verify = (client, done) => {
+            client.on('error', () => {
+                // Ignore
+            });
+            client.query('SELECT pg_sleep(3);', done);
+        };
+        const dbSingleCN = pgp(singleCN);
+
+        let error;
+
+        beforeEach(done => {
+            Promise.all([
+                dbSingleCN.connect().then((obj) => {
+                    obj.done();
+                }, reason => {
+                    error = reason;
+                })
+                ,
+                // Terminate the connections during verify, which causes an 'error' event from the pool
+                promise.delay(500).then(() => {
+                    return db.query(
+                        'SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid();'
+                    );
+                })
+            ]).then(() => {
+                done();
+            }, (err) => {
+                done(err);
+            });
+        });
+
+        it('returns the postgres error', () => {
+            expect(error instanceof Error).toBe(true);
+
+            expect(error.code).toEqual('57P01');
+            expect(error.message).toEqual('terminating connection due to administrator command');
         });
     });
 });
