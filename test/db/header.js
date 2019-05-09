@@ -16,7 +16,7 @@ defPromise.config({
 const cn = {
     host: 'localhost', // server name or IP address;
     port: 5432, // default port;
-    database: 'postgres', // local database name for testing;
+    database: 'pg_promise_test', // local database name for testing;
     user: 'postgres' // user name;
     // password: - add password, if needed;
 };
