@@ -13,7 +13,7 @@
 // Calling it 'pg-subset' to avoid a conflict in case the application also
 // includes the official 'pg' typings.
 //
-// Supported version of pg: 7.8.0 and later.
+// Supported version of pg: 7.10.0 and later.
 //
 // pg: https://github.com/brianc/node-postgres
 //////////////////////////////////////////////////////////////////////////////
@@ -25,6 +25,7 @@ declare namespace pg {
 
     interface IColumn {
         name: string
+        oid: number
         dataTypeID: number
 
         // NOTE: properties below are not available within Native Bindings:
@@ -43,8 +44,15 @@ declare namespace pg {
         fields: IColumn[]
 
         // properties below are not available within Native Bindings:
-
         rowAsArray: boolean
+
+        _types: {
+            _types: any,
+            text: any,
+            binary: any
+        };
+        _parsers: Array<Function>;
+
     }
 
     // SSL configuration;
