@@ -354,23 +354,27 @@ describe('Connection', () => {
         beforeEach(done => {
             dbSingleCN.connect()
                 .then(obj => {
-                    obj.any('SELECT pg_backend_pid()').then((res) => {
-                        const pid = res[0].pg_backend_pid;
-                        return promise.all([
-                            obj.any('SELECT pg_sleep(2);').catch(reason => {
-                                error = reason;
-                            }),
-                            // Terminate connection after a short delay, before the query finishes
-                            promise.delay(1000).then(() => {
-                                return db.query(
-                                    'SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid
-                                );
-                            })
-                        ]).finally(() => {
-                            obj.done(error);
-                            done();
+                    obj.func('pg_backend_pid')
+                        .then((res) => {
+                            const pid = res[0].pg_backend_pid;
+                            return promise.all([
+                                obj.proc('pg_sleep', [1])
+                                    .catch(reason => {
+                                        error = reason;
+                                    }),
+                                // Terminate connection after a short delay, before the query finishes
+                                promise.delay(500)
+                                    .then(() => {
+                                        return db.one(
+                                            'SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid
+                                        );
+                                    })
+                            ])
+                                .finally(() => {
+                                    obj.done(error);
+                                    done();
+                                });
                         });
-                    });
                 });
         });
 
@@ -392,7 +396,7 @@ describe('Connection', () => {
                 })
                 .then(() => {
                     expect(singleError).not.toBeDefined();
-                    expect(result).toEqual([{ test: '1' }]);
+                    expect(result).toEqual([{test: '1'}]);
 
                     done();
                 });
@@ -1522,9 +1526,8 @@ describe('Transactions', () => {
 
         it('returns the postgres error', () => {
             expect(error instanceof Error).toBe(true);
-
-            expect(error.code).toEqual('57P01');
-            expect(error.message).toEqual('terminating connection due to administrator command');
+            expect(error.code === '57P01' || error.code === 'read ECONNRESET').toBeTruthy();
+            expect(error.message === 'terminating connection due to administrator command' || error.code === 'read ECONNRESET').toBeTruthy();
         });
     });
 });

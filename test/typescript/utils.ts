@@ -1,6 +1,4 @@
 import * as pgPromise from '../../typescript/pg-promise';
-import {TSqlBuildConfig} from "../../typescript/pg-promise";
-import {TransactionMode} from "../../typescript/pg-promise";
 
 const utils = pgPromise.utils;
 
