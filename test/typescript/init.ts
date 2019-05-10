@@ -20,7 +20,6 @@ interface Test {
 
 const db = <pgPromise.IDatabase<Test> & Test>pgp({
     isDomainSocket: true,
-    poolSize: 20,
     min: 0,
     max: 20,
     application_name: 'my-app'

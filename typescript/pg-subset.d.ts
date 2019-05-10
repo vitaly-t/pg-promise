@@ -13,7 +13,7 @@
 // Calling it 'pg-subset' to avoid a conflict in case the application also
 // includes the official 'pg' typings.
 //
-// Supported version of pg: 7.10.0 and later.
+// Supported version of pg: 7.11.0 and later.
 //
 // pg: https://github.com/brianc/node-postgres
 //////////////////////////////////////////////////////////////////////////////
@@ -75,11 +75,11 @@ declare namespace pg {
     // 2) https://github.com/brianc/node-pg-pool
     type TConnectionParameters = {
         connectionString?: string
+        host?: string
         database?: string
         user?: string
         password?: string
         port?: number
-        host?: string
         ssl?: boolean | TSSLConfig
         binary?: boolean
         client_encoding?: string
@@ -87,18 +87,18 @@ declare namespace pg {
         application_name?: string
         fallback_application_name?: string
         isDomainSocket?: boolean
-        poolSize?: number // is the same as `max` below
-        max?: number // replaces `poolSize`
+        max?: number
         min?: number
         idleTimeoutMillis?: number
-        reapIntervalMillis?: number
-        returnToHead?: boolean
-        poolLog?: boolean | (() => void)
         parseInputDatesAsUTC?: boolean
         rows?: number
         statement_timeout?: boolean | number
         query_timeout?: boolean | number
+        connect_timeout?: number
+        keepAliveInitialDelayMillis?: number
         keepAlive?: boolean
+        keepalives?: number
+        keepalives_idle?: number
     }
 
     // Interface of 'pg-types' module;
@@ -117,39 +117,34 @@ declare namespace pg {
         // database host. defaults to localhost
         host: string
 
-        //database user's name
+        // database user's name
         user: string
 
-        //name of database to connect
+        // name of database to connect
         database: string
 
-        //database user's password
+        // database user's password
         password: string
 
-        //database port
+        // database port
         port: number
 
-        //number of rows to return at a time from a prepared statement's
-        //portal. 0 will return all rows at once
+        // number of rows to return at a time from a prepared statement's
+        // portal. 0 will return all rows at once
         rows: number
 
         // binary result mode
         binary: boolean
 
-        //Connection pool options - see https://github.com/coopernurse/node-pool
-        //number of connections to use in connection pool
-        //0 will disable connection pooling
-        poolSize: number
+        // Connection pool options - see https://github.com/brianc/node-pg-pool
 
-        //max milliseconds a client can go unused before it is removed
-        //from the pool and destroyed
+        // number of connections to use in connection pool
+        // 0 will disable connection pooling
+        max: 10,
+
+        // max milliseconds a client can go unused before it is removed
+        // from the pool and destroyed
         idleTimeoutMillis: number
-
-        //frequency to check for idle clients within the client pool
-        reapIntervalMillis: number
-
-        //pool log function / boolean
-        poolLog: boolean | (() => void)
 
         client_encoding: string
 
@@ -161,9 +156,18 @@ declare namespace pg {
 
         parseInputDatesAsUTC: boolean
 
+        // max milliseconds any query using this connection will execute for before timing out in error.
+        // false=unlimited
         statement_timeout: boolean | number
 
+        // max milliseconds to wait for query to complete (client side)
         query_timeout: boolean | number
+
+        connect_timeout: number
+
+        keepalives: number
+
+        keepalives_idle: number
     }
 
     class Connection {
