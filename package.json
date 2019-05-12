@@ -44,7 +44,7 @@
     "assert-options": "0.1.3",
     "manakin": "0.5.2",
     "pg": "7.11.0",
-    "pg-minify": "1.2.0",
+    "pg-minify": "1.2.3",
     "spex": "2.2.0"
   },
   "devDependencies": {
@@ -56,7 +56,7 @@
     "tslint": "5.16.0",
     "istanbul": "0.4.5",
     "jasmine-node": "1.16.2",
-    "jsdoc": "3.6.1",
+    "jsdoc": "3.6.2",
     "pg-query-stream": "2.0.0",
     "typescript": "3.4.5"
   }
