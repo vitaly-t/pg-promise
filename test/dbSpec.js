@@ -358,12 +358,12 @@ describe('Connection', () => {
                         .then(res => {
                             const pid = res[0].pg_backend_pid;
                             return promise.all([
-                                obj.proc('pg_sleep', [1])
+                                obj.proc('pg_sleep', [2])
                                     .catch(reason => {
                                         error = reason;
                                     }),
                                 // Terminate connection after a short delay, before the query finishes
-                                promise.delay(500)
+                                promise.delay(1000)
                                     .then(() =>
                                         db.one('SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid)
                                     )
