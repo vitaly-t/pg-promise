@@ -44,11 +44,11 @@
     "assert-options": "0.1.3",
     "manakin": "0.5.2",
     "pg": "7.11.0",
-    "pg-minify": "1.2.3",
+    "pg-minify": "1.4.1",
     "spex": "2.2.0"
   },
   "devDependencies": {
-    "@types/node": "12.0.0",
+    "@types/node": "12.0.2",
     "JSONStream": "1.3.5",
     "bluebird": "3.5.4",
     "coveralls": "3.0.3",
