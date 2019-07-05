@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "8.7.2",
+  "version": "8.7.3",
   "description": "Promises interface for PostgreSQL",
   "main": "lib/index.js",
   "typings": "typescript/pg-promise.d.ts",
