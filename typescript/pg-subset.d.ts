@@ -140,7 +140,7 @@ declare namespace pg {
 
         // number of connections to use in connection pool
         // 0 will disable connection pooling
-        max: 10,
+        max: number,
 
         // max milliseconds a client can go unused before it is removed
         // from the pool and destroyed
