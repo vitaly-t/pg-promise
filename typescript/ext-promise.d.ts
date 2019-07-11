@@ -17,26 +17,22 @@
 
  Example of enabling declarations for Bluebird:
 
- 1. Install Bluebird ambient TypeScript as you normally would:
- $ typings install bluebird --ambient --save
-
- 2. Add the reference path here, similar to this:
- /// <reference path='../../../typings/main' />
-
- 3. Replace line `export=Promise` with the following:
+ 1. Install Bluebird ambient TypeScript as you normally would;
+ 2. Replace line `export = Promise` with the following:
  import * as promise from 'bluebird';
- export=promise;
+ export = promise;
 
- Unfortunately, as of today (TypeScript 3.2.1), it is still impossible to use custom promises
- as TypeScript generics, and this is why we still have this file here, so it can be manually patched,
+ Unfortunately, as of today (TypeScript 3.5), it is still impossible to use custom promises as
+ TypeScript generics, and this is why we still have this file here, so it can be manually patched,
  in order to provide access to the custom API of a third-party promise library.
 
- You can find research details on this matter from the following link:
+ You can find research details on this matter from the following links:
  http://stackoverflow.com/questions/36593087/using-a-custom-promise-as-a-generic-type
+ https://github.com/Microsoft/TypeScript/issues/1213
 
- In the meantime, if you do not want to get changes here overridden during an update or deployment,
- it may be a good idea to copy all of the *.ts files into your own project, and use them locally.
-
+ In the meantime, if you decide to go ahead with this change, and do not want to get changes here overridden
+ during an update or deployment, it may be a good idea to copy all of the *.ts files into your own project,
+ and use them locally.
  */
 
 export = Promise; // Using ES6 Promise declarative syntax by default
