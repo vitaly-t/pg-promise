@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-pg-pool.html">pg-pool</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-Result.html">Result</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-Symbol.html">Symbol</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -44,36 +44,53 @@
 
 
     <section>
-        <article><h2>Installing</h2><pre class="prettyprint source"><code>$ npm install pg-promise</code></pre><h2>Initialization</h2><p>Loading and initializing the library with <a href="http://vitaly-t.github.io/pg-promise/module-pg-promise.html">Initialization Options</a>:</p>
+        <article><h2>Installing</h2>
+<pre class="prettyprint source"><code>$ npm install pg-promise
+</code></pre>
+<h2>Initialization</h2>
+<p>Loading and initializing the library with <a href="http://vitaly-t.github.io/pg-promise/module-pg-promise.html">Initialization Options</a>:</p>
 <pre class="prettyprint source lang-js"><code>const initOptions = {/* initialization options */};
-const pgp = require('pg-promise')(initOptions);</code></pre><p>&#8722; or without <a href="http://vitaly-t.github.io/pg-promise/module-pg-promise.html">Initialization Options</a>:</p>
-<pre class="prettyprint source lang-js"><code>const pgp = require('pg-promise')();</code></pre><h2>Database</h2><p>Create your <a href="http://vitaly-t.github.io/pg-promise/Database.html">Database</a> object from the connection as <code>pgp(connection, [dc])</code>:</p>
-<pre class="prettyprint source lang-js"><code>const db = pgp(connection);</code></pre><ul>
+const pgp = require('pg-promise')(initOptions);
+</code></pre>
+<p>− or without <a href="http://vitaly-t.github.io/pg-promise/module-pg-promise.html">Initialization Options</a>:</p>
+<pre class="prettyprint source lang-js"><code>const pgp = require('pg-promise')();
+</code></pre>
+<h2>Database</h2>
+<p>Create your <a href="http://vitaly-t.github.io/pg-promise/Database.html">Database</a> object from the connection as <code>pgp(connection, [dc])</code>:</p>
+<pre class="prettyprint source lang-js"><code>const db = pgp(connection);
+</code></pre>
+<ul>
 <li>The <code>connection</code> parameter is either a <a href="https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#configuration-object">Configuration Object</a> or a <a href="https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax#connection-string">Connection String</a>.</li>
 <li><code>dc</code> = Database Context - optional parameter (see <a href="http://vitaly-t.github.io/pg-promise/Database.html">Database</a> constructor).</li>
 </ul>
 <p>Object <code>db</code> represents the <a href="http://vitaly-t.github.io/pg-promise/Database.html">Database</a> protocol with lazy connection, i.e. only the actual query methods acquire
 and release the connection automatically. Therefore you should create only one global/shared <code>db</code> object per connection details.</p>
 <p>It is best to initialize the library and create <a href="http://vitaly-t.github.io/pg-promise/Database.html">Database</a> in its own module, see <a href="https://stackoverflow.com/questions/34382796/where-should-i-initialize-pg-promise">Where should I initialize pg-promise</a>.</p>
-<h2>Usage</h2><p><a href="https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example">Learn by Example</a> is the best quick-start tutorial. For everything else see the <a href="https://github.com/vitaly-t/pg-promise/wiki">WiKi</a> pages.</p>
-<h2>References</h2><h3>External Resources</h3><ul>
+<h2>Usage</h2>
+<p><a href="https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example">Learn by Example</a> is the best quick-start tutorial. For everything else see the <a href="https://github.com/vitaly-t/pg-promise/wiki">WiKi</a> pages.</p>
+<h2>References</h2>
+<h3>External Resources</h3>
+<ul>
 <li><a href="https://github.com/vitaly-t/pg-promise">The library's Main Page</a></li>
 <li><a href="https://github.com/vitaly-t/pg-promise/tree/master/typescript">TypeScript 2.x</a> declarations for the library</li>
 <li><a href="https://github.com/vitaly-t/pg-promise/wiki">The library's WiKi Pages</a></li>
-<li><a href="https://stackoverflow.com/questions/tagged/pg-promise?sort=votes&amp;pageSize=50">Popular questions on StackOverflow</a> </li>
+<li><a href="https://stackoverflow.com/questions/tagged/pg-promise?sort=votes&amp;pageSize=50">Popular questions on StackOverflow</a></li>
 </ul>
-<h3>Main Types</h3><ul>
+<h3>Main Types</h3>
+<ul>
 <li><a href="http://vitaly-t.github.io/pg-promise/Database.html">Database</a> - database-level methods and properties</li>
 <li><a href="http://vitaly-t.github.io/pg-promise/Task.html">Task</a> - extends <a href="http://vitaly-t.github.io/pg-promise/Database.html">Database</a> with task-level methods and properties</li>
 </ul>
-<h3>Special Types</h3><ul>
+<h3>Special Types</h3>
+<ul>
 <li><a href="http://vitaly-t.github.io/pg-promise/QueryFile.html">QueryFile</a> - type for working with external SQL files</li>
 <li><a href="http://vitaly-t.github.io/pg-promise/PreparedStatement.html">PreparedStatement</a> - type for working with <a href="https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#prepared-statements">Prepared Statements</a></li>
 <li><a href="http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html">ParameterizedQuery</a> - type for working with <a href="https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#parameterized-queries">Parameterized Queries</a></li>
 <li><a href="http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html">TransactionMode</a> - transaction configuration type</li>
 <li><a href="http://vitaly-t.github.io/pg-promise/PromiseAdapter.html">PromiseAdapter</a> - adapter for using non-standard promise libraries</li>
 </ul>
-<h3>Namespaces</h3><ul>
+<h3>Namespaces</h3>
+<ul>
 <li><a href="http://vitaly-t.github.io/pg-promise/formatting.html">formatting</a> - the library's query formatting engine</li>
 <li><a href="http://vitaly-t.github.io/pg-promise/formatting.ctf.html">ctf</a> - ES6 symbols used by <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a></li>
 <li><a href="http://vitaly-t.github.io/pg-promise/helpers.html">helpers</a> - for automatic query generation</li>
@@ -81,7 +98,8 @@ and release the connection automatically. Therefore you should create only one g
 <li><a href="http://vitaly-t.github.io/pg-promise/errors.html">errors</a> - custom error types supported by the library</li>
 <li><a href="http://vitaly-t.github.io/pg-promise/txMode.html">txMode</a> - types for configuring a transaction</li>
 </ul>
-<h3>Events</h3><ul>
+<h3>Events</h3>
+<ul>
 <li><a href="http://vitaly-t.github.io/pg-promise/global.html#event:connect">connect</a> - connecting to the database</li>
 <li><a href="http://vitaly-t.github.io/pg-promise/global.html#event:disconnect">disconnect</a> - disconnecting from the database</li>
 <li><a href="http://vitaly-t.github.io/pg-promise/global.html#event:query">query</a> - executing a query</li>

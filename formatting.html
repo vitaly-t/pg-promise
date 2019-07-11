@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-pg-pool.html">pg-pool</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-Result.html">Result</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-Symbol.html">Symbol</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -1494,46 +1494,56 @@ wrapped in quotes (unless flag <code>raw</code> is set).</p>
 <div class="description">
     <p>Replaces variables in a string according to the type of <code>values</code>:</p>
 <ul>
-<li><p>Replaces <code>$1</code> occurrences when <code>values</code> is of type <code>string</code>, <code>boolean</code>, <code>number</code>, <code>Date</code>, <code>Buffer</code> or when it is <code>null</code>.</p>
+<li>
+<p>Replaces <code>$1</code> occurrences when <code>values</code> is of type <code>string</code>, <code>boolean</code>, <code>number</code>, <code>Date</code>, <code>Buffer</code> or when it is <code>null</code>.</p>
 </li>
-<li><p>Replaces variables <code>$1</code>, <code>$2</code>, ...<code>$100000</code> when <code>values</code> is an array of parameters. It throws a <a href="external-RangeError.html">RangeError</a>
+<li>
+<p>Replaces variables <code>$1</code>, <code>$2</code>, ...<code>$100000</code> when <code>values</code> is an array of parameters. It throws a <a href="external-RangeError.html">RangeError</a>
 when the values or variables are out of range.</p>
 </li>
-<li><p>Replaces <code>$*propName*</code>, where <code>*</code> is any of <code>{}</code>, <code>()</code>, <code>[]</code>, <code>&lt;&gt;</code>, <code>//</code>, when <code>values</code> is an object that's not a
+<li>
+<p>Replaces <code>$*propName*</code>, where <code>*</code> is any of <code>{}</code>, <code>()</code>, <code>[]</code>, <code>&lt;&gt;</code>, <code>//</code>, when <code>values</code> is an object that's not a
 <code>Date</code>, <code>Buffer</code>, <a href="QueryFile.html">QueryFile</a> or <code>null</code>. Special property name <code>this</code> refers to the formatting object itself,
 to be injected as a JSON string. When referencing a property that doesn't exist in the formatting object, it throws
 <a href="external-Error.html">Error</a> = <code>Property 'PropName' doesn't exist</code>, unless option <code>partial</code> is used.</p>
 </li>
-<li><p>Supports <a href="https://github.com/vitaly-t/pg-promise#nested-named-parameters">Nested Named Parameters</a> of any depth.</p>
+<li>
+<p>Supports <a href="https://github.com/vitaly-t/pg-promise#nested-named-parameters">Nested Named Parameters</a> of any depth.</p>
 </li>
 </ul>
 <p>By default, each variable is automatically formatted according to its type, unless it is a special variable:</p>
 <ul>
-<li><p>Raw-text variables end with <code>:raw</code> or symbol <code>^</code>, and prevent escaping the text. Such variables are not
+<li>
+<p>Raw-text variables end with <code>:raw</code> or symbol <code>^</code>, and prevent escaping the text. Such variables are not
 allowed to be <code>null</code> or <code>undefined</code>, or the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Values null/undefined cannot be used as raw text.</code></p>
 <ul>
 <li><code>$1:raw</code>, <code>$2:raw</code>,..., and <code>$*propName:raw*</code> (see <code>*</code> above)</li>
 <li><code>$1^</code>, <code>$2^</code>,..., and <code>$*propName^*</code> (see <code>*</code> above)</li>
 </ul>
 </li>
-<li><p>Open-value variables end with <code>:value</code> or symbol <code>#</code>, to be escaped, but not wrapped in quotes. Such variables are
+<li>
+<p>Open-value variables end with <code>:value</code> or symbol <code>#</code>, to be escaped, but not wrapped in quotes. Such variables are
 not allowed to be <code>null</code> or <code>undefined</code>, or the method will throw <a href="external-TypeError.html">TypeError</a> = <code>Open values cannot be null or undefined.</code></p>
 <ul>
 <li><code>$1:value</code>, <code>$2:value</code>,..., and <code>$*propName:value*</code> (see <code>*</code> above)</li>
 <li><code>$1#</code>, <code>$2#</code>,..., and <code>$*propName#*</code> (see <code>*</code> above)</li>
 </ul>
 </li>
-<li><p>SQL name variables end with <code>:name</code> or symbol <code>~</code> (tilde), and provide proper escaping for SQL names/identifiers:</p>
+<li>
+<p>SQL name variables end with <code>:name</code> or symbol <code>~</code> (tilde), and provide proper escaping for SQL names/identifiers:</p>
 <ul>
 <li><code>$1:name</code>, <code>$2:name</code>,..., and <code>$*propName:name*</code> (see <code>*</code> above)</li>
 <li><code>$1~</code>, <code>$2~</code>,..., and <code>$*propName~*</code> (see <code>*</code> above)</li>
 </ul>
 </li>
-<li><p>Modifier <code>:alias</code> - non-verbose <a href="https://github.com/vitaly-t/pg-promise#sql-names">SQL Names</a> escaping.</p>
+<li>
+<p>Modifier <code>:alias</code> - non-verbose <a href="https://github.com/vitaly-t/pg-promise#sql-names">SQL Names</a> escaping.</p>
 </li>
-<li><p>JSON override ends with <code>:json</code> to format the value of any type as a JSON string</p>
+<li>
+<p>JSON override ends with <code>:json</code> to format the value of any type as a JSON string</p>
 </li>
-<li><p>CSV override ends with <code>:csv</code> or <code>:list</code> to format an array as a properly escaped comma-separated list of values.</p>
+<li>
+<p>CSV override ends with <code>:csv</code> or <code>:list</code> to format an array as a properly escaped comma-separated list of values.</p>
 </li>
 </ul>
 </div>
@@ -1781,13 +1791,15 @@ or property name that's missing within the formatting parameters.</p>
 <p>It can also be set to a function, to be called with two parameters that depend on the type of formatting being used,
 and to return the actual default value:</p>
 <ul>
-<li><p>For <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting:</p>
+<li>
+<p>For <a href="https://github.com/vitaly-t/pg-promise#named-parameters">Named Parameters</a> formatting:</p>
 <ul>
 <li><code>name</code> - name of the property missing in the formatting object</li>
 <li><code>obj</code> - the formatting object, and is the same as <code>this</code> context</li>
 </ul>
 </li>
-<li><p>For <a href="https://github.com/vitaly-t/pg-promise#index-variables">Index Variables</a> formatting:</p>
+<li>
+<p>For <a href="https://github.com/vitaly-t/pg-promise#index-variables">Index Variables</a> formatting:</p>
 <ul>
 <li><code>index</code> - element's index (starts with 1) that's outside of the input array</li>
 <li><code>arr</code> - the formatting/input array, and is the same as <code>this</code> context</li>
@@ -2883,10 +2895,9 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
     <ul>
 <li><code>null</code> string, if the <code>value</code> resolves as <code>null</code> or <code>undefined</code></li>
 <li>escaped result of <code>value.toString()</code>, if the <code>value</code> isn't a string</li>
-<li><p>escaped string version, if <code>value</code> is a string.</p>
-<p>The result is not escaped, if <code>raw</code> was passed in as <code>true</code>.</p>
-</li>
+<li>escaped string version, if <code>value</code> is a string.</li>
 </ul>
+<p>The result is not escaped, if <code>raw</code> was passed in as <code>true</code>.</p>
 </div>
 
 

@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-pg-pool.html">pg-pool</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-Result.html">Result</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-Symbol.html">Symbol</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -382,7 +382,8 @@ Database object.</p>
 <li><code>pgp</code> - instance of the entire library after initialization</li>
 <li><code>options</code> - the library's <a href="module-pg-promise.html">Initialization Options</a> object</li>
 <li><code>promiseLib</code> - instance of the promise library that's used</li>
-<li><code>promise</code> - generic promise interface that uses <code>promiseLib</code> via 4 basic methods:<ul>
+<li><code>promise</code> - generic promise interface that uses <code>promiseLib</code> via 4 basic methods:
+<ul>
 <li><code>promise((resolve, reject) =&gt; {})</code> - to create a new promise</li>
 <li><code>promise.resolve(value)</code> - to resolve with a value</li>
 <li><code>promise.reject(reason)</code> - to reject with a reason</li>
@@ -1063,7 +1064,8 @@ This option is only suitable for global connection usage, such as event listener
             <td class="description last"><p>Notification callback of the lost/broken connection, called with the following parameters:</p>
 <ul>
 <li><code>err</code> - the original connectivity error</li>
-<li><code>e</code> - error context object, which contains:<ul>
+<li><code>e</code> - error context object, which contains:
+<ul>
 <li><code>cn</code> - safe connection string/config (with the password hashed);</li>
 <li><code>dc</code> - Database Context, as was used during <a href="Database.html">Database</a> construction;</li>
 <li><code>start</code> - Date/Time (<code>Date</code> type) when the connection was established;</li>
@@ -1077,7 +1079,9 @@ method <a href="Database.html#connect">connect</a> again.</p>
 set up on the connection's <code>client</code> object, you should remove them to avoid leaks:</p>
 <pre class="prettyprint source lang-js"><code>function onLostConnection(err, e) {
     e.client.removeListener('my-event', myHandler);
-}</code></pre><p>For a complete example see <a href="https://github.com/vitaly-t/pg-promise/wiki/Robust-Listeners">Robust Listeners</a>.</p></td>
+}
+</code></pre>
+<p>For a complete example see <a href="https://github.com/vitaly-t/pg-promise/wiki/Robust-Listeners">Robust Listeners</a>.</p></td>
         </tr>
 
     
@@ -1161,7 +1165,8 @@ set up on the connection's <code>client</code> object, you should remove them to
 <div class="param-desc">
     <p>A promise object that represents the connection result:</p>
 <ul>
-<li>resolves with the complete <a href="Database.html">Database</a> protocol, extended with:<ul>
+<li>resolves with the complete <a href="Database.html">Database</a> protocol, extended with:
+<ul>
 <li>property <code>client</code> of type <a href="external-Client.html">Client</a> that represents the open connection</li>
 <li>method <code>done()</code> that must be called in the end, in order to release the connection</li>
 <li>methods <code>batch</code>, <code>page</code> and <code>sequence</code>, same as inside a <a href="Task.html">Task</a></li>
@@ -1214,7 +1219,9 @@ set up on the connection's <code>client</code> object, you should remove them to
              // process the row
         });
         return data;
-    });</code></pre><p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
+    });
+</code></pre>
+<p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
 
@@ -1965,7 +1972,8 @@ as an override for its internal <code>values</code>.</p></td>
     <p>A promise object that represents the query result:</p>
 <ul>
 <li>When 1 or more rows are returned, it resolves with the array of rows.</li>
-<li>When no rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:<ul>
+<li>When no rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:
+<ul>
 <li><code>.message</code> = <code>No data returned from the query.</code></li>
 <li><code>.code</code> = <a href="errors.html#.queryResultErrorCode#.noData">queryResultErrorCode.noData</a></li>
 </ul>
@@ -2245,7 +2253,9 @@ resolved by method <a href="Database.html#any">any</a>.</p>
         return data.map((row, index, data) => {
              // return a new element
         });
-    });</code></pre><p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
+    });
+</code></pre>
+<p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
 
@@ -3205,7 +3215,8 @@ as an override for its internal <code>values</code>.</p></td>
     <p>A promise object that represents the query result:</p>
 <ul>
 <li>When no records are returned, it resolves with <code>null</code>.</li>
-<li>When any data is returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:<ul>
+<li>When any data is returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:
+<ul>
 <li><code>.message</code> = <code>No return data was expected.</code></li>
 <li><code>.code</code> = <a href="errors.html#.queryResultErrorCode#.notEmpty">queryResultErrorCode.notEmpty</a></li>
 </ul>
@@ -3512,12 +3523,14 @@ When specified, the return value replaces the original resolved value.</p>
     <p>A promise object that represents the query result:</p>
 <ul>
 <li>When 1 row is returned, it resolves with that row as a single object.</li>
-<li>When no rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:<ul>
+<li>When no rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:
+<ul>
 <li><code>.message</code> = <code>No data returned from the query.</code></li>
 <li><code>.code</code> = <a href="errors.html#.queryResultErrorCode#.noData">queryResultErrorCode.noData</a></li>
 </ul>
 </li>
-<li>When multiple rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:<ul>
+<li>When multiple rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:
+<ul>
 <li><code>.message</code> = <code>Multiple rows were not expected.</code></li>
 <li><code>.code</code> = <a href="errors.html#.queryResultErrorCode#.multiple">queryResultErrorCode.multiple</a></li>
 </ul>
@@ -3833,7 +3846,8 @@ When specified, the return value replaces the original resolved value.</p>
 <ul>
 <li>When no rows are returned, it resolves with <code>null</code>.</li>
 <li>When 1 row is returned, it resolves with that row as a single object.</li>
-<li>When multiple rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:<ul>
+<li>When multiple rows are returned, it rejects with <a href="errors.QueryResultError.html">QueryResultError</a>:
+<ul>
 <li><code>.message</code> = <code>Multiple rows were not expected.</code></li>
 <li><code>.code</code> = <a href="errors.html#.queryResultErrorCode#.multiple">queryResultErrorCode.multiple</a></li>
 </ul>
@@ -5223,7 +5237,9 @@ it is expected to be an object with options as listed below.</p>
 when it is necessary (on the top level), or else it reuses the current connection context.</p>
 <p>The default condition is <code>not in task or transaction</code>, to start a task only if currently not inside another task or transaction,
 which is the same as calling the following:</p>
-<pre class="prettyprint source lang-js"><code>db.taskIf({cnd: t => !t.ctx}, cb => {})</code></pre><p>It can be useful, if you want to simplify/reduce the task + log events footprint, by creating new tasks only when necessary.</p>
+<pre class="prettyprint source lang-js"><code>db.taskIf({cnd: t => !t.ctx}, cb => {})
+</code></pre>
+<p>It can be useful, if you want to simplify/reduce the task + log events footprint, by creating new tasks only when necessary.</p>
 </div>
 
 
@@ -5383,7 +5399,8 @@ it is expected to be an object with options as listed below.</p>
             <td class="description last"><p>Condition for creating a (<a href="Database.html#task">task</a>), if it is met.
 It can be either a simple boolean, or a callback function that takes the task context as <code>this</code> and as the first parameter.</p>
 <p>Default condition (when it is not specified):</p>
-<pre class="prettyprint source lang-js"><code>{cnd: t => !t.ctx}</code></pre></td>
+<pre class="prettyprint source lang-js"><code>{cnd: t => !t.ctx}
+</code></pre></td>
         </tr>
 
     
@@ -5865,7 +5882,9 @@ it is expected to be an object with options as listed below.</p>
 or else it executes a regular <a href="Database.html#task">task</a>.</p>
 <p>The default condition is <code>not in transaction</code>, to start a transaction only if currently not in transaction,
 or else start a task, which is the same as calling the following:</p>
-<pre class="prettyprint source lang-js"><code>db.txIf({cnd: t => !t.ctx || !t.ctx.inTransaction}, cb => {})</code></pre><p>It is useful when you want to avoid <a href="https://github.com/vitaly-t/pg-promise#nested-transactions">Nested Transactions</a> - savepoints.</p>
+<pre class="prettyprint source lang-js"><code>db.txIf({cnd: t => !t.ctx || !t.ctx.inTransaction}, cb => {})
+</code></pre>
+<p>It is useful when you want to avoid <a href="https://github.com/vitaly-t/pg-promise#nested-transactions">Nested Transactions</a> - savepoints.</p>
 </div>
 
 
@@ -6072,7 +6091,8 @@ it is expected to be an object with options as listed below.</p>
             <td class="description last"><p>Condition for opening a transaction (<a href="Database.html#tx">tx</a>), if it is met, or a <a href="Database.html#task">task</a> when the condition is not met.
 It can be either a simple boolean, or a callback function that takes the task/tx context as <code>this</code> and as the first parameter.</p>
 <p>Default condition (when it is not specified):</p>
-<pre class="prettyprint source lang-js"><code>{cnd: t => !t.ctx || !t.ctx.inTransaction}</code></pre></td>
+<pre class="prettyprint source lang-js"><code>{cnd: t => !t.ctx || !t.ctx.inTransaction}
+</code></pre></td>
         </tr>
 
     
@@ -6371,7 +6391,7 @@ success or failure for the operation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1632">line 1632</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1637">line 1637</a>
     </li></ul></dd>
     
 
