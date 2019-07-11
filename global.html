@@ -550,7 +550,7 @@ inside a task or transaction.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line486">line 486</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line485">line 485</a>
     </li></ul></dd>
     
 
@@ -1504,7 +1504,7 @@ with parameter <code>{direct: true}</code>).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line312">line 312</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line311">line 311</a>
     </li></ul></dd>
     
 
@@ -1674,7 +1674,7 @@ if you try overriding them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line365">line 365</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line364">line 364</a>
     </li></ul></dd>
     
 
@@ -1878,7 +1878,8 @@ validation for regular queries, which is executed right after.</li>
 <li>If the event handler throws an error, the original request will be rejected with that error.</li>
 </ul>
 <p>For methods <a href="Database.html#multi">Database.multi</a> and <a href="Database.html#multiResult">Database.multiResult</a>,
-this event is called for every result that's returned.</p>
+this event is called for every result that's returned. And for method <a href="Database.html#stream">Database.stream</a>,
+the event occurs for every record.</p>
 </div>
 
 
@@ -1931,8 +1932,7 @@ this event is called for every result that's returned.</p>
             
 
             <td class="description last"><p>Array of received objects/rows.</p>
-<p>If any of those objects are modified during notification, the client will receive the modified data.</p>
-<p>For method <a href="Database.html#stream">Database.stream</a>, the event occurs for every record.</p></td>
+<p>If any of those objects are modified during notification, the client will receive the modified data.</p></td>
         </tr>
 
     
@@ -2162,7 +2162,7 @@ it took to send the query, execute it and get the result back.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line222">line 222</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line221">line 221</a>
     </li></ul></dd>
     
 
@@ -2300,7 +2300,7 @@ or <a href="Database.html#txIf">Database.txIf</a>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line267">line 267</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line266">line 266</a>
     </li></ul></dd>
     
 
