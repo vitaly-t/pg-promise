@@ -1,6 +1,6 @@
 ## TypeScript for pg-promise
 
-Complete TypeScript 2.x/3.x declarations for the [pg-promise] module.
+Complete TypeScript declarations for the [pg-promise] module.
 
 ### Inclusion
 
@@ -48,7 +48,7 @@ interface IExtensions {
 
 // pg-promise initialization options:
 const options = {
-    extend: obj => {
+    extend(obj) {
         obj.findUser = userId => {
             return obj.one('SELECT * FROM Users WHERE id = $1', userId);
         }
@@ -80,7 +80,7 @@ And if you want strict initialization options, with inline type casting, you can
 ```ts
 // extended initialization:
 const pgp = pgPromise<IExtensions>({
-    extend: obj => {
+    extend(obj) {
         obj.findUser = userId => {
             return obj.one('SELECT * FROM Users WHERE id = $1', userId);
         }
