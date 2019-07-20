@@ -1467,6 +1467,27 @@ describe('Transactions', () => {
         });
     });
 
+    describe('Closing after a protocol violation', () => {
+        let error, value;
+        beforeEach(done => {
+            db.task(task =>
+                task.tx(tx => tx.one('select \'\u0000\''))
+                    .then(() => {
+                        throw new Error('expected error');
+                    }, () => {})
+                    .then(() => task.tx(tx => tx.one('select \'hi\' as v')))
+            ).then(row => {
+                value = row.v;
+            }, e => {
+                error = e;
+            }).then(done);
+        });
+        it('Must not have an error', () => {
+            expect(value).toEqual('hi');
+            expect(error).toEqual(undefined);
+        });
+    });
+
     describe('Closing after a connectivity issue', () => {
         let error, query;
         beforeEach(done => {
