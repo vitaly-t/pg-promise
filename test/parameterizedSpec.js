@@ -17,14 +17,6 @@ const ParameterizedQueryError = pgp.errors.ParameterizedQueryError;
 
 describe('ParameterizedQuery', () => {
 
-    describe('non-class initialization', () => {
-        it('must return a new object', () => {
-            /* eslint new-cap: 0 */
-            const pq = pgp.ParameterizedQuery('test-query');
-            expect(pq instanceof pgp.ParameterizedQuery).toBe(true);
-        });
-    });
-
     describe('parameter-object initialization', () => {
         it('must initialize correctly', () => {
             const pq = new pgp.ParameterizedQuery({text: 'test-query', values: [123]});

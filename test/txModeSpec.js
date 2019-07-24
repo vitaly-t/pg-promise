@@ -50,38 +50,6 @@ describe('Transaction Mode', () => {
         });
     });
 
-    describe('initialized without new', () => {
-        const queries = [];
-        let result;
-        beforeEach(done => {
-
-            options.query = e => {
-                queries.push(e.query);
-            };
-
-            function txNoParams() {
-                return promise.resolve('success');
-            }
-
-            // eslint-disable-next-line
-            txNoParams.txMode = pgp.txMode.TransactionMode();
-
-            db.tx(txNoParams)
-                .then(data => {
-                    result = data;
-                    done();
-                });
-        });
-        it('must execute default transaction opening', () => {
-            expect(result).toBe('success');
-            expect(queries.length).toBe(2);
-            expect(queries[0]).toBe('begin');
-        });
-        afterEach(() => {
-            delete options.query;
-        });
-    });
-
     describe('with isolation level', () => {
         const queries = [];
         let result;

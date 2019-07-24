@@ -236,14 +236,6 @@ describe('UPDATE', () => {
 
 describe('TableName', () => {
 
-    describe('Function call', () => {
-        it('must return a new object', () => {
-            // eslint-disable-next-line
-            const obj = helpers.TableName('table');
-            expect(obj instanceof helpers.TableName).toBe(true);
-        });
-    });
-
     describe('Negative', () => {
 
         describe('invalid \'table\' parameter', () => {
@@ -306,14 +298,6 @@ describe('TableName', () => {
 });
 
 describe('Column', () => {
-
-    describe('Function call', () => {
-        it('must return a new object', () => {
-            // eslint-disable-next-line
-            const obj = helpers.Column('col');
-            expect(obj instanceof helpers.Column).toBe(true);
-        });
-    });
 
     describe('set all', () => {
         it('must set all values', () => {
@@ -491,14 +475,6 @@ describe('Column', () => {
 });
 
 describe('ColumnSet', () => {
-
-    describe('Function call', () => {
-        it('must return a new object', () => {
-            // eslint-disable-next-line
-            const obj = helpers.ColumnSet(['colName']);
-            expect(obj instanceof helpers.ColumnSet).toBe(true);
-        });
-    });
 
     describe('options', () => {
         it('must ignore empty options', () => {

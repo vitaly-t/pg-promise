@@ -17,14 +17,6 @@ const PreparedStatementError = pgp.errors.PreparedStatementError;
 
 describe('PreparedStatement', () => {
 
-    describe('non-class initialization', () => {
-        it('must return a new object', () => {
-            // eslint-disable-next-line
-            const ps = pgp.PreparedStatement('test-name', 'test-query');
-            expect(ps instanceof pgp.PreparedStatement).toBe(true);
-        });
-    });
-
     describe('parameter-object initialization', () => {
         it('must initialize correctly', () => {
             const ps = new pgp.PreparedStatement({name: 'test-name', text: 'test-query', values: [123]});

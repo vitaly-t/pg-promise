@@ -31,13 +31,6 @@ const sqlTemp = getPath('./sql/temp.sql');
 
 describe('QueryFile / Positive:', () => {
 
-    describe('function-style call', () => {
-        it('must return an object', () => {
-            // eslint-disable-next-line
-            expect(QueryFile(sqlSimple, {noWarnings: true}) instanceof QueryFile).toBe(true);
-        });
-    });
-
     describe('without options', () => {
         const qf = new QueryFile(sqlSimple, {noWarnings: true});
         it('must not minify', () => {
