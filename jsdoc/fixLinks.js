@@ -1,5 +1,3 @@
-'use strict';
-
 // Automatic links:
 const links = {
     'Promises/A+': 'https://promisesaplus.com',
@@ -53,4 +51,4 @@ function fixLinks(source) {
     });
 }
 
-module.exports = fixLinks;
+module.exports = {fixLinks};
