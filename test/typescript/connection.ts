@@ -1,4 +1,5 @@
 import * as pgPromise from '../../typescript/pg-promise';
+import {IConnectionParameters} from '../../typescript/pg-subset';
 
 const pgp: pgPromise.IMain = pgPromise({
     schema: ['public', 'mine'],
@@ -22,7 +23,7 @@ const pgp3: pgPromise.IMain = pgPromise({
 
 const db = pgp('connection');
 
-type t = pgPromise.TConfig;
+type t = IConnectionParameters;
 let r: t;
 r.application_name = 'hello';
 r.ssl = {

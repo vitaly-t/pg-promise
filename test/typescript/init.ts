@@ -1,5 +1,5 @@
 import * as pgPromise from '../../typescript/pg-promise';
-import {IConnectionParameters} from "../../typescript/pg-subset";
+import {IConnectionParameters} from '../../typescript/pg-subset';
 
 const pgp: pgPromise.IMain = pgPromise({
     capSQL: true,
@@ -7,7 +7,7 @@ const pgp: pgPromise.IMain = pgPromise({
     pgNative: true
 });
 
-let c: pgPromise.TConfig;
+let c: IConnectionParameters;
 c.binary = true;
 
 const spex = pgp.spex;
