@@ -3,10 +3,7 @@
 const util = require('util');
 
 function inspect(obj) {
-    if (util.inspect.custom) {
-        return obj[util.inspect.custom]();
-    }
-    return obj.inspect();
+    return obj[util.inspect.custom]();
 }
 
 module.exports = {
