@@ -1,5 +1,5 @@
-const PromiseAdapter = require('../lib/index').PromiseAdapter;
-const supportsPromise = typeof(Promise) !== 'undefined';
+const {PromiseAdapter} = require('../lib/index');
+const supportsPromise = typeof (Promise) !== 'undefined';
 
 const header = require('./db/header');
 const promise = header.defPromise;
@@ -22,7 +22,7 @@ describe('Library entry function', () => {
         it('must return a valid library object', () => {
             if (supportsPromise) {
                 const lib = header({noWarnings: true});
-                expect(typeof(lib.pgp)).toBe('function');
+                expect(typeof (lib.pgp)).toBe('function');
             } else {
                 expect(() => {
                     header();
@@ -106,7 +106,7 @@ describe('Library entry function', () => {
                     },
                     noWarnings: true
                 });
-            expect(typeof(lib.pgp)).toBe('function');
+            expect(typeof (lib.pgp)).toBe('function');
         });
     });
 
@@ -122,7 +122,7 @@ describe('Library entry function', () => {
                 promiseLib: fakePromiseLib,
                 noWarnings: true
             });
-            expect(typeof(lib.pgp)).toBe('function');
+            expect(typeof (lib.pgp)).toBe('function');
         });
     });
 
