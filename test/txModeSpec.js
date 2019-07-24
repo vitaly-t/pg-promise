@@ -57,7 +57,7 @@ describe('Transaction Mode', () => {
                 queries.push(e.query);
             };
 
-            const mode = new pgp.txMode.TransactionMode(pgp.txMode.isolationLevel.serializable);
+            const mode = new pgp.txMode.TransactionMode({tiLevel: pgp.txMode.isolationLevel.serializable});
 
             db.tx({mode}, () => {
                 return promise.resolve('success');
@@ -249,7 +249,11 @@ describe('Transaction Mode', () => {
             };
 
             const level = pgp.txMode.isolationLevel;
-            const mode = new pgp.txMode.TransactionMode(level.repeatableRead, true, false);
+            const mode = new pgp.txMode.TransactionMode({
+                tiLevel: level.repeatableRead,
+                readOnly: true,
+                deferrable: false
+            });
 
             db.tx({mode}, () => {
                 return promise.resolve('success');
