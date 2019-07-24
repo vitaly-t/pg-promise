@@ -11,13 +11,9 @@ Typescript should be able to pick up the definitions without any manual configur
 ```ts
 import * as pgPromise from 'pg-promise';
 
-const pgp = pgPromise({
-    // Initialization Options
-});
+const pgp = pgPromise({/* Initialization Options */});
 
-const cn = 'postgres://username:password@host:port/database';
-
-const db = pgp(cn);
+const db = pgp('postgres://username:password@host:port/database');
 ```
 
 #### With Extensions
@@ -26,7 +22,6 @@ The library supports dynamic protocol extensions, via event [extend], which requ
 explicit extension interface to be declared, and parameterized as shown below.
 
 ```ts
-import {IInitOptions} from 'pg-promise';
 import * as pgPromise from 'pg-promise';
 
 // your protocol extensions:
@@ -35,7 +30,7 @@ interface IExtensions {
 }
 
 // pg-promise initialization options:
-const options: IInitOptions<IExtensions> = {
+const options = {
     extend(obj) {
         obj.findUser = userId => {
             return obj.one('SELECT * FROM Users WHERE id = $1', userId);
@@ -43,19 +38,17 @@ const options: IInitOptions<IExtensions> = {
     }
 };
 
-const cn = 'postgres://username:password@host:port/database';
-
 // initializing the library:
 const pgp = pgPromise(options);
 
 // database object with extensions:
-const db = pgp<IExtensions>(cn);
+const db = pgp<IExtensions>('postgres://username:password@host:port/database');
 
 // now you can use the extensions everywhere (including tasks and transactions):
 db.findUser(123).then(...);
 ```
 
-For a more complete example, check out [pg-promise-demo]. 
+For a complete and comprehensive example, check out [pg-promise-demo]. 
 
 [pg-promise-demo]:https://github.com/vitaly-t/pg-promise-demo
 [extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
