@@ -2,8 +2,8 @@ language: node_js
 sudo: required
 matrix:
   include:
-  - node_js: "4"
-    script: "npm test"
+  - node_js: "7"
+    script: "npm run travis"
   - node_js: "8"
     script: "npm run travis"
   - node_js: "12"
