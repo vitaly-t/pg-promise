@@ -26,6 +26,8 @@ interface IEmptyExt {
 // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
 declare namespace pgPromise {
 
+    type FormattingFilter = '^' | '~' | '#' | ':raw' | ':alias' | ':name' | ':json' | ':csv' | ':list' | ':value';
+
     interface IQueryFileOptions {
         debug?: boolean
         minify?: boolean | 'after'
@@ -103,7 +105,7 @@ declare namespace pgPromise {
     interface IColumnConfig {
         name: string
         prop?: string
-        mod?: string
+        mod?: FormattingFilter
         cast?: string
         cnd?: boolean
         def?: any
@@ -168,7 +170,7 @@ declare namespace pgPromise {
         // these are all read-only:
         readonly name: string;
         readonly prop: string;
-        readonly mod: string;
+        readonly mod: FormattingFilter;
         readonly cast: string;
         readonly cnd: boolean;
         readonly def: any;
