@@ -21,6 +21,12 @@ import * as pg from './pg-subset';
 import * as pgMinify from 'pg-minify';
 import * as spexLib from 'spex';
 
+// TODO:
+//  1. type object not to be used, perhaps?
+//  2. Try to avoid & Ext requirement for IDatabase
+//  3. Readme.md to be updated
+//  4. All examples to be updated + the demo
+
 // Main protocol of the library;
 // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
 declare namespace pgPromise {
@@ -82,15 +88,6 @@ declare namespace pgPromise {
         rowMode: string
     }
 
-    type QueryParam =
-        string
-        | QueryFile
-        | IPreparedStatement
-        | IParameterizedQuery
-        | PreparedStatement
-        | ParameterizedQuery
-        | ((values?: any) => QueryParam)
-
     interface IColumnDescriptor {
         source: any
         name: string
@@ -141,7 +138,19 @@ declare namespace pgPromise {
     }
 
     type FormattingFilter = '^' | '~' | '#' | ':raw' | ':alias' | ':name' | ':json' | ':csv' | ':list' | ':value';
+
     type QueryColumns = Column | ColumnSet | Array<string | IColumnConfig | Column>
+
+    type QueryParam =
+        string
+        | QueryFile
+        | IPreparedStatement
+        | IParameterizedQuery
+        | PreparedStatement
+        | ParameterizedQuery
+        | ((values?: any) => QueryParam)
+
+    type ValidSchema = string | string[] | null | void;
 
     // helpers.TableName class;
     // API: http://vitaly-t.github.io/pg-promise/helpers.TableName.html
@@ -559,11 +568,9 @@ declare namespace pgPromise {
         begin: (cap?: boolean) => string
     }
 
-    type ValidSchema = string | string[] | null | void;
-
     // Library's Initialization Options
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-    interface IOptions<Ext> {
+    interface IInitOptions<Ext> {
         noWarnings?: boolean
         pgFormatting?: boolean
         pgNative?: boolean
@@ -586,7 +593,7 @@ declare namespace pgPromise {
         version: string
         promiseLib: any
         promise: IGenericPromise
-        options: IOptions<Ext>
+        options: IInitOptions<Ext>
         pgp: IMain
         $npm: any
     }
@@ -597,16 +604,11 @@ declare namespace pgPromise {
         toPostgres: (a: any) => any
     }
 
-    interface ICustomTypeFormatting {
-        toPostgres: symbol
-        rawType: symbol
-    }
-
     // Query formatting namespace;
     // API: http://vitaly-t.github.io/pg-promise/formatting.html
     interface IFormatting {
 
-        ctf: ICustomTypeFormatting,
+        ctf: { toPostgres: symbol, rawType: symbol }
 
         alias(name: string | (() => string)): string
 
@@ -695,7 +697,7 @@ declare namespace pgPromise {
 
 // Default library interface (before initialization)
 // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-declare function pgPromise(options?: pgPromise.IOptions<{}>): pgPromise.IMain
-declare function pgPromise<Ext>(options?: pgPromise.IOptions<Ext>): pgPromise.IMain
+declare function pgPromise(options?: pgPromise.IInitOptions<{}>): pgPromise.IMain
+declare function pgPromise<Ext>(options?: pgPromise.IInitOptions<Ext>): pgPromise.IMain
 
 export = pgPromise;
