@@ -23,9 +23,7 @@ import * as spexLib from 'spex';
 
 // TODO:
 //  1. type object not to be used, perhaps?
-//  2. Try to avoid & Ext requirement for IDatabase
-//  3. Readme.md to be updated
-//  4. All examples to be updated + the demo
+//  2. All examples to be updated + the demo
 
 // Main protocol of the library;
 // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
