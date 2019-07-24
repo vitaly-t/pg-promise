@@ -295,7 +295,7 @@ declare namespace pgPromise {
     // API: http://vitaly-t.github.io/pg-promise/Database.html
     //
     // We export this interface only to be able to help IntelliSense cast extension types correctly,
-    // which doesn't always work, depending on the version of IntelliSense being used. 
+    // which doesn't always work, depending on the version of IntelliSense being used.
     interface IDatabase<Ext> extends IBaseProtocol<Ext> {
         connect(options?: IConnectionOptions): XPromise<IConnected<Ext>>
 
@@ -570,7 +570,7 @@ declare namespace pgPromise {
 
     // Library's Initialization Options
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-    interface IInitOptions<Ext> {
+    interface IInitOptions<Ext = {}> {
         noWarnings?: boolean
         pgFormatting?: boolean
         pgNative?: boolean
@@ -697,7 +697,6 @@ declare namespace pgPromise {
 
 // Default library interface (before initialization)
 // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-declare function pgPromise(options?: pgPromise.IInitOptions<{}>): pgPromise.IMain
-declare function pgPromise<Ext>(options?: pgPromise.IInitOptions<Ext>): pgPromise.IMain
+declare function pgPromise(options?: pgPromise.IInitOptions): pgPromise.IMain
 
 export = pgPromise;
