@@ -11,7 +11,7 @@ import {
     IColumnConfig,
     IColumnSetOptions,
     ITable,
-    TQueryColumns,
+    QueryColumns,
     ISqlBuildConfig,
     TableName,
     Column,

@@ -119,9 +119,6 @@ declare namespace pgPromise {
         schema?: string
     }
 
-    type FormattingFilter = '^' | '~' | '#' | ':raw' | ':alias' | ':name' | ':json' | ':csv' | ':list' | ':value';
-    type TQueryColumns = Column | ColumnSet | Array<string | IColumnConfig | Column>
-
     interface ISqlBuildConfig {
         dir: string
         recursive?: boolean
@@ -142,6 +139,9 @@ declare namespace pgPromise {
 
         all: (iterable: any) => XPromise<any>
     }
+
+    type FormattingFilter = '^' | '~' | '#' | ':raw' | ':alias' | ':name' | ':json' | ':csv' | ':list' | ':value';
+    type QueryColumns = Column | ColumnSet | Array<string | IColumnConfig | Column>
 
     // helpers.TableName class;
     // API: http://vitaly-t.github.io/pg-promise/helpers.TableName.html
@@ -669,13 +669,13 @@ declare namespace pgPromise {
 
         concat(queries: Array<string | QueryFile | { query: string | QueryFile, values?: any, options?: IFormattingOptions }>): string
 
-        insert(data: object | object[], columns?: TQueryColumns, table?: string | ITable | TableName): string
+        insert(data: object | object[], columns?: QueryColumns, table?: string | ITable | TableName): string
 
-        update(data: object | object[], columns?: TQueryColumns, table?: string | ITable | TableName, options?: { tableAlias?: string, valueAlias?: string, emptyUpdate?: any }): any
+        update(data: object | object[], columns?: QueryColumns, table?: string | ITable | TableName, options?: { tableAlias?: string, valueAlias?: string, emptyUpdate?: any }): any
 
-        values(data: object | object[], columns?: TQueryColumns): string
+        values(data: object | object[], columns?: QueryColumns): string
 
-        sets(data: object, columns?: TQueryColumns): string
+        sets(data: object, columns?: QueryColumns): string
 
         Column: typeof Column
         ColumnSet: typeof ColumnSet
