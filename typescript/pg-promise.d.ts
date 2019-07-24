@@ -11,16 +11,15 @@
 // Requires pg-promise v9.0.0 or later.
 /////////////////////////////////////////
 
-import * as XPromise from './ext-promise'; // External Promise Provider
+// We use ES6 as static promise here, because generic promises are still not supported.
+// Follow the links below:
+// http://stackoverflow.com/questions/36593087/using-a-custom-promise-as-a-generic-type
+// https://github.com/Microsoft/TypeScript/issues/1213
+type XPromise<T> = Promise<T>;
 
 import * as pg from './pg-subset';
 import * as pgMinify from 'pg-minify';
 import * as spexLib from 'spex';
-
-// Empty Extensions
-interface IEmptyExt {
-
-}
 
 // Main protocol of the library;
 // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
@@ -312,7 +311,7 @@ declare namespace pgPromise {
         duration?: number;
     }
 
-    type TConfig = pg.TConnectionParameters
+    type TConfig = pg.IConnectionParameters
 
     // Post-initialization interface;
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
@@ -699,12 +698,11 @@ declare namespace pgPromise {
 
         all(iterable: any): XPromise<any>
     }
-
 }
 
 // Default library interface (before initialization)
 // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-declare function pgPromise(options?: pgPromise.IOptions<IEmptyExt>): pgPromise.IMain
+declare function pgPromise(options?: pgPromise.IOptions<{}>): pgPromise.IMain
 declare function pgPromise<Ext>(options?: pgPromise.IOptions<Ext>): pgPromise.IMain
 
 export = pgPromise;
