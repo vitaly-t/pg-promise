@@ -2,8 +2,6 @@
 // Database connection header used in every test;
 //////////////////////////////////////////////////
 
-'use strict';
-
 const pgpLib = require('../../lib/index');
 const defPromise = require('bluebird'); // default promise library;
 

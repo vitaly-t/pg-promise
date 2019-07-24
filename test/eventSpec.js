@@ -1,5 +1,3 @@
-'use strict';
-
 const QueryStream = require('pg-query-stream');
 const JSONStream = require('JSONStream');
 

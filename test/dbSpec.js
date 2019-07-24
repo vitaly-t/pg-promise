@@ -1,5 +1,3 @@
-'use strict';
-
 const npm = {
     util: require('util')
 };
@@ -745,6 +743,8 @@ describe('Method \'one\'', () => {
         let result, context;
         beforeEach(done => {
             db.one('select count(*) from users', null, function (value) {
+                'use strict';
+                // NOTE: Outside of strict mode, only objects can be passed in as this context
                 context = this;
                 return parseInt(value.count);
             }, 123)
@@ -897,6 +897,8 @@ describe('Method \'oneOrNone\'', () => {
         let result, context;
         beforeEach(done => {
             db.oneOrNone('select count(*) from users', null, function (value) {
+                'use strict';
+                // NOTE: Outside of strict mode, only objects can be passed in as this context
                 context = this;
                 return parseInt(value.count);
             }, 123)
@@ -1474,7 +1476,8 @@ describe('Transactions', () => {
                 task.tx(tx => tx.one('select \'\u0000\''))
                     .then(() => {
                         throw new Error('expected error');
-                    }, () => {})
+                    }, () => {
+                    })
                     .then(() => task.tx(tx => tx.one('select \'hi\' as v')))
             ).then(row => {
                 value = row.v;
@@ -2086,6 +2089,8 @@ describe('Querying a function', () => {
         let result, context;
         beforeEach(done => {
             db.proc('findUser', 1, function (value) {
+                'use strict';
+                // NOTE: Outside of strict mode, only objects can be passed in as this context
                 context = this;
                 return value.id;
             }, 123)

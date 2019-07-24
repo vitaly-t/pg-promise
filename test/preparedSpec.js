@@ -1,5 +1,3 @@
-'use strict';
-
 const path = require('path');
 const header = require('./db/header');
 const tools = require('./tools');

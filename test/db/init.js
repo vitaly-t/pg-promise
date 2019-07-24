@@ -2,8 +2,6 @@
 // Initialization scripts for the test database;
 ////////////////////////////////////////////////
 
-'use strict';
-
 const con = require('manakin').global;
 const dbHeader = require('./header');
 const promise = dbHeader.defPromise;

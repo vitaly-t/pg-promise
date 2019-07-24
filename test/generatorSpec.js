@@ -1,5 +1,3 @@
-'use strict';
-
 const header = require('./db/header');
 const promise = header.defPromise;
 

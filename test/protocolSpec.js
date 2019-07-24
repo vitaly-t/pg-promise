@@ -1,5 +1,3 @@
-'use strict';
-
 const PG = require('pg');
 const header = require('./db/header');
 const tools = require('./tools');

@@ -1,5 +1,3 @@
-'use strict';
-
 function hookConsole(callback) {
 
     const stdout = process.stdout,

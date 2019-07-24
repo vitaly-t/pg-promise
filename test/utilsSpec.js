@@ -1,5 +1,3 @@
-'use strict';
-
 const EOL = require('os').EOL;
 
 const $u = require('../lib/utils');

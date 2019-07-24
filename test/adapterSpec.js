@@ -1,5 +1,3 @@
-'use strict';
-
 const pgp = require('../lib/index');
 const PromiseAdapter = pgp.PromiseAdapter;
 
