@@ -1,5 +1,5 @@
 import * as pgPromise from '../../typescript/pg-promise';
-import {TConnectionParameters} from "../../typescript/pg-subset";
+import {IConnectionParameters} from '../../typescript/pg-subset';
 
 const pgp: pgPromise.IMain = pgPromise({
     capSQL: true,
@@ -7,7 +7,7 @@ const pgp: pgPromise.IMain = pgPromise({
     pgNative: true
 });
 
-let c: pgPromise.TConfig;
+let c: IConnectionParameters;
 c.binary = true;
 
 const spex = pgp.spex;
@@ -26,7 +26,7 @@ const db = <pgPromise.IDatabase<Test> & Test>pgp({
 });
 
 const connection1: string = <string>db.$cn;
-const connection2: TConnectionParameters = <TConnectionParameters>db.$cn;
+const connection2: IConnectionParameters = <IConnectionParameters>db.$cn;
 
 const context: any = db.$dc;
 const pool: any = db.$pool;

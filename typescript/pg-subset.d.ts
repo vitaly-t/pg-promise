@@ -52,13 +52,12 @@ declare namespace pg {
             binary: any
         };
         _parsers: Array<Function>;
-
     }
 
     // SSL configuration;
     // For property types and documentation see:
     // http://nodejs.org/api/tls.html#tls_tls_connect_options_callback
-    type TSSLConfig = {
+    interface ISSLConfig {
         ca?: string | Buffer | Array<string | Buffer>
         pfx?: string | Buffer | Array<string | Buffer | object>
         cert?: string | Buffer | Array<string | Buffer>
@@ -73,14 +72,14 @@ declare namespace pg {
     // See:
     // 1) https://github.com/brianc/node-postgres/blob/master/lib/defaults.js
     // 2) https://github.com/brianc/node-pg-pool
-    type TConnectionParameters = {
+    interface IConnectionParameters {
         connectionString?: string
         host?: string
         database?: string
         user?: string
         password?: string
         port?: number
-        ssl?: boolean | TSSLConfig
+        ssl?: boolean | ISSLConfig
         binary?: boolean
         client_encoding?: string
         encoding?: string
@@ -148,7 +147,7 @@ declare namespace pg {
 
         client_encoding: string
 
-        ssl: boolean | TSSLConfig
+        ssl: boolean | ISSLConfig
 
         application_name: string
 
@@ -180,7 +179,7 @@ declare namespace pg {
 
     class Client extends EventEmitter {
 
-        constructor(cn: string | TConnectionParameters)
+        constructor(cn: string | IConnectionParameters)
 
         query: (config: any, values: any, callback: (err: Error, result: IResult) => void) => Query;
 
@@ -190,7 +189,7 @@ declare namespace pg {
         on(event: 'notice', listener: (message: any) => void): this
         on(event: string, listener: Function): this
 
-        connectionParameters: TConnectionParameters;
+        connectionParameters: IConnectionParameters;
         database: string;
         user: string;
         password: string;
@@ -201,7 +200,7 @@ declare namespace pg {
 
         queryQueue: Query[];
         binary: boolean;
-        ssl: boolean | TSSLConfig;
+        ssl: boolean | ISSLConfig;
         secretKey: number;
         processID: number;
         encoding: string;
