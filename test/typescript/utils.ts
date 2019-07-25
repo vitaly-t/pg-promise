@@ -14,29 +14,6 @@ const tree = utils.enumSql('', {recursive: true, ignoreErrors: true}, (file: str
 
 });
 
-utils.objectToCode(tree, (value, name, obj) => {
-
-});
-
-const a: string = utils.buildSqlModule();
-
-utils.buildSqlModule('');
-
-utils.buildSqlModule({
-    dir: ''
-});
-
-utils.buildSqlModule({
-    dir: '',
-    recursive: true,
-    ignoreErrors: true,
-    output: '',
-    module: {
-        name: '',
-        path: ''
-    }
-});
-
 function testTaskArgs() {
     const args = utils.taskArgs<{ first: string, second: boolean }>(arguments);
     args.options.tag = 123;

@@ -114,17 +114,6 @@ declare namespace pgPromise {
         schema?: string
     }
 
-    interface ISqlBuildConfig {
-        dir: string
-        recursive?: boolean
-        ignoreErrors?: boolean
-        output?: string
-        module?: {
-            path?: string
-            name?: string
-        }
-    }
-
     interface IPromiseConfig {
         create: (resolve: (value?: any) => void, reject?: (reason?: any) => void) => XPromise<any>
 
@@ -653,11 +642,7 @@ declare namespace pgPromise {
 
         camelizeVar(text: string): string
 
-        objectToCode(obj: any, cb?: (value: any, name: string, obj: any) => any): string
-
         enumSql(dir: string, options?: { recursive?: boolean, ignoreErrors?: boolean }, cb?: (file: string, name: string, path: string) => any): any
-
-        buildSqlModule(config?: string | ISqlBuildConfig): string
 
         taskArgs<T = {}>(args: IArguments): ITaskArguments<T>
     }

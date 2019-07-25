@@ -12,7 +12,6 @@ import {
     IColumnSetOptions,
     ITable,
     QueryColumns,
-    ISqlBuildConfig,
     TableName,
     Column,
     ColumnSet,
