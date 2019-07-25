@@ -21,10 +21,6 @@ import * as pg from './pg-subset';
 import * as pgMinify from 'pg-minify';
 import * as spexLib from 'spex';
 
-// TODO:
-//  1. type object not to be used, perhaps?
-//  2. All examples to be updated + the demo
-
 // Main protocol of the library;
 // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
 declare namespace pgPromise {
