@@ -1554,12 +1554,16 @@ describe('Transactions', () => {
 
         it('returns the postgres error', () => {
             expect(error instanceof Error).toBe(true);
-            if (error.code.includes('ECONNRESET')) {
-                expect(error.code).toBe('ECONNRESET');
-                expect(error.message).toBe('read ECONNRESET');
+            if (options.pgNative) {
+                // we do not test it for native bindings
             } else {
-                expect(error.code).toBe('57P01');
-                expect(error.message).toBe('terminating connection due to administrator command');
+                if (error.code.includes('ECONNRESET')) {
+                    expect(error.code).toBe('ECONNRESET');
+                    expect(error.message).toBe('read ECONNRESET');
+                } else {
+                    expect(error.code).toBe('57P01');
+                    expect(error.message).toBe('terminating connection due to administrator command');
+                }
             }
         });
     });

@@ -1,5 +1,5 @@
 const pgp = require('../lib/index');
-const PromiseAdapter = pgp.PromiseAdapter;
+const {PromiseAdapter} = pgp;
 
 const dummy = () => {
 };
