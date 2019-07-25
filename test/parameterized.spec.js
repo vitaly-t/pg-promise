@@ -127,7 +127,7 @@ describe('ParameterizedQuery', () => {
                 .finally(done);
         });
         it('must return one user', () => {
-            expect(result && typeof(result) === 'object').toBeTruthy();
+            expect(result && typeof result === 'object').toBeTruthy();
         });
     });
 
@@ -198,7 +198,7 @@ describe('Direct Parameterized Query', () => {
                 .finally(done);
         });
         it('must return all users', () => {
-            expect(result && typeof(result) === 'object').toBeTruthy();
+            expect(result && typeof result === 'object').toBeTruthy();
         });
     });
 

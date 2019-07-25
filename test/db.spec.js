@@ -107,7 +107,7 @@ describe('Connection', () => {
         it('must provide functioning context', () => {
             expect(result).toBeDefined();
             expect(result.count > 0).toBe(true);
-            expect(typeof (sco.tx)).toBe('function'); // just a protocol check;
+            expect(typeof sco.tx).toBe('function'); // just a protocol check;
         });
     });
 
@@ -139,8 +139,8 @@ describe('Connection', () => {
         it('must provide functioning context', () => {
             expect(isResult(result)).toBe(true);
             expect(result.rows.length > 0).toBe(true);
-            expect(typeof (result.rowCount)).toBe('number');
-            expect(typeof (result.duration)).toBe('number');
+            expect(typeof result.rowCount).toBe('number');
+            expect(typeof result.duration).toBe('number');
             expect(result.rows.length === result.rowCount).toBe(true);
         });
     });
@@ -734,7 +734,7 @@ describe('Method \'one\'', () => {
         }, 'Query timed out', 5000);
         runs(() => {
             expect(error).toBeUndefined();
-            expect(typeof (result)).toBe('object');
+            expect(typeof result).toBe('object');
             expect(result.value).toBe(123);
         });
     });
@@ -869,7 +869,7 @@ describe('Method \'oneOrNone\'', () => {
         }, 'Query timed out', 5000);
         runs(() => {
             expect(error).toBeUndefined();
-            expect(typeof (result)).toBe('object');
+            expect(typeof result).toBe('object');
             expect(result.id).toBe(1);
         });
     });
@@ -1204,7 +1204,7 @@ describe('Transactions', () => {
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(10003); // drop + create + insert x 10000 + select;
             const last = result[result.length - 1]; // result from the select;
-            expect(typeof (last)).toBe('object');
+            expect(typeof last).toBe('object');
             expect(last.count).toBe('10000'); // last one must be the counter (as text);
             expect(tag).toBe('complex');
         });
@@ -2080,7 +2080,7 @@ describe('Querying a function', () => {
                 .finally(done);
         });
         it('must return correctly', () => {
-            expect(typeof (result)).toBe('object');
+            expect(typeof result).toBe('object');
             expect('id' in result && 'login' in result && 'active' in result).toBe(true);
         });
     });

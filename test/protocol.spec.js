@@ -195,7 +195,7 @@ describe('Database Protocol', () => {
         });
 
         it('must have all the required methods', () => {
-            expect(connection && typeof(connection) === 'object').toBe(true);
+            expect(connection && typeof connection === 'object').toBe(true);
             expect(connection.connect).toBeUndefined();
             expect(typeof connection.query).toBe('function');
             expect(typeof connection.result).toBe('function');
@@ -243,7 +243,7 @@ describe('Database Protocol', () => {
         });
 
         it('must have all the required methods', () => {
-            expect(protocol && typeof(protocol) === 'object').toBe(true);
+            expect(protocol && typeof protocol === 'object').toBe(true);
             expect(protocol.connect).toBeUndefined();
             expect(protocol.client).toBeUndefined();
             expect(protocol.$config).toBeUndefined();
@@ -286,32 +286,32 @@ describe('Database Protocol', () => {
         });
 
         it('must have all the required methods', () => {
-            expect(protocol && typeof(protocol) === 'object').toBe(true);
+            expect(protocol && typeof protocol === 'object').toBe(true);
             expect(protocol.connect).toBeUndefined();
             expect(protocol.client).toBeUndefined();
             expect(protocol.$config).toBeUndefined();
-            expect(typeof(protocol.query)).toBe('function');
-            expect(typeof(protocol.result)).toBe('function');
-            expect(typeof(protocol.task)).toBe('function');
-            expect(typeof(protocol.taskIf)).toBe('function');
-            expect(typeof(protocol.tx)).toBe('function');
-            expect(typeof(protocol.txIf)).toBe('function');
-            expect(typeof(protocol.one)).toBe('function');
-            expect(typeof(protocol.many)).toBe('function');
-            expect(typeof(protocol.any)).toBe('function');
-            expect(typeof(protocol.none)).toBe('function');
-            expect(typeof(protocol.oneOrNone)).toBe('function');
-            expect(typeof(protocol.manyOrNone)).toBe('function');
-            expect(typeof(protocol.stream)).toBe('function');
-            expect(typeof(protocol.func)).toBe('function');
-            expect(typeof(protocol.proc)).toBe('function');
-            expect(typeof(protocol.batch)).toBe('function');
-            expect(typeof(protocol.page)).toBe('function');
-            expect(typeof(protocol.sequence)).toBe('function');
-            expect(typeof(protocol.map)).toBe('function');
-            expect(typeof(protocol.each)).toBe('function');
-            expect(typeof(protocol.multi)).toBe('function');
-            expect(typeof(protocol.multiResult)).toBe('function');
+            expect(typeof protocol.query).toBe('function');
+            expect(typeof protocol.result).toBe('function');
+            expect(typeof protocol.task).toBe('function');
+            expect(typeof protocol.taskIf).toBe('function');
+            expect(typeof protocol.tx).toBe('function');
+            expect(typeof protocol.txIf).toBe('function');
+            expect(typeof protocol.one).toBe('function');
+            expect(typeof protocol.many).toBe('function');
+            expect(typeof protocol.any).toBe('function');
+            expect(typeof protocol.none).toBe('function');
+            expect(typeof protocol.oneOrNone).toBe('function');
+            expect(typeof protocol.manyOrNone).toBe('function');
+            expect(typeof protocol.stream).toBe('function');
+            expect(typeof protocol.func).toBe('function');
+            expect(typeof protocol.proc).toBe('function');
+            expect(typeof protocol.batch).toBe('function');
+            expect(typeof protocol.page).toBe('function');
+            expect(typeof protocol.sequence).toBe('function');
+            expect(typeof protocol.map).toBe('function');
+            expect(typeof protocol.each).toBe('function');
+            expect(typeof protocol.multi).toBe('function');
+            expect(typeof protocol.multiResult).toBe('function');
         });
     });
 
@@ -382,7 +382,7 @@ describe('Protocol Extension', () => {
         it('must allow custom properties', () => {
             expect(THIS && ctx && THIS === ctx).toBeTruthy();
             expect(counter).toBe(2);
-            expect(result && typeof(result) === 'object').toBe(true);
+            expect(result && typeof result === 'object').toBe(true);
             expect(result.msg).toBe('hello');
         });
 

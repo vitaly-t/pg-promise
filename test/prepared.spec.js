@@ -208,7 +208,7 @@ describe('Direct Prepared Statements', () => {
                 .finally(done);
         });
         it('must return one user', () => {
-            expect(result && typeof (result) === 'object').toBeTruthy();
+            expect(result && typeof result === 'object').toBeTruthy();
         });
     });
 
@@ -225,7 +225,7 @@ describe('Direct Prepared Statements', () => {
                 .finally(done);
         });
         it('must return one user', () => {
-            expect(result && typeof (result) === 'object').toBeTruthy();
+            expect(result && typeof result === 'object').toBeTruthy();
         });
     });
 
