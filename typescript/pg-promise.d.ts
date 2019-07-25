@@ -142,8 +142,7 @@ declare namespace pgPromise {
     // helpers.TableName class;
     // API: http://vitaly-t.github.io/pg-promise/helpers.TableName.html
     class TableName {
-        constructor(table: string, schema?: string)
-        constructor(table: ITable)
+        constructor(table: string | ITable)
 
         // these are all read-only:
         readonly name: string;
