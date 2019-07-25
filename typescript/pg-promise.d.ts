@@ -560,7 +560,7 @@ declare namespace pgPromise {
     // TransactionMode class;
     // API: http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
     class TransactionMode {
-        constructor(options: { tiLevel?: isolationLevel, readOnly?: boolean, deferrable?: boolean })
+        constructor(options?: { tiLevel?: isolationLevel, readOnly?: boolean, deferrable?: boolean })
 
         begin: (cap?: boolean) => string
     }

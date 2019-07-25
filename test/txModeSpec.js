@@ -10,7 +10,21 @@ const dbHeader = header(options);
 const pgp = dbHeader.pgp;
 const db = dbHeader.db;
 
-describe('Transaction Mode', () => {
+const TransactionMode = pgp.txMode.TransactionMode;
+const isolationLevel = pgp.txMode.isolationLevel;
+
+describe('TransactionMode', () => {
+
+    describe('Negative', () => {
+        it('must throw throw on invalid options', () => {
+            expect(() => {
+                new TransactionMode(0);
+            }).toThrow('Invalid "options" parameter: 0');
+            expect(() => {
+                new TransactionMode({value: 123});
+            }).toThrow('Option "value" is not recognized.');
+        });
+    });
 
     describe('without parameters, capitalized', () => {
         const queries = [];
@@ -28,7 +42,7 @@ describe('Transaction Mode', () => {
                 return promise.resolve('success');
             }
 
-            txNoParams.txMode = new pgp.txMode.TransactionMode();
+            txNoParams.txMode = new TransactionMode();
 
             db.tx.call(context, txNoParams)
                 .then(data => {
@@ -57,7 +71,7 @@ describe('Transaction Mode', () => {
                 queries.push(e.query);
             };
 
-            const mode = new pgp.txMode.TransactionMode({tiLevel: pgp.txMode.isolationLevel.serializable});
+            const mode = new TransactionMode({tiLevel: isolationLevel.serializable});
 
             db.tx({mode}, () => {
                 return promise.resolve('success');
@@ -86,7 +100,7 @@ describe('Transaction Mode', () => {
                 queries.push(e.query);
             };
 
-            const mode = new pgp.txMode.TransactionMode({readOnly: true});
+            const mode = new TransactionMode({readOnly: true});
 
             db.tx({mode}, () => {
                 return promise.resolve('success');
@@ -115,7 +129,7 @@ describe('Transaction Mode', () => {
                 queries.push(e.query);
             };
 
-            const mode = new pgp.txMode.TransactionMode({readOnly: false});
+            const mode = new TransactionMode({readOnly: false});
 
             db.tx({mode}, () => {
                 return promise.resolve('success');
@@ -144,10 +158,8 @@ describe('Transaction Mode', () => {
                 queries.push(e.query);
             };
 
-            const level = pgp.txMode.isolationLevel;
-
-            const mode = new pgp.txMode.TransactionMode({
-                tiLevel: level.serializable,
+            const mode = new TransactionMode({
+                tiLevel: isolationLevel.serializable,
                 readOnly: true
             });
 
@@ -178,10 +190,8 @@ describe('Transaction Mode', () => {
                 queries.push(e.query);
             };
 
-            const level = pgp.txMode.isolationLevel;
-
-            const mode = new pgp.txMode.TransactionMode({
-                tiLevel: level.serializable,
+            const mode = new TransactionMode({
+                tiLevel: isolationLevel.serializable,
                 readOnly: true,
                 deferrable: true
             });
@@ -213,10 +223,8 @@ describe('Transaction Mode', () => {
                 queries.push(e.query);
             };
 
-            const level = pgp.txMode.isolationLevel;
-
-            const mode = new pgp.txMode.TransactionMode({
-                tiLevel: level.serializable,
+            const mode = new TransactionMode({
+                tiLevel: isolationLevel.serializable,
                 readOnly: true,
                 deferrable: false
             });
@@ -248,9 +256,8 @@ describe('Transaction Mode', () => {
                 queries.push(e.query);
             };
 
-            const level = pgp.txMode.isolationLevel;
-            const mode = new pgp.txMode.TransactionMode({
-                tiLevel: level.repeatableRead,
+            const mode = new TransactionMode({
+                tiLevel: isolationLevel.repeatableRead,
                 readOnly: true,
                 deferrable: false
             });
@@ -274,7 +281,7 @@ describe('Transaction Mode', () => {
     });
 
     describe('inspection', () => {
-        const mode = new pgp.txMode.TransactionMode();
+        const mode = new TransactionMode();
         it('must return the same as method begin()', () => {
             expect(mode.begin(true)).toBe(tools.inspect(mode));
         });

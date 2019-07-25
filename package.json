@@ -40,7 +40,7 @@
     "node": ">=7.6"
   },
   "dependencies": {
-    "assert-options": "0.1.3",
+    "assert-options": "0.2.0",
     "manakin": "0.5.2",
     "pg": "7.11.0",
     "pg-minify": "1.4.1",
