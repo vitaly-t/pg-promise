@@ -1,9 +1,6 @@
-const EOL = require('os').EOL;
-
 const $u = require('../lib/utils');
 const utils = require('../lib/utils/public');
 const internal = require('../lib/utils');
-const path = require('path');
 
 function dummy() {
 }
