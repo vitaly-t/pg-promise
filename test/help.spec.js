@@ -253,15 +253,6 @@ describe('TableName', () => {
                 }).toThrow(error);
             });
         });
-
-        describe('invalid \'schema\' parameter', () => {
-            const error = 'Invalid schema name.';
-            it('must throw an error', () => {
-                expect(() => {
-                    new helpers.TableName('table', 123);
-                }).toThrow(error);
-            });
-        });
     });
 
     describe('options', () => {
