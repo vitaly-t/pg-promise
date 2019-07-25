@@ -668,51 +668,7 @@ Tasks provide a shared connection context for its callback function, to be relea
 they must be used whenever executing more than one query at a time. See also [Chaining Queries] to understand
 the importance of using tasks.
 
-You can optionally tag tasks (see [Tags]), and use either ES6 generators or ES7 async syntax:
-
-<details>
-  <summary><b>With ES6 generator</b></summary>
-  
-```js
-db.task(function * (t) {
-    const count = yield t.one('SELECT count(*) FROM events WHERE id = $1', 123, a => +a.count);
-    if(count > 0) {
-        const logs = yield t.any('SELECT * FROM log WHERE event_id = $1', 123);
-        return {count, logs};
-    }
-    return {count};
-})
-    .then(data => {
-        // success, data = either {count} or {count, logs}
-    })
-    .catch(error => {
-        // failed    
-    });
-```
-
-</details>
-
-<details>
-  <summary><b>With ES6 generator + tag</b></summary>
-  
-```js
-db.task('get-event-logs', function * (t) {
-    const count = yield t.one('SELECT count(*) FROM events WHERE id = $1', 123, a => +a.count);
-    if(count > 0) {
-        const logs = yield t.any('SELECT * FROM log WHERE event_id = $1', 123);
-        return {count, logs};
-    }
-    return {count};
-})
-    .then(data => {
-        // success, data = either {count} or {count, logs}
-    })
-    .catch(error => {
-        // failed    
-    });
-```
-
-</details>
+You can optionally tag tasks (see [Tags]), and use ES7 async syntax:
 
 <details>
   <summary><b>With ES7 async</b></summary>
@@ -760,7 +716,7 @@ db.task('get-event-logs', async t => {
 
 ### Conditional Tasks
 
-Method [taskIf] was added in v8.2.0, to create a new task only when required, according to the condition. 
+Method [taskIf] creates a new task only when required, according to the condition. 
 
 The default condition is to start a new task only when necessary, such as on the top level.
 
@@ -837,43 +793,7 @@ db.tx(t => {
 If the callback function returns a rejected promise or throws an error, the method will automatically execute `ROLLBACK` at the end. 
 In all other cases the transaction will be automatically closed by `COMMIT`.
 
-The same as tasks, transactions support [Tags], ES6 generators and ES7 async:
-
-<details>
-<summary><b>With ES6 generator</b></summary>
-
-```js
-db.tx(function * (t) {
-    yield t.none('UPDATE users SET active = $1 WHERE id = $2', [true, 123]);
-    yield t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id', ['users', 123]);
-})
-    .then(data => {
-        // success, COMMIT was executed
-    })
-    .catch(error => {
-        // failure, ROLLBACK was executed
-    });
-```
-
-</details>
-
-<details>
-<summary><b>With ES6 generator + tag</b></summary>
-
-```js
-db.tx('update-user', function * (t) {
-    yield t.none('UPDATE users SET active = $1 WHERE id = $2', [true, 123]);
-    yield t.one('INSERT INTO audit(entity, id) VALUES($1, $2) RETURNING id', ['users', 123]);
-})
-    .then(data => {
-        // success, COMMIT was executed
-    })
-    .catch(error => {
-        // failure, ROLLBACK was executed
-    });
-```
-
-</details>
+The same as tasks, transactions support [Tags] and ES7 `async`:
 
 <details>
 <summary><b>With ES7 async</b></summary>
