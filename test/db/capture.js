@@ -25,8 +25,7 @@ function hookConsole(callback) {
 
 // removes color elements from text;
 function removeColors(text) {
-    // eslint-disable-next-line
-    return text.replace(/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]/g, '');
+    return text.replace(/\\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]/g, '');
 }
 
 function capture() {

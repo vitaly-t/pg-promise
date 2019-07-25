@@ -147,7 +147,7 @@ describe('Method stream', () => {
                     .finally(done);
             });
             it('must return the correct data and provide notification', () => {
-                expect(typeof(res)).toBe('object');
+                expect(typeof (res)).toBe('object');
                 expect(res.processed).toBe(1);
                 expect(res.duration >= 0).toBe(true);
                 expect(count).toBe(1);

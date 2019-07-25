@@ -6,6 +6,7 @@
   },
   "extends": "eslint:recommended",
   "parserOptions": {
+    "ecmaVersion": 2017
   },
   "rules": {
     "prefer-arrow-callback": "error",
