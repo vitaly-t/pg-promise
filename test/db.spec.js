@@ -5,7 +5,7 @@ const npm = {
 const capture = require('./db/capture');
 const pgResult = require('pg/lib/result');
 const header = require('./db/header');
-const tools = require('./tools');
+const tools = require('./db/tools');
 
 const isMacOS = require('os').platform() === 'darwin';
 

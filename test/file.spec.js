@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const header = require('./db/header');
 const utils = require('../lib/utils');
-const tools = require('./tools');
+const tools = require('./db/tools');
 
 const promise = header.defPromise;
 const options = {
