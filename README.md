@@ -50,7 +50,6 @@ Built on top of [node-postgres], this library adds the following:
 * Automatic connections
 * Automatic transactions
 * Powerful query-formatting engine
-* Support for ES6 generators and ES7 `async/await`
 * Declarative approach to handling query results
 * Global events reporting for central handling
 * Extensive support for external SQL files

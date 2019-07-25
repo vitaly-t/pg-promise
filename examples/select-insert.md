@@ -39,32 +39,16 @@ getInsertUserId('name')
     });
 ```
 
-The same function `getInsertUserId`, using ES6 generators:
-
-```js
-function getInsertUserId(name) {
-    return db.task('getInsertUserId', function *(t) {
-        const userId = yield t.oneOrNone('SELECT id FROM Users WHERE name = $1', name, u => u && u.id);
-        return yield userId || t.one('INSERT INTO Users(name) VALUES($1) RETURNING id', name, u => u.id);
-    });
-}
-```
-
-The same function `getInsertUserId`, using ES7 async syntax:
+The same function `getInsertUserId`, using ES7 `async` syntax:
 
 ```js
 async function getInsertUserId(name) {
-    return await db.task('getInsertUserId', async (t) => {
+    return db.task('getInsertUserId', async t => {
         const userId = await t.oneOrNone('SELECT id FROM Users WHERE name = $1', name, u => u && u.id);
         return userId || await t.one('INSERT INTO Users(name) VALUES($1) RETURNING id', name, u => u.id);
     });
 }
 ```
-
-We recommend one of the following runtimes or transpilers when using the ES7 async clause:
-* Node.js `7.6` or more recent
-* TypeScript `2.1` or more recent
-* Babel using `babel-preset-es2017` preset or `babel-plugin-transform-async-to-generator` plugin
 
 ## Single-query alternative
 
