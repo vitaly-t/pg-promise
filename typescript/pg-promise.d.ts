@@ -55,7 +55,7 @@ declare namespace pgPromise {
         text: string | QueryFile
         values?: any[]
         binary?: boolean
-        rowMode?: string
+        rowMode?: void | 'array'
         rows?: number
     }
 
@@ -63,7 +63,7 @@ declare namespace pgPromise {
         text: string | QueryFile
         values?: any[]
         binary?: boolean
-        rowMode?: string
+        rowMode?: void | 'array'
     }
 
     interface IPreparedParsed {
@@ -71,7 +71,7 @@ declare namespace pgPromise {
         text: string
         values: any[]
         binary: boolean
-        rowMode: string
+        rowMode: void | 'array'
         rows: number
     }
 
@@ -79,7 +79,7 @@ declare namespace pgPromise {
         text: string
         values: any[]
         binary: boolean
-        rowMode: string
+        rowMode: void | 'array'
     }
 
     interface IColumnDescriptor {
@@ -217,8 +217,8 @@ declare namespace pgPromise {
 
         // advanced properties:
         binary: boolean;
-        rowMode: string;
-        rows: any;
+        rowMode: void | 'array';
+        rows: number;
 
         parse(): IPreparedParsed | errors.PreparedStatementError
 
@@ -237,7 +237,7 @@ declare namespace pgPromise {
 
         // advanced properties:
         binary: boolean;
-        rowMode: string;
+        rowMode: void | 'array';
 
         parse(): IParameterizedParsed | errors.ParameterizedQueryError
 

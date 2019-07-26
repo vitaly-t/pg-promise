@@ -11,7 +11,8 @@ const qf = new pgPromise.QueryFile('file');
 ps1.text = 'some text';
 ps1.text = qf;
 
-const ps4 = new pgp.PreparedStatement({name: '', text: qf, values: [], rowMode: 'hello', rows: 123});
+const ps3 = new pgp.PreparedStatement({name: '', text: qf, values: [], rowMode: null, rows: 123});
+const ps4 = new pgp.PreparedStatement({name: '', text: qf, values: [], rowMode: 'array', rows: 0});
 
 db.one(ps1);
 
