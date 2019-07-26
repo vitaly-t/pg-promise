@@ -210,8 +210,7 @@ declare namespace pgPromise {
     // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html
     class PreparedStatement {
 
-        constructor(name: string, text: string | QueryFile, values?: any[])
-        constructor(obj: PreparedStatement | IPreparedStatement)
+        constructor(options: IPreparedStatement)
 
         // standard properties:
         name: string;

@@ -89,7 +89,7 @@ describe('PreparedStatement', () => {
     });
 
     describe('parameters', () => {
-        const ps = new pgp.PreparedStatement('test-name', 'test-query', [123]);
+        const ps = new pgp.PreparedStatement({name: 'test-name', text: 'test-query', values: [123]});
         it('must expose the values correctly', () => {
             expect(ps.name).toBe('test-name');
             expect(ps.text).toBe('test-query');
@@ -110,7 +110,7 @@ describe('PreparedStatement', () => {
 
     describe('valid, without parameters', () => {
         let result;
-        const ps = new pgp.PreparedStatement('test-1', 'select 1 as value');
+        const ps = new pgp.PreparedStatement({name: 'test-1', text: 'select 1 as value'});
         beforeEach(done => {
             db.one(ps)
                 .then(data => {
@@ -125,7 +125,11 @@ describe('PreparedStatement', () => {
 
     describe('valid, with parameters', () => {
         let result;
-        const ps = new pgp.PreparedStatement('test-2', 'select count(*) from users where login = $1', ['non-existing']);
+        const ps = new pgp.PreparedStatement({
+            name: 'test-2',
+            text: 'select count(*) from users where login = $1',
+            values: ['non-existing']
+        });
         beforeEach(done => {
             db.one(ps)
                 .then(data => {
@@ -140,8 +144,8 @@ describe('PreparedStatement', () => {
     });
 
     describe('object inspection', () => {
-        const ps1 = new pgp.PreparedStatement('test-name', 'test-query $1');
-        const ps2 = new pgp.PreparedStatement('test-name', 'test-query $1', [123]);
+        const ps1 = new pgp.PreparedStatement({name: 'test-name', text: 'test-query $1'});
+        const ps2 = new pgp.PreparedStatement({name: 'test-name', text: 'test-query $1', values: [123]});
         it('must stringify all values', () => {
             expect(tools.inspect(ps1)).toBe(ps1.toString());
             expect(tools.inspect(ps2)).toBe(ps2.toString());
@@ -153,7 +157,7 @@ describe('PreparedStatement', () => {
         describe('successful', () => {
             const f = path.join(__dirname, './sql/simple.sql');
             const qf = new pgp.QueryFile(f, {compress: true, noWarnings: true});
-            const ps = new pgp.PreparedStatement('test-name', qf);
+            const ps = new pgp.PreparedStatement({name: 'test-name', text: qf});
             let result = ps.parse();
             expect(result && typeof result === 'object').toBeTruthy();
             expect(result.name).toBe('test-name');
@@ -163,7 +167,7 @@ describe('PreparedStatement', () => {
 
         describe('with error', () => {
             const qf = new pgp.QueryFile('./invalid.sql', {noWarnings: true});
-            const ps = new pgp.PreparedStatement('test-name', qf);
+            const ps = new pgp.PreparedStatement({name: 'test-name', text: qf});
             const result = ps.parse();
             expect(result instanceof pgp.errors.PreparedStatementError).toBe(true);
             expect(result.error instanceof pgp.errors.QueryFileError).toBe(true);
