@@ -133,8 +133,6 @@ describe('QueryFile / Positive:', () => {
                 compress: true,
                 noWarnings: true
             };
-        Object.freeze(options1);
-        Object.freeze(options3);
         it('must be consistent with the settings', () => {
             expect(new QueryFile(sqlSimple, {noWarnings: true}).options).toEqual(options1);
             expect(new QueryFile(sqlSimple, options2).options).toEqual(options3);
