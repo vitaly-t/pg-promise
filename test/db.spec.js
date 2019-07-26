@@ -1139,7 +1139,7 @@ describe('Executing method query', () => {
             });
         });
         describe('for async functions', () => {
-            function* invalidFunc() {
+            async function invalidFunc() {
             }
 
             let error, query, params;

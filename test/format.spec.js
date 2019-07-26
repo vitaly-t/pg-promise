@@ -158,12 +158,6 @@ describe('Method as.number', () => {
         expect(() => {
             pgp.as.number([1, 2]);
         }).toThrow('\'1,2\'' + err);
-
-        expect(() => {
-            pgp.as.number(function* () {
-            });
-        }).toThrow('Cannot use asynchronous functions with query formatting.');
-
     });
 
 });
@@ -1370,7 +1364,19 @@ describe('Custom Type Formatting', () => {
             }).toThrow(errMsg);
             expect(() => {
                 pgp.as.format('$1', {
+                    toPostgres: async function () {
+                    }
+                });
+            }).toThrow(errMsg);
+            expect(() => {
+                pgp.as.format('$1', {
                     [pgp.as.ctf.toPostgres]: function* () {
+                    }
+                });
+            }).toThrow(errMsg);
+            expect(() => {
+                pgp.as.format('$1', {
+                    [pgp.as.ctf.toPostgres]: async function () {
                     }
                 });
             }).toThrow(errMsg);
