@@ -26,7 +26,7 @@ describe('ES6 Generators', () => {
                 })
                 .finally(done);
         });
-        it('must throw error', () => {
+        it('must reject', () => {
             expect(error instanceof TypeError).toBe(true);
             expect(error.message).toBe(errMsg);
         });
@@ -42,7 +42,7 @@ describe('ES6 Generators', () => {
                 })
                 .finally(done);
         });
-        it('must throw error', () => {
+        it('must reject', () => {
             expect(error instanceof TypeError).toBe(true);
             expect(error.message).toBe(errMsg);
         });
