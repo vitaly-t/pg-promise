@@ -3,7 +3,7 @@ import * as pgPromise from '../../typescript/pg-promise';
 const pgp: pgPromise.IMain = pgPromise();
 const db: pgPromise.IDatabase<any> = pgp('connection');
 
-const pq1 = new pgp.ParameterizedQuery('', []);
+const pq1 = new pgp.ParameterizedQuery('');
 const pq2 = new pgp.ParameterizedQuery({text: ''});
 const pq3 = new pgp.ParameterizedQuery(pq1);
 

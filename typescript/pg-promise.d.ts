@@ -232,7 +232,7 @@ declare namespace pgPromise {
     // API: http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
     class ParameterizedQuery {
 
-        constructor(text: string | QueryFile | ParameterizedQuery | IParameterizedQuery, values?: any[])
+        constructor(options: string | QueryFile | IParameterizedQuery)
 
         // standard properties:
         text: string | QueryFile;

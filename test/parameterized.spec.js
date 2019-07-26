@@ -17,8 +17,10 @@ describe('ParameterizedQuery', () => {
 
     describe('parameter-object initialization', () => {
         it('must initialize correctly', () => {
-            const pq = new pgp.ParameterizedQuery({text: 'test-query', values: [123]});
-            expect(pq.parse()).toEqual({text: 'test-query', values: [123]});
+            const pq1 = new pgp.ParameterizedQuery({text: 'test-query', values: [123]});
+            const pq2 = new pgp.ParameterizedQuery({text: 'test-query', values: []});
+            expect(pq1.parse()).toEqual({text: 'test-query', values: [123]});
+            expect(pq2.parse()).toEqual({text: 'test-query'});
         });
     });
 
@@ -101,7 +103,10 @@ describe('ParameterizedQuery', () => {
 
     describe('valid, with parameters', () => {
         let result;
-        const pq = new pgp.ParameterizedQuery('select count(*) from users where login = $1', ['non-existing']);
+        const pq = new pgp.ParameterizedQuery({
+            text: 'select count(*) from users where login = $1',
+            values: ['non-existing']
+        });
         beforeEach(done => {
             db.one(pq)
                 .then(data => {
@@ -119,7 +124,7 @@ describe('ParameterizedQuery', () => {
         let result;
         beforeEach(done => {
             db.one({
-                text: 'select * from users where id=$1'
+                text: 'select * from users where id = $1'
             }, 1)
                 .then(data => {
                     result = data;
