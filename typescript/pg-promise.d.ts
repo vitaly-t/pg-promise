@@ -146,8 +146,6 @@ declare namespace pgPromise {
         readonly schema: string;
 
         toString(): string
-
-        toPostgres(self: TableName): string
     }
 
     // helpers.Column class;
@@ -258,8 +256,6 @@ declare namespace pgPromise {
         prepare(): void
 
         toString(level?: number): string
-
-        toPostgres(self: QueryFile): string
     }
 
     // PromiseAdapter class;
