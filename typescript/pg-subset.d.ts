@@ -100,6 +100,8 @@ declare namespace pg {
         keepalives_idle?: number
     }
 
+    // Type id-s supported by PostgreSQL, copied from:
+    // http://github.com/brianc/node-pg-types/blob/master/lib/builtins.js
     enum TypeId {
         BOOL = 16,
         BYTEA = 17,
