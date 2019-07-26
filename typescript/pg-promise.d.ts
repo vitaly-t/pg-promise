@@ -51,8 +51,8 @@ declare namespace pgPromise {
     }
 
     interface IPreparedStatement {
-        name: string
-        text: string | QueryFile
+        name?: string
+        text?: string | QueryFile
         values?: any[]
         binary?: boolean
         rowMode?: void | 'array'
@@ -60,7 +60,7 @@ declare namespace pgPromise {
     }
 
     interface IParameterizedQuery {
-        text: string | QueryFile
+        text?: string | QueryFile
         values?: any[]
         binary?: boolean
         rowMode?: void | 'array'
@@ -208,7 +208,7 @@ declare namespace pgPromise {
     // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html
     class PreparedStatement {
 
-        constructor(options: IPreparedStatement)
+        constructor(options?: IPreparedStatement)
 
         // standard properties:
         name: string;
@@ -229,7 +229,7 @@ declare namespace pgPromise {
     // API: http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
     class ParameterizedQuery {
 
-        constructor(options: string | QueryFile | IParameterizedQuery)
+        constructor(options?: string | QueryFile | IParameterizedQuery)
 
         // standard properties:
         text: string | QueryFile;
