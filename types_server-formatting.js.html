@@ -27,106 +27,103 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/*
- * Copyright (c) 2015-present, Vitaly Tomilov
- *
- * See the LICENSE file at the top-level directory of this distribution
- * for licensing information.
- *
- * Removal or modification of this copyright notice is prohibited.
- */
-
-'use strict';
-
-const npm = {
-    con: require('manakin').local,
-    utils: require('./utils')
-};
+            <pre class="prettyprint source linenums"><code>const {InnerState} = require('../inner-state');
+const {addInspection} = require('../utils');
+const utils = require('../utils');
 
 /**
- * @class DatabasePool
  * @private
+ * @class ServerFormatting
  */
-class DatabasePool {
+class ServerFormatting extends InnerState {
 
-    constructor() {
-        this.dbMap = {}; // map of used database context keys (connection + dc)
-        this.dbs = []; // all database objects
+    constructor(options) {
+        const _inner = {
+            options,
+            changed: true,
+            currentError: undefined,
+            target: {}
+        };
+        super(_inner);
+        setValues.call(this, options.values);
     }
 
-    /**
-     * @method DatabasePool.register
-     * @private
-     * @description
-     *  - Registers each database object, to make sure no duplicates connections are used,
-     *    and if they are, produce a warning;
-     *  - Registers each Pool object, to be able to release them all when requested.
-     *
-     * @param {Database} db - The new Database object being registered.
-     */
-    register(db) {
-        const cnKey = DatabasePool.createContextKey(db);
-        npm.utils.addReadProp(db, '$cnKey', cnKey, true);
-        if (cnKey in this.dbMap) {
-            this.dbMap[cnKey]++;
-            /* istanbul ignore if */
-            if (!db.$config.options.noWarnings) {
-                npm.con.warn('WARNING: Creating a duplicate database object for the same connection.\n%s\n',
-                    npm.utils.getLocalStack(5));
-            }
+    get error() {
+        return this._inner.currentError;
+    }
+
+    get text() {
+        return this._inner.options.text;
+    }
+
+    set text(value) {
+        const _i = this._inner;
+        if (value !== _i.options.text) {
+            _i.options.text = value;
+            _i.changed = true;
+        }
+    }
+
+    get binary() {
+        return this._inner.options.binary;
+    }
+
+    set binary(value) {
+        const _i = this._inner;
+        if (value !== _i.options.binary) {
+            _i.options.binary = value;
+            _i.changed = true;
+        }
+    }
+
+    get rowMode() {
+        return this._inner.options.rowMode;
+    }
+
+    set rowMode(value) {
+        const _i = this._inner;
+        if (value !== _i.options.rowMode) {
+            _i.options.rowMode = value;
+            _i.changed = true;
+        }
+    }
+
+    get values() {
+        return this._inner.target.values;
+    }
+
+    set values(values) {
+        setValues.call(this, values);
+    }
+
+}
+
+/**
+ * @member ServerFormatting#parse
+ */
+
+function setValues(v) {
+    const target = this._inner.target;
+    if (Array.isArray(v)) {
+        if (v.length) {
+            target.values = v;
         } else {
-            this.dbMap[cnKey] = 1;
+            delete target.values;
         }
-        this.dbs.push(db);
-    }
-
-    /**
-     * @method DatabasePool.unregister
-     * @param db
-     */
-    unregister(db) {
-        const cnKey = db.$cnKey;
-        if (!--this.dbMap[cnKey]) {
-            delete this.dbMap[cnKey];
+    } else {
+        if (utils.isNull(v)) {
+            delete target.values;
+        } else {
+            target.values = [v];
         }
-    }
-
-    /**
-     * @method DatabasePool.shutDown
-     * @private
-     */
-    shutDown() {
-        this.dbs.forEach(db => {
-            db.$destroy();
-        });
-        this.dbs.length = 0;
-        this.dbMap = {};
-    }
-
-    /**
-     * @method DatabasePool.createContextKey
-     * @static
-     * @private
-     * @description
-     * For connections that are objects it reorders the keys alphabetically,
-     * and then serializes the result into a JSON string.
-     *
-     * @param {Database} db - Database instance.
-     */
-    static createContextKey(db) {
-        let cn = db.$cn;
-        if (typeof cn === 'object') {
-            const obj = {}, keys = Object.keys(cn).sort();
-            keys.forEach(name => {
-                obj[name] = cn[name];
-            });
-            cn = obj;
-        }
-        return JSON.stringify(npm.utils.getSafeConnection(cn)) + JSON.stringify(db.$dc);
     }
 }
 
-module.exports = new DatabasePool();
+addInspection(ServerFormatting, function () {
+    return this.toString();
+});
+
+module.exports = {ServerFormatting};
 </code></pre>
         </article>
     </section>

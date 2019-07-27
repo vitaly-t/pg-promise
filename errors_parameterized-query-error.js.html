@@ -36,12 +36,11 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-'use strict';
+const {QueryFileError} = require('./query-file-error');
 
 const npm = {
     os: require('os'),
-    utils: require('../utils'),
-    QueryFileError: require('./queryFile')
+    utils: require('../utils')
 };
 
 /**
@@ -73,15 +72,15 @@ const npm = {
  * @see ParameterizedQuery
  */
 class ParameterizedQueryError extends Error {
-    constructor(error, ps) {
-        const isQueryFileError = error instanceof npm.QueryFileError;
+    constructor(error, pq) {
+        const isQueryFileError = error instanceof QueryFileError;
         const message = isQueryFileError ? 'Failed to initialize \'text\' from a QueryFile.' : error;
         super(message);
         this.name = this.constructor.name;
         if (isQueryFileError) {
             this.error = error;
         }
-        this.result = ps;
+        this.result = pq;
         Error.captureStackTrace(this, this.constructor);
     }
 }
@@ -122,7 +121,7 @@ npm.utils.addInspection(ParameterizedQueryError, function () {
     return this.toString();
 });
 
-module.exports = ParameterizedQueryError;
+module.exports = {ParameterizedQueryError};
 </code></pre>
         </article>
     </section>

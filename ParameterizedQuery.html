@@ -41,20 +41,16 @@
 
     
 
-    <h4 class="name" id="ParameterizedQuery"><span class="type-signature"></span>new ParameterizedQuery<span class="signature">(text, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="ParameterizedQuery.html">ParameterizedQuery</a>}</span></h4>
+    <h4 class="name" id="ParameterizedQuery"><span class="type-signature"></span>new ParameterizedQuery<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="ParameterizedQuery.html">ParameterizedQuery</a>}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p><strong>Alternative Syntax:</strong> <code>ParameterizedQuery({text, values, ...})</code> ⇒ <a href="ParameterizedQuery.html">ParameterizedQuery</a></p>
-<p>Constructs a new <a href="ParameterizedQuery.html">ParameterizedQuery</a> object.</p>
-<p>The alternative syntax supports advanced properties <a href="ParameterizedQuery.html#binary">binary</a> and <a href="ParameterizedQuery.html#rowMode">rowMode</a>,
-which are passed into <a href="https://github.com/brianc/node-postgres">pg</a>, but not used by the class.</p>
-<p>All properties can also be set after the object's construction.</p>
-<p>This type extends the basic <code>{text, values}</code> object, by replacing it, i.e. when the basic object is used
-with a query method, a new <a href="ParameterizedQuery.html">ParameterizedQuery</a> object is created implicitly in its place.</p>
+    <p>Constructs a new <a href="ParameterizedQuery.html">ParameterizedQuery</a> object. All properties can also be set after the object's construction.</p>
+<p>This type extends the basic <code>{text, values}</code> object, i.e. when the basic object is used with a query method,
+a new <a href="ParameterizedQuery.html">ParameterizedQuery</a> object is created in its place.</p>
 <p>The type can be used in place of the <code>query</code> parameter, with any query method directly. And it never throws any error,
 leaving it for query methods to reject with <a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a>.</p>
 <p>The type is available from the library's root: <code>pgp.ParameterizedQuery</code>.</p>
@@ -70,6 +66,66 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
 
     <h5>Parameters:</h5>
     
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type"><a href="QueryFile.html">QueryFile</a></span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Object configuration options / properties.</p>
+                <h6>Properties</h6>
+                
 
 <table class="params">
     <thead>
@@ -113,6 +169,8 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
             
                 <td class="attributes">
                 
+                    &lt;optional><br>
+                
 
                 
 
@@ -122,8 +180,7 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
 
             
 
-            <td class="description last"><p>A non-empty query string or a <a href="QueryFile.html">QueryFile</a> object.</p>
-<p>Only the basic variables (<code>$1</code>, <code>$2</code>, etc) can be used in the query, because <em>Parameterized Queries</em> are formatted by the database server.</p></td>
+            <td class="description last"><p>See property <a href="ParameterizedQuery.html#text">text</a>.</p></td>
         </tr>
 
     
@@ -156,7 +213,80 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
 
             
 
-            <td class="description last"><p>Query formatting values. When it is not an <code>Array</code> and not <code>null</code>/<code>undefined</code>, it is automatically wrapped into an array.</p></td>
+            <td class="description last"><p>See property <a href="ParameterizedQuery.html#values">values</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>binary</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>See property <a href="ParameterizedQuery.html#binary">binary</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rowMode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>See property <a href="ParameterizedQuery.html#rowMode">rowMode</a>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -197,7 +327,7 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line20">line 20</a>
+        <a href="types_parameterized-query.js.html">types/parameterized-query.js</a>, <a href="types_parameterized-query.js.html#line20">line 20</a>
     </li></ul></dd>
     
 
@@ -249,7 +379,7 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>const PQ = require('pg-promise').ParameterizedQuery;// Creating a complete Parameterized Query with parameters:const findUser = new PQ('SELECT * FROM Users WHERE id = $1', [123]);db.one(findUser)    .then(user => {        // user found;    })    .catch(error => {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>const PQ = require('pg-promise').ParameterizedQuery;// Creating a complete Parameterized Query with parameters:const findUser = new PQ({text: 'SELECT * FROM Users WHERE id = $1', values: [123]});db.one(findUser)    .then(user => {        // user found;    })    .catch(error => {        // error;    });</code></pre>
 
     <pre class="prettyprint"><code>const PQ = require('pg-promise').ParameterizedQuery;// Creating a reusable Parameterized Query without values:const addUser = new PQ('INSERT INTO Users(name, age) VALUES($1, $2)');// setting values explicitly:addUser.values = ['John', 30];db.none(addUser)    .then(() => {        // user added;    })    .catch(error=> {        // error;    });// setting values implicitly, by passing them into the query method:db.none(addUser, ['Mike', 25])    .then(() => {        // user added;    })    .catch(error=> {        // error;    });</code></pre>
 
@@ -332,7 +462,7 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line172">line 172</a>
+        <a href="types_parameterized-query.js.html">types/parameterized-query.js</a>, <a href="types_parameterized-query.js.html#line223">line 223</a>
     </li></ul></dd>
     
 
@@ -417,7 +547,7 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line214">line 214</a>
+        <a href="types_parameterized-query.js.html">types/parameterized-query.js</a>, <a href="types_parameterized-query.js.html#line242">line 242</a>
     </li></ul></dd>
     
 
@@ -443,8 +573,7 @@ leaving it for query methods to reject with <a href="errors.ParameterizedQueryEr
 <div class="description">
     <p>Changes the way data arrives to the client, with only one value supported by <a href="https://github.com/brianc/node-postgres">pg</a>:</p>
 <ul>
-<li><code>rowMode = 'array'</code> will make all data rows arrive as arrays of values.
-By default, rows arrive as objects.</li>
+<li><code>array</code> will make all data rows arrive as arrays of values. By default, rows arrive as objects.</li>
 </ul>
 </div>
 
@@ -498,7 +627,7 @@ By default, rows arrive as objects.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line193">line 193</a>
+        <a href="types_parameterized-query.js.html">types/parameterized-query.js</a>, <a href="types_parameterized-query.js.html#line233">line 233</a>
     </li></ul></dd>
     
 
@@ -523,6 +652,8 @@ By default, rows arrive as objects.</li>
 
 <div class="description">
     <p>A non-empty query string or a <a href="QueryFile.html">QueryFile</a> object.</p>
+<p>Only the basic variables (<code>$1</code>, <code>$2</code>, etc) can be used in the query, because <em>Parameterized Queries</em>
+are formatted on the server side.</p>
 </div>
 
 
@@ -573,7 +704,7 @@ By default, rows arrive as objects.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line134">line 134</a>
+        <a href="types_parameterized-query.js.html">types/parameterized-query.js</a>, <a href="types_parameterized-query.js.html#line201">line 201</a>
     </li></ul></dd>
     
 
@@ -651,7 +782,7 @@ is then automatically wrapped into an array</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line152">line 152</a>
+        <a href="types_parameterized-query.js.html">types/parameterized-query.js</a>, <a href="types_parameterized-query.js.html#line211">line 211</a>
     </li></ul></dd>
     
 
@@ -731,7 +862,7 @@ or else it returns a <a href="errors.ParameterizedQueryError.html">Parameterized
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line230">line 230</a>
+        <a href="types_parameterized-query.js.html">types/parameterized-query.js</a>, <a href="types_parameterized-query.js.html#line101">line 101</a>
     </li></ul></dd>
     
 
@@ -904,7 +1035,7 @@ or else it returns a <a href="errors.ParameterizedQueryError.html">Parameterized
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="types_parameterized.js.html">types/parameterized.js</a>, <a href="types_parameterized.js.html#line292">line 292</a>
+        <a href="types_parameterized-query.js.html">types/parameterized-query.js</a>, <a href="types_parameterized-query.js.html#line161">line 161</a>
     </li></ul></dd>
     
 

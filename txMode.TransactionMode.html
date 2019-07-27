@@ -42,15 +42,14 @@
 
     
 
-    <h4 class="name" id="TransactionMode"><span class="type-signature"></span>new TransactionMode<span class="signature">(tiLevel<span class="signature-attributes">opt</span>, readOnly<span class="signature-attributes">opt</span>, deferrable<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="txMode.TransactionMode.html">txMode.TransactionMode</a>}</span></h4>
+    <h4 class="name" id="TransactionMode"><span class="type-signature"></span>new TransactionMode<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="txMode.TransactionMode.html">txMode.TransactionMode</a>}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p><strong>Alternative Syntax:</strong> <code>TransactionMode({tiLevel, readOnly, deferrable})</code> ⇒ TransactionMode</p>
-<p>Constructs a complete transaction-opening command, based on the parameters:</p>
+    <p>Constructs a complete transaction-opening command, based on the options:</p>
 <ul>
 <li>isolation level</li>
 <li>access mode</li>
@@ -94,6 +93,55 @@
 
         <tr>
             
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Transaction Mode options.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
                 <td class="name"><code>tiLevel</code></td>
             
 
@@ -101,9 +149,6 @@
             
                 
 <span class="param-type"><a href="txMode.html#.isolationLevel">txMode.isolationLevel</a></span>
-|
-
-<span class="param-type">object</span>
 
 
             
@@ -123,8 +168,7 @@
 
             
 
-            <td class="description last"><p>Transaction Isolation Level, or an object with parameters, if the alternative
-syntax is used.</p></td>
+            <td class="description last"><p>Transaction Isolation Level.</p></td>
         </tr>
 
     
@@ -209,6 +253,13 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
     </tbody>
 </table>
 
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
 
 
 
@@ -243,7 +294,7 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="txMode.js.html">txMode.js</a>, <a href="txMode.js.html#line47">line 47</a>
+        <a href="tx-mode.js.html">tx-mode.js</a>, <a href="tx-mode.js.html#line42">line 42</a>
     </li></ul></dd>
     
 
@@ -443,7 +494,7 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="txMode.js.html">txMode.js</a>, <a href="txMode.js.html#line165">line 165</a>
+        <a href="tx-mode.js.html">tx-mode.js</a>, <a href="tx-mode.js.html#line148">line 148</a>
     </li></ul></dd>
     
 

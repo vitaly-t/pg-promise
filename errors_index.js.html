@@ -36,14 +36,10 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-'use strict';
-
-const npm = {
-    qResult: require('./queryResult'),
-    qFile: require('./queryFile'),
-    prepared: require('./prepared'),
-    paramQuery: require('./paramQuery')
-};
+const {QueryResultError, queryResultErrorCode} = require('./query-result-error');
+const {PreparedStatementError} = require('./prepared-statement-error');
+const {ParameterizedQueryError} = require('./parameterized-query-error');
+const {QueryFileError} = require('./query-file-error');
 
 /**
  * @namespace errors
@@ -76,14 +72,12 @@ const npm = {
  */
 
 module.exports = {
-    QueryResultError: npm.qResult.QueryResultError,
-    queryResultErrorCode: npm.qResult.queryResultErrorCode,
-    PreparedStatementError: npm.prepared,
-    ParameterizedQueryError: npm.paramQuery,
-    QueryFileError: npm.qFile
+    QueryResultError,
+    queryResultErrorCode,
+    PreparedStatementError,
+    ParameterizedQueryError,
+    QueryFileError
 };
-
-Object.freeze(module.exports);
 </code></pre>
         </article>
     </section>

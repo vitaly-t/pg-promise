@@ -36,26 +36,25 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-'use strict';
+const {PromiseAdapter} = require('./promise-adapter');
+const {DatabasePool} = require('./database-pool');
+const {PreparedStatement, ParameterizedQuery} = require('./types');
+const {QueryFile} = require('./query-file');
+const {queryResult} = require('./query-result');
+const {parsePromise} = require('./promise-parser');
+const {assertOptions} = require('assert-options');
 
 const npm = {
-    assertOptions: require('assert-options'),
     con: require('manakin').local,
     path: require('path'),
     pg: require('pg'),
     minify: require('pg-minify'),
-    adapter: require('./adapter'),
-    result: require('./result'),
-    promise: require('./promise'),
     formatting: require('./formatting'),
     helpers: require('./helpers'),
-    queryFile: require('./queryFile'),
     errors: require('./errors'),
     utils: require('./utils'),
     pubUtils: require('./utils/public'),
-    mode: require('./txMode'),
-    types: require('./types'),
-    dbPool: require('./dbPool'),
+    mode: require('./tx-mode'),
     package: require('../package.json'),
     text: require('./text')
 };
@@ -65,6 +64,9 @@ const npm = {
  * @module pg-promise
  *
  * @description
+ * ## pg-promise v9.0
+ * Please note that all documentation here is for the latest official release only.
+ *
  * ### Initialization Options
  *
  * Below is the complete list of _Initialization Options_ for the library that can be passed in during
@@ -217,11 +219,11 @@ const npm = {
  */
 function $main(options) {
 
-    options = npm.assertOptions(options, ['pgFormatting', 'pgNative', 'promiseLib', 'noLocking', 'capSQL', 'noWarnings',
+    options = assertOptions(options, ['pgFormatting', 'pgNative', 'promiseLib', 'noLocking', 'capSQL', 'noWarnings',
         'connect', 'disconnect', 'query', 'receive', 'task', 'transact', 'error', 'extend', 'schema']);
 
     let pg = npm.pg;
-    const p = npm.promise(options.promiseLib);
+    const p = parsePromise(options.promiseLib);
 
     const config = {
         version: npm.package.version,
@@ -285,7 +287,7 @@ function $main(options) {
      * For more details see $[Library de-initialization].
      */
     npm.utils.addReadProp(inst, 'end', () => {
-        npm.dbPool.shutDown();
+        DatabasePool.shutDown();
     });
 
     /**
@@ -353,7 +355,7 @@ const rootNameSpace = {
      *
      * Available as `pgp.queryResult`, before and after initializing the library.
      */
-    queryResult: npm.result,
+    queryResult,
 
     /**
      * @member {PromiseAdapter} PromiseAdapter
@@ -363,7 +365,7 @@ const rootNameSpace = {
      *
      * Available as `pgp.PromiseAdapter`, before and after initializing the library.
      */
-    PromiseAdapter: npm.adapter,
+    PromiseAdapter,
 
     /**
      * @member {ParameterizedQuery} ParameterizedQuery
@@ -373,7 +375,7 @@ const rootNameSpace = {
      *
      * Available as `pgp.ParameterizedQuery`, before and after initializing the library.
      */
-    ParameterizedQuery: npm.types.ParameterizedQuery,
+    ParameterizedQuery,
 
     /**
      * @member {PreparedStatement} PreparedStatement
@@ -383,7 +385,7 @@ const rootNameSpace = {
      *
      * Available as `pgp.PreparedStatement`, before and after initializing the library.
      */
-    PreparedStatement: npm.types.PreparedStatement,
+    PreparedStatement,
 
     /**
      * @member {QueryFile} QueryFile
@@ -393,8 +395,7 @@ const rootNameSpace = {
      *
      * Available as `pgp.QueryFile`, before and after initializing the library.
      */
-    QueryFile: npm.queryFile,
-
+    QueryFile,
 
     /**
      * @member {errors} errors

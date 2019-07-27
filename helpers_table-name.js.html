@@ -36,20 +36,16 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-'use strict';
+const {assertOptions} = require('assert-options');
 
 const npm = {
-    assertOptions: require('assert-options'),
     utils: require('../utils'),
-    formatting: require('../formatting')
+    format: require('../formatting').as // formatting namespace
 };
 
 /**
  * @class helpers.TableName
  * @description
- *
- * **Alternative Syntax:** `TableName({table, [schema]})` &amp;#8658; {@link helpers.TableName}
- *
  * Prepares and escapes a full table name that can be injected into queries directly.
  *
  * This is a read-only type that can be used wherever parameter `table` is supported.
@@ -63,11 +59,6 @@ const npm = {
  * - table name, if `table` is a string
  * - object `{table, [schema]}`
  *
- * @param {string} [schema]
- * Database schema name.
- *
- * When `table` is passed in as `{table, [schema]}`, this parameter is ignored.
- *
  * @property {string} name
  * Formatted/escaped full table name, based on properties `schema` + `table`.
  *
@@ -77,7 +68,7 @@ const npm = {
  * @property {string} schema
  * Database schema name.
  *
- * It is `undefined` when no schema was specified (or if it was an empty string).
+ * It is `undefined` when no valid schema was specified.
  *
  * @returns {helpers.TableName}
  *
@@ -86,7 +77,7 @@ const npm = {
  *
  * @example
  *
- * const table = new pgp.helpers.TableName('my-table', 'my-schema');
+ * const table = new pgp.helpers.TableName({table: 'my-table', schema: 'my-schema'});
  * console.log(table);
  * //=> "my-schema"."my-table"
  *
@@ -95,41 +86,27 @@ const npm = {
  * //=> SELECT * FROM "my-schema"."my-table"
  *
  */
-function TableName(table, schema) {
+class TableName {
 
-    if (!(this instanceof TableName)) {
-        return new TableName(table, schema);
-    }
-
-    if (typeof table !== 'string') {
-        table = npm.assertOptions(table, ['table', 'schema']);
-        schema = table.schema;
-        table = table.table;
-    }
-
-    if (!npm.utils.isText(table)) {
-        throw new TypeError('Table name must be a non-empty text string.');
-    }
-
-    if (!npm.utils.isNull(schema)) {
-        if (typeof schema !== 'string') {
-            throw new TypeError('Invalid schema name.');
+    constructor(table) {
+        if (typeof table === 'string') {
+            this.table = table;
+        } else {
+            const config = assertOptions(table, ['table', 'schema']);
+            this.table = config.table;
+            if (npm.utils.isText(config.schema)) {
+                this.schema = config.schema;
+            }
         }
-        if (schema.length > 0) {
-            this.schema = schema;
+        if (!npm.utils.isText(this.table)) {
+            throw new TypeError('Table name must be a non-empty text string.');
         }
+        this.name = npm.format.name(this.table);
+        if (this.schema) {
+            this.name = npm.format.name(this.schema) + '.' + this.name;
+        }
+        Object.freeze(this);
     }
-
-    this.table = table;
-    this.name = npm.formatting.as.name(table);
-
-    if (this.schema) {
-        this.name = npm.formatting.as.name(schema) + '.' + this.name;
-    }
-
-    this[npm.formatting.as.ctf.rawType] = true; // do not format the content when used as a formatting value
-
-    Object.freeze(this);
 }
 
 /**
@@ -151,10 +128,12 @@ function TableName(table, schema) {
  * @returns {string}
  * Escaped full table name that includes optional schema name, if specified.
  */
-TableName.prototype[npm.formatting.as.ctf.toPostgres] = function (self) {
-    self = this || self;
+TableName.prototype[npm.format.ctf.toPostgres] = function (self) {
+    self = this instanceof TableName &amp;&amp; this || self;
     return self.name;
 };
+
+TableName.prototype[npm.format.ctf.rawType] = true; // use as pre-formatted
 
 /**
  * @method helpers.TableName#toString
@@ -173,7 +152,7 @@ npm.utils.addInspection(TableName, function () {
     return this.toString();
 });
 
-module.exports = TableName;
+module.exports = {TableName};
 </code></pre>
         </article>
     </section>

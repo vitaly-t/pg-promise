@@ -36,12 +36,9 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-'use strict';
-
-const npm = {
-    assertOptions: require('assert-options'),
-    utils: require('./utils')
-};
+const {InnerState} = require('./inner-state');
+const {addInspection} = require('./utils');
+const {assertOptions} = require('assert-options');
 
 /**
  * @enum {number}
@@ -71,31 +68,29 @@ const isolationLevel = {
     // => skipping `READ UNCOMMITTED`.
 };
 
-Object.freeze(isolationLevel);
-
 /**
  * @class txMode.TransactionMode
  * @description
- * **Alternative Syntax:** `TransactionMode({tiLevel, readOnly, deferrable})` &amp;#8658; {@link TransactionMode}
- *
- * Constructs a complete transaction-opening command, based on the parameters:
+ * Constructs a complete transaction-opening command, based on the options:
  *  - isolation level
  *  - access mode
  *  - deferrable mode
  *
  * The type is available from the {@link txMode} namespace.
  *
- * @param {txMode.isolationLevel|object} [tiLevel]
- * Transaction Isolation Level, or an object with parameters, if the alternative
- * syntax is used.
+ * @param {} [options]
+ * Transaction Mode options.
  *
- * @param {boolean} [readOnly]
+ * @param {txMode.isolationLevel} [options.tiLevel]
+ * Transaction Isolation Level.
+ *
+ * @param {boolean} [options.readOnly]
  * Sets transaction access mode based on the read-only flag:
  *  - `undefined` - access mode not specified (default)
  *  - `true` - access mode is set to `READ ONLY`
  *  - `false` - access mode is set to `READ WRITE`
  *
- * @param {boolean} [deferrable]
+ * @param {boolean} [options.deferrable]
  * Sets transaction deferrable mode based on the boolean value:
  *  - `undefined` - deferrable mode not specified (default)
  *  - `true` - mode is set to `DEFERRABLE`
@@ -135,61 +130,49 @@ Object.freeze(isolationLevel);
  * // BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE
  *
  */
-function TransactionMode(tiLevel, readOnly, deferrable) {
+class TransactionMode extends InnerState {
 
-    if (!(this instanceof TransactionMode)) {
-        return new TransactionMode(tiLevel, readOnly, deferrable);
-    }
+    constructor(options) {
+        options = assertOptions(options, ['tiLevel', 'deferrable', 'readOnly']);
+        let {tiLevel, readOnly, deferrable} = options;
+        let level, accessMode, deferrableMode, capBegin, begin = 'begin';
+        tiLevel = (tiLevel > 0) ? parseInt(tiLevel) : 0;
 
-    if (tiLevel &amp;&amp; typeof tiLevel === 'object') {
-        npm.assertOptions(tiLevel, ['tiLevel', 'deferrable', 'readOnly']);
-        readOnly = tiLevel.readOnly;
-        deferrable = tiLevel.deferrable;
-        tiLevel = tiLevel.tiLevel;
-    }
-
-    let level, accessMode, deferrableMode, capBegin, begin = 'begin';
-
-    tiLevel = (tiLevel > 0) ? parseInt(tiLevel) : 0;
-
-    if (tiLevel > 0 &amp;&amp; tiLevel &lt; 4) {
-        const values = ['serializable', 'repeatable read', 'read committed'];
-        level = 'isolation level ' + values[tiLevel - 1];
-    }
-
-    if (readOnly) {
-        accessMode = 'read only';
-    } else {
-        if (readOnly !== undefined) {
-            accessMode = 'read write';
+        if (tiLevel > 0 &amp;&amp; tiLevel &lt; 4) {
+            const values = ['serializable', 'repeatable read', 'read committed'];
+            level = 'isolation level ' + values[tiLevel - 1];
         }
-    }
-
-    // From the official documentation: http://www.postgresql.org/docs/9.5/static/sql-set-transaction.html
-    // The DEFERRABLE transaction property has no effect unless the transaction is also SERIALIZABLE and READ ONLY
-    if (tiLevel === isolationLevel.serializable &amp;&amp; readOnly) {
-        if (deferrable) {
-            deferrableMode = 'deferrable';
+        if (readOnly) {
+            accessMode = 'read only';
         } else {
-            if (deferrable !== undefined) {
-                deferrableMode = 'not deferrable';
+            if (readOnly !== undefined) {
+                accessMode = 'read write';
             }
         }
-    }
+        // From the official documentation: http://www.postgresql.org/docs/9.5/static/sql-set-transaction.html
+        // The DEFERRABLE transaction property has no effect unless the transaction is also SERIALIZABLE and READ ONLY
+        if (tiLevel === isolationLevel.serializable &amp;&amp; readOnly) {
+            if (deferrable) {
+                deferrableMode = 'deferrable';
+            } else {
+                if (deferrable !== undefined) {
+                    deferrableMode = 'not deferrable';
+                }
+            }
+        }
+        if (level) {
+            begin += ' ' + level;
+        }
+        if (accessMode) {
+            begin += ' ' + accessMode;
+        }
+        if (deferrableMode) {
+            begin += ' ' + deferrableMode;
+        }
+        capBegin = begin.toUpperCase();
 
-    if (level) {
-        begin += ' ' + level;
+        super({begin, capBegin});
     }
-
-    if (accessMode) {
-        begin += ' ' + accessMode;
-    }
-
-    if (deferrableMode) {
-        begin += ' ' + deferrableMode;
-    }
-
-    capBegin = begin.toUpperCase();
 
     /**
      * @method txMode.TransactionMode#begin
@@ -203,12 +186,12 @@ function TransactionMode(tiLevel, readOnly, deferrable) {
      *
      * @returns {string}
      */
-    this.begin = cap => {
-        return cap ? capBegin : begin;
-    };
+    begin(cap) {
+        return cap ? this._inner.capBegin : this._inner.begin;
+    }
 }
 
-npm.utils.addInspection(TransactionMode, function () {
+addInspection(TransactionMode, function () {
     return this.begin(true);
 });
 
@@ -235,7 +218,6 @@ module.exports = {
     TransactionMode
 };
 
-Object.freeze(module.exports);
 </code></pre>
         </article>
     </section>

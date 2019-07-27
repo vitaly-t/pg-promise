@@ -36,19 +36,21 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-'use strict';
+const {InnerState} = require('./inner-state');
+const {QueryFileError} = require('./errors');
+const {assertOptions} = require('assert-options');
 
 const npm = {
-    assertOptions: require('assert-options'),
     fs: require('fs'),
     os: require('os'),
     path: require('path'),
     con: require('manakin').local,
     minify: require('pg-minify'),
     utils: require('./utils'),
-    formatting: require('./formatting'),
-    QueryFileError: require('./errors/queryFile')
+    formatting: require('./formatting')
 };
+
+const file$query = Symbol('QueryFile.query');
 
 /**
  * @class QueryFile
@@ -127,99 +129,48 @@ const npm = {
  * };
  *
  */
-function QueryFile(file, options) {
+class QueryFile extends InnerState {
 
-    if (!(this instanceof QueryFile)) {
-        return new QueryFile(file, options);
+    constructor(file, options) {
+
+        let filePath = file;
+
+        options = assertOptions(options, {
+            debug: npm.utils.isDev(),
+            minify: (options &amp;&amp; options.compress &amp;&amp; options.minify === undefined) ? true : undefined,
+            compress: undefined,
+            params: undefined,
+            noWarnings: undefined
+        });
+
+        if (npm.utils.isText(filePath) &amp;&amp; !npm.utils.isPathAbsolute(filePath)) {
+            filePath = npm.path.join(npm.utils.startDir, filePath);
+        }
+
+        // istanbul ignore next:
+        if (!options.noWarnings) {
+            if (filePath in usedPath) {
+                usedPath[filePath]++;
+                npm.con.warn('WARNING: Creating a duplicate QueryFile object for the same file - \n    %s\n%s\n', filePath, npm.utils.getLocalStack(3));
+            } else {
+                usedPath[filePath] = 0;
+            }
+        }
+
+        const _inner = {
+            file,
+            filePath,
+            options,
+            sql: undefined,
+            error: undefined,
+            ready: undefined,
+            modTime: undefined
+        };
+
+        super(_inner);
+
+        this.prepare();
     }
-
-    let sql, error, ready, modTime, filePath = file;
-
-    const opt = npm.assertOptions(options, {
-        debug: npm.utils.isDev(),
-        minify: (options &amp;&amp; options.compress &amp;&amp; options.minify === undefined) ? true : undefined,
-        compress: undefined,
-        params: undefined,
-        noWarnings: undefined
-    });
-
-    Object.freeze(opt);
-
-    if (npm.utils.isText(filePath) &amp;&amp; !npm.utils.isPathAbsolute(filePath)) {
-        filePath = npm.path.join(npm.utils.startDir, filePath);
-    }
-
-    // istanbul ignore next:
-    if (!opt.noWarnings) {
-        if (filePath in usedPath) {
-            usedPath[filePath]++;
-            npm.con.warn('WARNING: Creating a duplicate QueryFile object for the same file - \n    %s\n%s\n', filePath, npm.utils.getLocalStack(3));
-        } else {
-            usedPath[filePath] = 0;
-        }
-    }
-
-    this[npm.formatting.as.ctf.rawType] = true; // do not format the content when used as a formatting value
-
-    /**
-     * @method QueryFile#prepare
-     * @summary Prepares the query for execution.
-     * @description
-     * If the query hasn't been prepared yet, it will read the file and process the content according
-     * to the parameters passed into the constructor.
-     *
-     * This method is primarily for internal use by the library.
-     *
-     * @param {boolean} [throwErrors=false]
-     * Throw any error encountered.
-     *
-     */
-    this.prepare = function (throwErrors) {
-        let lastMod;
-        if (opt.debug &amp;&amp; ready) {
-            try {
-                lastMod = npm.fs.statSync(filePath).mtime.getTime();
-                if (lastMod === modTime) {
-                    // istanbul ignore next;
-                    // coverage for this works differently under Windows and Linux
-                    return;
-                }
-                ready = false;
-            } catch (e) {
-                sql = undefined;
-                ready = false;
-                error = e;
-                if (throwErrors) {
-                    throw error;
-                }
-                return;
-            }
-        }
-        if (ready) {
-            return;
-        }
-        try {
-            sql = npm.fs.readFileSync(filePath, 'utf8');
-            modTime = lastMod || npm.fs.statSync(filePath).mtime.getTime();
-            if (opt.minify &amp;&amp; opt.minify !== 'after') {
-                sql = npm.minify(sql, {compress: opt.compress});
-            }
-            if (opt.params !== undefined) {
-                sql = npm.formatting.as.format(sql, opt.params, {partial: true});
-            }
-            if (opt.minify &amp;&amp; opt.minify === 'after') {
-                sql = npm.minify(sql, {compress: opt.compress});
-            }
-            ready = true;
-            error = undefined;
-        } catch (e) {
-            sql = undefined;
-            error = new npm.QueryFileError(e, this);
-            if (throwErrors) {
-                throw error;
-            }
-        }
-    };
 
     /**
      * @name QueryFile#Symbol(QueryFile.$query)
@@ -234,11 +185,9 @@ function QueryFile(file, options) {
      * **IMPORTANT:** This property is for internal use by the library only, never use this
      * property directly from your code.
      */
-    Object.defineProperty(this, QueryFile.$query, {
-        get() {
-            return sql;
-        }
-    });
+    get [file$query]() {
+        return this._inner.sql;
+    }
 
     /**
      * @name QueryFile#error
@@ -248,11 +197,9 @@ function QueryFile(file, options) {
      * @description
      * When in an error state, it is set to a {@link errors.QueryFileError QueryFileError} object. Otherwise, it is `undefined`.
      */
-    Object.defineProperty(this, 'error', {
-        get() {
-            return error;
-        }
-    });
+    get error() {
+        return this._inner.error;
+    }
 
     /**
      * @name QueryFile#file
@@ -263,11 +210,9 @@ function QueryFile(file, options) {
      *
      * This property is primarily for internal use by the library.
      */
-    Object.defineProperty(this, 'file', {
-        get() {
-            return file;
-        }
-    });
+    get file() {
+        return this._inner.file;
+    }
 
     /**
      * @name QueryFile#options
@@ -278,18 +223,74 @@ function QueryFile(file, options) {
      *
      * This property is primarily for internal use by the library.
      */
-    Object.defineProperty(this, 'options', {
-        get() {
-            return opt;
-        }
-    });
+    get options() {
+        return this._inner.options;
+    }
 
-    this.prepare();
+    /**
+     * @summary Prepares the query for execution.
+     * @description
+     * If the query hasn't been prepared yet, it will read the file and process the content according
+     * to the parameters passed into the constructor.
+     *
+     * This method is primarily for internal use by the library.
+     *
+     * @param {boolean} [throwErrors=false]
+     * Throw any error encountered.
+     */
+    prepare(throwErrors) {
+        const _i = this._inner, options = _i.options;
+        let lastMod;
+        if (options.debug &amp;&amp; _i.ready) {
+            try {
+                lastMod = npm.fs.statSync(_i.filePath).mtime.getTime();
+                if (lastMod === _i.modTime) {
+                    // istanbul ignore next;
+                    // coverage for this works differently under Windows and Linux
+                    return;
+                }
+                _i.ready = false;
+            } catch (e) {
+                _i.sql = undefined;
+                _i.ready = false;
+                _i.error = e;
+                if (throwErrors) {
+                    throw _i.error;
+                }
+                return;
+            }
+        }
+        if (_i.ready) {
+            return;
+        }
+        try {
+            _i.sql = npm.fs.readFileSync(_i.filePath, 'utf8');
+            _i.modTime = lastMod || npm.fs.statSync(_i.filePath).mtime.getTime();
+            if (options.minify &amp;&amp; options.minify !== 'after') {
+                _i.sql = npm.minify(_i.sql, {compress: options.compress});
+            }
+            if (options.params !== undefined) {
+                _i.sql = npm.formatting.as.format(_i.sql, options.params, {partial: true});
+            }
+            if (options.minify &amp;&amp; options.minify === 'after') {
+                _i.sql = npm.minify(_i.sql, {compress: options.compress});
+            }
+            _i.ready = true;
+            _i.error = undefined;
+        } catch (e) {
+            _i.sql = undefined;
+            _i.error = new QueryFileError(e, this);
+            if (throwErrors) {
+                throw _i.error;
+            }
+        }
+    }
+
 }
 
 // Hiding the query as a symbol within the type,
 // to make it even more difficult to misuse it:
-QueryFile.$query = Symbol('QueryFile.query');
+QueryFile.$query = file$query;
 
 const usedPath = {};
 
@@ -317,10 +318,12 @@ const usedPath = {};
  *
  */
 QueryFile.prototype[npm.formatting.as.ctf.toPostgres] = function (self) {
-    self = this || self;
+    self = this instanceof QueryFile &amp;&amp; this || self;
     self.prepare(true);
     return self[QueryFile.$query];
 };
+
+QueryFile.prototype[npm.formatting.as.ctf.rawType] = true; // use as pre-formatted
 
 /**
  * @method QueryFile#toString
@@ -356,7 +359,7 @@ npm.utils.addInspection(QueryFile, function () {
     return this.toString();
 });
 
-module.exports = QueryFile;
+module.exports = {QueryFile};
 
 /**
  * @typedef QueryFile.Options

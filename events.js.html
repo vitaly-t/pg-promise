@@ -36,8 +36,6 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-'use strict';
-
 const npm = {
     con: require('manakin').local,
     main: require('./'),
@@ -46,13 +44,11 @@ const npm = {
 
 /////////////////////////////////
 // Client notification helpers;
-const $events = {
+class Events {
 
     /**
      * @event connect
      * @description
-     * **Updated in v8.4.0**
-     *
      * Global notification of acquiring a new database connection from the connection pool, i.e. a virtual connection.
      *
      * However, for direct calls to method {@link Database#connect Database.connect} with parameter `{direct: true}`,
@@ -86,7 +82,7 @@ const $events = {
      *
      * };
      */
-    connect(ctx, client, useCount) {
+    static connect(ctx, client, useCount) {
         if (typeof ctx.options.connect === 'function') {
             try {
                 ctx.options.connect(client, ctx.dc, useCount);
@@ -94,10 +90,10 @@ const $events = {
                 // have to silence errors here;
                 // cannot allow unhandled errors while connecting to the database,
                 // as it will break the connection logic;
-                $events.unexpected('connect', e);
+                Events.unexpected('connect', e);
             }
         }
-    },
+    }
 
     /**
      * @event disconnect
@@ -126,7 +122,7 @@ const $events = {
      *
      * };
      */
-    disconnect(ctx, client) {
+    static disconnect(ctx, client) {
         if (typeof ctx.options.disconnect === 'function') {
             try {
                 ctx.options.disconnect(client, ctx.dc);
@@ -134,10 +130,10 @@ const $events = {
                 // have to silence errors here;
                 // cannot allow unhandled errors while disconnecting from the database,
                 // as it will break the disconnection logic;
-                $events.unexpected('disconnect', e);
+                Events.unexpected('disconnect', e);
             }
         }
-    },
+    }
 
     /**
      * @event query
@@ -162,7 +158,7 @@ const $events = {
      *     }
      * };
      */
-    query(options, context) {
+    static query(options, context) {
         if (typeof options.query === 'function') {
             try {
                 options.query(context);
@@ -172,7 +168,7 @@ const $events = {
                 return e instanceof Error ? e : new npm.utils.InternalError(e);
             }
         }
-    },
+    }
 
     /**
      * @event receive
@@ -235,7 +231,7 @@ const $events = {
      *     }
      * }
      */
-    receive(options, data, result, context) {
+    static receive(options, data, result, context) {
         if (typeof options.receive === 'function') {
             try {
                 options.receive(data, result, context);
@@ -245,7 +241,7 @@ const $events = {
                 return e instanceof Error ? e : new npm.utils.InternalError(e);
             }
         }
-    },
+    }
 
     /**
      * @event task
@@ -281,16 +277,16 @@ const $events = {
      * };
      *
      */
-    task(options, context) {
+    static task(options, context) {
         if (typeof options.task === 'function') {
             try {
                 options.task(context);
             } catch (e) {
                 // silencing the error, to avoid breaking the task;
-                $events.unexpected('task', e);
+                Events.unexpected('task', e);
             }
         }
-    },
+    }
 
     /**
      * @event transact
@@ -326,16 +322,16 @@ const $events = {
      * };
      *
      */
-    transact(options, context) {
+    static transact(options, context) {
         if (typeof options.transact === 'function') {
             try {
                 options.transact(context);
             } catch (e) {
                 // silencing the error, to avoid breaking the transaction;
-                $events.unexpected('transact', e);
+                Events.unexpected('transact', e);
             }
         }
-    },
+    }
 
     /**
      * @event error
@@ -377,7 +373,7 @@ const $events = {
      * };
      *
      */
-    error(options, err, context) {
+    static error(options, err, context) {
         if (typeof options.error === 'function') {
             try {
                 options.error(err, context);
@@ -385,10 +381,10 @@ const $events = {
                 // have to silence errors here;
                 // throwing unhandled errors while handling an error
                 // notification is simply not acceptable.
-                $events.unexpected('error', e);
+                Events.unexpected('error', e);
             }
         }
-    },
+    }
 
     /**
      * @event extend
@@ -475,7 +471,7 @@ const $events = {
      *     });
      *
      */
-    extend(options, obj, dc) {
+    static extend(options, obj, dc) {
         if (typeof options.extend === 'function') {
             try {
                 options.extend.call(obj, obj, dc);
@@ -483,10 +479,10 @@ const $events = {
                 // have to silence errors here;
                 // the result of throwing unhandled errors while
                 // extending the protocol would be unpredictable.
-                $events.unexpected('extend', e);
+                Events.unexpected('extend', e);
             }
         }
-    },
+    }
 
     /**
      * @event unexpected
@@ -494,7 +490,7 @@ const $events = {
      * @param {string|Error} e - unhandled error.
      * @private
      */
-    unexpected(event, e) {
+    static unexpected(event, e) {
         // If you should ever get here, your app is definitely broken, and you need to fix
         // your event handler to prevent unhandled errors during event notifications.
         //
@@ -507,9 +503,9 @@ const $events = {
             npm.con.error('Unexpected error in \'%s\' event handler.\n%s\n', event, stack);
         }
     }
-};
+}
 
-module.exports = $events;
+module.exports = {Events};
 
 /**
  * @typedef EventContext

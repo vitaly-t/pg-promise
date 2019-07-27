@@ -36,10 +36,9 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-'use strict';
+const {ColumnSet} = require('../column-set');
 
 const npm = {
-    ColumnSet: require('../columnSet'),
     format: require('../../formatting').as.format,
     utils: require('../../utils')
 };
@@ -100,14 +99,14 @@ function sets(data, columns) {
         throw new TypeError('Invalid parameter \'data\' specified.');
     }
 
-    if (!(columns instanceof npm.ColumnSet)) {
-        columns = new npm.ColumnSet(columns || data);
+    if (!(columns instanceof ColumnSet)) {
+        columns = new ColumnSet(columns || data);
     }
 
     return npm.format(columns.assign({source: data}), columns.prepare(data));
 }
 
-module.exports = sets;
+module.exports = {sets};
 </code></pre>
         </article>
     </section>

@@ -36,97 +36,96 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-const {QueryFile} = require('../../query-file');
-
 const npm = {
-    formatting: require('../../formatting')
+    con: require('manakin').local,
+    utils: require('./utils')
 };
 
 /**
- * @method helpers.concat
- * @description
- * Formats and concatenates multiple queries into a single query string.
- *
- * Before joining the queries, the method does the following:
- *  - Formats each query, if `values` are provided;
- *  - Removes all leading and trailing spaces, tabs and semi-colons;
- *  - Automatically skips all empty queries.
- *
- * @param {array&lt;string|helpers.QueryFormat|QueryFile>} queries
- * Array of mixed-type elements:
- * - a simple query string, to be used as is
- * - a {@link helpers.QueryFormat QueryFormat}-like object = `{query, [values], [options]}`
- * - a {@link QueryFile} object
- *
- * @returns {string}
- * Concatenated string with all queries.
- *
- * @example
- *
- * const pgp = require('pg-promise')();
- *
- * const qf1 = new pgp.QueryFile('./query1.sql', {minify: true});
- * const qf2 = new pgp.QueryFile('./query2.sql', {minify: true});
- *
- * const query = pgp.helpers.concat([
- *     {query: 'INSERT INTO Users(name, age) VALUES($1, $2)', values: ['John', 23]}, // QueryFormat-like object
- *     {query: qf1, values: [1, 'Name']}, // QueryFile with formatting parameters
- *     'SELECT count(*) FROM Users', // a simple-string query,
- *     qf2 // direct QueryFile object
- * ]);
- *
- * // query = concatenated string with all the queries
+ * @class DatabasePool
+ * @static
+ * @private
  */
-function concat(queries) {
-    if (!Array.isArray(queries)) {
-        throw new TypeError('Parameter \'queries\' must be an array.');
+class DatabasePool {
+
+    /**
+     * @method DatabasePool.register
+     * @static
+     * @description
+     *  - Registers each database object, to make sure no duplicates connections are used,
+     *    and if they are, produce a warning;
+     *  - Registers each Pool object, to be able to release them all when requested.
+     *
+     * @param {Database} db - The new Database object being registered.
+     */
+    static register(db) {
+        const cnKey = DatabasePool.createContextKey(db);
+        npm.utils.addReadProp(db, '$cnKey', cnKey, true);
+        if (cnKey in DatabasePool.dbMap) {
+            DatabasePool.dbMap[cnKey]++;
+            /* istanbul ignore if */
+            if (!db.$config.options.noWarnings) {
+                npm.con.warn('WARNING: Creating a duplicate database object for the same connection.\n%s\n',
+                    npm.utils.getLocalStack(5));
+            }
+        } else {
+            DatabasePool.dbMap[cnKey] = 1;
+        }
+        DatabasePool.dbs.push(db);
     }
-    const all = queries.map((q, index) => {
-        if (typeof q === 'string') {
-            // a simple query string without parameters:
-            return clean(q);
-        }
-        if (q &amp;&amp; typeof q === 'object') {
-            if (q instanceof QueryFile) {
-                // QueryFile object:
-                return clean(q[npm.formatting.as.ctf.toPostgres]());
-            }
-            if ('query' in q) {
-                // object {query, values, options}:
-                return clean(npm.formatting.as.format(q.query, q.values, q.options));
-            }
-        }
-        throw new Error('Invalid query element at index ' + index + '.');
-    });
 
-    return all.filter(q => q).join(';');
+    /**
+     * @method DatabasePool.unregister
+     * @static
+     * @param db
+     */
+    static unregister(db) {
+        const cnKey = db.$cnKey;
+        if (!--DatabasePool.dbMap[cnKey]) {
+            delete DatabasePool.dbMap[cnKey];
+        }
+    }
+
+    /**
+     * @method DatabasePool.shutDown
+     * @static
+     */
+    static shutDown() {
+        DatabasePool.dbs.forEach(db => {
+            db.$destroy();
+        });
+        DatabasePool.dbs.length = 0;
+        DatabasePool.dbMap = {};
+    }
+
+    /**
+     * @method DatabasePool.createContextKey
+     * @static
+     * @description
+     * For connections that are objects it reorders the keys alphabetically,
+     * and then serializes the result into a JSON string.
+     *
+     * @param {Database} db - Database instance.
+     */
+    static createContextKey(db) {
+        let cn = db.$cn;
+        if (typeof cn === 'object') {
+            const obj = {}, keys = Object.keys(cn).sort();
+            keys.forEach(name => {
+                obj[name] = cn[name];
+            });
+            cn = obj;
+        }
+        return JSON.stringify(npm.utils.getSafeConnection(cn)) + JSON.stringify(db.$dc);
+    }
 }
 
-function clean(q) {
-    // removes from the query all leading and trailing symbols ' ', '\t' and ';'
-    return q.replace(/^[\s;]*|[\s;]*$/g, '');
-}
+/////////////////////
+// Static Properties:
+DatabasePool.dbMap = {}; // map of used database context keys (connection + dc)
+DatabasePool.dbs = []; // all database objects
 
-module.exports = {concat};
-
-/**
- * @typedef helpers.QueryFormat
- * @description
- * A simple structure of parameters to be passed into method {@link formatting.format as.format} exactly as they are,
- * used by {@link helpers.concat}.
- *
- * @property {string|value|object} query
- * A query string or a value/object that implements $[Custom Type Formatting], to be formatted according to `values`.
- *
- * @property {array|object|value} [values]
- * Query-formatting values.
- *
- * @property {object} [options]
- * Query-formatting options, as supported by method {@link formatting.format as.format}.
- *
- * @see
- * {@link formatting.format as.format}
- */
+module.exports = {DatabasePool};
 </code></pre>
         </article>
     </section>

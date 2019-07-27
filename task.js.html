@@ -36,15 +36,13 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-'use strict';
+const {Events} = require('./events');
 
 const npm = {
     spex: require('spex'),
     utils: require('./utils'),
-    mode: require('./txMode'),
-    events: require('./events'),
+    mode: require('./tx-mode'),
     query: require('./query'),
-    async: require('./async'),
     text: require('./text')
 };
 
@@ -221,15 +219,16 @@ function Task(ctx, tag, isTX, config) {
 const callback = (ctx, obj, cb, config) => {
 
     const $p = config.promise;
-
     let result;
-    if (cb.constructor.name === 'GeneratorFunction') {
-        cb = config.$npm.async(cb);
-    }
+
     try {
+        if (cb.constructor.name === 'GeneratorFunction') {
+            // v9.0 dropped all support for ES6 generator functions:
+            throw new TypeError('ES6 generator functions are no longer supported!');
+        }
         result = cb.call(obj, obj); // invoking the callback function;
     } catch (err) {
-        npm.events.error(ctx.options, err, {
+        Events.error(ctx.options, err, {
             client: ctx.db &amp;&amp; ctx.db.client, // the error can be due to loss of connectivity
             dc: ctx.dc,
             ctx: ctx.ctx
@@ -269,7 +268,7 @@ const execute = (ctx, obj, isTX, config) => {
             c.duration = c.finish - c.start;
             npm.utils.lock(c, true);
         }
-        (isTX ? npm.events.transact : npm.events.task)(ctx.options, {
+        (isTX ? Events.transact : Events.task)(ctx.options, {
             client: ctx.db &amp;&amp; ctx.db.client, // loss of connectivity is possible at this point
             dc: ctx.dc,
             ctx: c
@@ -293,7 +292,6 @@ const execute = (ctx, obj, isTX, config) => {
                     success = true;
                     return commit();
                 }, err => {
-                    // TODO: Re-test this check, to see if still necessary:
                     if (npm.utils.isConnectivityError(err)) {
                         // Cannot execute ROLLBACK after a connectivity error:
                         return $p.reject(err);
@@ -359,7 +357,6 @@ const execute = (ctx, obj, isTX, config) => {
             update(false, false, error);
             return $p.reject(error);
         });
-
 };
 
 module.exports = config => {
@@ -369,8 +366,6 @@ module.exports = config => {
     // we keep 'npm.query' initialization here, even though it is always
     // pre-initialized by the 'database' module, for integrity purpose.
     npmLocal.query = npmLocal.query || npm.query(config);
-
-    npmLocal.async = npmLocal.async || npm.async(config);
     npmLocal.spex = npmLocal.spex || npm.spex(config.promiseLib);
 
     return {

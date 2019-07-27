@@ -36,10 +36,9 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-'use strict';
+const {ColumnSet} = require('../column-set');
 
 const npm = {
-    ColumnSet: require('../columnSet'),
     formatting: require('../../formatting'),
     utils: require('../../utils')
 };
@@ -117,11 +116,11 @@ function values(data, columns) {
 
     const isArray = Array.isArray(data);
 
-    if (!(columns instanceof npm.ColumnSet)) {
+    if (!(columns instanceof ColumnSet)) {
         if (isArray &amp;&amp; npm.utils.isNull(columns)) {
             throw new TypeError('Parameter \'columns\' is required when generating multi-row values.');
         }
-        columns = new npm.ColumnSet(columns || data);
+        columns = new ColumnSet(columns || data);
     }
 
     if (!columns.columns.length) {
@@ -141,7 +140,7 @@ function values(data, columns) {
     return '(' + format(columns.variables, columns.prepare(data)) + ')';
 }
 
-module.exports = values;
+module.exports = {values};
 </code></pre>
         </article>
     </section>

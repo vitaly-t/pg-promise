@@ -36,25 +36,22 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-'use strict';
-
 const npm = {
     os: require('os'),
     utils: require('../utils'),
-    QueryFileError: require('./queryFile')
+    minify: require('pg-minify')
 };
 
 /**
- * @class errors.PreparedStatementError
+ * @class errors.QueryFileError
  * @augments external:Error
  * @description
- * {@link errors.PreparedStatementError PreparedStatementError} class, available from the {@link errors} namespace.
+ * {@link errors.QueryFileError QueryFileError} class, available from the {@link errors} namespace.
  *
- * This type represents all errors that can be reported by class {@link PreparedStatement}, whether it is used
- * explicitly or implicitly (via a simple `{name, text, values}` object).
+ * This type represents all errors related to {@link QueryFile}.
  *
  * @property {string} name
- * Standard {@link external:Error Error} property - error type name = `PreparedStatementError`.
+ * Standard {@link external:Error Error} property - error type name = `QueryFileError`.
  *
  * @property {string} message
  * Standard {@link external:Error Error} property - the error message.
@@ -62,32 +59,37 @@ const npm = {
  * @property {string} stack
  * Standard {@link external:Error Error} property - the stack trace.
  *
- * @property {errors.QueryFileError} error
- * Internal {@link errors.QueryFileError} object.
+ * @property {string} file
+ * File path/name that was passed into the {@link QueryFile} constructor.
  *
- * It is set only when the source {@link PreparedStatement} used a {@link QueryFile} which threw the error.
+ * @property {object} options
+ * Set of options that was used by the {@link QueryFile} object.
  *
- * @property {object} result
- * Resulting Prepared Statement object.
+ * @property {SQLParsingError} error
+ * Internal $[SQLParsingError] object.
  *
- * @see PreparedStatement
+ * It is set only when the error was thrown by $[pg-minify] while parsing the SQL file.
+ *
+ * @see QueryFile
+ *
  */
-class PreparedStatementError extends Error {
-    constructor(error, ps) {
-        const isQueryFileError = error instanceof npm.QueryFileError;
-        const message = isQueryFileError ? 'Failed to initialize \'text\' from a QueryFile.' : error;
+class QueryFileError extends Error {
+    constructor(error, qf) {
+        const isSqlError = error instanceof npm.minify.SQLParsingError;
+        const message = isSqlError ? 'Failed to parse the SQL.' : error.message;
         super(message);
         this.name = this.constructor.name;
-        if (isQueryFileError) {
+        if (isSqlError) {
             this.error = error;
         }
-        this.result = ps;
+        this.file = qf.file;
+        this.options = qf.options;
         Error.captureStackTrace(this, this.constructor);
     }
 }
 
 /**
- * @method errors.PreparedStatementError#toString
+ * @method errors.QueryFileError#toString
  * @description
  * Creates a well-formatted multi-line string that represents the error.
  *
@@ -98,19 +100,15 @@ class PreparedStatementError extends Error {
  *
  * @returns {string}
  */
-PreparedStatementError.prototype.toString = function (level) {
+QueryFileError.prototype.toString = function (level) {
     level = level > 0 ? parseInt(level) : 0;
     const gap0 = npm.utils.messageGap(level),
         gap1 = npm.utils.messageGap(level + 1),
-        gap2 = npm.utils.messageGap(level + 2),
         lines = [
-            'PreparedStatementError {',
+            'QueryFileError {',
             gap1 + 'message: "' + this.message + '"',
-            gap1 + 'result: {',
-            gap2 + 'name: ' + JSON.stringify(this.result.name),
-            gap2 + 'text: ' + JSON.stringify(this.result.text),
-            gap2 + 'values: ' + JSON.stringify(this.result.values),
-            gap1 + '}'
+            gap1 + 'options: ' + JSON.stringify(this.options),
+            gap1 + 'file: "' + this.file + '"'
         ];
     if (this.error) {
         lines.push(gap1 + 'error: ' + this.error.toString(level + 1));
@@ -119,11 +117,11 @@ PreparedStatementError.prototype.toString = function (level) {
     return lines.join(npm.os.EOL);
 };
 
-npm.utils.addInspection(PreparedStatementError, function () {
+npm.utils.addInspection(QueryFileError, function () {
     return this.toString();
 });
 
-module.exports = PreparedStatementError;
+module.exports = {QueryFileError};
 </code></pre>
         </article>
     </section>

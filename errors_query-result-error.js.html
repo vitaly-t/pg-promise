@@ -36,8 +36,6 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-'use strict';
-
 const npm = {
     os: require('os'),
     utils: require('../utils'),
@@ -65,8 +63,6 @@ const queryResultErrorCode = {
     /** Multiple rows were not expected. */
     multiple: 2
 };
-
-Object.freeze(queryResultErrorCode);
 
 const errorMessages = [
     {name: 'noData', message: npm.text.noData},

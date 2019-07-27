@@ -160,7 +160,7 @@
 
             
 
-            <td class="description last"><p><a href="utils.html#.objectToCode">objectToCode</a> - generates code from an object</p></td>
+            <td class="description last"><p>objectToCode - generates code from an object</p></td>
         </tr>
 
     
@@ -183,7 +183,7 @@
 
             
 
-            <td class="description last"><p><a href="utils.html#.buildSqlModule">buildSqlModule</a> - generates a complete Node.js module</p></td>
+            <td class="description last"><p>buildSqlModule - generates a complete Node.js module</p></td>
         </tr>
 
     
@@ -245,7 +245,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line604">line 604</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line295">line 295</a>
     </li></ul></dd>
     
 
@@ -275,219 +275,6 @@
 
     
         <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".buildSqlModule"><span class="type-signature">(static) </span>buildSqlModule<span class="signature">(config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Synchronously generates a Node.js module with a camelized SQL tree, based on a configuration object that has the format shown below.</p>
-<p>This method is normally to be used on a grunt/gulp watch that triggers when the file structure changes in your SQL directory,
-although it can be invoked manually as well.</p>
-<pre class="prettyprint source lang-js"><code>{
-   // Required Properties:
-   
-   &quot;dir&quot; // {string}: relative or absolute directory where SQL files are located (see API for method enumSql, parameter `dir`)
-
-   // Optional Properties:
-   
-   &quot;recursive&quot; // {boolean}: search for sql files recursively (see API for method enumSql, option `recursive`)
-
-   &quot;ignoreErrors&quot; // {boolean}: ignore common errors (see API for method enumSql, option `ignoreErrors`)
-
-   &quot;output&quot; // {string}: relative or absolute destination file path; when not specified, no file is created,
-            // but you still can use the code string that's always returned by the method.
-    
-   &quot;module&quot;: {
-       &quot;path&quot; // {string}: relative path to a module exporting a function which takes a file path
-              // and returns a proper value (typically, a new QueryFile object); by default, it uses `./loadSql`.
-
-       &quot;name&quot; // {string}: local variable name for the SQL-loading module; by default, it uses `load`.
-   }
-}
-</code></pre>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>config</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Configuration parameter for generating the code.</p>
-<ul>
-<li>When it is a non-null object, it is assumed to be a configuration object (see the format above).</li>
-<li>When it is a text string - it is the relative path to either a JSON file that contains the configuration object,
-or a Node.js module that exports one. The path is relative to the application's entry point file.</li>
-<li>When <code>config</code> isn't specified, the method will try to locate the default <code>sql-config.json</code> file in the directory of your
-application's entry point file, and if not found - throw <a href="external-Error.html">Error</a> = <code>Default SQL configuration file not found</code>.</li>
-</ul></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line343">line 343</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="utils.html#.enumSql">enumSql</a>,<a href="utils.html#.objectToCode">objectToCode</a></li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>Generated code.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>// generate SQL module automatically, from sql-config.json in the module's start-up folder:pgp.utils.buildSqlModule();// see generated file below:</code></pre>
-
-    <pre class="prettyprint"><code>/////////////////////////////////////////////////////////////////////////// This file was automatically generated by pg-promise v.4.3.8//// Generated on: 6/2/2016, at 2:15:23 PM// Total files: 15//// API: http://vitaly-t.github.io/pg-promise/utils.html#.buildSqlModule/////////////////////////////////////////////////////////////////////////const load = require('./loadSql');module.exports = {    events: {        add: load("../sql/events/add.sql"),        delete: load("../sql/events/delete.sql"),        find: load("../sql/events/find.sql"),        update: load("../sql/events/update.sql")    },    products: {        add: load("../sql/products/add.sql"),        delete: load("../sql/products/delete.sql"),        find: load("../sql/products/find.sql"),        update: load("../sql/products/update.sql")    },    users: {        add: load("../sql/users/add.sql"),        delete: load("../sql/users/delete.sql"),        find: load("../sql/users/find.sql"),        update: load("../sql/users/update.sql")    },    create: load("../sql/create.sql"),    init: load("../sql/init.sql"),    drop: load("../sql/drop.sql")};</code></pre>
-
-
 
         
             
@@ -601,7 +388,7 @@ application's entry point file, and if not found - throw <a href="external-Error
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line22">line 22</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line19">line 19</a>
     </li></ul></dd>
     
 
@@ -768,7 +555,7 @@ and then it forwards into <a href="utils.html#.camelize">camelize</a>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line50">line 50</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line47">line 47</a>
     </li></ul></dd>
     
 
@@ -1128,7 +915,7 @@ non-existing directory.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line129">line 129</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line126">line 126</a>
     </li></ul></dd>
     
 
@@ -1138,7 +925,7 @@ non-existing directory.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="utils.html#.objectToCode">objectToCode</a>,<a href="utils.html#.buildSqlModule">buildSqlModule</a></li>
+            <li>objectToCode,buildSqlModule</li>
         </ul>
     </dd>
     
@@ -1189,223 +976,6 @@ non-existing directory.</p></td>
     <pre class="prettyprint"><code>// generating an SQL tree for dynamic use of names:const sql = pgp.utils.enumSql(__dirname, {recursive: true}, file=> {    return new pgp.QueryFile(file, {minify: true});});</code></pre>
 
     <pre class="prettyprint"><code>const path = require('path');// replacing each relative path in the tree with a full one:const tree = pgp.utils.enumSql('../sql', {recursive: true}, file=> {    return path.join(__dirname, file);});</code></pre>
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".objectToCode"><span class="type-signature">(static) </span>objectToCode<span class="signature">(obj, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Translates an object tree into a well-formatted JSON code string.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>obj</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Source tree object.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>cb</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>A callback function to override property values for the code.</p>
-<p>It takes three arguments:</p>
-<ul>
-<li><code>value</code> - property value</li>
-<li><code>name</code> - property name</li>
-<li><code>obj</code> - current object (which contains the property)</li>
-</ul>
-<p>The returned value is used as is for the property value in the generated code.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line204">line 204</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="utils.html#.enumSql">enumSql</a>,<a href="utils.html#.buildSqlModule">buildSqlModule</a></li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>// Generating code for a simple objectconst tree = {one: 1, two: {item: 'abc'}};const code = pgp.utils.objectToCode(tree);console.log(code);//=>// {//     one: 1,//     two: {//         item: "abc"//     }// }</code></pre>
-
-    <pre class="prettyprint"><code>// Generating a Node.js module with an SQL treeconst fs = require('fs');const EOL = require('os').EOL;// generating an SQL tree from the folder:const tree = pgp.utils.enumSql('./sql', {recursive: true});// generating the module's code:const code = "const load = require('./loadSql');" + EOL + EOL + "module.exports = " +        pgp.utils.objectToCode(tree, value => {            return 'load(' + JSON.stringify(value) + ')';        }) + ';';// saving the module:fs.writeFileSync('sql.js', code);</code></pre>
-
-    <pre class="prettyprint"><code>// generated code example (file sql.js)const load = require('./loadSql');module.exports = {    events: {        add: load("../sql/events/add.sql"),        delete: load("../sql/events/delete.sql"),        find: load("../sql/events/find.sql"),        update: load("../sql/events/update.sql")    },    products: {        add: load("../sql/products/add.sql"),        delete: load("../sql/products/delete.sql"),        find: load("../sql/products/find.sql"),        update: load("../sql/products/update.sql")    },    users: {        add: load("../sql/users/add.sql"),        delete: load("../sql/users/delete.sql"),        find: load("../sql/users/find.sql"),        update: load("../sql/users/update.sql")    },    create: load("../sql/create.sql"),    init: load("../sql/init.sql"),    drop: load("../sql/drop.sql")};</code></pre>
-
-    <pre class="prettyprint"><code>// loadSql.js module exampleconst QueryFile = require('pg-promise').QueryFile;module.exports = file => {    return new QueryFile(file, {minify: true});};</code></pre>
 
 
 
@@ -1519,7 +1089,7 @@ are always made of two parameters - <code>(options, cb)</code>, same as all the 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line510">line 510</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line201">line 201</a>
     </li></ul></dd>
     
 
