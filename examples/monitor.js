@@ -1,6 +1,4 @@
-'use strict';
-
-/*eslint-disable */
+/* eslint-disable */
 
 ////////////////////////////////////////////////////
 // This is a complete test application, which shows

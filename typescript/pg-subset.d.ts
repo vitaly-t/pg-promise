@@ -13,7 +13,7 @@
 // Calling it 'pg-subset' to avoid a conflict in case the application also
 // includes the official 'pg' typings.
 //
-// Supported version of pg: 7.11.0 and later.
+// Supported version of pg: 7.12.0 and later.
 //
 // pg: https://github.com/brianc/node-postgres
 //////////////////////////////////////////////////////////////////////////////
@@ -52,13 +52,12 @@ declare namespace pg {
             binary: any
         };
         _parsers: Array<Function>;
-
     }
 
     // SSL configuration;
     // For property types and documentation see:
     // http://nodejs.org/api/tls.html#tls_tls_connect_options_callback
-    type TSSLConfig = {
+    interface ISSLConfig {
         ca?: string | Buffer | Array<string | Buffer>
         pfx?: string | Buffer | Array<string | Buffer | object>
         cert?: string | Buffer | Array<string | Buffer>
@@ -73,14 +72,14 @@ declare namespace pg {
     // See:
     // 1) https://github.com/brianc/node-postgres/blob/master/lib/defaults.js
     // 2) https://github.com/brianc/node-pg-pool
-    type TConnectionParameters = {
+    interface IConnectionParameters {
         connectionString?: string
         host?: string
         database?: string
         user?: string
         password?: string
         port?: number
-        ssl?: boolean | TSSLConfig
+        ssl?: boolean | ISSLConfig
         binary?: boolean
         client_encoding?: string
         encoding?: string
@@ -101,11 +100,76 @@ declare namespace pg {
         keepalives_idle?: number
     }
 
+    // Type id-s supported by PostgreSQL, copied from:
+    // http://github.com/brianc/node-pg-types/blob/master/lib/builtins.js
+    enum TypeId {
+        BOOL = 16,
+        BYTEA = 17,
+        CHAR = 18,
+        INT8 = 20,
+        INT2 = 21,
+        INT4 = 23,
+        REGPROC = 24,
+        TEXT = 25,
+        OID = 26,
+        TID = 27,
+        XID = 28,
+        CID = 29,
+        JSON = 114,
+        XML = 142,
+        PG_NODE_TREE = 194,
+        SMGR = 210,
+        PATH = 602,
+        POLYGON = 604,
+        CIDR = 650,
+        FLOAT4 = 700,
+        FLOAT8 = 701,
+        ABSTIME = 702,
+        RELTIME = 703,
+        TINTERVAL = 704,
+        CIRCLE = 718,
+        MACADDR8 = 774,
+        MONEY = 790,
+        MACADDR = 829,
+        INET = 869,
+        ACLITEM = 1033,
+        BPCHAR = 1042,
+        VARCHAR = 1043,
+        DATE = 1082,
+        TIME = 1083,
+        TIMESTAMP = 1114,
+        TIMESTAMPTZ = 1184,
+        INTERVAL = 1186,
+        TIMETZ = 1266,
+        BIT = 1560,
+        VARBIT = 1562,
+        NUMERIC = 1700,
+        REFCURSOR = 1790,
+        REGPROCEDURE = 2202,
+        REGOPER = 2203,
+        REGOPERATOR = 2204,
+        REGCLASS = 2205,
+        REGTYPE = 2206,
+        UUID = 2950,
+        TXID_SNAPSHOT = 2970,
+        PG_LSN = 3220,
+        PG_NDISTINCT = 3361,
+        PG_DEPENDENCIES = 3402,
+        TSVECTOR = 3614,
+        TSQUERY = 3615,
+        GTSVECTOR = 3642,
+        REGCONFIG = 3734,
+        REGDICTIONARY = 3769,
+        JSONB = 3802,
+        REGNAMESPACE = 4089,
+        REGROLE = 4096
+    }
+
     // Interface of 'pg-types' module;
     // See: https://github.com/brianc/node-pg-types
     interface ITypes {
-        setTypeParser: (oid: number, format: string | ((value: string) => any)) => void
-        getTypeParser: (oid: number, format?: string) => any
+        setTypeParser: (id: TypeId, format: string | ((value: string) => any)) => void
+        getTypeParser: (id: TypeId, format?: string) => any
         arrayParser: (source: string, transform: (entry: any) => any) => any[]
     }
 
@@ -148,7 +212,7 @@ declare namespace pg {
 
         client_encoding: string
 
-        ssl: boolean | TSSLConfig
+        ssl: boolean | ISSLConfig
 
         application_name: string
 
@@ -170,17 +234,13 @@ declare namespace pg {
         keepalives_idle: number
     }
 
-    class Connection {
-        // not needed within pg-promise;
-    }
-
     class Query {
-        // not needed within pg-promise;
+        // not used within pg-promise;
     }
 
     class Client extends EventEmitter {
 
-        constructor(cn: string | TConnectionParameters)
+        constructor(cn: string | IConnectionParameters)
 
         query: (config: any, values: any, callback: (err: Error, result: IResult) => void) => Query;
 
@@ -190,7 +250,7 @@ declare namespace pg {
         on(event: 'notice', listener: (message: any) => void): this
         on(event: string, listener: Function): this
 
-        connectionParameters: TConnectionParameters;
+        connectionParameters: IConnectionParameters;
         database: string;
         user: string;
         password: string;
@@ -201,7 +261,7 @@ declare namespace pg {
 
         queryQueue: Query[];
         binary: boolean;
-        ssl: boolean | TSSLConfig;
+        ssl: boolean | ISSLConfig;
         secretKey: number;
         processID: number;
         encoding: string;

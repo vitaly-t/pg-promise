@@ -1,10 +1,13 @@
 import * as pgPromise from '../../typescript/pg-promise';
 import * as pgSubset from '../../typescript/pg-subset';
+import {TypeId} from '../../typescript/pg-subset';
 
 const pgp: pgPromise.IMain = pgPromise();
 const db = pgp('connection');
 
 const pg = pgp.pg;
+
+pg.types.setTypeParser(TypeId.INT8, parseInt);
 
 const client = new pg.Client({
     ssl: {
@@ -21,7 +24,6 @@ db.connect()
     });
 
 const query = new pg.Query();
-const connection = new pg.Connection();
 
 const database = pg.defaults.database;
 

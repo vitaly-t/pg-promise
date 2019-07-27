@@ -1,6 +1,6 @@
 import * as pgPromise from '../../typescript/pg-promise';
 
-interface Extensions {
+interface IExtensions {
     findUser(userId: number): Promise<any>;
 }
 
@@ -14,17 +14,17 @@ const pgp: pgPromise.IMain = pgPromise({
 
 const db = pgp('connection');
 
-const pgpExt = pgPromise<Extensions>({
-    extend: function (obj: pgPromise.IDatabase<Extensions> & Extensions) {
+const pgpExt = pgPromise({
+    extend: function (obj: pgPromise.IDatabase<IExtensions> & IExtensions) {
         obj.findUser = (userId: number) => {
             return obj.one('', userId);
         }
     }
 });
 
-const dbExt1 = <pgPromise.IDatabase<Extensions> & Extensions>pgp('connection');
-const dbExt2 = <pgPromise.IDatabase<Extensions> & Extensions>pgpExt('connection');
-const dbExt3 = pgpExt<Extensions>('connection');
+const dbExt1 = pgp<IExtensions>('connection');
+const dbExt2 = pgpExt<IExtensions>('connection');
+const dbExt3 = pgpExt<IExtensions>('connection');
 
 dbExt1.findUser(123).then();
 dbExt2.findUser(123).then();
