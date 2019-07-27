@@ -192,10 +192,6 @@ function _enumSql(dir, options, cb, namePath) {
  * @returns {object}
  * Camelized SQL tree object, with each value being an SQL file path (unless changed via the callback).
  *
- * @see
- * {@link utils.objectToCode objectToCode},
- * {@link utils.buildSqlModule buildSqlModule}
- *
  * @example
  *
  * // simple SQL tree generation for further processing:
@@ -204,7 +200,7 @@ function _enumSql(dir, options, cb, namePath) {
  * @example
  *
  * // generating an SQL tree for dynamic use of names:
- * const sql = pgp.utils.enumSql(__dirname, {recursive: true}, file=> {
+ * const sql = pgp.utils.enumSql(__dirname, {recursive: true}, file => {
  *     return new pgp.QueryFile(file, {minify: true});
  * });
  *
@@ -213,7 +209,7 @@ function _enumSql(dir, options, cb, namePath) {
  * const path = require('path');
  *
  * // replacing each relative path in the tree with a full one:
- * const tree = pgp.utils.enumSql('../sql', {recursive: true}, file=> {
+ * const tree = pgp.utils.enumSql('../sql', {recursive: true}, file => {
  *     return path.join(__dirname, file);
  * });
  *
@@ -327,10 +323,6 @@ function taskArgs(args) {
  * @description
  * Namespace for general-purpose static functions, available as `pgp.utils`, before and after initializing the library.
  *
- * See also:
- * - [Automatic SQL Trees](https://github.com/vitaly-t/pg-promise/issues/153)
- * - [SQL Files](https://github.com/vitaly-t/pg-promise/wiki/SQL-Files)
- *
  * @property {function} camelize
  * {@link utils.camelize camelize} - camelizes a text string
  *
@@ -349,7 +341,6 @@ module.exports = {
     enumSql,
     taskArgs
 };
-
 </code></pre>
         </article>
     </section>

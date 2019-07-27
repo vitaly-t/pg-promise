@@ -38,12 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Namespace for general-purpose static functions, available as <code>pgp.utils</code>, before and after initializing the library.</p>
-<p>See also:</p>
-<ul>
-<li><a href="https://github.com/vitaly-t/pg-promise/issues/153">Automatic SQL Trees</a></li>
-<li><a href="https://github.com/vitaly-t/pg-promise/wiki/SQL-Files">SQL Files</a></li>
-</ul></div>
+            <div class="description"><p>Namespace for general-purpose static functions, available as <code>pgp.utils</code>, before and after initializing the library.</p></div>
         
 
         
@@ -199,7 +194,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line295">line 295</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line291">line 291</a>
     </li></ul></dd>
     
 
@@ -876,13 +871,6 @@ non-existing directory.</p></td>
     
 
     
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li>objectToCode,buildSqlModule</li>
-        </ul>
-    </dd>
-    
 
     
 </dl>
@@ -927,9 +915,9 @@ non-existing directory.</p></td>
     
     <pre class="prettyprint"><code>// simple SQL tree generation for further processing:const tree = pgp.utils.enumSql('../sql', {recursive: true});</code></pre>
 
-    <pre class="prettyprint"><code>// generating an SQL tree for dynamic use of names:const sql = pgp.utils.enumSql(__dirname, {recursive: true}, file=> {    return new pgp.QueryFile(file, {minify: true});});</code></pre>
+    <pre class="prettyprint"><code>// generating an SQL tree for dynamic use of names:const sql = pgp.utils.enumSql(__dirname, {recursive: true}, file => {    return new pgp.QueryFile(file, {minify: true});});</code></pre>
 
-    <pre class="prettyprint"><code>const path = require('path');// replacing each relative path in the tree with a full one:const tree = pgp.utils.enumSql('../sql', {recursive: true}, file=> {    return path.join(__dirname, file);});</code></pre>
+    <pre class="prettyprint"><code>const path = require('path');// replacing each relative path in the tree with a full one:const tree = pgp.utils.enumSql('../sql', {recursive: true}, file => {    return path.join(__dirname, file);});</code></pre>
 
 
 
@@ -1043,7 +1031,7 @@ are always made of two parameters - <code>(options, cb)</code>, same as all the 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line201">line 201</a>
+        <a href="utils_public.js.html">utils/public.js</a>, <a href="utils_public.js.html#line197">line 197</a>
     </li></ul></dd>
     
 
