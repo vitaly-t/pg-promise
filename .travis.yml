@@ -5,9 +5,9 @@ matrix:
   - node_js: "7"
     script: "npm test"
   - node_js: "8"
-    script: "npm test"
+    script: "npm run travis"
   - node_js: "12"
-    script: "npm test"
+    script: "npm run travis"
 addons:
   postgresql: "10"
 before_script:
