@@ -1507,9 +1507,9 @@ describe('Transactions', () => {
                     done();
                 });
         });
-        it('Must not execute ROLLBACK', () => {
+        it('must still execute ROLLBACK', () => {
             expect(error).toEqual({code: 'ECONNRESET'});
-            expect(query).toBe('begin');
+            expect(query).toBe('rollback');
         });
         afterEach(() => {
             delete options.query;
