@@ -8,6 +8,7 @@ const db = pgp('connection');
 const pg = pgp.pg;
 
 pg.types.setTypeParser(TypeId.INT8, parseInt);
+pg.types.setTypeParser(pg.types.builtins.INT8, parseInt);
 
 const client = new pg.Client({
     ssl: {
