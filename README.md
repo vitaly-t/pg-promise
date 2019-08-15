@@ -155,7 +155,8 @@ When a query method is parameterized with `values` as an object, the formatting 
 the Named Parameter syntax `$*propName*`, with `*` being any of the following open-close pairs: `{}`, `()`, `<>`, `[]`, `//`.
 
 ```js
-db.none(`INSERT INTO users(first_name, last_name, age) VALUES($/name.first/, $/name.last/, $/age/)`, {
+// We can use every supported variable syntax at the same time, if needed:
+db.none('INSERT INTO users(first_name, last_name, age) VALUES(${name.first}, $<name.last>, $/age/)', {
     name: {first: 'John', last: 'Dow'},
     age: 30
 });
@@ -166,7 +167,7 @@ for PostgreSQL. Inside ES6 template strings you should only use one of the 4 alt
 In general, you should either use the standard strings for SQL, or place SQL into external files - see [Query Files]. 
 
 Valid variable names are limited to the syntax of open-name JavaScript variables. And name `this` has special meaning - it refers
-to the formatting object itself.
+to the formatting object itself (see below).
 
 Keep in mind that while property values `null` and `undefined` are both formatted as `null`, an error is thrown when the
 property does not exist.
