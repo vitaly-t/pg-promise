@@ -30,6 +30,8 @@ r.ssl = {
     ca: ''
 };
 
+r.password = () => 'pass123';
+
 r.keepAlive = true;
 
 const db2 = pgp({

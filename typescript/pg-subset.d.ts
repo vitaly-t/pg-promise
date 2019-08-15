@@ -69,6 +69,8 @@ declare namespace pg {
         NPNProtocols?: string[] | Buffer | Buffer[] | Uint8Array | Uint8Array[]
     }
 
+    type DynamicPassword = string | (() => string) | (() => Promise<string>);
+
     // See:
     // 1) https://github.com/brianc/node-postgres/blob/master/lib/defaults.js
     // 2) https://github.com/brianc/node-pg-pool
@@ -77,7 +79,7 @@ declare namespace pg {
         host?: string
         database?: string
         user?: string
-        password?: string
+        password?: DynamicPassword
         port?: number
         ssl?: boolean | ISSLConfig
         binary?: boolean
@@ -190,7 +192,7 @@ declare namespace pg {
         database: string
 
         // database user's password
-        password: string
+        password: DynamicPassword
 
         // database port
         port: number
@@ -255,7 +257,7 @@ declare namespace pg {
         connectionParameters: IConnectionParameters;
         database: string;
         user: string;
-        password: string;
+        password: DynamicPassword;
         port: number;
         host: string;
 
