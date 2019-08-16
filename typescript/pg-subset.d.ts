@@ -246,7 +246,7 @@ declare namespace pg {
 
         constructor(cn: string | IConnectionParameters)
 
-        query: (config: any, values: any, callback: (err: Error, result: IResult) => void) => Query;
+        query: (config: any, values?: any, callback?: (err: Error, result: IResult) => void) => Promise<IResult> | undefined;
 
         on(event: 'drain', listener: () => void): this
         on(event: 'error', listener: (err: Error) => void): this
