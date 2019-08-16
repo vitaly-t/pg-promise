@@ -242,11 +242,14 @@ declare namespace pg {
         // not used within pg-promise;
     }
 
+    /**
+     * Declaring Client as a class, for compatibility, though it is never
+     * created within the TypeScript, i.e. used as an interface only.
+     */
     class Client extends EventEmitter {
 
-        constructor(cn: string | IConnectionParameters)
-
-        query: (config: any, values?: any, callback?: (err: Error, result: IResult) => void) => Promise<IResult> | undefined;
+        query: ((config: any, values: any, callback: (err: Error, result: IResult) => void) => undefined) |
+            ((config: any, values?: any) => Promise<IResult>);
 
         on(event: 'drain', listener: () => void): this
         on(event: 'error', listener: (err: Error) => void): this
