@@ -294,8 +294,8 @@ declare namespace pgPromise {
 
     // Post-initialization interface;
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-    interface IMain {
-        <T>(cn: string | pg.IConnectionParameters, dc?: any): IDatabase<T> & T
+    interface IMain<Ext = {}> {
+        <T = Ext>(cn: string | pg.IConnectionParameters, dc?: any): IDatabase<T> & T
 
         readonly PromiseAdapter: typeof PromiseAdapter
         readonly PreparedStatement: typeof PreparedStatement
@@ -570,7 +570,7 @@ declare namespace pgPromise {
         promiseLib: any
         promise: IGenericPromise
         options: IInitOptions<Ext>
-        pgp: IMain
+        pgp: IMain<Ext>
         $npm: any
     }
 
@@ -669,6 +669,6 @@ declare namespace pgPromise {
 
 // Default library interface (before initialization)
 // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-declare function pgPromise(options?: pgPromise.IInitOptions): pgPromise.IMain
+declare function pgPromise<Ext = {}>(options?: pgPromise.IInitOptions<Ext>): pgPromise.IMain<Ext>
 
 export = pgPromise;
