@@ -1,6 +1,6 @@
 ## TypeScript for pg-promise
 
-Complete TypeScript 3.x declarations for [pg-promise].
+Complete TypeScript 3.x (`strict` mode) declarations for [pg-promise].
 
 ### Inclusion
 

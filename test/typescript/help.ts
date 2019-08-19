@@ -13,7 +13,7 @@ const col1: Column = new pgp.helpers.Column({
     cnd: true,
     init: function (col) {
         const e = col.exists;
-        return this.test;
+        return this;
     },
     skip: (col) => {
         const e = col.exists;
@@ -64,7 +64,7 @@ const values4: string = pgp.helpers.values([], cs);
 const names: string = cs.names;
 const variables: string = cs.variables;
 
-let obj = cs.prepare(null); // this one should fail
+let obj = cs.prepare(Date);
 obj = cs.prepare({});
 
 const sets1: string = pgp.helpers.sets({});

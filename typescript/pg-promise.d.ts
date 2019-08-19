@@ -47,7 +47,7 @@ declare namespace pgPromise {
 
     interface IConnectionOptions {
         direct?: boolean
-        onLost?: (err?: any, e?: ILostContext) => void
+        onLost?: (err: any, e: ILostContext) => void
     }
 
     interface IPreparedStatement {
@@ -55,7 +55,7 @@ declare namespace pgPromise {
         text?: string | QueryFile
         values?: any[]
         binary?: boolean
-        rowMode?: void | 'array'
+        rowMode?: 'array' | null | void
         rows?: number
     }
 
@@ -393,7 +393,7 @@ declare namespace pgPromise {
 
         tx<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        tx<T = any>(options: { tag?: any, mode?: TransactionMode }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        tx<T = any>(options: { tag?: any, mode?: TransactionMode | null }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Conditional Transactions;
         // API: http://vitaly-t.github.io/pg-promise/Database.html#txIf
@@ -401,7 +401,7 @@ declare namespace pgPromise {
 
         txIf<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        txIf<T = any>(options: { tag?: any, mode?: TransactionMode, reusable?: boolean | ((t: ITask<Ext> & Ext) => boolean), cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        txIf<T = any>(options: { tag?: any, mode?: TransactionMode | null, reusable?: boolean | ((t: ITask<Ext> & Ext) => boolean), cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
     }
 
     // Database object in connected state;
@@ -621,7 +621,7 @@ declare namespace pgPromise {
     }
 
     interface ITaskArguments<T> extends IArguments {
-        options: { tag?: any, cnd?: any, mode?: TransactionMode } & T
+        options: { tag?: any, cnd?: any, mode?: TransactionMode | null } & T
         cb: () => any
     }
 
@@ -657,7 +657,7 @@ declare namespace pgPromise {
     }
 
     interface IGenericPromise {
-        (cb: (resolve: (value?: any) => void, reject?: (reason?: any) => void) => void): XPromise<any>
+        (cb: (resolve: (value?: any) => void, reject: (reason?: any) => void) => void): XPromise<any>
 
         resolve(value?: any): void
 
