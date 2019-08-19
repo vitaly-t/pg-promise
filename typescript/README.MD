@@ -30,7 +30,7 @@ interface IExtensions {
 }
 
 // pg-promise initialization options:
-const options = {
+const options: pgPromise.IInitOptions<IExtensions> = {
     extend(obj) {
         obj.findUser = userId => {
             return obj.one('SELECT * FROM Users WHERE id = $1', userId);
@@ -41,14 +41,14 @@ const options = {
 // initializing the library:
 const pgp = pgPromise(options);
 
-// database object with extensions:
-const db = pgp<IExtensions>('postgres://username:password@host:port/database');
+// database object:
+const db = pgp('postgres://username:password@host:port/database');
 
 // now you can use the extensions everywhere (including tasks and transactions):
 db.findUser(123).then(...);
 ```
 
-For a complete and comprehensive example, check out [pg-promise-demo]. 
+For a complete and comprehensive example, check out [pg-promise-demo].
 
 [pg-promise-demo]:https://github.com/vitaly-t/pg-promise-demo
 [extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
