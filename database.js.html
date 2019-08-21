@@ -360,7 +360,6 @@ function Database(cn, dc, config) {
             })
             .catch(error => {
                 ctx.disconnect();
-
                 return $p.reject(error);
             });
     };
