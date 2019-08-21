@@ -7,7 +7,7 @@ const pgp: pgPromise.IMain = pgPromise({
     pgNative: true
 });
 
-let c: IConnectionParameters;
+let c: IConnectionParameters = {};
 c.binary = true;
 
 const spex = pgp.spex;

@@ -15,6 +15,10 @@ alias = pgp.as.alias(() => 'a');
 
 class CTF {
 
+    constructor() {
+        this.rawType = true;
+    }
+
     toPostgres(a: any) {
 
     }

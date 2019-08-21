@@ -47,11 +47,11 @@
     "spex": "2.2.0"
   },
   "devDependencies": {
-    "@types/node": "12.7.1",
+    "@types/node": "12.7.2",
     "JSONStream": "1.3.5",
     "bluebird": "3.5.5",
     "coveralls": "3.0.6",
-    "eslint": "6.1.0",
+    "eslint": "6.2.0",
     "tslint": "5.18.0",
     "istanbul": "0.4.5",
     "jasmine-node": "3.0.0",

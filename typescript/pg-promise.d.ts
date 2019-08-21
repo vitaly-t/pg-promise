@@ -42,12 +42,12 @@ declare namespace pgPromise {
         cn: string
         dc: any
         start: Date
-        client: pg.Client
+        client: pg.IClient
     }
 
     interface IConnectionOptions {
         direct?: boolean
-        onLost?: (err?: any, e?: ILostContext) => void
+        onLost?: (err: any, e: ILostContext) => void
     }
 
     interface IPreparedStatement {
@@ -55,7 +55,7 @@ declare namespace pgPromise {
         text?: string | QueryFile
         values?: any[]
         binary?: boolean
-        rowMode?: void | 'array'
+        rowMode?: 'array' | null | void
         rows?: number
     }
 
@@ -294,8 +294,8 @@ declare namespace pgPromise {
 
     // Post-initialization interface;
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-    interface IMain {
-        <T>(cn: string | pg.IConnectionParameters, dc?: any): IDatabase<T> & T
+    interface IMain<Ext = {}> {
+        <T = Ext>(cn: string | pg.IConnectionParameters, dc?: any): IDatabase<T> & T
 
         readonly PromiseAdapter: typeof PromiseAdapter
         readonly PreparedStatement: typeof PreparedStatement
@@ -393,7 +393,7 @@ declare namespace pgPromise {
 
         tx<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        tx<T = any>(options: { tag?: any, mode?: TransactionMode }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        tx<T = any>(options: { tag?: any, mode?: TransactionMode | null }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Conditional Transactions;
         // API: http://vitaly-t.github.io/pg-promise/Database.html#txIf
@@ -401,12 +401,12 @@ declare namespace pgPromise {
 
         txIf<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        txIf<T = any>(options: { tag?: any, mode?: TransactionMode, reusable?: boolean | ((t: ITask<Ext> & Ext) => boolean), cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        txIf<T = any>(options: { tag?: any, mode?: TransactionMode | null, reusable?: boolean | ((t: ITask<Ext> & Ext) => boolean), cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
     }
 
     // Database object in connected state;
     interface IConnected<Ext> extends IBaseProtocol<Ext>, spexLib.ISpexBase {
-        readonly client: pg.Client
+        readonly client: pg.IClient
 
         done(): void
     }
@@ -440,7 +440,7 @@ declare namespace pgPromise {
     // Generic Event Context interface;
     // See: http://vitaly-t.github.io/pg-promise/global.html#EventContext
     interface IEventContext {
-        client: pg.Client
+        client: pg.IClient
         cn: any
         dc: any
         query: any
@@ -551,8 +551,8 @@ declare namespace pgPromise {
         pgFormatting?: boolean
         pgNative?: boolean
         promiseLib?: any
-        connect?: (client: pg.Client, dc: any, useCount: number) => void
-        disconnect?: (client: pg.Client, dc: any) => void
+        connect?: (client: pg.IClient, dc: any, useCount: number) => void
+        disconnect?: (client: pg.IClient, dc: any) => void
         query?: (e: IEventContext) => void
         receive?: (data: any[], result: IResultExt, e: IEventContext) => void
         task?: (e: IEventContext) => void
@@ -570,7 +570,7 @@ declare namespace pgPromise {
         promiseLib: any
         promise: IGenericPromise
         options: IInitOptions<Ext>
-        pgp: IMain
+        pgp: IMain<Ext>
         $npm: any
     }
 
@@ -621,7 +621,7 @@ declare namespace pgPromise {
     }
 
     interface ITaskArguments<T> extends IArguments {
-        options: { tag?: any, cnd?: any, mode?: TransactionMode } & T
+        options: { tag?: any, cnd?: any, mode?: TransactionMode | null } & T
         cb: () => any
     }
 
@@ -657,7 +657,7 @@ declare namespace pgPromise {
     }
 
     interface IGenericPromise {
-        (cb: (resolve: (value?: any) => void, reject?: (reason?: any) => void) => void): XPromise<any>
+        (cb: (resolve: (value?: any) => void, reject: (reason?: any) => void) => void): XPromise<any>
 
         resolve(value?: any): void
 
@@ -669,6 +669,6 @@ declare namespace pgPromise {
 
 // Default library interface (before initialization)
 // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-declare function pgPromise(options?: pgPromise.IInitOptions): pgPromise.IMain
+declare function pgPromise<Ext = {}>(options?: pgPromise.IInitOptions<Ext>): pgPromise.IMain<Ext>
 
 export = pgPromise;
