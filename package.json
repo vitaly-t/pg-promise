@@ -43,7 +43,7 @@
     "assert-options": "0.4.0",
     "manakin": "0.5.2",
     "pg": "7.12.1",
-    "pg-minify": "1.4.1",
+    "pg-minify": "1.5.0",
     "spex": "2.2.0"
   },
   "devDependencies": {
