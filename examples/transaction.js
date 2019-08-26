@@ -26,16 +26,12 @@ const cn = {
 
 const db = pgp(cn); // database instance;
 
-// NOTE: The default ES6 Promise doesn't have method `.finally`,
-// but it is available within Bluebird library used here.
-
-db.tx(t => {
-    return t.batch([
-        t.one('insert into users(name) values($1) returning id', 'John'),
-        t.one('insert into events(code) values($1) returning id', 123)
-    ]);
+db.tx(async t => {
+    const user = await t.one('INSERT INTO users(name) VALUES($1) RETURNING id', 'John');
+    const event = await t.one('INSERT INTO events(code) VALUES($1) RETURNING id', 123);
+    return {user, event};
 })
-    .then(([user, event]) => {
+    .then(({user, event}) => {
         // print new user id + new event id;
         console.log('DATA:', user.id, event.id);
     })

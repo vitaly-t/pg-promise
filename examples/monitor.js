@@ -45,9 +45,6 @@ const cn = {
 
 const db = pgp(cn); // database instance;
 
-// NOTE: The default ES6 Promise doesn't have method `.finally`, but it is
-// available within Bluebird library used here as an example.
-
 db.any('select * from users where active = $1', [true])
     .then(data => {
         console.log('DATA:', data);
