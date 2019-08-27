@@ -151,7 +151,7 @@ describe('ParameterizedQuery', () => {
             const f = path.join(__dirname, './sql/simple.sql');
             const qf = new pgp.QueryFile(f, {compress: true, noWarnings: true});
             const pq = new pgp.ParameterizedQuery(qf);
-            let result = pq.parse();
+            const result = pq.parse();
             expect(result && typeof result === 'object').toBeTruthy();
             expect(result.text).toBe('select 1;');
             expect(pq.toString()).toBe(tools.inspect(pq));

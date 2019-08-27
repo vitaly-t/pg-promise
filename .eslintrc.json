@@ -9,6 +9,8 @@
     "ecmaVersion": 2017
   },
   "rules": {
+    "no-var": "error",
+    "prefer-const": "error",
     "prefer-arrow-callback": "error",
     "no-else-return": "error",
     "no-multi-spaces": "error",
@@ -17,7 +19,6 @@
     "new-cap": "error",
     "no-console": "error",
     "comma-dangle": "error",
-    "no-var": "error",
     "no-shadow": "error",
     "object-shorthand": [
       "error",

@@ -188,7 +188,7 @@ describe('enumSql', () => {
     });
 
     it('must be able to ignore duplicate folders', () => {
-        let tree = utils.enumSql('./test/sql-special/dup-folders', {
+        const tree = utils.enumSql('./test/sql-special/dup-folders', {
             recursive: true,
             ignoreErrors: true
         }, (file, name, p) => {
@@ -199,7 +199,7 @@ describe('enumSql', () => {
     });
 
     it('must be able to ignore duplicate files', () => {
-        let tree = utils.enumSql('./test/sql-special/dup-files', {
+        const tree = utils.enumSql('./test/sql-special/dup-files', {
             recursive: true,
             ignoreErrors: true
         }, (file, name, p) => {

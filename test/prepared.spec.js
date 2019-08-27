@@ -158,7 +158,7 @@ describe('PreparedStatement', () => {
             const f = path.join(__dirname, './sql/simple.sql');
             const qf = new pgp.QueryFile(f, {compress: true, noWarnings: true});
             const ps = new pgp.PreparedStatement({name: 'test-name', text: qf});
-            let result = ps.parse();
+            const result = ps.parse();
             expect(result && typeof result === 'object').toBeTruthy();
             expect(result.name).toBe('test-name');
             expect(result.text).toBe('select 1;');

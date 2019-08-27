@@ -37,7 +37,8 @@ const dummy = () => {
 describe('Connect/Disconnect events', () => {
 
     describe('during a query', () => {
-        let ctx1 = {}, ctx2 = {}, connect = 0, disconnect = 0;
+        const ctx1 = {}, ctx2 = {};
+        let connect = 0, disconnect = 0;
         beforeEach(done => {
             options.connect = (client, dc, useCount) => {
                 ctx1.dc = dc;
@@ -75,7 +76,8 @@ describe('Connect/Disconnect events', () => {
     });
 
     describe('during a transaction', () => {
-        let obj1 = {}, obj2 = {}, ctx, connect = 0, disconnect = 0;
+        const obj1 = {}, obj2 = {};
+        let ctx, connect = 0, disconnect = 0;
         beforeEach(done => {
             options.connect = (client, dc, useCount) => {
                 obj1.dc = dc;
