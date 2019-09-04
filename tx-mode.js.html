@@ -134,8 +134,9 @@ class TransactionMode extends InnerState {
 
     constructor(options) {
         options = assertOptions(options, ['tiLevel', 'deferrable', 'readOnly']);
-        let {tiLevel, readOnly, deferrable} = options;
-        let level, accessMode, deferrableMode, capBegin, begin = 'begin';
+        const {readOnly, deferrable} = options;
+        let {tiLevel} = options;
+        let level, accessMode, deferrableMode, begin = 'begin';
         tiLevel = (tiLevel > 0) ? parseInt(tiLevel) : 0;
 
         if (tiLevel > 0 &amp;&amp; tiLevel &lt; 4) {
@@ -169,9 +170,8 @@ class TransactionMode extends InnerState {
         if (deferrableMode) {
             begin += ' ' + deferrableMode;
         }
-        capBegin = begin.toUpperCase();
 
-        super({begin, capBegin});
+        super({begin, capBegin: begin.toUpperCase()});
     }
 
     /**
