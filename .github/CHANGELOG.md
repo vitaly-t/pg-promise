@@ -39,7 +39,6 @@
 [Nested Named Parameters]:https://github.com/vitaly-t/pg-promise#nested-named-parameters
 [QueryStream]:https://github.com/brianc/node-pg-query-stream
 [spex]:https://github.com/vitaly-t/spex
-[utils]:http://vitaly-t.github.io/pg-promise/utils.html
 [each]:http://vitaly-t.github.io/pg-promise/Database.html#each
 [map]:http://vitaly-t.github.io/pg-promise/Database.html#map
 [Connection Syntax]:https://github.com/vitaly-t/pg-promise/wiki/Connection-Syntax
@@ -61,23 +60,15 @@
 [sequence]:http://vitaly-t.github.io/pg-promise/Task.html#sequence
 [API]:http://vitaly-t.github.io/pg-promise/Database.html
 [API Documentation]:http://vitaly-t.github.io/pg-promise/Database.html
-[Transaction Mode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
 [pg-minify]:https://github.com/vitaly-t/pg-minify
 [pg-monitor]:https://github.com/vitaly-t/pg-monitor
 [pg-promise]:https://github.com/vitaly-t/pg-promise
 [PG]:https://github.com/brianc/node-postgres
 [pg]:https://github.com/brianc/node-postgres
 [node-postgres]:https://github.com/brianc/node-postgres
-[Promises/A+]:https://promisesaplus.com/
 [Promise]:https://github.com/then/promise
-[Bluebird]:https://github.com/petkaantonov/bluebird
-[When]:https://github.com/cujojs/when
-[Q]:https://github.com/kriskowal/q
-[RSVP]:https://github.com/tildeio/rsvp.js
-[Lie]:https://github.com/calvinmetcalf/lie
 [Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
 [Promise Adapter]:https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter
-[spex.sequence]:https://github.com/vitaly-t/spex/blob/master/docs/code/sequence.md
 [Result]:https://node-postgres.com/api/result
 [Custom Type Formatting]:https://github.com/vitaly-t/pg-promise#custom-type-formatting
 [multi]:http://vitaly-t.github.io/pg-promise/Database.html#multi
