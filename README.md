@@ -1,7 +1,7 @@
 pg-promise
 ==========
 
-[Promises/A+] interface for PostgreSQL.
+PostgreSQL interface for Node.js (v7.6 and later).
 
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
 [![Coverage Status](https://coveralls.io/repos/vitaly-t/pg-promise/badge.svg?branch=master)](https://coveralls.io/r/vitaly-t/pg-promise?branch=master)
@@ -49,11 +49,15 @@ Built on top of [node-postgres], this library adds the following:
 
 * Automatic connections
 * Automatic transactions
-* Powerful query-formatting engine
+* Powerful query-formatting engine + query generation
 * Declarative approach to handling query results
 * Global events reporting for central handling
 * Extensive support for external SQL files
 * Support for all promise libraries
+
+At its inception in 2015, this library was only adding promises to the base driver, hence the name.
+And while name `pg-promise` was kept, the library's functionality was vastly extended, with promises
+now being just its tiny part.
 
 # Support & Sponsorship  
 
@@ -281,7 +285,7 @@ The following filters are supported:
 
 ### SQL Names
 
-When a variable ends with `:name`, or shorter syntax `~` (tilde), it represents an SQL name or identifier,
+When a variable name ends with `:name`, or shorter syntax `~` (tilde), it represents an SQL name or identifier,
 to be escaped accordingly:
 
 <details>
@@ -365,7 +369,7 @@ For more details see method [as.alias] that implements the formatting.
 
 ### Raw Text
 
-When a variable ends with `:raw`, or shorter syntax `^`, the value is to be injected as raw text, without escaping.
+When a variable name ends with `:raw`, or shorter syntax `^`, the value is to be injected as raw text, without escaping.
 
 Such variables cannot be `null` or `undefined`, because of the ambiguous meaning in this case, and those values
 will throw error `Values null/undefined cannot be used as raw text.`
@@ -383,7 +387,7 @@ This filter is unsafe, and should not be used for values that come from the clie
 
 ### Open Values
 
-When a variable ends with `:value`, or shorter syntax `#`, it is escaped as usual, except when its type is a string,
+When a variable name ends with `:value`, or shorter syntax `#`, it is escaped as usual, except when its type is a string,
 the trailing quotes are not added.
 
 Open values are primarily to be able to compose complete `LIKE`/`ILIKE` dynamic statements in external SQL files,
@@ -410,7 +414,7 @@ Method [as.value] implements the formatting.
 
 ### JSON Filter
 
-When a variable ends with `:json`, explicit JSON formatting is applied to the value.
+When a variable name ends with `:json`, explicit JSON formatting is applied to the value.
 
 By default, any object that's not `Date`, `Array`, `Buffer`, `null` or Custom-Type (see [Custom Type Formatting]),
 is automatically formatted as JSON.
@@ -419,7 +423,7 @@ Method [as.json] implements the formatting.
 
 ### CSV Filter
 
-When a variable ends with `:csv` or `:list`, it is formatted as a list of Comma-Separated Values, with each
+When a variable name ends with `:csv` or `:list`, it is formatted as a list of Comma-Separated Values, with each
 value formatted according to its JavaScript type.
 
 Typically, you would use this for a value that's an array, though it works for single values also. See the examples below.
@@ -1109,7 +1113,6 @@ for detailed changes between versions you should see the corresponding release n
 <!-- External Links -->
 
 [node-postgres]:https://github.com/brianc/node-postgres
-[Promises/A+]:https://promisesaplus.com/
 [Bluebird]:https://github.com/petkaantonov/bluebird
 [SQL injection]:https://en.wikipedia.org/wiki/SQL_injection
 [Symbol]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
