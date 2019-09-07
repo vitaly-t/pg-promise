@@ -55,9 +55,9 @@ Built on top of [node-postgres], this library adds the following:
 * Extensive support for external SQL files
 * Support for all promise libraries
 
-At its inception in 2015, this library was only adding promises to the base driver, hence the name.
-And while name `pg-promise` was kept, the library's functionality was vastly extended, with promises
-now being just its tiny part.
+At its inception in 2015, this library was only adding promises to the base driver, hence the name `pg-promise`.
+And while the original name was kept, the library's functionality was vastly extended, with promises now being
+only its tiny part.
 
 # Support & Sponsorship  
 
