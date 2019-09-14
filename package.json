@@ -43,7 +43,7 @@
     "assert-options": "0.6.0",
     "manakin": "0.5.2",
     "pg": "7.12.1",
-    "pg-minify": "1.5.0",
+    "pg-minify": "1.5.1",
     "spex": "3.0.0"
   },
   "devDependencies": {
@@ -51,12 +51,12 @@
     "JSONStream": "1.3.5",
     "bluebird": "3.5.5",
     "coveralls": "3.0.6",
-    "eslint": "6.3.0",
-    "tslint": "5.19.0",
+    "eslint": "6.4.0",
+    "tslint": "5.20.0",
     "istanbul": "0.4.5",
     "jasmine-node": "3.0.0",
     "jsdoc": "3.6.3",
     "pg-query-stream": "2.0.0",
-    "typescript": "3.6.2"
+    "typescript": "3.6.3"
   }
 }
