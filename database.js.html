@@ -989,7 +989,11 @@ function Database(cn, dc, config) {
         /**
          * @method Database#func
          * @description
-         * Executes a query against a database function by its name: `SELECT * FROM funcName(values)`.
+         * Executes a database function as `SELECT * FROM funcName(values)`.
+         *
+         * This is to help with the most common scenario of using functions.
+         * If, however, you need to type-cast parameters, or use the `SELECT funcName` form,
+         * then you should use a regular query method.
          *
          * @param {string} funcName
          * Name of the function to be executed.
