@@ -908,11 +908,12 @@ describe('method \'concat\'', () => {
             it('must format parameters correctly', () => {
                 expect(helpers.concat([{
                     query: '$1^, $2^, $3^',
-                    values: ['a', 'b'],
+                    values: ['a', [1, 2]],
                     options: {
-                        partial: true
+                        partial: true,
+                        capSQL: true
                     }
-                }])).toBe('a, b, $3^');
+                }])).toBe('a, ARRAY[1,2], $3^');
             });
         });
         describe('with empty queries', () => {
