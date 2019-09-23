@@ -8,7 +8,7 @@
  */
 
 /////////////////////////////////////////
-// Requires pg-promise v9.0.0 or later.
+// Requires pg-promise v9.2.0 or later.
 /////////////////////////////////////////
 
 // We use ES6 as static promise here, because generic promises are still not supported.
@@ -34,6 +34,7 @@ declare namespace pgPromise {
     }
 
     interface IFormattingOptions {
+        capSQL?: boolean
         partial?: boolean
         def?: any
     }
@@ -588,7 +589,7 @@ declare namespace pgPromise {
 
         alias(name: string | (() => string)): string
 
-        array(arr: any[] | (() => any[])): string
+        array(arr: any[] | (() => any[]), options?: { capSQL?: boolean }): string
 
         bool(value: any | (() => any)): string
 

@@ -5,7 +5,7 @@ const value2 = pgPromise.as.array(() => []);
 
 const pgp: pgPromise.IMain = pgPromise();
 
-const value3 = pgp.as.array([]);
+const value3 = pgp.as.array([], {capSQL: true});
 const value4 = pgp.as.array(() => []);
 const value5 = pgp.as.format('hello', []);
 const value6 = pgp.as.format(new pgPromise.QueryFile(''));
@@ -42,7 +42,7 @@ class CTF {
 
 const ctf = new CTF();
 
-const testCTF = pgp.as.format(ctf, null, {def: 1});
+const testCTF = pgp.as.format(ctf, null, {def: 1, partial: true, capSQL: true});
 
 const testFunc1 = pgp.as.func(() => {
 });
