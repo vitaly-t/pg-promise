@@ -76,18 +76,23 @@ const utils = require('../utils');
  * {@link helpers.concat concat} static method.
  */
 module.exports = config => {
+    const capSQL = () => config.options &amp;&amp; config.options.capSQL;
     const res = {
-        insert: (data, columns, table) => {
-            const capSQL = config.options &amp;&amp; config.options.capSQL;
-            return method.insert(data, columns, table, capSQL);
+        insert(data, columns, table) {
+            return method.insert(data, columns, table, capSQL());
         },
-        update: (data, columns, table, options) => {
-            const capSQL = config.options &amp;&amp; config.options.capSQL;
-            return method.update(data, columns, table, options, capSQL);
+        update(data, columns, table, options) {
+            return method.update(data, columns, table, options, capSQL());
         },
-        concat: method.concat,
-        values: method.values,
-        sets: method.sets,
+        concat(queries) {
+            return method.concat(queries, capSQL());
+        },
+        values(data, columns) {
+            return method.values(data, columns, capSQL());
+        },
+        sets(data, columns) {
+            return method.sets(data, columns, capSQL());
+        },
         TableName,
         ColumnSet,
         Column

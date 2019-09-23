@@ -197,7 +197,8 @@ function update(data, columns, table, options, capSQL) {
     options = assertOptions(options, ['tableAlias', 'valueAlias', 'emptyUpdate']);
 
     const format = npm.formatting.as.format,
-        useEmptyUpdate = 'emptyUpdate' in options;
+        useEmptyUpdate = 'emptyUpdate' in options,
+        fmOptions = {capSQL};
 
     if (isArray) {
         const tableAlias = npm.formatting.as.alias(npm.utils.isNull(options.tableAlias) ? 't' : options.tableAlias);
@@ -219,10 +220,10 @@ function update(data, columns, table, options, capSQL) {
             if (!d || typeof d !== 'object') {
                 throw new Error('Invalid update object at index ' + index + '.');
             }
-            return '(' + format(columns.variables, columns.prepare(d)) + ')';
+            return '(' + format(columns.variables, columns.prepare(d), fmOptions) + ')';
         }).join();
 
-        return format(q, [table.name, tableAlias, targetCols, values, valueAlias, columns.names]);
+        return format(q, [table.name, tableAlias, targetCols, values, valueAlias, columns.names], fmOptions);
     }
 
     const updates = columns.assign({source: data});
@@ -235,7 +236,7 @@ function update(data, columns, table, options, capSQL) {
 
     const query = capSQL ? sql.single.capCase : sql.single.lowCase;
 
-    return format(query, table.name) + format(updates, columns.prepare(data));
+    return format(query, table.name) + format(updates, columns.prepare(data), fmOptions);
 
     function checkTable() {
         if (table &amp;&amp; !(table instanceof TableName)) {

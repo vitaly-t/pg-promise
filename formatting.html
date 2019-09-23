@@ -378,7 +378,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line313">line 313</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line317">line 317</a>
     </li></ul></dd>
     
 
@@ -535,7 +535,7 @@ an SQL alias would be incorrect.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line491">line 491</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line495">line 495</a>
     </li></ul></dd>
     
 
@@ -595,7 +595,7 @@ an SQL alias would be incorrect.</p>
 
     
 
-    <h4 class="name" id=".array"><span class="type-signature">(static) </span>array<span class="signature">(arr)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".array"><span class="type-signature">(static) </span>array<span class="signature">(arr, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
 
@@ -628,6 +628,8 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -656,10 +658,121 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last"><p>Array to be converted, or a function that returns one.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p><strong>Added in v9.2.0</strong></p>
+<p>Array-Formatting Options.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>capSQL</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>When <code>true</code>, outputs <code>ARRAY</code> instead of <code>array</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -700,7 +813,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line651">line 651</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line655">line 655</a>
     </li></ul></dd>
     
 
@@ -852,7 +965,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line585">line 585</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line589">line 589</a>
     </li></ul></dd>
     
 
@@ -1060,7 +1173,7 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line558">line 558</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line562">line 562</a>
     </li></ul></dd>
     
 
@@ -1221,7 +1334,7 @@ according to their JavaScript type.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line675">line 675</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line688">line 688</a>
     </li></ul></dd>
     
 
@@ -1436,7 +1549,7 @@ wrapped in quotes (unless flag <code>raw</code> is set).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line603">line 603</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line607">line 607</a>
     </li></ul></dd>
     
 
@@ -1715,6 +1828,46 @@ not allowed to be <code>null</code> or <code>undefined</code>, or the method wil
 
         <tr>
             
+                <td class="name"><code>capSQL</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p><strong>Added in v9.2.0</strong></p>
+<p>Formats reserved SQL words capitalized. Presently, this only concerns arrays, to output <code>ARRAY</code> when required.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>partial</code></td>
             
 
@@ -1854,7 +2007,7 @@ and to return the actual default value:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line752">line 752</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line765">line 765</a>
     </li></ul></dd>
     
 
@@ -2101,7 +2254,7 @@ according to its type + <code>raw</code> flag.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line723">line 723</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line736">line 736</a>
     </li></ul></dd>
     
 
@@ -2307,7 +2460,7 @@ symbols fixed, unless flag <code>raw</code> is set.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line696">line 696</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line709">line 709</a>
     </li></ul></dd>
     
 
@@ -2482,7 +2635,7 @@ symbols fixed, unless flag <code>raw</code> is set.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line429">line 429</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line433">line 433</a>
     </li></ul></dd>
     
 
@@ -2651,7 +2804,7 @@ with support for special values <code>NaN</code>, <code>+Infinity</code> and <co
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line629">line 629</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line633">line 633</a>
     </li></ul></dd>
     
 
@@ -2865,7 +3018,7 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line391">line 391</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line395">line 395</a>
     </li></ul></dd>
     
 
@@ -3028,7 +3181,7 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line532">line 532</a>
+        <a href="formatting.js.html">formatting.js</a>, <a href="formatting.js.html#line536">line 536</a>
     </li></ul></dd>
     
 

@@ -77,10 +77,11 @@ const npm = {
  *
  * // query = concatenated string with all the queries
  */
-function concat(queries) {
+function concat(queries, capSQL) {
     if (!Array.isArray(queries)) {
         throw new TypeError('Parameter \'queries\' must be an array.');
     }
+    const fmOptions = {capSQL};
     const all = queries.map((q, index) => {
         if (typeof q === 'string') {
             // a simple query string without parameters:
@@ -93,7 +94,9 @@ function concat(queries) {
             }
             if ('query' in q) {
                 // object {query, values, options}:
-                return clean(npm.formatting.as.format(q.query, q.values, q.options));
+                let opt = q.options &amp;&amp; typeof q.options === 'object' ? q.options : {};
+                opt = opt.capSQL === undefined ? Object.assign(opt, fmOptions) : opt;
+                return clean(npm.formatting.as.format(q.query, q.values, opt));
             }
         }
         throw new Error('Invalid query element at index ' + index + '.');
