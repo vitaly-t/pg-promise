@@ -799,6 +799,15 @@ describe('Method as.format', () => {
             });
         });
 
+        it('must propagate options through all types', () => {
+            const a1 = pgp.as.format('$1', [[1, 2]]);
+            const a2 = pgp.as.format('$1', [[1, 2]], {capSQL: true});
+            const a3 = pgp.as.format('${first:csv}', {first: [1, 2, [3, 4]]}, {capSQL: true});
+            expect(a1).toBe('array[1,2]');
+            expect(a2).toBe('ARRAY[1,2]');
+            expect(a3).toBe('1,2,ARRAY[3,4]');
+        });
+
     });
 
     describe('QueryFile - positive', () => {
