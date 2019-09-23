@@ -431,7 +431,17 @@ describe('Method as.array', () => {
         expect(() => {
             pgp.as.array('');
         }).toThrow('\'\'' + err);
+    });
 
+    it('must capitalize the output when required', () => {
+        const a = pgp.as.array([1, 2], {capSQL: true});
+        expect(a).toBe('ARRAY[1,2]');
+    });
+
+    it('should throw on invalid options', () => {
+        expect(() => {
+            pgp.as.array([], {bla: 1});
+        }).toThrow('Option "bla" is not recognized.');
     });
 
 });
