@@ -119,6 +119,7 @@ function formatValue({value, fm, cc, options}) {
         case 'boolean':
             return $to.bool(value);
         case 'number':
+        case 'bigint':
             return $to.number(value);
         case 'symbol':
             throw new TypeError('Type Symbol has no meaning for PostgreSQL: ' + value.toString());
@@ -662,10 +663,12 @@ const $as = {
     /**
      * @method formatting.number
      * @description
-     * Converts a numeric value into its PostgreSQL number presentation,
-     * with support for special values `NaN`, `+Infinity` and `-Infinity`.
+     * Converts a numeric value into its PostgreSQL number presentation, with support
+     * for special values of `NaN`, `+Infinity` and `-Infinity`.
      *
-     * @param {number|function} num
+     * **Added in v9.3.0:** support for `BigInt` type.
+     *
+     * @param {number|bigint|function} num
      * Number to be converted, or a function that returns one.
      *
      * @returns {string}
@@ -675,7 +678,8 @@ const $as = {
         if (isNull(num)) {
             return 'null';
         }
-        if (typeof num !== 'number') {
+        const t = typeof num;
+        if (t !== 'number' &amp;&amp; t !== 'bigint') {
             throw new TypeError(wrapText(num) + ' is not a number.');
         }
         return $to.number(num);
@@ -796,7 +800,7 @@ const $as = {
      * @description
      * Replaces variables in a string according to the type of `values`:
      *
-     * - Replaces `$1` occurrences when `values` is of type `string`, `boolean`, `number`, `Date`, `Buffer` or when it is `null`.
+     * - Replaces `$1` occurrences when `values` is of type `string`, `boolean`, `number`, `bigint`, `Date`, `Buffer` or when it is `null`.
      *
      * - Replaces variables `$1`, `$2`, ...`$100000` when `values` is an array of parameters. It throws a {@link external:RangeError RangeError}
      * when the values or variables are out of range.
@@ -906,7 +910,7 @@ const $to = {
         return raw ? s : wrapText(safeText(s));
     },
     number(num) {
-        if (Number.isFinite(num)) {
+        if (typeof num === 'bigint' || Number.isFinite(num)) {
             return num.toString();
         }
         // Converting NaN/+Infinity/-Infinity according to Postgres documentation:
