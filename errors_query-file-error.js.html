@@ -107,7 +107,7 @@ QueryFileError.prototype.toString = function (level) {
         lines = [
             'QueryFileError {',
             gap1 + 'message: "' + this.message + '"',
-            gap1 + 'options: ' + JSON.stringify(this.options),
+            gap1 + 'options: ' + npm.utils.toJson(this.options),
             gap1 + 'file: "' + this.file + '"'
         ];
     if (this.error) {

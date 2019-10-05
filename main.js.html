@@ -254,7 +254,7 @@ function $main(options) {
         if (npm.utils.isText(cn) || (cn &amp;&amp; typeof cn === 'object')) {
             return new Database(cn, dc, config);
         }
-        throw new TypeError('Invalid connection details: ' + JSON.stringify(cn));
+        throw new TypeError('Invalid connection details: ' + npm.utils.toJson(cn));
     };
 
     npm.utils.addReadProperties(inst, rootNameSpace);

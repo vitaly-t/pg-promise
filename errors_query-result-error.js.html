@@ -187,10 +187,10 @@ QueryResultError.prototype.toString = function (level) {
             gap1 + 'code: queryResultErrorCode.' + errorMessages[this.code].name,
             gap1 + 'message: "' + this.message + '"',
             gap1 + 'received: ' + this.received,
-            gap1 + 'query: ' + (typeof this.query === 'string' ? '"' + this.query + '"' : JSON.stringify(this.query))
+            gap1 + 'query: ' + (typeof this.query === 'string' ? '"' + this.query + '"' : npm.utils.toJson(this.query))
         ];
     if (this.values !== undefined) {
-        lines.push(gap1 + 'values: ' + JSON.stringify(this.values));
+        lines.push(gap1 + 'values: ' + npm.utils.toJson(this.values));
     }
     lines.push(gap0 + '}');
     return lines.join(npm.os.EOL);

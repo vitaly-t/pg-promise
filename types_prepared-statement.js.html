@@ -248,22 +248,22 @@ PreparedStatement.prototype.toString = function (level) {
     const ps = this.parse();
     const lines = [
         'PreparedStatement {',
-        gap + 'name: ' + JSON.stringify(this.name)
+        gap + 'name: ' + npm.utils.toJson(this.name)
     ];
     if (npm.utils.isText(ps.text)) {
         lines.push(gap + 'text: "' + ps.text + '"');
     }
     if (this.values !== undefined) {
-        lines.push(gap + 'values: ' + JSON.stringify(this.values));
+        lines.push(gap + 'values: ' + npm.utils.toJson(this.values));
     }
     if (this.binary !== undefined) {
-        lines.push(gap + 'binary: ' + JSON.stringify(this.binary));
+        lines.push(gap + 'binary: ' + npm.utils.toJson(this.binary));
     }
     if (this.rowMode !== undefined) {
-        lines.push(gap + 'rowMode: ' + JSON.stringify(this.rowMode));
+        lines.push(gap + 'rowMode: ' + npm.utils.toJson(this.rowMode));
     }
     if (this.rows !== undefined) {
-        lines.push(gap + 'rows: ' + JSON.stringify(this.rows));
+        lines.push(gap + 'rows: ' + npm.utils.toJson(this.rows));
     }
     if (this.error) {
         lines.push(gap + 'error: ' + this.error.toString(level + 1));

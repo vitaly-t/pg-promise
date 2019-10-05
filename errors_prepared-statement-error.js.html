@@ -106,9 +106,9 @@ PreparedStatementError.prototype.toString = function (level) {
             'PreparedStatementError {',
             gap1 + 'message: "' + this.message + '"',
             gap1 + 'result: {',
-            gap2 + 'name: ' + JSON.stringify(this.result.name),
-            gap2 + 'text: ' + JSON.stringify(this.result.text),
-            gap2 + 'values: ' + JSON.stringify(this.result.values),
+            gap2 + 'name: ' + npm.utils.toJson(this.result.name),
+            gap2 + 'text: ' + npm.utils.toJson(this.result.text),
+            gap2 + 'values: ' + npm.utils.toJson(this.result.values),
             gap1 + '}'
         ];
     if (this.error) {

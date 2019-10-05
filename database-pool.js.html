@@ -116,7 +116,7 @@ class DatabasePool {
             });
             cn = obj;
         }
-        return JSON.stringify(npm.utils.getSafeConnection(cn)) + JSON.stringify(db.$dc);
+        return npm.utils.toJson(npm.utils.getSafeConnection(cn)) + npm.utils.toJson(db.$dc);
     }
 }
 
