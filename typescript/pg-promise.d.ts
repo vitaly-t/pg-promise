@@ -607,7 +607,7 @@ declare namespace pgPromise {
 
         name(name: any | (() => any)): string
 
-        number(value: number | BigInt | (() => number | BigInt)): string
+        number(value: number | bigint | (() => number | bigint)): string
 
         text(value: any | (() => any), raw?: boolean): string
 
