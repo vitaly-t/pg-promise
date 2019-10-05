@@ -13,6 +13,11 @@ const value6 = pgp.as.format(new pgPromise.QueryFile(''));
 let alias = pgp.as.alias('a');
 alias = pgp.as.alias(() => 'a');
 
+const num1 = pgp.as.number(123);
+const num2 = pgp.as.number(123n);
+const num3 = pgp.as.number(() => 123);
+const num4 = pgp.as.number(() => 123n);
+
 class CTF {
 
     constructor() {

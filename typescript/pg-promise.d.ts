@@ -8,7 +8,7 @@
  */
 
 /////////////////////////////////////////
-// Requires pg-promise v9.2.0 or later.
+// Requires pg-promise v9.3.0 or later.
 /////////////////////////////////////////
 
 // We use ES6 as static promise here, because generic promises are still not supported.
@@ -607,7 +607,7 @@ declare namespace pgPromise {
 
         name(name: any | (() => any)): string
 
-        number(value: number | (() => number)): string
+        number(value: number | BigInt | (() => number | BigInt)): string
 
         text(value: any | (() => any), raw?: boolean): string
 
