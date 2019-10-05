@@ -1,7 +1,7 @@
 pg-promise
 ==========
 
-PostgreSQL interface for Node.js (v7.6 and later).
+PostgreSQL interface for Node.js
 
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
 [![Coverage Status](https://coveralls.io/repos/vitaly-t/pg-promise/badge.svg?branch=master)](https://coveralls.io/r/vitaly-t/pg-promise?branch=master)
@@ -149,7 +149,7 @@ The formatting engine also supports single-value parametrization for queries tha
 db.any('SELECT * FROM users WHERE name = $1', 'John')
 ```
 
-This however works only for types `number`, `string`, `boolean`, `Date` and `null`, because types like `Array`
+This however works only for types `number`, `bigint`, `string`, `boolean`, `Date` and `null`, because types like `Array`
 and `Object` change the way parameters are interpreted. That's why passing in index variables within an array
 is advised as safer, to avoid ambiguities.
 
