@@ -345,3 +345,30 @@ describe('Nested Named Parameters', () => {
         expect(duration).toBeLessThan(100);
     });
 });
+
+describe('toJson', () => {
+    const v = process.versions.node.split('.'),
+        highVer = +v[0], lowVer = +v[1];
+    if (highVer > 10 || (highVer === 10 && lowVer >= 4)) {
+        // Node.js v10.4.0 is required to support BigInt natively.
+        describe('for a direct value', () => {
+            expect(internal.toJson(BigInt('0'))).toBe('0');
+            expect(internal.toJson(BigInt('123'))).toBe('123');
+            expect(internal.toJson(BigInt('-12345678901234567890'))).toBe('-12345678901234567890');
+        });
+        describe('for an object', () => {
+            expect(internal.toJson({value: BigInt('0')})).toEqual('{"value":0}');
+            expect(internal.toJson({value: BigInt('123')})).toEqual('{"value":123}');
+            expect(internal.toJson({value: BigInt('-456')})).toEqual('{"value":-456}');
+            const mix1 = {
+                val1: 12345678901234567890,
+                val2: BigInt('12345678901234567890')
+            };
+            expect(internal.toJson(mix1)).toEqual('{"val1":12345678901234567000,"val2":12345678901234567890}');
+        });
+        describe('for an undefined', () => {
+            expect(internal.toJson()).toBeUndefined();
+            expect(internal.toJson(undefined)).toBeUndefined();
+        });
+    }
+});
