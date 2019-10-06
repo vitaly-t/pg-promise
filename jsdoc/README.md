@@ -114,4 +114,3 @@ It is best to initialize the library and create [Database] in its own module, se
 [Learn by Example]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example
 [WiKi]:https://github.com/vitaly-t/pg-promise/wiki
 [Custom Type Formatting]:https://github.com/vitaly-t/pg-promise#custom-type-formatting
-
