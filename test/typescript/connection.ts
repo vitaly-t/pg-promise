@@ -12,12 +12,12 @@ const pgp: pgPromise.IMain = pgPromise({
 });
 
 const pgp2: pgPromise.IMain = pgPromise({
-    schema: () => {
+    schema() {
     }
 });
 
 const pgp3: pgPromise.IMain = pgPromise({
-    schema: (dc: any) => {
+    schema(dc: any) {
         return ['one', 'two'];
     }
 });
@@ -54,7 +54,7 @@ db.connect({});
 
 db.connect({
     direct: true,
-    onLost: (err: any, e: ILostContext) => {
+    onLost(err: any, e: ILostContext) {
         e.client.removeListener('notification', () => {
         })
     }

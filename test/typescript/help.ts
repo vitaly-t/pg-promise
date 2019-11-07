@@ -11,11 +11,11 @@ const col1: Column = new pgp.helpers.Column({
     def: 888,
     cast: '',
     cnd: true,
-    init: function (col) {
+    init(col) {
         const e = col.exists;
         return this;
     },
-    skip: (col) => {
+    skip(col) {
         const e = col.exists;
         return false;
     }
@@ -44,9 +44,9 @@ const cs: ColumnSet = new pgp.helpers.ColumnSet([
         def: 888,
         cast: '',
         cnd: true,
-        init: () => {
+        init() {
         },
-        skip: () => {
+        skip() {
         }
     }
 ], {table: 'my-table', inherit: true});

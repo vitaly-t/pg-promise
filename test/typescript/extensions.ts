@@ -5,7 +5,7 @@ interface IExtensions {
 }
 
 const pgp: pgPromise.IMain = pgPromise({
-    extend: function (obj: any, dc: any) {
+    extend(obj: any, dc: any) {
         obj['findUser'] = (userId: number) => {
             return obj.one('', userId);
         }
@@ -15,7 +15,7 @@ const pgp: pgPromise.IMain = pgPromise({
 const db = pgp('connection');
 
 const pgpExt = pgPromise({
-    extend: function (obj: pgPromise.IDatabase<IExtensions> & IExtensions) {
+    extend(obj: pgPromise.IDatabase<IExtensions> & IExtensions) {
         obj.findUser = (userId: number) => {
             return obj.one('', userId);
         }
