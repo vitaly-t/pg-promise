@@ -23,6 +23,8 @@ import {checkServerIdentity} from 'tls';
 
 declare namespace pg {
 
+    import Socket = NodeJS.Socket;
+
     interface IColumn {
         name: string
         oid: number
@@ -239,10 +241,32 @@ declare namespace pg {
     }
 
     class Query {
-        // not used within pg-promise;
+        // this type is not used within pg-promise;
     }
 
-    interface IClient extends EventEmitter {
+    interface IConnection extends EventEmitter {
+        /*
+            While there are many other properties exist within the connection,
+            the only one that may be remotely useful is the stream, to be able
+            to listen to the events, from within a custom Client class.
+        */
+        stream: Socket
+    }
+
+    class Client extends EventEmitter {
+
+        /*
+            Never try to instantiate this class directly within the client!
+            Only the connection pool knows how to do that.
+
+            We have the correct constructor here only to let you extend Client with your own,
+            as the connection pool can be parameterized to create custom Client,
+            via option Client within the connection parameters.
+
+            See the following example of where you might need to do that:
+            https://stackoverflow.com/questions/58725659/get-the-postgresql-server-version-from-connection
+        */
+        constructor(config: string | IConnectionParameters);
 
         query(config: any, values: any[], callback: (err: Error, result: IResult) => void): undefined;
 
@@ -252,16 +276,7 @@ declare namespace pg {
 
         query(config: any): Promise<IResult>;
 
-        on(event: 'drain', listener: () => void): this
-
-        on(event: 'error', listener: (err: Error) => void): this
-
-        on(event: 'notification', listener: (message: any) => void): this
-
-        on(event: 'notice', listener: (message: any) => void): this
-
-        on(event: string, listener: Function): this
-
+        connection: IConnection;
         connectionParameters: IConnectionParameters;
         database: string;
         user: string;

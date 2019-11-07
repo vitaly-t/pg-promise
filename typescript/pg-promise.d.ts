@@ -43,7 +43,7 @@ declare namespace pgPromise {
         cn: string
         dc: any
         start: Date
-        client: pg.IClient
+        client: pg.Client
     }
 
     interface IConnectionOptions {
@@ -407,7 +407,7 @@ declare namespace pgPromise {
 
     // Database object in connected state;
     interface IConnected<Ext> extends IBaseProtocol<Ext>, spexLib.ISpexBase {
-        readonly client: pg.IClient
+        readonly client: pg.Client
 
         done(): void
     }
@@ -441,7 +441,7 @@ declare namespace pgPromise {
     // Generic Event Context interface;
     // See: http://vitaly-t.github.io/pg-promise/global.html#EventContext
     interface IEventContext {
-        client: pg.IClient
+        client: pg.Client
         cn: any
         dc: any
         query: any
@@ -552,8 +552,8 @@ declare namespace pgPromise {
         pgFormatting?: boolean
         pgNative?: boolean
         promiseLib?: any
-        connect?: (client: pg.IClient, dc: any, useCount: number) => void
-        disconnect?: (client: pg.IClient, dc: any) => void
+        connect?: (client: pg.Client, dc: any, useCount: number) => void
+        disconnect?: (client: pg.Client, dc: any) => void
         query?: (e: IEventContext) => void
         receive?: (data: any[], result: IResultExt, e: IEventContext) => void
         task?: (e: IEventContext) => void
