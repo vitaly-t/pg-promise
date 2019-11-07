@@ -73,6 +73,8 @@ declare namespace pg {
 
     type DynamicPassword = string | (() => string) | (() => Promise<string>);
 
+    type ClientConnector = new(config: string | IConnectionParameters) => IClient;
+
     // See:
     // 1) https://github.com/brianc/node-postgres/blob/master/lib/defaults.js
     // 2) https://github.com/brianc/node-pg-pool
@@ -102,6 +104,7 @@ declare namespace pg {
         keepAlive?: boolean
         keepalives?: number
         keepalives_idle?: number
+        Client?: ClientConnector
     }
 
     // Type id-s supported by PostgreSQL, copied from:
@@ -248,56 +251,44 @@ declare namespace pg {
         /*
             While there are many other properties exist within the connection,
             the only one that may be remotely useful is the stream, to be able
-            to listen to the events, from within a custom Client class.
+            to listen to its events, from within a custom Client class.
         */
         stream: Socket
     }
 
-    class Client extends EventEmitter {
+    interface IClient extends EventEmitter {
 
-        /*
-            Never try to instantiate this class directly within the client!
-            Only the connection pool knows how to do that.
+        query(config: any, values: any[], callback: (err: Error, result: IResult) => void): undefined
 
-            We have the correct constructor here only to let you extend Client with your own,
-            as the connection pool can be parameterized to create custom Client,
-            via option Client within the connection parameters.
+        query(config: any, callback: (err: Error, result: IResult) => void): undefined
 
-            See the following example of where you might need to do that:
-            https://stackoverflow.com/questions/58725659/get-the-postgresql-server-version-from-connection
-        */
-        constructor(config: string | IConnectionParameters);
+        query(config: any, values: any[]): Promise<IResult>
 
-        query(config: any, values: any[], callback: (err: Error, result: IResult) => void): undefined;
+        query(config: any): Promise<IResult>
 
-        query(config: any, callback: (err: Error, result: IResult) => void): undefined;
-
-        query(config: any, values: any[]): Promise<IResult>;
-
-        query(config: any): Promise<IResult>;
-
-        connection: IConnection;
-        connectionParameters: IConnectionParameters;
-        database: string;
-        user: string;
-        password: DynamicPassword;
-        port: number;
-        host: string;
+        connection: IConnection
+        connectionParameters: IConnectionParameters
+        database: string
+        user: string
+        password: DynamicPassword
+        port: number
+        host: string
 
         // properties below are not available within Native Bindings:
 
-        queryQueue: Query[];
-        binary: boolean;
-        ssl: boolean | ISSLConfig;
-        secretKey: number;
-        processID: number;
-        encoding: string;
-        readyForQuery: boolean;
-        activeQuery: Query;
+        queryQueue: Query[]
+        binary: boolean
+        ssl: boolean | ISSLConfig
+        secretKey: number
+        processID: number
+        encoding: string
+        readyForQuery: boolean
+        activeQuery: Query
     }
 
     const defaults: IDefaults;
     const types: ITypes;
+    const Client: ClientConnector;
 }
 
 export = pg;
