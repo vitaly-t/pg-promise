@@ -280,7 +280,7 @@ declare namespace pgPromise {
         /////////////////////////////////////////////////////////////////////////////
         // Hidden, read-only properties, for integrating with third-party libraries:
 
-        readonly $config: ILibConfig<Ext>
+        readonly $config: ILibConfig<Ext, C>
         readonly $cn: string | pg.IConnectionParameters<C>
         readonly $dc: any
         readonly $pool: any
