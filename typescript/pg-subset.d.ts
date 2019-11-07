@@ -23,6 +23,8 @@ import {checkServerIdentity} from 'tls';
 
 declare namespace pg {
 
+    import Socket = NodeJS.Socket;
+
     interface IColumn {
         name: string
         oid: number
@@ -74,7 +76,7 @@ declare namespace pg {
     // See:
     // 1) https://github.com/brianc/node-postgres/blob/master/lib/defaults.js
     // 2) https://github.com/brianc/node-pg-pool
-    interface IConnectionParameters {
+    interface IConnectionParameters<C extends IClient = IClient> {
         connectionString?: string
         host?: string
         database?: string
@@ -100,6 +102,7 @@ declare namespace pg {
         keepAlive?: boolean
         keepalives?: number
         keepalives_idle?: number
+        Client?: new(config: string | IConnectionParameters) => C;
     }
 
     // Type id-s supported by PostgreSQL, copied from:
@@ -238,51 +241,52 @@ declare namespace pg {
         keepalives_idle: number
     }
 
-    class Query {
-        // not used within pg-promise;
+    interface IQuery {
+        // this type is not used within pg-promise;
+    }
+
+    interface IConnection extends EventEmitter {
+        /*
+            While there are many other properties exist within the connection,
+            the only one that may be remotely useful is the stream, to be able
+            to listen to its events, from within a custom Client class.
+        */
+        stream: Socket
     }
 
     interface IClient extends EventEmitter {
 
-        query(config: any, values: any[], callback: (err: Error, result: IResult) => void): undefined;
+        query(config: any, values: any[], callback: (err: Error, result: IResult) => void): undefined
 
-        query(config: any, callback: (err: Error, result: IResult) => void): undefined;
+        query(config: any, callback: (err: Error, result: IResult) => void): undefined
 
-        query(config: any, values: any[]): Promise<IResult>;
+        query(config: any, values: any[]): Promise<IResult>
 
-        query(config: any): Promise<IResult>;
+        query(config: any): Promise<IResult>
 
-        on(event: 'drain', listener: () => void): this
-
-        on(event: 'error', listener: (err: Error) => void): this
-
-        on(event: 'notification', listener: (message: any) => void): this
-
-        on(event: 'notice', listener: (message: any) => void): this
-
-        on(event: string, listener: Function): this
-
-        connectionParameters: IConnectionParameters;
-        database: string;
-        user: string;
-        password: DynamicPassword;
-        port: number;
-        host: string;
+        connection: IConnection
+        connectionParameters: IConnectionParameters
+        database: string
+        user: string
+        password: DynamicPassword
+        port: number
+        host: string
 
         // properties below are not available within Native Bindings:
 
-        queryQueue: Query[];
-        binary: boolean;
-        ssl: boolean | ISSLConfig;
-        secretKey: number;
-        processID: number;
-        encoding: string;
-        readyForQuery: boolean;
-        activeQuery: Query;
+        queryQueue: IQuery[]
+        binary: boolean
+        ssl: boolean | ISSLConfig
+        secretKey: number
+        processID: number
+        encoding: string
+        readyForQuery: boolean
+        activeQuery: IQuery
     }
 
     const defaults: IDefaults;
     const types: ITypes;
+    const Client: new(config: string | IConnectionParameters) => IClient;
 }
 
 export = pg;

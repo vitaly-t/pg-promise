@@ -39,16 +39,16 @@ declare namespace pgPromise {
         def?: any
     }
 
-    interface ILostContext {
+    interface ILostContext<C extends pg.IClient = pg.IClient> {
         cn: string
         dc: any
         start: Date
-        client: pg.IClient
+        client: C
     }
 
-    interface IConnectionOptions {
+    interface IConnectionOptions<C extends pg.IClient = pg.IClient> {
         direct?: boolean
-        onLost?: (err: any, e: ILostContext) => void
+        onLost?: (err: any, e: ILostContext<C>) => void
     }
 
     interface IPreparedStatement {
@@ -274,14 +274,14 @@ declare namespace pgPromise {
     //
     // We export this interface only to be able to help IntelliSense cast extension types correctly,
     // which doesn't always work, depending on the version of IntelliSense being used.
-    interface IDatabase<Ext> extends IBaseProtocol<Ext> {
-        connect(options?: IConnectionOptions): XPromise<IConnected<Ext>>
+    interface IDatabase<Ext, C extends pg.IClient = pg.IClient> extends IBaseProtocol<Ext> {
+        connect(options?: IConnectionOptions<C>): XPromise<IConnected<Ext, C>>
 
         /////////////////////////////////////////////////////////////////////////////
         // Hidden, read-only properties, for integrating with third-party libraries:
 
         readonly $config: ILibConfig<Ext>
-        readonly $cn: string | pg.IConnectionParameters
+        readonly $cn: string | pg.IConnectionParameters<C>
         readonly $dc: any
         readonly $pool: any
     }
@@ -295,8 +295,8 @@ declare namespace pgPromise {
 
     // Post-initialization interface;
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-    interface IMain<Ext = {}> {
-        <T = Ext>(cn: string | pg.IConnectionParameters, dc?: any): IDatabase<T> & T
+    interface IMain<Ext = {}, C extends pg.IClient = pg.IClient> {
+        <T = Ext, C extends pg.IClient = pg.IClient>(cn: string | pg.IConnectionParameters<C>, dc?: any): IDatabase<T, C> & T
 
         readonly PromiseAdapter: typeof PromiseAdapter
         readonly PreparedStatement: typeof PreparedStatement
@@ -406,8 +406,8 @@ declare namespace pgPromise {
     }
 
     // Database object in connected state;
-    interface IConnected<Ext> extends IBaseProtocol<Ext>, spexLib.ISpexBase {
-        readonly client: pg.IClient
+    interface IConnected<Ext, C extends pg.IClient> extends IBaseProtocol<Ext>, spexLib.ISpexBase {
+        readonly client: C;
 
         done(): void
     }
@@ -440,8 +440,8 @@ declare namespace pgPromise {
 
     // Generic Event Context interface;
     // See: http://vitaly-t.github.io/pg-promise/global.html#EventContext
-    interface IEventContext {
-        client: pg.IClient
+    interface IEventContext<C extends pg.IClient = pg.IClient> {
+        client: C
         cn: any
         dc: any
         query: any
@@ -547,31 +547,31 @@ declare namespace pgPromise {
 
     // Library's Initialization Options
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-    interface IInitOptions<Ext = {}> {
+    interface IInitOptions<Ext = {}, C extends pg.IClient = pg.IClient> {
         noWarnings?: boolean
         pgFormatting?: boolean
         pgNative?: boolean
         promiseLib?: any
-        connect?: (client: pg.IClient, dc: any, useCount: number) => void
-        disconnect?: (client: pg.IClient, dc: any) => void
-        query?: (e: IEventContext) => void
-        receive?: (data: any[], result: IResultExt, e: IEventContext) => void
-        task?: (e: IEventContext) => void
-        transact?: (e: IEventContext) => void
-        error?: (err: any, e: IEventContext) => void
-        extend?: (obj: IDatabase<Ext> & Ext, dc: any) => void
+        connect?: (client: C, dc: any, useCount: number) => void
+        disconnect?: (client: C, dc: any) => void
+        query?: (e: IEventContext<C>) => void
+        receive?: (data: any[], result: IResultExt, e: IEventContext<C>) => void
+        task?: (e: IEventContext<C>) => void
+        transact?: (e: IEventContext<C>) => void
+        error?: (err: any, e: IEventContext<C>) => void
+        extend?: (obj: IDatabase<Ext, C> & Ext, dc: any) => void
         noLocking?: boolean
         capSQL?: boolean
         schema?: ValidSchema | ((dc: any) => ValidSchema)
     }
 
     // API: http://vitaly-t.github.io/pg-promise/Database.html#$config
-    interface ILibConfig<Ext> {
+    interface ILibConfig<Ext, C extends pg.IClient = pg.IClient> {
         version: string
         promiseLib: any
         promise: IGenericPromise
-        options: IInitOptions<Ext>
-        pgp: IMain<Ext>
+        options: IInitOptions<Ext, C>
+        pgp: IMain<Ext, C>
         $npm: any
     }
 
