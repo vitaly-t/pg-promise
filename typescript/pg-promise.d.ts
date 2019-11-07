@@ -670,6 +670,6 @@ declare namespace pgPromise {
 
 // Default library interface (before initialization)
 // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-declare function pgPromise<Ext = {}, C extends pg.IClient = pg.IClient>(options?: pgPromise.IInitOptions<Ext>): pgPromise.IMain<Ext, C>
+declare function pgPromise<Ext = {}>(options?: pgPromise.IInitOptions<Ext>): pgPromise.IMain<Ext>
 
 export = pgPromise;
