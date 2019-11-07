@@ -73,12 +73,10 @@ declare namespace pg {
 
     type DynamicPassword = string | (() => string) | (() => Promise<string>);
 
-    type ClientConnector = new(config: string | IConnectionParameters) => IClient;
-
     // See:
     // 1) https://github.com/brianc/node-postgres/blob/master/lib/defaults.js
     // 2) https://github.com/brianc/node-pg-pool
-    interface IConnectionParameters {
+    interface IConnectionParameters<C extends IClient = IClient> {
         connectionString?: string
         host?: string
         database?: string
@@ -104,7 +102,7 @@ declare namespace pg {
         keepAlive?: boolean
         keepalives?: number
         keepalives_idle?: number
-        Client?: ClientConnector
+        Client?: new(config: string | IConnectionParameters) => C;
     }
 
     // Type id-s supported by PostgreSQL, copied from:
@@ -243,7 +241,7 @@ declare namespace pg {
         keepalives_idle: number
     }
 
-    class Query {
+    interface IQuery {
         // this type is not used within pg-promise;
     }
 
@@ -276,19 +274,19 @@ declare namespace pg {
 
         // properties below are not available within Native Bindings:
 
-        queryQueue: Query[]
+        queryQueue: IQuery[]
         binary: boolean
         ssl: boolean | ISSLConfig
         secretKey: number
         processID: number
         encoding: string
         readyForQuery: boolean
-        activeQuery: Query
+        activeQuery: IQuery
     }
 
     const defaults: IDefaults;
     const types: ITypes;
-    const Client: ClientConnector;
+    const Client: new(config: string | IConnectionParameters) => IClient;
 }
 
 export = pg;

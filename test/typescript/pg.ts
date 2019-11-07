@@ -1,5 +1,5 @@
 import * as pgPromise from '../../typescript/pg-promise';
-import {IColumn, IResult, IClient, IConnectionParameters} from '../../typescript/pg-subset';
+import {IColumn, IResult} from '../../typescript/pg-subset';
 import {TypeId} from '../../typescript/pg-subset';
 
 const pgp: pgPromise.IMain = pgPromise();
@@ -41,13 +41,12 @@ pg.types.setTypeParser(pg.types.builtins.INT8, parseInt);
 
 db.connect()
     .then(t => {
+        const v = t.client.version;
         t.client.on('notification', (message: any) => {
             const s = message.anything;
         });
         t.client.removeAllListeners();
     });
-
-const query = new pg.Query();
 
 const database = pg.defaults.database;
 
