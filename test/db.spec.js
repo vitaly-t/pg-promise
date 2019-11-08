@@ -2423,6 +2423,21 @@ describe('Multi-result queries', () => {
 });
 
 describe('Dynamic Schema', () => {
+    describe('for an invalid value', () => {
+        let result;
+        beforeEach(done => {
+            const innerDb = header({schema: 123, noWarnings: true, promiseLib: promise}).db;
+            innerDb.any('select * from users')
+                .then(data => {
+                    result = data;
+                    done();
+                });
+        });
+        it('must not try change the schema', () => {
+            expect(result.length).toBeGreaterThan(1);
+        });
+    });
+
     describe('for a single schema', () => {
         let result;
         beforeEach(done => {
