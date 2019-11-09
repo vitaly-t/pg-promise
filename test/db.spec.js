@@ -2059,7 +2059,7 @@ describe('Querying an entity', () => {
         let result;
         beforeEach(done => {
             options.capSQL = true;
-            db.func('getUsers')
+            db.func('get_users')
                 .then(data => {
                     result = data;
                 })
@@ -2077,7 +2077,7 @@ describe('Querying an entity', () => {
     describe('single-row function', () => {
         let result;
         beforeEach(done => {
-            db.func('findUser', 1, pgp.queryResult.one)
+            db.func('find_user', 1, pgp.queryResult.one)
                 .then(data => {
                     result = data;
                 })

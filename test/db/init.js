@@ -34,8 +34,8 @@ const db = header.db;
     await db.tx(async t => {
 
         // drop all functions;
-        await t.none('DROP FUNCTION IF EXISTS findUser(int)');
-        await t.none('DROP FUNCTION IF EXISTS getUsers()');
+        await t.none('DROP FUNCTION IF EXISTS find_user(int)');
+        await t.none('DROP FUNCTION IF EXISTS get_users()');
 
         // drop all tables;
         await t.none('DROP TABLE IF EXISTS audit');
@@ -62,12 +62,12 @@ const db = header.db;
         await t.none('INSERT INTO person(name, dob) VALUES($1, $2)', ['Peter', new Date(1992, 11, 3)]);
 
         // adding functions & procedures;
-        await t.none('CREATE OR REPLACE FUNCTION findUser(userId int) RETURNS SETOF users AS $$ SELECT * FROM users WHERE id = userId $$ language \'sql\'');
-        await t.none('CREATE OR REPLACE FUNCTION getUsers() RETURNS SETOF users AS $$ SELECT * FROM users $$ language \'sql\'');
+        await t.none('CREATE OR REPLACE FUNCTION find_user(userId int) RETURNS SETOF users AS $$ SELECT * FROM users WHERE id = userId $$ language \'sql\'');
+        await t.none('CREATE OR REPLACE FUNCTION get_users() RETURNS SETOF users AS $$ SELECT * FROM users $$ language \'sql\'');
 
         if (serverHighVer >= 11) {
             // Stored procedures require PostgreSQL v11 or later:
-            await t.none('CREATE OR REPLACE PROCEDURE testProc() LANGUAGE SQL AS $$ $$;');
+            await t.none('CREATE OR REPLACE PROCEDURE test_proc() LANGUAGE SQL AS $$ $$;');
         }
     })
         .then(() => {

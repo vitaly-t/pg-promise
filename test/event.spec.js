@@ -684,7 +684,7 @@ describe('pgFormatting', () => {
                 ctx.push(e);
             };
             promise.all([
-                db.func('findUser', [1]),
+                db.func('find_user', [1]),
                 db.one('select * from users where id=$1', [1])
             ])
                 .then(data => {
