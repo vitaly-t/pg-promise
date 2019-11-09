@@ -264,7 +264,6 @@ declare namespace pg {
 
         query(config: any): Promise<IResult>
 
-        connection: IConnection
         connectionParameters: IConnectionParameters
         database: string
         user: string
@@ -272,8 +271,10 @@ declare namespace pg {
         port: number
         host: string
 
-        // properties below are not available within Native Bindings:
+        //////////////////////////////////////////////////////////////
+        // Properties below are not available within Native Bindings:
 
+        connection: IConnection
         queryQueue: IQuery[]
         binary: boolean
         ssl: boolean | ISSLConfig
