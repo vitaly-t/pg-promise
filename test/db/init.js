@@ -28,7 +28,6 @@ const db = header.db;
     await db.connect()
         .then(c => {
             serverHighVer = +c.client.version.split('.')[0];
-            console.log(serverHighVer);
             c.done();
         });
 
