@@ -2053,9 +2053,9 @@ describe('Method \'multi\'', () => {
 
 });
 
-describe('Querying a function', () => {
+describe('Querying an entity', () => {
 
-    describe('that expects multiple rows', () => {
+    describe('multi-row function', () => {
         let result;
         beforeEach(done => {
             options.capSQL = true;
@@ -2065,7 +2065,7 @@ describe('Querying a function', () => {
                 })
                 .finally(done);
         });
-        it('must return correctly', () => {
+        it('must return all rows', () => {
             expect(result instanceof Array).toBe(true);
             expect(result.length >= 4).toBe(true);
         });
@@ -2074,86 +2074,18 @@ describe('Querying a function', () => {
         });
     });
 
-    describe('that expects a single row', () => {
+    describe('single-row function', () => {
         let result;
         beforeEach(done => {
-            db.proc('findUser', 1)
+            db.func('findUser', 1, pgp.queryResult.one)
                 .then(data => {
                     result = data;
                 })
                 .finally(done);
         });
-        it('must return correctly', () => {
+        it('must return one object', () => {
             expect(typeof result).toBe('object');
             expect('id' in result && 'login' in result && 'active' in result).toBe(true);
-        });
-    });
-
-    describe('value transformation', () => {
-        let result, context;
-        beforeEach(done => {
-            db.proc('findUser', 1, function (value) {
-                'use strict';
-                // NOTE: Outside of strict mode, only objects can be passed in as this context
-                context = this;
-                return value.id;
-            }, 123)
-                .then(data => {
-                    result = data;
-                    done();
-                });
-        });
-        it('must resolve with the new value', () => {
-            expect(typeof result).toBe('number');
-            expect(result > 0).toBe(true);
-            expect(context).toBe(123);
-        });
-    });
-
-    describe('with function-parameter that throws an error', () => {
-        let result, errCtx;
-        beforeEach(done => {
-            options.error = function (err, e) {
-                errCtx = e;
-            };
-            db.proc('findUser', [() => {
-                throw new Error('format failed');
-            }])
-                .catch(reason => {
-                    result = reason;
-                })
-                .finally(done);
-        });
-        it('must throw an error', () => {
-            expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe('format failed');
-            expect(errCtx.query).toBe('select * from findUser(...)');
-        });
-        afterEach(() => {
-            delete options.error;
-        });
-    });
-
-    describe('with function-parameter that throws an error + capitalized', () => {
-        let errCtx;
-        beforeEach(done => {
-            options.capSQL = true;
-            options.error = function (err, e) {
-                errCtx = e;
-            };
-            db.func('findUser', [() => {
-                throw new Error('1');
-            }])
-                .catch(() => {
-                    done();
-                });
-        });
-        it('must throw an error', () => {
-            expect(errCtx.query).toBe('SELECT * FROM findUser(...)');
-        });
-        afterEach(() => {
-            delete options.error;
-            delete options.capSQL;
         });
     });
 
@@ -2168,13 +2100,13 @@ describe('Querying a function', () => {
                 db.func(null), // null function name;
                 // query function overrides:
                 db.query({
-                    funcName: null
+                    entity: null, type: 'func'
                 }),
                 db.query({
-                    funcName: ''
+                    entity: '', type: 'func'
                 }),
                 db.query({
-                    funcName: '   '
+                    entity: '   ', type: 'func'
                 })
             ])
                 .catch(reason => {
