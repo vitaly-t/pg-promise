@@ -2077,7 +2077,7 @@ describe('Querying an entity', () => {
     describe('single-row function', () => {
         let result;
         beforeEach(done => {
-            db.func('find_user', 1, pgp.queryResult.one)
+            db.func('findUser', 1, pgp.queryResult.one)
                 .then(data => {
                     result = data;
                 })
@@ -2121,6 +2121,41 @@ describe('Querying an entity', () => {
                 expect(result[i].message).toBe($text.invalidFunction);
             }
         });
+    });
+
+    describe('stored procedures', () => {
+        describe('normal call', () => {
+            let ver;
+            beforeEach(done => {
+                db.connect().then(c => {
+                    c.done();
+                    ver = +c.client.version.split('.')[0];
+                    done();
+                });
+            });
+
+            it('must resolve with null', async () => {
+                if (ver >= 11) {
+                    const res = await db.proc('test_proc');
+                    expect(res).toBeNull();
+                }
+            });
+        });
+
+        describe('with invalid name', () => {
+            let err;
+            beforeEach(done => {
+                db.proc()
+                    .catch(e => {
+                        err = e.message;
+                        done();
+                    });
+            });
+            it('must throw error', () => {
+                expect(err).toBe('Invalid procedure name.');
+            });
+        });
+
     });
 });
 
