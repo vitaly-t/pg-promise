@@ -2123,6 +2123,83 @@ describe('Querying an entity', () => {
         });
     });
 
+    describe('proc with bad parameters', () => {
+        let result, errCtx;
+        beforeEach(done => {
+            options.error = function (err, e) {
+                errCtx = e;
+            };
+            db.proc('camelCase', [() => {
+                throw new Error('bad proc params');
+            }])
+                .catch(reason => {
+                    result = reason;
+                })
+                .finally(done);
+        });
+        it('must throw an error', () => {
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe('bad proc params');
+            // NOTE: camel-case ignored within the error query;
+            expect(errCtx.query).toBe('call camelCase(...)');
+        });
+        afterEach(() => {
+            delete options.error;
+        });
+    });
+
+    describe('func with bad parameters', () => {
+        let result, errCtx;
+        beforeEach(done => {
+            options.error = function (err, e) {
+                errCtx = e;
+            };
+            db.func('camelCase', [() => {
+                throw new Error('bad func params');
+            }])
+                .catch(reason => {
+                    result = reason;
+                })
+                .finally(done);
+        });
+        it('must throw an error', () => {
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe('bad func params');
+            // NOTE: camel-case ignored within the error query;
+            expect(errCtx.query).toBe('select * from camelCase(...)');
+        });
+        afterEach(() => {
+            delete options.error;
+        });
+    });
+
+    describe('with bad proc params + caps', () => {
+        let result, errCtx;
+        beforeEach(done => {
+            options.error = function (err, e) {
+                errCtx = e;
+            };
+            options.capSQL = true;
+            db.proc('camelCase', () => {
+                throw new Error('bad proc name');
+            })
+                .catch(reason => {
+                    result = reason;
+                })
+                .finally(done);
+        });
+        it('must throw an error', () => {
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe('bad proc name');
+            // NOTE: camel-case ignored within the error query;
+            expect(errCtx.query).toBe('CALL camelCase(...)');
+        });
+        afterEach(() => {
+            delete options.error;
+            delete options.capSQL;
+        });
+    });
+
     describe('stored procedures', () => {
         describe('normal call', () => {
             let ver;
