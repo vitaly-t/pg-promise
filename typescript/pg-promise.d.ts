@@ -8,7 +8,7 @@
  */
 
 /////////////////////////////////////////
-// Requires pg-promise v10.0.0 or later.
+// Requires pg-promise v10.1.0 or later.
 /////////////////////////////////////////
 
 // We use ES6 as static promise here, because generic promises are still not supported.
@@ -436,6 +436,10 @@ declare namespace pgPromise {
 
         // this exists only inside transactions (isTX = true):
         readonly txLevel?: number
+
+        // Version of PostgreSQL Server to which we are connected;
+        // This property is not available with Native Bindings!
+        readonly serverVersion: string
     }
 
     // Generic Event Context interface;

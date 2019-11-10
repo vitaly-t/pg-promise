@@ -274,6 +274,7 @@ declare namespace pg {
         //////////////////////////////////////////////////////////////
         // Properties below are not available within Native Bindings:
 
+        serverVersion: string
         connection: IConnection
         queryQueue: IQuery[]
         binary: boolean
