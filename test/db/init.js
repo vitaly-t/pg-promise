@@ -23,15 +23,10 @@ const db = header.db;
 
 (async function () {
 
-    let serverHighVer; // PostgreSQL Server Version
-
-    await db.connect()
-        .then(c => {
-            serverHighVer = +c.client.version.split('.')[0];
-            c.done();
-        });
-
     await db.tx(async t => {
+
+        // PostgreSQL Server Version:
+        const serverHighVer = +t.ctx.serverVersion.split('.')[0];
 
         // drop all functions;
         await t.none('DROP FUNCTION IF EXISTS "findUser"(int)');
