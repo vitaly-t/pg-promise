@@ -274,7 +274,8 @@ declare namespace pg {
         //////////////////////////////////////////////////////////////
         // Properties below are not available within Native Bindings:
 
-        serverVersion: string
+        readonly serverVersion: string // PostgreSQL Server to which the client is connected
+
         connection: IConnection
         queryQueue: IQuery[]
         binary: boolean
