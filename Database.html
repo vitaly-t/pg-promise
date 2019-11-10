@@ -649,7 +649,7 @@ to use this <a href="Database.html">Database</a> object, and each query method w
 
 
 <div class="description">
-    <p>Executes a query that expects any number of rows.
+    <p>Executes a query that can return any number of rows.
 This is simply a shorter alias for method <a href="Database.html#manyOrNone">manyOrNone</a>.</p>
 <p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
@@ -1596,7 +1596,7 @@ then you should use a regular query method.</p>
             
 
             <td class="description last"><p>Name of the function to be executed.
-When the name is not same-case, or uses extended symbols, it is double-quoted.</p></td>
+When it is not same-case, or contains extended symbols, it is double-quoted.</p></td>
         </tr>
 
     
@@ -1783,7 +1783,7 @@ When the name is not same-case, or uses extended symbols, it is double-quoted.</
 
 
 <div class="description">
-    <p>Executes a query that expects one or more rows. When the query returns no rows, the method rejects.</p>
+    <p>Executes a query that expects one or more rows to be returned. When the query returns no rows, the method rejects.</p>
 <p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
@@ -2015,7 +2015,7 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 <div class="description">
-    <p>Executes a query that expects any number of rows.</p>
+    <p>Executes a query that can return any number of rows.</p>
 <p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
@@ -2564,7 +2564,7 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 <div class="description">
-    <p>Executes a multi-query string without any expectation for the return data, to resolve with an array
+    <p>Executes a multi-query string, without any expectation for the return data, and resolves with an array
 of arrays of rows when successful.</p>
 <p>The operation is atomic, i.e. all queries are executed in a single transaction, unless there are explicit
 <code>BEGIN/COMMIT</code> commands included in the query string to divide it into multiple transactions.</p>
@@ -2797,7 +2797,7 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 <div class="description">
-    <p>Executes a multi-query string, without any expectation for the return data, to resolve with an array
+    <p>Executes a multi-query string, without any expectation for the return data, and resolves with an array
 of the original <a href="https://node-postgres.com/api/result">Result</a> objects when successful.</p>
 <p>The operation is atomic, i.e. all queries are executed in a single transaction, unless there are explicit
 <code>BEGIN/COMMIT</code> commands included in the query string to divide it into multiple transactions.</p>
@@ -3025,7 +3025,7 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 <div class="description">
-    <p>Executes a query that expects no data to be returned. If the query returns any kind of data,
+    <p>Executes a query that expects no data to be returned. If the query returns any data,
 the method rejects.</p>
 <p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
@@ -3258,7 +3258,7 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 <div class="description">
-    <p>Executes a query that expects exactly one row of data. When 0 or more than 1 rows are returned,
+    <p>Executes a query that expects exactly 1 row to be returned. When 0 or more than 1 rows are returned,
 the method rejects.</p>
 <p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
@@ -3580,8 +3580,8 @@ When specified, the return value replaces the original resolved value.</p>
 
 
 <div class="description">
-    <p>Executes a query that expects 0 or 1 rows, to resolve with the row-object when 1 row is returned,
-and with <code>null</code> when nothing is returned. When the query returns more than 1 row, the method rejects.</p>
+    <p>Executes a query that expects 0 or 1 rows to be returned. It resolves with the row-object when 1 row is returned,
+or with <code>null</code> when nothing is returned. When the query returns more than 1 row, the method rejects.</p>
 <p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
 
@@ -3896,7 +3896,7 @@ When specified, the return value replaces the original resolved value.</p>
 
 <div class="description">
     <p>Executes a stored procedure as <code>CALL procName(values)</code>, and resolves with <code>null</code>.</p>
-<p><strong>NOTE:</strong> This method completely changed in v10 of the driver, to use the new <code>CALL</code>
+<p><strong>NOTE:</strong> This method changed in v10 of the driver, and now uses the new <code>CALL</code>
 syntax that requires PostgreSQL v11 or later.</p>
 </div>
 
@@ -3960,7 +3960,7 @@ syntax that requires PostgreSQL v11 or later.</p>
             
 
             <td class="description last"><p>Name of the stored procedure to be executed.
-When the name is not same-case, or uses extended symbols, it is double-quoted.</p></td>
+When it is not same-case, or contains extended symbols, it is double-quoted.</p></td>
         </tr>
 
     
@@ -4382,7 +4382,7 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 <div class="description">
-    <p>Executes a query without any expectation for the return data, to resolve with the
+    <p>Executes a query without any expectation for the return data, and resolves with the
 original <a href="https://node-postgres.com/api/result">Result</a> object when successful.</p>
 <p>When receiving a multi-query result, only the last result is processed, ignoring the rest.</p>
 </div>
