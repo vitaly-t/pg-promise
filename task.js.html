@@ -288,38 +288,38 @@ const execute = (ctx, obj, isTX, config) => {
         spName = 'level_' + ctx.txLevel;
         return begin()
             .then(() => callback(ctx, obj, ctx.cb, config)
-                .then(data => {
-                    cbData = data; // save callback data;
-                    success = true;
-                    return commit();
-                }, err => {
-                    cbReason = err; // save callback failure reason;
-                    return rollback();
-                })
-                .then(() => {
-                    if (success) {
-                        update(false, true, cbData);
-                        return cbData;
-                    }
-                    update(false, false, cbReason);
-                    return $p.reject(cbReason);
-                },
+                    .then(data => {
+                        cbData = data; // save callback data;
+                        success = true;
+                        return commit();
+                    }, err => {
+                        cbReason = err; // save callback failure reason;
+                        return rollback();
+                    })
+                    .then(() => {
+                            if (success) {
+                                update(false, true, cbData);
+                                return cbData;
+                            }
+                            update(false, false, cbReason);
+                            return $p.reject(cbReason);
+                        },
+                        err => {
+                            // either COMMIT or ROLLBACK has failed, which is impossible
+                            // to replicate in a test environment, so skipping from the test;
+                            // istanbul ignore next:
+                            update(false, false, err);
+                            // istanbul ignore next:
+                            return $p.reject(err);
+                        }),
                 err => {
-                    // either COMMIT or ROLLBACK has failed, which is impossible
-                    // to replicate in a test environment, so skipping from the test;
+                    // BEGIN has failed, which is impossible to replicate in a test
+                    // environment, so skipping the whole block from the test;
                     // istanbul ignore next:
                     update(false, false, err);
                     // istanbul ignore next:
                     return $p.reject(err);
-                }),
-            err => {
-                // BEGIN has failed, which is impossible to replicate in a test
-                // environment, so skipping the whole block from the test;
-                // istanbul ignore next:
-                update(false, false, err);
-                // istanbul ignore next:
-                return $p.reject(err);
-            });
+                });
     }
 
     function begin() {
@@ -376,7 +376,7 @@ module.exports = config => {
  * Task/Transaction Context used via property {@link Task#ctx ctx} inside tasks (methods {@link Database#task Database.task} and {@link Database#taskIf Database.taskIf})
  * and transactions (methods {@link Database#tx Database.tx} and {@link Database#txIf Database.txIf}).
  *
- * Properties `context`, `connected`, `parent`, `level`, `dc`, `isTX`, `tag`, `start` and `useCount` are set just before the operation has started,
+ * Properties `context`, `connected`, `parent`, `level`, `dc`, `isTX`, `tag`, `start`, `useCount` and `serverVersion` are set just before the operation has started,
  * while properties `finish`, `duration`, `success` and `result` are set immediately after the operation has finished.
  *
  * @property {*} context
@@ -426,6 +426,9 @@ module.exports = config => {
  * @property {number} useCount
  * Number of times the connection has been previously used, starting with 0 for a freshly
  * allocated physical connection.
+ *
+ * @property {string} serverVersion
+ * **(Added in v10.1.0)** - Version of the PostgreSQL server to which we are connected.
  *
  * @property {Date} finish
  * Once the operation has finished, this property is set to the Data/Time of when it happened.

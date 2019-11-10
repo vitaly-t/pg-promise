@@ -576,7 +576,7 @@ inside a task or transaction.</p></td>
 <div class="description">
     <p>Task/Transaction Context used via property <a href="Task.html#ctx">ctx</a> inside tasks (methods <a href="Database.html#task">Database.task</a> and <a href="Database.html#taskIf">Database.taskIf</a>)
 and transactions (methods <a href="Database.html#tx">Database.tx</a> and <a href="Database.html#txIf">Database.txIf</a>).</p>
-<p>Properties <code>context</code>, <code>connected</code>, <code>parent</code>, <code>level</code>, <code>dc</code>, <code>isTX</code>, <code>tag</code>, <code>start</code> and <code>useCount</code> are set just before the operation has started,
+<p>Properties <code>context</code>, <code>connected</code>, <code>parent</code>, <code>level</code>, <code>dc</code>, <code>isTX</code>, <code>tag</code>, <code>start</code>, <code>useCount</code> and <code>serverVersion</code> are set just before the operation has started,
 while properties <code>finish</code>, <code>duration</code>, <code>success</code> and <code>result</code> are set immediately after the operation has finished.</p>
 </div>
 
@@ -891,6 +891,29 @@ the operation has finished. When the value is <code>false</code>, the operation 
 
             <td class="description last"><p>Number of times the connection has been previously used, starting with 0 for a freshly
 allocated physical connection.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>serverVersion</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><strong>(Added in v10.1.0)</strong> - Version of the PostgreSQL server to which we are connected.</p></td>
         </tr>
 
     

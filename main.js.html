@@ -59,6 +59,8 @@ const npm = {
     text: require('./text')
 };
 
+let originalClientConnect;
+
 /**
  * @author Vitaly Tomilov
  * @module pg-promise
@@ -245,6 +247,20 @@ function $main(options) {
         pg = npm.pg.native;
         if (npm.utils.isNull(pg)) {
             throw new Error(npm.text.nativeError);
+        }
+    } else {
+        if (!originalClientConnect) {
+            originalClientConnect = pg.Client.prototype.connect;
+            pg.Client.prototype.connect = function () {
+                const handler = msg => {
+                    if (msg.parameterName === 'server_version') {
+                        this.serverVersion = msg.parameterValue;
+                        this.connection.removeListener('parameterStatus', handler);
+                    }
+                };
+                this.connection.on('parameterStatus', handler);
+                originalClientConnect.call(this, ...arguments);
+            };
         }
     }
 
