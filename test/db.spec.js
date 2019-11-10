@@ -2053,19 +2053,19 @@ describe('Method \'multi\'', () => {
 
 });
 
-describe('Querying a function', () => {
+describe('Querying an entity', () => {
 
-    describe('that expects multiple rows', () => {
+    describe('multi-row function', () => {
         let result;
         beforeEach(done => {
             options.capSQL = true;
-            db.func('getUsers')
+            db.func('get_users')
                 .then(data => {
                     result = data;
                 })
                 .finally(done);
         });
-        it('must return correctly', () => {
+        it('must return all rows', () => {
             expect(result instanceof Array).toBe(true);
             expect(result.length >= 4).toBe(true);
         });
@@ -2074,86 +2074,18 @@ describe('Querying a function', () => {
         });
     });
 
-    describe('that expects a single row', () => {
+    describe('single-row function', () => {
         let result;
         beforeEach(done => {
-            db.proc('findUser', 1)
+            db.func('findUser', 1, pgp.queryResult.one)
                 .then(data => {
                     result = data;
                 })
                 .finally(done);
         });
-        it('must return correctly', () => {
+        it('must return one object', () => {
             expect(typeof result).toBe('object');
             expect('id' in result && 'login' in result && 'active' in result).toBe(true);
-        });
-    });
-
-    describe('value transformation', () => {
-        let result, context;
-        beforeEach(done => {
-            db.proc('findUser', 1, function (value) {
-                'use strict';
-                // NOTE: Outside of strict mode, only objects can be passed in as this context
-                context = this;
-                return value.id;
-            }, 123)
-                .then(data => {
-                    result = data;
-                    done();
-                });
-        });
-        it('must resolve with the new value', () => {
-            expect(typeof result).toBe('number');
-            expect(result > 0).toBe(true);
-            expect(context).toBe(123);
-        });
-    });
-
-    describe('with function-parameter that throws an error', () => {
-        let result, errCtx;
-        beforeEach(done => {
-            options.error = function (err, e) {
-                errCtx = e;
-            };
-            db.proc('findUser', [() => {
-                throw new Error('format failed');
-            }])
-                .catch(reason => {
-                    result = reason;
-                })
-                .finally(done);
-        });
-        it('must throw an error', () => {
-            expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe('format failed');
-            expect(errCtx.query).toBe('select * from findUser(...)');
-        });
-        afterEach(() => {
-            delete options.error;
-        });
-    });
-
-    describe('with function-parameter that throws an error + capitalized', () => {
-        let errCtx;
-        beforeEach(done => {
-            options.capSQL = true;
-            options.error = function (err, e) {
-                errCtx = e;
-            };
-            db.func('findUser', [() => {
-                throw new Error('1');
-            }])
-                .catch(() => {
-                    done();
-                });
-        });
-        it('must throw an error', () => {
-            expect(errCtx.query).toBe('SELECT * FROM findUser(...)');
-        });
-        afterEach(() => {
-            delete options.error;
-            delete options.capSQL;
         });
     });
 
@@ -2168,13 +2100,13 @@ describe('Querying a function', () => {
                 db.func(null), // null function name;
                 // query function overrides:
                 db.query({
-                    funcName: null
+                    entity: null, type: 'func'
                 }),
                 db.query({
-                    funcName: ''
+                    entity: '', type: 'func'
                 }),
                 db.query({
-                    funcName: '   '
+                    entity: '   ', type: 'func'
                 })
             ])
                 .catch(reason => {
@@ -2189,6 +2121,118 @@ describe('Querying a function', () => {
                 expect(result[i].message).toBe($text.invalidFunction);
             }
         });
+    });
+
+    describe('proc with bad parameters', () => {
+        let result, errCtx;
+        beforeEach(done => {
+            options.error = function (err, e) {
+                errCtx = e;
+            };
+            db.proc('camelCase', [() => {
+                throw new Error('bad proc params');
+            }])
+                .catch(reason => {
+                    result = reason;
+                })
+                .finally(done);
+        });
+        it('must throw an error', () => {
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe('bad proc params');
+            // NOTE: camel-case ignored within the error query;
+            expect(errCtx.query).toBe('call camelCase(...)');
+        });
+        afterEach(() => {
+            delete options.error;
+        });
+    });
+
+    describe('func with bad parameters', () => {
+        let result, errCtx;
+        beforeEach(done => {
+            options.error = function (err, e) {
+                errCtx = e;
+            };
+            db.func('camelCase', [() => {
+                throw new Error('bad func params');
+            }])
+                .catch(reason => {
+                    result = reason;
+                })
+                .finally(done);
+        });
+        it('must throw an error', () => {
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe('bad func params');
+            // NOTE: camel-case ignored within the error query;
+            expect(errCtx.query).toBe('select * from camelCase(...)');
+        });
+        afterEach(() => {
+            delete options.error;
+        });
+    });
+
+    describe('with bad proc params + caps', () => {
+        let result, errCtx;
+        beforeEach(done => {
+            options.error = function (err, e) {
+                errCtx = e;
+            };
+            options.capSQL = true;
+            db.proc('camelCase', () => {
+                throw new Error('bad proc name');
+            })
+                .catch(reason => {
+                    result = reason;
+                })
+                .finally(done);
+        });
+        it('must throw an error', () => {
+            expect(result instanceof Error).toBe(true);
+            expect(result.message).toBe('bad proc name');
+            // NOTE: camel-case ignored within the error query;
+            expect(errCtx.query).toBe('CALL camelCase(...)');
+        });
+        afterEach(() => {
+            delete options.error;
+            delete options.capSQL;
+        });
+    });
+
+    describe('stored procedures', () => {
+        describe('normal call', () => {
+            let ver;
+            beforeEach(done => {
+                db.connect().then(c => {
+                    c.done();
+                    ver = +c.client.version.split('.')[0];
+                    done();
+                });
+            });
+
+            it('must resolve with null', async () => {
+                if (ver >= 11) {
+                    const res = await db.proc('test_proc');
+                    expect(res).toBeNull();
+                }
+            });
+        });
+
+        describe('with invalid name', () => {
+            let err;
+            beforeEach(done => {
+                db.proc()
+                    .catch(e => {
+                        err = e.message;
+                        done();
+                    });
+            });
+            it('must throw error', () => {
+                expect(err).toBe('Invalid procedure name.');
+            });
+        });
+
     });
 });
 

@@ -40,6 +40,19 @@ function main(options, dc) {
         pgpLib, cn,
         pgp: pgpLib(options)
     };
+
+    class MyClient extends result.pgp.pg.Client {
+        constructor(config) {
+            super(config);
+            this.connection.on('parameterStatus', msg => {
+                if (msg.parameterName === 'server_version') {
+                    this.version = msg.parameterValue;
+                }
+            });
+        }
+    }
+
+    cn.Client = MyClient;
     result.db = result.pgp(cn, dc);
     return result;
 }

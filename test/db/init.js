@@ -5,6 +5,7 @@
 const con = require('manakin').global;
 const dbHeader = require('./header');
 const promise = dbHeader.defPromise;
+
 const header = dbHeader({
     query: e => {
         // eslint-disable-next-line no-console
@@ -20,13 +21,21 @@ con.error.bright = true;
 const pgp = header.pgp;
 const db = header.db;
 
-(function () {
+(async function () {
 
-    db.tx(async t => {
+    let serverHighVer; // PostgreSQL Server Version
+
+    await db.connect()
+        .then(c => {
+            serverHighVer = +c.client.version.split('.')[0];
+            c.done();
+        });
+
+    await db.tx(async t => {
 
         // drop all functions;
-        await t.none('DROP FUNCTION IF EXISTS findUser(int)');
-        await t.none('DROP FUNCTION IF EXISTS getUsers()');
+        await t.none('DROP FUNCTION IF EXISTS "findUser"(int)');
+        await t.none('DROP FUNCTION IF EXISTS get_users()');
 
         // drop all tables;
         await t.none('DROP TABLE IF EXISTS audit');
@@ -52,9 +61,14 @@ const db = header.db;
         await t.none('INSERT INTO person(name, dob) VALUES($1, $2)', ['Mark', new Date(1973, 5, 12)]);
         await t.none('INSERT INTO person(name, dob) VALUES($1, $2)', ['Peter', new Date(1992, 11, 3)]);
 
-        // adding functions;
-        await t.none('CREATE OR REPLACE FUNCTION findUser(userId int) RETURNS SETOF users AS $$ SELECT * FROM users WHERE id = userId $$ language \'sql\'');
-        await t.none('CREATE OR REPLACE FUNCTION getUsers() RETURNS SETOF users AS $$ SELECT * FROM users $$ language \'sql\'');
+        // adding functions & procedures;
+        await t.none('CREATE OR REPLACE FUNCTION "findUser"(userId int) RETURNS SETOF users AS $$ SELECT * FROM users WHERE id = userId $$ language \'sql\'');
+        await t.none('CREATE OR REPLACE FUNCTION get_users() RETURNS SETOF users AS $$ SELECT * FROM users $$ language \'sql\'');
+
+        if (serverHighVer >= 11) {
+            // Stored procedures require PostgreSQL v11 or later:
+            await t.none('CREATE OR REPLACE PROCEDURE test_proc() LANGUAGE SQL AS $$ $$;');
+        }
     })
         .then(() => {
             // eslint-disable-next-line no-console
