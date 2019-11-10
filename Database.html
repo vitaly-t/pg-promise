@@ -1452,7 +1452,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1135">line 1135</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1120">line 1120</a>
     </li></ul></dd>
     
 
@@ -1595,7 +1595,8 @@ then you should use a regular query method.</p>
                 </td>
             
 
-            <td class="description last"><p>Name of the function to be executed.</p></td>
+            <td class="description last"><p>Name of the function to be executed.
+When the name is not same-case, or uses extended symbols, it is double-quoted.</p></td>
         </tr>
 
     
@@ -2487,7 +2488,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1029">line 1029</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1014">line 1014</a>
     </li></ul></dd>
     
 
@@ -3887,17 +3888,16 @@ When specified, the return value replaces the original resolved value.</p>
 
     
 
-    <h4 class="name" id="proc"><span class="type-signature"></span>proc<span class="signature">(procName, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id="proc"><span class="type-signature"></span>proc<span class="signature">(procName, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Executes a query against a stored procedure via its name: <code>SELECT * FROM procName(values)</code>,
-expecting back 0 or 1 rows. It resolves either with the resulting row-object, or with
-<code>null</code> when none returned.</p>
-<p>The method simply forwards into <a href="Database.html#func">func</a><code>(procName, values, queryResult.one|queryResult.none)</code>.</p>
+    <p>Executes a stored procedure as <code>CALL procName(values)</code>, and resolves with <code>null</code>.</p>
+<p><strong>NOTE:</strong> This method completely changed in v10 of the driver, to use the new <code>CALL</code>
+syntax that requires PostgreSQL v11 or later.</p>
 </div>
 
 
@@ -3959,7 +3959,8 @@ expecting back 0 or 1 rows. It resolves either with the resulting row-object, or
 
             
 
-            <td class="description last"><p>Name of the stored procedure to be executed.</p></td>
+            <td class="description last"><p>Name of the stored procedure to be executed.
+When the name is not same-case, or uses extended symbols, it is double-quoted.</p></td>
         </tr>
 
     
@@ -3996,74 +3997,6 @@ expecting back 0 or 1 rows. It resolves either with the resulting row-object, or
             
 
             <td class="description last"><p>Parameters for the procedure - one value or an array of values.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>cb</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Value transformation callback, to allow in-line value change.
-When specified, the return value replaces the original resolved value.</p>
-<p>The function takes only one parameter - value resolved from the query.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>thisArg</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
         </tr>
 
     
@@ -4104,7 +4037,7 @@ When specified, the return value replaces the original resolved value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line989">line 989</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line990">line 990</a>
     </li></ul></dd>
     
 
@@ -4114,7 +4047,7 @@ When specified, the return value replaces the original resolved value.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Database.html#oneOrNone">oneOrNone</a>,<a href="Database.html#func">func</a></li>
+            <li><a href="Database.html#func">func</a></li>
         </ul>
     </dd>
     
@@ -4137,12 +4070,6 @@ When specified, the return value replaces the original resolved value.</p>
 <h5>Returns:</h5>
 
         
-<div class="param-desc">
-    <p>It calls <a href="Database.html#func">func</a>(<code>procName</code>, <code>values</code>, <code>queryResult.one|queryResult.none</code>),
-and then returns the same result as method <a href="Database.html#oneOrNone">oneOrNone</a>.</p>
-<p>And if transformation callback <code>cb</code> was specified, it resolves with the new value.</p>
-</div>
-
 
 
 <dl>
@@ -5159,7 +5086,7 @@ it is expected to be an object with options as listed below.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1213">line 1213</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1198">line 1198</a>
     </li></ul></dd>
     
 
@@ -5481,7 +5408,7 @@ It can be either a simple boolean, or a callback function that takes the task co
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1297">line 1297</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1282">line 1282</a>
     </li></ul></dd>
     
 
@@ -5798,7 +5725,7 @@ it is expected to be an object with options as listed below.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1367">line 1367</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1352">line 1352</a>
     </li></ul></dd>
     
 
@@ -6216,7 +6143,7 @@ success or failure for the operation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1464">line 1464</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1449">line 1449</a>
     </li></ul></dd>
     
 
@@ -6382,7 +6309,7 @@ success or failure for the operation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1639">line 1639</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1624">line 1624</a>
     </li></ul></dd>
     
 

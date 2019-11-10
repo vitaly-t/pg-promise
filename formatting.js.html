@@ -334,10 +334,13 @@ function formatQuery(query, values, raw, options) {
 }
 
 //////////////////////////////////////////////////////
-// Formats a standard PostgreSQL function call query;
-function formatFunction(funcName, values, options) {
-    const sql = options &amp;&amp; options.capSQL ? 'SELECT * FROM ' : 'select * from ';
-    return sql + funcName + '(' + formatCSV(values, options) + ')';
+// Formats a function or stored procedure call query;
+function formatEntity(entity, values, {capSQL, type}) {
+    let prefix = type === 'func' ? 'select * from' : 'call';
+    if (capSQL) {
+        prefix = prefix.toUpperCase();
+    }
+    return prefix + ' ' + $as.alias(entity) + '(' + formatCSV(values, {capSQL}) + ')';
 }
 
 function formatSqlName(name) {
@@ -666,8 +669,6 @@ const $as = {
      * Converts a numeric value into its PostgreSQL number presentation, with support
      * for special values of `NaN`, `+Infinity` and `-Infinity`.
      *
-     * **Added in v9.3.0:** support for `BigInt` type.
-     *
      * @param {number|bigint|function} num
      * Number to be converted, or a function that returns one.
      *
@@ -697,8 +698,6 @@ const $as = {
      * Array to be converted, or a function that returns one.
      *
      * @param {object} [options]
-     * **Added in v9.2.0**
-     *
      * Array-Formatting Options.
      *
      * @param {boolean} [options.capSQL=false]
@@ -843,8 +842,6 @@ const $as = {
      * Formatting Options.
      *
      * @param {boolean} [options.capSQL=false]
-     * **Added in v9.2.0**
-     *
      * Formats reserved SQL words capitalized. Presently, this only concerns arrays, to output `ARRAY` when required.
      *
      * @param {boolean} [options.partial=false]
@@ -931,7 +928,7 @@ const $to = {
 
 module.exports = {
     formatQuery,
-    formatFunction,
+    formatEntity,
     resolveFunc,
     as: $as
 };
