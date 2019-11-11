@@ -39,8 +39,8 @@
     
         
             <div class="description"><p>Extends <a href="Database.html">Database</a> for an automatic connection session, with methods for executing multiple database queries.</p>
-<p>The type isn't available directly, it can only be created via methods <a href="Database.html#task">Database.task</a>, <a href="Database.html#taskIf">Database.taskIf</a>,
-<a href="Database.html#tx">Database.tx</a> and <a href="Database.html#txIf">Database.txIf</a>.</p>
+<p>The type isn't available directly, it can only be created via methods <a href="Database.html#task">Database.task</a>, <a href="Database.html#tx">Database.tx</a>,
+or their derivations.</p>
 <p>When executing more than one request at a time, one should allocate and release the connection only once,
 while executing all the required queries within the same connection session. More importantly, a transaction
 can only work within a single connection.</p>

@@ -49,7 +49,7 @@
 
 
 <div class="description">
-    <p>Prepares and escapes a full table name that can be injected into queries directly.</p>
+    <p>Represents a full table name that can be injected into queries directly.</p>
 <p>This is a read-only type that can be used wherever parameter <code>table</code> is supported.</p>
 <p>It supports <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, which means you can use the type directly as a formatting
 parameter, without specifying any escaping.</p>
@@ -165,7 +165,7 @@ parameter, without specifying any escaping.</p>
 
             
 
-            <td class="description last"><p>Formatted/escaped full table name, based on properties <code>schema</code> + <code>table</code>.</p></td>
+            <td class="description last"><p>Formatted/escaped full table name, combining <code>schema</code> + <code>table</code>.</p></td>
         </tr>
 
     

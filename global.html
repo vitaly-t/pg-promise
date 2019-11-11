@@ -104,8 +104,8 @@
 
 <div class="description">
     <p><strong>Query Result Mask</strong></p>
-<p>Binary mask that represents the result expected from queries.
-It is used by the base <a href="Database.html#query">query</a> method, as well as method <a href="Database.html#func">func</a>.</p>
+<p>Binary mask that represents the number of rows expected from a query method,
+used by generic <a href="Database.html#query">query</a> method, plus <a href="Database.html#func">func</a>.</p>
 <p>The mask is always the last optional parameter, which defaults to <code>queryResult.any</code>.</p>
 <p>Any combination of flags is supported, except for <code>one + many</code>.</p>
 <p>The type is available from the library's root: <code>pgp.queryResult</code>.</p>
@@ -192,7 +192,7 @@ It is used by the base <a href="Database.html#query">query</a> method, as well a
 
             
 
-            <td class="description last"><p>One or more rows expected, to be resolved as an array with at least 1 row-object.</p></td>
+            <td class="description last"><p>One or more rows expected, to be resolved as an array, with at least 1 row-object.</p></td>
         </tr>
 
     

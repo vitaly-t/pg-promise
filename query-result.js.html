@@ -43,8 +43,8 @@
  * @description
  * **Query Result Mask**
  *
- * Binary mask that represents the result expected from queries.
- * It is used by the base {@link Database#query query} method, as well as method {@link Database#func func}.
+ * Binary mask that represents the number of rows expected from a query method,
+ * used by generic {@link Database#query query} method, plus {@link Database#func func}.
  *
  * The mask is always the last optional parameter, which defaults to `queryResult.any`.
  *
@@ -57,7 +57,7 @@
 const queryResult = {
     /** Single row is expected, to be resolved as a single row-object. */
     one: 1,
-    /** One or more rows expected, to be resolved as an array with at least 1 row-object. */
+    /** One or more rows expected, to be resolved as an array, with at least 1 row-object. */
     many: 2,
     /** Expecting no rows, to be resolved with `null`. */
     none: 4,
