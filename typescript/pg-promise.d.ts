@@ -406,10 +406,11 @@ declare namespace pgPromise {
     }
 
     // Database object in connected state;
+    // API: https://vitaly-t.github.io/pg-promise/Database.html#connect
     interface IConnected<Ext, C extends pg.IClient> extends IBaseProtocol<Ext>, spexLib.ISpexBase {
         readonly client: C;
 
-        done(): void
+        done(kill?: boolean): void
     }
 
     // Event context extension for tasks + transactions;
