@@ -13,7 +13,7 @@
 // Calling it 'pg-subset' to avoid a conflict in case the application also
 // includes the official 'pg' typings.
 //
-// Supported version of pg: 7.12.1 and later.
+// Supported version of pg: 7.14.0 and later.
 //
 // pg: https://github.com/brianc/node-postgres
 //////////////////////////////////////////////////////////////////////////////
@@ -91,7 +91,6 @@ declare namespace pg {
         fallback_application_name?: string
         isDomainSocket?: boolean
         max?: number
-        min?: number
         idleTimeoutMillis?: number
         parseInputDatesAsUTC?: boolean
         rows?: number
