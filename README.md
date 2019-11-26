@@ -1,7 +1,7 @@
 pg-promise
 ==========
 
-:bulb: **[The author](https://www.vitalytomilov.com) is currently looking for work. [Here's my direct contact](mailto:vitalytomilov@gmail.com)**.
+:bulb: **Nov/2019: [The author](https://www.vitalytomilov.com) is currently looking for work ([my direct contact](mailto:vitalytomilov@gmail.com))**.
 
 ---
 
