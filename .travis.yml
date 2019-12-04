@@ -25,4 +25,3 @@ before_script:
 - node test/db/init.js
 env:
 - BLUEBIRD_DEBUG=0
-- PGPORT=5432
