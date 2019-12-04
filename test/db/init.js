@@ -25,9 +25,6 @@ const db = header.db;
 
     await db.tx(async t => {
 
-        // PostgreSQL Server Version:
-        const serverHighVer = +t.ctx.serverVersion.split('.')[0];
-
         // drop all functions;
         await t.none('DROP FUNCTION IF EXISTS "findUser"(int)');
         await t.none('DROP FUNCTION IF EXISTS get_users()');
@@ -59,11 +56,7 @@ const db = header.db;
         // adding functions & procedures;
         await t.none('CREATE OR REPLACE FUNCTION "findUser"(userId int) RETURNS SETOF users AS $$ SELECT * FROM users WHERE id = userId $$ language \'sql\'');
         await t.none('CREATE OR REPLACE FUNCTION get_users() RETURNS SETOF users AS $$ SELECT * FROM users $$ language \'sql\'');
-
-        if (serverHighVer >= 11) {
-            // Stored procedures require PostgreSQL v11 or later:
-            await t.none('CREATE OR REPLACE PROCEDURE test_proc() LANGUAGE SQL AS $$ $$;');
-        }
+        await t.none('CREATE OR REPLACE PROCEDURE test_proc() LANGUAGE SQL AS $$ $$;');
     })
         .then(() => {
             // eslint-disable-next-line no-console

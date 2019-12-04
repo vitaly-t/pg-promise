@@ -2201,27 +2201,12 @@ describe('Querying an entity', () => {
     });
 
     describe('stored procedures', () => {
-        if (!options.pgNative) {
-            // For now, do not test with Native Bindings, because we do not have PostgreSQL v11
-            // within Travis CI test environment. Once we do, remove the Native condition.
-            describe('normal call', () => {
-                let pgHighVersion; // PostgreSQL high version
-                beforeEach(done => {
-                    db.connect().then(c => {
-                        c.done();
-                        pgHighVersion = +c.client.serverVersion.split('.')[0];
-                        done();
-                    });
-                });
-
-                it('must resolve with null', async () => {
-                    if (pgHighVersion >= 11) {
-                        const res = await db.proc('test_proc');
-                        expect(res).toBeNull();
-                    }
-                });
+        describe('normal call', () => {
+            it('must resolve with null', async () => {
+                const res = await db.proc('test_proc');
+                expect(res).toBeNull();
             });
-        }
+        });
 
         describe('with invalid name', () => {
             let err;
