@@ -1,10 +1,6 @@
 pg-promise
 ==========
 
-:bulb: **Nov/2019: [The author](https://www.vitalytomilov.com) is currently looking for work ([my direct contact](mailto:vitaly.tomilov@gmail.com))**.
-
----
-
 PostgreSQL interface for Node.js
 
 [![Build Status](https://travis-ci.org/vitaly-t/pg-promise.svg?branch=master)](https://travis-ci.org/vitaly-t/pg-promise)
