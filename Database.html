@@ -1527,7 +1527,7 @@ as an override for its internal <code>values</code>.</p></td>
 
 <div class="description">
     <p>Executes a database function that returns a table, abbreviating the full syntax
-of <code>query('SELECT * FROM $1:alias($2:csv)', ['funcName', params], qrm)</code>.</p>
+of <code>query('SELECT * FROM $1:alias($2:csv)', ['funcName', values], qrm)</code>.</p>
 </div>
 
 
@@ -3897,7 +3897,7 @@ When specified, the return value replaces the original resolved value.</p>
 
 <div class="description">
     <p>Executes a stored procedure by name, abbreviating the full syntax of
-<code>none('CALL $1:alias($2:csv)', ['procName', params])</code>.</p>
+<code>none('CALL $1:alias($2:csv)', ['procName', values])</code>.</p>
 <p><strong>NOTE:</strong> This method changed in v10 of the driver, to use the new <code>CALL</code>
 syntax that requires PostgreSQL v11 or later.</p>
 </div>
