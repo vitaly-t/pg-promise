@@ -1527,7 +1527,7 @@ as an override for its internal <code>values</code>.</p></td>
 
 <div class="description">
     <p>Executes a database function that returns a table, abbreviating the full syntax
-of <code>any('SELECT * FROM $1:alias($2:csv)', ['funcName', params])</code>.</p>
+of <code>query('SELECT * FROM $1:alias($2:csv)', ['funcName', params], qrm)</code>.</p>
 </div>
 
 
