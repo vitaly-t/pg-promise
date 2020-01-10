@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "10.4.0-beta.3",
+  "version": "10.4.0-beta.4",
   "description": "PostgreSQL interface for Node.js",
   "main": "lib/index.js",
   "typings": "typescript/pg-promise.d.ts",
@@ -56,7 +56,7 @@
     "istanbul": "0.4.5",
     "jasmine-node": "3.0.0",
     "jsdoc": "3.6.3",
-    "pg-query-stream": "3.0.0",
+    "pg-query-stream": "2.1.2",
     "typescript": "3.7.4"
   }
 }
