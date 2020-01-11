@@ -1460,7 +1460,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1137">line 1137</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1138">line 1138</a>
     </li></ul></dd>
     
 
@@ -2507,7 +2507,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1031">line 1031</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1032">line 1032</a>
     </li></ul></dd>
     
 
@@ -3930,7 +3930,7 @@ When specified, the resolved value replaces the original one.</p>
 
 <div class="description">
     <p>Executes a stored procedure by name, abbreviating the full syntax of
-<code>oneOrNone('CALL $1:alias($2:csv)', [procName, values])</code>.</p>
+<code>oneOrNone('CALL $1:alias($2:csv)', [procName, values], cb, thisArg)</code>.</p>
 <p><strong>NOTE:</strong> This method uses the new <code>CALL</code> syntax that requires PostgreSQL v11 or later.</p>
 </div>
 
@@ -4178,7 +4178,8 @@ When specified, the resolved value replaces the original one.</p>
         
 <div class="param-desc">
     <p>When the procedure takes output parameters, a single object is returned, with
-properties for the output values. Otherwise, the method resolves with <code>null</code>.</p>
+properties for the output values. Otherwise, the method resolves with <code>null</code>.
+And if the value-transformation callback is provided, it overrides the result.</p>
 </div>
 
 
@@ -5203,7 +5204,7 @@ it is expected to be an object with options as listed below.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1215">line 1215</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1216">line 1216</a>
     </li></ul></dd>
     
 
@@ -5525,7 +5526,7 @@ It can be either a simple boolean, or a callback function that takes the task co
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1299">line 1299</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1300">line 1300</a>
     </li></ul></dd>
     
 
@@ -5842,7 +5843,7 @@ it is expected to be an object with options as listed below.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1369">line 1369</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1370">line 1370</a>
     </li></ul></dd>
     
 
@@ -6260,7 +6261,7 @@ success or failure for the operation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1466">line 1466</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1467">line 1467</a>
     </li></ul></dd>
     
 
@@ -6426,7 +6427,7 @@ success or failure for the operation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1651">line 1651</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1652">line 1652</a>
     </li></ul></dd>
     
 
