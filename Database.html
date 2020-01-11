@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-pg-pool.html">pg-pool</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-Result.html">Result</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-Symbol.html">Symbol</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -1460,7 +1460,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1123">line 1123</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1137">line 1137</a>
     </li></ul></dd>
     
 
@@ -2507,7 +2507,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1017">line 1017</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1031">line 1031</a>
     </li></ul></dd>
     
 
@@ -3446,7 +3446,7 @@ as an override for its internal <code>values</code>.</p></td>
             
 
             <td class="description last"><p>Value transformation callback, to allow in-line value change.
-When specified, the return value replaces the original resolved value.</p>
+When specified, the resolved value replaces the original one.</p>
 <p>The function takes only one parameter - value resolved from the query.</p></td>
         </tr>
 
@@ -3771,7 +3771,7 @@ as an override for its internal <code>values</code>.</p></td>
             
 
             <td class="description last"><p>Value transformation callback, to allow in-line value change.
-When specified, the return value replaces the original resolved value.</p>
+When specified, the resolved value replaces the original one.</p>
 <p>The function takes only one parameter - value resolved from the query.</p></td>
         </tr>
 
@@ -3922,7 +3922,7 @@ When specified, the return value replaces the original resolved value.</p>
 
     
 
-    <h4 class="name" id="proc"><span class="type-signature"></span>proc<span class="signature">(procName, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    <h4 class="name" id="proc"><span class="type-signature"></span>proc<span class="signature">(procName, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
 
     
 
@@ -3930,9 +3930,8 @@ When specified, the return value replaces the original resolved value.</p>
 
 <div class="description">
     <p>Executes a stored procedure by name, abbreviating the full syntax of
-<code>none('CALL $1:alias($2:csv)', [procName, values])</code>.</p>
-<p><strong>NOTE:</strong> This method changed in v10 of the driver, to use the new <code>CALL</code>
-syntax that requires PostgreSQL v11 or later.</p>
+<code>oneOrNone('CALL $1:alias($2:csv)', [procName, values])</code>.</p>
+<p><strong>NOTE:</strong> This method uses the new <code>CALL</code> syntax that requires PostgreSQL v11 or later.</p>
 </div>
 
 
@@ -4039,6 +4038,74 @@ as per the <code>:alias</code> filter.</p></td>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Value transformation callback, to allow in-line value change.
+When specified, the resolved value replaces the original one.</p>
+<p>The function takes only one parameter - value resolved from the query.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thisArg</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Value to use as <code>this</code> when executing the transformation callback.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -4109,6 +4176,11 @@ as per the <code>:alias</code> filter.</p></td>
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>When the procedure takes output parameters, a single object is returned, with
+properties for the output values. Otherwise, the method resolves with <code>null</code>.</p>
+</div>
+
 
 
 <dl>
@@ -4584,7 +4656,7 @@ as an override for its internal <code>values</code>.</p></td>
             
 
             <td class="description last"><p>Value transformation callback, to allow in-line value change.
-When specified, the return value replaces the original resolved value.</p>
+When specified, the resolved value replaces the original one.</p>
 <p>The function takes only one parameter - value resolved from the query.</p></td>
         </tr>
 
@@ -5131,7 +5203,7 @@ it is expected to be an object with options as listed below.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1201">line 1201</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1215">line 1215</a>
     </li></ul></dd>
     
 
@@ -5453,7 +5525,7 @@ It can be either a simple boolean, or a callback function that takes the task co
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1285">line 1285</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1299">line 1299</a>
     </li></ul></dd>
     
 
@@ -5770,7 +5842,7 @@ it is expected to be an object with options as listed below.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1355">line 1355</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1369">line 1369</a>
     </li></ul></dd>
     
 
@@ -6188,7 +6260,7 @@ success or failure for the operation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1452">line 1452</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1466">line 1466</a>
     </li></ul></dd>
     
 
@@ -6354,7 +6426,7 @@ success or failure for the operation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1637">line 1637</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1651">line 1651</a>
     </li></ul></dd>
     
 

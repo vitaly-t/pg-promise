@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Error.html">Error</a></li><li><a href="external-PG.html">PG</a></li><li><a href="external-pg-minify.html">pg-minify</a></li><li><a href="external-pg-pool.html">pg-pool</a></li><li><a href="external-Promise.html">Promise</a></li><li><a href="external-RangeError.html">RangeError</a></li><li><a href="external-Result.html">Result</a></li><li><a href="external-spex.html">spex</a></li><li><a href="external-Stream.html">Stream</a></li><li><a href="external-Symbol.html">Symbol</a></li><li><a href="external-TypeError.html">TypeError</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -566,7 +566,7 @@ function Database(cn, dc, config) {
          *
          * @param {function} [cb]
          * Value transformation callback, to allow in-line value change.
-         * When specified, the return value replaces the original resolved value.
+         * When specified, the resolved value replaces the original one.
          *
          * The function takes only one parameter - value resolved from the query.
          *
@@ -679,7 +679,7 @@ function Database(cn, dc, config) {
          *
          * @param {function} [cb]
          * Value transformation callback, to allow in-line value change.
-         * When specified, the return value replaces the original resolved value.
+         * When specified, the resolved value replaces the original one.
          *
          * The function takes only one parameter - value resolved from the query.
          *
@@ -832,7 +832,7 @@ function Database(cn, dc, config) {
          *
          * @param {function} [cb]
          * Value transformation callback, to allow in-line value change.
-         * When specified, the return value replaces the original resolved value.
+         * When specified, the resolved value replaces the original one.
          *
          * The function takes only one parameter - value resolved from the query.
          *
@@ -1021,10 +1021,9 @@ function Database(cn, dc, config) {
          * @method Database#proc
          * @description
          * Executes a stored procedure by name, abbreviating the full syntax of
-         * `none('CALL $1:alias($2:csv)', [procName, values])`.
+         * `oneOrNone('CALL $1:alias($2:csv)', [procName, values])`.
          *
-         * **NOTE:** This method changed in v10 of the driver, to use the new `CALL`
-         * syntax that requires PostgreSQL v11 or later.
+         * **NOTE:** This method uses the new `CALL` syntax that requires PostgreSQL v11 or later.
          *
          * @param {string} procName
          * Name of the stored procedure to be executed.
@@ -1034,13 +1033,28 @@ function Database(cn, dc, config) {
          * @param {array|value|function} [values]
          * Parameters for the procedure - one value | array of values | function returning value(s).
          *
+         * @param {function} [cb]
+         * Value transformation callback, to allow in-line value change.
+         * When specified, the resolved value replaces the original one.
+         *
+         * The function takes only one parameter - value resolved from the query.
+         *
+         * @param {*} [thisArg]
+         * Value to use as `this` when executing the transformation callback.
+         *
          * @returns {external:Promise}
+         * When the procedure takes output parameters, a single object is returned, with
+         * properties for the output values. Otherwise, the method resolves with `null`.
          *
          * @see
          * {@link Database#func func}
          */
-        obj.proc = function (procName, values) {
-            return obj.query.call(this, {entity: procName, type: 'proc'}, values, queryResult.none);
+        obj.proc = function (procName, values, cb, thisArg) {
+            const v = obj.query.call(this, {
+                entity: procName,
+                type: 'proc'
+            }, values, queryResult.one | queryResult.none);
+            return transform(v, cb, thisArg);
         };
 
         /**
