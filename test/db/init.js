@@ -53,10 +53,18 @@ const db = header.db;
         await t.none('INSERT INTO person(name, dob) VALUES($1, $2)', ['Mark', new Date(1973, 5, 12)]);
         await t.none('INSERT INTO person(name, dob) VALUES($1, $2)', ['Peter', new Date(1992, 11, 3)]);
 
-        // adding functions & procedures;
+        // adding functions:
         await t.none('CREATE OR REPLACE FUNCTION "findUser"(userId int) RETURNS SETOF users AS $$ SELECT * FROM users WHERE id = userId $$ language \'sql\'');
         await t.none('CREATE OR REPLACE FUNCTION get_users() RETURNS SETOF users AS $$ SELECT * FROM users $$ language \'sql\'');
-        await t.none('CREATE OR REPLACE PROCEDURE test_proc() LANGUAGE SQL AS $$ $$;');
+
+        // adding procedures:
+        await t.none('CREATE OR REPLACE PROCEDURE empty_proc() LANGUAGE SQL AS $$ $$;');
+        await t.none(`CREATE OR REPLACE PROCEDURE output_proc(INOUT output1 boolean, INOUT output2 text)
+                            LANGUAGE plpgsql AS $$
+                            BEGIN
+                                output1 := true;
+                                output2 := concat(output2, '-hello!');
+                            END;$$;`);
     })
         .then(() => {
             // eslint-disable-next-line no-console

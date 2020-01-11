@@ -8,7 +8,7 @@
  */
 
 /////////////////////////////////////////
-// Requires pg-promise v10.2.0 or later.
+// Requires pg-promise v10.3.3 or later.
 /////////////////////////////////////////
 
 // We use ES6 as static promise here, because generic promises are still not supported.
@@ -364,7 +364,7 @@ declare namespace pgPromise {
         func<T = any>(funcName: string, values?: any, qrm?: queryResult): XPromise<T>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#proc
-        proc(procName: string, values?: any): XPromise<null>
+        proc<T = any>(procName: string, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T | null>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#map
         map<T = any>(query: QueryParam, values: any, cb: (row: any, index: number, data: any[]) => T, thisArg?: any): XPromise<T[]>

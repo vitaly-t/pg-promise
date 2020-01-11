@@ -48,6 +48,17 @@ db.result('', [], r => {
         const value = data.rows[0];
     });
 
+db.func('func_name').then();
+db.func('func_name', [123]).then();
+db.func('func_name', [123]).then();
+
+db.proc('proc_name').then();
+db.proc('proc_name', [123]).then();
+db.proc('proc_name', [123], a => a.value).then();
+db.proc<number>('proc_name', [123], a => a && a.value)
+    .then((value: number | null) => {
+    });
+
 db.multiResult('', [])
     .then(data => {
         const tableID = data[0].fields[0].tableID;

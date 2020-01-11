@@ -2203,8 +2203,16 @@ describe('Querying an entity', () => {
     describe('stored procedures', () => {
         describe('normal call', () => {
             it('must resolve with null', async () => {
-                const res = await db.proc('test_proc');
+                const res = await db.proc('empty_proc');
                 expect(res).toBeNull();
+            });
+            it('must support output values', async () => {
+                const res = await db.proc('output_proc', [null, 'world']);
+                expect(res).toEqual({output1: true, output2: 'world-hello!'});
+            });
+            it('must support transformation', async () => {
+                const res = await db.proc('output_proc', [null, 'world'], a => a.output2);
+                expect(res).toBe('world-hello!');
             });
         });
 
