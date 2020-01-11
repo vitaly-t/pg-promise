@@ -481,13 +481,9 @@ function Database(cn, dc, config) {
         return new ConnectionContext({cn, dc, options: config.options});
     }
 
+    // Optional value-transformation helper:
     function transform(value, cb, thisArg) {
-        if (typeof cb === 'function') {
-            value = value.then(data => {
-                return cb.call(thisArg, data);
-            });
-        }
-        return value;
+        return typeof cb === 'function' ? value.then(data => cb.call(thisArg, data)) : value;
     }
 
     ////////////////////////////////////////////////////
@@ -566,7 +562,7 @@ function Database(cn, dc, config) {
          *
          * @param {function} [cb]
          * Value transformation callback, to allow in-line value change.
-         * When specified, the resolved value replaces the original one.
+         * When specified, the returned value replaces the original one.
          *
          * The function takes only one parameter - value resolved from the query.
          *
@@ -679,7 +675,7 @@ function Database(cn, dc, config) {
          *
          * @param {function} [cb]
          * Value transformation callback, to allow in-line value change.
-         * When specified, the resolved value replaces the original one.
+         * When specified, the returned value replaces the original one.
          *
          * The function takes only one parameter - value resolved from the query.
          *
@@ -832,7 +828,7 @@ function Database(cn, dc, config) {
          *
          * @param {function} [cb]
          * Value transformation callback, to allow in-line value change.
-         * When specified, the resolved value replaces the original one.
+         * When specified, the returned value replaces the original one.
          *
          * The function takes only one parameter - value resolved from the query.
          *
@@ -1035,7 +1031,7 @@ function Database(cn, dc, config) {
          *
          * @param {function} [cb]
          * Value transformation callback, to allow in-line value change.
-         * When specified, the resolved value replaces the original one.
+         * When specified, the returned value replaces the original one.
          *
          * The function takes only one parameter - value resolved from the query.
          *
