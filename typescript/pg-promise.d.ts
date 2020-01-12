@@ -123,7 +123,7 @@ declare namespace pgPromise {
 
     type FormattingFilter = '^' | '~' | '#' | ':raw' | ':alias' | ':name' | ':json' | ':csv' | ':list' | ':value';
 
-    type QueryColumns = Column | ColumnSet | Array<string | IColumnConfig | Column>
+    type QueryColumns = Column | ColumnSet | Array<string | IColumnConfig | Column>;
 
     type QueryParam =
         string
@@ -132,7 +132,7 @@ declare namespace pgPromise {
         | IParameterizedQuery
         | PreparedStatement
         | ParameterizedQuery
-        | ((values?: any) => QueryParam)
+        | ((values?: any) => QueryParam);
 
     type ValidSchema = string | string[] | null | void;
 
@@ -290,7 +290,7 @@ declare namespace pgPromise {
         // Property 'duration' exists only in the following context:
         //  - for single-query events 'receive'
         //  - for method Database.result
-        duration?: number;
+        duration?: number
     }
 
     // Post-initialization interface;
@@ -408,7 +408,7 @@ declare namespace pgPromise {
     // Database object in connected state;
     // API: https://vitaly-t.github.io/pg-promise/Database.html#connect
     interface IConnected<Ext, C extends pg.IClient> extends IBaseProtocol<Ext>, spexLib.ISpexBase {
-        readonly client: C;
+        readonly client: C
 
         done(kill?: boolean): void
     }

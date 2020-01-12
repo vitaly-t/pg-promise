@@ -101,7 +101,7 @@ declare namespace pg {
         keepAlive?: boolean
         keepalives?: number
         keepalives_idle?: number
-        Client?: new(config: string | IConnectionParameters) => C;
+        Client?: new(config: string | IConnectionParameters) => C
     }
 
     // Type id-s supported by PostgreSQL, copied from:
@@ -210,7 +210,7 @@ declare namespace pg {
 
         // number of connections to use in connection pool
         // 0 will disable connection pooling
-        max: number,
+        max: number
 
         // max milliseconds a client can go unused before it is removed
         // from the pool and destroyed
