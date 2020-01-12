@@ -96,7 +96,7 @@ declare namespace pg {
         rows?: number
         statement_timeout?: boolean | number
         query_timeout?: boolean | number
-        connect_timeout?: number
+        connectionTimeoutMillis?: number
         keepAliveInitialDelayMillis?: number
         keepAlive?: boolean
         keepalives?: number
@@ -232,8 +232,6 @@ declare namespace pg {
 
         // max milliseconds to wait for query to complete (client side)
         query_timeout: boolean | number
-
-        connect_timeout: number
 
         keepalives: number
 
