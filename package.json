@@ -40,11 +40,10 @@
     "node": ">=8.0"
   },
   "dependencies": {
-    "assert-options": "0.6.0",
-    "manakin": "0.5.2",
+    "assert-options": "0.6.1",
     "pg": "7.18.1",
-    "pg-minify": "1.5.1",
-    "spex": "3.0.0"
+    "pg-minify": "1.5.2",
+    "spex": "3.0.1"
   },
   "devDependencies": {
     "@types/node": "13.5.3",

@@ -2,21 +2,18 @@
 // Initialization scripts for the test database;
 ////////////////////////////////////////////////
 
-const con = require('manakin').global;
 const dbHeader = require('./header');
 const promise = dbHeader.defPromise;
+const {ColorConsole} = require('../../lib/utils/color');
 
 const header = dbHeader({
     query: e => {
         // eslint-disable-next-line no-console
-        console.info(e.query); // print all of the queries being executed;
+        ColorConsole.info(e.query); // print all of the queries being executed;
     },
     promiseLib: promise,
     capSQL: true
 });
-
-con.success.bright = true;
-con.error.bright = true;
 
 const pgp = header.pgp;
 const db = header.db;
@@ -68,11 +65,11 @@ const db = header.db;
     })
         .then(() => {
             // eslint-disable-next-line no-console
-            console.success('*** SUCCESS ***');
+            ColorConsole.success('*** SUCCESS ***');
         })
         .catch(error => {
             // eslint-disable-next-line no-console
-            console.error('FAILED:', error);
+            ColorConsole.error('FAILED:', error);
         })
         .finally(pgp.end);
 }());
