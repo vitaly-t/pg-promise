@@ -39,12 +39,12 @@
 const {InnerState} = require('./inner-state');
 const {QueryFileError} = require('./errors');
 const {assertOptions} = require('assert-options');
+const {ColorConsole} = require('./utils/color');
 
 const npm = {
     fs: require('fs'),
     os: require('os'),
     path: require('path'),
-    con: require('manakin').local,
     minify: require('pg-minify'),
     utils: require('./utils'),
     formatting: require('./formatting')
@@ -151,7 +151,7 @@ class QueryFile extends InnerState {
         if (!options.noWarnings) {
             if (filePath in usedPath) {
                 usedPath[filePath]++;
-                npm.con.warn('WARNING: Creating a duplicate QueryFile object for the same file - \n    %s\n%s\n', filePath, npm.utils.getLocalStack(3));
+                ColorConsole.warn('WARNING: Creating a duplicate QueryFile object for the same file - \n    %s\n%s\n', filePath, npm.utils.getLocalStack(3));
             } else {
                 usedPath[filePath] = 0;
             }
