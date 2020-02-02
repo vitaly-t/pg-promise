@@ -65,7 +65,7 @@ describe('QueryFile / Positive:', () => {
             expect(qf1[QueryFile.$query]).toBe('SELECT "col" FROM "public"."users"');
         });
         const qf2 = new QueryFile(sqlParams, {minify: 'after', compress: true, params, noWarnings: true});
-        it('must return compressed replacements for \'after\'', () => {
+        it(`must return compressed replacements for 'after'`, () => {
             expect(qf2[QueryFile.$query]).toBe('SELECT"col"FROM"public"."users"');
         });
     });

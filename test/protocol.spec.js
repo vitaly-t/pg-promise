@@ -20,15 +20,15 @@ function dummy() {
 
 describe('Library instance', () => {
 
-    it('must NOT have property \'pg\'', () => {
+    it(`must NOT have property 'pg'`, () => {
         expect(pgpLib.pg).toBeUndefined();
     });
 
-    it('must NOT have function \'end\'', () => {
+    it(`must NOT have function 'end'`, () => {
         expect(pgpLib.end).toBeUndefined();
     });
 
-    it('must have valid property \'as\'', () => {
+    it(`must have valid property 'as'`, () => {
         expect(pgpLib.as && typeof pgpLib.as === 'object').toBeTruthy();
         expect(pgpLib.as.text instanceof Function).toBe(true);
         expect(pgpLib.as.bool instanceof Function).toBe(true);
@@ -53,23 +53,23 @@ describe('Library instance', () => {
         expect(pgpLib.errors.ParameterizedQueryError instanceof Function).toBe(true);
     });
 
-    it('must have function \'PromiseAdapter\'', () => {
+    it(`must have function 'PromiseAdapter'`, () => {
         expect(pgpLib.PromiseAdapter instanceof Function).toBe(true);
     });
 
-    it('must have function \'PreparedStatement\'', () => {
+    it(`must have function 'PreparedStatement'`, () => {
         expect(pgpLib.PreparedStatement instanceof Function).toBe(true);
     });
 
-    it('must have function \'ParameterizedQuery\'', () => {
+    it(`must have function 'ParameterizedQuery'`, () => {
         expect(pgpLib.ParameterizedQuery instanceof Function).toBe(true);
     });
 
-    it('must have function \'minify\'', () => {
+    it(`must have function 'minify'`, () => {
         expect(pgpLib.minify instanceof Function).toBe(true);
     });
 
-    it('must have valid property \'queryResult\'', () => {
+    it(`must have valid property 'queryResult'`, () => {
         expect(pgpLib.queryResult && typeof pgpLib.queryResult === 'object').toBeTruthy();
         expect(pgpLib.queryResult.one).toBe(1);
         expect(pgpLib.queryResult.many).toBe(2);
@@ -81,7 +81,7 @@ describe('Library instance', () => {
 
 describe('Initialized instance', () => {
 
-    it('must have valid property \'pg\'', () => {
+    it(`must have valid property 'pg'`, () => {
         if (options.pgNative) {
             expect(typeof pgp.pg).toBe('object');
         } else {
@@ -89,11 +89,11 @@ describe('Initialized instance', () => {
         }
     });
 
-    it('must have function \'end\'', () => {
+    it(`must have function 'end'`, () => {
         expect(pgp.end instanceof Function).toBe(true);
     });
 
-    it('must have valid property \'as\'', () => {
+    it(`must have valid property 'as'`, () => {
         expect(pgp.as && typeof pgp.as === 'object').toBeTruthy();
         expect(pgp.as).toBe(pgpLib.as);
     });
@@ -106,23 +106,23 @@ describe('Initialized instance', () => {
         expect(pgp.errors.ParameterizedQueryError instanceof Function).toBe(true);
     });
 
-    it('must have function \'PromiseAdapter\'', () => {
+    it(`must have function 'PromiseAdapter'`, () => {
         expect(pgp.PromiseAdapter instanceof Function).toBe(true);
     });
 
-    it('must have function \'PreparedStatement\'', () => {
+    it(`must have function 'PreparedStatement'`, () => {
         expect(pgp.PreparedStatement instanceof Function).toBe(true);
     });
 
-    it('must have function \'ParameterizedQuery\'', () => {
+    it(`must have function 'ParameterizedQuery'`, () => {
         expect(pgp.ParameterizedQuery instanceof Function).toBe(true);
     });
 
-    it('must have function \'minify\'', () => {
+    it(`must have function 'minify'`, () => {
         expect(pgp.minify instanceof Function).toBe(true);
     });
 
-    it('must have valid property \'queryResult\'', () => {
+    it(`must have valid property 'queryResult'`, () => {
         expect(pgp.queryResult && typeof pgp.queryResult === 'object').toBeTruthy();
         expect(pgp.queryResult).toBe(pgpLib.queryResult);
     });
@@ -332,11 +332,11 @@ describe('Protocol Extension', () => {
                 this.getOne = function (query, values) {
                     return this.one(query, values);
                 };
-                throw new Error('### Testing error output in \'extend\'. Please ignore. ###');
+                throw new Error(`### Testing error output in 'extend'. Please ignore. ###`);
             }
         }, testDC);
         beforeEach(done => {
-            pgpTest.db.getOne('select \'hello\' as msg')
+            pgpTest.db.getOne(`select 'hello' as msg`)
                 .then(data => {
                     result = data;
                 })
@@ -371,7 +371,7 @@ describe('Protocol Extension', () => {
 
         beforeEach(done => {
             pgpTest.db.tx(t => {
-                return t.getOne('select \'hello\' as msg');
+                return t.getOne(`select 'hello' as msg`);
             })
                 .then(data => {
                     result = data;

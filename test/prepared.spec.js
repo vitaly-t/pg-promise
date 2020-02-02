@@ -251,7 +251,7 @@ describe('Direct Prepared Statements', () => {
         });
     });
 
-    describe('with an empty \'name\'', () => {
+    describe(`with an empty 'name'`, () => {
         let result;
         const ps = new pgp.PreparedStatement({name: '', text: 'non-empty'});
         beforeEach(done => {
@@ -268,7 +268,7 @@ describe('Direct Prepared Statements', () => {
         });
     });
 
-    describe('with an empty \'text\'', () => {
+    describe(`with an empty 'text'`, () => {
         let result;
         beforeEach(done => {
             db.query({

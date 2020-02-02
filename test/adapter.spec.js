@@ -24,35 +24,35 @@ describe('Adapter', () => {
         });
     });
 
-    describe('with invalid \'create\'', () => {
+    describe(`with invalid 'create'`, () => {
         it('must throw an error', () => {
             expect(() => {
                 new PromiseAdapter({});
-            }).toThrow('Function \'create\' must be specified.');
+            }).toThrow(`Function 'create' must be specified.`);
         });
     });
 
-    describe('with invalid \'resolve\'', () => {
+    describe(`with invalid 'resolve'`, () => {
         it('must throw an error', () => {
             expect(() => {
                 new PromiseAdapter({create: dummy});
-            }).toThrow('Function \'resolve\' must be specified.');
+            }).toThrow(`Function 'resolve' must be specified.`);
         });
     });
 
-    describe('with invalid \'reject\'', () => {
+    describe(`with invalid 'reject'`, () => {
         it('must throw an error', () => {
             expect(() => {
                 new PromiseAdapter({create: dummy, resolve: dummy});
-            }).toThrow('Function \'reject\' must be specified.');
+            }).toThrow(`Function 'reject' must be specified.`);
         });
     });
 
-    describe('with invalid \'all\'', () => {
+    describe(`with invalid 'all'`, () => {
         it('must throw an error', () => {
             expect(() => {
                 new PromiseAdapter({create: dummy, resolve: dummy, reject: dummy});
-            }).toThrow('Function \'all\' must be specified.');
+            }).toThrow(`Function 'all' must be specified.`);
         });
     });
 
