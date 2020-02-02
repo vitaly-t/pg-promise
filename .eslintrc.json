@@ -32,8 +32,8 @@
       }
     ],
     "quotes": [
-      "error",
-      "single"
+      "off",
+      "backtick"
     ],
     "semi": [
       "error",

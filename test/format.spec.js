@@ -8,8 +8,8 @@ const dateSample = new Date();
 // common error messages;
 const errors = {
     rawNull: () => 'Values null/undefined cannot be used as raw text.',
-    range: (variable, length) => 'Variable ' + variable + ' out of range. Parameters array length: ' + length,
-    buffer: value => '\'' + value + '\' is not a Buffer object.'
+    range: (variable, length) => `Variable ${variable} out of range. Parameters array length: ${length}`,
+    buffer: value => `'${value}' is not a Buffer object.`
 };
 
 const sqlSimple = getPath('./sql/simple.sql');
@@ -23,7 +23,7 @@ const dummy = () => {
 };
 
 const userObj = {
-    name: 'John O\'Connor',
+    name: `John O'Connor`,
     dob: new Date(1980, 5, 15),
     active: true
 };
@@ -35,7 +35,7 @@ describe('Method as.buffer', () => {
         const hex = '\\x010203';
 
         it('must hex-format data', () => {
-            expect(pgp.as.buffer(data)).toBe('\'' + hex + '\'');
+            expect(pgp.as.buffer(data)).toBe(`'${hex}'`);
             expect(pgp.as.buffer(data, true)).toBe(hex);
         });
 
@@ -45,8 +45,8 @@ describe('Method as.buffer', () => {
         });
 
         it('must format values correctly', () => {
-            expect(pgp.as.format('$1', data)).toBe('\'' + hex + '\'');
-            expect(pgp.as.format('$1', [data])).toBe('\'' + hex + '\'');
+            expect(pgp.as.format('$1', data)).toBe(`'${hex}'`);
+            expect(pgp.as.format('$1', [data])).toBe(`'${hex}'`);
         });
 
         it('must format raw values correctly', () => {
@@ -60,10 +60,10 @@ describe('Method as.buffer', () => {
         });
 
         it('must work in any other context', () => {
-            const input = [23, Buffer.from([1, 2, 3]), 'Hello'], output = '23,\'\\x010203\',\'Hello\'',
+            const input = [23, Buffer.from([1, 2, 3]), 'Hello'], output = `23,'\\x010203','Hello'`,
                 simple = Buffer.from([1, 2, 3]);
             expect(pgp.as.csv(simple)).toBe('1,2,3');
-            expect(pgp.as.format('$1:json', [simple])).toEqual('\'' + JSON.stringify(simple) + '\'');
+            expect(pgp.as.format('$1:json', [simple])).toEqual(`'${JSON.stringify(simple)}'`);
             expect(pgp.as.csv(input)).toBe(output);
             expect(pgp.as.format('$1,$2,$3', input)).toBe(output);
             expect(pgp.as.format('$1:csv', [input])).toBe(output);
@@ -123,12 +123,12 @@ describe('Method as.number', () => {
         expect(pgp.as.number(1)).toBe('1');
         expect(pgp.as.number(1234567890)).toBe('1234567890');
         expect(pgp.as.number(-123.456)).toBe('-123.456');
-        expect(pgp.as.number(NaN)).toBe('\'NaN\'');
-        expect(pgp.as.number(Number.NaN)).toBe('\'NaN\'');
-        expect(pgp.as.number(1 / 0)).toBe('\'+Infinity\'');
-        expect(pgp.as.number(Number.POSITIVE_INFINITY)).toBe('\'+Infinity\'');
-        expect(pgp.as.number(-1 / 0)).toBe('\'-Infinity\'');
-        expect(pgp.as.number(Number.NEGATIVE_INFINITY)).toBe('\'-Infinity\'');
+        expect(pgp.as.number(NaN)).toBe(`'NaN'`);
+        expect(pgp.as.number(Number.NaN)).toBe(`'NaN'`);
+        expect(pgp.as.number(1 / 0)).toBe(`'+Infinity'`);
+        expect(pgp.as.number(Number.POSITIVE_INFINITY)).toBe(`'+Infinity'`);
+        expect(pgp.as.number(-1 / 0)).toBe(`'-Infinity'`);
+        expect(pgp.as.number(Number.NEGATIVE_INFINITY)).toBe(`'-Infinity'`);
     });
 
     it('must correctly resolve functions', () => {
@@ -136,7 +136,7 @@ describe('Method as.number', () => {
         expect(pgp.as.number(() => null)).toBe('null');
         expect(pgp.as.number(() => 123)).toBe('123');
         expect(pgp.as.number(() => 0)).toBe('0');
-        expect(pgp.as.number(() => -1 / 0)).toBe('\'-Infinity\'');
+        expect(pgp.as.number(() => -1 / 0)).toBe(`'-Infinity'`);
 
         // deep-call test:
         expect(pgp.as.number(() => {
@@ -153,11 +153,11 @@ describe('Method as.number', () => {
         const err = ' is not a number.';
         expect(() => {
             pgp.as.number('');
-        }).toThrow('\'\'' + err);
+        }).toThrow(`''${err}`);
 
         expect(() => {
             pgp.as.number([1, 2]);
-        }).toThrow('\'1,2\'' + err);
+        }).toThrow(`'1,2'${err}`);
     });
 
 });
@@ -168,39 +168,39 @@ describe('Method as.text', () => {
         expect(pgp.as.text()).toBe('null');
         expect(pgp.as.text(null)).toBe('null');
 
-        expect(pgp.as.text('')).toBe('\'\'');
+        expect(pgp.as.text('')).toBe(`''`);
         expect(pgp.as.text('', true)).toBe(''); // raw-text test;
 
-        expect(pgp.as.text('some text')).toBe('\'some text\'');
+        expect(pgp.as.text('some text')).toBe(`'some text'`);
         expect(pgp.as.text('some text', true)).toBe('some text'); // raw-text test;
 
-        expect(pgp.as.text('\'starts with quote')).toBe('\'\'\'starts with quote\'');
-        expect(pgp.as.text('\'starts with quote', true)).toBe('\'starts with quote'); // raw-text test;
+        expect(pgp.as.text(`'starts with quote`)).toBe(`'''starts with quote'`);
+        expect(pgp.as.text(`'starts with quote`, true)).toBe(`'starts with quote`); // raw-text test;
 
-        expect(pgp.as.text('ends with quote\'')).toBe('\'ends with quote\'\'\'');
-        expect(pgp.as.text('ends with quote\'', true)).toBe('ends with quote\''); // raw-text test;
+        expect(pgp.as.text(`ends with quote'`)).toBe(`'ends with quote'''`);
+        expect(pgp.as.text(`ends with quote'`, true)).toBe(`ends with quote'`); // raw-text test;
 
-        expect(pgp.as.text('has \'\' two quotes')).toBe('\'has \'\'\'\' two quotes\'');
-        expect(pgp.as.text('has \'\' two quotes', true)).toBe('has \'\' two quotes'); // raw-text test;
+        expect(pgp.as.text(`has '' two quotes`)).toBe(`'has '''' two quotes'`);
+        expect(pgp.as.text(`has '' two quotes`, true)).toBe(`has '' two quotes`); // raw-text test;
 
-        expect(pgp.as.text('\'')).toBe('\'\'\'\'');
-        expect(pgp.as.text('\'', true)).toBe('\''); // raw-text test;
+        expect(pgp.as.text(`'`)).toBe(`''''`);
+        expect(pgp.as.text(`'`, true)).toBe(`'`); // raw-text test;
 
-        expect(pgp.as.text('\'\'')).toBe('\'\'\'\'\'\'');
+        expect(pgp.as.text(`''`)).toBe(`''''''`);
         expect(pgp.as.text('\'\'', true)).toBe('\'\''); // raw-text test;
 
-        expect(pgp.as.text(-123.456)).toBe('\'-123.456\'');
-        expect(pgp.as.text(true)).toBe('\'true\'');
-        expect(pgp.as.text(false)).toBe('\'false\'');
-        expect(pgp.as.text(dateSample)).toBe('\'' + dateSample.toString() + '\'');
+        expect(pgp.as.text(-123.456)).toBe(`'-123.456'`);
+        expect(pgp.as.text(true)).toBe(`'true'`);
+        expect(pgp.as.text(false)).toBe(`'false'`);
+        expect(pgp.as.text(dateSample)).toBe(`'${dateSample.toString()}'`);
 
-        expect(pgp.as.text([])).toBe('\'\'');
+        expect(pgp.as.text([])).toBe(`''`);
         expect(pgp.as.text([], true)).toBe(''); // raw-text test;
 
-        expect(pgp.as.text([1, 'hello'])).toBe('\'1,hello\''); // converts string as is;
+        expect(pgp.as.text([1, 'hello'])).toBe(`'1,hello'`); // converts string as is;
         expect(pgp.as.text([1, 'hello'], true)).toBe('1,hello'); // converts string as is;
 
-        expect(pgp.as.text({})).toBe('\'[object Object]\'');
+        expect(pgp.as.text({})).toBe(`'[object Object]'`);
     });
 
     it('must correctly resolve functions', () => {
@@ -209,7 +209,7 @@ describe('Method as.text', () => {
 
         expect(pgp.as.text(() => null)).toBe('null');
 
-        expect(pgp.as.text(() => 'hello')).toBe('\'hello\'');
+        expect(pgp.as.text(() => 'hello')).toBe(`'hello'`);
 
     });
 
@@ -233,13 +233,13 @@ describe('Method as.value', () => {
     });
     it('must correctly escape text', () => {
         expect(pgp.as.value('text')).toBe('text');
-        expect(pgp.as.value('te\'xt')).toBe('te\'\'xt');
+        expect(pgp.as.value(`te'xt`)).toBe(`te''xt`);
     });
 
     it('must correctly format values', () => {
         expect(pgp.as.format('$1:value', 'val')).toBe('val');
         expect(pgp.as.format('$1#', 'val')).toBe('val');
-        expect(pgp.as.format('$1#', 'val\'ue')).toBe('val\'\'ue');
+        expect(pgp.as.format('$1#', `val'ue`)).toBe(`val''ue`);
     });
 
     it('must throw on null/undefined', () => {
@@ -263,7 +263,7 @@ describe('Method as.date', () => {
     it('must correctly convert any date', () => {
         expect(pgp.as.date()).toBe('null');
         expect(pgp.as.date(null)).toBe('null');
-        expect(pgp.as.date(dateSample)).toBe('\'' + $pgUtils.prepareValue(dateSample) + '\'');
+        expect(pgp.as.date(dateSample)).toBe(`'${$pgUtils.prepareValue(dateSample)}'`);
         expect(pgp.as.date(dateSample, true)).toBe($pgUtils.prepareValue(dateSample));
     });
 
@@ -285,23 +285,23 @@ describe('Method as.date', () => {
 
         expect(() => {
             pgp.as.date('');
-        }).toThrow('\'\' is not a Date object.');
+        }).toThrow(`'' is not a Date object.`);
 
         expect(() => {
             pgp.as.date('bla-bla');
-        }).toThrow('\'bla-bla\' is not a Date object.');
+        }).toThrow(`'bla-bla' is not a Date object.`);
 
         expect(() => {
             pgp.as.date(123);
-        }).toThrow('\'123\' is not a Date object.');
+        }).toThrow(`'123' is not a Date object.`);
 
         expect(() => {
             pgp.as.date([]);
-        }).toThrow('\'\' is not a Date object.');
+        }).toThrow(`'' is not a Date object.`);
 
         expect(() => {
             pgp.as.date({});
-        }).toThrow('\'[object Object]\' is not a Date object.');
+        }).toThrow(`'[object Object]' is not a Date object.`);
 
     });
 
@@ -318,7 +318,7 @@ describe('Method as.csv', () => {
 
         expect(pgp.as.csv()).toBe(''); // test undefined;
         expect(pgp.as.csv([])).toBe(''); // test empty array;
-        expect(pgp.as.csv([[]])).toBe('\'{}\''); // test empty array;
+        expect(pgp.as.csv([[]])).toBe(`'{}'`); // test empty array;
         expect(pgp.as.csv(null)).toBe('null'); // test null;
         expect(pgp.as.csv([null])).toBe('null'); // test null in array;
         expect(pgp.as.csv([undefined])).toBe('null'); // test undefined in array;
@@ -335,26 +335,26 @@ describe('Method as.csv', () => {
         expect(pgp.as.csv(false)).toBe('false'); // test boolean False;
         expect(pgp.as.csv([false])).toBe('false'); // test boolean False in array;
 
-        expect(pgp.as.csv('')).toBe('\'\''); // empty text;
-        expect(pgp.as.csv([''])).toBe('\'\''); // empty text in array;
-        expect(pgp.as.csv('simple text')).toBe('\'simple text\''); // simple text;
-        expect(pgp.as.csv('don\'t break')).toBe('\'don\'\'t break\''); // text with one single-quote symbol;
-        expect(pgp.as.csv('test \'\'')).toBe('\'test \'\'\'\'\''); // text with two single-quote symbols;
+        expect(pgp.as.csv('')).toBe(`''`); // empty text;
+        expect(pgp.as.csv([''])).toBe(`''`); // empty text in array;
+        expect(pgp.as.csv('simple text')).toBe(`'simple text'`); // simple text;
+        expect(pgp.as.csv(`don't break`)).toBe(`'don''t break'`); // text with one single-quote symbol;
+        expect(pgp.as.csv(`test ''`)).toBe(`'test '''''`); // text with two single-quote symbols;
 
         expect(pgp.as.csv(dateSample)).toBe(''); // test date;
-        expect(pgp.as.csv([dateSample])).toBe('\'' + $pgUtils.prepareValue(dateSample) + '\''); // test date in array;
+        expect(pgp.as.csv([dateSample])).toBe(`'${$pgUtils.prepareValue(dateSample)}'`); // test date in array;
 
         expect(pgp.as.csv([userObj])).toBe(pgp.as.text(JSON.stringify(userObj)));
 
         // test a combination of all possible types;
-        expect(pgp.as.csv([12.34, true, 'don\'t break', null, undefined, userObj, dateSample, [1, 2]]))
-            .toBe('12.34,true,\'don\'\'t break\',null,null,' + pgp.as.text(JSON.stringify(userObj)) + ',\'' + $pgUtils.prepareValue(dateSample) + '\',array[1,2]');
+        expect(pgp.as.csv([12.34, true, `don't break`, null, undefined, userObj, dateSample, [1, 2]]))
+            .toBe(`12.34,true,'don''t break',null,null,` + pgp.as.text(JSON.stringify(userObj)) + `,'` + $pgUtils.prepareValue(dateSample) + `',array[1,2]`);
 
         // test array-type as a parameter;
         expect(pgp.as.csv([1, [2, 3], 4])).toBe('1,array[2,3],4');
-        expect(pgp.as.csv([1, [['two'], ['three']], 4])).toBe('1,array[[\'two\'],[\'three\']],4');
+        expect(pgp.as.csv([1, [['two'], ['three']], 4])).toBe(`1,array[['two'],['three']],4`);
 
-        expect(pgp.as.csv(obj)).toBe('123,\'test\'');
+        expect(pgp.as.csv(obj)).toBe(`123,'test'`);
     });
 
     it('must correctly resolve functions', () => {
@@ -363,9 +363,9 @@ describe('Method as.csv', () => {
 
         expect(pgp.as.csv(() => null)).toBe('null');
 
-        expect(pgp.as.csv(() => 'one')).toBe('\'one\'');
+        expect(pgp.as.csv(() => 'one')).toBe(`'one'`);
 
-        expect(pgp.as.csv(() => ['one', 'two', [1, 2, 3]])).toBe('\'one\',\'two\',array[1,2,3]');
+        expect(pgp.as.csv(() => ['one', 'two', [1, 2, 3]])).toBe(`'one','two',array[1,2,3]`);
     });
 
 });
@@ -375,7 +375,7 @@ describe('Method as.json', () => {
     it('must correctly convert any object into JSON', () => {
         expect(pgp.as.json()).toBe('null');
         expect(pgp.as.json(null)).toBe('null');
-        expect(pgp.as.json({})).toBe('\'' + JSON.stringify({}) + '\'');
+        expect(pgp.as.json({})).toBe(`'${JSON.stringify({})}'`);
         expect(pgp.as.json(userObj)).toBe(pgp.as.text(JSON.stringify(userObj)));
     });
 

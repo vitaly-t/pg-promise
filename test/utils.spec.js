@@ -7,7 +7,7 @@ function dummy() {
 
 describe('taskArgs', () => {
     describe('with invalid arguments', () => {
-        const error = 'Parameter "args" must be an array-like object of arguments.';
+        const error = `Parameter 'args' must be an array-like object of arguments.`;
         it('must throw error', () => {
             expect(() => {
                 utils.taskArgs();
@@ -211,7 +211,7 @@ describe('enumSql', () => {
 
     describe('negative', () => {
         it('must throw on invalid or empty directory', () => {
-            const errMsg = 'Parameter \'dir\' must be a non-empty text string.';
+            const errMsg = `Parameter 'dir' must be a non-empty text string.`;
             expect(() => {
                 utils.enumSql();
             }).toThrow(errMsg);

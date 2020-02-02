@@ -51,8 +51,8 @@ const db = header.db;
         await t.none('INSERT INTO person(name, dob) VALUES($1, $2)', ['Peter', new Date(1992, 11, 3)]);
 
         // adding functions:
-        await t.none('CREATE OR REPLACE FUNCTION "findUser"(userId int) RETURNS SETOF users AS $$ SELECT * FROM users WHERE id = userId $$ language \'sql\'');
-        await t.none('CREATE OR REPLACE FUNCTION get_users() RETURNS SETOF users AS $$ SELECT * FROM users $$ language \'sql\'');
+        await t.none(`CREATE OR REPLACE FUNCTION "findUser"(userId int) RETURNS SETOF users AS $$ SELECT * FROM users WHERE id = userId $$ language 'sql'`);
+        await t.none(`CREATE OR REPLACE FUNCTION get_users() RETURNS SETOF users AS $$ SELECT * FROM users $$ language 'sql'`);
 
         // adding procedures:
         await t.none('CREATE OR REPLACE PROCEDURE empty_proc() LANGUAGE SQL AS $$ $$;');
