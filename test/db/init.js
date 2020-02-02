@@ -65,11 +65,11 @@ const db = header.db;
     })
         .then(() => {
             // eslint-disable-next-line no-console
-            ColorConsole.success('*** SUCCESS ***');
+            ColorConsole.success.bright('*** SUCCESS ***');
         })
         .catch(error => {
             // eslint-disable-next-line no-console
-            ColorConsole.error('FAILED:', error);
+            ColorConsole.error.bright('FAILED:', error);
         })
         .finally(pgp.end);
 }());
