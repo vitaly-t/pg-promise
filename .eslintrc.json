@@ -32,7 +32,7 @@
       }
     ],
     "quotes": [
-      "off",
+      "error",
       "backtick"
     ],
     "semi": [

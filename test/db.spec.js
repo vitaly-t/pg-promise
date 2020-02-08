@@ -1,13 +1,13 @@
 const npm = {
-    util: require('util')
+    util: require(`util`)
 };
 
-const capture = require('./db/capture');
-const pgResult = require('pg/lib/result');
-const header = require('./db/header');
-const tools = require('./db/tools');
+const capture = require(`./db/capture`);
+const pgResult = require(`pg/lib/result`);
+const header = require(`./db/header`);
+const tools = require(`./db/tools`);
 
-const isMacOS = require('os').platform() === 'darwin';
+const isMacOS = require(`os`).platform() === `darwin`;
 
 const promise = header.defPromise;
 const options = {
@@ -32,60 +32,60 @@ function isResult(value) {
     return value instanceof pgResult;
 }
 
-const $text = require('../lib/text');
+const $text = require(`../lib/text`);
 
-describe('Database Instantiation', () => {
-    it('must throw an invalid connection passed', () => {
-        const errBody = 'Invalid connection details: ';
-        expect(pgp).toThrow(errBody + 'undefined');
+describe(`Database Instantiation`, () => {
+    it(`must throw an invalid connection passed`, () => {
+        const errBody = `Invalid connection details: `;
+        expect(pgp).toThrow(errBody + `undefined`);
 
         expect(() => {
             pgp(null);
-        }).toThrow(errBody + 'null');
+        }).toThrow(errBody + `null`);
         expect(() => {
-            pgp('');
-        }).toThrow(errBody + '""');
+            pgp(``);
+        }).toThrow(errBody + `""`);
         expect(() => {
-            pgp('   ');
-        }).toThrow(errBody + '"   "');
+            pgp(`   `);
+        }).toThrow(errBody + `"   "`);
         expect(() => {
             pgp(123);
-        }).toThrow(errBody + '123');
+        }).toThrow(errBody + `123`);
     });
 });
 
-describe('Connection', () => {
+describe(`Connection`, () => {
 
-    describe('with default parameters', () => {
-        let status = 'connecting', error;
+    describe(`with default parameters`, () => {
+        let status = `connecting`, error;
         beforeEach(done => {
             db.connect()
                 .then(obj => {
-                    status = 'success';
+                    status = `success`;
                     obj.done(); // release connection;
                 }, reason => {
                     error = reason;
-                    status = 'failed';//reason.error;
+                    status = `failed`;//reason.error;
                 })
                 .catch(err => {
                     error = err;
-                    status = 'exception';
+                    status = `exception`;
                 })
                 .finally(done);
         });
-        it('must be successful', () => {
-            expect(status).toBe('success');
+        it(`must be successful`, () => {
+            expect(status).toBe(`success`);
             expect(error).toBeUndefined();
         });
     });
 
-    describe('for regular queries', () => {
+    describe(`for regular queries`, () => {
         let result, sco;
         beforeEach(done => {
             db.connect()
                 .then(obj => {
                     sco = obj;
-                    return sco.one('select count(*) from users');
+                    return sco.one(`select count(*) from users`);
                 })
                 .catch(reason => {
                     result = null;
@@ -104,20 +104,20 @@ describe('Connection', () => {
                     done();
                 });
         });
-        it('must provide functioning context', () => {
+        it(`must provide functioning context`, () => {
             expect(result).toBeDefined();
             expect(result.count > 0).toBe(true);
-            expect(typeof sco.tx).toBe('function'); // just a protocol check;
+            expect(typeof sco.tx).toBe(`function`); // just a protocol check;
         });
     });
 
-    describe('for raw queries', () => {
+    describe(`for raw queries`, () => {
         let result, sco;
         beforeEach(done => {
             db.connect()
                 .then(obj => {
                     sco = obj;
-                    return sco.result('select * from users');
+                    return sco.result(`select * from users`);
                 })
                 .catch(reason => {
                     result = null;
@@ -136,16 +136,16 @@ describe('Connection', () => {
                     done();
                 });
         });
-        it('must provide functioning context', () => {
+        it(`must provide functioning context`, () => {
             expect(isResult(result)).toBe(true);
             expect(result.rows.length > 0).toBe(true);
-            expect(typeof result.rowCount).toBe('number');
-            expect(typeof result.duration).toBe('number');
+            expect(typeof result.rowCount).toBe(`number`);
+            expect(typeof result.duration).toBe(`number`);
             expect(result.rows.length === result.rowCount).toBe(true);
         });
     });
 
-    describe('for invalid port', () => {
+    describe(`for invalid port`, () => {
         let errCN, dbErr, result, log;
         beforeEach(() => {
             errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
@@ -155,7 +155,7 @@ describe('Connection', () => {
                 log = {err, e};
             };
         });
-        describe('using connect()', () => {
+        describe(`using connect()`, () => {
             beforeEach(done => {
                 dbErr.connect()
                     .catch(error => {
@@ -163,7 +163,7 @@ describe('Connection', () => {
                     })
                     .finally(done);
             });
-            it('must report the right error', () => {
+            it(`must report the right error`, () => {
                 if (!isMacOS) {
                     // we do not test this on MacOS, because it requires use of password, so the test will fail.
                     expect(log.e.cn).toEqual(errCN);
@@ -171,14 +171,14 @@ describe('Connection', () => {
                 expect(result instanceof Error).toBe(true);
 
                 if (options.pgNative) {
-                    expect(result.message).toContain('could not connect to server');
+                    expect(result.message).toContain(`could not connect to server`);
                 } else {
-                    expect(result.message).toContain('connect ECONNREFUSED');
+                    expect(result.message).toContain(`connect ECONNREFUSED`);
                 }
 
             });
         });
-        describe('with transaction connection', () => {
+        describe(`with transaction connection`, () => {
             beforeEach(done => {
                 dbErr.tx(dummy)
                     .catch(error => {
@@ -186,12 +186,12 @@ describe('Connection', () => {
                     })
                     .finally(done);
             });
-            it('must report the right error', () => {
+            it(`must report the right error`, () => {
                 expect(result instanceof Error).toBe(true);
                 if (options.pgNative) {
-                    expect(result.message).toContain('could not connect to server');
+                    expect(result.message).toContain(`could not connect to server`);
                 } else {
-                    expect(result.message).toContain('connect ECONNREFUSED');
+                    expect(result.message).toContain(`connect ECONNREFUSED`);
                 }
             });
         });
@@ -200,9 +200,9 @@ describe('Connection', () => {
         });
     });
 
-    describe('for an invalid port', () => {
+    describe(`for an invalid port`, () => {
         const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-        errCN.port = '12345';
+        errCN.port = `12345`;
         const dbErr = pgp(errCN);
         let result;
         beforeEach(done => {
@@ -212,17 +212,17 @@ describe('Connection', () => {
                 })
                 .finally(done);
         });
-        it('must report the right error', () => {
+        it(`must report the right error`, () => {
             expect(result instanceof Error).toBe(true);
             if (options.pgNative) {
-                expect(result.message).toContain('could not connect to server');
+                expect(result.message).toContain(`could not connect to server`);
             } else {
-                expect(result.message).toContain('connect ECONNREFUSED');
+                expect(result.message).toContain(`connect ECONNREFUSED`);
             }
         });
     });
 
-    describe('direct end() call', () => {
+    describe(`direct end() call`, () => {
         let txt;
         beforeEach(done => {
             db.connect()
@@ -234,13 +234,13 @@ describe('Connection', () => {
                 })
                 .finally(done);
         });
-        it('must be reported into the console', () => {
+        it(`must be reported into the console`, () => {
             expect(txt).toContain($text.clientEnd);
         });
     });
 
-    describe('for invalid connection', () => {
-        const dbErr = pgp('bla-bla');
+    describe(`for invalid connection`, () => {
+        const dbErr = pgp(`bla-bla`);
         let error;
         beforeEach(done => {
             dbErr.connect()
@@ -249,21 +249,21 @@ describe('Connection', () => {
                 })
                 .finally(done);
         });
-        it('must report the right error', () => {
-            const oldStyleError = 'database "bla-bla" does not exist'; // Before PostgreSQL v.10
-            const newStyleError = 'role ' + JSON.stringify(pgp.pg.defaults.user) + ' does not exist';
+        it(`must report the right error`, () => {
+            const oldStyleError = `database "bla-bla" does not exist`; // Before PostgreSQL v.10
+            const newStyleError = `role ` + JSON.stringify(pgp.pg.defaults.user) + ` does not exist`;
             expect(error instanceof Error).toBe(true);
             if (isMacOS) {
-                expect(error.message).toContain('password authentication failed for user');
+                expect(error.message).toContain(`password authentication failed for user`);
             } else {
                 expect(error.message.indexOf(oldStyleError) >= 0 || error.message.indexOf(newStyleError) >= 0).toBe(true);
             }
         });
     });
 
-    describe('for invalid user name', () => {
+    describe(`for invalid user name`, () => {
         const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-        errCN.user = 'somebody';
+        errCN.user = `somebody`;
         const dbErr = pgp(errCN);
         let error;
         beforeEach(done => {
@@ -273,18 +273,18 @@ describe('Connection', () => {
                 })
                 .finally(done);
         });
-        it('must report the right error', () => {
+        it(`must report the right error`, () => {
             expect(error instanceof Error).toBe(true);
-            const macError = 'password authentication failed for user "somebody"';
+            const macError = `password authentication failed for user "somebody"`;
             if (isMacOS) {
                 expect(error.message).toContain(macError);
             } else {
-                expect(error.message).toContain('role "somebody" does not exist');
+                expect(error.message).toContain(`role "somebody" does not exist`);
             }
         });
     });
 
-    describe('on repeated disconnection', () => {
+    describe(`on repeated disconnection`, () => {
         let error;
         beforeEach(done => {
             db.connect()
@@ -301,13 +301,13 @@ describe('Connection', () => {
                 })
                 .finally(done);
         });
-        it('must throw the right error', () => {
+        it(`must throw the right error`, () => {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe($text.looseQuery);
         });
     });
 
-    describe('when executing a disconnected query', () => {
+    describe(`when executing a disconnected query`, () => {
         let error;
         beforeEach(done => {
             db.connect()
@@ -320,14 +320,14 @@ describe('Connection', () => {
                 })
                 .finally(done);
         });
-        it('must throw the right error', () => {
+        it(`must throw the right error`, () => {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe($text.queryDisconnected);
         });
     });
 
-    describe('external closing of the connection pool', () => {
-        const tmpDB = pgp('postgres://postgres:password@localhost:5432/invalidDB');
+    describe(`external closing of the connection pool`, () => {
+        const tmpDB = pgp(`postgres://postgres:password@localhost:5432/invalidDB`);
         let error;
         beforeEach(done => {
             tmpDB.$pool.end();
@@ -337,7 +337,7 @@ describe('Connection', () => {
                 })
                 .finally(done);
         });
-        it('must be handled', () => {
+        it(`must be handled`, () => {
             expect(error).toEqual(new Error($text.poolDestroyed));
         });
     });
@@ -407,9 +407,9 @@ describe('Connection', () => {
 
 });
 
-describe('Direct Connection', () => {
+describe(`Direct Connection`, () => {
 
-    describe('successful connection', () => {
+    describe(`successful connection`, () => {
         let sco;
         beforeEach(done => {
             db.connect({direct: true})
@@ -419,12 +419,12 @@ describe('Direct Connection', () => {
                     done();
                 });
         });
-        it('must connect correctly', () => {
-            expect(typeof sco).toBe('object');
+        it(`must connect correctly`, () => {
+            expect(typeof sco).toBe(`object`);
         });
     });
 
-    describe('direct end() call', () => {
+    describe(`direct end() call`, () => {
         let txt;
         beforeEach(done => {
             db.connect({direct: true})
@@ -435,14 +435,14 @@ describe('Direct Connection', () => {
                     done();
                 });
         });
-        it('must be reported into the console', () => {
+        it(`must be reported into the console`, () => {
             expect(txt).toContain($text.clientEnd);
         });
     });
 
-    describe('for an invalid port', () => {
+    describe(`for an invalid port`, () => {
         const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-        errCN.port = '12345';
+        errCN.port = `12345`;
         const dbErr = pgp(errCN);
         let result;
         beforeEach(done => {
@@ -455,19 +455,19 @@ describe('Direct Connection', () => {
                 })
                 .finally(done);
         });
-        it('must report the right error', () => {
+        it(`must report the right error`, () => {
             expect(result instanceof Error).toBe(true);
             if (options.pgNative) {
-                expect(result.message).toContain('could not connect to server');
+                expect(result.message).toContain(`could not connect to server`);
             } else {
-                expect(result.message).toContain('connect ECONNREFUSED');
+                expect(result.message).toContain(`connect ECONNREFUSED`);
             }
         });
     });
 
 });
 
-describe('Masked Connection Log', () => {
+describe(`Masked Connection Log`, () => {
 
     let cn;
     beforeEach(() => {
@@ -475,12 +475,12 @@ describe('Masked Connection Log', () => {
             cn = e.cn;
         };
     });
-    describe('as an object', () => {
+    describe(`as an object`, () => {
         const connection = {
-            host: 'localhost',
+            host: `localhost`,
             port: 123,
-            user: 'unknown',
-            password: '123'
+            user: `unknown`,
+            password: `123`
         };
         beforeEach(done => {
             const errDB = pgp(connection);
@@ -489,34 +489,34 @@ describe('Masked Connection Log', () => {
                     done();
                 });
         });
-        it('must report the password masked correctly', () => {
-            expect(cn.password).toEqual('###');
+        it(`must report the password masked correctly`, () => {
+            expect(cn.password).toEqual(`###`);
         });
     });
 
-    describe('as a string', () => {
+    describe(`as a string`, () => {
         beforeEach(done => {
-            const errDB = pgp('postgres://postgres:password@localhost:123/unknown');
+            const errDB = pgp(`postgres://postgres:password@localhost:123/unknown`);
             errDB.connect()
                 .catch(() => {
                     done();
                 });
         });
-        it('must report the password masked correctly', () => {
-            expect(cn).toBe('postgres://postgres:########@localhost:123/unknown');
+        it(`must report the password masked correctly`, () => {
+            expect(cn).toBe(`postgres://postgres:########@localhost:123/unknown`);
         });
     });
 
-    describe('as a config string', () => {
+    describe(`as a config string`, () => {
         beforeEach(done => {
-            const errDB = pgp({connectionString: 'postgres://postgres:password@localhost:123/unknown'});
+            const errDB = pgp({connectionString: `postgres://postgres:password@localhost:123/unknown`});
             errDB.connect()
                 .catch(() => {
                     done();
                 });
         });
-        it('must report the password masked correctly', () => {
-            expect(cn).toEqual({connectionString: 'postgres://postgres:########@localhost:123/unknown'});
+        it(`must report the password masked correctly`, () => {
+            expect(cn).toEqual({connectionString: `postgres://postgres:########@localhost:123/unknown`});
         });
     });
 
@@ -526,12 +526,12 @@ describe('Masked Connection Log', () => {
     });
 });
 
-describe('Method \'map\'', () => {
+describe(`Method 'map'`, () => {
 
-    describe('positive:', () => {
+    describe(`positive:`, () => {
         let pValue, pIndex, pArr, pData;
         beforeEach(done => {
-            db.map('SELECT 1 as value', null, (value, index, arr) => {
+            db.map(`SELECT 1 as value`, null, (value, index, arr) => {
                 pValue = value;
                 pIndex = index;
                 pArr = arr;
@@ -542,7 +542,7 @@ describe('Method \'map\'', () => {
                     done();
                 });
         });
-        it('must resolve with the right value', () => {
+        it(`must resolve with the right value`, () => {
             expect(pValue).toEqual({value: 1});
             expect(pIndex).toBe(0);
             expect(pArr).toEqual([{value: 1}]);
@@ -550,48 +550,48 @@ describe('Method \'map\'', () => {
         });
     });
 
-    describe('negative:', () => {
+    describe(`negative:`, () => {
 
-        describe('with invalid parameters', () => {
+        describe(`with invalid parameters`, () => {
             let err;
             beforeEach(done => {
-                db.map('SELECT 1')
+                db.map(`SELECT 1`)
                     .catch(error => {
                         err = error;
                     })
                     .finally(done);
             });
-            it('must reject with an error', () => {
+            it(`must reject with an error`, () => {
                 expect(err instanceof TypeError).toBe(true);
-                expect(err.message).toContain('is not a function');
+                expect(err.message).toContain(`is not a function`);
             });
         });
 
-        describe('with error thrown inside the callback', () => {
+        describe(`with error thrown inside the callback`, () => {
             let err;
             beforeEach(done => {
-                db.map('SELECT 1', null, () => {
-                    throw new Error('Ops!');
+                db.map(`SELECT 1`, null, () => {
+                    throw new Error(`Ops!`);
                 })
                     .catch(error => {
                         err = error;
                     })
                     .finally(done);
             });
-            it('must reject with an error', () => {
-                expect(err).toEqual(new Error('Ops!'));
+            it(`must reject with an error`, () => {
+                expect(err).toEqual(new Error(`Ops!`));
             });
         });
 
     });
 });
 
-describe('Method \'each\'', () => {
+describe(`Method 'each'`, () => {
 
-    describe('positive:', () => {
+    describe(`positive:`, () => {
         let pValue, pIndex, pArr, pData;
         beforeEach(done => {
-            db.each('SELECT 1 as value', null, (value, index, arr) => {
+            db.each(`SELECT 1 as value`, null, (value, index, arr) => {
                 pValue = value;
                 pIndex = index;
                 pArr = arr;
@@ -602,7 +602,7 @@ describe('Method \'each\'', () => {
                     done();
                 });
         });
-        it('must resolve with the right value', () => {
+        it(`must resolve with the right value`, () => {
             expect(pValue).toEqual({value: 2});
             expect(pIndex).toBe(0);
             expect(pArr).toEqual([{value: 2}]);
@@ -610,47 +610,47 @@ describe('Method \'each\'', () => {
         });
     });
 
-    describe('negative:', () => {
+    describe(`negative:`, () => {
 
-        describe('with invalid parameters', () => {
+        describe(`with invalid parameters`, () => {
             let err;
             beforeEach(done => {
-                db.each('SELECT 1')
+                db.each(`SELECT 1`)
                     .catch(error => {
                         err = error;
                     })
                     .finally(done);
             });
-            it('must reject with an error', () => {
+            it(`must reject with an error`, () => {
                 expect(err instanceof TypeError).toBe(true);
-                expect(err.message).toContain('is not a function');
+                expect(err.message).toContain(`is not a function`);
             });
         });
 
-        describe('with error thrown inside the callback', () => {
+        describe(`with error thrown inside the callback`, () => {
             let err;
             beforeEach(done => {
-                db.each('SELECT 1', null, () => {
-                    throw new Error('Ops!');
+                db.each(`SELECT 1`, null, () => {
+                    throw new Error(`Ops!`);
                 })
                     .catch(error => {
                         err = error;
                     })
                     .finally(done);
             });
-            it('must reject with an error', () => {
-                expect(err).toEqual(new Error('Ops!'));
+            it(`must reject with an error`, () => {
+                expect(err).toEqual(new Error(`Ops!`));
             });
         });
 
     });
 });
 
-describe('Method \'none\'', () => {
+describe(`Method 'none'`, () => {
 
-    it('must resolve with \'null\'', () => {
+    it(`must resolve with 'null'`, () => {
         let result, error, finished;
-        db.none('select * from users where id = $1', 12345678)
+        db.none(`select * from users where id = $1`, 12345678)
             .then(data => {
                 result = data;
             })
@@ -660,18 +660,18 @@ describe('Method \'none\'', () => {
             .finally(() => {
                 finished = true;
             });
-        waitsFor(() => finished === true, 'Query timed out', 5000);
+        waitsFor(() => finished === true, `Query timed out`, 5000);
         runs(() => {
             expect(error).toBeUndefined();
             expect(result).toBe(null);
         });
     });
 
-    describe('when any data is returned', () => {
+    describe(`when any data is returned`, () => {
 
-        it('must reject for a single query', () => {
+        it(`must reject for a single query`, () => {
             let result, error, finished;
-            db.none('select * from users')
+            db.none(`select * from users`)
                 .then(data => {
                     result = data;
                 })
@@ -681,7 +681,7 @@ describe('Method \'none\'', () => {
                 .finally(() => {
                     finished = true;
                 });
-            waitsFor(() => finished === true, 'Query timed out', 5000);
+            waitsFor(() => finished === true, `Query timed out`, 5000);
             runs(() => {
                 expect(result).toBeUndefined();
                 expect(error instanceof pgp.errors.QueryResultError).toBe(true);
@@ -691,9 +691,9 @@ describe('Method \'none\'', () => {
             });
         });
 
-        it('must reject for multi-queries', () => {
+        it(`must reject for multi-queries`, () => {
             let result, error, finished;
-            db.none('select 1;select * from users')
+            db.none(`select 1;select * from users`)
                 .then(data => {
                     result = data;
                 })
@@ -703,7 +703,7 @@ describe('Method \'none\'', () => {
                 .finally(() => {
                     finished = true;
                 });
-            waitsFor(() => finished === true, 'Query timed out', 5000);
+            waitsFor(() => finished === true, `Query timed out`, 5000);
             runs(() => {
                 expect(result).toBeUndefined();
                 expect(error instanceof pgp.errors.QueryResultError).toBe(true);
@@ -717,11 +717,11 @@ describe('Method \'none\'', () => {
 
 });
 
-describe('Method \'one\'', () => {
+describe(`Method 'one'`, () => {
 
-    it('must resolve with one object', () => {
+    it(`must resolve with one object`, () => {
         let result, error;
-        db.one('select 123 as value')
+        db.one(`select 123 as value`)
             .then(data => {
                 result = data;
             })
@@ -731,18 +731,18 @@ describe('Method \'one\'', () => {
             });
         waitsFor(() => {
             return result !== undefined;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(error).toBeUndefined();
-            expect(typeof result).toBe('object');
+            expect(typeof result).toBe(`object`);
             expect(result.value).toBe(123);
         });
     });
 
-    describe('value transformation', () => {
+    describe(`value transformation`, () => {
         let result, context;
         beforeEach(done => {
-            db.one('select count(*) from users', null, function (value) {
+            db.one(`select count(*) from users`, null, function (value) {
                 'use strict';
                 // NOTE: Outside of strict mode, only objects can be passed in as this context
                 context = this;
@@ -753,18 +753,18 @@ describe('Method \'one\'', () => {
                     done();
                 });
         });
-        it('must resolve with the new value', () => {
-            expect(typeof result).toBe('number');
+        it(`must resolve with the new value`, () => {
+            expect(typeof result).toBe(`number`);
             expect(result > 0).toBe(true);
             expect(context).toBe(123);
         });
     });
 
-    describe('when no data found', () => {
+    describe(`when no data found`, () => {
 
-        it('must reject for a single query', () => {
+        it(`must reject for a single query`, () => {
             let result, error, finished;
-            db.one('select * from users where id = $1', 12345678)
+            db.one(`select * from users where id = $1`, 12345678)
                 .then(data => {
                     result = data;
                 })
@@ -774,7 +774,7 @@ describe('Method \'one\'', () => {
                 .finally(() => {
                     finished = true;
                 });
-            waitsFor(() => finished === true, 'Query timed out', 5000);
+            waitsFor(() => finished === true, `Query timed out`, 5000);
             runs(() => {
                 expect(result).toBeUndefined();
                 expect(error instanceof pgp.errors.QueryResultError).toBe(true);
@@ -783,9 +783,9 @@ describe('Method \'one\'', () => {
             });
         });
 
-        it('must reject for a multi-query', () => {
+        it(`must reject for a multi-query`, () => {
             let result, error, finished;
-            db.one('select 1;select * from users where id = $1', 12345678)
+            db.one(`select 1;select * from users where id = $1`, 12345678)
                 .then(data => {
                     result = data;
                 })
@@ -795,7 +795,7 @@ describe('Method \'one\'', () => {
                 .finally(() => {
                     finished = true;
                 });
-            waitsFor(() => finished === true, 'Query timed out', 5000);
+            waitsFor(() => finished === true, `Query timed out`, 5000);
             runs(() => {
                 expect(result).toBeUndefined();
                 expect(error instanceof pgp.errors.QueryResultError).toBe(true);
@@ -806,10 +806,10 @@ describe('Method \'one\'', () => {
 
     });
 
-    describe('When multiple rows are found', () => {
-        it('must reject for a single query', () => {
+    describe(`When multiple rows are found`, () => {
+        it(`must reject for a single query`, () => {
             let result, error, finished;
-            db.one('select * from users')
+            db.one(`select * from users`)
                 .then(data => {
                     result = data;
                 })
@@ -819,7 +819,7 @@ describe('Method \'one\'', () => {
                 .finally(() => {
                     finished = true;
                 });
-            waitsFor(() => finished === true, 'Query timed out', 5000);
+            waitsFor(() => finished === true, `Query timed out`, 5000);
             runs(() => {
                 expect(result).toBeUndefined();
                 expect(error instanceof pgp.errors.QueryResultError).toBe(true);
@@ -827,9 +827,9 @@ describe('Method \'one\'', () => {
                 expect(error.result.rows.length).toBeGreaterThan(0);
             });
         });
-        it('must reject for a multi-query', () => {
+        it(`must reject for a multi-query`, () => {
             let result, error, finished;
-            db.one('select 1;select * from users')
+            db.one(`select 1;select * from users`)
                 .then(data => {
                     result = data;
                 })
@@ -839,7 +839,7 @@ describe('Method \'one\'', () => {
                 .finally(() => {
                     finished = true;
                 });
-            waitsFor(() => finished === true, 'Query timed out', 5000);
+            waitsFor(() => finished === true, `Query timed out`, 5000);
             runs(() => {
                 expect(result).toBeUndefined();
                 expect(error instanceof pgp.errors.QueryResultError).toBe(true);
@@ -852,11 +852,11 @@ describe('Method \'one\'', () => {
 
 });
 
-describe('Method \'oneOrNone\'', () => {
+describe(`Method 'oneOrNone'`, () => {
 
-    it('must resolve with one object when found', () => {
+    it(`must resolve with one object when found`, () => {
         let result, error;
-        db.oneOrNone('select * from users where id=$1', 1)
+        db.oneOrNone(`select * from users where id=$1`, 1)
             .then(data => {
                 result = data;
             })
@@ -866,17 +866,17 @@ describe('Method \'oneOrNone\'', () => {
             });
         waitsFor(() => {
             return result !== undefined;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(error).toBeUndefined();
-            expect(typeof result).toBe('object');
+            expect(typeof result).toBe(`object`);
             expect(result.id).toBe(1);
         });
     });
 
-    it('must resolve with null when no data found', () => {
+    it(`must resolve with null when no data found`, () => {
         let result, error, finished;
-        db.oneOrNone('select * from users where id=$1', 12345678)
+        db.oneOrNone(`select * from users where id=$1`, 12345678)
             .then(data => {
                 result = data;
                 finished = true;
@@ -886,17 +886,17 @@ describe('Method \'oneOrNone\'', () => {
             });
         waitsFor(() => {
             return finished === true;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(error).toBeUndefined();
             expect(result).toBeNull();
         });
     });
 
-    describe('value transformation', () => {
+    describe(`value transformation`, () => {
         let result, context;
         beforeEach(done => {
-            db.oneOrNone('select count(*) from users', null, function (value) {
+            db.oneOrNone(`select count(*) from users`, null, function (value) {
                 'use strict';
                 // NOTE: Outside of strict mode, only objects can be passed in as this context
                 context = this;
@@ -907,16 +907,16 @@ describe('Method \'oneOrNone\'', () => {
                     done();
                 });
         });
-        it('must resolve with the new value', () => {
-            expect(typeof result).toBe('number');
+        it(`must resolve with the new value`, () => {
+            expect(typeof result).toBe(`number`);
             expect(result > 0).toBe(true);
             expect(context).toBe(123);
         });
     });
 
-    it('must reject when multiple rows are found', () => {
+    it(`must reject when multiple rows are found`, () => {
         let result, error, finished;
-        db.oneOrNone('select * from users')
+        db.oneOrNone(`select * from users`)
             .then(data => {
                 result = data;
                 finished = true;
@@ -926,7 +926,7 @@ describe('Method \'oneOrNone\'', () => {
             });
         waitsFor(() => {
             return finished === true;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
@@ -936,11 +936,11 @@ describe('Method \'oneOrNone\'', () => {
 
 });
 
-describe('Method \'many\'', () => {
+describe(`Method 'many'`, () => {
 
-    it('must resolve with array of objects', () => {
+    it(`must resolve with array of objects`, () => {
         let result, error;
-        db.many('select * from users')
+        db.many(`select * from users`)
             .then(data => {
                 result = data;
             }, reason => {
@@ -949,7 +949,7 @@ describe('Method \'many\'', () => {
             });
         waitsFor(() => {
             return result !== undefined;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
@@ -957,9 +957,9 @@ describe('Method \'many\'', () => {
         });
     });
 
-    it('must reject when no data found', () => {
+    it(`must reject when no data found`, () => {
         let result, error, finished;
-        db.many('select * from users where id=$1', 12345678)
+        db.many(`select * from users where id=$1`, 12345678)
             .then(data => {
                 result = data;
                 finished = true;
@@ -969,7 +969,7 @@ describe('Method \'many\'', () => {
             });
         waitsFor(() => {
             return finished === true;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(result).toBeUndefined();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
@@ -979,11 +979,11 @@ describe('Method \'many\'', () => {
 
 });
 
-describe('Method \'manyOrNone\'', () => {
+describe(`Method 'manyOrNone'`, () => {
 
-    it('must resolve with array of objects', () => {
+    it(`must resolve with array of objects`, () => {
         let result, error;
-        db.manyOrNone('select * from users')
+        db.manyOrNone(`select * from users`)
             .then(data => {
                 result = data;
             }, reason => {
@@ -992,7 +992,7 @@ describe('Method \'manyOrNone\'', () => {
             });
         waitsFor(() => {
             return result !== undefined;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
@@ -1000,9 +1000,9 @@ describe('Method \'manyOrNone\'', () => {
         });
     });
 
-    it('must resolve with an empty array when no data found', () => {
+    it(`must resolve with an empty array when no data found`, () => {
         let result, error, finished;
-        db.manyOrNone('select * from users where id=$1', 12345678)
+        db.manyOrNone(`select * from users where id=$1`, 12345678)
             .then(data => {
                 result = data;
                 finished = true;
@@ -1012,7 +1012,7 @@ describe('Method \'manyOrNone\'', () => {
             });
         waitsFor(() => {
             return finished === true;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
@@ -1022,15 +1022,15 @@ describe('Method \'manyOrNone\'', () => {
 
 });
 
-describe('Executing method query', () => {
+describe(`Executing method query`, () => {
 
-    describe('with invalid query as parameter', () => {
+    describe(`with invalid query as parameter`, () => {
         let result;
         beforeEach(done => {
             promise.any([
                 db.query(),
-                db.query(''),
-                db.query('   '),
+                db.query(``),
+                db.query(`   `),
                 db.query({}),
                 db.query(1),
                 db.query(null)])
@@ -1039,7 +1039,7 @@ describe('Executing method query', () => {
                 })
                 .finally(done);
         });
-        it('must throw an error', () => {
+        it(`must throw an error`, () => {
             expect(result.length).toBe(6);
             expect(result[0].message).toBe($text.invalidQuery); // reject to an undefined query;
             expect(result[1].message).toBe($text.invalidQuery); // reject to an empty-string query;
@@ -1050,26 +1050,26 @@ describe('Executing method query', () => {
         });
     });
 
-    describe('with invalid qrm as parameter', () => {
+    describe(`with invalid qrm as parameter`, () => {
         let result;
         beforeEach(done => {
             promise.any([
-                db.query('something', undefined, ''),
-                db.query('something', undefined, '2'),
-                db.query('something', undefined, -1),
-                db.query('something', undefined, 0),
-                db.query('something', undefined, 100),
-                db.query('something', undefined, NaN),
-                db.query('something', undefined, 1 / 0),
-                db.query('something', undefined, -1 / 0),
-                db.query('something', undefined, 2.45)])
+                db.query(`something`, undefined, ``),
+                db.query(`something`, undefined, `2`),
+                db.query(`something`, undefined, -1),
+                db.query(`something`, undefined, 0),
+                db.query(`something`, undefined, 100),
+                db.query(`something`, undefined, NaN),
+                db.query(`something`, undefined, 1 / 0),
+                db.query(`something`, undefined, -1 / 0),
+                db.query(`something`, undefined, 2.45)])
                 .catch(err => {
                     result = err;
                 })
                 .finally(done);
         });
-        it('must throw an error', () => {
-            const error = 'Invalid Query Result Mask specified.';
+        it(`must throw an error`, () => {
+            const error = `Invalid Query Result Mask specified.`;
             expect(result.length).toBe(9);
             for (let i = 0; i < 9; i++) {
                 expect(result[i] instanceof TypeError).toBe(true);
@@ -1078,14 +1078,14 @@ describe('Executing method query', () => {
         });
     });
 
-    describe('with query as function', () => {
-        describe('for normal functions', () => {
+    describe(`with query as function`, () => {
+        describe(`for normal functions`, () => {
             const context = [];
-            const getQuery1 = () => 'select 123 as value';
+            const getQuery1 = () => `select 123 as value`;
 
             function getQuery2(values) {
                 context.push(this);
-                return pgp.as.format('select $1 as value', values);
+                return pgp.as.format(`select $1 as value`, values);
             }
 
             const getQuery3 = () => getQuery2;
@@ -1103,16 +1103,16 @@ describe('Executing method query', () => {
                     })
                     .finally(done);
             });
-            it('must return the right result', () => {
+            it(`must return the right result`, () => {
                 expect(result[0]).toEqual({value: 123});
                 expect(result[1]).toEqual({value: 456}); // test that values are passing in correctly;
                 expect(result[2]).toEqual({value: 789});// must pass values through recursive functions
                 expect(context).toEqual([456, 789]); // this context must be passed in correctly
             });
         });
-        describe('for error-throwing functions', () => {
+        describe(`for error-throwing functions`, () => {
             function throwError() {
-                throw new Error('Ops!');
+                throw new Error(`Ops!`);
             }
 
             let error, query, params;
@@ -1127,10 +1127,10 @@ describe('Executing method query', () => {
                     })
                     .finally(done);
             });
-            it('must reject with the error', () => {
-                expect(error.message).toBe('Ops!');
+            it(`must reject with the error`, () => {
+                expect(error.message).toBe(`Ops!`);
             });
-            it('must notify with the right query and params', () => {
+            it(`must notify with the right query and params`, () => {
                 expect(query).toBe(npm.util.inspect(throwError));
                 expect(params).toBe(123);
             });
@@ -1138,7 +1138,7 @@ describe('Executing method query', () => {
                 delete options.error;
             });
         });
-        describe('for async functions', () => {
+        describe(`for async functions`, () => {
             async function invalidFunc() {
             }
 
@@ -1154,10 +1154,10 @@ describe('Executing method query', () => {
                     })
                     .finally(done);
             });
-            it('must reject with the right error', () => {
-                expect(error.message).toBe('Cannot use asynchronous functions with query formatting.');
+            it(`must reject with the right error`, () => {
+                expect(error.message).toBe(`Cannot use asynchronous functions with query formatting.`);
             });
-            it('must notify with the right query and params', () => {
+            it(`must notify with the right query and params`, () => {
                 expect(query).toBe(npm.util.inspect(invalidFunc));
                 expect(params).toBe(123);
             });
@@ -1168,28 +1168,28 @@ describe('Executing method query', () => {
     });
 });
 
-describe('Transactions', () => {
+describe(`Transactions`, () => {
 
     // NOTE: The same test for 100,000 inserts works also the same.
     // Inserting just 10,000 records to avoid exceeding memory quota on the test server.
     // Also, the client shouldn't execute more than 10,000 queries within a single transaction,
     // huge transactions should  be throttled into smaller chunks.
-    describe('A complex transaction with 10,000 inserts', () => {
+    describe(`A complex transaction with 10,000 inserts`, () => {
 
         let result, error, context, THIS, tag;
         beforeEach(done => {
-            db.tx('complex', function (t) {
+            db.tx(`complex`, function (t) {
                 tag = t.ctx.tag;
                 THIS = this;
                 context = t;
                 const queries = [
-                    this.none('drop table if exists test'),
-                    this.none('create table test(id serial, name text)')
+                    this.none(`drop table if exists test`),
+                    this.none(`create table test(id serial, name text)`)
                 ];
                 for (let i = 1; i <= 10000; i++) {
-                    queries.push(this.none('insert into test(name) values($1)', 'name-' + i));
+                    queries.push(this.none(`insert into test(name) values($1)`, `name-` + i));
                 }
-                queries.push(this.one('select count(*) from test'));
+                queries.push(this.one(`select count(*) from test`));
                 return this.batch(queries);
             })
                 .then(data => {
@@ -1198,19 +1198,19 @@ describe('Transactions', () => {
                 });
         }, 20000);
 
-        it('must not fail', () => {
+        it(`must not fail`, () => {
             expect(THIS === context).toBe(true);
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(10003); // drop + create + insert x 10000 + select;
             const last = result[result.length - 1]; // result from the select;
-            expect(typeof last).toBe('object');
-            expect(last.count).toBe('10000'); // last one must be the counter (as text);
-            expect(tag).toBe('complex');
+            expect(typeof last).toBe(`object`);
+            expect(last.count).toBe(`10000`); // last one must be the counter (as text);
+            expect(tag).toBe(`complex`);
         });
     });
 
-    describe('When a nested transaction fails', () => {
+    describe(`When a nested transaction fails`, () => {
         let error, THIS, context, ctx;
         beforeEach(done => {
             options.capSQL = true;
@@ -1218,10 +1218,10 @@ describe('Transactions', () => {
                 THIS = this;
                 context = t;
                 return this.batch([
-                    this.none('update users set login=$1 where id=$2', ['TestName', 1]),
+                    this.none(`update users set login=$1 where id=$2`, [`TestName`, 1]),
                     this.tx(function () {
                         ctx = this.ctx;
-                        throw new Error('Nested TX failure');
+                        throw new Error(`Nested TX failure`);
                     })
                 ]);
             })
@@ -1230,10 +1230,10 @@ describe('Transactions', () => {
                 })
                 .finally(done);
         });
-        it('must return error from the nested transaction', () => {
+        it(`must return error from the nested transaction`, () => {
             expect(THIS === context).toBe(true);
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Nested TX failure');
+            expect(error.message).toBe(`Nested TX failure`);
             expect(ctx.level).toBe(1);
             expect(ctx.txLevel).toBe(1);
         });
@@ -1242,7 +1242,7 @@ describe('Transactions', () => {
         });
     });
 
-    describe('Detached Transaction', () => {
+    describe(`Detached Transaction`, () => {
         let error;
         beforeEach(done => {
             db.tx(t => {
@@ -1250,33 +1250,33 @@ describe('Transactions', () => {
             })
                 .then(obj => {
                     // cannot use transaction context outside of transaction callback:
-                    return obj.query('select 123');
+                    return obj.query(`select 123`);
                 })
                 .catch(err => {
                     error = err;
                 })
                 .finally(done);
         });
-        it('must reject when querying after the callback', () => {
+        it(`must reject when querying after the callback`, () => {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe($text.looseQuery);
         });
     });
 
-    describe('bottom-level failure', () => {
+    describe(`bottom-level failure`, () => {
         let result, nestError, THIS1, THIS2, context1, context2;
         beforeEach(done => {
             db.tx(function (t1) {
                 THIS1 = this;
                 context1 = t1;
                 return this.batch([
-                    this.none('update users set login=$1', 'External'),
+                    this.none(`update users set login=$1`, `External`),
                     this.tx(function (t2) {
                         THIS2 = this;
                         context2 = t2;
                         return this.batch([
-                            this.none('update users set login=$1', 'Internal'),
-                            this.one('select * from unknownTable') // emulating a bad query;
+                            this.none(`update users set login=$1`, `Internal`),
+                            this.one(`select * from unknownTable`) // emulating a bad query;
                         ]);
                     })
                 ]);
@@ -1284,8 +1284,8 @@ describe('Transactions', () => {
                 .then(dummy, reason => {
                     nestError = reason.data[1].result.data[1].result;
                     return promise.all([
-                        db.one('select count(*) from users where login=$1', 'External'), // 0 is expected;
-                        db.one('select count(*) from users where login=$1', 'Internal') // 0 is expected;
+                        db.one(`select count(*) from users where login=$1`, `External`), // 0 is expected;
+                        db.one(`select count(*) from users where login=$1`, `Internal`) // 0 is expected;
                     ]);
                 })
                 .then(data => {
@@ -1293,7 +1293,7 @@ describe('Transactions', () => {
                 })
                 .finally(done);
         });
-        it('must rollback everything', () => {
+        it(`must rollback everything`, () => {
             expect(THIS1 && THIS2 && context1 && context2).toBeTruthy();
             expect(THIS1 === context1).toBe(true);
             expect(THIS2 === context2).toBe(true);
@@ -1301,32 +1301,32 @@ describe('Transactions', () => {
             expect(THIS1.ctx.inTransaction).toBe(true);
             expect(THIS2.ctx.inTransaction).toBe(true);
             expect(nestError instanceof Error).toBe(true);
-            expect(nestError.message).toContain('relation "unknowntable" does not exist');
+            expect(nestError.message).toContain(`relation "unknowntable" does not exist`);
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(2);
-            expect(result[0].count).toBe('0'); // no changes within parent transaction;
-            expect(result[1].count).toBe('0'); // no changes within nested transaction;
+            expect(result[0].count).toBe(`0`); // no changes within parent transaction;
+            expect(result[1].count).toBe(`0`); // no changes within nested transaction;
         });
     });
 
-    describe('top-level failure', () => {
+    describe(`top-level failure`, () => {
         let result;
         beforeEach(done => {
             db.tx(function () {
                 return this.batch([
-                    this.none('update users set login=$1 where id=1', 'Test'),
+                    this.none(`update users set login=$1 where id=1`, `Test`),
                     this.tx(function () {
-                        return this.none('update person set name=$1 where id=1', 'Test');
+                        return this.none(`update person set name=$1 where id=1`, `Test`);
                     })
                 ])
                     .then(() => {
-                        return promise.reject(new Error('ops!'));
+                        return promise.reject(new Error(`ops!`));
                     });
             })
                 .then(dummy, () => {
                     return promise.all([
-                        db.one('select count(*) from users where login=$1', 'Test'), // 0 is expected;
-                        db.one('select count(*) from person where name=$1', 'Test') // 0 is expected;
+                        db.one(`select count(*) from users where login=$1`, `Test`), // 0 is expected;
+                        db.one(`select count(*) from person where name=$1`, `Test`) // 0 is expected;
                     ]);
                 })
                 .then(data => {
@@ -1334,16 +1334,16 @@ describe('Transactions', () => {
                     done();
                 });
         });
-        it('must rollback everything', () => {
+        it(`must rollback everything`, () => {
             expect(result instanceof Array).toBe(true);
             expect(result.length).toBe(2);
-            expect(result[0].count).toBe('0'); // no changes within parent transaction;
-            expect(result[1].count).toBe('0'); // no changes within nested transaction;
+            expect(result[0].count).toBe(`0`); // no changes within parent transaction;
+            expect(result[1].count).toBe(`0`); // no changes within nested transaction;
         });
     });
 
-    describe('Calling without a callback', () => {
-        describe('for a transaction', () => {
+    describe(`Calling without a callback`, () => {
+        describe(`for a transaction`, () => {
             let error;
             beforeEach(done => {
                 db.tx()
@@ -1352,12 +1352,12 @@ describe('Transactions', () => {
                     })
                     .finally(done);
             });
-            it('must reject', () => {
+            it(`must reject`, () => {
                 expect(error instanceof TypeError).toBe(true);
-                expect(error.message).toBe('Callback function is required.');
+                expect(error.message).toBe(`Callback function is required.`);
             });
         });
-        describe('for a task', () => {
+        describe(`for a task`, () => {
             let error;
             beforeEach(done => {
                 db.task()
@@ -1366,15 +1366,15 @@ describe('Transactions', () => {
                     })
                     .finally(done);
             });
-            it('must reject', () => {
+            it(`must reject`, () => {
                 expect(error instanceof TypeError).toBe(true);
-                expect(error.message).toBe('Callback function is required.');
+                expect(error.message).toBe(`Callback function is required.`);
             });
         });
 
     });
 
-    describe('A nested transaction (10 levels)', () => {
+    describe(`A nested transaction (10 levels)`, () => {
         let result, THIS, context;
         const ctx = [];
         beforeEach(done => {
@@ -1392,7 +1392,7 @@ describe('Transactions', () => {
                                 return this.tx(5, function () {
                                     ctx.push(this.ctx);
                                     return this.batch([
-                                        this.one('select \'Hello\' as word'),
+                                        this.one(`select 'Hello' as word`),
                                         this.tx(6, function () {
                                             ctx.push(this.ctx);
                                             return this.tx(7, function () {
@@ -1403,7 +1403,7 @@ describe('Transactions', () => {
                                                         ctx.push(this.ctx);
                                                         THIS = this;
                                                         context = t;
-                                                        return this.one('select \'World!\' as word');
+                                                        return this.one(`select 'World!' as word`);
                                                     });
                                                 });
                                             });
@@ -1420,10 +1420,10 @@ describe('Transactions', () => {
                     done();
                 });
         });
-        it('must work the same no matter how many levels', () => {
+        it(`must work the same no matter how many levels`, () => {
             expect(THIS && context && THIS === context).toBeTruthy();
             expect(result instanceof Array).toBe(true);
-            expect(result).toEqual([{word: 'Hello'}, {word: 'World!'}]);
+            expect(result).toEqual([{word: `Hello`}, {word: `World!`}]);
             for (let i = 0; i < 10; i++) {
                 expect(ctx[i].tag).toBe(i);
                 expect(ctx[i].inTransaction).toBe(true);
@@ -1444,7 +1444,7 @@ describe('Transactions', () => {
         });
     });
 
-    describe('Closing after a regular issue', () => {
+    describe(`Closing after a regular issue`, () => {
         let error, query;
         beforeEach(done => {
             options.query = e => {
@@ -1452,7 +1452,7 @@ describe('Transactions', () => {
             };
             db.tx(() => {
                 throw {
-                    code: 'something'
+                    code: `something`
                 };
             })
                 .catch(e => {
@@ -1460,38 +1460,38 @@ describe('Transactions', () => {
                     done();
                 });
         });
-        it('Must end with ROLLBACK', () => {
-            expect(error).toEqual({code: 'something'});
-            expect(query).toBe('rollback');
+        it(`Must end with ROLLBACK`, () => {
+            expect(error).toEqual({code: `something`});
+            expect(query).toBe(`rollback`);
         });
         afterEach(() => {
             delete options.query;
         });
     });
 
-    describe('Closing after a protocol violation', () => {
+    describe(`Closing after a protocol violation`, () => {
         let error, value;
         beforeEach(done => {
             db.task(task =>
-                task.tx(tx => tx.one('select \'\u0000\''))
+                task.tx(tx => tx.one(`select '\u0000'`))
                     .then(() => {
-                        throw new Error('expected error');
+                        throw new Error(`expected error`);
                     }, () => {
                     })
-                    .then(() => task.tx(tx => tx.one('select \'hi\' as v')))
+                    .then(() => task.tx(tx => tx.one(`select 'hi' as v`)))
             ).then(row => {
                 value = row.v;
             }, e => {
                 error = e;
             }).then(done);
         });
-        it('Must not have an error', () => {
-            expect(value).toEqual('hi');
+        it(`Must not have an error`, () => {
+            expect(value).toEqual(`hi`);
             expect(error).toEqual(undefined);
         });
     });
 
-    describe('Closing after a connectivity issue', () => {
+    describe(`Closing after a connectivity issue`, () => {
         let error, query;
         beforeEach(done => {
             options.query = e => {
@@ -1499,7 +1499,7 @@ describe('Transactions', () => {
             };
             db.tx(() => {
                 throw {
-                    code: 'ECONNRESET'
+                    code: `ECONNRESET`
                 };
             })
                 .catch(e => {
@@ -1507,25 +1507,25 @@ describe('Transactions', () => {
                     done();
                 });
         });
-        it('must still execute ROLLBACK', () => {
-            expect(error).toEqual({code: 'ECONNRESET'});
-            expect(query).toBe('rollback');
+        it(`must still execute ROLLBACK`, () => {
+            expect(error).toEqual({code: `ECONNRESET`});
+            expect(query).toBe(`rollback`);
         });
         afterEach(() => {
             delete options.query;
         });
     });
 
-    describe('db side closing of the connection during slow-verify', () => {
+    describe(`db side closing of the connection during slow-verify`, () => {
         // dumb connection cloning;
         const singleCN = JSON.parse(JSON.stringify(dbHeader.cn));
         singleCN.max = 1;
         // simulate a slow verify call;
         singleCN.verify = (client, done) => {
-            client.on('error', () => {
+            client.on(`error`, () => {
                 // Ignore
             });
-            client.query('SELECT pg_sleep(3);', done);
+            client.query(`SELECT pg_sleep(3);`, done);
         };
         const dbSingleCN = pgp(singleCN);
 
@@ -1542,7 +1542,7 @@ describe('Transactions', () => {
                 // Terminate the connections during verify, which causes an 'error' event from the pool
                 promise.delay(500).then(() => {
                     return db.query(
-                        'SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid();'
+                        `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid();`
                     );
                 })
             ]).then(() => {
@@ -1552,25 +1552,25 @@ describe('Transactions', () => {
             });
         });
 
-        it('returns the postgres error', () => {
+        it(`returns the postgres error`, () => {
             expect(error instanceof Error).toBe(true);
             if (options.pgNative) {
                 // we do not test it for native bindings
             } else {
-                if (error.code.includes('ECONNRESET')) {
-                    expect(error.code).toBe('ECONNRESET');
-                    expect(error.message).toBe('read ECONNRESET');
+                if (error.code.includes(`ECONNRESET`)) {
+                    expect(error.code).toBe(`ECONNRESET`);
+                    expect(error.message).toBe(`read ECONNRESET`);
                 } else {
-                    expect(error.code).toBe('57P01');
-                    expect(error.message).toBe('terminating connection due to administrator command');
+                    expect(error.code).toBe(`57P01`);
+                    expect(error.message).toBe(`terminating connection due to administrator command`);
                 }
             }
         });
     });
 });
 
-describe('Conditional Transaction', () => {
-    describe('with default parameters', () => {
+describe(`Conditional Transaction`, () => {
+    describe(`with default parameters`, () => {
         let firstCtx, secondCtx;
         beforeEach(done => {
             db.txIf(t => {
@@ -1581,14 +1581,14 @@ describe('Conditional Transaction', () => {
             })
                 .finally(done);
         });
-        it('must execute a transaction on the top level', () => {
+        it(`must execute a transaction on the top level`, () => {
             expect(firstCtx.isTX).toBe(true);
         });
-        it('must execute a task on lower levels', () => {
+        it(`must execute a task on lower levels`, () => {
             expect(secondCtx.isTX).toBe(false);
         });
     });
-    describe('with condition simple override', () => {
+    describe(`with condition simple override`, () => {
         let firstCtx, secondCtx;
         beforeEach(done => {
             db.txIf({cnd: false}, t => {
@@ -1599,12 +1599,12 @@ describe('Conditional Transaction', () => {
             })
                 .finally(done);
         });
-        it('must change the nested transaction logic', () => {
+        it(`must change the nested transaction logic`, () => {
             expect(firstCtx.isTX).toBe(false);
             expect(secondCtx.isTX).toBe(true);
         });
     });
-    describe('with successful condition-function override', () => {
+    describe(`with successful condition-function override`, () => {
         let firstCtx, secondCtx;
         beforeEach(done => {
             db.txIf({cnd: () => false}, t => {
@@ -1615,15 +1615,15 @@ describe('Conditional Transaction', () => {
             })
                 .finally(done);
         });
-        it('must change the nested transaction logic', () => {
+        it(`must change the nested transaction logic`, () => {
             expect(firstCtx.isTX).toBe(false);
             expect(secondCtx.isTX).toBe(true);
         });
     });
 
-    describe('with error condition-function override', () => {
+    describe(`with error condition-function override`, () => {
         function errorCondition() {
-            throw new Error('Ops!');
+            throw new Error(`Ops!`);
         }
 
         let error;
@@ -1635,14 +1635,14 @@ describe('Conditional Transaction', () => {
                 })
                 .finally(done);
         });
-        it('must reject with the right error', () => {
-            expect(error.message).toBe('Ops!');
+        it(`must reject with the right error`, () => {
+            expect(error.message).toBe(`Ops!`);
         });
     });
 });
 
-describe('Reusable Transaction', () => {
-    describe('as value with default condition', () => {
+describe(`Reusable Transaction`, () => {
+    describe(`as value with default condition`, () => {
         let ctx1, ctx2;
         beforeEach(done => {
             db.tx(t1 => {
@@ -1653,29 +1653,29 @@ describe('Reusable Transaction', () => {
             })
                 .finally(done);
         });
-        it('must reuse context', () => {
+        it(`must reuse context`, () => {
             expect(ctx1).toBe(ctx2);
         });
     });
-    describe('as value with true condition', () => {
+    describe(`as value with true condition`, () => {
         let ctx1, ctx2;
         beforeEach(done => {
-            db.tx('first', t1 => {
+            db.tx(`first`, t1 => {
                 ctx1 = t1.ctx;
-                return t1.txIf({tag: 'second', cnd: true, reusable: false}, t2 => {
+                return t1.txIf({tag: `second`, cnd: true, reusable: false}, t2 => {
                     ctx2 = t2.ctx;
                 });
             })
                 .finally(done);
         });
-        it('must create a new sub-transaction context', () => {
+        it(`must create a new sub-transaction context`, () => {
             expect(ctx1).not.toBe(ctx2);
-            expect(ctx1.tag).toBe('first');
-            expect(ctx2.tag).toBe('second');
+            expect(ctx1.tag).toBe(`first`);
+            expect(ctx2.tag).toBe(`second`);
         });
     });
 
-    describe('as successful function', () => {
+    describe(`as successful function`, () => {
         function getReusable() {
             return true;
         }
@@ -1690,13 +1690,13 @@ describe('Reusable Transaction', () => {
             })
                 .finally(done);
         });
-        it('must reuse context', () => {
+        it(`must reuse context`, () => {
             expect(ctx1).toBe(ctx2);
         });
     });
-    describe('as error function', () => {
+    describe(`as error function`, () => {
         function getReusable() {
-            throw new Error('Ops!');
+            throw new Error(`Ops!`);
         }
 
         let error;
@@ -1710,14 +1710,14 @@ describe('Reusable Transaction', () => {
                 })
                 .finally(done);
         });
-        it('must reject with the right error', () => {
-            expect(error.message).toBe('Ops!');
+        it(`must reject with the right error`, () => {
+            expect(error.message).toBe(`Ops!`);
         });
     });
 });
 
-describe('Conditional Task', () => {
-    describe('with default parameters', () => {
+describe(`Conditional Task`, () => {
+    describe(`with default parameters`, () => {
         let firstCtx, secondCtx;
         beforeEach(done => {
             db.taskIf(t => {
@@ -1728,11 +1728,11 @@ describe('Conditional Task', () => {
             })
                 .finally(done);
         });
-        it('must reuse the task', () => {
+        it(`must reuse the task`, () => {
             expect(secondCtx).toBe(firstCtx);
         });
     });
-    describe('with successful condition-function override', () => {
+    describe(`with successful condition-function override`, () => {
         let firstCtx, secondCtx;
         beforeEach(done => {
             db.taskIf({cnd: true}, t1 => {
@@ -1743,14 +1743,14 @@ describe('Conditional Task', () => {
             })
                 .finally(done);
         });
-        it('must create new task as required', () => {
+        it(`must create new task as required`, () => {
             expect(firstCtx).toBe(secondCtx);
         });
     });
 
-    describe('with error condition-function override', () => {
+    describe(`with error condition-function override`, () => {
         function errorCondition() {
-            throw new Error('Ops!');
+            throw new Error(`Ops!`);
         }
 
         let error;
@@ -1762,32 +1762,32 @@ describe('Conditional Task', () => {
                 })
                 .finally(done);
         });
-        it('must reject with the right error', () => {
-            expect(error.message).toBe('Ops!');
+        it(`must reject with the right error`, () => {
+            expect(error.message).toBe(`Ops!`);
         });
     });
 });
 
-describe('Return data from a query must match the request type', () => {
+describe(`Return data from a query must match the request type`, () => {
 
-    describe('when no data returned', () => {
+    describe(`when no data returned`, () => {
         let error;
         beforeEach(done => {
-            db.none('select * from person where name=$1', 'John')
+            db.none(`select * from person where name=$1`, `John`)
                 .catch(err => {
                     error = err;
                     done();
                 });
         });
-        it('method \'none\' must return an error', () => {
+        it(`method 'none' must return an error`, () => {
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
             expect(error.message).toBe($text.notEmpty);
         });
     });
 
-    it('method \'one\' must throw an error when there was no data returned', () => {
+    it(`method 'one' must throw an error when there was no data returned`, () => {
         let result, error;
-        db.one('select * from person where name=$1', 'Unknown')
+        db.one(`select * from person where name=$1`, `Unknown`)
             .then(data => {
                 result = data;
             }, reason => {
@@ -1796,7 +1796,7 @@ describe('Return data from a query must match the request type', () => {
             });
         waitsFor(() => {
             return result !== undefined;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(result).toBeNull();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
@@ -1804,9 +1804,9 @@ describe('Return data from a query must match the request type', () => {
         });
     });
 
-    it('method \'one\' must throw an error when more than one row was returned', () => {
+    it(`method 'one' must throw an error when more than one row was returned`, () => {
         let result, error;
-        db.one('select * from person')
+        db.one(`select * from person`)
             .then(data => {
                 result = data;
             }, reason => {
@@ -1815,7 +1815,7 @@ describe('Return data from a query must match the request type', () => {
             });
         waitsFor(() => {
             return result !== undefined;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(result).toBeNull();
             expect(error instanceof pgp.errors.QueryResultError).toBe(true);
@@ -1823,27 +1823,27 @@ describe('Return data from a query must match the request type', () => {
         });
     });
 
-    it('method \'oneOrNone\' must resolve into null when no data returned', () => {
+    it(`method 'oneOrNone' must resolve into null when no data returned`, () => {
         let result, error;
-        db.oneOrNone('select * from person where name=$1', 'Unknown')
+        db.oneOrNone(`select * from person where name=$1`, `Unknown`)
             .then(data => {
                 result = data;
             }, reason => {
-                result = 'whatever';
+                result = `whatever`;
                 error = reason;
             });
         waitsFor(() => {
             return result !== undefined;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(error).toBeUndefined();
             expect(result).toBeNull();
         });
     });
 
-    it('method \'any\' must return an empty array when no records found', () => {
+    it(`method 'any' must return an empty array when no records found`, () => {
         let result, error;
-        db.any('select * from person where name=\'Unknown\'')
+        db.any(`select * from person where name='Unknown'`)
             .then(data => {
                 result = data;
             }, reason => {
@@ -1852,7 +1852,7 @@ describe('Return data from a query must match the request type', () => {
             });
         waitsFor(() => {
             return result !== undefined;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(error).toBeUndefined();
             expect(result instanceof Array).toBe(true);
@@ -1862,10 +1862,10 @@ describe('Return data from a query must match the request type', () => {
 
 });
 
-describe('Queries must not allow invalid QRM (Query Request Mask) combinations', () => {
-    it('method \'query\' must throw an error when mask is one+many', () => {
+describe(`Queries must not allow invalid QRM (Query Request Mask) combinations`, () => {
+    it(`method 'query' must throw an error when mask is one+many`, () => {
         let result, error;
-        db.query('select * from person', undefined, pgp.queryResult.one | pgp.queryResult.many)
+        db.query(`select * from person`, undefined, pgp.queryResult.one | pgp.queryResult.many)
             .then(data => {
                 result = data;
             }, reason => {
@@ -1874,16 +1874,16 @@ describe('Queries must not allow invalid QRM (Query Request Mask) combinations',
             });
         waitsFor(() => {
             return result !== undefined;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(result).toBeNull();
             expect(error instanceof TypeError).toBe(true);
-            expect(error.message).toBe('Invalid Query Result Mask specified.');
+            expect(error.message).toBe(`Invalid Query Result Mask specified.`);
         });
     });
-    it('method \'query\' must throw an error when QRM is > 6', () => {
+    it(`method 'query' must throw an error when QRM is > 6`, () => {
         let result, error;
-        db.query('select * from person', undefined, 7)
+        db.query(`select * from person`, undefined, 7)
             .then(data => {
                 result = data;
             }, reason => {
@@ -1892,16 +1892,16 @@ describe('Queries must not allow invalid QRM (Query Request Mask) combinations',
             });
         waitsFor(() => {
             return result !== undefined;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(result).toBeNull();
             expect(error instanceof TypeError).toBe(true);
-            expect(error.message).toBe('Invalid Query Result Mask specified.');
+            expect(error.message).toBe(`Invalid Query Result Mask specified.`);
         });
     });
-    it('method \'query\' must throw an error when QRM is < 1', () => {
+    it(`method 'query' must throw an error when QRM is < 1`, () => {
         let result, error;
-        db.query('select * from person', undefined, 0)
+        db.query(`select * from person`, undefined, 0)
             .then(data => {
                 result = data;
             })
@@ -1911,17 +1911,17 @@ describe('Queries must not allow invalid QRM (Query Request Mask) combinations',
             });
         waitsFor(() => {
             return result !== undefined;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(result).toBeNull();
             expect(error instanceof TypeError).toBe(true);
-            expect(error.message).toBe('Invalid Query Result Mask specified.');
+            expect(error.message).toBe(`Invalid Query Result Mask specified.`);
         });
     });
 
-    it('method \'query\' must throw an error when QRM is of the wrong type', () => {
+    it(`method 'query' must throw an error when QRM is of the wrong type`, () => {
         let result, error;
-        db.query('select * from person', undefined, 'wrong qrm')
+        db.query(`select * from person`, undefined, `wrong qrm`)
             .then(data => {
                 result = data;
             })
@@ -1931,80 +1931,80 @@ describe('Queries must not allow invalid QRM (Query Request Mask) combinations',
             });
         waitsFor(() => {
             return result !== undefined;
-        }, 'Query timed out', 5000);
+        }, `Query timed out`, 5000);
         runs(() => {
             expect(result).toBeNull();
             expect(error instanceof TypeError).toBe(true);
-            expect(error.message).toBe('Invalid Query Result Mask specified.');
+            expect(error.message).toBe(`Invalid Query Result Mask specified.`);
         });
     });
 
 });
 
-describe('Method \'result\'', () => {
+describe(`Method 'result'`, () => {
 
-    describe('for a single query', () => {
+    describe(`for a single query`, () => {
         let result;
         beforeEach(done => {
-            db.result('select 1 as one')
+            db.result(`select 1 as one`)
                 .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must resolve with a single Result object', () => {
+        it(`must resolve with a single Result object`, () => {
             expect(isResult(result)).toBe(true);
             expect(result.rows).toEqual([{one: 1}]);
-            expect(typeof result.duration).toBe('number');
+            expect(typeof result.duration).toBe(`number`);
         });
     });
 
-    describe('for a multi-query', () => {
+    describe(`for a multi-query`, () => {
         let result;
         beforeEach(done => {
-            db.result('select 1 as one;select 2 as two')
+            db.result(`select 1 as one;select 2 as two`)
                 .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must resolve with the last Result object', () => {
+        it(`must resolve with the last Result object`, () => {
             expect(isResult(result)).toBe(true);
             expect(result.rows).toEqual([{two: 2}]);
-            expect('duration' in result).toBe(false); // must be present in multi-query results
+            expect(`duration` in result).toBe(false); // must be present in multi-query results
         });
     });
 
 });
 
-describe('Method \'multiResult\'', () => {
+describe(`Method 'multiResult'`, () => {
 
-    describe('for a single query', () => {
+    describe(`for a single query`, () => {
         let result;
         beforeEach(done => {
-            db.multiResult('select 1 as one')
+            db.multiResult(`select 1 as one`)
                 .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must resolve with one-element array of Result', () => {
+        it(`must resolve with one-element array of Result`, () => {
             expect(Array.isArray(result)).toBe(true);
             expect(result.length).toBe(1);
             expect(result[0].rows).toEqual([{one: 1}]);
         });
     });
 
-    describe('for a multi-query', () => {
+    describe(`for a multi-query`, () => {
         let result;
         beforeEach(done => {
-            db.multiResult('select 1 as one;select 2 as two;select * from users where id =- 1;')
+            db.multiResult(`select 1 as one;select 2 as two;select * from users where id =- 1;`)
                 .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must resolve with an array of Results', () => {
+        it(`must resolve with an array of Results`, () => {
             expect(Array.isArray(result)).toBe(true);
             expect(result.length).toBe(3);
             expect(result[0].rows).toEqual([{one: 1}]);
@@ -2015,34 +2015,34 @@ describe('Method \'multiResult\'', () => {
 
 });
 
-describe('Method \'multi\'', () => {
+describe(`Method 'multi'`, () => {
 
-    describe('for a single query', () => {
+    describe(`for a single query`, () => {
         let result;
         beforeEach(done => {
-            db.multi('select 1 as one')
+            db.multi(`select 1 as one`)
                 .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must resolve with one-element array', () => {
+        it(`must resolve with one-element array`, () => {
             expect(Array.isArray(result)).toBe(true);
             expect(result.length).toBe(1);
             expect(result[0]).toEqual([{one: 1}]);
         });
     });
 
-    describe('for a multi-query', () => {
+    describe(`for a multi-query`, () => {
         let result;
         beforeEach(done => {
-            db.multi('select 1 as one;select 2 as two;select * from users where id =- 1;')
+            db.multi(`select 1 as one;select 2 as two;select * from users where id =- 1;`)
                 .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must resolve with an array of arrays', () => {
+        it(`must resolve with an array of arrays`, () => {
             expect(Array.isArray(result)).toBe(true);
             expect(result.length).toBe(3);
             expect(result[0]).toEqual([{one: 1}]);
@@ -2053,19 +2053,19 @@ describe('Method \'multi\'', () => {
 
 });
 
-describe('Querying an entity', () => {
+describe(`Querying an entity`, () => {
 
-    describe('multi-row function', () => {
+    describe(`multi-row function`, () => {
         let result;
         beforeEach(done => {
             options.capSQL = true;
-            db.func('get_users')
+            db.func(`get_users`)
                 .then(data => {
                     result = data;
                 })
                 .finally(done);
         });
-        it('must return all rows', () => {
+        it(`must return all rows`, () => {
             expect(result instanceof Array).toBe(true);
             expect(result.length >= 4).toBe(true);
         });
@@ -2074,39 +2074,39 @@ describe('Querying an entity', () => {
         });
     });
 
-    describe('single-row function', () => {
+    describe(`single-row function`, () => {
         let result;
         beforeEach(done => {
-            db.func('findUser', 1, pgp.queryResult.one)
+            db.func(`findUser`, 1, pgp.queryResult.one)
                 .then(data => {
                     result = data;
                 })
                 .finally(done);
         });
-        it('must return one object', () => {
-            expect(typeof result).toBe('object');
-            expect('id' in result && 'login' in result && 'active' in result).toBe(true);
+        it(`must return one object`, () => {
+            expect(typeof result).toBe(`object`);
+            expect(`id` in result && `login` in result && `active` in result).toBe(true);
         });
     });
 
-    describe('with invalid parameters', () => {
+    describe(`with invalid parameters`, () => {
         let result;
         beforeEach(done => {
             promise.any([
                 db.func(), // undefined function name;
-                db.func(''), // empty-string function name;
-                db.func('   '), // white-space string for function name;
+                db.func(``), // empty-string function name;
+                db.func(`   `), // white-space string for function name;
                 db.func(1), // invalid-type function name;
                 db.func(null), // null function name;
                 // query function overrides:
                 db.query({
-                    entity: null, type: 'func'
+                    entity: null, type: `func`
                 }),
                 db.query({
-                    entity: '', type: 'func'
+                    entity: ``, type: `func`
                 }),
                 db.query({
-                    entity: '   ', type: 'func'
+                    entity: `   `, type: `func`
                 })
             ])
                 .catch(reason => {
@@ -2114,7 +2114,7 @@ describe('Querying an entity', () => {
                 })
                 .finally(done);
         });
-        it('must reject with the right error', () => {
+        it(`must reject with the right error`, () => {
             expect(result.length).toBe(8);
             for (let i = 0; i < result.length; i++) {
                 expect(result[i] instanceof Error).toBe(true);
@@ -2123,76 +2123,76 @@ describe('Querying an entity', () => {
         });
     });
 
-    describe('proc with bad parameters', () => {
+    describe(`proc with bad parameters`, () => {
         let result, errCtx;
         beforeEach(done => {
             options.error = function (err, e) {
                 errCtx = e;
             };
-            db.proc('camelCase', [() => {
-                throw new Error('bad proc params');
+            db.proc(`camelCase`, [() => {
+                throw new Error(`bad proc params`);
             }])
                 .catch(reason => {
                     result = reason;
                 })
                 .finally(done);
         });
-        it('must throw an error', () => {
+        it(`must throw an error`, () => {
             expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe('bad proc params');
+            expect(result.message).toBe(`bad proc params`);
             // NOTE: camel-case ignored within the error query;
-            expect(errCtx.query).toBe('call camelCase(...)');
+            expect(errCtx.query).toBe(`call camelCase(...)`);
         });
         afterEach(() => {
             delete options.error;
         });
     });
 
-    describe('func with bad parameters', () => {
+    describe(`func with bad parameters`, () => {
         let result, errCtx;
         beforeEach(done => {
             options.error = function (err, e) {
                 errCtx = e;
             };
-            db.func('camelCase', [() => {
-                throw new Error('bad func params');
+            db.func(`camelCase`, [() => {
+                throw new Error(`bad func params`);
             }])
                 .catch(reason => {
                     result = reason;
                 })
                 .finally(done);
         });
-        it('must throw an error', () => {
+        it(`must throw an error`, () => {
             expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe('bad func params');
+            expect(result.message).toBe(`bad func params`);
             // NOTE: camel-case ignored within the error query;
-            expect(errCtx.query).toBe('select * from camelCase(...)');
+            expect(errCtx.query).toBe(`select * from camelCase(...)`);
         });
         afterEach(() => {
             delete options.error;
         });
     });
 
-    describe('with bad proc params + caps', () => {
+    describe(`with bad proc params + caps`, () => {
         let result, errCtx;
         beforeEach(done => {
             options.error = function (err, e) {
                 errCtx = e;
             };
             options.capSQL = true;
-            db.proc('camelCase', () => {
-                throw new Error('bad proc name');
+            db.proc(`camelCase`, () => {
+                throw new Error(`bad proc name`);
             })
                 .catch(reason => {
                     result = reason;
                 })
                 .finally(done);
         });
-        it('must throw an error', () => {
+        it(`must throw an error`, () => {
             expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe('bad proc name');
+            expect(result.message).toBe(`bad proc name`);
             // NOTE: camel-case ignored within the error query;
-            expect(errCtx.query).toBe('CALL camelCase(...)');
+            expect(errCtx.query).toBe(`CALL camelCase(...)`);
         });
         afterEach(() => {
             delete options.error;
@@ -2200,23 +2200,23 @@ describe('Querying an entity', () => {
         });
     });
 
-    describe('stored procedures', () => {
-        describe('normal call', () => {
-            it('must resolve with null', async () => {
-                const res = await db.proc('empty_proc');
+    describe(`stored procedures`, () => {
+        describe(`normal call`, () => {
+            it(`must resolve with null`, async () => {
+                const res = await db.proc(`empty_proc`);
                 expect(res).toBeNull();
             });
-            it('must support output values', async () => {
-                const res = await db.proc('output_proc', [null, 'world']);
-                expect(res).toEqual({output1: true, output2: 'world-hello!'});
+            it(`must support output values`, async () => {
+                const res = await db.proc(`output_proc`, [null, `world`]);
+                expect(res).toEqual({output1: true, output2: `world-hello!`});
             });
-            it('must support transformation', async () => {
-                const res = await db.proc('output_proc', [null, 'world'], a => a.output2);
-                expect(res).toBe('world-hello!');
+            it(`must support transformation`, async () => {
+                const res = await db.proc(`output_proc`, [null, `world`], a => a.output2);
+                expect(res).toBe(`world-hello!`);
             });
         });
 
-        describe('with invalid name', () => {
+        describe(`with invalid name`, () => {
             let err;
             beforeEach(done => {
                 db.proc()
@@ -2225,17 +2225,17 @@ describe('Querying an entity', () => {
                         done();
                     });
             });
-            it('must throw error', () => {
-                expect(err).toBe('Invalid procedure name.');
+            it(`must throw error`, () => {
+                expect(err).toBe(`Invalid procedure name.`);
             });
         });
 
     });
 });
 
-describe('Task', () => {
+describe(`Task`, () => {
 
-    describe('with detached connection', () => {
+    describe(`with detached connection`, () => {
         let error, tsk;
         beforeEach(done => {
             db.task(function () {
@@ -2244,14 +2244,14 @@ describe('Task', () => {
             })
                 .then(() => {
                     // try use the task connection context outside of the task callback;
-                    return tsk.query('select \'test\'');
+                    return tsk.query(`select 'test'`);
                 })
                 .catch(err => {
                     error = err;
                 })
                 .finally(done);
         });
-        it('must throw an error on any query request', () => {
+        it(`must throw an error on any query request`, () => {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe($text.looseQuery);
             expect(tsk.ctx.level).toBe(0);
@@ -2261,7 +2261,7 @@ describe('Task', () => {
         });
     });
 
-    describe('inside a transaction', () => {
+    describe(`inside a transaction`, () => {
         let context;
         beforeEach(done => {
             db.tx(tx => {
@@ -2271,12 +2271,12 @@ describe('Task', () => {
             })
                 .finally(done);
         });
-        it('must know it is in transaction', () => {
+        it(`must know it is in transaction`, () => {
             expect(context.ctx.inTransaction).toBe(true);
         });
     });
 
-    describe('with a callback that returns nothing', () => {
+    describe(`with a callback that returns nothing`, () => {
         let result;
         beforeEach(done => {
             db.task(dummy)
@@ -2285,12 +2285,12 @@ describe('Task', () => {
                 })
                 .finally(done);
         });
-        it('must resolve with undefined', () => {
+        it(`must resolve with undefined`, () => {
             expect(result).toBeUndefined();
         });
     });
 
-    describe('with a callback that returns a value', () => {
+    describe(`with a callback that returns a value`, () => {
         let result;
         beforeEach(done => {
             db.task(() => {
@@ -2301,66 +2301,66 @@ describe('Task', () => {
                 })
                 .finally(done);
         });
-        it('must resolve with the value', () => {
+        it(`must resolve with the value`, () => {
             expect(result).toBe(123);
         });
     });
 
-    describe('with the callback throwing an error', () => {
+    describe(`with the callback throwing an error`, () => {
         let result;
         beforeEach(done => {
             db.task(() => {
-                throw new Error('test');
+                throw new Error(`test`);
             })
                 .catch(reason => {
                     result = reason;
                 })
                 .finally(done);
         });
-        it('must reject with the error thrown', () => {
+        it(`must reject with the error thrown`, () => {
             expect(result instanceof Error).toBe(true);
-            expect(result.message).toBe('test');
+            expect(result.message).toBe(`test`);
         });
     });
 
-    describe('with a simple promise result', () => {
+    describe(`with a simple promise result`, () => {
         let result, context, THIS;
         beforeEach(done => {
             db.task(function (t) {
                 THIS = this;
                 context = t;
-                return promise.resolve('Ok');
+                return promise.resolve(`Ok`);
             })
                 .then(data => {
                     result = data;
                 })
                 .finally(done);
         });
-        it('must resolve with that result', () => {
-            expect(result).toBe('Ok');
+        it(`must resolve with that result`, () => {
+            expect(result).toBe(`Ok`);
         });
-        it('must provide correct connection context', () => {
-            expect(context && typeof context === 'object').toBeTruthy();
+        it(`must provide correct connection context`, () => {
+            expect(context && typeof context === `object`).toBeTruthy();
             expect(context === THIS).toBe(true);
         });
     });
 
-    describe('with a notification error', () => {
+    describe(`with a notification error`, () => {
         let result, event, counter = 0;
         beforeEach(done => {
             options.task = e => {
                 if (counter) {
-                    throw 'ops!';
+                    throw `ops!`;
                 }
                 counter++;
                 event = e;
             };
 
             function myTask() {
-                return promise.resolve('success');
+                return promise.resolve(`success`);
             }
 
-            db.task('testTag', myTask)
+            db.task(`testTag`, myTask)
                 .then(data => {
                     result = data;
                 })
@@ -2369,53 +2369,53 @@ describe('Task', () => {
         afterEach(() => {
             delete options.task;
         });
-        it('that must be ignored', () => {
-            expect(result).toBe('success');
+        it(`that must be ignored`, () => {
+            expect(result).toBe(`success`);
             expect(counter).toBe(1); // successful notification 'Start', failed for 'Finish';
-            expect(event && event.ctx && typeof event.ctx === 'object').toBeTruthy();
-            expect(event.ctx.tag).toBe('testTag');
+            expect(event && event.ctx && typeof event.ctx === `object`).toBeTruthy();
+            expect(event.ctx.tag).toBe(`testTag`);
         });
     });
 
 });
 
-describe('negative query formatting', () => {
+describe(`negative query formatting`, () => {
 
-    describe('with invalid property name', () => {
+    describe(`with invalid property name`, () => {
         let error;
         beforeEach(done => {
-            db.one('select ${invalid}', {})
+            db.one(`select \${invalid}`, {})
                 .catch(e => {
                     error = e;
                 })
                 .finally(done);
         });
-        it('must reject with correct error', () => {
+        it(`must reject with correct error`, () => {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Property \'invalid\' doesn\'t exist.');
+            expect(error.message).toBe(`Property 'invalid' doesn't exist.`);
         });
     });
 
-    describe('with invalid variable index', () => {
+    describe(`with invalid variable index`, () => {
         let error;
         beforeEach(done => {
-            db.one('select $1', [])
+            db.one(`select $1`, [])
                 .catch(e => {
                     error = e;
                 })
                 .finally(done);
         });
-        it('must reject with correct error', () => {
+        it(`must reject with correct error`, () => {
             expect(error instanceof RangeError).toBe(true);
-            expect(error.message).toBe('Variable $1 out of range. Parameters array length: 0');
+            expect(error.message).toBe(`Variable $1 out of range. Parameters array length: 0`);
         });
     });
 
-    describe('with formatting parameter throwing error', () => {
+    describe(`with formatting parameter throwing error`, () => {
         let error;
-        const err = new Error('ops!');
+        const err = new Error(`ops!`);
         beforeEach(done => {
-            db.one('select $1', [() => {
+            db.one(`select $1`, [() => {
                 throw err;
             }])
                 .catch(e => {
@@ -2423,17 +2423,17 @@ describe('negative query formatting', () => {
                 })
                 .finally(done);
         });
-        it('must reject with correct error', () => {
+        it(`must reject with correct error`, () => {
             expect(error instanceof Error).toBe(true);
             expect(error).toBe(err);
         });
     });
 
-    describe('with formatting parameter throwing a non-error', () => {
+    describe(`with formatting parameter throwing a non-error`, () => {
         let error;
-        const err = 'ops!';
+        const err = `ops!`;
         beforeEach(done => {
-            db.one('select $1', [() => {
+            db.one(`select $1`, [() => {
                 throw err;
             }])
                 .catch(e => {
@@ -2441,7 +2441,7 @@ describe('negative query formatting', () => {
                 })
                 .finally(done);
         });
-        it('must reject with correct error', () => {
+        it(`must reject with correct error`, () => {
             expect(error instanceof Error).toBe(false);
             expect(error).toBe(err);
         });
@@ -2449,76 +2449,76 @@ describe('negative query formatting', () => {
 
 });
 
-describe('Multi-result queries', () => {
+describe(`Multi-result queries`, () => {
     let result;
     beforeEach(done => {
-        db.one('select 1 as one;select 2 as two')
+        db.one(`select 1 as one;select 2 as two`)
             .then(data => {
                 result = data;
             })
             .finally(done);
     });
-    it('must return the first result', () => {
+    it(`must return the first result`, () => {
         expect(result).toEqual({two: 2});
     });
 });
 
-describe('Dynamic Schema', () => {
-    describe('for an invalid value', () => {
+describe(`Dynamic Schema`, () => {
+    describe(`for an invalid value`, () => {
         let result;
         beforeEach(done => {
             const innerDb = header({schema: 123, noWarnings: true, promiseLib: promise}).db;
-            innerDb.any('select * from users')
+            innerDb.any(`select * from users`)
                 .then(data => {
                     result = data;
                     done();
                 });
         });
-        it('must not try change the schema', () => {
+        it(`must not try change the schema`, () => {
             expect(result.length).toBeGreaterThan(1);
         });
     });
 
-    describe('for a single schema', () => {
+    describe(`for a single schema`, () => {
         let result;
         beforeEach(done => {
-            const innerDb = header({schema: 'test', noWarnings: true, promiseLib: promise}).db;
-            innerDb.any('select * from users')
+            const innerDb = header({schema: `test`, noWarnings: true, promiseLib: promise}).db;
+            innerDb.any(`select * from users`)
                 .catch(error => {
                     result = error;
                 })
                 .finally(done);
         });
-        it('must change the default schema', () => {
-            expect(result && result.message).toBe('relation "users" does not exist');
+        it(`must change the default schema`, () => {
+            expect(result && result.message).toBe(`relation "users" does not exist`);
         });
     });
-    describe('for multiple schemas', () => {
+    describe(`for multiple schemas`, () => {
         let result;
         beforeEach(done => {
-            const innerDb = header({schema: ['first', 'second', 'public'], noWarnings: true, promiseLib: promise}).db;
-            innerDb.any('select * from users')
+            const innerDb = header({schema: [`first`, `second`, `public`], noWarnings: true, promiseLib: promise}).db;
+            innerDb.any(`select * from users`)
                 .then(data => {
                     result = data;
                 })
                 .finally(done);
         });
-        it('must change the default schemas', () => {
+        it(`must change the default schemas`, () => {
             expect(result && result.length).toBeGreaterThan(0);
         });
     });
-    describe('for a callback', () => {
+    describe(`for a callback`, () => {
         let result;
         beforeEach(done => {
-            const schema = () => ['first', 'second', 'public'];
+            const schema = () => [`first`, `second`, `public`];
             const innerDb = header({schema, noWarnings: true, promiseLib: promise}).db;
-            innerDb.any('select * from users')
+            innerDb.any(`select * from users`)
                 .then(data => {
                     result = data;
                 })
                 .finally(done);
         });
-        it('must change the default schemas', () => {
+        it(`must change the default schemas`, () => {
             expect(result && result.length).toBeGreaterThan(0);
         });
     });

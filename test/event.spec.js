@@ -1,10 +1,10 @@
-const QueryStream = require('pg-query-stream');
-const JSONStream = require('JSONStream');
+const QueryStream = require(`pg-query-stream`);
+const JSONStream = require(`JSONStream`);
 
-const pgResult = require('pg/lib/result');
-const pgClient = require('pg/lib/client');
+const pgResult = require(`pg/lib/result`);
+const pgClient = require(`pg/lib/client`);
 
-const header = require('./db/header');
+const header = require(`./db/header`);
 
 const promise = header.defPromise;
 const options = {
@@ -12,13 +12,13 @@ const options = {
     noWarnings: true
 };
 
-const testDC = 'test_DC_123';
+const testDC = `test_DC_123`;
 
 const dbHeader = header(options, testDC);
 const pgp = dbHeader.pgp;
 const db = dbHeader.db;
 
-const $text = require('../lib/text');
+const $text = require(`../lib/text`);
 
 function isResult(value) {
     if (options.pgNative) {
@@ -34,9 +34,9 @@ function isResult(value) {
 const dummy = () => {
 };
 
-describe('Connect/Disconnect events', () => {
+describe(`Connect/Disconnect events`, () => {
 
-    describe('during a query', () => {
+    describe(`during a query`, () => {
         const ctx1 = {}, ctx2 = {};
         let connect = 0, disconnect = 0;
         beforeEach(done => {
@@ -45,15 +45,15 @@ describe('Connect/Disconnect events', () => {
                 ctx1.client = client;
                 ctx1.useCount = useCount;
                 connect++;
-                throw new Error('### Testing error output in \'connect\'. Please ignore. ###');
+                throw new Error(`### Testing error output in 'connect'. Please ignore. ###`);
             };
             options.disconnect = (client, dc) => {
                 ctx2.dc = dc;
                 ctx2.client = client;
                 disconnect++;
-                throw new Error('### Testing error output in \'disconnect\'. Please ignore. ###');
+                throw new Error(`### Testing error output in 'disconnect'. Please ignore. ###`);
             };
-            db.query('select \'test\'')
+            db.query(`select 'test'`)
                 .then(dummy, dummy)
                 .finally(done);
         });
@@ -61,7 +61,7 @@ describe('Connect/Disconnect events', () => {
             options.connect = null;
             options.disconnect = null;
         });
-        it('must be sent correctly', () => {
+        it(`must be sent correctly`, () => {
             expect(connect).toBe(1);
             expect(disconnect).toBe(1);
             if (!options.pgNative) {
@@ -69,13 +69,13 @@ describe('Connect/Disconnect events', () => {
                 expect(ctx2.client instanceof pgClient).toBe(true);
             }
             expect(ctx1.dc).toBe(testDC);
-            expect(typeof ctx1.useCount).toBe('number');
+            expect(typeof ctx1.useCount).toBe(`number`);
             expect(ctx1.useCount >= 0).toBe(true);
             expect(ctx2.dc).toBe(testDC);
         });
     });
 
-    describe('during a transaction', () => {
+    describe(`during a transaction`, () => {
         const obj1 = {}, obj2 = {};
         let ctx, connect = 0, disconnect = 0;
         beforeEach(done => {
@@ -93,9 +93,9 @@ describe('Connect/Disconnect events', () => {
             db.tx(function (t) {
                 ctx = t.ctx;
                 return this.batch([
-                    t.query('select \'one\''),
-                    t.query('select \'two\''),
-                    t.query('select \'three\'')
+                    t.query(`select 'one'`),
+                    t.query(`select 'two'`),
+                    t.query(`select 'three'`)
                 ]);
             })
                 .then(dummy, dummy)
@@ -105,7 +105,7 @@ describe('Connect/Disconnect events', () => {
             options.connect = null;
             options.disconnect = null;
         });
-        it('must be sent correctly', () => {
+        it(`must be sent correctly`, () => {
             expect(connect).toBe(1);
             expect(disconnect).toBe(1);
             if (!options.pgNative) {
@@ -119,58 +119,58 @@ describe('Connect/Disconnect events', () => {
     });
 });
 
-describe('Query event', () => {
+describe(`Query event`, () => {
 
-    describe('positive', () => {
+    describe(`positive`, () => {
         let param, counter = 0;
         beforeEach(done => {
             options.query = e => {
                 counter++;
                 param = e;
             };
-            db.query('select $1', [123])
+            db.query(`select $1`, [123])
                 .finally(done);
         });
-        it('must pass query and parameters correctly', () => {
+        it(`must pass query and parameters correctly`, () => {
             expect(counter).toBe(1);
-            expect(param.query).toBe('select 123');
+            expect(param.query).toBe(`select 123`);
             expect(param.params).toBeUndefined();
             expect(param.dc).toBe(testDC);
         });
     });
 
-    describe('negative, with an error object', () => {
+    describe(`negative, with an error object`, () => {
         let result;
-        const errMsg = 'Throwing a new Error during \'query\' notification.';
+        const errMsg = `Throwing a new Error during 'query' notification.`;
         beforeEach(done => {
             options.query = () => {
                 throw new Error(errMsg);
             };
-            db.query('select $1', [123])
+            db.query(`select $1`, [123])
                 .catch(error => {
                     result = error;
                 })
                 .finally(done);
         });
-        it('must reject with the right error', () => {
+        it(`must reject with the right error`, () => {
             expect(result).toEqual(new Error(errMsg));
         });
     });
 
-    describe('negative, with undefined', () => {
+    describe(`negative, with undefined`, () => {
         let result, handled;
         beforeEach(done => {
             options.query = () => {
                 throw undefined;
             };
-            db.query('select $1', [123])
+            db.query(`select $1`, [123])
                 .catch(error => {
                     handled = true;
                     result = error;
                 })
                 .finally(done);
         });
-        it('must reject with undefined', () => {
+        it(`must reject with undefined`, () => {
             expect(handled).toBe(true);
             expect(result).toBeUndefined();
         });
@@ -182,7 +182,7 @@ describe('Query event', () => {
 
 });
 
-describe('Start/Finish transaction events', () => {
+describe(`Start/Finish transaction events`, () => {
     let result, tag, ctx, e1, e2, start = 0, finish = 0;
     beforeEach(done => {
         options.transact = e => {
@@ -195,10 +195,10 @@ describe('Start/Finish transaction events', () => {
                 tag = e.ctx.tag;
                 e2 = e;
             }
-            throw '### Testing error output in \'transact\'. Please ignore. ###';
+            throw `### Testing error output in 'transact'. Please ignore. ###`;
         };
-        db.tx('myTransaction', () => {
-            return promise.resolve('SUCCESS');
+        db.tx(`myTransaction`, () => {
+            return promise.resolve(`SUCCESS`);
         })
             .then(data => {
                 result = data;
@@ -209,11 +209,11 @@ describe('Start/Finish transaction events', () => {
         options.transact = null;
     });
 
-    it('must execute correctly', () => {
-        expect(result).toBe('SUCCESS');
+    it(`must execute correctly`, () => {
+        expect(result).toBe(`SUCCESS`);
         expect(start).toBe(1);
         expect(finish).toBe(1);
-        expect(tag).toBe('myTransaction');
+        expect(tag).toBe(`myTransaction`);
         expect(ctx.success).toBe(true);
         expect(ctx.isTX).toBe(true);
         expect(ctx.dc).toBe(testDC);
@@ -222,32 +222,32 @@ describe('Start/Finish transaction events', () => {
     });
 });
 
-describe('Error event', () => {
+describe(`Error event`, () => {
 
-    describe('from transaction callbacks', () => {
+    describe(`from transaction callbacks`, () => {
         let r, error, context, counter = 0;
         beforeEach(done => {
             options.error = (err, e) => {
                 counter++;
                 error = err;
                 context = e;
-                throw new Error('### Testing error output in \'error\'. Please ignore. ###');
+                throw new Error(`### Testing error output in 'error'. Please ignore. ###`);
             };
-            db.tx('Error Transaction', () => {
-                throw new Error('Test Error');
+            db.tx(`Error Transaction`, () => {
+                throw new Error(`Test Error`);
             })
                 .catch(reason => {
                     r = reason;
                 })
                 .finally(done);
         });
-        it('must report errors', () => {
+        it(`must report errors`, () => {
             expect(r instanceof Error).toBe(true);
-            expect(r.message).toBe('Test Error');
+            expect(r.message).toBe(`Test Error`);
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Test Error');
+            expect(error.message).toBe(`Test Error`);
             expect(counter).toBe(1);
-            expect(context.ctx.tag).toBe('Error Transaction');
+            expect(context.ctx.tag).toBe(`Error Transaction`);
             expect(context.dc).toBe(testDC);
             if (!options.pgNative) {
                 expect(context.client instanceof pgClient).toBe(true);
@@ -255,7 +255,7 @@ describe('Error event', () => {
         });
     });
 
-    describe('for null-queries', () => {
+    describe(`for null-queries`, () => {
         let error, context, counter = 0;
         beforeEach(done => {
             options.error = (err, e) => {
@@ -267,7 +267,7 @@ describe('Error event', () => {
                 .then(dummy, dummy)
                 .finally(done);
         });
-        it('must fail correctly', () => {
+        it(`must fail correctly`, () => {
             expect(error instanceof TypeError).toBe(true);
             expect(error.message).toBe($text.invalidQuery);
             expect(context.params).toBeUndefined();
@@ -278,7 +278,7 @@ describe('Error event', () => {
         });
     });
 
-    describe('for incorrect QRM', () => {
+    describe(`for incorrect QRM`, () => {
         let error, context, counter = 0;
         beforeEach(done => {
             options.error = (err, e) => {
@@ -286,14 +286,14 @@ describe('Error event', () => {
                 error = err;
                 context = e;
             };
-            db.query('Bla-Bla', undefined, 42)
+            db.query(`Bla-Bla`, undefined, 42)
                 .then(dummy, dummy)
                 .finally(done);
         });
-        it('must reject with correct error', () => {
+        it(`must reject with correct error`, () => {
             expect(error instanceof TypeError).toBe(true);
-            expect(error.message).toBe('Invalid Query Result Mask specified.');
-            expect(context.query).toBe('Bla-Bla');
+            expect(error.message).toBe(`Invalid Query Result Mask specified.`);
+            expect(context.query).toBe(`Bla-Bla`);
             expect(context.params).toBeUndefined();
             if (!options.pgNative) {
                 expect(context.client instanceof pgClient).toBe(true);
@@ -302,7 +302,7 @@ describe('Error event', () => {
         });
     });
 
-    describe('for single-row requests', () => {
+    describe(`for single-row requests`, () => {
         let errTxt, context, counter = 0;
         beforeEach(done => {
             options.error = (err, e) => {
@@ -310,14 +310,14 @@ describe('Error event', () => {
                 errTxt = err;
                 context = e;
             };
-            db.one('select * from users')
+            db.one(`select * from users`)
                 .then(dummy, dummy)
                 .finally(done);
         });
-        it('must reject with correct error', () => {
+        it(`must reject with correct error`, () => {
             expect(errTxt instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(errTxt.message).toBe('Multiple rows were not expected.');
-            expect(context.query).toBe('select * from users');
+            expect(errTxt.message).toBe(`Multiple rows were not expected.`);
+            expect(context.query).toBe(`select * from users`);
             expect(context.params).toBeUndefined();
             if (!options.pgNative) {
                 expect(context.client instanceof pgClient).toBe(true);
@@ -326,7 +326,7 @@ describe('Error event', () => {
         });
     });
 
-    describe('for no-row requests', () => {
+    describe(`for no-row requests`, () => {
         let errTxt, context, counter = 0;
         beforeEach(done => {
             options.error = (err, e) => {
@@ -334,14 +334,14 @@ describe('Error event', () => {
                 errTxt = err;
                 context = e;
             };
-            db.none('select * from users')
+            db.none(`select * from users`)
                 .then(dummy, dummy)
                 .finally(done);
         });
-        it('must reject with correct error', () => {
+        it(`must reject with correct error`, () => {
             expect(errTxt instanceof pgp.errors.QueryResultError).toBe(true);
             expect(errTxt.message).toBe($text.notEmpty);
-            expect(context.query).toBe('select * from users');
+            expect(context.query).toBe(`select * from users`);
             expect(context.params).toBeUndefined();
             if (!options.pgNative) {
                 expect(context.client instanceof pgClient).toBe(true);
@@ -350,7 +350,7 @@ describe('Error event', () => {
         });
     });
 
-    describe('for empty requests', () => {
+    describe(`for empty requests`, () => {
         let errTxt, context, counter = 0;
         beforeEach(done => {
             options.error = (err, e) => {
@@ -358,14 +358,14 @@ describe('Error event', () => {
                 errTxt = err;
                 context = e;
             };
-            db.many('select * from users where id > $1', 1000)
+            db.many(`select * from users where id > $1`, 1000)
                 .then(dummy, dummy)
                 .finally(done);
         });
-        it('must reject with correct error', () => {
+        it(`must reject with correct error`, () => {
             expect(errTxt instanceof pgp.errors.QueryResultError).toBe(true);
-            expect(errTxt.message).toBe('No data returned from the query.');
-            expect(context.query).toBe('select * from users where id > 1000');
+            expect(errTxt.message).toBe(`No data returned from the query.`);
+            expect(context.query).toBe(`select * from users where id > 1000`);
             expect(context.params).toBeUndefined();
             if (!options.pgNative) {
                 expect(context.client instanceof pgClient).toBe(true);
@@ -374,7 +374,7 @@ describe('Error event', () => {
         });
     });
 
-    describe('for loose query requests', () => {
+    describe(`for loose query requests`, () => {
         let error, r, context, counter = 0;
         beforeEach(done => {
             options.error = (err, e) => {
@@ -386,7 +386,7 @@ describe('Error event', () => {
             db.connect()
                 .then(obj => {
                     sco = obj;
-                    query = sco.query('select * from users where($1)', false);
+                    query = sco.query(`select * from users where($1)`, false);
                     return null;
                 })
                 .finally(() => {
@@ -398,12 +398,12 @@ describe('Error event', () => {
                         .finally(done);
                 });
         });
-        it('must notify with correct error', () => {
+        it(`must notify with correct error`, () => {
             expect(error instanceof Error).toBe(true);
             expect(error.message).toBe($text.looseQuery);
             expect(r instanceof Error).toBe(true);
             expect(r.message).toBe($text.looseQuery);
-            expect(context.query).toBe('select * from users where(false)');
+            expect(context.query).toBe(`select * from users where(false)`);
             expect(context.client).toBeUndefined();
             expect(context.params).toBeUndefined();
             expect(counter).toBe(1);
@@ -411,17 +411,17 @@ describe('Error event', () => {
     });
 
     if (!options.pgNative) {
-        describe('for loose stream requests', () => {
+        describe(`for loose stream requests`, () => {
             let r, sco;
             beforeEach(done => {
-                const qs = new QueryStream('select * from users');
+                const qs = new QueryStream(`select * from users`);
                 db.connect()
                     .then(obj => {
                         sco = obj;
                         return sco.stream(qs, s => {
                             s.pipe(JSONStream.stringify());
                             obj.done();
-                            throw new Error('Something went wrong here');
+                            throw new Error(`Something went wrong here`);
                         });
                     })
                     .catch(reason => {
@@ -429,14 +429,14 @@ describe('Error event', () => {
                     })
                     .finally(done);
             });
-            it('must notify with correct error', () => {
+            it(`must notify with correct error`, () => {
                 expect(r instanceof Error).toBe(true);
                 expect(r.message).toBe($text.looseQuery);
             });
         });
     }
 
-    describe('for invalid parameters', () => {
+    describe(`for invalid parameters`, () => {
         let error, context, counter = 0;
         const params = {};
         beforeEach(done => {
@@ -445,14 +445,14 @@ describe('Error event', () => {
                 error = err;
                 context = e;
             };
-            db.query('${test}', params)
+            db.query(`\${test}`, params)
                 .then(dummy, dummy)
                 .finally(done);
         });
-        it('must report the parameters correctly', () => {
+        it(`must report the parameters correctly`, () => {
             expect(error instanceof Error).toBe(true);
-            expect(error.message).toBe('Property \'test\' doesn\'t exist.');
-            expect(context.query).toBe('${test}');
+            expect(error.message).toBe(`Property 'test' doesn't exist.`);
+            expect(context.query).toBe(`\${test}`);
             expect(context.params).toBe(params);
             if (!options.pgNative) {
                 expect(context.client instanceof pgClient).toBe(true);
@@ -467,9 +467,9 @@ describe('Error event', () => {
 
 });
 
-describe('Receive event', () => {
+describe(`Receive event`, () => {
 
-    describe('query positive', () => {
+    describe(`query positive`, () => {
         let ctx, data, res, counter = 0;
         beforeEach(done => {
             options.receive = (d, r, e) => {
@@ -478,23 +478,23 @@ describe('Receive event', () => {
                 res = r;
                 ctx = e;
             };
-            db.one('select $1 as value', [123])
+            db.one(`select $1 as value`, [123])
                 .finally(done);
         });
-        it('must pass in correct data and context', () => {
+        it(`must pass in correct data and context`, () => {
             expect(counter).toBe(1);
-            expect(ctx.query).toBe('select 123 as value');
+            expect(ctx.query).toBe(`select 123 as value`);
             expect(ctx.params).toBeUndefined();
             expect(ctx.dc).toBe(testDC);
             expect(data).toEqual([{
                 value: 123
             }]);
             expect(isResult(res)).toBe(true);
-            expect(typeof res.duration).toBe('number');
+            expect(typeof res.duration).toBe(`number`);
         });
     });
 
-    describe('for empty queries', () => {
+    describe(`for empty queries`, () => {
         let ctx, data, res, counter = 0;
         beforeEach(done => {
             options.receive = function (d, r, e) {
@@ -503,87 +503,87 @@ describe('Receive event', () => {
                 res = r;
                 ctx = e;
             };
-            db.none('delete from users where id = $1', 1234567890)
+            db.none(`delete from users where id = $1`, 1234567890)
                 .finally(done);
         });
-        it('must pass in correct empty data and context', () => {
+        it(`must pass in correct empty data and context`, () => {
             expect(counter).toBe(1);
-            expect(ctx.query).toBe('delete from users where id = 1234567890');
+            expect(ctx.query).toBe(`delete from users where id = 1234567890`);
             expect(ctx.params).toBeUndefined();
             expect(ctx.dc).toBe(testDC);
             expect(data).toEqual([]);
             expect(isResult(res)).toBe(true);
-            expect(typeof res.duration).toBe('number');
+            expect(typeof res.duration).toBe(`number`);
         });
     });
 
-    describe('positive for multi-queries', () => {
+    describe(`positive for multi-queries`, () => {
         const data = [];
         beforeEach(done => {
             options.receive = (d, r, e) => {
                 data.push({d, r, e});
             };
-            db.multiResult('select 1 as one;select 2 as two')
+            db.multiResult(`select 1 as one;select 2 as two`)
                 .then(() => {
                     done();
                 });
         });
-        it('must send the event for each result', () => {
+        it(`must send the event for each result`, () => {
             expect(data.length).toBe(2);
             expect(data[0].d).toEqual([{one: 1}]);
             expect(data[1].d).toEqual([{two: 2}]);
         });
     });
 
-    describe('negative for multi-queries', () => {
+    describe(`negative for multi-queries`, () => {
         let result;
         beforeEach(done => {
             options.receive = () => {
-                throw new Error('Ops!');
+                throw new Error(`Ops!`);
             };
-            db.multiResult('select 1 as one;select 2 as two')
+            db.multiResult(`select 1 as one;select 2 as two`)
                 .catch(error => {
                     result = error;
                 })
                 .finally(done);
         });
-        it('must reject with the error', () => {
+        it(`must reject with the error`, () => {
             expect(result instanceof Error).toBe(true);
         });
     });
 
-    describe('query negative', () => {
+    describe(`query negative`, () => {
         let result;
-        const error = 'ops!';
+        const error = `ops!`;
         beforeEach(done => {
             options.receive = () => {
                 throw error;
             };
-            db.one('select $1 as value', [123])
+            db.one(`select $1 as value`, [123])
                 .catch(reason => {
                     result = reason;
                 })
                 .finally(done);
         });
-        it('must reject with the right error', () => {
+        it(`must reject with the right error`, () => {
             expect(result).toBe(error);
         });
     });
 
-    describe('query negative, undefined', () => {
+    describe(`query negative, undefined`, () => {
         let result, handled;
         beforeEach(done => {
             options.receive = () => {
                 throw undefined;
             };
-            db.one('select $1 as value', [123])
+            db.one(`select $1 as value`, [123])
                 .catch(error => {
                     handled = true;
                     result = error;
                 })
                 .finally(done);
         });
-        it('must reject with undefined', () => {
+        it(`must reject with undefined`, () => {
             expect(handled).toBe(true);
             expect(result).toBeUndefined();
         });
@@ -592,7 +592,7 @@ describe('Receive event', () => {
     if (!options.pgNative) {
         // Cannot test streams against native bindings;
 
-        describe('stream positive', () => {
+        describe(`stream positive`, () => {
             let ctx, data, res, counter = 0;
             beforeEach(done => {
                 options.receive = (d, r, e) => {
@@ -601,7 +601,7 @@ describe('Receive event', () => {
                     res = r;
                     ctx = e;
                 };
-                const qs = new QueryStream('select $1::int as value', [123]);
+                const qs = new QueryStream(`select $1::int as value`, [123]);
                 db.stream(qs, s => {
                     s.pipe(JSONStream.stringify());
                 })
@@ -609,10 +609,10 @@ describe('Receive event', () => {
                         done();
                     });
             });
-            it('must pass in correct data and context', () => {
+            it(`must pass in correct data and context`, () => {
                 expect(counter).toBe(1);
-                expect(ctx.query).toBe('select $1::int as value');
-                expect(ctx.params).toEqual(['123']);
+                expect(ctx.query).toBe(`select $1::int as value`);
+                expect(ctx.params).toEqual([`123`]);
                 expect(data).toEqual([{
                     value: 123
                 }]);
@@ -620,13 +620,13 @@ describe('Receive event', () => {
             });
         });
 
-        describe('for paged streaming', () => {
+        describe(`for paged streaming`, () => {
             let result, counter = 0;
             beforeEach(done => {
                 options.receive = data => {
                     counter += data.length;
                 };
-                const qs = new QueryStream('select * from users', [], {batchSize: 2});
+                const qs = new QueryStream(`select * from users`, [], {batchSize: 2});
                 db.stream(qs, s => {
                     s.pipe(JSONStream.stringify());
                 })
@@ -635,19 +635,19 @@ describe('Receive event', () => {
                         done();
                     });
             });
-            it('must get all the rows', () => {
+            it(`must get all the rows`, () => {
                 expect(counter).toBe(result.processed);
             });
         });
 
-        describe('stream negative', () => {
+        describe(`stream negative`, () => {
             let result;
-            const err = new Error('Ops!');
+            const err = new Error(`Ops!`);
             beforeEach(done => {
                 options.receive = () => {
                     throw err;
                 };
-                const qs = new QueryStream('select $1::int as value', [123]);
+                const qs = new QueryStream(`select $1::int as value`, [123]);
                 db.stream(qs, s => {
                     s.pipe(JSONStream.stringify());
                 })
@@ -656,7 +656,7 @@ describe('Receive event', () => {
                     })
                     .finally(done);
             });
-            it('must reject with the right error', () => {
+            it(`must reject with the right error`, () => {
                 expect(result).toBe(err);
             });
         });
@@ -668,7 +668,7 @@ describe('Receive event', () => {
 
 });
 
-describe('pgFormatting', () => {
+describe(`pgFormatting`, () => {
     let result;
     beforeEach(() => {
         result = undefined;
@@ -677,15 +677,15 @@ describe('pgFormatting', () => {
     afterEach(() => {
         options.pgFormatting = false;
     });
-    describe('query event', () => {
+    describe(`query event`, () => {
         const ctx = [];
         beforeEach(done => {
             options.query = e => {
                 ctx.push(e);
             };
             promise.all([
-                db.func('findUser', [1]),
-                db.one('select * from users where id=$1', [1])
+                db.func(`findUser`, [1]),
+                db.one(`select * from users where id=$1`, [1])
             ])
                 .then(data => {
                     result = data;
@@ -695,7 +695,7 @@ describe('pgFormatting', () => {
         afterEach(() => {
             options.query = null;
         });
-        it('must affect formatting accordingly', () => {
+        it(`must affect formatting accordingly`, () => {
             expect(Array.isArray(result)).toBe(true);
             expect(ctx.length).toBe(2);
             // params will be passed back only because the formatting
@@ -706,12 +706,12 @@ describe('pgFormatting', () => {
         });
     });
 
-    describe('empty / null query', () => {
+    describe(`empty / null query`, () => {
         let err;
         beforeEach(done => {
             promise.any([
                 db.query(),
-                db.query(''),
+                db.query(``),
                 db.query(null),
                 db.query(0)
             ])
@@ -720,7 +720,7 @@ describe('pgFormatting', () => {
                 })
                 .finally(done);
         });
-        it('must provide the original pg response', () => {
+        it(`must provide the original pg response`, () => {
             if (!options.pgNative) {
                 expect(err.length).toBe(4);
                 for (let i = 0; i < 4; i++) {

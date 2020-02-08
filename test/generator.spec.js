@@ -1,4 +1,4 @@
-const header = require('./db/header');
+const header = require(`./db/header`);
 const promise = header.defPromise;
 
 const options = {
@@ -9,14 +9,14 @@ const options = {
 const dbHeader = header(options);
 const db = dbHeader.db;
 
-describe('ES6 Generators', () => {
+describe(`ES6 Generators`, () => {
 
     // v9.0 dropped all generators support, and now it throws an error,
     // if someone still tries to use them.
 
-    const errMsg = 'ES6 generator functions are no longer supported!';
+    const errMsg = `ES6 generator functions are no longer supported!`;
 
-    describe('for tasks', () => {
+    describe(`for tasks`, () => {
         let error;
         beforeEach(done => {
             db.task(function* () {
@@ -26,13 +26,13 @@ describe('ES6 Generators', () => {
                 })
                 .finally(done);
         });
-        it('must reject', () => {
+        it(`must reject`, () => {
             expect(error instanceof TypeError).toBe(true);
             expect(error.message).toBe(errMsg);
         });
     });
 
-    describe('for transactions', () => {
+    describe(`for transactions`, () => {
         let error;
         beforeEach(done => {
             db.tx(function* () {
@@ -42,7 +42,7 @@ describe('ES6 Generators', () => {
                 })
                 .finally(done);
         });
-        it('must reject', () => {
+        it(`must reject`, () => {
             expect(error instanceof TypeError).toBe(true);
             expect(error.message).toBe(errMsg);
         });
