@@ -22,7 +22,7 @@ const cn = {
     password: 'myPassword'
 };
 // You can check for all default values in:
-// https://github.com/brianc/node-postgres/blob/master/lib/defaults.js
+// https://github.com/brianc/node-postgres/blob/master/packages/pg/lib/defaults.js
 
 const db = pgp(cn); // database instance;
 

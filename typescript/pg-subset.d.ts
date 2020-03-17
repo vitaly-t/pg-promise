@@ -74,7 +74,7 @@ declare namespace pg {
     type DynamicPassword = string | (() => string) | (() => Promise<string>);
 
     // See:
-    // 1) https://github.com/brianc/node-postgres/blob/master/lib/defaults.js
+    // 1) https://github.com/brianc/node-postgres/blob/master/packages/pg/lib/defaults.js
     // 2) https://github.com/brianc/node-pg-pool
     interface IConnectionParameters<C extends IClient = IClient> {
         connectionString?: string

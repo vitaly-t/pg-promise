@@ -1110,6 +1110,6 @@ for detailed changes between versions you should see the corresponding release n
 [Bluebird]:https://github.com/petkaantonov/bluebird
 [SQL injection]:https://en.wikipedia.org/wiki/SQL_injection
 [Symbol]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
-[idleTimeoutMillis]:https://github.com/brianc/node-postgres/blob/master/lib/defaults.js#L46
+[idleTimeoutMillis]:https://github.com/brianc/node-postgres/blob/master/packages/pg/lib/defaults.js#L46
 [connection pool]:https://github.com/brianc/node-pg-pool
 [Error]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
