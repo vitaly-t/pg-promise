@@ -975,8 +975,7 @@ db.txIf({cnd}, t => {
 This library manages all database connections via the [connection pool], which internally caches them.
 
 Connections in the cache expire due to inactivity after [idleTimeoutMillis] number of milliseconds, which you
-can adjust when creating the [Database] object, or override the default via `pgp.pg.defaults.idleTimeoutMillis`
-before creating the [Database] object. 
+can set when creating the [Database] object. 
 
 While there is a single open connection in the pool, the process cannot terminate by itself, only via `process.exit()`. 
 If you want the process to finish by itself, without waiting for all connections in the pool to expire, you need
