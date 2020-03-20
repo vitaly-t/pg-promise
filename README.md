@@ -555,15 +555,15 @@ The only difference from [Explicit CTF] is that we set `toPostgres` and `rawType
 defined in the [ctf] namespace: 
 
 ```js
-const ctf = pgp.as.ctf; // Global CTF symbols
+const {toPostgres, rawType} = pgp.as.ctf; // Global CTF symbols
 
 const obj = {
-    [ctf.toPostgres](self) {
+    [toPostgres](self) {
         // self = this = obj
         
         // return a pre-formatted value that does not need escaping
     },
-    [ctf.rawType]: true // use result from toPostgres directly, as Raw Text
+    [rawType]: true // use result from toPostgres directly, as Raw Text
 };
 ```
 
@@ -885,8 +885,7 @@ savepoint names, based on the transaction level.
 [TransactionMode] type can extend your `BEGIN` command with transaction configuration:
 
 ```js
-const TransactionMode = pgp.txMode.TransactionMode;
-const isolationLevel = pgp.txMode.isolationLevel;
+const {TransactionMode, isolationLevel} = pgp.txMode;
  
 // Create a reusable transaction mode (serializable + read-only + deferrable):
 const mode = new TransactionMode({
