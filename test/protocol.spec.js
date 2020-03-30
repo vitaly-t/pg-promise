@@ -175,7 +175,7 @@ describe(`Database Protocol`, () => {
         expect(typeof db.$config.$npm).toBe(`object`);
         expect(db.$cn).toBe(dbHeader.cn);
         expect(`$dc` in db).toBe(true);
-        expect(db.$pool && db.$pool.constructor && db.$pool.constructor.name).toBe(`Pool`);
+        expect(db.$pool && db.$pool.constructor && db.$pool.constructor.name).toBe(`BoundPool`);
     });
 
     describe(`on connection level`, () => {
