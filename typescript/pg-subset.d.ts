@@ -212,9 +212,13 @@ declare namespace pg {
         // 0 will disable connection pooling
         max: number
 
-        // max milliseconds a client can go unused before it is removed
-        // from the pool and destroyed
-        idleTimeoutMillis: number
+        // max milliseconds a client can go unused before it is removed from the pool and destroyed;
+        //
+        // Made unavailable in v10.5.0, due to the following:
+        //  - https://github.com/brianc/node-postgres/issues/2139
+        //  - https://github.com/vitaly-t/pg-promise/issues/703
+        //
+        // idleTimeoutMillis: number
 
         client_encoding: string
 
