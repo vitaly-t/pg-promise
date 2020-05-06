@@ -649,13 +649,13 @@ declare namespace pgPromise {
 
         concat(queries: Array<string | QueryFile | { query: string | QueryFile, values?: any, options?: IFormattingOptions }>): string
 
-        insert(data: object | object[], columns?: QueryColumns, table?: string | ITable | TableName): string
+        insert(data: object | object[], columns?: QueryColumns | null, table?: string | ITable | TableName): string
 
-        update(data: object | object[], columns?: QueryColumns, table?: string | ITable | TableName, options?: { tableAlias?: string, valueAlias?: string, emptyUpdate?: any }): any
+        update(data: object | object[], columns?: QueryColumns | null, table?: string | ITable | TableName, options?: { tableAlias?: string, valueAlias?: string, emptyUpdate?: any }): any
 
-        values(data: object | object[], columns?: QueryColumns): string
+        values(data: object | object[], columns?: QueryColumns | null): string
 
-        sets(data: object, columns?: QueryColumns): string
+        sets(data: object, columns?: QueryColumns | null): string
 
         Column: typeof Column
         ColumnSet: typeof ColumnSet
