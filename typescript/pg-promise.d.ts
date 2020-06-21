@@ -155,7 +155,7 @@ declare namespace pgPromise {
     // helpers.Column class;
     // API: http://vitaly-t.github.io/pg-promise/helpers.Column.html
     class Column<S = any> {
-        constructor(col: string | IColumnConfig);
+        constructor(col: string | IColumnConfig<S>);
 
         // these are all read-only:
         readonly name: string;
@@ -166,10 +166,8 @@ declare namespace pgPromise {
         readonly def: any;
         readonly castText: string;
         readonly escapedName: string;
-
-        init(col: IColumnDescriptor<S>): any
-
-        skip(col: IColumnDescriptor<S>): boolean
+        readonly init: (col: IColumnDescriptor<S>) => any
+        readonly skip: (col: IColumnDescriptor<S>) => boolean
 
         toString(level?: number): string
     }
