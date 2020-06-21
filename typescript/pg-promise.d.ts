@@ -48,7 +48,8 @@ declare namespace pgPromise {
 
     interface IConnectionOptions<C extends pg.IClient = pg.IClient> {
         direct?: boolean
-        onLost?: (err: any, e: ILostContext<C>) => void
+
+        onLost?(err: any, e: ILostContext<C>): void
     }
 
     interface IPreparedStatement {
@@ -83,22 +84,24 @@ declare namespace pgPromise {
         rowMode: void | 'array'
     }
 
-    interface IColumnDescriptor {
-        source: any
+    interface IColumnDescriptor<S = any> {
+        source: S
         name: string
         value: any
         exists: boolean
     }
 
-    interface IColumnConfig {
+    interface IColumnConfig<S = any> {
         name: string
         prop?: string
         mod?: FormattingFilter
         cast?: string
         cnd?: boolean
         def?: any
-        init?: (col: IColumnDescriptor) => any
-        skip?: (col: IColumnDescriptor) => boolean
+
+        init?(col: IColumnDescriptor<S>): any
+
+        skip?(col: IColumnDescriptor<S>): boolean
     }
 
     interface IColumnSetOptions {
@@ -112,13 +115,13 @@ declare namespace pgPromise {
     }
 
     interface IPromiseConfig {
-        create: (resolve: (value?: any) => void, reject?: (reason?: any) => void) => XPromise<any>
+        create(resolve: (value?: any) => void, reject?: (reason?: any) => void): XPromise<any>
 
-        resolve: (value?: any) => void
+        resolve(value?: any): void
 
-        reject: (reason?: any) => void
+        reject(reason?: any): void
 
-        all: (iterable: any) => XPromise<any>
+        all(iterable: any): XPromise<any>
     }
 
     type FormattingFilter = '^' | '~' | '#' | ':raw' | ':alias' | ':name' | ':json' | ':csv' | ':list' | ':value';
@@ -151,7 +154,7 @@ declare namespace pgPromise {
 
     // helpers.Column class;
     // API: http://vitaly-t.github.io/pg-promise/helpers.Column.html
-    class Column {
+    class Column<S = any> {
         constructor(col: string | IColumnConfig);
 
         // these are all read-only:
@@ -163,27 +166,29 @@ declare namespace pgPromise {
         readonly def: any;
         readonly castText: string;
         readonly escapedName: string;
-        readonly init: (value: any) => any;
-        readonly skip: (name: string) => boolean;
+
+        init(col: IColumnDescriptor<S>): any
+
+        skip(col: IColumnDescriptor<S>): boolean
 
         toString(level?: number): string
     }
 
     // helpers.Column class;
     // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html
-    class ColumnSet {
-        constructor(columns: Column, options?: IColumnSetOptions)
-        constructor(columns: Array<string | IColumnConfig | Column>, options?: IColumnSetOptions)
+    class ColumnSet<S = any> {
+        constructor(columns: Column<S>, options?: IColumnSetOptions)
+        constructor(columns: Array<string | IColumnConfig<S> | Column<S>>, options?: IColumnSetOptions)
         constructor(columns: object, options?: IColumnSetOptions)
 
-        readonly columns: Column[];
+        readonly columns: Column<S>[];
         readonly names: string;
         readonly table: TableName;
         readonly variables: string;
 
         assign(source?: { source?: object, prefix?: string }): string
 
-        assignColumns(options?: { from?: string, to?: string, skip?: string | string[] | ((c: Column) => boolean) }): string
+        assignColumns(options?: { from?: string, to?: string, skip?: string | string[] | ((c: Column<S>) => boolean) }): string
 
         extend(columns: Column | ColumnSet | Array<string | IColumnConfig | Column>): ColumnSet
 
@@ -547,7 +552,7 @@ declare namespace pgPromise {
     class TransactionMode {
         constructor(options?: { tiLevel?: isolationLevel, readOnly?: boolean, deferrable?: boolean })
 
-        begin: (cap?: boolean) => string
+        begin(cap?: boolean): string
     }
 
     // Library's Initialization Options
@@ -557,17 +562,25 @@ declare namespace pgPromise {
         pgFormatting?: boolean
         pgNative?: boolean
         promiseLib?: any
-        connect?: (client: C, dc: any, useCount: number) => void
-        disconnect?: (client: C, dc: any) => void
-        query?: (e: IEventContext<C>) => void
-        receive?: (data: any[], result: IResultExt, e: IEventContext<C>) => void
-        task?: (e: IEventContext<C>) => void
-        transact?: (e: IEventContext<C>) => void
-        error?: (err: any, e: IEventContext<C>) => void
-        extend?: (obj: IDatabase<Ext, C> & Ext, dc: any) => void
         noLocking?: boolean
         capSQL?: boolean
         schema?: ValidSchema | ((dc: any) => ValidSchema)
+
+        connect?(client: C, dc: any, useCount: number): void
+
+        disconnect?(client: C, dc: any): void
+
+        query?(e: IEventContext<C>): void
+
+        receive?(data: any[], result: IResultExt, e: IEventContext<C>): void
+
+        task?(e: IEventContext<C>): void
+
+        transact?(e: IEventContext<C>): void
+
+        error?(err: any, e: IEventContext<C>): void
+
+        extend?(obj: IDatabase<Ext, C> & Ext, dc: any): void
     }
 
     // API: http://vitaly-t.github.io/pg-promise/Database.html#$config
@@ -583,7 +596,7 @@ declare namespace pgPromise {
     // Custom-Type Formatting object
     // API: https://github.com/vitaly-t/pg-promise#custom-type-formatting
     interface ICTFObject {
-        toPostgres: (a: any) => any
+        toPostgres(a: any): any
     }
 
     // Query formatting namespace;
@@ -628,7 +641,8 @@ declare namespace pgPromise {
 
     interface ITaskArguments<T> extends IArguments {
         options: { tag?: any, cnd?: any, mode?: TransactionMode | null } & T
-        cb: () => any
+
+        cb(): any
     }
 
     // General-purpose functions

@@ -172,9 +172,11 @@ declare namespace pg {
     // Interface of 'pg-types' module;
     // See: https://github.com/brianc/node-pg-types
     interface ITypes {
-        setTypeParser: (id: TypeId, format: string | ((value: string) => any)) => void
-        getTypeParser: (id: TypeId, format?: string) => any
-        arrayParser: (source: string, transform: (entry: any) => any) => any[]
+        setTypeParser(id: TypeId, format: string | ((value: string) => any)): void
+
+        getTypeParser(id: TypeId, format?: string): any
+
+        arrayParser(source: string, transform: (entry: any) => any): any[]
 
         builtins: typeof TypeId
     }
