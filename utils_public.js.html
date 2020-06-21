@@ -36,13 +36,13 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-const {assertOptions} = require('assert-options');
+const {assertOptions} = require(`assert-options`);
 
 const npm = {
-    fs: require('fs'),
-    path: require('path'),
-    utils: require('./'),
-    package: require('../../package.json')
+    fs: require(`fs`),
+    path: require(`path`),
+    utils: require(`./`),
+    package: require(`../../package.json`)
 };
 
 /**
@@ -68,7 +68,7 @@ const npm = {
  */
 function camelize(text) {
     text = text.replace(/[-_\s.]+(.)?/g, (match, chr) => {
-        return chr ? chr.toUpperCase() : '';
+        return chr ? chr.toUpperCase() : ``;
     });
     return text.substr(0, 1).toLowerCase() + text.substr(1);
 }
@@ -96,7 +96,7 @@ function camelize(text) {
  *
  */
 function camelizeVar(text) {
-    text = text.replace(/[^a-zA-Z0-9$_\-\s.]/g, '').replace(/^[0-9_\-\s.]+/, '');
+    text = text.replace(/[^a-zA-Z0-9$_\-\s.]/g, ``).replace(/^[0-9_\-\s.]+/, ``);
     return camelize(text);
 }
 
@@ -120,28 +120,28 @@ function _enumSql(dir, options, cb, namePath) {
         if (stat.isDirectory()) {
             if (options.recursive) {
                 const dirName = camelizeVar(file);
-                const np = namePath ? (namePath + '.' + dirName) : dirName;
+                const np = namePath ? (namePath + `.` + dirName) : dirName;
                 const t = _enumSql(fullPath, options, cb, np);
                 if (Object.keys(t).length) {
                     if (!dirName.length || dirName in tree) {
                         if (!options.ignoreErrors) {
-                            throw new Error('Empty or duplicate camelized folder name: ' + fullPath);
+                            throw new Error(`Empty or duplicate camelized folder name: ` + fullPath);
                         }
                     }
                     tree[dirName] = t;
                 }
             }
         } else {
-            if (npm.path.extname(file).toLowerCase() === '.sql') {
-                const name = camelizeVar(file.replace(/\.[^/.]+$/, ''));
+            if (npm.path.extname(file).toLowerCase() === `.sql`) {
+                const name = camelizeVar(file.replace(/\.[^/.]+$/, ``));
                 if (!name.length || name in tree) {
                     if (!options.ignoreErrors) {
-                        throw new Error('Empty or duplicate camelized file name: ' + fullPath);
+                        throw new Error(`Empty or duplicate camelized file name: ` + fullPath);
                     }
                 }
                 tree[name] = fullPath;
                 if (cb) {
-                    const result = cb(fullPath, name, namePath ? (namePath + '.' + name) : name);
+                    const result = cb(fullPath, name, namePath ? (namePath + `.` + name) : name);
                     if (result !== undefined) {
                         tree[name] = result;
                     }
@@ -216,11 +216,11 @@ function _enumSql(dir, options, cb, namePath) {
  */
 function enumSql(dir, options, cb) {
     if (!npm.utils.isText(dir)) {
-        throw new TypeError('Parameter \'dir\' must be a non-empty text string.');
+        throw new TypeError(`Parameter 'dir' must be a non-empty text string.`);
     }
-    options = assertOptions(options, ['recursive', 'ignoreErrors']);
-    cb = (typeof cb === 'function') ? cb : null;
-    return _enumSql(dir, options, cb, '');
+    options = assertOptions(options, [`recursive`, `ignoreErrors`]);
+    cb = (typeof cb === `function`) ? cb : null;
+    return _enumSql(dir, options, cb, ``);
 }
 
 /**
@@ -267,26 +267,26 @@ function enumSql(dir, options, cb) {
  */
 function taskArgs(args) {
 
-    if (!args || typeof args.length !== 'number') {
-        throw new TypeError('Parameter "args" must be an array-like object of arguments.');
+    if (!args || typeof args.length !== `number`) {
+        throw new TypeError(`Parameter 'args' must be an array-like object of arguments.`);
     }
 
     let options = args[0], cb;
-    if (typeof options === 'function') {
+    if (typeof options === `function`) {
         cb = options;
         options = {};
         if (cb.name) {
             options.tag = cb.name;
         }
     } else {
-        if (typeof args[1] === 'function') {
+        if (typeof args[1] === `function`) {
             cb = args[1];
         }
-        if (typeof options === 'string' || typeof options === 'number') {
+        if (typeof options === `string` || typeof options === `number`) {
             options = {tag: options};
         } else {
-            options = (typeof options === 'object' &amp;&amp; options) || {};
-            if (!('tag' in options) &amp;&amp; cb &amp;&amp; cb.name) {
+            options = (typeof options === `object` &amp;&amp; options) || {};
+            if (!(`tag` in options) &amp;&amp; cb &amp;&amp; cb.name) {
                 options.tag = cb.name;
             }
         }
@@ -294,22 +294,22 @@ function taskArgs(args) {
 
     const res = [options, cb];
 
-    Object.defineProperty(res, 'options', {
+    Object.defineProperty(res, `options`, {
         get: function () {
             return this[0];
         },
         set: function (newValue) {
-            return this[0] = newValue;
+            this[0] = newValue;
         },
         enumerable: true
     });
 
-    Object.defineProperty(res, 'cb', {
+    Object.defineProperty(res, `cb`, {
         get: function () {
             return this[1];
         },
         set: function (newValue) {
-            return this[1] = newValue;
+            this[1] = newValue;
         },
         enumerable: true
     });

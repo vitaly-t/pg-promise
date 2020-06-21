@@ -27,7 +27,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const {addReadProp} = require('./utils');
+            <pre class="prettyprint source linenums"><code>const {addReadProp} = require(`./utils`);
 
 /**
  * @private
@@ -39,8 +39,8 @@
 class InnerState {
 
     constructor(initialState) {
-        addReadProp(this, '_inner', {}, true);
-        if (initialState &amp;&amp; typeof initialState === 'object') {
+        addReadProp(this, `_inner`, {}, true);
+        if (initialState &amp;&amp; typeof initialState === `object`) {
             this.extendState(initialState);
         }
     }

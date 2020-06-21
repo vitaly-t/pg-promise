@@ -36,11 +36,11 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-const {ColorConsole} = require('./utils/color');
+const {ColorConsole} = require(`./utils/color`);
 
 const npm = {
-    main: require('./'),
-    utils: require('./utils')
+    main: require(`./`),
+    utils: require(`./utils`)
 };
 
 /////////////////////////////////
@@ -84,14 +84,14 @@ class Events {
      * };
      */
     static connect(ctx, client, useCount) {
-        if (typeof ctx.options.connect === 'function') {
+        if (typeof ctx.options.connect === `function`) {
             try {
                 ctx.options.connect(client, ctx.dc, useCount);
             } catch (e) {
                 // have to silence errors here;
                 // cannot allow unhandled errors while connecting to the database,
                 // as it will break the connection logic;
-                Events.unexpected('connect', e);
+                Events.unexpected(`connect`, e);
             }
         }
     }
@@ -124,14 +124,14 @@ class Events {
      * };
      */
     static disconnect(ctx, client) {
-        if (typeof ctx.options.disconnect === 'function') {
+        if (typeof ctx.options.disconnect === `function`) {
             try {
                 ctx.options.disconnect(client, ctx.dc);
             } catch (e) {
                 // have to silence errors here;
                 // cannot allow unhandled errors while disconnecting from the database,
                 // as it will break the disconnection logic;
-                Events.unexpected('disconnect', e);
+                Events.unexpected(`disconnect`, e);
             }
         }
     }
@@ -160,7 +160,7 @@ class Events {
      * };
      */
     static query(options, context) {
-        if (typeof options.query === 'function') {
+        if (typeof options.query === `function`) {
             try {
                 options.query(context);
             } catch (e) {
@@ -233,7 +233,7 @@ class Events {
      * }
      */
     static receive(options, data, result, context) {
-        if (typeof options.receive === 'function') {
+        if (typeof options.receive === `function`) {
             try {
                 options.receive(data, result, context);
             } catch (e) {
@@ -279,12 +279,12 @@ class Events {
      *
      */
     static task(options, context) {
-        if (typeof options.task === 'function') {
+        if (typeof options.task === `function`) {
             try {
                 options.task(context);
             } catch (e) {
                 // silencing the error, to avoid breaking the task;
-                Events.unexpected('task', e);
+                Events.unexpected(`task`, e);
             }
         }
     }
@@ -324,12 +324,12 @@ class Events {
      *
      */
     static transact(options, context) {
-        if (typeof options.transact === 'function') {
+        if (typeof options.transact === `function`) {
             try {
                 options.transact(context);
             } catch (e) {
                 // silencing the error, to avoid breaking the transaction;
-                Events.unexpected('transact', e);
+                Events.unexpected(`transact`, e);
             }
         }
     }
@@ -375,14 +375,14 @@ class Events {
      *
      */
     static error(options, err, context) {
-        if (typeof options.error === 'function') {
+        if (typeof options.error === `function`) {
             try {
                 options.error(err, context);
             } catch (e) {
                 // have to silence errors here;
                 // throwing unhandled errors while handling an error
                 // notification is simply not acceptable.
-                Events.unexpected('error', e);
+                Events.unexpected(`error`, e);
             }
         }
     }
@@ -473,14 +473,14 @@ class Events {
      *
      */
     static extend(options, obj, dc) {
-        if (typeof options.extend === 'function') {
+        if (typeof options.extend === `function`) {
             try {
                 options.extend.call(obj, obj, dc);
             } catch (e) {
                 // have to silence errors here;
                 // the result of throwing unhandled errors while
                 // extending the protocol would be unpredictable.
-                Events.unexpected('extend', e);
+                Events.unexpected(`extend`, e);
             }
         }
     }
@@ -501,7 +501,7 @@ class Events {
         /* istanbul ignore if */
         if (!npm.main.suppressErrors) {
             const stack = e instanceof Error ? e.stack : new Error().stack;
-            ColorConsole.error('Unexpected error in \'%s\' event handler.\n%s\n', event, stack);
+            ColorConsole.error(`Unexpected error in '${event}' event handler.\n${stack}\n`);
         }
     }
 }
