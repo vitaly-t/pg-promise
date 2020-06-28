@@ -1460,7 +1460,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1134">line 1134</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1130">line 1130</a>
     </li></ul></dd>
     
 
@@ -1726,7 +1726,7 @@ as per the <code>:alias</code> filter.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line959">line 959</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line955">line 955</a>
     </li></ul></dd>
     
 
@@ -2267,7 +2267,7 @@ as an override for its internal <code>values</code>.</p></td>
 <div class="description">
     <p>Creates a new array with the results of calling a provided function on every element in the array of rows
 resolved by method <a href="Database.html#any">any</a>.</p>
-<p>It is a convenience method to reduce the following code:</p>
+<p>It is a convenience method, to reduce the following code:</p>
 <pre class="prettyprint source lang-js"><code>db.any(query, values)
     .then(data => {
         return data.map((row, index, data) => {
@@ -2507,7 +2507,7 @@ as an override for its internal <code>values</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1028">line 1028</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1024">line 1024</a>
     </li></ul></dd>
     
 
@@ -2803,7 +2803,7 @@ as an override for its internal <code>values</code>.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>db.multi('SELECT * FROM users;SELECT * FROM products')   .then(([users, products]) => {       // we get data from all queries at once   })   .catch(error => {       // error   });</code></pre>
+    <pre class="prettyprint"><code>// Get data from 2 tables in a single request:const [users, products] = await db.multi('SELECT * FROM users;SELECT * FROM products');</code></pre>
 
 
 
@@ -4143,7 +4143,7 @@ When specified, the returned value replaces the original one.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line987">line 987</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line983">line 983</a>
     </li></ul></dd>
     
 
@@ -4922,7 +4922,7 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line926">line 926</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line922">line 922</a>
     </li></ul></dd>
     
 
@@ -5204,7 +5204,7 @@ it is expected to be an object with options as listed below.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1212">line 1212</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1208">line 1208</a>
     </li></ul></dd>
     
 
@@ -5526,7 +5526,7 @@ It can be either a simple boolean, or a callback function that takes the task co
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1296">line 1296</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1292">line 1292</a>
     </li></ul></dd>
     
 
@@ -5608,7 +5608,7 @@ However, when invoked inside another task or transaction, the method reuses the 
 <a href="Task.html#batch">batch</a>, <a href="Task.html#page">page</a>, <a href="Task.html#sequence">sequence</a>, plus property <a href="Task.html#ctx">ctx</a> -
 the transaction context object. See class <a href="Task.html">Task</a> for more details.</p>
 <p>Note that transactions should be chosen over tasks only where necessary, because unlike regular tasks,
-transactions are blocking operations, and must be used with caution.</p>
+transactions are blocking operations.</p>
 </div>
 
 
@@ -5843,7 +5843,7 @@ it is expected to be an object with options as listed below.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1366">line 1366</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1362">line 1362</a>
     </li></ul></dd>
     
 
@@ -6261,7 +6261,7 @@ success or failure for the operation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1463">line 1463</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1459">line 1459</a>
     </li></ul></dd>
     
 
@@ -6427,7 +6427,7 @@ success or failure for the operation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1648">line 1648</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1644">line 1644</a>
     </li></ul></dd>
     
 
