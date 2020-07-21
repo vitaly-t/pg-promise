@@ -295,25 +295,6 @@ describe(`getSafeConnection`, () => {
     });
 });
 
-describe(`isPathAbsolute`, () => {
-    const tests = [];
-    if (process.platform === `win32`) {
-        tests.push({path: `C:\\Temp\\file.txt`, absolute: true});
-        tests.push({path: `C:/Temp/file.txt`, absolute: true});
-        tests.push({path: `Temp\\file.txt`, absolute: false});
-        tests.push({path: `Temp/file.txt`, absolute: false});
-        tests.push({path: `file.txt`, absolute: false});
-    } else {
-        tests.push({path: `/Temp/file.txt`, absolute: true});
-        tests.push({path: `file.txt`, absolute: false});
-    }
-    it(`must determine each path type`, () => {
-        tests.forEach(t => {
-            expect(internal.isPathAbsolute(t.path)).toBe(t.absolute);
-        });
-    });
-});
-
 describe(`Nested Named Parameters`, () => {
     let tmp, result, duration;
     beforeEach(() => {
