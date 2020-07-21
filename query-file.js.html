@@ -121,7 +121,7 @@ const file$query = Symbol(`QueryFile.query`);
  * // Testing our SQL provider
  *
  * const db = require('./db'); // our database module;
- * const sql = require('./sql').users; // our sql for users;
+ * const {users: sql} = require('./sql'); // sql for users;
  *
  * module.exports = {
  *     addUser: (name, age) => db.none(sql.add, [name, age]),

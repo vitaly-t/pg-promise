@@ -247,7 +247,7 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
     
     <pre class="prettyprint"><code>// File sql.js// Proper way to organize an sql provider://// - have all sql files for Users in ./sql/users// - have all sql files for Products in ./sql/products// - have your sql provider module as ./sql/index.jsconst {QueryFile} = require('pg-promise');const {join: joinPath} = require('path');// Helper for linking to external query files:function sql(file) {    const fullPath = joinPath(__dirname, file); // generating full path;    return new QueryFile(fullPath, {minify: true});}module.exports = {    // external queries for Users:    users: {        add: sql('users/create.sql'),        search: sql('users/search.sql'),        report: sql('users/report.sql'),    },    // external queries for Products:    products: {        add: sql('products/add.sql'),        quote: sql('products/quote.sql'),        search: sql('products/search.sql'),    }};</code></pre>
 
-    <pre class="prettyprint"><code>// Testing our SQL providerconst db = require('./db'); // our database module;const sql = require('./sql').users; // our sql for users;module.exports = {    addUser: (name, age) => db.none(sql.add, [name, age]),    findUser: name => db.any(sql.search, name)};</code></pre>
+    <pre class="prettyprint"><code>// Testing our SQL providerconst db = require('./db'); // our database module;const {users: sql} = require('./sql'); // sql for users;module.exports = {    addUser: (name, age) => db.none(sql.add, [name, age]),    findUser: name => db.any(sql.search, name)};</code></pre>
 
 
 

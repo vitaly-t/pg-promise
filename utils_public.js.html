@@ -67,9 +67,7 @@ const npm = {
  *
  */
 function camelize(text) {
-    text = text.replace(/[-_\s.]+(.)?/g, (match, chr) => {
-        return chr ? chr.toUpperCase() : ``;
-    });
+    text = text.replace(/[-_\s.]+(.)?/g, (_, c) => c ? c.toUpperCase() : ``);
     return text.substr(0, 1).toLowerCase() + text.substr(1);
 }
 
