@@ -917,7 +917,7 @@ non-existing directory.</p></td>
 
     <pre class="prettyprint"><code>// generating an SQL tree for dynamic use of names:const sql = pgp.utils.enumSql(__dirname, {recursive: true}, file => {    return new pgp.QueryFile(file, {minify: true});});</code></pre>
 
-    <pre class="prettyprint"><code>const path = require('path');// replacing each relative path in the tree with a full one:const tree = pgp.utils.enumSql('../sql', {recursive: true}, file => {    return path.join(__dirname, file);});</code></pre>
+    <pre class="prettyprint"><code>const {join: joinPath} = require('path');// replacing each relative path in the tree with a full one:const tree = pgp.utils.enumSql('../sql', {recursive: true}, file => {    return joinPath(__dirname, file);});</code></pre>
 
 
 

@@ -378,9 +378,9 @@ a new <a href="ParameterizedQuery.html">ParameterizedQuery</a> object is created
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>const PQ = require('pg-promise').ParameterizedQuery;// Creating a complete Parameterized Query with parameters:const findUser = new PQ({text: 'SELECT * FROM Users WHERE id = $1', values: [123]});db.one(findUser)    .then(user => {        // user found;    })    .catch(error => {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>const {ParameterizedQuery: PQ} = require('pg-promise');// Creating a complete Parameterized Query with parameters:const findUser = new PQ({text: 'SELECT * FROM Users WHERE id = $1', values: [123]});db.one(findUser)    .then(user => {        // user found;    })    .catch(error => {        // error;    });</code></pre>
 
-    <pre class="prettyprint"><code>const PQ = require('pg-promise').ParameterizedQuery;// Creating a reusable Parameterized Query without values:const addUser = new PQ('INSERT INTO Users(name, age) VALUES($1, $2)');// setting values explicitly:addUser.values = ['John', 30];db.none(addUser)    .then(() => {        // user added;    })    .catch(error=> {        // error;    });// setting values implicitly, by passing them into the query method:db.none(addUser, ['Mike', 25])    .then(() => {        // user added;    })    .catch(error=> {        // error;    });</code></pre>
+    <pre class="prettyprint"><code>const {ParameterizedQuery: PQ} = require('pg-promise');// Creating a reusable Parameterized Query without values:const addUser = new PQ('INSERT INTO Users(name, age) VALUES($1, $2)');// setting values explicitly:addUser.values = ['John', 30];db.none(addUser)    .then(() => {        // user added;    })    .catch(error=> {        // error;    });// setting values implicitly, by passing them into the query method:db.none(addUser, ['Mike', 25])    .then(() => {        // user added;    })    .catch(error=> {        // error;    });</code></pre>
 
 
 

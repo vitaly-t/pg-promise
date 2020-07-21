@@ -206,11 +206,11 @@ function _enumSql(dir, options, cb, namePath) {
  *
  * @example
  *
- * const path = require('path');
+ * const {join: joinPath} = require('path');
  *
  * // replacing each relative path in the tree with a full one:
  * const tree = pgp.utils.enumSql('../sql', {recursive: true}, file => {
- *     return path.join(__dirname, file);
+ *     return joinPath(__dirname, file);
  * });
  *
  */

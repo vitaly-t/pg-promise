@@ -93,12 +93,12 @@ const file$query = Symbol(`QueryFile.query`);
  * // - have all sql files for Products in ./sql/products
  * // - have your sql provider module as ./sql/index.js
  *
- * const QueryFile = require('pg-promise').QueryFile;
- * const path = require('path');
+ * const {QueryFile} = require('pg-promise');
+ * const {join: joinPath} = require('path');
  *
  * // Helper for linking to external query files:
  * function sql(file) {
- *     const fullPath = path.join(__dirname, file); // generating full path;
+ *     const fullPath = joinPath(__dirname, file); // generating full path;
  *     return new QueryFile(fullPath, {minify: true});
  * }
  *
@@ -143,7 +143,7 @@ class QueryFile extends InnerState {
             noWarnings: undefined
         });
 
-        if (npm.utils.isText(filePath) &amp;&amp; !npm.utils.isPathAbsolute(filePath)) {
+        if (npm.utils.isText(filePath) &amp;&amp; !npm.path.isAbsolute(filePath)) {
             filePath = npm.path.join(npm.utils.startDir, filePath);
         }
 
