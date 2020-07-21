@@ -133,13 +133,13 @@ The simplest (classic) formatting uses `$1, $2, ...` syntax to inject values int
 based on their index (from `$1` to `$100000`) from the array of values: 
 
 ```js
-db.any('SELECT * FROM product WHERE price BETWEEN $1 AND $2', [1, 10])
+await db.any('SELECT * FROM product WHERE price BETWEEN $1 AND $2', [1, 10])
 ```
 
 The formatting engine also supports single-value parametrization for queries that use only variable `$1`: 
 
 ```js
-db.any('SELECT * FROM users WHERE name = $1', 'John')
+await db.any('SELECT * FROM users WHERE name = $1', 'John')
 ```
 
 This however works only for types `number`, `bigint`, `string`, `boolean`, `Date` and `null`, because types like `Array`
@@ -153,7 +153,7 @@ the Named Parameter syntax `$*propName*`, with `*` being any of the following op
 
 ```js
 // We can use every supported variable syntax at the same time, if needed:
-db.none('INSERT INTO users(first_name, last_name, age) VALUES(${name.first}, $<name.last>, $/age/)', {
+await db.none('INSERT INTO users(first_name, last_name, age) VALUES(${name.first}, $<name.last>, $/age/)', {
     name: {first: 'John', last: 'Dow'},
     age: 30
 });
@@ -174,7 +174,7 @@ property does not exist.
 Property `this` refers to the formatting object itself, to be inserted as a JSON-formatted string.
 
 ```js
-db.none('INSERT INTO documents(id, doc) VALUES(${id}, ${this})', {
+await db.none('INSERT INTO documents(id, doc) VALUES(${id}, ${this})', {
     id: 123,
     body: 'some text'    
 })
@@ -214,10 +214,10 @@ const obj = {
         }
     }
 };
-db.one('SELECT ${one.two.three.value1}', obj); //=> SELECT 123
-db.one('SELECT ${one.two.three.value2}', obj); //=> SELECT 'hello'
-db.one('SELECT ${one.two.three.value3}', obj); //=> SELECT 'world'
-db.one('SELECT ${one.two.three.value4}', obj); //=> SELECT 'custom'
+await db.one('SELECT ${one.two.three.value1}', obj); //=> SELECT 123
+await db.one('SELECT ${one.two.three.value2}', obj); //=> SELECT 'hello'
+await db.one('SELECT ${one.two.three.value3}', obj); //=> SELECT 'world'
+await db.one('SELECT ${one.two.three.value4}', obj); //=> SELECT 'custom'
 ```
 </details>
 <br/>
@@ -249,7 +249,7 @@ Filters use the same syntax for [Index Variables] and [Named Parameters], follow
 <summary><b>With Index Variables</b></summary>
 
 ```js
-db.any('SELECT $1:name FROM $2:name', ['price', 'products'])
+await db.any('SELECT $1:name FROM $2:name', ['price', 'products'])
 //=> SELECT "price" FROM "products"
 ```
 </details>
@@ -258,7 +258,7 @@ db.any('SELECT $1:name FROM $2:name', ['price', 'products'])
 <summary><b>With Named Parameters</b></summary>
 
 ```js
-db.any('SELECT ${column:name} FROM ${table:name}', {
+await db.any('SELECT ${column:name} FROM ${table:name}', {
     column: 'price',
     table: 'products'    
 });
@@ -285,7 +285,7 @@ to be escaped accordingly:
 <summary><b>Using ~ filter</b></summary>
 
 ```js
-db.query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
+await db.query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
 //=> INSERT INTO "Table Name"("Column Name") VALUES(...)
 ```
 </details>
@@ -294,7 +294,7 @@ db.query('INSERT INTO $1~($2~) VALUES(...)', ['Table Name', 'Column Name']);
 <summary><b>Using :name filter</b></summary>
 
 ```js
-db.query('INSERT INTO $1:name($2:name) VALUES(...)', ['Table Name', 'Column Name']);
+await db.query('INSERT INTO $1:name($2:name) VALUES(...)', ['Table Name', 'Column Name']);
 //=> INSERT INTO "Table Name"("Column Name") VALUES(...)
 ```
 </details>
@@ -306,14 +306,14 @@ However, `pg-promise` supports a variety of ways in which SQL names can be suppl
 * A string that contains only `*` (asterisks) is automatically recognized as _all columns_:
 
 ```js
-db.query('SELECT $1:name FROM $2:name', ['*', 'table']);
+await db.query('SELECT $1:name FROM $2:name', ['*', 'table']);
 //=> SELECT * FROM "table"
 ```
 
 * An array of strings to represent column names:
 
 ```js
-db.query('SELECT ${columns:name} FROM ${table:name}', {
+await db.query('SELECT ${columns:name} FROM ${table:name}', {
     columns: ['column1', 'column2'],
     table: 'table'
 });
@@ -338,7 +338,7 @@ const obj = {
     one: 1,
     two: 2
 };
-db.query('INSERT INTO table(${this:name}) VALUES(${this:csv})', obj);
+await db.query('INSERT INTO table(${this:name}) VALUES(${this:csv})', obj);
 //=> INSERT INTO table("one","two") VALUES(1, 2)
 ```
 
@@ -354,7 +354,7 @@ An alias is a lighter/simpler version of [SQL Names], which only supports a text
 For example, it will skip adding surrounding double quotes when the name is a same-case single word:
 
 ```js
-db.any('SELECT full_name as $1:alias FROM $2:name', ['name', 'table']);
+await db.any('SELECT full_name as $1:alias FROM $2:name', ['name', 'table']);
 //=> SELECT full_name as name FROM "table"
 ```
 
@@ -369,7 +369,7 @@ will throw error `Values null/undefined cannot be used as raw text.`
 
 ```js
 const where = pgp.as.format('WHERE price BETWEEN $1 AND $2', [5, 10]); // pre-format WHERE condition
-db.any('SELECT * FROM products $1:raw', where);
+await db.any('SELECT * FROM products $1:raw', where);
 //=> SELECT * FROM products WHERE price BETWEEN 5 AND 10
 ```
 
@@ -426,7 +426,7 @@ Typically, you would use this for a value that's an array, though it works for s
 
 ```js
 const ids = [1, 2, 3];
-db.any('SELECT * FROM table WHERE id IN ($1:csv)', [ids])
+await db.any('SELECT * FROM table WHERE id IN ($1:csv)', [ids])
 //=> SELECT * FROM table WHERE id IN (1,2,3)
 ```
 </details>
@@ -436,7 +436,7 @@ db.any('SELECT * FROM table WHERE id IN ($1:csv)', [ids])
 
 ```js
 const ids = [1, 2, 3];
-db.any('SELECT * FROM table WHERE id IN ($1:list)', [ids])
+await db.any('SELECT * FROM table WHERE id IN ($1:list)', [ids])
 //=> SELECT * FROM table WHERE id IN (1,2,3)
 ```
 </details>
@@ -450,10 +450,10 @@ Using automatic property enumeration:
 ```js
 const obj = {first: 123, second: 'text'};
 
-db.none('INSERT INTO table($1:name) VALUES($1:csv)', [obj])
+await db.none('INSERT INTO table($1:name) VALUES($1:csv)', [obj])
 //=> INSERT INTO table("first","second") VALUES(123,'text')
 
-db.none('INSERT INTO table(${this:name}) VALUES(${this:csv})', obj)
+await db.none('INSERT INTO table(${this:name}) VALUES(${this:csv})', obj)
 //=> INSERT INTO table("first","second") VALUES(123,'text')
 ```
 </details>
@@ -464,10 +464,10 @@ db.none('INSERT INTO table(${this:name}) VALUES(${this:csv})', obj)
 ```js
 const obj = {first: 123, second: 'text'};
 
-db.none('INSERT INTO table($1:name) VALUES($1:list)', [obj])
+await db.none('INSERT INTO table($1:name) VALUES($1:list)', [obj])
 //=> INSERT INTO table("first","second") VALUES(123,'text')
 
-db.none('INSERT INTO table(${this:name}) VALUES(${this:list})', obj)
+await db.none('INSERT INTO table(${this:name}) VALUES(${this:list})', obj)
 //=> INSERT INTO table("first","second") VALUES(123,'text')
 ```
 </details>
@@ -595,11 +595,11 @@ Use of external SQL files (via [QueryFile]) offers many advantages:
 <summary><b>Example</b></summary>
 
 ```js
-const path = require('path');
+const {join: joinPath} = require('path');
 
 // Helper for linking to external query files:
 function sql(file) {
-    const fullPath = path.join(__dirname, file);
+    const fullPath = joinPath(__dirname, file);
     return new pgp.QueryFile(fullPath, {minify: true});
 }
 
