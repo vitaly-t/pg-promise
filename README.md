@@ -327,7 +327,8 @@ const obj = {
     one: 1,
     two: 2
 };
-db.query('SELECT $1:name FROM $2:name', [obj, 'table']);
+
+await db.query('SELECT $1:name FROM $2:name', [obj, 'table']);
 //=> SELECT "one","two" FROM "table"
 ```
 
@@ -338,6 +339,7 @@ const obj = {
     one: 1,
     two: 2
 };
+
 await db.query('INSERT INTO table(${this:name}) VALUES(${this:csv})', obj);
 //=> INSERT INTO table("one","two") VALUES(1, 2)
 ```
