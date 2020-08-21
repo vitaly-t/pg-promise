@@ -665,7 +665,7 @@ to the parameters passed into the constructor.</p>
 <div class="description">
     <p><a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, based on <a href="https://github.com/vitaly-t/pg-promise#symbolic-ctf">Symbolic CTF</a>, i.e. the actual method is available only via <a href="external-Symbol.html">Symbol</a>:</p>
 <pre class="prettyprint source lang-js"><code>const ctf = pgp.as.ctf; // Custom Type Formatting symbols namespace
-const query = qf[ctf.toPostgres]; // qf = an object of type QueryFile
+const query = qf[ctf.toPostgres](); // qf = an object of type QueryFile
 </code></pre>
 <p>This is a raw formatting type (<code>rawType = true</code>), i.e. when used as a query-formatting parameter, type <code>QueryFile</code> injects SQL as raw text.</p>
 <p>If you need to support type <code>QueryFile</code> outside of query methods, this is the only safe way to get the most current SQL.
