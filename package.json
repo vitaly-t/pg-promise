@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "assert-options": "0.6.2",
-    "pg": "8.2.2",
+    "pg": "8.3.2",
     "pg-minify": "1.6.1",
     "spex": "3.0.2"
   },
