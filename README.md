@@ -241,7 +241,10 @@ Please note, however, that nested parameters are not supported within the [helpe
 ## Formatting Filters
 
 By default, all values are formatted according to their JavaScript type. Formatting filters (or modifiers),
-change that, so the value is formatted differently. 
+change that, so the value is formatted differently.
+
+Note that filters work only for normal queries, and are not available within [PreparedStatement] or
+[ParameterizedQuery], and those are formatted on the server side.   
 
 Filters use the same syntax for [Index Variables] and [Named Parameters], following immediately the variable name:
 
@@ -1096,6 +1099,8 @@ for detailed changes between versions you should see the corresponding release n
 [as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
 [as.alias]:http://vitaly-t.github.io/pg-promise/formatting.html#.alias
 [TransactionMode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
+[PreparedStatement]:https://vitaly-t.github.io/pg-promise/PreparedStatement.html
+[ParameterizedQuery]:https://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
 
 <!-- WiKi Links -->
 
