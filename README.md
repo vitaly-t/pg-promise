@@ -244,7 +244,7 @@ By default, all values are formatted according to their JavaScript type. Formatt
 change that, so the value is formatted differently.
 
 Note that filters work only for normal queries, and are not available within [PreparedStatement] or
-[ParameterizedQuery], because those are formatted on the server side.   
+[ParameterizedQuery], because those are, by definition, formatted on the server side.
 
 Filters use the same syntax for [Index Variables] and [Named Parameters], following immediately the variable name:
 
