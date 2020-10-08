@@ -102,6 +102,7 @@ declare namespace pg {
         keepalives?: number
         keepalives_idle?: number
         Client?: new(config: string | IConnectionParameters) => C
+        types?: ITypeOverrides
     }
 
     // Type id-s supported by PostgreSQL, copied from:
@@ -169,13 +170,17 @@ declare namespace pg {
         REGROLE = 4096
     }
 
-    // Interface of 'pg-types' module;
-    // See: https://github.com/brianc/node-pg-types
-    interface ITypes {
+    // Interface for TypeOverrides;
+    // See: https://github.com/brianc/node-postgres/blob/master/packages/pg/lib/type-overrides.js
+    interface ITypeOverrides {
         setTypeParser(id: TypeId, format: string | ((value: string) => any)): void
 
         getTypeParser(id: TypeId, format?: string): any
+    }
 
+    // Interface of 'pg-types' module;
+    // See: https://github.com/brianc/node-pg-types
+    interface ITypes extends ITypeOverrides {
         arrayParser(source: string, transform: (entry: any) => any): any[]
 
         builtins: typeof TypeId
