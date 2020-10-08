@@ -170,12 +170,16 @@ declare namespace pg {
         REGROLE = 4096
     }
 
+    type ParserFormat = 'text' | 'binary';
+
     // Interface for TypeOverrides;
     // See: https://github.com/brianc/node-postgres/blob/master/packages/pg/lib/type-overrides.js
     interface ITypeOverrides {
-        setTypeParser(id: TypeId, format: string | ((value: string) => any)): void
+        setTypeParser(id: TypeId, parseFn: string | ((value: string) => any)): void
 
-        getTypeParser(id: TypeId, format?: string): any
+        setTypeParser(id: TypeId, format: ParserFormat, parseFn: string | ((value: string) => any)): void
+
+        getTypeParser(id: TypeId, format?: ParserFormat): any
     }
 
     // Interface of 'pg-types' module;
