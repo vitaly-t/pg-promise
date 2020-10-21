@@ -60,7 +60,7 @@ only its tiny part.
 
 # Support & Sponsorship  
 
-For paid support & sponsorship, see [pg-promise on xscode](https://xscode.com/vitaly-tomilov/pg-promise).
+For paid support and sponsorship, see [pg-promise on xscode...](https://xscode.com/vitaly-tomilov/pg-promise)
 
 <a href='https://xscode.com/vitaly-tomilov/pg-promise'><img alt='Click here for support and sponsorship.' src='https://github.com/vitaly-t/pg-promise/raw/master/jsdoc/pg-promise-banner.png' border='0' ></a>
 
