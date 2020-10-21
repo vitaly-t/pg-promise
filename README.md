@@ -60,10 +60,11 @@ only its tiny part.
 
 # Support & Sponsorship  
 
-If you like this library, and want a continuous support, then please consider donating:
+For paid support & sponsorship, see [pg-promise on xscode](https://xscode.com/vitaly-tomilov/pg-promise).
 
- - <a href='https://www.paypal.me/VitalyTomilov'><img alt='Click here to lend your support to: pg-promise and make a donation at PayPal.com !' src='https://github.com/vitaly-t/pg-promise/raw/master/jsdoc/paypal.png' border='0' ></a>
- - Bitcoin: `1yki7MXMkuDw8qqe5icVdh1GJZSQSzKZp`
+<a href='https://xscode.com/vitaly-tomilov/pg-promise'><img alt='Click here for support and sponsorship.' src='https://github.com/vitaly-t/pg-promise/raw/master/jsdoc/pg-promise-banner.png' border='0' ></a>
+
+We also do free support here and on [StackOverflow](https://stackoverflow.com/questions/tagged/pg-promise).
 
 # Documentation
 
