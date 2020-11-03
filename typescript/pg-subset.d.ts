@@ -259,7 +259,12 @@ declare namespace pg {
     interface IPool extends EventEmitter {
         end(): Promise<undefined>;
 
-        end(cb: (err: Error) => void): void;
+        end(cb: (err: Error) => any): any;
+
+        readonly options: { [name: string]: any }; // connection options
+
+        readonly ended: boolean;
+        readonly ending: boolean;
 
         readonly waitingCount: number;
         readonly idleCount: number;

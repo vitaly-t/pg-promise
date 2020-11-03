@@ -5,9 +5,9 @@ const pgp: pgPromise.IMain = pgPromise({});
 const db = pgp('connection');
 
 (async function () {
-    await db.$pool.end();
+    const res: undefined = await db.$pool.end();
 
-    await db.$pool.end(err => {
+    const res2: void = await db.$pool.end((err: Error) => {
         console.log(err.stack);
     });
 
@@ -16,4 +16,6 @@ const db = pgp('connection');
     db.$pool.on('error', err => {
         // handle errors
     })
+
+    const database = db.$pool.options.database;
 })();
