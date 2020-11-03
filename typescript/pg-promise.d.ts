@@ -286,7 +286,7 @@ declare namespace pgPromise {
         readonly $config: ILibConfig<Ext, C>
         readonly $cn: string | pg.IConnectionParameters<C>
         readonly $dc: any
-        readonly $pool: any
+        readonly $pool: pg.IPool
     }
 
     interface IResultExt extends pg.IResult {

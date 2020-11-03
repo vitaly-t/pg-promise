@@ -253,6 +253,19 @@ declare namespace pg {
         keepalives_idle: number
     }
 
+    // interface IPool, as per the following implementation:
+    // https://github.com/brianc/node-postgres/blob/master/packages/pg-pool/index.js#L61
+    // NOTE: We declare only what can be used from pg-promise!
+    interface IPool extends EventEmitter {
+        end(): Promise<Error>;
+
+        end(cb: (err: Error) => void): void;
+
+        readonly waitingCount: number;
+        readonly idleCount: number;
+        readonly totalCount: number;
+    }
+
     interface IQuery {
         // this type is not used within pg-promise;
     }
