@@ -255,9 +255,9 @@ declare namespace pg {
 
     // interface IPool, as per the following implementation:
     // https://github.com/brianc/node-postgres/blob/master/packages/pg-pool/index.js#L61
-    // NOTE: We declare only what can be used from pg-promise!
+    // NOTE: We declare only what can be used from pg-promise
     interface IPool extends EventEmitter {
-        end(): Promise<Error | undefined>;
+        end(): Promise<undefined>;
 
         end(cb: (err: Error) => void): void;
 
