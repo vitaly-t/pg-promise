@@ -361,7 +361,7 @@ declare namespace pgPromise {
         multi<T = any>(query: QueryParam, values?: any): XPromise<Array<T[]>>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#stream
-        stream(qs: object, init: (stream: NodeJS.ReadableStream) => void): XPromise<{ processed: number, duration: number }>
+        stream(qs: NodeJS.ReadableStream, init: (stream: NodeJS.ReadableStream) => void): XPromise<{ processed: number, duration: number }>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#func
         func<T = any>(funcName: string, values?: any, qrm?: queryResult): XPromise<T>
