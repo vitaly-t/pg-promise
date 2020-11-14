@@ -91,6 +91,7 @@ declare namespace pg {
         fallback_application_name?: string
         isDomainSocket?: boolean
         max?: number
+        maxUses?: number
         idleTimeoutMillis?: number
         parseInputDatesAsUTC?: boolean
         rows?: number
@@ -102,6 +103,7 @@ declare namespace pg {
         keepalives?: number
         keepalives_idle?: number
         Client?: new(config: string | IConnectionParameters) => C
+        Promise?: any
         types?: ITypeOverrides
     }
 
