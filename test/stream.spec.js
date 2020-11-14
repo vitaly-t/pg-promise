@@ -131,27 +131,23 @@ describe(`Method stream`, () => {
 
         describe(`with a valid request`, () => {
             let res, count = 0, context, initCtx;
-            const qs = new QueryStream(`select * from users where id=$1`, [1]);
-            beforeEach(done => {
+            const qs = new QueryStream(`select * from users where id = $1`, [1]);
+            beforeEach(async done => {
                 options.query = e => {
                     context = e;
                     count++;
                 };
-                db.stream.call(qs, qs, function (stream) {
+                res = await db.stream.call(qs, qs, function (stream) {
                     initCtx = this;
                     stream.pipe(JSONStream.stringify());
-                })
-                    .then(data => {
-                        res = data;
-                    })
-                    .finally(done);
+                }).finally(done);
             });
             it(`must return the correct data and provide notification`, () => {
                 expect(typeof res).toBe(`object`);
                 expect(res.processed).toBe(1);
                 expect(res.duration >= 0).toBe(true);
                 expect(count).toBe(1);
-                expect(context.query).toBe(`select * from users where id=$1`);
+                expect(context.query).toBe(`select * from users where id = $1`);
                 expect(JSON.stringify(context.params)).toBe(`["1"]`);
                 expect(initCtx).toBe(qs);
             });
@@ -162,26 +158,28 @@ describe(`Method stream`, () => {
 
         describe(`with invalid request`, () => {
             let res, err, context, count = 0;
-            beforeEach(done => {
+            beforeEach(async done => {
                 options.error = (error, e) => {
                     err = error;
                     context = e;
                     count++;
                 };
-                const qs = new QueryStream(`select * from unknown where id=$1`, [1]);
-                db.stream(qs, stream => {
-                    stream.pipe(JSONStream.stringify());
-                })
-                    .catch(reason => {
-                        res = reason;
-                    })
-                    .finally(done);
+                try {
+                    const qs = new QueryStream(`select * from unknown where id = $1`, [1]);
+                    await db.stream(qs, stream => {
+                        stream.pipe(JSONStream.stringify());
+                    });
+                } catch (e) {
+                    res = e;
+                } finally {
+                    done();
+                }
             });
             it(`must return the correct data and provide notification`, () => {
                 expect(res instanceof Error).toBe(true);
                 expect(res.message).toBe(`relation "unknown" does not exist`);
                 expect(count).toBe(1);
-                expect(context.query).toBe(`select * from unknown where id=$1`);
+                expect(context.query).toBe(`select * from unknown where id = $1`);
                 expect(JSON.stringify(context.params)).toBe(`["1"]`);
                 expect(err instanceof Error).toBe(true);
                 expect(err.message).toBe(`relation "unknown" does not exist`);
