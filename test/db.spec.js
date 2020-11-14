@@ -371,7 +371,7 @@ describe(`Connection`, () => {
                             .then(res => {
                                 const pid = res[0].pg_backend_pid;
                                 return promise.all([
-                                    obj.proc(`pg_sleep`, [2])
+                                    obj.func(`pg_sleep`, [2])
                                         .catch(reason => {
                                             error = reason;
                                         }),
