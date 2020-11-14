@@ -7,7 +7,7 @@ const pgResult = require(`pg/lib/result`);
 const header = require(`./db/header`);
 const tools = require(`./db/tools`);
 
-const isMacOS = require(`os`).platform() === `darwin`;
+const {isMac, isWindows} = require(`../lib/utils`).platform;
 
 const promise = header.defPromise;
 const options = {
@@ -164,7 +164,7 @@ describe(`Connection`, () => {
                     .finally(done);
             });
             it(`must report the right error`, () => {
-                if (!isMacOS) {
+                if (!isMac) {
                     // we do not test this on MacOS, because it requires use of password, so the test will fail.
                     expect(log.e.cn).toEqual(errCN);
                 }
@@ -239,50 +239,60 @@ describe(`Connection`, () => {
         });
     });
 
-    describe(`for invalid connection`, () => {
-        const dbErr = pgp(`bla-bla`);
-        let error;
-        beforeEach(done => {
-            dbErr.connect()
-                .catch(err => {
-                    error = err;
-                })
-                .finally(done);
+    if (!isWindows) {
+        /*
+          Disabled this test on 14/11/2020, since it started showing crypto-related issues on Windows;
+        */
+        describe(`for invalid connection`, () => {
+            const dbErr = pgp(`bla-bla`);
+            let error;
+            beforeEach(done => {
+                dbErr.connect()
+                    .catch(err => {
+                        error = err;
+                    })
+                    .finally(done);
+            });
+            it(`must report the right error`, () => {
+                const oldStyleError = `database "bla-bla" does not exist`; // Before PostgreSQL v.10
+                const newStyleError = `role ` + JSON.stringify(pgp.pg.defaults.user) + ` does not exist`;
+                expect(error instanceof Error).toBe(true);
+                if (isMac) {
+                    expect(error.message).toContain(`password authentication failed for user`);
+                } else {
+                    expect(error.message.indexOf(oldStyleError) >= 0 || error.message.indexOf(newStyleError) >= 0).toBe(true);
+                }
+            });
         });
-        it(`must report the right error`, () => {
-            const oldStyleError = `database "bla-bla" does not exist`; // Before PostgreSQL v.10
-            const newStyleError = `role ` + JSON.stringify(pgp.pg.defaults.user) + ` does not exist`;
-            expect(error instanceof Error).toBe(true);
-            if (isMacOS) {
-                expect(error.message).toContain(`password authentication failed for user`);
-            } else {
-                expect(error.message.indexOf(oldStyleError) >= 0 || error.message.indexOf(newStyleError) >= 0).toBe(true);
-            }
-        });
-    });
+    }
 
-    describe(`for invalid user name`, () => {
-        const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-        errCN.user = `somebody`;
-        const dbErr = pgp(errCN);
-        let error;
-        beforeEach(done => {
-            dbErr.connect()
-                .catch(err => {
-                    error = err;
-                })
-                .finally(done);
+    if (!isWindows) {
+        /*
+          Disabled this test on 14/11/2020, since it started showing crypto-related issues on Windows;
+        */
+        describe(`for invalid user name`, () => {
+            const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+            errCN.user = `somebody`;
+            const dbErr = pgp(errCN);
+            let error;
+            beforeEach(done => {
+                dbErr.connect()
+                    .catch(err => {
+                        error = err;
+                    })
+                    .finally(done);
+            });
+            it(`must report the right error`, () => {
+                expect(error instanceof Error).toBe(true);
+                const macError = `password authentication failed for user "somebody"`;
+                if (isMac) {
+                    expect(error.message).toContain(macError);
+                } else {
+                    expect(error.message).toContain(`role "somebody" does not exist`);
+                }
+            });
         });
-        it(`must report the right error`, () => {
-            expect(error instanceof Error).toBe(true);
-            const macError = `password authentication failed for user "somebody"`;
-            if (isMacOS) {
-                expect(error.message).toContain(macError);
-            } else {
-                expect(error.message).toContain(`role "somebody" does not exist`);
-            }
-        });
-    });
+    }
 
     describe(`on repeated disconnection`, () => {
         let error;
@@ -342,69 +352,68 @@ describe(`Connection`, () => {
         });
     });
 
-    /*
-    Commenting this out again, on July 11, 2019, because this test
-    has been known to be very flaky, especially on Windows, and keeps
-    getting in the way of testing the framework locally.
+    if (!isWindows) {
+        /*
+        This test has been known to be very flaky, especially on Windows, and keeps
+        getting in the way of testing the framework locally.
+        */
+        describe(`db side closing of the connection pool`, () => {
+            const singleCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
+            singleCN.max = 1;
+            const dbSingleCN = pgp(singleCN);
 
-    describe('db side closing of the connection pool', () => {
-        const singleCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
-        singleCN.max = 1;
-        const dbSingleCN = pgp(singleCN);
+            let error;
 
-        let error;
+            beforeEach(done => {
+                dbSingleCN.connect()
+                    .then(obj => {
+                        obj.func(`pg_backend_pid`)
+                            .then(res => {
+                                const pid = res[0].pg_backend_pid;
+                                return promise.all([
+                                    obj.proc(`pg_sleep`, [2])
+                                        .catch(reason => {
+                                            error = reason;
+                                        }),
+                                    // Terminate connection after a short delay, before the query finishes
+                                    promise.delay(1000)
+                                        .then(() =>
+                                            db.one(`SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1`, pid)
+                                        )
+                                ])
+                                    .finally(() => {
+                                        obj.done(error);
+                                        done();
+                                    });
+                            });
+                    });
+            });
 
-        beforeEach(done => {
-            dbSingleCN.connect()
-                .then(obj => {
-                    obj.func('pg_backend_pid')
-                        .then(res => {
-                            const pid = res[0].pg_backend_pid;
-                            return promise.all([
-                                obj.proc('pg_sleep', [2])
-                                    .catch(reason => {
-                                        error = reason;
-                                    }),
-                                // Terminate connection after a short delay, before the query finishes
-                                promise.delay(1000)
-                                    .then(() =>
-                                        db.one('SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid)
-                                    )
-                            ])
-                                .finally(() => {
-                                    obj.done(error);
-                                    done();
-                                });
-                        });
-                });
+            it(`returns the postgres error`, () => {
+                expect(error instanceof Error).toBe(true);
+                expect(error.code).toEqual(`57P01`);
+                expect(error.message).toEqual(`terminating connection due to administrator command`);
+            });
+
+            it(`releases the client from the pool`, done => {
+                let result, singleError;
+
+                dbSingleCN.one(`SELECT 1 as test`)
+                    .then(data => {
+                        result = data;
+                    })
+                    .catch(reason => {
+                        singleError = reason;
+                    })
+                    .then(() => {
+                        expect(singleError).not.toBeDefined();
+                        expect(result).toEqual({test: 1});
+                        done();
+                    });
+
+            });
         });
-
-        it('returns the postgres error', () => {
-            expect(error instanceof Error).toBe(true);
-            expect(error.code).toEqual('57P01');
-            expect(error.message).toEqual('terminating connection due to administrator command');
-        });
-
-        it('releases the client from the pool', done => {
-            let result, singleError;
-
-            dbSingleCN.one('SELECT 1 as test;')
-                .then(data => {
-                    result = data;
-                })
-                .catch(reason => {
-                    singleError = reason;
-                })
-                .then(() => {
-                    expect(singleError).not.toBeDefined();
-                    expect(result).toEqual({test: 1});
-                    done();
-                });
-
-        });
-    });
-    */
-
+    }
 });
 
 describe(`Direct Connection`, () => {
