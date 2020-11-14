@@ -410,7 +410,6 @@ describe(`Connection`, () => {
                         expect(result).toEqual({test: 1});
                         done();
                     });
-
             });
         });
     }
