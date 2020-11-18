@@ -641,6 +641,14 @@ describe(`Method as.alias`, () => {
         });
     });
 
+    describe(`with dots in the name`, () => {
+        expect(pgp.as.alias(`one.two`)).toBe(`one.two`);
+        expect(pgp.as.alias(`one.two.three`)).toBe(`one.two.three`);
+        expect(pgp.as.alias(`One.two.thrEe`)).toBe(`"One".two."thrEe"`);
+        expect(pgp.as.alias(`..one..`)).toBe(`one`);
+        expect(pgp.as.alias(`..one..two..`)).toBe(`one.two`);
+        expect(pgp.as.alias(`..one. .two..`)).toBe(`one." ".two`);
+    });
 });
 
 describe(`Method as.format`, () => {
