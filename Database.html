@@ -1602,8 +1602,8 @@ of <code>query('SELECT * FROM $1:alias($2:csv)', [funcName, values], qrm)</code>
             
 
             <td class="description last"><p>Name of the function to be executed.
-When it is not same-case, or contains extended symbols, it is double-quoted,
-as per the <code>:alias</code> filter.</p></td>
+When it is not same-case, or contains extended symbols, it is double-quoted, as per the <code>:alias</code> filter,
+which also supports <code>.</code>, to auto-split into a composite name.</p></td>
         </tr>
 
     
@@ -3994,8 +3994,8 @@ When specified, the returned value replaces the original one.</p>
             
 
             <td class="description last"><p>Name of the stored procedure to be executed.
-When it is not same-case, or contains extended symbols, it is double-quoted,
-as per the <code>:alias</code> filter.</p></td>
+When it is not same-case, or contains extended symbols, it is double-quoted, as per the <code>:alias</code> filter,
+which also supports <code>.</code>, to auto-split into a composite SQL name.</p></td>
         </tr>
 
     

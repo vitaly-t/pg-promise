@@ -170,7 +170,7 @@ function formatCSV(values, options) {
 // Query formatting helpers;
 const formatAs = {
 
-    object(query, obj, raw, options) {
+    object({query, obj, raw, options}) {
         options = options &amp;&amp; typeof options === `object` ? options : {};
         return query.replace(npm.patterns.namedParameters, name => {
             const v = formatAs.stripName(name.replace(/^\$[{(&lt;[/]|[\s})>\]/]/g, ``), raw),
@@ -196,7 +196,7 @@ const formatAs = {
         });
     },
 
-    array(query, array, raw, options) {
+    array({query, array, raw, options}) {
         options = options &amp;&amp; typeof options === `object` ? options : {};
         return query.replace(npm.patterns.multipleValues, name => {
             const v = formatAs.stripName(name.substr(1), raw);
@@ -218,7 +218,7 @@ const formatAs = {
         });
     },
 
-    value(query, value, raw, options) {
+    value({query, value, raw, options}) {
         return query.replace(npm.patterns.singleValue, name => {
             const v = formatAs.stripName(name, raw);
             return formatValue({value, fm: v.fm, options});
@@ -322,15 +322,15 @@ function formatQuery(query, values, raw, options) {
     if (typeof values === `object` &amp;&amp; values !== null) {
         if (values instanceof Array) {
             // $1, $2,... formatting to be applied;
-            return formatAs.array(query, values, raw, options);
+            return formatAs.array({query, array: values, raw, options});
         }
         if (!(values instanceof Date || values instanceof Buffer)) {
             // $*propName* formatting to be applied;
-            return formatAs.object(query, values, raw, options);
+            return formatAs.object({query, obj: values, raw, options});
         }
     }
     // $1 formatting to be applied, if values != undefined;
-    return values === undefined ? query : formatAs.value(query, values, raw, options);
+    return values === undefined ? query : formatAs.value({query, value: values, raw, options});
 }
 
 //////////////////////////////////////////////////////
@@ -340,7 +340,7 @@ function formatEntity(entity, values, {capSQL, type}) {
     if (capSQL) {
         prefix = prefix.toUpperCase();
     }
-    return `${prefix} ${$as.alias(entity)} (${formatCSV(values, {capSQL})})`;
+    return `${prefix} ${$as.alias(entity)}(${formatCSV(values, {capSQL})})`;
 }
 
 function formatSqlName(name) {
@@ -529,20 +529,22 @@ const $as = {
      * @method formatting.alias
      * @description
      * Simpler (non-verbose) version of method {@link formatting.name name}, to handle only a regular string-identifier
-     * that's used as an SQL alias, i.e. it doesn't support `*` or an array/object of names, which in the context of
-     * an SQL alias would be incorrect.
+     * that's mostly used as an SQL alias, i.e. it doesn't support `*` or an array/object of names, which in the context of
+     * an SQL alias would be incorrect. However, it supports `.` as name-separator, for simpler escaping of composite names.
      *
      * The surrounding double quotes are not added when the alias uses a simple syntax:
      *  - it is a same-case single word, without spaces
      *  - it can contain underscores, and can even start with them
      *  - it can contain digits and `$`, but cannot start with those
      *
+     * The method will automatically split the string with `.`, to support composite SQL names.
+     *
      * When formatting a query, a variable makes use of this method via modifier `:alias`. See method {@link formatting.format format}.
      *
      * @param {string|function} name
      * SQL alias name, or a function that returns it.
      *
-     * The name must be at least 1 character long.
+     * The name must be at least 1 character long. And it can contain `.`, to split into multiple SQL names.
      *
      * If `name` doesn't resolve into a non-empty string, it throws {@link external:TypeError TypeError} = `Invalid sql alias: ...`
      *
@@ -557,11 +559,15 @@ const $as = {
     alias(name) {
         name = resolveFunc(name);
         if (name &amp;&amp; typeof name === `string`) {
-            const m = name.match(/^([a-z_][a-z0-9_$]*|[A-Z_][A-Z0-9_$]*)$/);
-            if (m &amp;&amp; m[0] === name) {
-                return name;
-            }
-            return `"${name.replace(/"/g, `""`)}"`;
+            return name.split(`.`)
+                .filter(f => f)
+                .map(a => {
+                    const m = a.match(/^([a-z_][a-z0-9_$]*|[A-Z_][A-Z0-9_$]*)$/);
+                    if (m &amp;&amp; m[0] === a) {
+                        return a;
+                    }
+                    return `"${a.replace(/"/g, `""`)}"`;
+                }).join(`.`);
         }
         throw new TypeError(`Invalid sql alias: ${npm.utils.toJson(name)}`);
     },
@@ -697,7 +703,7 @@ const $as = {
      * @param {Array|function} arr
      * Array to be converted, or a function that returns one.
      *
-     * @param {object} [options]
+     * @param {{}} [options]
      * Array-Formatting Options.
      *
      * @param {boolean} [options.capSQL=false]
@@ -767,8 +773,7 @@ const $as = {
     /**
      * @method formatting.func
      * @description
-     * Calls the function to get the actual value, and then formats the result
-     * according to its type + `raw` flag.
+     * Calls the function to get the actual value, and then formats the result according to its type + `raw` flag.
      *
      * @param {function} func
      * Function to be called, with support for nesting.
@@ -838,7 +843,7 @@ const $as = {
      * @param {array|object|value} [values]
      * Formatting parameter(s) / variable value(s).
      *
-     * @param {object} [options]
+     * @param {{}} [options]
      * Formatting Options.
      *
      * @param {boolean} [options.capSQL=false]
