@@ -358,11 +358,18 @@ Method [as.name] implements the formatting.
 
 An alias is a lighter/simpler version of [SQL Names], which only supports a text string, and is used via the `:alias` filter.
 
-For example, it will skip adding surrounding double quotes when the name is a same-case single word:
+ - It will skip adding surrounding double quotes when the name is a same-case single word:
 
 ```js
 await db.any('SELECT full_name as $1:alias FROM $2:name', ['name', 'table']);
 //=> SELECT full_name as name FROM "table"
+```
+
+ - It will automatically split the name into multiple SQL names when encountering `.`:
+
+```js
+await db.any('SELECT * FROM $1:alias', ['schema.table']);
+//=> SELECT * FROM schema.table
 ```
 
 For more details see method [as.alias] that implements the formatting.
