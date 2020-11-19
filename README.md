@@ -357,7 +357,7 @@ Method [as.name] implements the formatting.
 #### Alias Filter
 
 An alias is a simpler, less-strict version of `:name` filter, which only supports a text string, i.e.
-it does not support `*`, array of strings or object as inputs, like `:name` does. However, it supports other
+it does not support `*`, `this`, array or object as inputs, like `:name` does. However, it supports other
 popular cases that are less strict, but cover at least 99% of all use cases, as shown below.   
 
  - It will skip adding surrounding double quotes when the name is a same-case single word:
@@ -371,8 +371,8 @@ await db.any('SELECT full_name as $1:alias FROM $2:name', ['name', 'table']);
  escape each part separately, thus supporting auto-composite SQL names:
 
 ```js
-await db.any('SELECT * FROM $1:alias', ['schema.table']);
-//=> SELECT * FROM schema.table
+await db.any('SELECT * FROM $1:alias', ['schemaName.table']);
+//=> SELECT * FROM "schemaName".table
 ```
 
 For more details see method [as.alias] that implements the formatting.
