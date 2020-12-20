@@ -188,9 +188,9 @@ declare namespace pgPromise {
 
         assignColumns(options?: { from?: string, to?: string, skip?: string | string[] | ((c: Column<S>) => boolean) }): string
 
-        extend(columns: Column | ColumnSet | Array<string | IColumnConfig | Column>): ColumnSet
+        extend<T = S>(columns: Column | ColumnSet | Array<string | IColumnConfig | Column>): ColumnSet<T>
 
-        merge(columns: Column | ColumnSet | Array<string | IColumnConfig | Column>): ColumnSet
+        merge<T = S>(columns: Column | ColumnSet | Array<string | IColumnConfig | Column>): ColumnSet<T>
 
         prepare(obj: object): object
 
