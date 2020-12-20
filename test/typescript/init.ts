@@ -12,7 +12,12 @@ c.binary = true;
 
 const spex = pgp.spex;
 
-const b = spex.batch([1, 2, 3]);
+(async function () {
+    const [first, second] = await spex.batch<number, string>([1, 'hello']);
+
+    const res = await spex.batch<number, string>([1, 'hello']);
+    const d = res.duration;
+})();
 
 interface Test {
     hello: string;
