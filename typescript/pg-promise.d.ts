@@ -84,14 +84,14 @@ declare namespace pgPromise {
         rowMode: void | 'array'
     }
 
-    interface IColumnDescriptor<S = any> {
-        source: S
+    interface IColumnDescriptor<T> {
+        source: T
         name: string
         value: any
         exists: boolean
     }
 
-    interface IColumnConfig<S = any> {
+    interface IColumnConfig<T> {
         name: string
         prop?: string
         mod?: FormattingFilter
@@ -99,9 +99,9 @@ declare namespace pgPromise {
         cnd?: boolean
         def?: any
 
-        init?(col: IColumnDescriptor<S>): any
+        init?(col: IColumnDescriptor<T>): any
 
-        skip?(col: IColumnDescriptor<S>): boolean
+        skip?(col: IColumnDescriptor<T>): boolean
     }
 
     interface IColumnSetOptions {
@@ -126,7 +126,7 @@ declare namespace pgPromise {
 
     type FormattingFilter = '^' | '~' | '#' | ':raw' | ':alias' | ':name' | ':json' | ':csv' | ':list' | ':value';
 
-    type QueryColumns = Column | ColumnSet | Array<string | IColumnConfig | Column>;
+    type QueryColumns<T> = Column<T> | ColumnSet<T> | Array<string | IColumnConfig<T> | Column<T>>;
 
     type QueryParam =
         string
@@ -154,8 +154,8 @@ declare namespace pgPromise {
 
     // helpers.Column class;
     // API: http://vitaly-t.github.io/pg-promise/helpers.Column.html
-    class Column<S = any> {
-        constructor(col: string | IColumnConfig<S>);
+    class Column<T = unknown> {
+        constructor(col: string | IColumnConfig<T>);
 
         // these are all read-only:
         readonly name: string;
@@ -166,31 +166,31 @@ declare namespace pgPromise {
         readonly def: any;
         readonly castText: string;
         readonly escapedName: string;
-        readonly init: (col: IColumnDescriptor<S>) => any
-        readonly skip: (col: IColumnDescriptor<S>) => boolean
+        readonly init: (col: IColumnDescriptor<T>) => any
+        readonly skip: (col: IColumnDescriptor<T>) => boolean
 
         toString(level?: number): string
     }
 
     // helpers.Column class;
     // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html
-    class ColumnSet<S = any> {
-        constructor(columns: Column<S>, options?: IColumnSetOptions)
-        constructor(columns: Array<string | IColumnConfig<S> | Column<S>>, options?: IColumnSetOptions)
+    class ColumnSet<T = unknown> {
+        constructor(columns: Column<T>, options?: IColumnSetOptions)
+        constructor(columns: Array<string | IColumnConfig<T> | Column<T>>, options?: IColumnSetOptions)
         constructor(columns: object, options?: IColumnSetOptions)
 
-        readonly columns: Column<S>[];
+        readonly columns: Column<T>[];
         readonly names: string;
         readonly table: TableName;
         readonly variables: string;
 
         assign(source?: { source?: object, prefix?: string }): string
 
-        assignColumns(options?: { from?: string, to?: string, skip?: string | string[] | ((c: Column<S>) => boolean) }): string
+        assignColumns(options?: { from?: string, to?: string, skip?: string | string[] | ((c: Column<T>) => boolean) }): string
 
-        extend<T = S>(columns: Column | ColumnSet | Array<string | IColumnConfig | Column>): ColumnSet<T>
+        extend<S>(columns: Column<T> | ColumnSet<T> | Array<string | IColumnConfig<T> | Column<T>>): ColumnSet<S>
 
-        merge<T = S>(columns: Column | ColumnSet | Array<string | IColumnConfig | Column>): ColumnSet<T>
+        merge<S>(columns: Column<T> | ColumnSet<T> | Array<string | IColumnConfig<T> | Column<T>>): ColumnSet<S>
 
         prepare(obj: object): object
 
@@ -661,13 +661,13 @@ declare namespace pgPromise {
 
         concat(queries: Array<string | QueryFile | { query: string | QueryFile, values?: any, options?: IFormattingOptions }>): string
 
-        insert(data: object | object[], columns?: QueryColumns | null, table?: string | ITable | TableName): string
+        insert(data: object | object[], columns?: QueryColumns<any> | null, table?: string | ITable | TableName): string
 
-        update(data: object | object[], columns?: QueryColumns | null, table?: string | ITable | TableName, options?: { tableAlias?: string, valueAlias?: string, emptyUpdate?: any }): any
+        update(data: object | object[], columns?: QueryColumns<any> | null, table?: string | ITable | TableName, options?: { tableAlias?: string, valueAlias?: string, emptyUpdate?: any }): any
 
-        values(data: object | object[], columns?: QueryColumns | null): string
+        values(data: object | object[], columns?: QueryColumns<any> | null): string
 
-        sets(data: object, columns?: QueryColumns | null): string
+        sets(data: object, columns?: QueryColumns<any> | null): string
 
         Column: typeof Column
         ColumnSet: typeof ColumnSet
