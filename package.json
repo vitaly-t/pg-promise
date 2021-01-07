@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "10.8.6",
+  "version": "10.8.7",
   "description": "PostgreSQL interface for Node.js",
   "main": "lib/index.js",
   "typings": "typescript/pg-promise.d.ts",
@@ -46,10 +46,10 @@
     "spex": "3.2.0"
   },
   "devDependencies": {
-    "@types/node": "14.14.14",
+    "@types/node": "14.14.20",
     "bluebird": "3.7.2",
     "coveralls": "3.1.0",
-    "eslint": "7.16.0",
+    "eslint": "7.17.0",
     "istanbul": "0.4.5",
     "jasmine-node": "3.0.0",
     "jsdoc": "3.6.6",
