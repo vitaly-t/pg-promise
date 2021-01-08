@@ -18,7 +18,7 @@
 type XPromise<T> = Promise<T>;
 
 import * as pg from './pg-subset';
-import * as pgMinify from 'pg-minify';
+import pgMinify from 'pg-minify';
 import * as spexLib from 'spex';
 
 // Main protocol of the library;
