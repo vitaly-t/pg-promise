@@ -46,10 +46,10 @@
     "spex": "3.2.0"
   },
   "devDependencies": {
-    "@types/node": "14.14.20",
+    "@types/node": "14.14.21",
     "bluebird": "3.7.2",
     "coveralls": "3.1.0",
-    "eslint": "7.17.0",
+    "eslint": "7.18.0",
     "istanbul": "0.4.5",
     "jasmine-node": "3.0.0",
     "jsdoc": "3.6.6",
