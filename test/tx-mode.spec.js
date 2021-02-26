@@ -10,8 +10,7 @@ const dbHeader = header(options);
 const pgp = dbHeader.pgp;
 const db = dbHeader.db;
 
-const TransactionMode = pgp.txMode.TransactionMode;
-const isolationLevel = pgp.txMode.isolationLevel;
+const {TransactionMode, isolationLevel} = pgp.txMode.TransactionMode;
 
 describe(`TransactionMode`, () => {
 

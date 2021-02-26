@@ -3,7 +3,7 @@ import * as pgPromise from '../../typescript/pg-promise';
 const pgp: pgPromise.IMain = pgPromise();
 const db: pgPromise.IDatabase<any> = pgp('connection');
 
-const TransactionMode = pgPromise.TransactionMode;
+const {TransactionMode} = pgPromise;
 
 const mode = new TransactionMode({deferrable: true, readOnly: true, tiLevel: pgPromise.isolationLevel.readCommitted});
 
