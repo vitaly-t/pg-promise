@@ -346,7 +346,7 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const TransactionMode = pgp.txMode.TransactionMode;const isolationLevel = pgp.txMode.isolationLevel;// Create a reusable transaction mode (serializable + read-only + deferrable):const mode = new TransactionMode({    tiLevel: isolationLevel.serializable,    readOnly: true,    deferrable: true});db.tx({mode}, t => {    return t.any('SELECT * FROM table');})    .then(data => {        // success;    })    .catch(error => {        // error    });// Instead of the default BEGIN, such transaction will start with:// BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE</code></pre>
+    <pre class="prettyprint"><code>const {TransactionMode, isolationLevel} = pgp.txMode;// Create a reusable transaction mode (serializable + read-only + deferrable):const mode = new TransactionMode({    tiLevel: isolationLevel.serializable,    readOnly: true,    deferrable: true});db.tx({mode}, t => {    return t.any('SELECT * FROM table');})    .then(data => {        // success;    })    .catch(error => {        // error    });// Instead of the default BEGIN, such transaction will start with:// BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE</code></pre>
 
 
 
@@ -494,7 +494,7 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tx-mode.js.html">tx-mode.js</a>, <a href="tx-mode.js.html#line148">line 148</a>
+        <a href="tx-mode.js.html">tx-mode.js</a>, <a href="tx-mode.js.html#line147">line 147</a>
     </li></ul></dd>
     
 
