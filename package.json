@@ -43,6 +43,7 @@
     "assert-options": "0.7.0",
     "pg": "8.5.1",
     "pg-minify": "1.6.2",
+    "pg-native": "^3.0.0",
     "spex": "3.2.0"
   },
   "devDependencies": {
