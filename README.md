@@ -894,7 +894,13 @@ Postgres uses `BEGIN` with `COMMIT / ROLLBACK` for top-level transactions, and `
 with `RELEASE / ROLLBACK TO name` for inner save-points.
 
 This library automatically executes all such transaction and savepoint commands, with unique
-savepoint names, based on the transaction level.
+savepoint names, based on the transaction level, plus index within the current level, in the
+form of `sp_x_y`.
+
+In the name, `x` is the transaction level, starting with `1` (because `0` is the top-level
+transaction that does not use savepoints). And `y` represents sub-transaction order/index
+within the current level, starting with `1`. So the first savepoint on the top level will
+be named `sp_1_1`.
 
 ### Configurable Transactions
 
