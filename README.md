@@ -61,7 +61,7 @@ only its tiny part.
 
 I do free support here and on [StackOverflow](https://stackoverflow.com/questions/tagged/pg-promise).
 
-And if you want to help this project, I can accept Bitcoin - `1yki7MXMkuDw8qqe5icVdh1GJZSQSzKZp`.
+And if you want to help this project, I can accept Bitcoin: `1yki7MXMkuDw8qqe5icVdh1GJZSQSzKZp`
 
 # Documentation
 
