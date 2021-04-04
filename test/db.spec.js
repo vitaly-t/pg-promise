@@ -57,12 +57,12 @@ describe(`Database Instantiation`, () => {
 describe(`Connection`, () => {
 
     describe(`with default parameters`, () => {
-        let status = `connecting`, error;
+        let status = `connecting`, error, doneRes;
         beforeEach(done => {
             db.connect()
                 .then(obj => {
                     status = `success`;
-                    obj.done(); // release connection;
+                    doneRes = obj.done(); // release connection;
                 }, reason => {
                     error = reason;
                     status = `failed`;//reason.error;
@@ -76,6 +76,7 @@ describe(`Connection`, () => {
         it(`must be successful`, () => {
             expect(status).toBe(`success`);
             expect(error).toBeUndefined();
+            expect(doneRes).toBeUndefined();
         });
     });
 
@@ -418,17 +419,18 @@ describe(`Connection`, () => {
 describe(`Direct Connection`, () => {
 
     describe(`successful connection`, () => {
-        let sco;
+        let sco, doneRes;
         beforeEach(done => {
             db.connect({direct: true})
                 .then(obj => {
                     sco = obj;
-                    sco.done();
+                    doneRes = sco.done();
                     done();
                 });
         });
         it(`must connect correctly`, () => {
             expect(typeof sco).toBe(`object`);
+            expect(doneRes && typeof doneRes.then === `function`).toBe(true);
         });
     });
 
