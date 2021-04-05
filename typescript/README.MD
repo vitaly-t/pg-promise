@@ -1,6 +1,6 @@
 ## TypeScript for pg-promise
 
-Complete TypeScript 3.x (`strict` mode) declarations for [pg-promise].
+Complete TypeScript declarations for [pg-promise].
 
 ### Inclusion
 
@@ -19,7 +19,7 @@ const db = pgp('postgres://username:password@host:port/database');
 #### With Extensions
 
 The library supports dynamic protocol extensions, via event [extend], which requires
-explicit extension interface to be declared, and parameterized as shown below.
+explicit extension interface to be declared and parameterized, as shown below.
 
 ```ts
 import * as pgPromise from 'pg-promise';
@@ -44,11 +44,16 @@ const pgp = pgPromise(options);
 // database object:
 const db = pgp('postgres://username:password@host:port/database');
 
-// now you can use the extensions everywhere (including tasks and transactions):
-db.findUser(123).then(...);
+// protocol is extended on each level:
+db.findUser(123).then(handler);
+
+// ...including inside tasks and transactions:
+db.task(async t => {
+    const user = await t.findUser(123);
+});
 ```
 
-For a complete and comprehensive example, check out [pg-promise-demo].
+For a comprehensive example, check out [pg-promise-demo].
 
 [pg-promise-demo]:https://github.com/vitaly-t/pg-promise-demo
 [extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
