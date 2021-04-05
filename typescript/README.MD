@@ -14,6 +14,8 @@ import * as pgPromise from 'pg-promise';
 const pgp = pgPromise({/* Initialization Options */});
 
 const db = pgp('postgres://username:password@host:port/database');
+
+const {value} = await db.one('SELECT 123 as value');
 ```
 
 #### With Extensions
@@ -33,7 +35,7 @@ interface IExtensions {
 const options: pgPromise.IInitOptions<IExtensions> = {
     extend(obj) {
         obj.findUser = userId => {
-            return obj.one('SELECT * FROM Users WHERE id = $1', userId);
+            return obj.one('SELECT * FROM Users WHERE id = $1', [userId]);
         }
     }
 };
@@ -45,11 +47,12 @@ const pgp = pgPromise(options);
 const db = pgp('postgres://username:password@host:port/database');
 
 // protocol is extended on each level:
-db.findUser(123).then(handler);
+const user = await db.findUser(123);
 
 // ...including inside tasks and transactions:
-db.task(async t => {
+await db.task(async t => {
     const user = await t.findUser(123);
+    // ...etc
 });
 ```
 
