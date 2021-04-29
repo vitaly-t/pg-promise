@@ -2286,6 +2286,19 @@ describe(`Task`, () => {
         });
     });
 
+    describe(`inside a transaction / task`, () => {
+        iit(`must know it is in transaction`, (done) => {
+            db.tx(t => {
+                const a = t.tx(t1 => { });
+                const b = t.tx(t1 => { }); 
+                const c = t.tx(t1 => { });
+
+                return t.batch([a, b, c]);
+            })
+                .finally(done);
+        });
+    });
+
     describe(`with a callback that returns nothing`, () => {
         let result;
         beforeEach(done => {
