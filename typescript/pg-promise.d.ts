@@ -580,7 +580,7 @@ declare namespace pgPromise {
         query?(e: IEventContext<C>): void
 
         // NOTE: result is undefined when data comes from QueryStream, i.e. via method Database.stream
-        receive?(data: any[], result: IResultExt | undefined, e: IEventContext<C>): void
+        receive?(data: any[], result: IResultExt | void, e: IEventContext<C>): void
 
         task?(e: IEventContext<C>): void
 

@@ -1,27 +1,29 @@
-language: node_js
-dist: xenial
-matrix:
-  include:
-  - node_js: "8"
-    script: "npm test"
-  - node_js: "12"
-    script: "npm test"
-  - node_js: "14"
-    script: "npm test travis"
-  - node_js: "15"
-    script: "npm test"
-addons:
-  postgresql: "11"
-  apt:
-     packages:
-     - postgresql-11
-before_install:
-- sudo sed -i 's/port = 5433/port = 5432/' /etc/postgresql/11/main/postgresql.conf
-- sudo cp /etc/postgresql/{10,11}/main/pg_hba.conf
-- sudo service postgresql stop
-- sudo service postgresql start 11
-before_script:
-- psql -c 'create database pg_promise_test;' -U postgres
-- node test/db/init.js
-env:
-- BLUEBIRD_DEBUG=0
+default:
+  language: node_js
+  dist: xenial
+  matrix:
+    include:
+      - node_js: "8"
+        script: "npm test"
+      - node_js: "12"
+        script: "npm test"
+      - node_js: "14"
+        script: "npm test travis"
+      - node_js: "15"
+        script: "npm test"
+  addons:
+    postgresql: "11"
+    apt:
+      packages:
+        - postgresql-11
+
+  before_install:
+    - sudo sed -i 's/port = 5433/port = 5432/' /etc/postgresql/11/main/postgresql.conf
+    - sudo cp /etc/postgresql/{10,11}/main/pg_hba.conf
+    - sudo service postgresql stop
+    - sudo service postgresql start 11
+  install:
+    - psql -c 'create database pg_promise_test;' -U postgres
+    - node test/db/init.js
+  env:
+    - BLUEBIRD_DEBUG=0
