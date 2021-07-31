@@ -40,7 +40,11 @@ const cn = {
     port: 5432, // 5432 is the default;
     database: 'myDatabase',
     user: 'myUser',
-    password: 'myPassword'
+    password: 'myPassword',
+
+    // to auto-exit on idle, without having to shut-down the pool;
+    // see https://github.com/vitaly-t/pg-promise#library-de-initialization
+    allowExitOnIdle: true
 };
 
 const db = pgp(cn); // database instance;
@@ -51,6 +55,4 @@ db.any('select * from users where active = $1', [true])
     })
     .catch(error => {
         console.log('ERROR:', error);
-    })
-    .finally(db.$pool.end); // For immediate app exit, shutting down the connection pool
-// For details see: https://github.com/vitaly-t/pg-promise#library-de-initialization
+    });

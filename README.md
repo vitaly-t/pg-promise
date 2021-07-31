@@ -994,7 +994,8 @@ This library manages all database connections via the [connection pool], which i
 Connections in the cache expire due to inactivity after [idleTimeoutMillis] number of milliseconds, which you
 can set only when creating the [Database] object. 
 
-While there is a single open connection in the pool, the process cannot terminate by itself, only via `process.exit()`. 
+While there is a single open connection in the pool, the process cannot terminate by itself, only via `process.exit()`,
+unless `allowExitOnIdle` is used - see update section below.
 If you want the process to finish by itself, without waiting for all connections in the pool to expire, you need
 to force the pool to shut down all the connections it holds:
 
@@ -1030,7 +1031,11 @@ Once you have shut down the pool associated with your [Database] object, you can
 will be rejecting with [Error] = `Connection pool of the database object has been destroyed`.
 
 See the relevant API: [pgp.end], [Database.$pool]
- 
+
+### update
+
+Version 10.11.0 of the library started supporting new connection option `allowExitOnIdle`, to let process exit when pool is idle.
+
 # History
 
 Although this project formally maintains a [CHANGELOG], for a short list of the top-level changes,
