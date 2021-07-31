@@ -2541,6 +2541,11 @@ if (jasmine.Runner) {
         // Run the old finishCallback:
         _finishCallback.bind(this)();
 
-        pgp.end(); // closing pg database application pool;
+        // Note that we cannot test 'pgp.end()' as part of any test,
+        // because it kills all other tests that depend on connection pool.
+        // So to add coverage, without breaking all tests, we can only
+        // call it from here...
+
+        pgp.end(); // shut-down all connection pools;
     };
 }

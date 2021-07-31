@@ -12,6 +12,7 @@ defPromise.config({
 // Either match your local database configuration according to the details below,
 // or the other way round - change the details to match your local configuration.
 const cn = {
+    allowExitOnIdle: true,
     host: `localhost`, // server name or IP address;
     port: 5432, // default port;
     database: `pg_promise_test`, // local database name for testing;

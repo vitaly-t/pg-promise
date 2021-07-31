@@ -286,13 +286,3 @@ describe(`Direct Prepared Statements`, () => {
     });
 
 });
-
-if (jasmine.Runner) {
-    const _finishCallback = jasmine.Runner.prototype.finishCallback;
-    jasmine.Runner.prototype.finishCallback = function () {
-        // Run the old finishCallback:
-        _finishCallback.bind(this)();
-
-        pgp.end(); // closing pg database application pool;
-    };
-}
