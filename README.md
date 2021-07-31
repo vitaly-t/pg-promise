@@ -1034,7 +1034,7 @@ See the relevant API: [pgp.end], [Database.$pool]
 
 ### update
 
-Version 10.11.0 of the library started supporting new connection option `allowExitOnIdle`, to let process exit when pool is idle.
+Version 10.11.0 added support for connection option `allowExitOnIdle`, to let process exit when pool is idle.
 
 # History
 
