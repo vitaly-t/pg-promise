@@ -9,7 +9,7 @@ const options = {
 };
 
 const dbHeader = header(options);
-const pgp = dbHeader.pgp;
+// const pgp = dbHeader.pgp;
 const db = dbHeader.db;
 
 if (options.pgNative) {

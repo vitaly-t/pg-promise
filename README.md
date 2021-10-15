@@ -3,8 +3,6 @@ pg-promise
 
 PostgreSQL interface for Node.js
 
-[![Join the chat at https://gitter.im/vitaly-t/pg-promise](https://img.shields.io/gitter/room/vitaly-t/pg-promise.svg)](https://gitter.im/vitaly-t/pg-promise?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ---
 
 * [About](#about)

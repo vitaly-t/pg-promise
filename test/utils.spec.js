@@ -342,6 +342,7 @@ describe(`toJson`, () => {
             expect(internal.toJson({value: BigInt(`123`)})).toEqual(`{"value":123}`);
             expect(internal.toJson({value: BigInt(`-456`)})).toEqual(`{"value":-456}`);
             const mix1 = {
+                // eslint-disable-next-line no-loss-of-precision
                 val1: 12345678901234567890,
                 val2: BigInt(`12345678901234567890`)
             };
