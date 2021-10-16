@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: New issues are for bug reports only. We everything else use [Discussions](https://github.com/vitaly-t/pg-promise/discussions).
+about: New issues are for bug reports only. We everything else use Discussions.
 title: ''
 labels: needs investigation
 assignees: vitaly-t
