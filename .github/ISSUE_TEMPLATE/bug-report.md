@@ -1,8 +1,8 @@
 ---
 name: Bug Report
-about: New issues are for bug reports only. We everything else use Discussions.
+about: New issues are for bug reports only. For everything else use Discussions.
 title: ''
-labels: needs investigation
+labels: triage
 assignees: vitaly-t
 
 ---
