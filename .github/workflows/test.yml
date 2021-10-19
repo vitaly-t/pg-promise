@@ -1,0 +1,34 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  container-job:
+    runs-on: ubuntu-latest
+    container: node:16-bullseye
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_HOST: postgres
+          POSTGRES_DB: pg_promise_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+    - run: npm install
+    - run: node test/db/init.js
+    - run: npm test
+    - run: npm run coverage
