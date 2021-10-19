@@ -13,11 +13,11 @@ defPromise.config({
 // or the other way round - change the details to match your local configuration.
 const cn = {
     allowExitOnIdle: true,
-    host: `localhost`, // server name or IP address;
+    host: process.env.POSTGRES_HOST || `localhost`, // server name or IP address;
     port: 5432, // default port;
-    database: `pg_promise_test`, // local database name for testing;
-    user: `postgres`, // user name;
-    password: `postgres`
+    database: process.env.POSTGRES_DB || `pg_promise_test`, // local database name for testing;
+    user: process.env.POSTGRES_USER || `postgres`, // user name;
+    password: process.env.POSTGRES_PASSWORD || `postgres`
 };
 
 pgpLib.suppressErrors = true; // suppress console output for error messages;
