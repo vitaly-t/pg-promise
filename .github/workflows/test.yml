@@ -7,6 +7,11 @@ on:
 jobs:
   container-job:
     runs-on: ubuntu-latest
+    env:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: pg_promise_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     container: node:16-bullseye
     services:
       postgres:
