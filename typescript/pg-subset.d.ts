@@ -106,6 +106,7 @@ declare namespace pg {
         Promise?: any
         types?: ITypeOverrides
         allowExitOnIdle?: boolean
+        maxLifetimeSeconds?: number
     }
 
     // Type id-s supported by PostgreSQL, copied from:
