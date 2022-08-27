@@ -166,6 +166,7 @@ declare namespace pgPromise {
         readonly def: any;
         readonly castText: string;
         readonly escapedName: string;
+        readonly variable: string;
         readonly init: (col: IColumnDescriptor<T>) => any
         readonly skip: (col: IColumnDescriptor<T>) => boolean
 
