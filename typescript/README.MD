@@ -9,7 +9,7 @@ Typescript should be able to pick up the definitions without any manual configur
 ### Simple Usage
 
 ```ts
-import * as pgPromise from 'pg-promise';
+import pgPromise from 'pg-promise';
 
 const pgp = pgPromise({/* Initialization Options */});
 
