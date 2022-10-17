@@ -80,7 +80,7 @@ describe(`QueryFile / Positive:`, () => {
                 .finally(done);
         });
         it(`must resolve with data`, () => {
-            expect(result instanceof Array).toBe(true);
+            expect(Array.isArray(result)).toBe(true);
             expect(result.length > 0).toBe(true);
         });
     });
@@ -95,7 +95,7 @@ describe(`QueryFile / Positive:`, () => {
                 .finally(done);
         });
         it(`must resolve with data`, () => {
-            expect(result instanceof Array).toBe(true);
+            expect(Array.isArray(result)).toBe(true);
             expect(result.length > 0).toBe(true);
         });
     });
@@ -112,7 +112,7 @@ describe(`QueryFile / Positive:`, () => {
         });
         it(`must resolve with data`, () => {
             expect(sql[QueryFile.$query]).toBe(`select*from users`);
-            expect(result instanceof Array).toBe(true);
+            expect(Array.isArray(result)).toBe(true);
             expect(result.length > 0).toBe(true);
         });
     });

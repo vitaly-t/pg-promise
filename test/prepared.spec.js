@@ -193,7 +193,7 @@ describe(`Direct Prepared Statements`, () => {
                 .finally(done);
         });
         it(`must return all users`, () => {
-            expect(result instanceof Array).toBe(true);
+            expect(Array.isArray(result)).toBe(true);
             expect(result.length > 0).toBe(true);
         });
     });

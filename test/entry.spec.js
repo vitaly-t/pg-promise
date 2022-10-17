@@ -90,7 +90,7 @@ describe(`Library entry function`, () => {
                     .finally(done);
             });
             it(`must be able to execute queries`, () => {
-                expect(result instanceof Array).toBe(true);
+                expect(Array.isArray(result)).toBe(true);
             });
         });
     }

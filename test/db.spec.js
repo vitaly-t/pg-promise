@@ -962,7 +962,7 @@ describe(`Method 'many'`, () => {
         }, `Query timed out`, 5000);
         runs(() => {
             expect(error).toBeUndefined();
-            expect(result instanceof Array).toBe(true);
+            expect(Array.isArray(result)).toBe(true);
             expect(result.length > 0).toBe(true);
         });
     });
@@ -1005,7 +1005,7 @@ describe(`Method 'manyOrNone'`, () => {
         }, `Query timed out`, 5000);
         runs(() => {
             expect(error).toBeUndefined();
-            expect(result instanceof Array).toBe(true);
+            expect(Array.isArray(result)).toBe(true);
             expect(result.length > 0).toBe(true);
         });
     });
@@ -1025,7 +1025,7 @@ describe(`Method 'manyOrNone'`, () => {
         }, `Query timed out`, 5000);
         runs(() => {
             expect(error).toBeUndefined();
-            expect(result instanceof Array).toBe(true);
+            expect(Array.isArray(result)).toBe(true);
             expect(result.length).toBe(0);
         });
     });
@@ -1211,7 +1211,7 @@ describe(`Transactions`, () => {
         it(`must not fail`, () => {
             expect(THIS === context).toBe(true);
             expect(error).toBeUndefined();
-            expect(result instanceof Array).toBe(true);
+            expect(Array.isArray(result)).toBe(true);
             expect(result.length).toBe(10003); // drop + create + insert x 10000 + select;
             const last = result[result.length - 1]; // result from the select;
             expect(typeof last).toBe(`object`);
@@ -1312,7 +1312,7 @@ describe(`Transactions`, () => {
             expect(THIS2.ctx.inTransaction).toBe(true);
             expect(nestError instanceof Error).toBe(true);
             expect(nestError.message).toContain(`relation "unknowntable" does not exist`);
-            expect(result instanceof Array).toBe(true);
+            expect(Array.isArray(result)).toBe(true);
             expect(result.length).toBe(2);
             expect(result[0].count).toBe(`0`); // no changes within parent transaction;
             expect(result[1].count).toBe(`0`); // no changes within nested transaction;
@@ -1345,7 +1345,7 @@ describe(`Transactions`, () => {
                 });
         });
         it(`must rollback everything`, () => {
-            expect(result instanceof Array).toBe(true);
+            expect(Array.isArray(result)).toBe(true);
             expect(result.length).toBe(2);
             expect(result[0].count).toBe(`0`); // no changes within parent transaction;
             expect(result[1].count).toBe(`0`); // no changes within nested transaction;
@@ -1432,7 +1432,7 @@ describe(`Transactions`, () => {
         });
         it(`must work the same no matter how many levels`, () => {
             expect(THIS && context && THIS === context).toBeTruthy();
-            expect(result instanceof Array).toBe(true);
+            expect(Array.isArray(result)).toBe(true);
             expect(result).toEqual([{word: `Hello`}, {word: `World!`}]);
             for (let i = 0; i < 10; i++) {
                 expect(ctx[i].tag).toBe(i);
@@ -1865,7 +1865,7 @@ describe(`Return data from a query must match the request type`, () => {
         }, `Query timed out`, 5000);
         runs(() => {
             expect(error).toBeUndefined();
-            expect(result instanceof Array).toBe(true);
+            expect(Array.isArray(result)).toBe(true);
             expect(result.length).toBe(0);
         });
     });
@@ -2076,7 +2076,7 @@ describe(`Querying an entity`, () => {
                 .finally(done);
         });
         it(`must return all rows`, () => {
-            expect(result instanceof Array).toBe(true);
+            expect(Array.isArray(result)).toBe(true);
             expect(result.length >= 4).toBe(true);
         });
         afterEach(() => {
