@@ -39,10 +39,10 @@ declare namespace pg {
         format: string
     }
 
-    interface IResult {
+    interface IResult<T = unknown> extends Iterable<T> {
         command: string
         rowCount: number
-        rows: any[]
+        rows: T[]
         fields: IColumn[]
 
         // properties below are not available within Native Bindings:
@@ -290,13 +290,13 @@ declare namespace pg {
 
     interface IClient extends EventEmitter {
 
-        query(config: any, values: any[], callback: (err: Error, result: IResult) => void): undefined
+        query<T>(config: any, values: any[], callback: (err: Error, result: IResult<T>) => void): undefined
 
-        query(config: any, callback: (err: Error, result: IResult) => void): undefined
+        query<T>(config: any, callback: (err: Error, result: IResult<T>) => void): undefined
 
-        query(config: any, values: any[]): Promise<IResult>
+        query<T>(config: any, values: any[]): Promise<IResult<T>>
 
-        query(config: any): Promise<IResult>
+        query<T>(config: any): Promise<IResult<T>>
 
         connectionParameters: IConnectionParameters
         database: string

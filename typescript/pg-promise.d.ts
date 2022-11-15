@@ -8,7 +8,7 @@
  */
 
 /////////////////////////////////////////
-// Requires pg-promise v10.5.0 or later.
+// Requires pg-promise v10.14.0 or later.
 /////////////////////////////////////////
 
 // We use ES6 as static promise here, because generic promises are still not supported.
@@ -290,7 +290,7 @@ declare namespace pgPromise {
         readonly $pool: pg.IPool
     }
 
-    interface IResultExt extends pg.IResult {
+    interface IResultExt<T = unknown> extends pg.IResult<T> {
         // Property 'duration' exists only in the following context:
         //  - for single-query events 'receive'
         //  - for method Database.result
