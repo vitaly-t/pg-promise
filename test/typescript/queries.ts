@@ -41,12 +41,12 @@ db.many('')
         const value = data[0].ops;
     });
 
-db.result('', [], r => {
-    return r;
-}, 123)
-    .then(data => {
-        const value = data.rows[0];
-    });
+const r = db.result('', [], data => {
+    for (const t of data) {
+        // can iterate
+    }
+    return data;
+}, 123);
 
 db.func('func_name').then();
 db.func('func_name', [123]).then();

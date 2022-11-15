@@ -353,7 +353,7 @@ declare namespace pgPromise {
         any<T = any>(query: QueryParam, values?: any): XPromise<T[]>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#result
-        result<T = IResultExt>(query: QueryParam, values?: any, cb?: (value: IResultExt) => T, thisArg?: any): XPromise<T>
+        result<T, R = IResultExt<T>>(query: QueryParam, values?: any, cb?: (value: IResultExt<T>) => R, thisArg?: any): XPromise<R>
 
         // API: http://vitaly-t.github.io/pg-promise/Database.html#multiResult
         multiResult(query: QueryParam, values?: any): XPromise<pg.IResult[]>
