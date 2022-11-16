@@ -21,6 +21,26 @@ import * as pg from './pg-subset';
 import * as pgMinify from 'pg-minify';
 import * as spexLib from 'spex';
 
+// internal txMode namespace;
+declare namespace txModeNamespace {
+    // Transaction Isolation Level;
+    // API: http://vitaly-t.github.io/pg-promise/txMode.html#.isolationLevel
+    enum isolationLevel {
+        none = 0,
+        serializable = 1,
+        repeatableRead = 2,
+        readCommitted = 3
+    }
+
+    // TransactionMode class;
+    // API: http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
+    class TransactionMode {
+        constructor(options?: { tiLevel?: isolationLevel, readOnly?: boolean, deferrable?: boolean })
+
+        begin(cap?: boolean): string
+    }
+}
+
 // Main protocol of the library;
 // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
 declare namespace pgPromise {
@@ -269,7 +289,7 @@ declare namespace pgPromise {
         constructor(api: IPromiseConfig)
     }
 
-    const txMode: ITXMode;
+    const txMode: typeof txModeNamespace;
     const utils: IUtils;
     const as: IFormatting;
 
@@ -311,7 +331,7 @@ declare namespace pgPromise {
         readonly spex: spexLib.ISpex
         readonly errors: typeof errors
         readonly utils: IUtils
-        readonly txMode: ITXMode
+        readonly txMode: typeof txMode
         readonly helpers: IHelpers
         readonly as: IFormatting
         readonly pg: typeof pg
@@ -398,7 +418,7 @@ declare namespace pgPromise {
 
         tx<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        tx<T = any>(options: { tag?: any, mode?: TransactionMode | null }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        tx<T = any>(options: { tag?: any, mode?: txModeNamespace.TransactionMode | null }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Conditional Transactions;
         // API: http://vitaly-t.github.io/pg-promise/Database.html#txIf
@@ -406,7 +426,7 @@ declare namespace pgPromise {
 
         txIf<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        txIf<T = any>(options: { tag?: any, mode?: TransactionMode | null, reusable?: boolean | ((t: ITask<Ext> & Ext) => boolean), cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        txIf<T = any>(options: { tag?: any, mode?: txModeNamespace.TransactionMode | null, reusable?: boolean | ((t: ITask<Ext> & Ext) => boolean), cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
     }
 
     // Database object in connected state;
@@ -546,23 +566,6 @@ declare namespace pgPromise {
         }
     }
 
-    // Transaction Isolation Level;
-    // API: http://vitaly-t.github.io/pg-promise/txMode.html#.isolationLevel
-    enum isolationLevel {
-        none = 0,
-        serializable = 1,
-        repeatableRead = 2,
-        readCommitted = 3
-    }
-
-    // TransactionMode class;
-    // API: http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
-    class TransactionMode {
-        constructor(options?: { tiLevel?: isolationLevel, readOnly?: boolean, deferrable?: boolean })
-
-        begin(cap?: boolean): string
-    }
-
     // Library's Initialization Options
     // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface IInitOptions<Ext = {}, C extends pg.IClient = pg.IClient> {
@@ -641,15 +644,8 @@ declare namespace pgPromise {
         value(value: any | (() => any)): string
     }
 
-    // Transaction Mode namespace;
-    // API: http://vitaly-t.github.io/pg-promise/txMode.html
-    interface ITXMode {
-        isolationLevel: typeof isolationLevel
-        TransactionMode: typeof TransactionMode
-    }
-
     interface ITaskArguments<T> extends IArguments {
-        options: { tag?: any, cnd?: any, mode?: TransactionMode | null } & T
+        options: { tag?: any, cnd?: any, mode?: txModeNamespace.TransactionMode | null } & T
 
         cb(): any
     }
