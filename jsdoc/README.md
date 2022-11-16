@@ -31,7 +31,7 @@ const db = pgp(connection);
 * `dc` = Database Context - optional parameter (see [Database] constructor).
 
 Object `db` represents the [Database] protocol with lazy connection, i.e. only the actual query methods acquire
-and release the connection automatically. Therefore you should create only one global/shared `db` object per connection details.
+and release the connection automatically. Therefore, you should create only one global/shared `db` object per connection details.
 
 It is best to initialize the library and create [Database] in its own module, see [Where should I initialize pg-promise].
 

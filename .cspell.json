@@ -4,7 +4,7 @@
   "ignorePaths": [
     "**/coverage/**",
     "**/node_modules/**",
-    "**/jsdoc/**",
+    "**/jsdoc/templates/*",
     "**/*.{json}",
     ".cspell.json"
   ],
