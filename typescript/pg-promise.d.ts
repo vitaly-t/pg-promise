@@ -21,8 +21,8 @@ import * as pg from './pg-subset';
 import * as pgMinify from 'pg-minify';
 import * as spexLib from 'spex';
 
-// internal txMode namespace;
-declare namespace txModeNamespace {
+// internal namespace for "txMode" property:
+declare namespace _txMode {
     // Transaction Isolation Level;
     // API: http://vitaly-t.github.io/pg-promise/txMode.html#.isolationLevel
     enum isolationLevel {
@@ -289,7 +289,7 @@ declare namespace pgPromise {
         constructor(api: IPromiseConfig)
     }
 
-    const txMode: typeof txModeNamespace;
+    const txMode: typeof _txMode;
     const utils: IUtils;
     const as: IFormatting;
 
@@ -418,7 +418,7 @@ declare namespace pgPromise {
 
         tx<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        tx<T = any>(options: { tag?: any, mode?: txModeNamespace.TransactionMode | null }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        tx<T = any>(options: { tag?: any, mode?: _txMode.TransactionMode | null }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Conditional Transactions;
         // API: http://vitaly-t.github.io/pg-promise/Database.html#txIf
@@ -426,7 +426,7 @@ declare namespace pgPromise {
 
         txIf<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        txIf<T = any>(options: { tag?: any, mode?: txModeNamespace.TransactionMode | null, reusable?: boolean | ((t: ITask<Ext> & Ext) => boolean), cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        txIf<T = any>(options: { tag?: any, mode?: _txMode.TransactionMode | null, reusable?: boolean | ((t: ITask<Ext> & Ext) => boolean), cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
     }
 
     // Database object in connected state;
@@ -645,7 +645,7 @@ declare namespace pgPromise {
     }
 
     interface ITaskArguments<T> extends IArguments {
-        options: { tag?: any, cnd?: any, mode?: txModeNamespace.TransactionMode | null } & T
+        options: { tag?: any, cnd?: any, mode?: _txMode.TransactionMode | null } & T
 
         cb(): any
     }
