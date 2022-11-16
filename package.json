@@ -5,11 +5,12 @@
   "main": "lib/index.js",
   "typings": "typescript/pg-promise.d.ts",
   "scripts": {
+    "check-spelling": "cspell --config=.cspell.json \"**/*.{md,ts,js}\"",
+    "coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test",
+    "doc": "jsdoc -c ./jsdoc/jsdoc.js ./jsdoc/README.md -t ./jsdoc/templates/custom",
+    "lint": "eslint ./lib ./test/*.js ./test/db --fix",
     "test": "jasmine-node --captureExceptions test",
     "test:native": "jasmine-node test --config PG_NATIVE true",
-    "doc": "jsdoc -c ./jsdoc/jsdoc.js ./jsdoc/README.md -t ./jsdoc/templates/custom",
-    "coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test",
-    "lint": "eslint ./lib ./test/*.js ./test/db --fix",
     "tslint": "tslint ./typescript/*.ts"
   },
   "files": [
@@ -48,6 +49,7 @@
     "@types/node": "18.11.9",
     "bluebird": "3.7.2",
     "coveralls": "3.1.1",
+    "cspell": "6.14.2",
     "eslint": "8.27.0",
     "istanbul": "0.4.5",
     "jasmine-node": "3.0.0",
