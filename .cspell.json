@@ -18,15 +18,17 @@
     "filetypes"
   ],
   "ignoreRegExpList": [
-    "/```[\\w\\W]*?```/",
-    "/~~~[\\w\\W]*?~~~/",
-    "/``[\\w\\W]*?``/",
-    "/`[^`]*`/",
-    "\\(#.+?\\)",
-    "// @ts-.*"
+    "/`[^`]*`/"
   ],
   "words": [
-    "PostgreSQL"
+    "PostgreSQL",
+    "Vitaly",
+    "Tomilov",
+    "savepoint",
+    "savepoints",
+    "spex",
+    "qrec",
+    "Millis"
   ],
   "overrides": [
     {
