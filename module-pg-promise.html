@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -28,6 +28,10 @@
 <section>
 
 <header>
+    
+        
+            
+        
     
 </header>
 
@@ -47,6 +51,741 @@ const pgp = require('pg-promise')(initOptions);
         
 
         
+            
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Library Initialization Options.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>pgFormatting</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Redirects all query formatting to the <a href="https://github.com/brianc/node-postgres">pg</a> driver.</p>
+<p>By default (<code>false</code>), the library uses its own advanced query-formatting engine.
+If you set this option to a truthy value, query formatting will be done entirely by the
+<a href="https://github.com/brianc/node-postgres">pg</a> driver, which means you won't be able to use any of the feature-rich query formatting
+that this library implements, restricting yourself to the very basic <code>$1, $2,...</code> syntax.</p>
+<p>This option is dynamic (can be set before or after initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pgNative</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Use <a href="https://node-postgres.com/features/native">Native Bindings</a>. Library <a href="https://github.com/brianc/node-pg-native">pg-native</a> must be included and installed independently, or else there will
+be an error thrown: <a href="external-Error.html">Error</a> = <code>Failed to initialize Native Bindings.</code></p>
+<p>This is a static option (can only be set prior to initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>promiseLib</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    Promise
+                
+                </td>
+            
+
+            <td class="description last"><p>Overrides the default (ES6 Promise) promise library for its internal use.</p>
+<p>Example below sets to use <a href="https://github.com/petkaantonov/bluebird">Bluebird</a> - the best and recommended promise library. It is the fastest one,
+and supports <a href="http://bluebirdjs.com/docs/api/promise.config.html">Long Stack Traces</a>, essential for debugging promises.</p>
+<pre class="prettyprint source lang-js"><code>const Promise = require('bluebird');
+const initOptions = {
+    promiseLib: Promise
+};
+const pgp = require('pg-promise')(initOptions);
+</code></pre>
+<p>All existing promise libraries are supported. The ones with recognizable signature are used automatically,
+while the rest can be configured via the <a href="https://github.com/vitaly-t/pg-promise/wiki/Promise-Adapter">Promise Adapter</a>.</p>
+<p>This is a static option (can only be set prior to initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>noLocking</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Prevents protocol locking.</p>
+<p>By default, the library locks much of its protocol to read-only access, as a fool-proof mechanism.
+Specifically for the <a href="global.html#event:extend">extend</a> event this serves as a protection against overriding existing
+properties or trying to set them at the wrong time.</p>
+<p>If this provision gets in the way of using a mock-up framework for your tests, you can force
+the library to deactivate most of the locks by setting <code>noLocking</code> = <code>true</code> within the options.</p>
+<p>This option is dynamic (can be set before or after initialization). However, changing it after the library's
+initialization will not affect <a href="Database.html">Database</a> objects that have already been created.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>capSQL</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Capitalizes any SQL generated by the library.</p>
+<p>By default, all internal SQL within the library is generated using the low case.
+If, however, you want all SQL to be capitalized instead, set <code>capSQL</code> = <code>true</code>.</p>
+<p>It is purely a cosmetic feature.</p>
+<p>This option is dynamic (can be set before or after initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>schema</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+|
+
+<span class="param-type">null</span>
+|
+
+<span class="param-type">undefined</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Forces change of the default database schema(s) for every fresh connection, i.e.
+the library will execute <code>SET search_path TO schema_1, schema_2, ...</code> in the background
+whenever a fresh physical connection is allocated.</p>
+<p>Normally, one changes the default schema(s) by <a href="https://stackoverflow.com/questions/2875610/permanently-set-postgresql-schema-path">changing the database or the role</a>, but sometimes you
+may want to switch the default schema(s) without persisting the change, and then use this option.</p>
+<p>It can be a string, an array of strings, or a callback function that takes <code>dc</code> (database context)
+as the only parameter (and as <code>this</code>), and returns schema(s) according to the database context. A callback function
+can also return nothing (<code>undefined</code> or <code>null</code>), if no schema change needed for the specified database context.</p>
+<p>The order of schema names matters, so if a table name exists in more than one schema, its default access resolves
+to the table from the first such schema on the list.</p>
+<p>This option is dynamic (can be set before or after initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>noWarnings</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Disables all diagnostic warnings in the library (it is ill-advised).</p>
+<p>This option is dynamic (can be set before or after initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>connect</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Global event <a href="global.html#event:connect">connect</a> handler.</p>
+<p>This option is dynamic (can be set before or after initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disconnect</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Global event <a href="global.html#event:disconnect">disconnect</a> handler.</p>
+<p>This option is dynamic (can be set before or after initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Global event <a href="global.html#event:query">query</a> handler.</p>
+<p>This option is dynamic (can be set before or after initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>receive</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Global event <a href="global.html#event:receive">receive</a> handler.</p>
+<p>This option is dynamic (can be set before or after initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>task</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Global event <a href="global.html#event:task">task</a> handler.</p>
+<p>This option is dynamic (can be set before or after initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>transact</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Global event <a href="global.html#event:transact">transact</a> handler.</p>
+<p>This option is dynamic (can be set before or after initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Global event <a href="global.html#event:error">error</a> handler.</p>
+<p>This option is dynamic (can be set before or after initialization).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>extend</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Global event <a href="global.html#event:extend">extend</a> handler.</p>
+<p>This option is dynamic (can be set before or after initialization).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
 
 
 <dl class="details">
@@ -104,6 +843,20 @@ const pgp = require('pg-promise')(initOptions);
 </dl>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
     
     </div>
@@ -120,298 +873,6 @@ const pgp = require('pg-promise')(initOptions);
 
     
         <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="~ParameterizedQuery"><span class="type-signature">(inner, readonly) </span>ParameterizedQuery<span class="type-signature"> :<a href="ParameterizedQuery.html">ParameterizedQuery</a></span></h4>
-
-
-
-
-<div class="description">
-    <p><a href="ParameterizedQuery.html">ParameterizedQuery</a> class.</p>
-<p>Available as <code>pgp.ParameterizedQuery</code>, before and after initializing the library.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="ParameterizedQuery.html">ParameterizedQuery</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line355">line 355</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~PreparedStatement"><span class="type-signature">(inner, readonly) </span>PreparedStatement<span class="type-signature"> :<a href="PreparedStatement.html">PreparedStatement</a></span></h4>
-
-
-
-
-<div class="description">
-    <p><a href="PreparedStatement.html">PreparedStatement</a> class.</p>
-<p>Available as <code>pgp.PreparedStatement</code>, before and after initializing the library.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="PreparedStatement.html">PreparedStatement</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line365">line 365</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~PromiseAdapter"><span class="type-signature">(inner, readonly) </span>PromiseAdapter<span class="type-signature"> :<a href="PromiseAdapter.html">PromiseAdapter</a></span></h4>
-
-
-
-
-<div class="description">
-    <p><a href="PromiseAdapter.html">PromiseAdapter</a> class.</p>
-<p>Available as <code>pgp.PromiseAdapter</code>, before and after initializing the library.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="PromiseAdapter.html">PromiseAdapter</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line345">line 345</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~QueryFile"><span class="type-signature">(inner, readonly) </span>QueryFile<span class="type-signature"> :<a href="QueryFile.html">QueryFile</a></span></h4>
-
-
-
-
-<div class="description">
-    <p><a href="QueryFile.html">QueryFile</a> class.</p>
-<p>Available as <code>pgp.QueryFile</code>, before and after initializing the library.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="QueryFile.html">QueryFile</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line375">line 375</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
         
             
@@ -799,6 +1260,79 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
 
         
             
+<h4 class="name" id="~ParameterizedQuery"><span class="type-signature">(inner, readonly) </span>ParameterizedQuery<span class="type-signature"> :<a href="ParameterizedQuery.html">ParameterizedQuery</a></span></h4>
+
+
+
+
+<div class="description">
+    <p><a href="ParameterizedQuery.html">ParameterizedQuery</a> class.</p>
+<p>Available as <code>pgp.ParameterizedQuery</code>, before and after initializing the library.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="ParameterizedQuery.html">ParameterizedQuery</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line355">line 355</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
 <h4 class="name" id="~pg"><span class="type-signature">(inner) </span>pg<span class="type-signature"> :<a href="external-PG.html">external:PG</a></span></h4>
 
 
@@ -859,6 +1393,225 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="main.js.html">main.js</a>, <a href="main.js.html#line248">line 248</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~PreparedStatement"><span class="type-signature">(inner, readonly) </span>PreparedStatement<span class="type-signature"> :<a href="PreparedStatement.html">PreparedStatement</a></span></h4>
+
+
+
+
+<div class="description">
+    <p><a href="PreparedStatement.html">PreparedStatement</a> class.</p>
+<p>Available as <code>pgp.PreparedStatement</code>, before and after initializing the library.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="PreparedStatement.html">PreparedStatement</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line365">line 365</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~PromiseAdapter"><span class="type-signature">(inner, readonly) </span>PromiseAdapter<span class="type-signature"> :<a href="PromiseAdapter.html">PromiseAdapter</a></span></h4>
+
+
+
+
+<div class="description">
+    <p><a href="PromiseAdapter.html">PromiseAdapter</a> class.</p>
+<p>Available as <code>pgp.PromiseAdapter</code>, before and after initializing the library.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="PromiseAdapter.html">PromiseAdapter</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line345">line 345</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~QueryFile"><span class="type-signature">(inner, readonly) </span>QueryFile<span class="type-signature"> :<a href="QueryFile.html">QueryFile</a></span></h4>
+
+
+
+
+<div class="description">
+    <p><a href="QueryFile.html">QueryFile</a> class.</p>
+<p>Available as <code>pgp.QueryFile</code>, before and after initializing the library.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="QueryFile.html">QueryFile</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line375">line 375</a>
     </li></ul></dd>
     
 

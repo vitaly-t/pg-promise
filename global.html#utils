@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="global.html#ParameterizedQuery">ParameterizedQuery</a></li><li><a href="global.html#PreparedStatement">PreparedStatement</a></li><li><a href="global.html#PromiseAdapter">PromiseAdapter</a></li><li><a href="global.html#QueryFile">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Namespaces</h3><ul><li><a href="global.html#errors">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="global.html#helpers">helpers</a></li><li><a href="pg-promise.html">pg-promise</a></li><li><a href="global.html#txMode">txMode</a></li><li><a href="global.html#utils">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Global</h3><ul><li><a href="global.html#as">as</a></li><li><a href="global.html#end">end</a></li><li><a href="global.html#minify">minify</a></li><li><a href="global.html#pg">pg</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#spex">spex</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -86,7 +86,7 @@
 
             
 
-            <td class="description last"><p><a href="utils.html#.camelize">camelize</a> - camelizes a text string</p></td>
+            <td class="description last"><p><a href="global.html#utils#.camelize">camelize</a> - camelizes a text string</p></td>
         </tr>
 
     
@@ -109,7 +109,7 @@
 
             
 
-            <td class="description last"><p><a href="utils.html#.camelizeVar">camelizeVar</a> - camelizes a text string as a variable</p></td>
+            <td class="description last"><p><a href="global.html#utils#.camelizeVar">camelizeVar</a> - camelizes a text string as a variable</p></td>
         </tr>
 
     
@@ -132,7 +132,7 @@
 
             
 
-            <td class="description last"><p><a href="utils.html#.enumSql">enumSql</a> - enumerates SQL files in a directory</p></td>
+            <td class="description last"><p><a href="global.html#utils#.enumSql">enumSql</a> - enumerates SQL files in a directory</p></td>
         </tr>
 
     
@@ -155,7 +155,7 @@
 
             
 
-            <td class="description last"><p><a href="utils.html#.taskArgs">taskArgs</a> - prepares arguments for tasks and transactions</p></td>
+            <td class="description last"><p><a href="global.html#utils#.taskArgs">taskArgs</a> - prepares arguments for tasks and transactions</p></td>
         </tr>
 
     
@@ -347,7 +347,7 @@
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="utils.html#.camelizeVar">camelizeVar</a></li>
+            <li><a href="global.html#utils#.camelizeVar">camelizeVar</a></li>
         </ul>
     </dd>
     
@@ -410,7 +410,7 @@
 <li>cannot have leading digits</li>
 </ul>
 <p>First, it removes all symbols that do not meet the above criteria, except for <em>hyphen</em>, <em>period</em> and <em>space</em>,
-and then it forwards into <a href="utils.html#.camelize">camelize</a>.</p>
+and then it forwards into <a href="global.html#utils#.camelize">camelize</a>.</p>
 </div>
 
 
@@ -514,7 +514,7 @@ and then it forwards into <a href="utils.html#.camelize">camelize</a>.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="utils.html#.camelize">camelize</a></li>
+            <li><a href="global.html#utils#.camelize">camelize</a></li>
         </ul>
     </dd>
     
@@ -572,7 +572,7 @@ and then it forwards into <a href="utils.html#.camelize">camelize</a>.</p>
 
 <div class="description">
     <p>Synchronously enumerates all SQL files (within a given directory) into a camelized SQL tree.</p>
-<p>All property names within the tree are camelized via <a href="utils.html#.camelizeVar">camelizeVar</a>,
+<p>All property names within the tree are camelized via <a href="global.html#utils#.camelizeVar">camelizeVar</a>,
 so they can be used in the code directly, as open property names.</p>
 </div>
 

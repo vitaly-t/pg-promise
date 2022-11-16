@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="global.html#ParameterizedQuery">ParameterizedQuery</a></li><li><a href="global.html#PreparedStatement">PreparedStatement</a></li><li><a href="global.html#PromiseAdapter">PromiseAdapter</a></li><li><a href="global.html#QueryFile">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Namespaces</h3><ul><li><a href="global.html#errors">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="global.html#helpers">helpers</a></li><li><a href="pg-promise.html">pg-promise</a></li><li><a href="global.html#txMode">txMode</a></li><li><a href="global.html#utils">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Global</h3><ul><li><a href="global.html#as">as</a></li><li><a href="global.html#end">end</a></li><li><a href="global.html#minify">minify</a></li><li><a href="global.html#pg">pg</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#spex">spex</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -41,7 +41,7 @@
 
     
 
-    <h4 class="name" id="PreparedStatement"><span class="type-signature"></span>new PreparedStatement<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="PreparedStatement.html">PreparedStatement</a>}</span></h4>
+    <h4 class="name" id="PreparedStatement"><span class="type-signature"></span>new PreparedStatement<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#PreparedStatement">PreparedStatement</a>}</span></h4>
 
     
 
@@ -50,7 +50,7 @@
 <div class="description">
     <p>Constructs a new <a href="http://www.postgresql.org/docs/9.6/static/sql-prepare.html">Prepared Statement</a> object. All properties can also be set after the object's construction.</p>
 <p>This type extends the basic <code>{name, text, values}</code> object, i.e. when the basic object is used
-with a query method, a new <a href="PreparedStatement.html">PreparedStatement</a> object is created in its place.</p>
+with a query method, a new <a href="global.html#PreparedStatement">PreparedStatement</a> object is created in its place.</p>
 <p>The type can be used in place of the <code>query</code> parameter, with any query method directly.</p>
 <p>The type is available from the library's root: <code>pgp.PreparedStatement</code>.</p>
 </div>
@@ -170,7 +170,7 @@ with a query method, a new <a href="PreparedStatement.html">PreparedStatement</a
 
             
 
-            <td class="description last"><p>See property <a href="PreparedStatement.html#name">name</a>.</p></td>
+            <td class="description last"><p>See property <a href="global.html#PreparedStatement#name">name</a>.</p></td>
         </tr>
 
     
@@ -186,7 +186,7 @@ with a query method, a new <a href="PreparedStatement.html">PreparedStatement</a
 <span class="param-type">string</span>
 |
 
-<span class="param-type"><a href="QueryFile.html">QueryFile</a></span>
+<span class="param-type"><a href="global.html#QueryFile">QueryFile</a></span>
 
 
             
@@ -206,7 +206,7 @@ with a query method, a new <a href="PreparedStatement.html">PreparedStatement</a
 
             
 
-            <td class="description last"><p>See property <a href="PreparedStatement.html#text">text</a>.</p></td>
+            <td class="description last"><p>See property <a href="global.html#PreparedStatement#text">text</a>.</p></td>
         </tr>
 
     
@@ -239,7 +239,7 @@ with a query method, a new <a href="PreparedStatement.html">PreparedStatement</a
 
             
 
-            <td class="description last"><p>See property <a href="PreparedStatement.html#values">values</a>.</p></td>
+            <td class="description last"><p>See property <a href="global.html#PreparedStatement#values">values</a>.</p></td>
         </tr>
 
     
@@ -272,7 +272,7 @@ with a query method, a new <a href="PreparedStatement.html">PreparedStatement</a
 
             
 
-            <td class="description last"><p>See property <a href="PreparedStatement.html#binary">binary</a>.</p></td>
+            <td class="description last"><p>See property <a href="global.html#PreparedStatement#binary">binary</a>.</p></td>
         </tr>
 
     
@@ -305,7 +305,7 @@ with a query method, a new <a href="PreparedStatement.html">PreparedStatement</a
 
             
 
-            <td class="description last"><p>See property <a href="PreparedStatement.html#rowMode">rowMode</a>.</p></td>
+            <td class="description last"><p>See property <a href="global.html#PreparedStatement#rowMode">rowMode</a>.</p></td>
         </tr>
 
     
@@ -338,7 +338,7 @@ with a query method, a new <a href="PreparedStatement.html">PreparedStatement</a
 
             
 
-            <td class="description last"><p>See property <a href="PreparedStatement.html#rows">rows</a>.</p></td>
+            <td class="description last"><p>See property <a href="global.html#PreparedStatement#rows">rows</a>.</p></td>
         </tr>
 
     
@@ -427,7 +427,7 @@ with a query method, a new <a href="PreparedStatement.html">PreparedStatement</a
     </dt>
     <dd>
         
-<span class="param-type"><a href="PreparedStatement.html">PreparedStatement</a></span>
+<span class="param-type"><a href="global.html#PreparedStatement">PreparedStatement</a></span>
 
 
     </dd>
@@ -850,17 +850,17 @@ The default is 0, which means that all rows must be returned at once.</p>
 
         
             
-<h4 class="name" id="text"><span class="type-signature"></span>text<span class="type-signature"> :string|<a href="QueryFile.html">QueryFile</a></span></h4>
+<h4 class="name" id="text"><span class="type-signature"></span>text<span class="type-signature"> :string|<a href="global.html#QueryFile">QueryFile</a></span></h4>
 
 
 
 
 <div class="description">
-    <p>A non-empty query string or a <a href="QueryFile.html">QueryFile</a> object.</p>
+    <p>A non-empty query string or a <a href="global.html#QueryFile">QueryFile</a> object.</p>
 <p>Only the basic variables (<code>$1</code>, <code>$2</code>, etc) can be used in the query, because <a href="http://www.postgresql.org/docs/9.6/static/sql-prepare.html">Prepared Statements</a>
 are formatted on the server side.</p>
-<p>Changing this property for the same <a href="PreparedStatement.html#name">name</a> will have no effect, because queries
-for Prepared Statements are cached by the server, with <a href="PreparedStatement.html#name">name</a> being the cache key.</p>
+<p>Changing this property for the same <a href="global.html#PreparedStatement#name">name</a> will have no effect, because queries
+for Prepared Statements are cached by the server, with <a href="global.html#PreparedStatement#name">name</a> being the cache key.</p>
 </div>
 
 
@@ -872,7 +872,7 @@ for Prepared Statements are cached by the server, with <a href="PreparedStatemen
 <span class="param-type">string</span>
 |
 
-<span class="param-type"><a href="QueryFile.html">QueryFile</a></span>
+<span class="param-type"><a href="global.html#QueryFile">QueryFile</a></span>
 
 
         </li>

@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="global.html#ParameterizedQuery">ParameterizedQuery</a></li><li><a href="global.html#PreparedStatement">PreparedStatement</a></li><li><a href="global.html#PromiseAdapter">PromiseAdapter</a></li><li><a href="global.html#QueryFile">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Namespaces</h3><ul><li><a href="global.html#errors">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="global.html#helpers">helpers</a></li><li><a href="pg-promise.html">pg-promise</a></li><li><a href="global.html#txMode">txMode</a></li><li><a href="global.html#utils">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Global</h3><ul><li><a href="global.html#as">as</a></li><li><a href="global.html#end">end</a></li><li><a href="global.html#minify">minify</a></li><li><a href="global.html#pg">pg</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#spex">spex</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -41,7 +41,7 @@
 
     
 
-    <h4 class="name" id="QueryFile"><span class="type-signature"></span>new QueryFile<span class="signature">(file, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="QueryFile.html">QueryFile</a>}</span></h4>
+    <h4 class="name" id="QueryFile"><span class="type-signature"></span>new QueryFile<span class="signature">(file, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#QueryFile">QueryFile</a>}</span></h4>
 
     
 
@@ -51,8 +51,8 @@
     <p>Represents an external SQL file. The type is available from the library's root: <code>pgp.QueryFile</code>.</p>
 <p>Reads a file with SQL and prepares it for execution, also parses and minifies it, if required.
 The SQL can be of any complexity, with both single and multi-line comments.</p>
-<p>The type can be used in place of the <code>query</code> parameter, with any query method directly, plus as <code>text</code> in <a href="PreparedStatement.html">PreparedStatement</a>
-and <a href="ParameterizedQuery.html">ParameterizedQuery</a>.</p>
+<p>The type can be used in place of the <code>query</code> parameter, with any query method directly, plus as <code>text</code> in <a href="global.html#PreparedStatement">PreparedStatement</a>
+and <a href="global.html#ParameterizedQuery">ParameterizedQuery</a>.</p>
 <p>It never throws any error, leaving it for query methods to reject with <a href="errors.QueryFileError.html">QueryFileError</a>.</p>
 <p><strong>IMPORTANT:</strong> You should only create a single reusable object per file, in order to avoid repeated file reads,
 as the IO is a very expensive resource. If you do not follow it, you will be seeing the following warning:
@@ -132,7 +132,7 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
             <td class="type">
             
                 
-<span class="param-type"><a href="QueryFile.html#.Options">QueryFile.Options</a></span>
+<span class="param-type"><a href="global.html#QueryFile#.Options">QueryFile.Options</a></span>
 
 
             
@@ -152,7 +152,7 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
 
             
 
-            <td class="description last"><p>Set of configuration options, as documented by <a href="QueryFile.html#.Options">QueryFile.Options</a>.</p></td>
+            <td class="description last"><p>Set of configuration options, as documented by <a href="global.html#QueryFile#.Options">QueryFile.Options</a>.</p></td>
         </tr>
 
     
@@ -203,7 +203,7 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="errors.QueryFileError.html">QueryFileError</a>,<a href="QueryFile.html#toPostgres">toPostgres</a></li>
+            <li><a href="errors.QueryFileError.html">QueryFileError</a>,<a href="global.html#QueryFile#toPostgres">toPostgres</a></li>
         </ul>
     </dd>
     
@@ -234,7 +234,7 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
     </dt>
     <dd>
         
-<span class="param-type"><a href="QueryFile.html">QueryFile</a></span>
+<span class="param-type"><a href="global.html#QueryFile">QueryFile</a></span>
 
 
     </dd>
@@ -266,68 +266,6 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
 
     
         <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id=".instance"><span class="type-signature">(static) </span>instance<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <p>Global instance of the file-path repository.</p>
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="query-file.js.html">query-file.js</a>, <a href="query-file.js.html#line153">line 153</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
         
             
@@ -481,7 +419,7 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
 
         
             
-<h4 class="name" id="options"><span class="type-signature">(readonly) </span>options<span class="type-signature"> :<a href="QueryFile.html#.Options">QueryFile.Options</a></span></h4>
+<h4 class="name" id="options"><span class="type-signature">(readonly) </span>options<span class="type-signature"> :<a href="global.html#QueryFile#.Options">QueryFile.Options</a></span></h4>
 
 
 
@@ -497,7 +435,7 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
     <ul>
         <li>
             
-<span class="param-type"><a href="QueryFile.html#.Options">QueryFile.Options</a></span>
+<span class="param-type"><a href="global.html#QueryFile#.Options">QueryFile.Options</a></span>
 
 
         </li>
@@ -537,6 +475,68 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="query-file.js.html">query-file.js</a>, <a href="query-file.js.html#line207">line 207</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".instance"><span class="type-signature">(static) </span>instance<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Global instance of the file-path repository.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="query-file.js.html">query-file.js</a>, <a href="query-file.js.html#line153">line 153</a>
     </li></ul></dd>
     
 
@@ -732,7 +732,7 @@ const query = qf[ctf.toPostgres](); // qf = an object of type QueryFile
 <p>This is a raw formatting type (<code>rawType = true</code>), i.e. when used as a query-formatting parameter, type <code>QueryFile</code> injects SQL as raw text.</p>
 <p>If you need to support type <code>QueryFile</code> outside of query methods, this is the only safe way to get the most current SQL.
 And you would want to use this method dynamically, as it reloads the SQL automatically, if option <code>debug</code> is set.
-See <a href="QueryFile.html#.Options">Options</a>.</p>
+See <a href="global.html#QueryFile#.Options">Options</a>.</p>
 </div>
 
 
@@ -776,7 +776,7 @@ See <a href="QueryFile.html#.Options">Options</a>.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="QueryFile.html">QueryFile</a></span>
+<span class="param-type"><a href="global.html#QueryFile">QueryFile</a></span>
 
 
             
@@ -864,7 +864,7 @@ See <a href="QueryFile.html#.Options">Options</a>.</p>
 
         
 <div class="param-desc">
-    <p>SQL string from the file, according to the <a href="QueryFile.html#.Options">options</a> specified.</p>
+    <p>SQL string from the file, according to the <a href="global.html#QueryFile#.Options">options</a> specified.</p>
 </div>
 
 
@@ -1069,7 +1069,7 @@ See <a href="QueryFile.html#.Options">Options</a>.</p>
 
 
 <div class="description">
-    <p>A set of configuration options as passed into the <a href="QueryFile.html">QueryFile</a> constructor.</p>
+    <p>A set of configuration options as passed into the <a href="global.html#QueryFile">QueryFile</a> constructor.</p>
 </div>
 
 

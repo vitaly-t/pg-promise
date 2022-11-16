@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="global.html#ParameterizedQuery">ParameterizedQuery</a></li><li><a href="global.html#PreparedStatement">PreparedStatement</a></li><li><a href="global.html#PromiseAdapter">PromiseAdapter</a></li><li><a href="global.html#QueryFile">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Namespaces</h3><ul><li><a href="global.html#errors">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="global.html#helpers">helpers</a></li><li><a href="pg-promise.html">pg-promise</a></li><li><a href="global.html#txMode">txMode</a></li><li><a href="global.html#utils">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Global</h3><ul><li><a href="global.html#as">as</a></li><li><a href="global.html#end">end</a></li><li><a href="global.html#minify">minify</a></li><li><a href="global.html#pg">pg</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#spex">spex</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -87,7 +87,7 @@
             
 
             <td class="description last"><p><a href="errors.PreparedStatementError.html">PreparedStatementError</a> class constructor.</p>
-<p>Represents all errors that can be reported by class <a href="PreparedStatement.html">PreparedStatement</a>.</p></td>
+<p>Represents all errors that can be reported by class <a href="global.html#PreparedStatement">PreparedStatement</a>.</p></td>
         </tr>
 
     
@@ -111,7 +111,7 @@
             
 
             <td class="description last"><p><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a> class constructor.</p>
-<p>Represents all errors that can be reported by class <a href="ParameterizedQuery.html">ParameterizedQuery</a>.</p></td>
+<p>Represents all errors that can be reported by class <a href="global.html#ParameterizedQuery">ParameterizedQuery</a>.</p></td>
         </tr>
 
     
@@ -135,7 +135,7 @@
             
 
             <td class="description last"><p><a href="errors.QueryFileError.html">QueryFileError</a> class constructor.</p>
-<p>Represents all errors that can be reported by class <a href="QueryFile.html">QueryFile</a>.</p></td>
+<p>Represents all errors that can be reported by class <a href="global.html#QueryFile">QueryFile</a>.</p></td>
         </tr>
 
     
@@ -172,7 +172,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="errors.html#.queryResultErrorCode">errors.queryResultErrorCode</a></span>
+<span class="param-type"><a href="global.html#errors#.queryResultErrorCode">errors.queryResultErrorCode</a></span>
 
 
             
@@ -274,7 +274,7 @@
 
 
 <div class="description">
-    <p><code>queryResultErrorCode</code> enumerator, available from the <a href="errors.html">errors</a> namespace.</p>
+    <p><code>queryResultErrorCode</code> enumerator, available from the <a href="global.html#errors">errors</a> namespace.</p>
 <p>Represents an integer code for each type of error supported by type <a href="errors.QueryResultError.html">errors.QueryResultError</a>.</p>
 </div>
 

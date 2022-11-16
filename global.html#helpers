@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="global.html#ParameterizedQuery">ParameterizedQuery</a></li><li><a href="global.html#PreparedStatement">PreparedStatement</a></li><li><a href="global.html#PromiseAdapter">PromiseAdapter</a></li><li><a href="global.html#QueryFile">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Namespaces</h3><ul><li><a href="global.html#errors">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="global.html#helpers">helpers</a></li><li><a href="pg-promise.html">pg-promise</a></li><li><a href="global.html#txMode">txMode</a></li><li><a href="global.html#utils">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Global</h3><ul><li><a href="global.html#as">as</a></li><li><a href="global.html#end">end</a></li><li><a href="global.html#minify">minify</a></li><li><a href="global.html#pg">pg</a></li><li><a href="global.html#queryResult">queryResult</a></li><li><a href="global.html#spex">spex</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Namespace for query-formatting generators, available as <a href="module-pg-promise.html#~helpers">pgp.helpers</a>, after initializing the library.</p>
+            <div class="description"><p>Namespace for query-formatting generators, available as pgp.helpers, after initializing the library.</p>
 <p>It unifies the approach to generating multi-row <code>INSERT</code> / <code>UPDATE</code> queries with the single-row ones.</p>
 <p>See also: <a href="https://github.com/vitaly-t/pg-promise/wiki/Performance-Boost">Performance Boost</a>.</p></div>
         
@@ -157,7 +157,7 @@
 
             
 
-            <td class="description last"><p><a href="helpers.html#.insert">insert</a> static method.</p></td>
+            <td class="description last"><p><a href="global.html#helpers#.insert">insert</a> static method.</p></td>
         </tr>
 
     
@@ -180,7 +180,7 @@
 
             
 
-            <td class="description last"><p><a href="helpers.html#.update">update</a> static method.</p></td>
+            <td class="description last"><p><a href="global.html#helpers#.update">update</a> static method.</p></td>
         </tr>
 
     
@@ -203,7 +203,7 @@
 
             
 
-            <td class="description last"><p><a href="helpers.html#.values">values</a> static method.</p></td>
+            <td class="description last"><p><a href="global.html#helpers#.values">values</a> static method.</p></td>
         </tr>
 
     
@@ -226,7 +226,7 @@
 
             
 
-            <td class="description last"><p><a href="helpers.html#.sets">sets</a> static method.</p></td>
+            <td class="description last"><p><a href="global.html#helpers#.sets">sets</a> static method.</p></td>
         </tr>
 
     
@@ -249,7 +249,7 @@
 
             
 
-            <td class="description last"><p><a href="helpers.html#.concat">concat</a> static method.</p></td>
+            <td class="description last"><p><a href="global.html#helpers#.concat">concat</a> static method.</p></td>
         </tr>
 
     
@@ -392,7 +392,7 @@
             <td class="type">
             
                 
-<span class="param-type">array.&lt;(string|<a href="helpers.html#.QueryFormat">helpers.QueryFormat</a>|<a href="QueryFile.html">QueryFile</a>)></span>
+<span class="param-type">array.&lt;(string|<a href="global.html#helpers#.QueryFormat">helpers.QueryFormat</a>|<a href="global.html#QueryFile">QueryFile</a>)></span>
 
 
             
@@ -405,8 +405,8 @@
             <td class="description last"><p>Array of mixed-type elements:</p>
 <ul>
 <li>a simple query string, to be used as is</li>
-<li>a <a href="helpers.html#.QueryFormat">QueryFormat</a>-like object = <code>{query, [values], [options]}</code></li>
-<li>a <a href="QueryFile.html">QueryFile</a> object</li>
+<li>a <a href="global.html#helpers#.QueryFormat">QueryFormat</a>-like object = <code>{query, [values], [options]}</code></li>
+<li>a <a href="global.html#QueryFile">QueryFile</a> object</li>
 </ul></td>
         </tr>
 
@@ -1900,8 +1900,8 @@ unless <code>prop</code> is specified, in which case <code>name</code> represent
             
 
             <td class="description last"><p>Conditional column flag.</p>
-<p>Used by methods <a href="helpers.html#.update">update</a> and <a href="helpers.html#.sets">sets</a>, ignored by methods <a href="helpers.html#.insert">insert</a> and
-<a href="helpers.html#.values">values</a>. It indicates that the column is reserved for a <code>WHERE</code> condition, not to be set or updated.</p>
+<p>Used by methods <a href="global.html#helpers#.update">update</a> and <a href="global.html#helpers#.sets">sets</a>, ignored by methods <a href="global.html#helpers#.insert">insert</a> and
+<a href="global.html#helpers#.values">values</a>. It indicates that the column is reserved for a <code>WHERE</code> condition, not to be set or updated.</p>
 <p>It can be set from a string initialization, by adding <code>?</code> in front of the name.</p></td>
         </tr>
 
@@ -1947,7 +1947,7 @@ It is ignored when property <code>init</code> is set.</p></td>
             <td class="type">
             
                 
-<span class="param-type"><a href="helpers.html#.initCB">helpers.initCB</a></span>
+<span class="param-type"><a href="global.html#helpers#.initCB">helpers.initCB</a></span>
 
 
             
@@ -1978,7 +1978,7 @@ It is ignored when property <code>init</code> is set.</p></td>
             <td class="type">
             
                 
-<span class="param-type"><a href="helpers.html#.skipCB">helpers.skipCB</a></span>
+<span class="param-type"><a href="global.html#helpers#.skipCB">helpers.skipCB</a></span>
 
 
             
@@ -1997,8 +1997,8 @@ It is ignored when property <code>init</code> is set.</p></td>
             
 
             <td class="description last"><p>An override for skipping columns dynamically.</p>
-<p>Used by methods <a href="helpers.html#.update">update</a> (for a single object) and <a href="helpers.html#.sets">sets</a>, ignored by methods
-<a href="helpers.html#.insert">insert</a> and <a href="helpers.html#.values">values</a>.</p>
+<p>Used by methods <a href="global.html#helpers#.update">update</a> (for a single object) and <a href="global.html#helpers#.sets">sets</a>, ignored by methods
+<a href="global.html#helpers#.insert">insert</a> and <a href="global.html#helpers#.values">values</a>.</p>
 <p>It is also ignored when conditional flag <code>cnd</code> is set.</p></td>
         </tr>
 
@@ -2056,6 +2056,210 @@ It is ignored when property <code>init</code> is set.</p></td>
 
             
                 
+<h4 class="name" id=".QueryFormat">QueryFormat</h4>
+
+
+
+
+<div class="description">
+    <p>A simple structure of parameters to be passed into method <a href="formatting.html#.format">as.format</a> exactly as they are,
+used by <a href="global.html#helpers#.concat">helpers.concat</a>.</p>
+</div>
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">value</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A query string or a value/object that implements <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, to be formatted according to <code>values</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">object</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query-formatting values.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query-formatting options, as supported by method <a href="formatting.html#.format">as.format</a>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_methods_concat.js.html">helpers/methods/concat.js</a>, <a href="helpers_methods_concat.js.html#line86">line 86</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="formatting.html#.format">as.format</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
 
     
 
@@ -2066,7 +2270,7 @@ It is ignored when property <code>init</code> is set.</p></td>
 
 
 <div class="description">
-    <p>A callback function type used by parameter <code>init</code> within <a href="helpers.html#.ColumnConfig">ColumnConfig</a>.</p>
+    <p>A callback function type used by parameter <code>init</code> within <a href="global.html#helpers#.ColumnConfig">ColumnConfig</a>.</p>
 <p>It works as an override for the corresponding property value in the <code>source</code> object.</p>
 <p>The function is called with <code>this</code> set to the <code>source</code> object.</p>
 </div>
@@ -2335,210 +2539,6 @@ for the column, or the value of <code>prop</code> when it is specified.</p></td>
 
             
                 
-<h4 class="name" id=".QueryFormat">QueryFormat</h4>
-
-
-
-
-<div class="description">
-    <p>A simple structure of parameters to be passed into method <a href="formatting.html#.format">as.format</a> exactly as they are,
-used by <a href="helpers.html#.concat">helpers.concat</a>.</p>
-</div>
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>query</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">value</span>
-|
-
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>A query string or a value/object that implements <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, to be formatted according to <code>values</code>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>values</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">array</span>
-|
-
-<span class="param-type">object</span>
-|
-
-<span class="param-type">value</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Query-formatting values.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Query-formatting options, as supported by method <a href="formatting.html#.format">as.format</a>.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_methods_concat.js.html">helpers/methods/concat.js</a>, <a href="helpers_methods_concat.js.html#line86">line 86</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="formatting.html#.format">as.format</a></li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-
-
-
-
-            
-                
 
     
 
@@ -2549,7 +2549,7 @@ used by <a href="helpers.html#.concat">helpers.concat</a>.</p>
 
 
 <div class="description">
-    <p>A callback function type used by parameter <code>skip</code> within <a href="helpers.html#.ColumnConfig">ColumnConfig</a>.</p>
+    <p>A callback function type used by parameter <code>skip</code> within <a href="global.html#helpers#.ColumnConfig">ColumnConfig</a>.</p>
 <p>It is to dynamically determine when the property with specified <code>name</code> in the <code>source</code> object is to be skipped.</p>
 <p>The function is called with <code>this</code> set to the <code>source</code> object.</p>
 </div>
