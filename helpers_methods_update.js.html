@@ -36,7 +36,7 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-const {assertOptions} = require(`assert-options`);
+const {assert} = require(`../../assert`);
 const {TableName} = require(`../table-name`);
 const {ColumnSet} = require(`../column-set`);
 
@@ -94,7 +94,7 @@ const npm = {
  * @param {*} [options.emptyUpdate]
  * This is a convenience option, to avoid throwing an error when generating a conditional update results in no columns.
  *
- * When present, regardless of the value, this option overrides the method's behaviour when applying `skip` logic results in no columns,
+ * When present, regardless of the value, this option overrides the method's behavior when applying `skip` logic results in no columns,
  * i.e. when every column is being skipped.
  *
  * By default, in that situation the method throws {@link external:Error Error} = `Cannot generate an UPDATE without any columns.`
@@ -197,7 +197,7 @@ function update(data, columns, table, options, capSQL) {
         columns = new ColumnSet(columns || data);
     }
 
-    options = assertOptions(options, [`tableAlias`, `valueAlias`, `emptyUpdate`]);
+    options = assert(options, [`tableAlias`, `valueAlias`, `emptyUpdate`]);
 
     const format = npm.formatting.as.format,
         useEmptyUpdate = `emptyUpdate` in options,

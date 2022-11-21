@@ -38,7 +38,7 @@
 
 const {InnerState} = require(`./inner-state`);
 const {QueryFileError} = require(`./errors`);
-const {assertOptions} = require(`assert-options`);
+const {assert} = require(`./assert`);
 const {ColorConsole} = require(`./utils/color`);
 
 const npm = {
@@ -135,7 +135,7 @@ class QueryFile extends InnerState {
 
         let filePath = file;
 
-        options = assertOptions(options, {
+        options = assert(options, {
             debug: npm.utils.isDev(),
             minify: (options &amp;&amp; options.compress &amp;&amp; options.minify === undefined) ? true : undefined,
             compress: undefined,

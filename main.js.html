@@ -42,7 +42,7 @@ const {PreparedStatement, ParameterizedQuery} = require(`./types`);
 const {QueryFile} = require(`./query-file`);
 const {queryResult} = require(`./query-result`);
 const {parsePromise} = require(`./promise-parser`);
-const {assertOptions} = require(`assert-options`);
+const {assert} = require(`./assert`);
 
 const npm = {
     path: require(`path`),
@@ -65,7 +65,7 @@ let originalClientConnect;
  * @module pg-promise
  *
  * @description
- * ## pg-promise v10
+ * ## pg-promise v10.15
  * All documentation here is for the latest official release only.
  *
  * ### Initialization Options
@@ -220,7 +220,7 @@ let originalClientConnect;
  */
 function $main(options) {
 
-    options = assertOptions(options, [`pgFormatting`, `pgNative`, `promiseLib`, `noLocking`, `capSQL`, `noWarnings`,
+    options = assert(options, [`pgFormatting`, `pgNative`, `promiseLib`, `noLocking`, `capSQL`, `noWarnings`,
         `connect`, `disconnect`, `query`, `receive`, `task`, `transact`, `error`, `extend`, `schema`]);
 
     let pg = npm.pg;

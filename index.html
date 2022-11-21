@@ -64,7 +64,7 @@ const pgp = require('pg-promise')(initOptions);
 <li><code>dc</code> = Database Context - optional parameter (see <a href="http://vitaly-t.github.io/pg-promise/Database.html">Database</a> constructor).</li>
 </ul>
 <p>Object <code>db</code> represents the <a href="http://vitaly-t.github.io/pg-promise/Database.html">Database</a> protocol with lazy connection, i.e. only the actual query methods acquire
-and release the connection automatically. Therefore you should create only one global/shared <code>db</code> object per connection details.</p>
+and release the connection automatically. Therefore, you should create only one global/shared <code>db</code> object per connection details.</p>
 <p>It is best to initialize the library and create <a href="http://vitaly-t.github.io/pg-promise/Database.html">Database</a> in its own module, see <a href="https://stackoverflow.com/questions/34382796/where-should-i-initialize-pg-promise">Where should I initialize pg-promise</a>.</p>
 <h2>Usage</h2>
 <p><a href="https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example">Learn by Example</a> is the best quick-start tutorial. For everything else see the <a href="https://github.com/vitaly-t/pg-promise/wiki">WiKi</a> pages.</p>

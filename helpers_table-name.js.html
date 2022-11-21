@@ -36,7 +36,7 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-const {assertOptions} = require(`assert-options`);
+const {assert} = require(`../assert`);
 
 const npm = {
     utils: require(`../utils`),
@@ -94,7 +94,7 @@ class TableName {
         if (typeof table === `string`) {
             this.table = table;
         } else {
-            const config = assertOptions(table, [`table`, `schema`]);
+            const config = assert(table, [`table`, `schema`]);
             this.table = config.table;
             if (npm.utils.isText(config.schema)) {
                 this.schema = config.schema;
