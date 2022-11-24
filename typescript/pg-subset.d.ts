@@ -261,6 +261,9 @@ declare namespace pg {
     // https://github.com/brianc/node-postgres/blob/master/packages/pg-pool/index.js#L61
     // NOTE: We declare only what can be used from pg-promise
     interface IPool extends EventEmitter {
+
+        connect(): Promise<IClient>;
+
         end(): Promise<undefined>;
 
         end(cb: (err: Error) => any): any;
@@ -297,6 +300,8 @@ declare namespace pg {
         query<T>(config: any, values: any[]): Promise<IResult<T>>
 
         query<T>(config: any): Promise<IResult<T>>
+
+        release();
 
         connectionParameters: IConnectionParameters
         database: string
