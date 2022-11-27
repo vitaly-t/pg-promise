@@ -1,11 +1,11 @@
 {
   "name": "pg-promise",
-  "version": "10.15.3",
+  "version": "10.15.4",
   "description": "PostgreSQL interface for Node.js",
   "main": "lib/index.js",
   "typings": "typescript/pg-promise.d.ts",
   "scripts": {
-    "check-spelling": "cspell --config=.cspell.json \"**/*.{md,ts,js}\" --no-progress",
+    "spelling": "cspell --config=.cspell.json \"**/*.{md,ts,js}\" --no-progress",
     "coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test",
     "doc": "jsdoc -c ./jsdoc/jsdoc.js ./jsdoc/README.md -t ./jsdoc/templates/custom",
     "lint": "eslint ./lib ./test/*.js ./test/db --fix",
@@ -49,7 +49,7 @@
     "@types/node": "18.11.9",
     "bluebird": "3.7.2",
     "coveralls": "3.1.1",
-    "cspell": "6.14.3",
+    "cspell": "6.15.0",
     "eslint": "8.28.0",
     "istanbul": "0.4.5",
     "jasmine-node": "3.0.0",
