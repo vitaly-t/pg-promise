@@ -293,15 +293,15 @@ declare namespace pg {
 
     interface IClient extends EventEmitter {
 
-        query<T>(config: any, values: any[], callback: (err: Error, result: IResult<T>) => void): undefined
+        query<T>(config: any, values: any[], callback: (err: Error, result: IResult<T>) => void): void
 
-        query<T>(config: any, callback: (err: Error, result: IResult<T>) => void): undefined
+        query<T>(config: any, callback: (err: Error, result: IResult<T>) => void): void
 
         query<T>(config: any, values: any[]): Promise<IResult<T>>
 
         query<T>(config: any): Promise<IResult<T>>
 
-        release();
+        release(): void
 
         connectionParameters: IConnectionParameters
         database: string
