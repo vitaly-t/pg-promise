@@ -447,7 +447,7 @@ can be logged safely, without exposing the password.</p></td>
 
             
 
-            <td class="description last"><p><a href="https://node-postgres.com/api/client">pg.Client</a> object that represents the connection. It is set for all events, except for event <a href="global.html#event:error">error</a>
+            <td class="description last"><p><a href="https://node-postgres.com/apis/client">pg.Client</a> object that represents the connection. It is set for all events, except for event <a href="global.html#event:error">error</a>
 when it is connection-related. Note that sometimes the value may be unset when the connection is lost.</p></td>
         </tr>
 
@@ -1115,7 +1115,7 @@ this event represents a physical connection.</p>
 
             
 
-            <td class="description last"><p><a href="https://node-postgres.com/api/client">pg.Client</a> object that represents the connection.</p></td>
+            <td class="description last"><p><a href="https://node-postgres.com/apis/client">pg.Client</a> object that represents the connection.</p></td>
         </tr>
 
     
@@ -1303,7 +1303,7 @@ with parameter <code>{direct: true}</code>).</p></td>
 
             
 
-            <td class="description last"><p><a href="https://node-postgres.com/api/client">pg.Client</a> object that represents connection with the database.</p></td>
+            <td class="description last"><p><a href="https://node-postgres.com/apis/client">pg.Client</a> object that represents connection with the database.</p></td>
         </tr>
 
     
@@ -1979,8 +1979,8 @@ the event occurs for every record.</p>
             
 
             <td class="description last"><ul>
-<li>Original <a href="https://node-postgres.com/api/result">Result</a> object, if the data is from a non-stream query, in which case <code>data = result.rows</code>.
-For single-query requests, <a href="https://node-postgres.com/api/result">Result</a> object is extended with property <code>duration</code> - number of milliseconds
+<li>Original <a href="https://node-postgres.com/apis/result">Result</a> object, if the data is from a non-stream query, in which case <code>data = result.rows</code>.
+For single-query requests, <a href="https://node-postgres.com/apis/result">Result</a> object is extended with property <code>duration</code> - number of milliseconds
 it took to send the query, execute it and get the result back.</li>
 <li>It is <code>undefined</code> when the data comes from a stream (method <a href="Database.html#stream">Database.stream</a>).</li>
 </ul></td>
