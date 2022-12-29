@@ -573,7 +573,6 @@ declare namespace pgPromise {
         pgFormatting?: boolean
         pgNative?: boolean
         promiseLib?: any
-        noLocking?: boolean
         capSQL?: boolean
         schema?: ValidSchema | ((dc: any) => ValidSchema)
 

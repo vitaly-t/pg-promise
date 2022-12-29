@@ -5,7 +5,6 @@ import {ILostContext} from "../../typescript/pg-promise";
 const pgp: pgPromise.IMain = pgPromise({
     schema: ['public', 'mine'],
     capSQL: true,
-    noLocking: true,
     pgNative: true,
     pgFormatting: true,
     noWarnings: true
