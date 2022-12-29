@@ -10,11 +10,15 @@ html, body, section {
     background-color: #F0F0F0;
 }
 
-.prettyprint {
+pre.prettyprint:not(pre.source) {
     width: auto;
-    background-color: lightgrey;
-    border-radius: 5px;
+    border: 1px solid lightgrey;
     padding: 10px;
+}
+
+p>code, .description code {
+    background-color: lightgray;
+    font-style: italic;
 }
 
 h4.name {
@@ -28,16 +32,11 @@ h4.name {
 div#main {
     margin-left: 260px;
     float: none;
-/ / max-width: 1650 px;
 }
 
 code {
     border-radius: 3px;
     padding: 2px 4px;
-}
-
-code span {
-/ / line-height: 20 px;
 }
 
 nav {
