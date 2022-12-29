@@ -47,9 +47,9 @@ describe(`Connect/Disconnect events`, () => {
                 connect++;
                 throw new Error(`### Testing error output in 'connect'. Please ignore. ###`);
             };
-            options.disconnect = (client, dc) => {
-                ctx2.dc = dc;
-                ctx2.client = client;
+            options.disconnect = (e) => {
+                ctx2.dc = e.dc;
+                ctx2.client = e.client;
                 disconnect++;
                 throw new Error(`### Testing error output in 'disconnect'. Please ignore. ###`);
             };
@@ -85,9 +85,9 @@ describe(`Connect/Disconnect events`, () => {
                 obj1.useCount = e.useCount;
                 connect++;
             };
-            options.disconnect = (client, dc) => {
-                obj2.client = client;
-                obj2.dc = dc;
+            options.disconnect = (e) => {
+                obj2.client = e.client;
+                obj2.dc = e.dc;
                 disconnect++;
             };
             db.tx(function (t) {

@@ -578,7 +578,7 @@ declare namespace pgPromise {
 
         connect?(e: { client: C, dc: any, useCount: number }): void
 
-        disconnect?(client: C, dc: any): void
+        disconnect?(e: { client: C, dc: any }): void
 
         query?(e: IEventContext<C>): void
 
