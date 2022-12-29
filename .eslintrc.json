@@ -6,7 +6,7 @@
   },
   "extends": "eslint:recommended",
   "parserOptions": {
-    "ecmaVersion": 2017
+    "ecmaVersion": 2022
   },
   "rules": {
     "no-var": "error",
