@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,17 +29,13 @@
 
 <header>
     
-        
-            
-        
-    
 </header>
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description"><h2>pg-promise v10.15</h2>
+            <div class="description"><h2>pg-promise v11.0</h2>
 <p>All documentation here is for the latest official release only.</p>
 <h3>Initialization Options</h3>
 <p>Below is the complete list of <em>Initialization Options</em> for the library that can be passed in during
@@ -51,22 +47,13 @@ const pgp = require('pg-promise')(initOptions);
         
 
         
-            
 
 
+    <h5 class="subsection-title">Properties:</h5>
 
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
     
 
-<table class="params">
+<table class="props">
     <thead>
     <tr>
         
@@ -109,8 +96,6 @@ const pgp = require('pg-promise')(initOptions);
                 
 
                 
-
-                
                 </td>
             
 
@@ -118,9 +103,8 @@ const pgp = require('pg-promise')(initOptions);
 
             <td class="description last"><p>Library Initialization Options.</p>
                 <h6>Properties</h6>
-                
 
-<table class="params">
+<table class="props">
     <thead>
     <tr>
         
@@ -162,8 +146,6 @@ const pgp = require('pg-promise')(initOptions);
                 <td class="attributes">
                 
                     &lt;optional><br>
-                
-
                 
 
                 
@@ -209,8 +191,6 @@ that this library implements, restricting yourself to the very basic <code>$1, $
                 
 
                 
-
-                
                 </td>
             
 
@@ -253,8 +233,6 @@ be an error thrown: <a href="external-Error.html">Error</a> = <code>Failed to in
                 
 
                 
-
-                
                 </td>
             
 
@@ -284,52 +262,6 @@ while the rest can be configured via the <a href="https://github.com/vitaly-t/pg
 
         <tr>
             
-                <td class="name"><code>noLocking</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Prevents protocol locking.</p>
-<p>By default, the library locks much of its protocol to read-only access, as a fool-proof mechanism.
-Specifically for the <a href="global.html#event:extend">extend</a> event this serves as a protection against overriding existing
-properties or trying to set them at the wrong time.</p>
-<p>If this provision gets in the way of using a mock-up framework for your tests, you can force
-the library to deactivate most of the locks by setting <code>noLocking</code> = <code>true</code> within the options.</p>
-<p>This option is dynamic (can be set before or after initialization). However, changing it after the library's
-initialization will not affect <a href="Database.html">Database</a> objects that have already been created.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>capSQL</code></td>
             
 
@@ -346,8 +278,6 @@ initialization will not affect <a href="Database.html">Database</a> objects that
                 <td class="attributes">
                 
                     &lt;optional><br>
-                
-
                 
 
                 
@@ -404,8 +334,6 @@ If, however, you want all SQL to be capitalized instead, set <code>capSQL</code>
                 
 
                 
-
-                
                 </td>
             
 
@@ -451,8 +379,6 @@ to the table from the first such schema on the list.</p>
                 
 
                 
-
-                
                 </td>
             
 
@@ -488,8 +414,6 @@ to the table from the first such schema on the list.</p>
                 <td class="attributes">
                 
                     &lt;optional><br>
-                
-
                 
 
                 
@@ -529,8 +453,6 @@ to the table from the first such schema on the list.</p>
                 
 
                 
-
-                
                 </td>
             
 
@@ -564,8 +486,6 @@ to the table from the first such schema on the list.</p>
                 <td class="attributes">
                 
                     &lt;optional><br>
-                
-
                 
 
                 
@@ -605,8 +525,6 @@ to the table from the first such schema on the list.</p>
                 
 
                 
-
-                
                 </td>
             
 
@@ -640,8 +558,6 @@ to the table from the first such schema on the list.</p>
                 <td class="attributes">
                 
                     &lt;optional><br>
-                
-
                 
 
                 
@@ -681,8 +597,6 @@ to the table from the first such schema on the list.</p>
                 
 
                 
-
-                
                 </td>
             
 
@@ -716,8 +630,6 @@ to the table from the first such schema on the list.</p>
                 <td class="attributes">
                 
                     &lt;optional><br>
-                
-
                 
 
                 
@@ -757,8 +669,6 @@ to the table from the first such schema on the list.</p>
                 
 
                 
-
-                
                 </td>
             
 
@@ -782,8 +692,6 @@ to the table from the first such schema on the list.</p>
     
     </tbody>
 </table>
-
-
 
 
 
@@ -843,20 +751,6 @@ to the table from the first such schema on the list.</p>
 </dl>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         
     
     </div>
@@ -867,12 +761,306 @@ to the table from the first such schema on the list.</p>
 
     
 
-     
+    
+
+    
 
     
 
     
         <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="~ParameterizedQuery"><span class="type-signature">(inner, readonly) </span>ParameterizedQuery<span class="type-signature"> :<a href="ParameterizedQuery.html">ParameterizedQuery</a></span></h4>
+
+
+
+
+<div class="description">
+    <p><a href="ParameterizedQuery.html">ParameterizedQuery</a> class.</p>
+<p>Available as <code>pgp.ParameterizedQuery</code>, before and after initializing the library.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="ParameterizedQuery.html">ParameterizedQuery</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line341">line 341</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~PreparedStatement"><span class="type-signature">(inner, readonly) </span>PreparedStatement<span class="type-signature"> :<a href="PreparedStatement.html">PreparedStatement</a></span></h4>
+
+
+
+
+<div class="description">
+    <p><a href="PreparedStatement.html">PreparedStatement</a> class.</p>
+<p>Available as <code>pgp.PreparedStatement</code>, before and after initializing the library.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="PreparedStatement.html">PreparedStatement</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line351">line 351</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~PromiseAdapter"><span class="type-signature">(inner, readonly) </span>PromiseAdapter<span class="type-signature"> :<a href="PromiseAdapter.html">PromiseAdapter</a></span></h4>
+
+
+
+
+<div class="description">
+    <p><a href="PromiseAdapter.html">PromiseAdapter</a> class.</p>
+<p>Available as <code>pgp.PromiseAdapter</code>, before and after initializing the library.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="PromiseAdapter.html">PromiseAdapter</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line331">line 331</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~QueryFile"><span class="type-signature">(inner, readonly) </span>QueryFile<span class="type-signature"> :<a href="QueryFile.html">QueryFile</a></span></h4>
+
+
+
+
+<div class="description">
+    <p><a href="QueryFile.html">QueryFile</a> class.</p>
+<p>Available as <code>pgp.QueryFile</code>, before and after initializing the library.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="QueryFile.html">QueryFile</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line361">line 361</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
 
         
             
@@ -931,7 +1119,7 @@ to the table from the first such schema on the list.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line313">line 313</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line299">line 299</a>
     </li></ul></dd>
     
 
@@ -1016,7 +1204,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line259">line 259</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line246">line 246</a>
     </li></ul></dd>
     
 
@@ -1089,7 +1277,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line385">line 385</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line371">line 371</a>
     </li></ul></dd>
     
 
@@ -1162,7 +1350,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line278">line 278</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line265">line 265</a>
     </li></ul></dd>
     
 
@@ -1242,80 +1430,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line325">line 325</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~ParameterizedQuery"><span class="type-signature">(inner, readonly) </span>ParameterizedQuery<span class="type-signature"> :<a href="ParameterizedQuery.html">ParameterizedQuery</a></span></h4>
-
-
-
-
-<div class="description">
-    <p><a href="ParameterizedQuery.html">ParameterizedQuery</a> class.</p>
-<p>Available as <code>pgp.ParameterizedQuery</code>, before and after initializing the library.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="ParameterizedQuery.html">ParameterizedQuery</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line355">line 355</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line311">line 311</a>
     </li></ul></dd>
     
 
@@ -1392,226 +1507,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line248">line 248</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~PreparedStatement"><span class="type-signature">(inner, readonly) </span>PreparedStatement<span class="type-signature"> :<a href="PreparedStatement.html">PreparedStatement</a></span></h4>
-
-
-
-
-<div class="description">
-    <p><a href="PreparedStatement.html">PreparedStatement</a> class.</p>
-<p>Available as <code>pgp.PreparedStatement</code>, before and after initializing the library.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="PreparedStatement.html">PreparedStatement</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line365">line 365</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~PromiseAdapter"><span class="type-signature">(inner, readonly) </span>PromiseAdapter<span class="type-signature"> :<a href="PromiseAdapter.html">PromiseAdapter</a></span></h4>
-
-
-
-
-<div class="description">
-    <p><a href="PromiseAdapter.html">PromiseAdapter</a> class.</p>
-<p>Available as <code>pgp.PromiseAdapter</code>, before and after initializing the library.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="PromiseAdapter.html">PromiseAdapter</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line345">line 345</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~QueryFile"><span class="type-signature">(inner, readonly) </span>QueryFile<span class="type-signature"> :<a href="QueryFile.html">QueryFile</a></span></h4>
-
-
-
-
-<div class="description">
-    <p><a href="QueryFile.html">QueryFile</a> class.</p>
-<p>Available as <code>pgp.QueryFile</code>, before and after initializing the library.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="QueryFile.html">QueryFile</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line375">line 375</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line235">line 235</a>
     </li></ul></dd>
     
 
@@ -1684,7 +1580,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line335">line 335</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line321">line 321</a>
     </li></ul></dd>
     
 
@@ -1757,7 +1653,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line290">line 290</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line277">line 277</a>
     </li></ul></dd>
     
 
@@ -1837,7 +1733,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line405">line 405</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line391">line 391</a>
     </li></ul></dd>
     
 
@@ -1910,7 +1806,7 @@ object that owns the pool: <code>db.$pool.end()</code> (see <a href="Database.ht
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line395">line 395</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line381">line 381</a>
     </li></ul></dd>
     
 

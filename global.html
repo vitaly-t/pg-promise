@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -88,7 +88,9 @@
 
     
 
-     
+    
+
+    
 
     
 
@@ -550,7 +552,7 @@ inside a task or transaction.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line482">line 482</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line488">line 488</a>
     </li></ul></dd>
     
 
@@ -1026,7 +1028,7 @@ Not available with <a href="https://node-postgres.com/features/native">Native Bi
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line344">line 344</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line343">line 343</a>
     </li></ul></dd>
     
 
@@ -1053,7 +1055,9 @@ Not available with <a href="https://node-postgres.com/features/native">Native Bi
 
     
 
+    
     <h4 class="name" id="event:connect">connect</h4>
+    
 
     
 
@@ -1076,6 +1080,48 @@ this event represents a physical connection.</p>
 
     <h5>Parameters:</h5>
     
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>e</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Event Properties</p>
+                <h6>Properties</h6>
+                
 
 <table class="params">
     <thead>
@@ -1161,10 +1207,17 @@ this event represents a physical connection.</p>
 
             
 
-            <td class="description last"><p>Number of times the connection has been previously used, starting with 0 for a freshly
+            <td class="description last"><p>Number of times the connection has been previously used, starting with 0, for a freshly
 allocated physical connection.</p>
 <p>This parameter is always 0 for direct connections (created by calling <a href="Database.html#connect">Database.connect</a>
 with parameter <code>{direct: true}</code>).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -1230,9 +1283,13 @@ with parameter <code>{direct: true}</code>).</p></td>
 
 
 
+
+
+
+
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    connect(client, dc, useCount) {        const cp = client.connectionParameters;        console.log('Connected to database:', cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    connect(e) {        const cp = e.client.connectionParameters;        console.log('Connected to database:', cp.database);    }};</code></pre>
 
 
 
@@ -1241,7 +1298,9 @@ with parameter <code>{direct: true}</code>).</p></td>
 
     
 
+    
     <h4 class="name" id="event:disconnect">disconnect</h4>
+    
 
     
 
@@ -1264,6 +1323,48 @@ with parameter <code>{direct: true}</code>).</p></td>
 
     <h5>Parameters:</h5>
     
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>e</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Event Properties</p>
+                <h6>Properties</h6>
+                
 
 <table class="params">
     <thead>
@@ -1333,6 +1434,13 @@ with parameter <code>{direct: true}</code>).</p></td>
     </tbody>
 </table>
 
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
 
 
 
@@ -1367,7 +1475,7 @@ with parameter <code>{direct: true}</code>).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line70">line 70</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line72">line 72</a>
     </li></ul></dd>
     
 
@@ -1392,9 +1500,13 @@ with parameter <code>{direct: true}</code>).</p></td>
 
 
 
+
+
+
+
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    disconnect(client, dc) {       const cp = client.connectionParameters;       console.log('Disconnecting from database:', cp.database);    }};</code></pre>
+    <pre class="prettyprint"><code>const initOptions = {    // pg-promise initialization options...    disconnect(e) {       const cp = e.client.connectionParameters;       console.log('Disconnecting from database:', cp.database);    }};</code></pre>
 
 
 
@@ -1403,7 +1515,9 @@ with parameter <code>{direct: true}</code>).</p></td>
 
     
 
+    
     <h4 class="name" id="event:error">error</h4>
+    
 
     
 
@@ -1527,7 +1641,7 @@ with parameter <code>{direct: true}</code>).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line308">line 308</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line314">line 314</a>
     </li></ul></dd>
     
 
@@ -1537,6 +1651,10 @@ with parameter <code>{direct: true}</code>).</p></td>
 
     
 </dl>
+
+
+
+
 
 
 
@@ -1563,7 +1681,9 @@ with parameter <code>{direct: true}</code>).</p></td>
 
     
 
+    
     <h4 class="name" id="event:extend">extend</h4>
+    
 
     
 
@@ -1697,7 +1817,7 @@ if you try overriding them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line361">line 361</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line367">line 367</a>
     </li></ul></dd>
     
 
@@ -1729,6 +1849,10 @@ if you try overriding them.</p>
 
 
 
+
+
+
+
     <h5>Examples</h5>
     
     <pre class="prettyprint"><code>// In the example below we extend the protocol with function `addImage`// that will insert one binary image and resolve with the new record id.const initOptions = {    // pg-promise initialization options...    extend(obj, dc) {        // dc = database context;        obj.addImage = data => {            // adds a new image and resolves with its record id:            return obj.one('INSERT INTO images(data) VALUES($1) RETURNING id', data, a => a.id);        }    }};</code></pre>
@@ -1742,7 +1866,9 @@ if you try overriding them.</p>
 
     
 
+    
     <h4 class="name" id="event:query">query</h4>
+    
 
     
 
@@ -1844,7 +1970,7 @@ will be rejected with that error.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line110">line 110</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line114">line 114</a>
     </li></ul></dd>
     
 
@@ -1854,6 +1980,10 @@ will be rejected with that error.</p>
 
     
 </dl>
+
+
+
+
 
 
 
@@ -1880,7 +2010,9 @@ will be rejected with that error.</p>
 
     
 
+    
     <h4 class="name" id="event:receive">receive</h4>
+    
 
     
 
@@ -1915,6 +2047,48 @@ the event occurs for every record.</p>
 
     <h5>Parameters:</h5>
     
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>e</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Event Properties</p>
+                <h6>Properties</h6>
+                
 
 <table class="params">
     <thead>
@@ -1990,7 +2164,7 @@ it took to send the query, execute it and get the result back.</li>
 
         <tr>
             
-                <td class="name"><code>e</code></td>
+                <td class="name"><code>ctx</code></td>
             
 
             <td class="type">
@@ -2007,6 +2181,13 @@ it took to send the query, execute it and get the result back.</li>
             
 
             <td class="description last"><p>Event Context Object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -2047,7 +2228,7 @@ it took to send the query, execute it and get the result back.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line145">line 145</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line149">line 149</a>
     </li></ul></dd>
     
 
@@ -2072,9 +2253,13 @@ it took to send the query, execute it and get the result back.</li>
 
 
 
+
+
+
+
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize all column names.// NOTE: The example does not do processing for nested JSON objects.const initOptions = {    // pg-promise initialization options...    receive(data, result, e) {        camelizeColumns(data);    }};function camelizeColumns(data) {    const tmp = data[0];    for (const prop in tmp) {        const camel = pgp.utils.camelize(prop);        if (!(camel in tmp)) {            for (let i = 0; i &lt; data.length; i++) {                const d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
+    <pre class="prettyprint"><code>// Example below shows the fastest way to camelize all column names.// NOTE: The example does not do processing for nested JSON objects.const initOptions = {    // pg-promise initialization options...    receive(e) {        camelizeColumns(e.data);    }};function camelizeColumns(data) {    const tmp = data[0];    for (const prop in tmp) {        const camel = pgp.utils.camelize(prop);        if (!(camel in tmp)) {            for (let i = 0; i &lt; data.length; i++) {                const d = data[i];                d[camel] = d[prop];                delete d[prop];            }        }    }}</code></pre>
 
 
 
@@ -2083,7 +2268,9 @@ it took to send the query, execute it and get the result back.</li>
 
     
 
+    
     <h4 class="name" id="event:task">task</h4>
+    
 
     
 
@@ -2185,7 +2372,7 @@ it took to send the query, execute it and get the result back.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line218">line 218</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line224">line 224</a>
     </li></ul></dd>
     
 
@@ -2195,6 +2382,10 @@ it took to send the query, execute it and get the result back.</li>
 
     
 </dl>
+
+
+
+
 
 
 
@@ -2221,7 +2412,9 @@ it took to send the query, execute it and get the result back.</li>
 
     
 
+    
     <h4 class="name" id="event:transact">transact</h4>
+    
 
     
 
@@ -2323,7 +2516,7 @@ or <a href="Database.html#txIf">Database.txIf</a>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="events.js.html">events.js</a>, <a href="events.js.html#line263">line 263</a>
+        <a href="events.js.html">events.js</a>, <a href="events.js.html#line269">line 269</a>
     </li></ul></dd>
     
 
@@ -2333,6 +2526,10 @@ or <a href="Database.html#txIf">Database.txIf</a>.</p>
 
     
 </dl>
+
+
+
+
 
 
 

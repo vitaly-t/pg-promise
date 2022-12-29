@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,8 +29,8 @@
 
 <header>
     
-        <h2>
-            <span class="ancestors"><a href="helpers.html">helpers</a>.</span>ColumnSet</h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="helpers.html">helpers</a>.</span>ColumnSet<span class="signature">(columns, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="helpers.ColumnSet.html">helpers.ColumnSet</a>}</span></h2>
         
     
 </header>
@@ -42,7 +42,9 @@
 
     
 
+    
     <h4 class="name" id="ColumnSet"><span class="type-signature"></span>new ColumnSet<span class="signature">(columns, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="helpers.ColumnSet.html">helpers.ColumnSet</a>}</span></h4>
+    
 
     
 
@@ -357,6 +359,8 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -377,6 +381,8 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
 
 
+
+
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// A complex insert/update object scenario for table 'purchases' in schema 'fiscal'.// For a good performance, you should declare such objects once and then reuse them.//// Column Requirements://// 1. Property 'id' is only to be used for a WHERE condition in updates// 2. Property 'list' needs to be formatted as a csv// 3. Property 'code' is to be used as raw text, and to be defaulted to 0 when the//    property is missing in the source object// 4. Property 'log' is a JSON object with 'log-entry' for the column name// 5. Property 'data' requires SQL type casting '::int[]'// 6. Property 'amount' needs to be set to 100, if it is 0// 7. Property 'total' must be skipped during updates, if 'amount' was 0, plus its//    column name is 'total-val'const cs = new pgp.helpers.ColumnSet([    '?id', // ColumnConfig equivalent: {name: 'id', cnd: true}    'list:csv', // ColumnConfig equivalent: {name: 'list', mod: ':csv'}    {        name: 'code',        mod: '^', // format as raw text        def: 0 // default to 0 when the property doesn't exist    },    {        name: 'log-entry',        prop: 'log',        mod: ':json' // format as JSON    },    {        name: 'data',        cast: 'int[]' // use SQL type casting '::int[]'    },    {        name: 'amount',        init(col) {            // set to 100, if the value is 0:            return col.value === 0 ? 100 : col.value;        }    },    {        name: 'total-val',        prop: 'total',        skip(col) {            // skip from updates, if 'amount' is 0:            return col.source.amount === 0;        }    }], {table: {table: 'purchases', schema: 'fiscal'}});// Alternatively, you could take the table declaration out:// const table = new pgp.helpers.TableName('purchases', 'fiscal');console.log(cs); // console output for the object://=>// ColumnSet {//    table: "fiscal"."purchases"//    columns: [//        Column {//            name: "id"//            cnd: true//        }//        Column {//            name: "list"//            mod: ":csv"//        }//        Column {//            name: "code"//            mod: "^"//            def: 0//        }//        Column {//            name: "log-entry"//            prop: "log"//            mod: ":json"//        }//        Column {//            name: "data"//            cast: "int[]"//        }//        Column {//            name: "amount"//            init: [Function]//        }//        Column {//            name: "total-val"//            prop: "total"//            skip: [Function]//        }//    ]// }</code></pre>
@@ -392,7 +398,9 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
 
     
 
-     
+    
+
+    
 
     
 
@@ -719,7 +727,9 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
 
     
 
+    
     <h4 class="name" id="assign"><span class="type-signature"></span>assign<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -960,6 +970,8 @@ and the rules defined in the <a href="helpers.ColumnSet.html">ColumnSet</a>. If,
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -984,6 +996,8 @@ and the rules defined in the <a href="helpers.ColumnSet.html">ColumnSet</a>. If,
     
 
 
+
+
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>const cs = new pgp.helpers.ColumnSet([    '?first', // = {name: 'first', cnd: true}    'second:json',    {name: 'third', mod: ':raw', cast: 'text'}]);cs.assign();//=> "second"=${second:json},"third"=${third:raw}::textcs.assign({prefix: 'a b c'});//=> "a b c"."second"=${second:json},"a b c"."third"=${third:raw}::text</code></pre>
@@ -995,7 +1009,9 @@ and the rules defined in the <a href="helpers.ColumnSet.html">ColumnSet</a>. If,
 
     
 
+    
     <h4 class="name" id="assignColumns"><span class="type-signature"></span>assignColumns<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -1266,6 +1282,8 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1290,6 +1308,8 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
     
 
 
+
+
     <h5>Examples</h5>
     
     <pre class="prettyprint"><code>const cs = new pgp.helpers.ColumnSet(['id', 'city', 'street']);cs.assignColumns({from: 'EXCLUDED', skip: 'id'})//=> "city"=EXCLUDED."city","street"=EXCLUDED."street"</code></pre>
@@ -1303,7 +1323,9 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
 
     
 
+    
     <h4 class="name" id="extend"><span class="type-signature"></span>extend<span class="signature">(columns)</span><span class="type-signature"> &rarr; {<a href="helpers.ColumnSet.html">helpers.ColumnSet</a>}</span></h4>
+    
 
     
 
@@ -1444,6 +1466,8 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1468,6 +1492,8 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
     
 
 
+
+
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>const pgp = require('pg-promise')();const cs = new pgp.helpers.ColumnSet(['one', 'two'], {table: 'my-table'});console.log(cs);//=>// ColumnSet {//    table: "my-table"//    columns: [//        Column {//            name: "one"//        }//        Column {//            name: "two"//        }//    ]// }const csExtended = cs.extend(['three']);console.log(csExtended);//=>// ColumnSet {//    table: "my-table"//    columns: [//        Column {//            name: "one"//        }//        Column {//            name: "two"//        }//        Column {//            name: "three"//        }//    ]// }</code></pre>
@@ -1479,7 +1505,9 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
 
     
 
+    
     <h4 class="name" id="merge"><span class="type-signature"></span>merge<span class="signature">(columns)</span><span class="type-signature"> &rarr; {<a href="helpers.ColumnSet.html">helpers.ColumnSet</a>}</span></h4>
+    
 
     
 
@@ -1620,6 +1648,8 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1644,6 +1674,8 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
     
 
 
+
+
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>const pgp = require('pg-promise')();const cs = new pgp.helpers.ColumnSet(['?one', 'two:json'], {table: 'my-table'});console.log(cs);//=>// ColumnSet {//    table: "my-table"//    columns: [//        Column {//            name: "one"//            cnd: true//        }//        Column {//            name: "two"//            mod: ":json"//        }//    ]// }const csMerged = cs.merge(['two', 'three^']);console.log(csMerged);//=>// ColumnSet {//    table: "my-table"//    columns: [//        Column {//            name: "one"//            cnd: true//        }//        Column {//            name: "two"//        }//        Column {//            name: "three"//            mod: "^"//        }//    ]// }</code></pre>
@@ -1655,7 +1687,9 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
 
     
 
+    
     <h4 class="name" id="prepare"><span class="type-signature"></span>prepare<span class="signature">(source)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
 
     
 
@@ -1782,6 +1816,8 @@ intended primarily for internal use by the library.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1809,12 +1845,16 @@ with all properties and values set according to the columns configuration.</p>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="toString"><span class="type-signature"></span>toString<span class="signature">(level<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -1958,6 +1998,8 @@ with all properties and values set according to the columns configuration.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1976,6 +2018,8 @@ with all properties and values set according to the columns configuration.</p>
 </dl>
 
     
+
+
 
 
 

@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -400,7 +400,9 @@
 
     
 
-     
+    
+
+    
 
     
         <h3 class="subsection-title">Namespaces</h3>
@@ -421,7 +423,9 @@
 
     
 
+    
     <h4 class="name" id=".alias"><span class="type-signature">(static) </span>alias<span class="signature">(name)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -566,6 +570,8 @@ an SQL alias would be incorrect. However, it supports <code>.</code> as name-sep
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -591,12 +597,16 @@ an SQL alias would be incorrect. However, it supports <code>.</code> as name-sep
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id=".array"><span class="type-signature">(static) </span>array<span class="signature">(arr, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -605,7 +615,7 @@ an SQL alias would be incorrect. However, it supports <code>.</code> as name-sep
 <div class="description">
     <p>Converts an array of values into its PostgreSQL presentation as an Array-Type constructor string: <code>array[]</code>.</p>
 <p>Top-level empty arrays are formatted as literal <code>{}</code>, to avoid the necessity of explicit type casting,
-as the server cannot automatically infer type of an empty non-literal array.</p>
+as the server cannot automatically infer type of empty non-literal array.</p>
 </div>
 
 
@@ -836,6 +846,8 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -857,12 +869,16 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id=".bool"><span class="type-signature">(static) </span>bool<span class="signature">(value)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -988,6 +1004,8 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1009,12 +1027,16 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id=".buffer"><span class="type-signature">(static) </span>buffer<span class="signature">(obj, raw<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -1196,6 +1218,8 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1217,12 +1241,16 @@ as the server cannot automatically infer type of an empty non-literal array.</p>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id=".csv"><span class="type-signature">(static) </span>csv<span class="signature">(values)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -1364,6 +1392,8 @@ according to their JavaScript type.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1385,12 +1415,16 @@ according to their JavaScript type.</p>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id=".date"><span class="type-signature">(static) </span>date<span class="signature">(d, raw<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -1572,6 +1606,8 @@ wrapped in quotes (unless flag <code>raw</code> is set).</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1593,12 +1629,16 @@ wrapped in quotes (unless flag <code>raw</code> is set).</p>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id=".format"><span class="type-signature">(static) </span>format<span class="signature">(query, values<span class="signature-attributes">opt</span>, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -2029,6 +2069,8 @@ and to return the actual default value:</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -2055,12 +2097,16 @@ and to return the actual default value:</p>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id=".func"><span class="type-signature">(static) </span>func<span class="signature">(func, raw<span class="signature-attributes">opt</span>, cc<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -2275,6 +2321,8 @@ and to return the actual default value:</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -2296,12 +2344,16 @@ and to return the actual default value:</p>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id=".json"><span class="type-signature">(static) </span>json<span class="signature">(data, raw<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -2488,6 +2540,8 @@ with single-quote symbols fixed, unless flag <code>raw</code> is set.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -2509,12 +2563,16 @@ with single-quote symbols fixed, unless flag <code>raw</code> is set.</p>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id=".name"><span class="type-signature">(static) </span>name<span class="signature">(name)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -2663,6 +2721,8 @@ with single-quote symbols fixed, unless flag <code>raw</code> is set.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -2687,6 +2747,8 @@ with single-quote symbols fixed, unless flag <code>raw</code> is set.</p>
     
 
 
+
+
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// automatically list object properties as sql names:format('INSERT INTO table(${this~}) VALUES(${one}, ${two})', {    one: 1,    two: 2});//=> INSERT INTO table("one","two") VALUES(1, 2)</code></pre>
@@ -2698,7 +2760,9 @@ with single-quote symbols fixed, unless flag <code>raw</code> is set.</p>
 
     
 
+    
     <h4 class="name" id=".number"><span class="type-signature">(static) </span>number<span class="signature">(num)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -2828,6 +2892,8 @@ for special values of <code>NaN</code>, <code>+Infinity</code> and <code>-Infini
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -2849,12 +2915,16 @@ for special values of <code>NaN</code>, <code>+Infinity</code> and <code>-Infini
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id=".text"><span class="type-signature">(static) </span>text<span class="signature">(value, raw<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -3042,6 +3112,8 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -3072,12 +3144,16 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id=".value"><span class="type-signature">(static) </span>value<span class="signature">(value)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -3212,6 +3288,8 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -3234,6 +3312,8 @@ it will throw <a href="external-TypeError.html">TypeError</a> = <code>Values nul
 </dl>
 
     
+
+
 
 
 

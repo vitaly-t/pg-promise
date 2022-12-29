@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,7 +29,7 @@
 
 <header>
     
-        <h2>QueryFile</h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>QueryFile<span class="signature">(file, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="QueryFile.html">QueryFile</a>}</span></h2>
         
     
 </header>
@@ -41,7 +41,9 @@
 
     
 
+    
     <h4 class="name" id="QueryFile"><span class="type-signature"></span>new QueryFile<span class="signature">(file, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="QueryFile.html">QueryFile</a>}</span></h4>
+    
 
     
 
@@ -223,6 +225,8 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -243,6 +247,8 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
     
 
 
+
+
     <h5>Examples</h5>
     
     <pre class="prettyprint"><code>// File sql.js// Proper way to organize an sql provider://// - have all sql files for Users in ./sql/users// - have all sql files for Products in ./sql/products// - have your sql provider module as ./sql/index.jsconst {QueryFile} = require('pg-promise');const {join: joinPath} = require('path');// Helper for linking to external query files:function sql(file) {    const fullPath = joinPath(__dirname, file); // generating full path;    return new QueryFile(fullPath, {minify: true});}module.exports = {    // external queries for Users:    users: {        add: sql('users/create.sql'),        search: sql('users/search.sql'),        report: sql('users/report.sql'),    },    // external queries for Products:    products: {        add: sql('products/add.sql'),        quote: sql('products/quote.sql'),        search: sql('products/search.sql'),    }};</code></pre>
@@ -260,74 +266,14 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
 
     
 
-     
+    
+
+    
 
     
 
     
         <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id=".instance"><span class="type-signature">(static) </span>instance<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <p>Global instance of the file-path repository.</p>
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="query-file.js.html">query-file.js</a>, <a href="query-file.js.html#line153">line 153</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
         
             
@@ -553,6 +499,68 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
 
 
         
+            
+<h4 class="name" id=".instance"><span class="type-signature">(static) </span>instance<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Global instance of the file-path repository.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="query-file.js.html">query-file.js</a>, <a href="query-file.js.html#line153">line 153</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
     
 
     
@@ -563,7 +571,9 @@ as the IO is a very expensive resource. If you do not follow it, you will be see
 
     
 
+    
     <h4 class="name" id="prepare"><span class="type-signature"></span>prepare<span class="signature">(throwErrors<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    
 
     
     <p class="summary"><p>Prepares the query for execution.</p></p>
@@ -713,12 +723,18 @@ to the parameters passed into the constructor.</p>
 
 
 
+
+
+
+
         
             
 
     
 
+    
     <h4 class="name" id="toPostgres"><span class="type-signature"></span>toPostgres<span class="signature">(self<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -860,6 +876,8 @@ See <a href="QueryFile.html#.Options">Options</a>.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -885,12 +903,16 @@ See <a href="QueryFile.html#.Options">Options</a>.</p>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="toString"><span class="type-signature"></span>toString<span class="signature">(level<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -1034,6 +1056,8 @@ See <a href="QueryFile.html#.Options">Options</a>.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1052,6 +1076,8 @@ See <a href="QueryFile.html#.Options">Options</a>.</p>
 </dl>
 
     
+
+
 
 
 

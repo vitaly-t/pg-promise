@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,8 +29,8 @@
 
 <header>
     
-        <h2>
-            <span class="ancestors"><a href="txMode.html">txMode</a>.</span>TransactionMode</h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="txMode.html">txMode</a>.</span>TransactionMode<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="txMode.TransactionMode.html">txMode.TransactionMode</a>}</span></h2>
         
     
 </header>
@@ -42,7 +42,9 @@
 
     
 
+    
     <h4 class="name" id="TransactionMode"><span class="type-signature"></span>new TransactionMode<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="txMode.TransactionMode.html">txMode.TransactionMode</a>}</span></h4>
+    
 
     
 
@@ -324,6 +326,8 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -344,6 +348,8 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
     
 
 
+
+
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>const {TransactionMode, isolationLevel} = pgp.txMode;// Create a reusable transaction mode (serializable + read-only + deferrable):const mode = new TransactionMode({    tiLevel: isolationLevel.serializable,    readOnly: true,    deferrable: true});db.tx({mode}, t => {    return t.any('SELECT * FROM table');})    .then(data => {        // success;    })    .catch(error => {        // error    });// Instead of the default BEGIN, such transaction will start with:// BEGIN ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE</code></pre>
@@ -359,7 +365,9 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
 
     
 
-     
+    
+
+    
 
     
 
@@ -373,7 +381,9 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
 
     
 
+    
     <h4 class="name" id="begin"><span class="type-signature"></span>begin<span class="signature">(cap<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -517,6 +527,8 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -535,6 +547,8 @@ and <code>readOnly</code>=<code>true</code>, or else it is ignored.</p></td>
 </dl>
 
     
+
+
 
 
 

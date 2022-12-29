@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -57,14 +57,16 @@ class Events {
      *
      * The library will suppress any error thrown by the handler and write it into the console.
      *
-     * @param {external:Client} client
+     * @param {{}} e Event Properties
+     *
+     * @param {external:Client} e.client
      * $[pg.Client] object that represents the connection.
      *
-     * @param {*} dc
+     * @param {*} e.dc
      * Database Context that was used when creating the database object (see {@link Database}).
      *
-     * @param {number} useCount
-     * Number of times the connection has been previously used, starting with 0 for a freshly
+     * @param {number} e.useCount
+     * Number of times the connection has been previously used, starting with 0, for a freshly
      * allocated physical connection.
      *
      * This parameter is always 0 for direct connections (created by calling {@link Database#connect Database.connect}
@@ -76,8 +78,8 @@ class Events {
      *
      *     // pg-promise initialization options...
      *
-     *     connect(client, dc, useCount) {
-     *         const cp = client.connectionParameters;
+     *     connect(e) {
+     *         const cp = e.client.connectionParameters;
      *         console.log('Connected to database:', cp.database);
      *     }
      *
@@ -86,7 +88,7 @@ class Events {
     static connect(ctx, client, useCount) {
         if (typeof ctx.options.connect === `function`) {
             try {
-                ctx.options.connect(client, ctx.dc, useCount);
+                ctx.options.connect({client, dc: ctx.dc, useCount});
             } catch (e) {
                 // have to silence errors here;
                 // cannot allow unhandled errors while connecting to the database,
@@ -106,9 +108,11 @@ class Events {
      *
      * The library will suppress any error thrown by the handler and write it into the console.
      *
-     * @param {external:Client} client - $[pg.Client] object that represents connection with the database.
+     * @param {{}} e Event Properties
      *
-     * @param {*} dc - Database Context that was used when creating the database object (see {@link Database}).
+     * @param {external:Client} e.client - $[pg.Client] object that represents connection with the database.
+     *
+     * @param {*} e.dc - Database Context that was used when creating the database object (see {@link Database}).
      *
      * @example
      *
@@ -116,8 +120,8 @@ class Events {
      *
      *     // pg-promise initialization options...
      *
-     *     disconnect(client, dc) {
-     *        const cp = client.connectionParameters;
+     *     disconnect(e) {
+     *        const cp = e.client.connectionParameters;
      *        console.log('Disconnecting from database:', cp.database);
      *     }
      *
@@ -126,7 +130,7 @@ class Events {
     static disconnect(ctx, client) {
         if (typeof ctx.options.disconnect === `function`) {
             try {
-                ctx.options.disconnect(client, ctx.dc);
+                ctx.options.disconnect({client, dc: ctx.dc});
             } catch (e) {
                 // have to silence errors here;
                 // cannot allow unhandled errors while disconnecting from the database,
@@ -190,18 +194,20 @@ class Events {
      * this event is called for every result that's returned. And for method {@link Database#stream Database.stream},
      * the event occurs for every record.
      *
-     * @param {Array&lt;Object>} data
+     * @param {{}} e Event Properties
+     *
+     * @param {Array&lt;Object>} e.data
      * Array of received objects/rows.
      *
      * If any of those objects are modified during notification, the client will receive the modified data.
      *
-     * @param {external:Result} result
+     * @param {external:Result} e.result
      * - Original $[Result] object, if the data is from a non-stream query, in which case `data = result.rows`.
      *   For single-query requests, $[Result] object is extended with property `duration` - number of milliseconds
      *   it took to send the query, execute it and get the result back.
      * - It is `undefined` when the data comes from a stream (method {@link Database#stream Database.stream}).
      *
-     * @param {EventContext} e
+     * @param {EventContext} e.ctx
      * Event Context Object.
      *
      * @example
@@ -213,8 +219,8 @@ class Events {
      *
      *     // pg-promise initialization options...
      *
-     *     receive(data, result, e) {
-     *         camelizeColumns(data);
+     *     receive(e) {
+     *         camelizeColumns(e.data);
      *     }
      * };
      *
@@ -232,10 +238,10 @@ class Events {
      *     }
      * }
      */
-    static receive(options, data, result, context) {
+    static receive(options, data, result, ctx) {
         if (typeof options.receive === `function`) {
             try {
-                options.receive(data, result, context);
+                options.receive({data, result, ctx});
             } catch (e) {
                 // throwing an error during event 'receive'
                 // will result in a reject for the request.
@@ -556,7 +562,6 @@ module.exports = {Events};
  * This property is always set for events {@link event:task task} and {@link event:transact transact}, while for events
  * {@link event:query query}, {@link event:receive receive} and {@link event:error error} it is only set when they occur
  * inside a task or transaction.
- *
  */
 </code></pre>
         </article>

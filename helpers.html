@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -288,7 +288,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_index.js.html">helpers/index.js</a>, <a href="helpers_index.js.html#line16">line 16</a>
+        <a href="helpers_index.js.html">helpers/index.js</a>, <a href="helpers_index.js.html#line15">line 15</a>
     </li></ul></dd>
     
 
@@ -323,7 +323,9 @@
         </dl>
     
 
-     
+    
+
+    
 
     
 
@@ -337,7 +339,9 @@
 
     
 
+    
     <h4 class="name" id=".concat"><span class="type-signature">(static) </span>concat<span class="signature">(queries)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -471,6 +475,8 @@
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -495,6 +501,8 @@
     
 
 
+
+
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>const pgp = require('pg-promise')();const qf1 = new pgp.QueryFile('./query1.sql', {minify: true});const qf2 = new pgp.QueryFile('./query2.sql', {minify: true});const query = pgp.helpers.concat([    {query: 'INSERT INTO Users(name, age) VALUES($1, $2)', values: ['John', 23]}, // QueryFormat-like object    {query: qf1, values: [1, 'Name']}, // QueryFile with formatting parameters    'SELECT count(*) FROM Users', // a simple-string query,    qf2 // direct QueryFile object]);// query = concatenated string with all the queries</code></pre>
@@ -506,7 +514,9 @@
 
     
 
+    
     <h4 class="name" id=".insert"><span class="type-signature">(static) </span>insert<span class="signature">(data, columns<span class="signature-attributes">opt</span>, table<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -740,6 +750,8 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -764,6 +776,8 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
     
 
 
+
+
     <h5>Examples</h5>
     
     <pre class="prettyprint"><code>const pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});const dataSingle = {val: 123, msg: 'hello'};const dataMulti = [{val: 123, msg: 'hello'}, {val: 456, msg: 'world!'}];// Column details can be taken from the data object:pgp.helpers.insert(dataSingle, null, 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello')</code></pre>
@@ -779,7 +793,9 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
 
     
 
+    
     <h4 class="name" id=".sets"><span class="type-signature">(static) </span>sets<span class="signature">(data, columns<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -963,6 +979,8 @@ to be used as part of a query.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -990,6 +1008,8 @@ to be used as part of a query.</p>
     
 
 
+
+
     <h5>Examples</h5>
     
     <pre class="prettyprint"><code>const pgp = require('pg-promise')();const data = {id: 1, val: 123, msg: 'hello'};// Properties can be pulled automatically from the object:pgp.helpers.sets(data);//=> "id"=1,"val"=123,"msg"='hello'</code></pre>
@@ -1003,7 +1023,9 @@ to be used as part of a query.</p>
 
     
 
+    
     <h4 class="name" id=".update"><span class="type-signature">(static) </span>update<span class="signature">(data, columns<span class="signature-attributes">opt</span>, table<span class="signature-attributes">opt</span>, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {*}</span></h4>
+    
 
     
 
@@ -1421,6 +1443,8 @@ But when this option is present, the method will instead return whatever value t
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1447,6 +1471,8 @@ to which the option was set.</p>
     
 
 
+
+
     <h5>Examples</h5>
     
     <pre class="prettyprint"><code>const pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});const dataSingle = {id: 1, val: 123, msg: 'hello'};const dataMulti = [{id: 1, val: 123, msg: 'hello'}, {id: 2, val: 456, msg: 'world!'}];// Although column details can be taken from the data object, it is not// a likely scenario for an update, unless updating the whole table:pgp.helpers.update(dataSingle, null, 'my-table');//=> UPDATE "my-table" SET "id"=1,"val"=123,"msg"='hello'</code></pre>
@@ -1468,7 +1494,9 @@ to which the option was set.</p>
 
     
 
+    
     <h4 class="name" id=".values"><span class="type-signature">(static) </span>values<span class="signature">(data, columns<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
@@ -1663,6 +1691,8 @@ of objects, the method will throw <a href="external-TypeError.html">TypeError</a
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1688,6 +1718,8 @@ of objects, the method will throw <a href="external-TypeError.html">TypeError</a
 </dl>
 
     
+
+
 
 
     <h5>Examples</h5>
@@ -2056,10 +2088,216 @@ It is ignored when property <code>init</code> is set.</p></td>
 
             
                 
+<h4 class="name" id=".QueryFormat">QueryFormat</h4>
+
+
+
+
+<div class="description">
+    <p>A simple structure of parameters to be passed into method <a href="formatting.html#.format">as.format</a> exactly as they are,
+used by <a href="helpers.html#.concat">helpers.concat</a>.</p>
+</div>
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
 
     
 
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">value</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A query string or a value/object that implements <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, to be formatted according to <code>values</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+|
+
+<span class="param-type">object</span>
+|
+
+<span class="param-type">value</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query-formatting values.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Query-formatting options, as supported by method <a href="formatting.html#.format">as.format</a>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_methods_concat.js.html">helpers/methods/concat.js</a>, <a href="helpers_methods_concat.js.html#line86">line 86</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="formatting.html#.format">as.format</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
+
+    
+
+    
     <h4 class="name" id=".initCB"><span class="type-signature"></span>initCB<span class="signature">(col)</span><span class="type-signature"> &rarr; {*}</span></h4>
+    
 
     
 
@@ -2308,6 +2546,8 @@ for the column, or the value of <code>prop</code> when it is specified.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -2333,208 +2573,6 @@ for the column, or the value of <code>prop</code> when it is specified.</p></td>
 
 
 
-            
-                
-<h4 class="name" id=".QueryFormat">QueryFormat</h4>
-
-
-
-
-<div class="description">
-    <p>A simple structure of parameters to be passed into method <a href="formatting.html#.format">as.format</a> exactly as they are,
-used by <a href="helpers.html#.concat">helpers.concat</a>.</p>
-</div>
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>query</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">value</span>
-|
-
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>A query string or a value/object that implements <a href="https://github.com/vitaly-t/pg-promise#custom-type-formatting">Custom Type Formatting</a>, to be formatted according to <code>values</code>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>values</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">array</span>
-|
-
-<span class="param-type">object</span>
-|
-
-<span class="param-type">value</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Query-formatting values.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Query-formatting options, as supported by method <a href="formatting.html#.format">as.format</a>.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_methods_concat.js.html">helpers/methods/concat.js</a>, <a href="helpers_methods_concat.js.html#line86">line 86</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="formatting.html#.format">as.format</a></li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-
-
 
 
             
@@ -2542,7 +2580,9 @@ used by <a href="helpers.html#.concat">helpers.concat</a>.</p>
 
     
 
+    
     <h4 class="name" id=".skipCB"><span class="type-signature"></span>skipCB<span class="signature">(col)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
 
     
 
@@ -2791,6 +2831,8 @@ for the column, or the value of <code>prop</code> when it is specified.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -2813,6 +2855,8 @@ for the column, or the value of <code>prop</code> when it is specified.</p></td>
 </dl>
 
     
+
+
 
 
 

@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -29,7 +29,7 @@
 
 <header>
     
-        <h2>Database</h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Database<span class="signature">(cn, dc<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Database.html">Database</a>}</span></h2>
         
     
 </header>
@@ -41,7 +41,9 @@
 
     
 
+    
     <h4 class="name" id="Database"><span class="type-signature"></span>new Database<span class="signature">(cn, dc<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Database.html">Database</a>}</span></h4>
+    
 
     
 
@@ -243,6 +245,8 @@ Database object.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -263,6 +267,8 @@ Database object.</p>
     
 
 
+
+
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// Proper way to initialize and share the Database object// Loading and initializing the library:const pgp = require('pg-promise')({    // Initialization Options});// Preparing the connection details:const cn = 'postgres://username:password@host:port/database';// Creating a new database instance from the connection details:const db = pgp(cn);// Exporting the database object for shared use:module.exports = db;</code></pre>
@@ -278,7 +284,9 @@ Database object.</p>
 
     
 
-     
+    
+
+    
 
     
 
@@ -642,7 +650,9 @@ to use this <a href="Database.html">Database</a> object, and each query method w
 
     
 
+    
     <h4 class="name" id="any"><span class="type-signature"></span>any<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array>}</span></h4>
+    
 
     
 
@@ -846,6 +856,8 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -875,12 +887,16 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="connect"><span class="type-signature"></span>connect<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    
 
     
 
@@ -1166,6 +1182,8 @@ set up on the connection's <code>client</code> object, you should remove them to
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1201,6 +1219,8 @@ in case of direct connections)</li>
     
 
 
+
+
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>let sco; // shared connection object;db.connect()    .then(obj => {        // obj.client = new connected Client object;        sco = obj; // save the connection object;        // execute all the queries you need:        return sco.any('SELECT * FROM Users');    })    .then(data => {        // success    })    .catch(error => {        // error    })    .finally(() => {        // release the connection, if it was successful:        if (sco) {            // if you pass `true` into method done, i.e. done(true),            // it will make the pool kill the physical connection.            sco.done();        }    });</code></pre>
@@ -1212,7 +1232,9 @@ in case of direct connections)</li>
 
     
 
+    
     <h4 class="name" id="each"><span class="type-signature"></span>each<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array.&lt;Object>>}</span></h4>
+    
 
     
 
@@ -1493,6 +1515,8 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1517,6 +1541,8 @@ as an override for its internal <code>values</code>.</p></td>
     
 
 
+
+
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>db.each('SELECT id, code, name FROM Events', [], row => {    row.code = parseInt(row.code);})    .then(data => {        // data = array of events, with 'code' converted into integer    })    .catch(error => {        // error    });</code></pre>
@@ -1528,7 +1554,9 @@ as an override for its internal <code>values</code>.</p></td>
 
     
 
+    
     <h4 class="name" id="func"><span class="type-signature"></span>func<span class="signature">(funcName, values<span class="signature-attributes">opt</span>, qrm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    
 
     
 
@@ -1759,6 +1787,8 @@ which also supports <code>.</code>, to auto-split into a composite name.</p></td
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1784,12 +1814,16 @@ which also supports <code>.</code>, to auto-split into a composite name.</p></td
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="many"><span class="type-signature"></span>many<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    
 
     
 
@@ -1985,6 +2019,8 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -2019,12 +2055,16 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="manyOrNone"><span class="type-signature"></span>manyOrNone<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array>}</span></h4>
+    
 
     
 
@@ -2227,6 +2267,8 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -2256,12 +2298,16 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="map"><span class="type-signature"></span>map<span class="signature">(query, values, cb, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array>}</span></h4>
+    
 
     
 
@@ -2540,6 +2586,8 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -2564,6 +2612,8 @@ as an override for its internal <code>values</code>.</p></td>
     
 
 
+
+
     <h5>Examples</h5>
     
     <pre class="prettyprint"><code>db.map('SELECT id FROM Users WHERE status = $1', ['active'], row => row.id)    .then(data => {        // data = array of active user id-s    })    .catch(error => {       // error    });</code></pre>
@@ -2579,7 +2629,9 @@ as an override for its internal <code>values</code>.</p></td>
 
     
 
+    
     <h4 class="name" id="multi"><span class="type-signature"></span>multi<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array.&lt;Array>>}</span></h4>
+    
 
     
 
@@ -2784,6 +2836,8 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -2804,6 +2858,8 @@ as an override for its internal <code>values</code>.</p></td>
     
 
 
+
+
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// Get data from 2 tables in a single request:const [users, products] = await db.multi('SELECT * FROM users;SELECT * FROM products');</code></pre>
@@ -2815,7 +2871,9 @@ as an override for its internal <code>values</code>.</p></td>
 
     
 
+    
     <h4 class="name" id="multiResult"><span class="type-signature"></span>multiResult<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;Array.&lt;<a href="external-Result.html">external:Result</a>>>}</span></h4>
+    
 
     
 
@@ -3020,6 +3078,8 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -3041,12 +3101,16 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="none"><span class="type-signature"></span>none<span class="signature">(query, values<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>.&lt;null>}</span></h4>
+    
 
     
 
@@ -3243,6 +3307,8 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -3277,12 +3343,16 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="one"><span class="type-signature"></span>one<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    
 
     
 
@@ -3554,6 +3624,8 @@ When specified, the returned value replaces the original one.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -3594,6 +3666,8 @@ When specified, the returned value replaces the original one.</p>
     
 
 
+
+
     <h5>Examples</h5>
     
     <pre class="prettyprint"><code>// a query with in-line value transformation:db.one('INSERT INTO Events VALUES($1) RETURNING id', [123], event => event.id)    .then(data => {        // data = a new event id, rather than an object with it    });</code></pre>
@@ -3607,7 +3681,9 @@ When specified, the returned value replaces the original one.</p>
 
     
 
+    
     <h4 class="name" id="oneOrNone"><span class="type-signature"></span>oneOrNone<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    
 
     
 
@@ -3879,6 +3955,8 @@ When specified, the returned value replaces the original one.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -3914,6 +3992,8 @@ When specified, the returned value replaces the original one.</p>
     
 
 
+
+
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// a query with in-line value transformation:db.oneOrNone('SELECT id FROM Events WHERE type = $1', ['entry'], e => e &amp;&amp; e.id)    .then(data => {        // data = the event id or null (rather than object or null)    });</code></pre>
@@ -3925,7 +4005,9 @@ When specified, the returned value replaces the original one.</p>
 
     
 
+    
     <h4 class="name" id="proc"><span class="type-signature"></span>proc<span class="signature">(procName, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    
 
     
 
@@ -4176,6 +4258,8 @@ When specified, the returned value replaces the original one.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -4203,12 +4287,16 @@ And if the value-transformation callback is provided, it overrides the result.</
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="query"><span class="type-signature"></span>query<span class="signature">(query, values<span class="signature-attributes">opt</span>, qrm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    
 
     
 
@@ -4463,6 +4551,8 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -4488,12 +4578,16 @@ as an override for its internal <code>values</code>.</p></td>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="result"><span class="type-signature"></span>result<span class="signature">(query, values<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>, thisArg<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    
 
     
 
@@ -4758,6 +4852,8 @@ When specified, the returned value replaces the original one.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -4786,6 +4882,8 @@ When specified, the returned value replaces the original one.</p>
     
 
 
+
+
     <h5>Examples</h5>
     
     <pre class="prettyprint"><code>// use of value transformation:// deleting rows and returning the number of rows deleteddb.result('DELETE FROM Events WHERE id = $1', [123], r => r.rowCount)    .then(data => {        // data = number of rows that were deleted    });</code></pre>
@@ -4799,7 +4897,9 @@ When specified, the returned value replaces the original one.</p>
 
     
 
+    
     <h4 class="name" id="stream"><span class="type-signature"></span>stream<span class="signature">(qs, initCB)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    
 
     
 
@@ -4948,6 +5048,8 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -4985,12 +5087,16 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="task"><span class="type-signature"></span>task<span class="signature">(options<span class="signature-attributes">opt</span>, cb)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    
 
     
 
@@ -5237,6 +5343,8 @@ it is expected to be an object with options as listed below.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -5261,6 +5369,8 @@ it is expected to be an object with options as listed below.</p>
     
 
 
+
+
     <h5>Examples</h5>
     
     <pre class="prettyprint"><code>db.task('my-task', t => {        // t.ctx = task context object        return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user => {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
@@ -5274,7 +5384,9 @@ it is expected to be an object with options as listed below.</p>
 
     
 
+    
     <h4 class="name" id="taskIf"><span class="type-signature"></span>taskIf<span class="signature">(options<span class="signature-attributes">opt</span>, cb)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    
 
     
 
@@ -5559,6 +5671,8 @@ It can be either a simple boolean, or a callback function that takes the task co
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -5584,12 +5698,16 @@ It can be either a simple boolean, or a callback function that takes the task co
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="tx"><span class="type-signature"></span>tx<span class="signature">(options<span class="signature-attributes">opt</span>, cb)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    
 
     
 
@@ -5876,6 +5994,8 @@ it is expected to be an object with options as listed below.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -5900,6 +6020,8 @@ it is expected to be an object with options as listed below.</p>
     
 
 
+
+
     <h5>Examples</h5>
     
     <pre class="prettyprint"><code>db.tx('my-transaction', t => {        // t.ctx = transaction context object        return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user => {                return t.batch([                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']),                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'login'])                ]);            });    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
@@ -5913,7 +6035,9 @@ it is expected to be an object with options as listed below.</p>
 
     
 
+    
     <h4 class="name" id="txIf"><span class="type-signature"></span>txIf<span class="signature">(options<span class="signature-attributes">opt</span>, cb)</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
+    
 
     
 
@@ -6294,6 +6418,8 @@ success or failure for the operation.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -6319,6 +6445,8 @@ success or failure for the operation.</p>
 
 
 
+
+
         
     
 
@@ -6330,7 +6458,9 @@ success or failure for the operation.</p>
 
     
 
+    
     <h4 class="name" id=".streamInitCB"><span class="type-signature"></span>streamInitCB<span class="signature">(stream)</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -6430,7 +6560,7 @@ success or failure for the operation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1648">line 1648</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1641">line 1641</a>
     </li></ul></dd>
     
 
@@ -6440,6 +6570,10 @@ success or failure for the operation.</p>
 
     
 </dl>
+
+
+
+
 
 
 

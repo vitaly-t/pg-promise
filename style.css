@@ -10,8 +10,14 @@ html, body, section {
     background-color: #F0F0F0;
 }
 
-.prettyprint {
+pre.prettyprint:not(pre.source) {
     width: auto;
+    border: 1px solid lightgrey;
+    padding: 10px;
+}
+
+p>code, .description code {
+    background-color: lightgray;
 }
 
 h4.name {
@@ -22,31 +28,14 @@ h4.name {
     font-size: 24px;
 }
 
-section {
-    border-bottom: none;
-    padding-left: 40px;
-}
-
 div#main {
     margin-left: 260px;
     float: none;
-    /*    max-width: 1650px;*/
 }
 
 code {
     border-radius: 3px;
     padding: 2px 4px;
-    background-color: grey;
-    color: white !important;
-}
-
-.prettyprint code {
-    border-radius: 7px;
-    padding: 10px 12px;
-}
-
-code span {
-    line-height: 20px;
 }
 
 nav {
