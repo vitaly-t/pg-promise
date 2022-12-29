@@ -12,6 +12,9 @@ html, body, section {
 
 .prettyprint {
     width: auto;
+    background-color: lightgrey;
+    border-radius: 5px;
+    padding: 10px;
 }
 
 h4.name {
@@ -22,31 +25,19 @@ h4.name {
     font-size: 24px;
 }
 
-section {
-    border-bottom: none;
-    padding-left: 40px;
-}
-
 div#main {
     margin-left: 260px;
     float: none;
-    /*    max-width: 1650px;*/
+/ / max-width: 1650 px;
 }
 
 code {
     border-radius: 3px;
     padding: 2px 4px;
-    background-color: grey;
-    color: white !important;
-}
-
-.prettyprint code {
-    border-radius: 7px;
-    padding: 10px 12px;
 }
 
 code span {
-    line-height: 20px;
+/ / line-height: 20 px;
 }
 
 nav {
