@@ -34,7 +34,6 @@ PostgreSQL interface for Node.js
     - [Configurable Transactions]
     - [Conditional Transactions]    
   - [Library de-initialization]
-* [History](#history)
 
 ---
 
@@ -1030,15 +1029,6 @@ will be rejecting with [Error] = `Connection pool of the database object has bee
 
 See the relevant API: [pgp.end], [Database.$pool]
 
-### update
-
-Version 10.11.0 added support for connection option `allowExitOnIdle`, to let process exit when pool is idle.
-
-# History
-
-Although this project formally maintains a [CHANGELOG], for a short list of the top-level changes,
-for detailed changes between versions you should see the corresponding release notes.
-
 <!-- Internal Menu Links -->
 
 [Usage]:#usage
@@ -1131,6 +1121,6 @@ for detailed changes between versions you should see the corresponding release n
 [Bluebird]:https://github.com/petkaantonov/bluebird
 [SQL injection]:https://en.wikipedia.org/wiki/SQL_injection
 [Symbol]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
-[idleTimeoutMillis]:https://github.com/brianc/node-postgres/blob/master/packages/pg/lib/defaults.js#L46
-[connection pool]:https://github.com/brianc/node-pg-pool
+[idleTimeoutMillis]:https://github.com/brianc/node-postgres/blob/master/packages/pg/lib/defaults.js
+[connection pool]:https://github.com/brianc/node-postgres/tree/master/packages/pg-pool
 [Error]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
