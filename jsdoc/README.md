@@ -44,7 +44,7 @@ It is best to initialize the library and create [Database] in its own module, se
 ### External Resources
 
 * [The library's Main Page](https://github.com/vitaly-t/pg-promise)
-* [TypeScript 3.x declarations](https://github.com/vitaly-t/pg-promise/tree/master/typescript)
+* [TypeScript 4.x declarations](https://github.com/vitaly-t/pg-promise/tree/master/typescript)
 * [The library's WiKi Pages](https://github.com/vitaly-t/pg-promise/wiki)
 * [Popular questions on StackOverflow](https://stackoverflow.com/questions/tagged/pg-promise?sort=votes&pageSize=50) 
 
