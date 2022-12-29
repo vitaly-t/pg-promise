@@ -40,16 +40,16 @@ describe(`Connect/Disconnect events`, () => {
         const ctx1 = {}, ctx2 = {};
         let connect = 0, disconnect = 0;
         beforeEach(done => {
-            options.connect = (client, dc, useCount) => {
-                ctx1.dc = dc;
-                ctx1.client = client;
-                ctx1.useCount = useCount;
+            options.connect = (e) => {
+                ctx1.dc = e.dc;
+                ctx1.client = e.client;
+                ctx1.useCount = e.useCount;
                 connect++;
                 throw new Error(`### Testing error output in 'connect'. Please ignore. ###`);
             };
-            options.disconnect = (client, dc) => {
-                ctx2.dc = dc;
-                ctx2.client = client;
+            options.disconnect = (e) => {
+                ctx2.dc = e.dc;
+                ctx2.client = e.client;
                 disconnect++;
                 throw new Error(`### Testing error output in 'disconnect'. Please ignore. ###`);
             };
@@ -79,15 +79,15 @@ describe(`Connect/Disconnect events`, () => {
         const obj1 = {}, obj2 = {};
         let ctx, connect = 0, disconnect = 0;
         beforeEach(done => {
-            options.connect = (client, dc, useCount) => {
-                obj1.dc = dc;
-                obj1.client = client;
-                obj1.useCount = useCount;
+            options.connect = (e) => {
+                obj1.dc = e.dc;
+                obj1.client = e.client;
+                obj1.useCount = e.useCount;
                 connect++;
             };
-            options.disconnect = (client, dc) => {
-                obj2.client = client;
-                obj2.dc = dc;
+            options.disconnect = (e) => {
+                obj2.client = e.client;
+                obj2.dc = e.dc;
                 disconnect++;
             };
             db.tx(function (t) {
@@ -472,11 +472,11 @@ describe(`Receive event`, () => {
     describe(`query positive`, () => {
         let ctx, data, res, counter = 0;
         beforeEach(done => {
-            options.receive = (d, r, e) => {
+            options.receive = (e) => {
                 counter++;
-                data = d;
-                res = r;
-                ctx = e;
+                data = e.data;
+                res = e.result;
+                ctx = e.ctx;
             };
             db.one(`select $1 as value`, [123])
                 .finally(done);
@@ -497,11 +497,11 @@ describe(`Receive event`, () => {
     describe(`for empty queries`, () => {
         let ctx, data, res, counter = 0;
         beforeEach(done => {
-            options.receive = function (d, r, e) {
+            options.receive = function (e) {
                 counter++;
-                data = d;
-                res = r;
-                ctx = e;
+                data = e.data;
+                res = e.result;
+                ctx = e.ctx;
             };
             db.none(`delete from users where id = $1`, 1234567890)
                 .finally(done);
@@ -520,8 +520,8 @@ describe(`Receive event`, () => {
     describe(`positive for multi-queries`, () => {
         const data = [];
         beforeEach(done => {
-            options.receive = (d, r, e) => {
-                data.push({d, r, e});
+            options.receive = (e) => {
+                data.push(e);
             };
             db.multiResult(`select 1 as one;select 2 as two`)
                 .then(() => {
@@ -530,8 +530,8 @@ describe(`Receive event`, () => {
         });
         it(`must send the event for each result`, () => {
             expect(data.length).toBe(2);
-            expect(data[0].d).toEqual([{one: 1}]);
-            expect(data[1].d).toEqual([{two: 2}]);
+            expect(data[0].data).toEqual([{one: 1}]);
+            expect(data[1].data).toEqual([{two: 2}]);
         });
     });
 
@@ -595,11 +595,11 @@ describe(`Receive event`, () => {
         describe(`stream positive`, () => {
             let ctx, data, res, counter = 0;
             beforeEach(done => {
-                options.receive = (d, r, e) => {
+                options.receive = (e) => {
                     counter++;
-                    data = d;
-                    res = r;
-                    ctx = e;
+                    data = e.data;
+                    res = e.result;
+                    ctx = e.ctx;
                 };
                 const qs = new QueryStream(`select $1::int as value`, [123]);
                 db.stream(qs, s => {
@@ -623,8 +623,8 @@ describe(`Receive event`, () => {
         describe(`for paged streaming`, () => {
             let result, counter = 0;
             beforeEach(done => {
-                options.receive = data => {
-                    counter += data.length;
+                options.receive = e => {
+                    counter += e.data.length;
                 };
                 const qs = new QueryStream(`select * from users`, [], {batchSize: 2});
                 db.stream(qs, s => {

@@ -1,5 +1,6 @@
 const npm = {
-    util: require(`util`)
+    util: require(`util`),
+    platform: require(`os`).platform()
 };
 
 const capture = require(`./db/capture`);
@@ -7,7 +8,8 @@ const pgResult = require(`pg/lib/result`);
 const header = require(`./db/header`);
 const tools = require(`./db/tools`);
 
-const {isMac, isWindows} = require(`../lib/utils`).platform;
+const isMac = npm.platform === `darwin`;
+const isWindows = npm.platform === `win32`;
 
 const promise = header.defPromise;
 const options = {
@@ -86,7 +88,8 @@ describe(`Connection`, () => {
             db.connect()
                 .then(obj => {
                     sco = obj;
-                    return sco.one(`select count(*) from users`);
+                    return sco.one(`select count(*)
+                                    from users`);
                 })
                 .catch(reason => {
                     result = null;
@@ -118,7 +121,8 @@ describe(`Connection`, () => {
             db.connect()
                 .then(obj => {
                     sco = obj;
-                    return sco.result(`select * from users`);
+                    return sco.result(`select *
+                                       from users`);
                 })
                 .catch(reason => {
                     result = null;
@@ -379,7 +383,9 @@ describe(`Connection`, () => {
                                     // Terminate connection after a short delay, before the query finishes
                                     promise.delay(1000)
                                         .then(() =>
-                                            db.one(`SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1`, pid)
+                                            db.one(`SELECT pg_terminate_backend(pid)
+                                                    FROM pg_stat_activity
+                                                    WHERE pid = $1`, pid)
                                         )
                                 ])
                                     .finally(() => {
@@ -660,7 +666,9 @@ describe(`Method 'none'`, () => {
 
     it(`must resolve with 'null'`, () => {
         let result, error, finished;
-        db.none(`select * from users where id = $1`, 12345678)
+        db.none(`select *
+                 from users
+                 where id = $1`, 12345678)
             .then(data => {
                 result = data;
             })
@@ -681,7 +689,8 @@ describe(`Method 'none'`, () => {
 
         it(`must reject for a single query`, () => {
             let result, error, finished;
-            db.none(`select * from users`)
+            db.none(`select *
+                     from users`)
                 .then(data => {
                     result = data;
                 })
@@ -703,7 +712,9 @@ describe(`Method 'none'`, () => {
 
         it(`must reject for multi-queries`, () => {
             let result, error, finished;
-            db.none(`select 1;select * from users`)
+            db.none(`select 1;
+            select *
+            from users`)
                 .then(data => {
                     result = data;
                 })
@@ -752,7 +763,8 @@ describe(`Method 'one'`, () => {
     describe(`value transformation`, () => {
         let result, context;
         beforeEach(done => {
-            db.one(`select count(*) from users`, null, function (value) {
+            db.one(`select count(*)
+                    from users`, null, function (value) {
                 'use strict';
                 // NOTE: Outside of strict mode, only objects can be passed in as this context
                 context = this;
@@ -774,7 +786,9 @@ describe(`Method 'one'`, () => {
 
         it(`must reject for a single query`, () => {
             let result, error, finished;
-            db.one(`select * from users where id = $1`, 12345678)
+            db.one(`select *
+                    from users
+                    where id = $1`, 12345678)
                 .then(data => {
                     result = data;
                 })
@@ -795,7 +809,10 @@ describe(`Method 'one'`, () => {
 
         it(`must reject for a multi-query`, () => {
             let result, error, finished;
-            db.one(`select 1;select * from users where id = $1`, 12345678)
+            db.one(`select 1;
+            select *
+            from users
+            where id = $1`, 12345678)
                 .then(data => {
                     result = data;
                 })
@@ -819,7 +836,8 @@ describe(`Method 'one'`, () => {
     describe(`When multiple rows are found`, () => {
         it(`must reject for a single query`, () => {
             let result, error, finished;
-            db.one(`select * from users`)
+            db.one(`select *
+                    from users`)
                 .then(data => {
                     result = data;
                 })
@@ -839,7 +857,9 @@ describe(`Method 'one'`, () => {
         });
         it(`must reject for a multi-query`, () => {
             let result, error, finished;
-            db.one(`select 1;select * from users`)
+            db.one(`select 1;
+            select *
+            from users`)
                 .then(data => {
                     result = data;
                 })
@@ -866,7 +886,9 @@ describe(`Method 'oneOrNone'`, () => {
 
     it(`must resolve with one object when found`, () => {
         let result, error;
-        db.oneOrNone(`select * from users where id=$1`, 1)
+        db.oneOrNone(`select *
+                      from users
+                      where id = $1`, 1)
             .then(data => {
                 result = data;
             })
@@ -886,7 +908,9 @@ describe(`Method 'oneOrNone'`, () => {
 
     it(`must resolve with null when no data found`, () => {
         let result, error, finished;
-        db.oneOrNone(`select * from users where id=$1`, 12345678)
+        db.oneOrNone(`select *
+                      from users
+                      where id = $1`, 12345678)
             .then(data => {
                 result = data;
                 finished = true;
@@ -906,7 +930,8 @@ describe(`Method 'oneOrNone'`, () => {
     describe(`value transformation`, () => {
         let result, context;
         beforeEach(done => {
-            db.oneOrNone(`select count(*) from users`, null, function (value) {
+            db.oneOrNone(`select count(*)
+                          from users`, null, function (value) {
                 'use strict';
                 // NOTE: Outside of strict mode, only objects can be passed in as this context
                 context = this;
@@ -926,7 +951,8 @@ describe(`Method 'oneOrNone'`, () => {
 
     it(`must reject when multiple rows are found`, () => {
         let result, error, finished;
-        db.oneOrNone(`select * from users`)
+        db.oneOrNone(`select *
+                      from users`)
             .then(data => {
                 result = data;
                 finished = true;
@@ -950,7 +976,8 @@ describe(`Method 'many'`, () => {
 
     it(`must resolve with array of objects`, () => {
         let result, error;
-        db.many(`select * from users`)
+        db.many(`select *
+                 from users`)
             .then(data => {
                 result = data;
             }, reason => {
@@ -969,7 +996,9 @@ describe(`Method 'many'`, () => {
 
     it(`must reject when no data found`, () => {
         let result, error, finished;
-        db.many(`select * from users where id=$1`, 12345678)
+        db.many(`select *
+                 from users
+                 where id = $1`, 12345678)
             .then(data => {
                 result = data;
                 finished = true;
@@ -993,7 +1022,8 @@ describe(`Method 'manyOrNone'`, () => {
 
     it(`must resolve with array of objects`, () => {
         let result, error;
-        db.manyOrNone(`select * from users`)
+        db.manyOrNone(`select *
+                       from users`)
             .then(data => {
                 result = data;
             }, reason => {
@@ -1012,7 +1042,9 @@ describe(`Method 'manyOrNone'`, () => {
 
     it(`must resolve with an empty array when no data found`, () => {
         let result, error, finished;
-        db.manyOrNone(`select * from users where id=$1`, 12345678)
+        db.manyOrNone(`select *
+                       from users
+                       where id = $1`, 12345678)
             .then(data => {
                 result = data;
                 finished = true;
@@ -1194,12 +1226,18 @@ describe(`Transactions`, () => {
                 context = t;
                 const queries = [
                     this.none(`drop table if exists test`),
-                    this.none(`create table test(id serial, name text)`)
+                    this.none(`create table test
+                               (
+                                   id   serial,
+                                   name text
+                               )`)
                 ];
                 for (let i = 1; i <= 10000; i++) {
-                    queries.push(this.none(`insert into test(name) values($1)`, `name-` + i));
+                    queries.push(this.none(`insert into test(name)
+                                            values ($1)`, `name-` + i));
                 }
-                queries.push(this.one(`select count(*) from test`));
+                queries.push(this.one(`select count(*)
+                                       from test`));
                 return this.batch(queries);
             })
                 .then(data => {
@@ -1228,7 +1266,9 @@ describe(`Transactions`, () => {
                 THIS = this;
                 context = t;
                 return this.batch([
-                    this.none(`update users set login=$1 where id=$2`, [`TestName`, 1]),
+                    this.none(`update users
+                               set login=$1
+                               where id = $2`, [`TestName`, 1]),
                     this.tx(function () {
                         ctx = this.ctx;
                         throw new Error(`Nested TX failure`);
@@ -1280,13 +1320,16 @@ describe(`Transactions`, () => {
                 THIS1 = this;
                 context1 = t1;
                 return this.batch([
-                    this.none(`update users set login=$1`, `External`),
+                    this.none(`update users
+                               set login=$1`, `External`),
                     this.tx(function (t2) {
                         THIS2 = this;
                         context2 = t2;
                         return this.batch([
-                            this.none(`update users set login=$1`, `Internal`),
-                            this.one(`select * from unknownTable`) // emulating a bad query;
+                            this.none(`update users
+                                       set login=$1`, `Internal`),
+                            this.one(`select *
+                                      from unknownTable`) // emulating a bad query;
                         ]);
                     })
                 ]);
@@ -1294,8 +1337,12 @@ describe(`Transactions`, () => {
                 .then(dummy, reason => {
                     nestError = reason.data[1].result.data[1].result;
                     return promise.all([
-                        db.one(`select count(*) from users where login=$1`, `External`), // 0 is expected;
-                        db.one(`select count(*) from users where login=$1`, `Internal`) // 0 is expected;
+                        db.one(`select count(*)
+                                from users
+                                where login = $1`, `External`), // 0 is expected;
+                        db.one(`select count(*)
+                                from users
+                                where login = $1`, `Internal`) // 0 is expected;
                     ]);
                 })
                 .then(data => {
@@ -1324,9 +1371,13 @@ describe(`Transactions`, () => {
         beforeEach(done => {
             db.tx(function () {
                 return this.batch([
-                    this.none(`update users set login=$1 where id=1`, `Test`),
+                    this.none(`update users
+                               set login=$1
+                               where id = 1`, `Test`),
                     this.tx(function () {
-                        return this.none(`update person set name=$1 where id=1`, `Test`);
+                        return this.none(`update person
+                                          set name=$1
+                                          where id = 1`, `Test`);
                     })
                 ])
                     .then(() => {
@@ -1335,8 +1386,12 @@ describe(`Transactions`, () => {
             })
                 .then(dummy, () => {
                     return promise.all([
-                        db.one(`select count(*) from users where login=$1`, `Test`), // 0 is expected;
-                        db.one(`select count(*) from person where name=$1`, `Test`) // 0 is expected;
+                        db.one(`select count(*)
+                                from users
+                                where login = $1`, `Test`), // 0 is expected;
+                        db.one(`select count(*)
+                                from person
+                                where name = $1`, `Test`) // 0 is expected;
                     ]);
                 })
                 .then(data => {
@@ -1552,7 +1607,9 @@ describe(`Transactions`, () => {
                 // Terminate the connections during verify, which causes an 'error' event from the pool
                 promise.delay(500).then(() => {
                     return db.query(
-                        `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid();`
+                        `SELECT pg_terminate_backend(pid)
+                         FROM pg_stat_activity
+                         WHERE pid <> pg_backend_pid();`
                     );
                 })
             ]).then(() => {
@@ -1783,7 +1840,9 @@ describe(`Return data from a query must match the request type`, () => {
     describe(`when no data returned`, () => {
         let error;
         beforeEach(done => {
-            db.none(`select * from person where name=$1`, `John`)
+            db.none(`select *
+                     from person
+                     where name = $1`, `John`)
                 .catch(err => {
                     error = err;
                     done();
@@ -1797,7 +1856,9 @@ describe(`Return data from a query must match the request type`, () => {
 
     it(`method 'one' must throw an error when there was no data returned`, () => {
         let result, error;
-        db.one(`select * from person where name=$1`, `Unknown`)
+        db.one(`select *
+                from person
+                where name = $1`, `Unknown`)
             .then(data => {
                 result = data;
             }, reason => {
@@ -1816,7 +1877,8 @@ describe(`Return data from a query must match the request type`, () => {
 
     it(`method 'one' must throw an error when more than one row was returned`, () => {
         let result, error;
-        db.one(`select * from person`)
+        db.one(`select *
+                from person`)
             .then(data => {
                 result = data;
             }, reason => {
@@ -1835,7 +1897,9 @@ describe(`Return data from a query must match the request type`, () => {
 
     it(`method 'oneOrNone' must resolve into null when no data returned`, () => {
         let result, error;
-        db.oneOrNone(`select * from person where name=$1`, `Unknown`)
+        db.oneOrNone(`select *
+                      from person
+                      where name = $1`, `Unknown`)
             .then(data => {
                 result = data;
             }, reason => {
@@ -1853,7 +1917,9 @@ describe(`Return data from a query must match the request type`, () => {
 
     it(`method 'any' must return an empty array when no records found`, () => {
         let result, error;
-        db.any(`select * from person where name='Unknown'`)
+        db.any(`select *
+                from person
+                where name = 'Unknown'`)
             .then(data => {
                 result = data;
             }, reason => {
@@ -1875,7 +1941,8 @@ describe(`Return data from a query must match the request type`, () => {
 describe(`Queries must not allow invalid QRM (Query Request Mask) combinations`, () => {
     it(`method 'query' must throw an error when mask is one+many`, () => {
         let result, error;
-        db.query(`select * from person`, undefined, pgp.queryResult.one | pgp.queryResult.many)
+        db.query(`select *
+                  from person`, undefined, pgp.queryResult.one | pgp.queryResult.many)
             .then(data => {
                 result = data;
             }, reason => {
@@ -1893,7 +1960,8 @@ describe(`Queries must not allow invalid QRM (Query Request Mask) combinations`,
     });
     it(`method 'query' must throw an error when QRM is > 6`, () => {
         let result, error;
-        db.query(`select * from person`, undefined, 7)
+        db.query(`select *
+                  from person`, undefined, 7)
             .then(data => {
                 result = data;
             }, reason => {
@@ -1911,7 +1979,8 @@ describe(`Queries must not allow invalid QRM (Query Request Mask) combinations`,
     });
     it(`method 'query' must throw an error when QRM is < 1`, () => {
         let result, error;
-        db.query(`select * from person`, undefined, 0)
+        db.query(`select *
+                  from person`, undefined, 0)
             .then(data => {
                 result = data;
             })
@@ -1931,7 +2000,8 @@ describe(`Queries must not allow invalid QRM (Query Request Mask) combinations`,
 
     it(`method 'query' must throw an error when QRM is of the wrong type`, () => {
         let result, error;
-        db.query(`select * from person`, undefined, `wrong qrm`)
+        db.query(`select *
+                  from person`, undefined, `wrong qrm`)
             .then(data => {
                 result = data;
             })
@@ -2008,7 +2078,11 @@ describe(`Method 'multiResult'`, () => {
     describe(`for a multi-query`, () => {
         let result;
         beforeEach(done => {
-            db.multiResult(`select 1 as one;select 2 as two;select * from users where id =- 1;`)
+            db.multiResult(`select 1 as one;
+            select 2 as two;
+            select *
+            from users
+            where id = - 1;`)
                 .then(data => {
                     result = data;
                     done();
@@ -2046,7 +2120,11 @@ describe(`Method 'multi'`, () => {
     describe(`for a multi-query`, () => {
         let result;
         beforeEach(done => {
-            db.multi(`select 1 as one;select 2 as two;select * from users where id =- 1;`)
+            db.multi(`select 1 as one;
+            select 2 as two;
+            select *
+            from users
+            where id = - 1;`)
                 .then(data => {
                     result = data;
                     done();
@@ -2478,7 +2556,8 @@ describe(`Dynamic Schema`, () => {
         let result;
         beforeEach(done => {
             const innerDb = header({schema: 123, noWarnings: true, promiseLib: promise}).db;
-            innerDb.any(`select * from users`)
+            innerDb.any(`select *
+                         from users`)
                 .then(data => {
                     result = data;
                     done();
@@ -2493,7 +2572,8 @@ describe(`Dynamic Schema`, () => {
         let result;
         beforeEach(done => {
             const innerDb = header({schema: `test`, noWarnings: true, promiseLib: promise}).db;
-            innerDb.any(`select * from users`)
+            innerDb.any(`select *
+                         from users`)
                 .catch(error => {
                     result = error;
                 })
@@ -2507,7 +2587,8 @@ describe(`Dynamic Schema`, () => {
         let result;
         beforeEach(done => {
             const innerDb = header({schema: [`first`, `second`, `public`], noWarnings: true, promiseLib: promise}).db;
-            innerDb.any(`select * from users`)
+            innerDb.any(`select *
+                         from users`)
                 .then(data => {
                     result = data;
                 })
@@ -2522,7 +2603,8 @@ describe(`Dynamic Schema`, () => {
         beforeEach(done => {
             const schema = () => [`first`, `second`, `public`];
             const innerDb = header({schema, noWarnings: true, promiseLib: promise}).db;
-            innerDb.any(`select * from users`)
+            innerDb.any(`select *
+                         from users`)
                 .then(data => {
                     result = data;
                 })

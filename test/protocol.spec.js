@@ -5,7 +5,6 @@ const tools = require(`./db/tools`);
 const promise = header.defPromise;
 const options = {
     promiseLib: promise,
-    noLocking: true,
     noWarnings: true
 };
 const testDC = `test_DC_123`;

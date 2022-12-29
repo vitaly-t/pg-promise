@@ -1,13 +1,13 @@
 import * as pgPromise from '../../typescript/pg-promise';
 
 const pgp: pgPromise.IMain<{}, MyClient> = pgPromise({
-    connect(client) {
-        const v = client.version;
+    connect(e) {
+        const v = e.client.version;
     },
-    receive(data: any, result: any, e: any) {
-        const dc = e.dc;
-        const d = data[0].prop;
-        const r = result.fields[0].name;
+    receive(e: any) {
+        const dc = e.ctx.dc;
+        const d = e.data[0].prop;
+        const r = e.result.fields[0].name;
         const query = e.query;
     },
     query(e: any) {

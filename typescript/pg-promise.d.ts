@@ -8,7 +8,7 @@
  */
 
 /////////////////////////////////////////
-// Requires pg-promise v10.14.0 or later.
+// Requires pg-promise v11.0.0 or later.
 /////////////////////////////////////////
 
 // We use ES6 as static promise here, because generic promises are still not supported.
@@ -573,18 +573,17 @@ declare namespace pgPromise {
         pgFormatting?: boolean
         pgNative?: boolean
         promiseLib?: any
-        noLocking?: boolean
         capSQL?: boolean
         schema?: ValidSchema | ((dc: any) => ValidSchema)
 
-        connect?(client: C, dc: any, useCount: number): void
+        connect?(e: { client: C, dc: any, useCount: number }): void
 
-        disconnect?(client: C, dc: any): void
+        disconnect?(e: { client: C, dc: any }): void
 
         query?(e: IEventContext<C>): void
 
         // NOTE: result is undefined when data comes from QueryStream, i.e. via method Database.stream
-        receive?(data: any[], result: IResultExt | void, e: IEventContext<C>): void
+        receive?(e: { data: any[], result: IResultExt | void, ctx: IEventContext<C> }): void
 
         task?(e: IEventContext<C>): void
 
