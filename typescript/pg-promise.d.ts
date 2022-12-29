@@ -8,7 +8,7 @@
  */
 
 /////////////////////////////////////////
-// Requires pg-promise v10.14.0 or later.
+// Requires pg-promise v11.0.0 or later.
 /////////////////////////////////////////
 
 // We use ES6 as static promise here, because generic promises are still not supported.
@@ -576,7 +576,7 @@ declare namespace pgPromise {
         capSQL?: boolean
         schema?: ValidSchema | ((dc: any) => ValidSchema)
 
-        connect?(client: C, dc: any, useCount: number): void
+        connect?(e: { client: C, dc: any, useCount: number }): void
 
         disconnect?(client: C, dc: any): void
 

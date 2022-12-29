@@ -40,10 +40,10 @@ describe(`Connect/Disconnect events`, () => {
         const ctx1 = {}, ctx2 = {};
         let connect = 0, disconnect = 0;
         beforeEach(done => {
-            options.connect = (client, dc, useCount) => {
-                ctx1.dc = dc;
-                ctx1.client = client;
-                ctx1.useCount = useCount;
+            options.connect = (e) => {
+                ctx1.dc = e.dc;
+                ctx1.client = e.client;
+                ctx1.useCount = e.useCount;
                 connect++;
                 throw new Error(`### Testing error output in 'connect'. Please ignore. ###`);
             };
@@ -79,10 +79,10 @@ describe(`Connect/Disconnect events`, () => {
         const obj1 = {}, obj2 = {};
         let ctx, connect = 0, disconnect = 0;
         beforeEach(done => {
-            options.connect = (client, dc, useCount) => {
-                obj1.dc = dc;
-                obj1.client = client;
-                obj1.useCount = useCount;
+            options.connect = (e) => {
+                obj1.dc = e.dc;
+                obj1.client = e.client;
+                obj1.useCount = e.useCount;
                 connect++;
             };
             options.disconnect = (client, dc) => {

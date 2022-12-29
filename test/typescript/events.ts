@@ -1,8 +1,8 @@
 import * as pgPromise from '../../typescript/pg-promise';
 
 const pgp: pgPromise.IMain<{}, MyClient> = pgPromise({
-    connect(client) {
-        const v = client.version;
+    connect(e) {
+        const v = e.client.version;
     },
     receive(data: any, result: any, e: any) {
         const dc = e.dc;
