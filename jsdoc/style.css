@@ -18,7 +18,6 @@ pre.prettyprint:not(pre.source) {
 
 p>code, .description code {
     background-color: lightgray;
-    font-style: italic;
 }
 
 h4.name {
