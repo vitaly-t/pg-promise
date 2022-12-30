@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - '**'
-env:
-  NODE_VERSION: 16
 jobs:
   check-lint:
      name: Lint
@@ -15,17 +13,10 @@ jobs:
      runs-on: ubuntu-latest
      steps:
        - uses: actions/checkout@v2
-       - name: Use Node.js ${{ matrix.NODE_VERSION }}
+       - name: Use Node.js 16
          uses: actions/setup-node@v2
          with:
-           node-version: ${{ matrix.node-version }}
-       - name: Cache Node.js modules
-         uses: actions/cache@v2
-         with:
-           path: ~/.npm
-           key: ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
-           restore-keys: |
-             ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-
+           node-version: 16
        - name: Install dependencies
          run: npm install
        - run: npm run tslint
