@@ -27,8 +27,23 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: PostgreSQL 11
+          - name: PostgreSQL 11, Node 14
             POSTGRES_IMAGE: postgres:11
+            NODE_VERSION: 14
+          - name: PostgreSQL 11, Node 16
+            POSTGRES_IMAGE: postgres:11
+            NODE_VERSION: 16
+          - name: PostgreSQL 12, Node 14
+            POSTGRES_IMAGE: postgres:12
+            NODE_VERSION: 14
+          - name: PostgreSQL 12, Node 16
+            POSTGRES_IMAGE: postgres:12
+            NODE_VERSION: 16
+          - name: PostgreSQL 13, Node 14
+            POSTGRES_IMAGE: postgres:13
+            NODE_VERSION: 14
+          - name: PostgreSQL 13, Node 16
+            POSTGRES_IMAGE: postgres:13
             NODE_VERSION: 16
       fail-fast: false
     name: ${{ matrix.name }}
@@ -50,13 +65,13 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.NODE_VERSION }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.NODE_VERSION }}
       - name: Cache Node.js modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
@@ -64,8 +79,6 @@ jobs:
             ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-
       - name: Install Dependencies
         run: npm install
-      - name: Install Typescript
-        run: npm install -g typescript
       - name: Initialize Database
         run: npm run test:init
       - name: Test and Coverage
