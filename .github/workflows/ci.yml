@@ -62,9 +62,8 @@ jobs:
             ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-
       - name: Install dependencies
         run: npm install
-      - run: |
-          bash scripts/before_script_postgres_conf.sh
-          bash scripts/before_script_postgres.sh
-      - run: npm run init
-      - run: npm test
-      - run: npm run coverage
+      - name: Initialize Database
+        run: npm run init
+      - name: Test and Coverage
+        run: npm test
+        run: npm run coverage
