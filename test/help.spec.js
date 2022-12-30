@@ -297,9 +297,9 @@ describe(`Column`, () => {
                 cnd: true,
                 cast: `int`,
                 mod: `^`,
-                init: () => {
+                init() {
                 },
-                skip: () => {
+                skip() {
                 }
             });
             expect(col.name).toBe(`_colName`);
@@ -564,11 +564,11 @@ describe(`ColumnSet`, () => {
         it(`must handle cnd and skip`, () => {
             const cs1 = new helpers.ColumnSet([`?val`, `msg`]);
             const cs2 = new helpers.ColumnSet([`val`, {
-                name: `msg`, skip: () => {
+                name: `msg`, skip() {
                 }
             }]);
             const cs3 = new helpers.ColumnSet([`val`, {
-                name: `msg`, skip: () => {
+                name: `msg`, skip() {
                     return true;
                 }
             }]);
@@ -646,7 +646,7 @@ describe(`ColumnSet`, () => {
                 },
                 {
                     name: `first`,
-                    init: () => {
+                    init() {
                         return `init-test`;
                     }
                 },

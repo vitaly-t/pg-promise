@@ -1314,7 +1314,7 @@ describe(`Custom Type Formatting`, () => {
         const obj = {
             // raw flag here must apply to every value of the array returned;
             rawType: true,
-            toPostgres: () => {
+            toPostgres() {
                 return [`first`, `second`];
             }
         };
