@@ -155,6 +155,7 @@ describe(`Connection`, () => {
         beforeEach(() => {
             errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
             errCN.port = 9999;
+            errCN.password = '########';
             dbErr = pgp(errCN);
             options.error = function (err, e) {
                 log = {err, e};
@@ -169,10 +170,7 @@ describe(`Connection`, () => {
                     .finally(done);
             });
             it(`must report the right error`, () => {
-                if (!isMac) {
-                    // we do not test this on MacOS, because it requires use of password, so the test will fail.
-                    expect(log.e.cn).toEqual(errCN);
-                }
+                expect(log.e.cn).toEqual(errCN);
                 expect(result instanceof Error).toBe(true);
 
                 if (options.pgNative) {
@@ -263,9 +261,9 @@ describe(`Connection`, () => {
                 const newStyleError = `role ` + JSON.stringify(pgp.pg.defaults.user) + ` does not exist`;
                 expect(error instanceof Error).toBe(true);
                 if (isMac) {
-                    expect(error.message).toContain(`password authentication failed for user`);
-                } else {
                     expect(error.message.indexOf(oldStyleError) >= 0 || error.message.indexOf(newStyleError) >= 0).toBe(true);
+                } else {
+                    expect(error.message).toContain(`password authentication failed for user`);
                 }
             });
         });
@@ -289,11 +287,11 @@ describe(`Connection`, () => {
             });
             it(`must report the right error`, () => {
                 expect(error instanceof Error).toBe(true);
-                const macError = `password authentication failed for user "somebody"`;
+                const reportError = `password authentication failed for user "somebody"`;
                 if (isMac) {
-                    expect(error.message).toContain(macError);
-                } else {
                     expect(error.message).toContain(`role "somebody" does not exist`);
+                } else {
+                    expect(error.message).toContain(reportError);
                 }
             });
         });

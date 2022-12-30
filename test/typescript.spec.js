@@ -1,5 +1,6 @@
 const exec = require(`child_process`).exec;
 const path = require(`path`);
+const TIMEOUT = 20000; // 20 SECONDS
 
 describe(`Typescript`, () => {
     describe(`build`, () => {
@@ -8,6 +9,6 @@ describe(`Typescript`, () => {
                 expect(error).toBe(null);
                 done();
             });
-        });
+        }, TIMEOUT);
     });
 });

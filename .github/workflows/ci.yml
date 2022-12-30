@@ -1,0 +1,85 @@
+name: ci
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '**'
+jobs:
+  check-lint:
+     name: Lint
+     timeout-minutes: 15
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v3
+       - name: Use Node.js 16
+         uses: actions/setup-node@v3
+         with:
+           node-version: 16
+       - name: Install Dependencies
+         run: npm install
+       - name: TypeScript Lint
+         run: npm run tslint
+       - name: ESLint
+         run: npm run lint
+  check-postgres:
+    strategy:
+      matrix:
+        include:
+          - name: PostgreSQL 11, Node 14
+            POSTGRES_IMAGE: postgres:11
+            NODE_VERSION: 14
+          - name: PostgreSQL 11, Node 16
+            POSTGRES_IMAGE: postgres:11
+            NODE_VERSION: 16
+          - name: PostgreSQL 12, Node 14
+            POSTGRES_IMAGE: postgres:12
+            NODE_VERSION: 14
+          - name: PostgreSQL 12, Node 16
+            POSTGRES_IMAGE: postgres:12
+            NODE_VERSION: 16
+          - name: PostgreSQL 13, Node 14
+            POSTGRES_IMAGE: postgres:13
+            NODE_VERSION: 14
+          - name: PostgreSQL 13, Node 16
+            POSTGRES_IMAGE: postgres:13
+            NODE_VERSION: 16
+      fail-fast: false
+    name: ${{ matrix.name }}
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: ${{ matrix.POSTGRES_IMAGE }}
+        env:
+          POSTGRES_HOST: postgres
+          POSTGRES_DB: pg_promise_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.NODE_VERSION }}
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-
+      - name: Install Dependencies
+        run: npm install
+      - name: Initialize Database
+        run: npm run test:init
+      - name: Test and Coverage
+        run: npm run coverage
