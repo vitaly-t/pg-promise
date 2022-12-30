@@ -12,12 +12,12 @@ jobs:
      timeout-minutes: 15
      runs-on: ubuntu-latest
      steps:
-       - uses: actions/checkout@v2
+       - uses: actions/checkout@v3
        - name: Use Node.js 16
-         uses: actions/setup-node@v2
+         uses: actions/setup-node@v3
          with:
            node-version: 16
-       - name: Install dependencies
+       - name: Install Dependencies
          run: npm install
        - name: TypeScript Lint
          run: npm run tslint
@@ -65,6 +65,6 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Initialize Database
-        run: npm run init
+        run: npm run test:init
       - name: Test and Coverage
         run: npm run coverage
