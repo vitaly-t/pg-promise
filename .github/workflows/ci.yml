@@ -7,7 +7,7 @@ on:
     branches:
       - '**'
 env:
-  NODE_VERSION: 14
+  NODE_VERSION: 16
 jobs:
   check-lint:
      name: Lint
@@ -36,7 +36,7 @@ jobs:
         include:
           - name: PostgreSQL 11,
             POSTGRES_IMAGE: postgres:11
-            NODE_VERSION: 14
+            NODE_VERSION: 16
       fail-fast: false
     name: ${{ matrix.name }}
     timeout-minutes: 15
