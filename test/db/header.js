@@ -16,8 +16,8 @@ const cn = {
     host: `localhost`, // server name or IP address;
     port: 5432, // default port;
     database: `pg_promise_test`, // local database name for testing;
-    user: `postgres` // user name;
-    // password: - add password, if needed;
+    user: `postgres`, // user name;
+    password: process.env.POSTGRES_PASSWORD, //- add password, if needed;
 };
 
 pgpLib.suppressErrors = true; // suppress console output for error messages;
