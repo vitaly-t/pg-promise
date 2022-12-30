@@ -25,7 +25,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: PostgreSQL 11,
+          - name: PostgreSQL 11
             POSTGRES_IMAGE: postgres:11
             NODE_VERSION: 16
       fail-fast: false
@@ -36,6 +36,9 @@ jobs:
       postgres:
         image: ${{ matrix.POSTGRES_IMAGE }}
         env:
+          POSTGRES_HOST: postgres
+          POSTGRES_DB: pg_promise_test
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
@@ -62,6 +65,6 @@ jobs:
       - run: |
           bash scripts/before_script_postgres_conf.sh
           bash scripts/before_script_postgres.sh
-      - run: node test/db/init.js
+      - run: npm run init
       - run: npm test
       - run: npm run coverage
