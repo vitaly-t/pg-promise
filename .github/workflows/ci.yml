@@ -19,8 +19,10 @@ jobs:
            node-version: 16
        - name: Install dependencies
          run: npm install
-       - run: npm run tslint
-       - run: npm run lint
+       - name: TypeScript Lint
+         run: npm run tslint
+       - name: ESLint
+         run: npm run lint
   check-postgres:
     strategy:
       matrix:
@@ -60,10 +62,9 @@ jobs:
           key: ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
       - name: Initialize Database
         run: npm run init
       - name: Test and Coverage
-        run: npm test
         run: npm run coverage
