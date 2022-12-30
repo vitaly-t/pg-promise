@@ -259,11 +259,12 @@ describe(`Connection`, () => {
             it(`must report the right error`, () => {
                 const oldStyleError = `database "bla-bla" does not exist`; // Before PostgreSQL v.10
                 const newStyleError = `role ` + JSON.stringify(pgp.pg.defaults.user) + ` does not exist`;
-                console.log('error', error.message);
-                console.log('old style', oldStyleError);
-                console.log('new style', newStyleError);
                 expect(error instanceof Error).toBe(true);
-                expect(error.message.indexOf(oldStyleError) >= 0 || error.message.indexOf(newStyleError) >= 0).toBe(true);
+                if (isMac) {
+                    expect(error.message.indexOf(oldStyleError) >= 0 || error.message.indexOf(newStyleError) >= 0).toBe(true);
+                } else {
+                    expect(error.message).toContain(`password authentication failed for user`);
+                }
             });
         });
     }
