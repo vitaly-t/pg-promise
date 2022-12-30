@@ -6,7 +6,7 @@
   "typings": "typescript/pg-promise.d.ts",
   "scripts": {
     "spelling": "cspell --config=.cspell.json \"**/*.{md,ts,js}\" --no-progress",
-    "coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node test",
+    "coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node --captureExceptions test",
     "doc": "jsdoc -c ./jsdoc/jsdoc.js ./jsdoc/README.md -t ./jsdoc/templates/custom",
     "lint": "eslint ./lib ./test/*.js ./test/db --fix",
     "test": "jasmine-node --captureExceptions test",
