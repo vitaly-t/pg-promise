@@ -27,7 +27,7 @@ jobs:
            restore-keys: |
              ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-
        - name: Install dependencies
-         run: npm ci
+         run: npm install
        - run: npm run tslint
        - run: npm run lint
   check-postgres:
@@ -67,7 +67,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-
       - name: Install dependencies
-        run: npm ci
+        run: npm install
       - run: |
           bash scripts/before_script_postgres_conf.sh
           bash scripts/before_script_postgres.sh
