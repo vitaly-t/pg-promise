@@ -64,6 +64,8 @@ jobs:
             ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-
       - name: Install Dependencies
         run: npm install
+      - name: Install Typescript
+        run: npm install -g typescript
       - name: Initialize Database
         run: npm run test:init
       - name: Test and Coverage

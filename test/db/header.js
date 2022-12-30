@@ -19,8 +19,7 @@ const cn = {
     user: process.env.POSTGRES_USER || `postgres`, // user name;
     password: process.env.POSTGRES_PASSWORD || 'postgres', //- add password, if needed;
 };
-console.log(cn);
-pgpLib.suppressErrors = false; // suppress console output for error messages;
+pgpLib.suppressErrors = true; // suppress console output for error messages;
 
 function main(options, dc) {
     const pgNative = eval(process.env.PG_NATIVE);
