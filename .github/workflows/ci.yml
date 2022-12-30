@@ -1,0 +1,76 @@
+name: ci
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '**'
+env:
+  NODE_VERSION: 14
+jobs:
+  check-lint:
+     name: Lint
+     timeout-minutes: 15
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v2
+       - name: Use Node.js ${{ matrix.NODE_VERSION }}
+         uses: actions/setup-node@v2
+         with:
+           node-version: ${{ matrix.node-version }}
+       - name: Cache Node.js modules
+         uses: actions/cache@v2
+         with:
+           path: ~/.npm
+           key: ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
+           restore-keys: |
+             ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-
+       - name: Install dependencies
+         run: npm ci
+       - run: npm run tslint
+       - run: npm run lint
+  check-postgres:
+    strategy:
+      matrix:
+        include:
+          - name: PostgreSQL 11,
+            POSTGRES_IMAGE: postgres:11
+            NODE_VERSION: 14
+      fail-fast: false
+    name: ${{ matrix.name }}
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: ${{ matrix.POSTGRES_IMAGE }}
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.NODE_VERSION }}
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.NODE_VERSION }}-
+      - name: Install dependencies
+        run: npm ci
+      - run: |
+          bash scripts/before_script_postgres_conf.sh
+          bash scripts/before_script_postgres.sh
+      - run: node test/db/init.js
+      - run: npm test
+      - run: npm run coverage
