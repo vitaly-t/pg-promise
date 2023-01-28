@@ -13,13 +13,14 @@
 // Calling it 'pg-subset' to avoid a conflict in case the application also
 // includes the official 'pg' typings.
 //
-// Supported version of pg: 8.7.1 and later.
+// Supported version of pg: 8.9.0 and later.
 //
 // pg: https://github.com/brianc/node-postgres
 //////////////////////////////////////////////////////////////////////////////
 
 import {EventEmitter} from 'events';
 import {checkServerIdentity} from 'tls';
+import {Stream} from 'stream';
 
 declare namespace pg {
 
@@ -102,6 +103,7 @@ declare namespace pg {
         keepAlive?: boolean
         keepalives?: number
         keepalives_idle?: number
+        stream?: Stream | ((cn: IConnectionParameters) => Stream)
         Client?: new(config: string | IConnectionParameters) => C
         Promise?: any
         types?: ITypeOverrides
