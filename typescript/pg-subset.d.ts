@@ -20,7 +20,6 @@
 
 import {EventEmitter} from 'events';
 import {checkServerIdentity} from 'tls';
-import {Stream} from 'stream';
 
 declare namespace pg {
 
@@ -103,7 +102,7 @@ declare namespace pg {
         keepAlive?: boolean
         keepalives?: number
         keepalives_idle?: number
-        stream?: Stream | ((cn: IConnectionParameters) => Stream)
+        stream?: Socket | ((cn: IConnectionParameters) => Socket)
         Client?: new(config: string | IConnectionParameters) => C
         Promise?: any
         types?: ITypeOverrides
