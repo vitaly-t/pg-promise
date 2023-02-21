@@ -95,7 +95,19 @@ declare namespace pg {
         idleTimeoutMillis?: number
         parseInputDatesAsUTC?: boolean
         rows?: number
+
+        // Max milliseconds any query using this connection will execute for before timing out in error.
+        // false = unlimited
         statement_timeout?: boolean | number
+
+        // Abort any statement that waits longer than the specified duration in milliseconds
+        // while attempting to acquire a lock; false = unlimited
+        lock_timeout?: boolean | number
+
+        // Terminate any session with an open transaction that has been idle for longer than
+        // the specified duration in milliseconds; false = unlimited
+        idle_in_transaction_session_timeout?: boolean | number
+
         query_timeout?: boolean | number
         connectionTimeoutMillis?: number
         keepAliveInitialDelayMillis?: number
@@ -246,9 +258,17 @@ declare namespace pg {
 
         parseInputDatesAsUTC: boolean
 
-        // max milliseconds any query using this connection will execute for before timing out in error.
-        // false=unlimited
+        // Max milliseconds any query using this connection will execute for before timing out in error.
+        // false = unlimited
         statement_timeout: boolean | number
+
+        // Abort any statement that waits longer than the specified duration in milliseconds
+        // while attempting to acquire a lock; false = unlimited
+        lock_timeout: boolean | number
+
+        // Terminate any session with an open transaction that has been idle for longer than
+        // the specified duration in milliseconds; false = unlimited
+        idle_in_transaction_session_timeout: boolean | number
 
         // max milliseconds to wait for query to complete (client side)
         query_timeout: boolean | number
