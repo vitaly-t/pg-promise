@@ -289,7 +289,7 @@ declare namespace pg {
 
         end(cb: (err: Error) => any): any;
 
-        log: () => void;
+        log: (msg: string, err?: any) => void;
 
         readonly options: { [name: string]: any }; // connection options
 
