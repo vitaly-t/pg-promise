@@ -289,6 +289,8 @@ declare namespace pg {
 
         end(cb: (err: Error) => any): any;
 
+        log: () => void;
+
         readonly options: { [name: string]: any }; // connection options
 
         readonly ended: boolean;
@@ -297,6 +299,7 @@ declare namespace pg {
         readonly waitingCount: number;
         readonly idleCount: number;
         readonly totalCount: number;
+        readonly expiredCount: number;
     }
 
     interface IQuery {
