@@ -1067,51 +1067,51 @@ See the relevant API: [pgp.end], [Database.$pool]
 
 <!-- Database Method Links -->
 
-[query]:http://vitaly-t.github.io/pg-promise/Database.html#query
-[none]:http://vitaly-t.github.io/pg-promise/Database.html#none
-[one]:http://vitaly-t.github.io/pg-promise/Database.html#one
-[oneOrNone]:http://vitaly-t.github.io/pg-promise/Database.html#oneOrNone
-[many]:http://vitaly-t.github.io/pg-promise/Database.html#many
-[manyOrNone]:http://vitaly-t.github.io/pg-promise/Database.html#manyOrNone
-[any]:http://vitaly-t.github.io/pg-promise/Database.html#any
-[result]:http://vitaly-t.github.io/pg-promise/Database.html#result
-[multi]:http://vitaly-t.github.io/pg-promise/Database.html#multi
-[multiResult]:http://vitaly-t.github.io/pg-promise/Database.html#multiResult
-[map]:http://vitaly-t.github.io/pg-promise/Database.html#map
-[each]:http://vitaly-t.github.io/pg-promise/Database.html#each
-[func]:http://vitaly-t.github.io/pg-promise/Database.html#func
-[proc]:http://vitaly-t.github.io/pg-promise/Database.html#proc
-[stream]:http://vitaly-t.github.io/pg-promise/Database.html#stream
-[connect]:http://vitaly-t.github.io/pg-promise/Database.html#connect
-[task]:http://vitaly-t.github.io/pg-promise/Database.html#task
-[taskIf]:http://vitaly-t.github.io/pg-promise/Database.html#taskIf
-[tx]:http://vitaly-t.github.io/pg-promise/Database.html#tx
-[txIf]:http://vitaly-t.github.io/pg-promise/Database.html#txIf
-[batch]:http://vitaly-t.github.io/pg-promise/Task.html#batch
-[sequence]:http://vitaly-t.github.io/pg-promise/Task.html#sequence
-[page]:http://vitaly-t.github.io/pg-promise/Task.html#page
-[extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
+[query]:https://vitaly-t.github.io/pg-promise/Database.html#query
+[none]:https://vitaly-t.github.io/pg-promise/Database.html#none
+[one]:https://vitaly-t.github.io/pg-promise/Database.html#one
+[oneOrNone]:https://vitaly-t.github.io/pg-promise/Database.html#oneOrNone
+[many]:https://vitaly-t.github.io/pg-promise/Database.html#many
+[manyOrNone]:https://vitaly-t.github.io/pg-promise/Database.html#manyOrNone
+[any]:https://vitaly-t.github.io/pg-promise/Database.html#any
+[result]:https://vitaly-t.github.io/pg-promise/Database.html#result
+[multi]:https://vitaly-t.github.io/pg-promise/Database.html#multi
+[multiResult]:https://vitaly-t.github.io/pg-promise/Database.html#multiResult
+[map]:https://vitaly-t.github.io/pg-promise/Database.html#map
+[each]:https://vitaly-t.github.io/pg-promise/Database.html#each
+[func]:https://vitaly-t.github.io/pg-promise/Database.html#func
+[proc]:https://vitaly-t.github.io/pg-promise/Database.html#proc
+[stream]:https://vitaly-t.github.io/pg-promise/Database.html#stream
+[connect]:https://vitaly-t.github.io/pg-promise/Database.html#connect
+[task]:https://vitaly-t.github.io/pg-promise/Database.html#task
+[taskIf]:https://vitaly-t.github.io/pg-promise/Database.html#taskIf
+[tx]:https://vitaly-t.github.io/pg-promise/Database.html#tx
+[txIf]:https://vitaly-t.github.io/pg-promise/Database.html#txIf
+[batch]:https://vitaly-t.github.io/pg-promise/Task.html#batch
+[sequence]:https://vitaly-t.github.io/pg-promise/Task.html#sequence
+[page]:https://vitaly-t.github.io/pg-promise/Task.html#page
+[extend]:https://vitaly-t.github.io/pg-promise/global.html#event:extend
 
 <!-- API Links -->
 
-[Official Documentation]:http://vitaly-t.github.io/pg-promise/index.html
-[Initialization Options]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html
-[helpers]:http://vitaly-t.github.io/pg-promise/helpers.html
-[QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
-[QueryFileError]:http://vitaly-t.github.io/pg-promise/errors.QueryFileError.html
-[Database]:http://vitaly-t.github.io/pg-promise/Database.html
-[Database.$pool]:http://vitaly-t.github.io/pg-promise/Database.html#$pool
-[pgp.end]:http://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
-[formatting]:http://vitaly-t.github.io/pg-promise/formatting.html
-[ctf]:http://vitaly-t.github.io/pg-promise/formatting.ctf.html
-[as.format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
-[format]:http://vitaly-t.github.io/pg-promise/formatting.html#.format
-[as.value]:http://vitaly-t.github.io/pg-promise/formatting.html#.value
-[as.csv]:http://vitaly-t.github.io/pg-promise/formatting.html#.csv
-[as.json]:http://vitaly-t.github.io/pg-promise/formatting.html#.json
-[as.name]:http://vitaly-t.github.io/pg-promise/formatting.html#.name
-[as.alias]:http://vitaly-t.github.io/pg-promise/formatting.html#.alias
-[TransactionMode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
+[Official Documentation]:https://vitaly-t.github.io/pg-promise/index.html
+[Initialization Options]:https://vitaly-t.github.io/pg-promise/module-pg-promise.html
+[helpers]:https://vitaly-t.github.io/pg-promise/helpers.html
+[QueryFile]:https://vitaly-t.github.io/pg-promise/QueryFile.html
+[QueryFileError]:https://vitaly-t.github.io/pg-promise/errors.QueryFileError.html
+[Database]:https://vitaly-t.github.io/pg-promise/Database.html
+[Database.$pool]:https://vitaly-t.github.io/pg-promise/Database.html#$pool
+[pgp.end]:https://vitaly-t.github.io/pg-promise/module-pg-promise.html#~end
+[formatting]:https://vitaly-t.github.io/pg-promise/formatting.html
+[ctf]:https://vitaly-t.github.io/pg-promise/formatting.ctf.html
+[as.format]:https://vitaly-t.github.io/pg-promise/formatting.html#.format
+[format]:https://vitaly-t.github.io/pg-promise/formatting.html#.format
+[as.value]:https://vitaly-t.github.io/pg-promise/formatting.html#.value
+[as.csv]:https://vitaly-t.github.io/pg-promise/formatting.html#.csv
+[as.json]:https://vitaly-t.github.io/pg-promise/formatting.html#.json
+[as.name]:https://vitaly-t.github.io/pg-promise/formatting.html#.name
+[as.alias]:https://vitaly-t.github.io/pg-promise/formatting.html#.alias
+[TransactionMode]:https://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
 [PreparedStatement]:https://vitaly-t.github.io/pg-promise/PreparedStatement.html
 [ParameterizedQuery]:https://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
 
