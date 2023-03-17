@@ -1,6 +1,6 @@
-const path = require(`path`);
-const header = require(`./db/header`);
-const tools = require(`./db/tools`);
+const path = require('path');
+const header = require('./db/header');
+const tools = require('./db/tools');
 
 const promise = header.defPromise;
 const options = {
@@ -13,73 +13,73 @@ const db = dbHeader.db;
 
 const PreparedStatementError = pgp.errors.PreparedStatementError;
 
-describe(`PreparedStatement`, () => {
+describe('PreparedStatement', () => {
 
-    describe(`parameter-object initialization`, () => {
-        it(`must initialize correctly`, () => {
-            const ps = new pgp.PreparedStatement({name: `test-name`, text: `test-query`, values: [123]});
-            expect(ps.parse()).toEqual({name: `test-name`, text: `test-query`, values: [123]});
+    describe('parameter-object initialization', () => {
+        it('must initialize correctly', () => {
+            const ps = new pgp.PreparedStatement({name: 'test-name', text: 'test-query', values: [123]});
+            expect(ps.parse()).toEqual({name: 'test-name', text: 'test-query', values: [123]});
         });
     });
 
-    describe(`property values`, () => {
+    describe('property values', () => {
         const values = [1, 2, 3];
-        it(`must get correctly`, () => {
+        it('must get correctly', () => {
             const ps = new pgp.PreparedStatement({
-                name: `original-name`,
-                text: `original-sql`,
+                name: 'original-name',
+                text: 'original-sql',
                 values,
                 binary: true,
-                rowMode: `array`,
+                rowMode: 'array',
                 rows: 1
             });
-            expect(ps.name).toBe(`original-name`);
-            expect(ps.text).toBe(`original-sql`);
+            expect(ps.name).toBe('original-name');
+            expect(ps.text).toBe('original-sql');
             expect(ps.values).toBe(values);
             expect(ps.binary).toBe(true);
-            expect(ps.rowMode).toBe(`array`);
+            expect(ps.rowMode).toBe('array');
             expect(ps.rows).toBe(1);
             expect(tools.inspect(ps)).toBe(ps.toString());
         });
-        it(`must keep original object when set to the same value`, () => {
+        it('must keep original object when set to the same value', () => {
             const ps = new pgp.PreparedStatement({
-                name: `original-name`,
-                text: `original-sql`,
+                name: 'original-name',
+                text: 'original-sql',
                 values,
                 binary: true,
-                rowMode: `array`,
+                rowMode: 'array',
                 rows: 1
             });
             const obj1 = ps.parse();
-            ps.name = `original-name`;
-            ps.text = `original-sql`;
+            ps.name = 'original-name';
+            ps.text = 'original-sql';
             ps.values = values;
             ps.binary = true;
-            ps.rowMode = `array`;
+            ps.rowMode = 'array';
             ps.rows = 1;
             const obj2 = ps.parse();
             expect(obj1 === obj2).toBe(true);
             expect(tools.inspect(ps)).toBe(ps.toString());
         });
-        it(`must create a new object when changed`, () => {
+        it('must create a new object when changed', () => {
             const ps = new pgp.PreparedStatement({
-                name: `original-name`,
-                text: `original-sql`,
+                name: 'original-name',
+                text: 'original-sql',
                 values,
                 binary: true,
-                rowMode: `array`,
+                rowMode: 'array',
                 rows: 1
             });
             const obj1 = ps.parse();
-            ps.name = `new value`;
+            ps.name = 'new value';
             const obj2 = ps.parse();
-            ps.text = `new text`;
+            ps.text = 'new text';
             const obj3 = ps.parse();
             ps.values = [1, 2, 3];
             const obj4 = ps.parse();
             ps.binary = false;
             const obj5 = ps.parse();
-            ps.rowMode = `new`;
+            ps.rowMode = 'new';
             const obj6 = ps.parse();
             ps.rows = 3;
             const obj7 = ps.parse();
@@ -88,29 +88,29 @@ describe(`PreparedStatement`, () => {
         });
     });
 
-    describe(`parameters`, () => {
-        const ps = new pgp.PreparedStatement({name: `test-name`, text: `test-query`, values: [123]});
-        it(`must expose the values correctly`, () => {
-            expect(ps.name).toBe(`test-name`);
-            expect(ps.text).toBe(`test-query`);
+    describe('parameters', () => {
+        const ps = new pgp.PreparedStatement({name: 'test-name', text: 'test-query', values: [123]});
+        it('must expose the values correctly', () => {
+            expect(ps.name).toBe('test-name');
+            expect(ps.text).toBe('test-query');
             expect(ps.values).toEqual([123]);
             // setting to the same values, for coverage:
             ps.name = ps.name; // eslint-disable-line
             ps.text = ps.text; // eslint-disable-line
         });
-        it(`must set the values correctly`, () => {
-            ps.name = `new-name`;
-            ps.text = `new-query`;
+        it('must set the values correctly', () => {
+            ps.name = 'new-name';
+            ps.text = 'new-query';
             ps.values = [456];
-            expect(ps.name).toBe(`new-name`);
-            expect(ps.text).toBe(`new-query`);
+            expect(ps.name).toBe('new-name');
+            expect(ps.text).toBe('new-query');
             expect(ps.values).toEqual([456]);
         });
     });
 
-    describe(`valid, without parameters`, () => {
+    describe('valid, without parameters', () => {
         let result;
-        const ps = new pgp.PreparedStatement({name: `test-1`, text: `select 1 as value`});
+        const ps = new pgp.PreparedStatement({name: 'test-1', text: 'select 1 as value'});
         beforeEach(done => {
             db.one(ps)
                 .then(data => {
@@ -118,17 +118,17 @@ describe(`PreparedStatement`, () => {
                 })
                 .finally(done);
         });
-        it(`must return the right value`, () => {
+        it('must return the right value', () => {
             expect(result && result.value === 1).toBeTruthy();
         });
     });
 
-    describe(`valid, with parameters`, () => {
+    describe('valid, with parameters', () => {
         let result;
         const ps = new pgp.PreparedStatement({
-            name: `test-2`,
-            text: `select count(*) from users where login = $1`,
-            values: [`non-existing`]
+            name: 'test-2',
+            text: 'select count(*) from users where login = $1',
+            values: ['non-existing']
         });
         beforeEach(done => {
             db.one(ps)
@@ -137,37 +137,37 @@ describe(`PreparedStatement`, () => {
                 })
                 .finally(done);
         });
-        it(`must return the right value`, () => {
-            expect(result && typeof result === `object`).toBeTruthy();
-            expect(result.count).toBe(`0`);
+        it('must return the right value', () => {
+            expect(result && typeof result === 'object').toBeTruthy();
+            expect(result.count).toBe('0');
         });
     });
 
-    describe(`object inspection`, () => {
-        const ps1 = new pgp.PreparedStatement({name: `test-name`, text: `test-query $1`});
-        const ps2 = new pgp.PreparedStatement({name: `test-name`, text: `test-query $1`, values: [123]});
-        it(`must stringify all values`, () => {
+    describe('object inspection', () => {
+        const ps1 = new pgp.PreparedStatement({name: 'test-name', text: 'test-query $1'});
+        const ps2 = new pgp.PreparedStatement({name: 'test-name', text: 'test-query $1', values: [123]});
+        it('must stringify all values', () => {
             expect(tools.inspect(ps1)).toBe(ps1.toString());
             expect(tools.inspect(ps2)).toBe(ps2.toString());
         });
     });
 
-    describe(`with QueryFile`, () => {
+    describe('with QueryFile', () => {
 
-        describe(`successful`, () => {
-            const f = path.join(__dirname, `./sql/simple.sql`);
+        describe('successful', () => {
+            const f = path.join(__dirname, './sql/simple.sql');
             const qf = new pgp.QueryFile(f, {compress: true, noWarnings: true});
-            const ps = new pgp.PreparedStatement({name: `test-name`, text: qf});
+            const ps = new pgp.PreparedStatement({name: 'test-name', text: qf});
             const result = ps.parse();
-            expect(result && typeof result === `object`).toBeTruthy();
-            expect(result.name).toBe(`test-name`);
-            expect(result.text).toBe(`select 1;`);
+            expect(result && typeof result === 'object').toBeTruthy();
+            expect(result.name).toBe('test-name');
+            expect(result.text).toBe('select 1;');
             expect(ps.toString()).toBe(tools.inspect(ps));
         });
 
-        describe(`with error`, () => {
-            const qf = new pgp.QueryFile(`./invalid.sql`, {noWarnings: true});
-            const ps = new pgp.PreparedStatement({name: `test-name`, text: qf});
+        describe('with error', () => {
+            const qf = new pgp.QueryFile('./invalid.sql', {noWarnings: true});
+            const ps = new pgp.PreparedStatement({name: 'test-name', text: qf});
             const result = ps.parse();
             expect(result instanceof pgp.errors.PreparedStatementError).toBe(true);
             expect(result.error instanceof pgp.errors.QueryFileError).toBe(true);
@@ -177,14 +177,14 @@ describe(`PreparedStatement`, () => {
 
 });
 
-describe(`Direct Prepared Statements`, () => {
+describe('Direct Prepared Statements', () => {
 
-    describe(`valid, without parameters`, () => {
+    describe('valid, without parameters', () => {
         let result;
         beforeEach(done => {
             db.many({
-                name: `get all users`,
-                text: `select * from users`,
+                name: 'get all users',
+                text: 'select * from users',
                 values: []
             })
                 .then(data => {
@@ -192,18 +192,18 @@ describe(`Direct Prepared Statements`, () => {
                 })
                 .finally(done);
         });
-        it(`must return all users`, () => {
+        it('must return all users', () => {
             expect(Array.isArray(result)).toBe(true);
             expect(result.length > 0).toBe(true);
         });
     });
 
-    describe(`valid, with parameters`, () => {
+    describe('valid, with parameters', () => {
         let result;
         beforeEach(done => {
             db.one({
-                name: `find one user`,
-                text: `select * from users where id=$1`,
+                name: 'find one user',
+                text: 'select * from users where id=$1',
                 values: [1]
             })
                 .then(data => {
@@ -211,49 +211,49 @@ describe(`Direct Prepared Statements`, () => {
                 })
                 .finally(done);
         });
-        it(`must return one user`, () => {
-            expect(result && typeof result === `object`).toBeTruthy();
+        it('must return one user', () => {
+            expect(result && typeof result === 'object').toBeTruthy();
         });
     });
 
-    describe(`valid, with parameters override`, () => {
+    describe('valid, with parameters override', () => {
         let result;
         beforeEach(done => {
             db.one({
-                name: `find one user`,
-                text: `select * from users where id=$1`
+                name: 'find one user',
+                text: 'select * from users where id=$1'
             }, 1)
                 .then(data => {
                     result = data;
                 })
                 .finally(done);
         });
-        it(`must return one user`, () => {
-            expect(result && typeof result === `object`).toBeTruthy();
+        it('must return one user', () => {
+            expect(result && typeof result === 'object').toBeTruthy();
         });
     });
 
-    describe(`with invalid query`, () => {
+    describe('with invalid query', () => {
         let result;
         beforeEach(done => {
             db.many({
-                name: `break it`,
-                text: `select * from somewhere`
+                name: 'break it',
+                text: 'select * from somewhere'
             })
                 .catch(reason => {
                     result = reason;
                 })
                 .finally(done);
         });
-        it(`must return an error`, () => {
+        it('must return an error', () => {
             expect(result instanceof Error).toBe(true);
-            expect(result.message).toContain(`relation "somewhere" does not exist`);
+            expect(result.message).toContain('relation "somewhere" does not exist');
         });
     });
 
-    describe(`with an empty 'name'`, () => {
+    describe('with an empty \'name\'', () => {
         let result;
-        const ps = new pgp.PreparedStatement({name: ``, text: `non-empty`});
+        const ps = new pgp.PreparedStatement({name: '', text: 'non-empty'});
         beforeEach(done => {
             db.query(ps)
                 .catch(reason => {
@@ -261,18 +261,18 @@ describe(`Direct Prepared Statements`, () => {
                 })
                 .finally(done);
         });
-        it(`must return an error`, () => {
+        it('must return an error', () => {
             expect(result instanceof PreparedStatementError).toBe(true);
             expect(ps.toString(1) != tools.inspect(ps)).toBe(true);
             expect(result.toString()).toBe(tools.inspect(result));
         });
     });
 
-    describe(`with an empty 'text'`, () => {
+    describe('with an empty \'text\'', () => {
         let result;
         beforeEach(done => {
             db.query({
-                name: `non-empty`,
+                name: 'non-empty',
                 text: null
             })
                 .catch(reason => {
@@ -280,7 +280,7 @@ describe(`Direct Prepared Statements`, () => {
                 })
                 .finally(done);
         });
-        it(`must return an error`, () => {
+        it('must return an error', () => {
             expect(result instanceof PreparedStatementError).toBe(true);
         });
     });

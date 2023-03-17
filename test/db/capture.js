@@ -25,11 +25,11 @@ function hookConsole(callback) {
 
 // removes color elements from text;
 function removeColors(text) {
-    return text.replace(/\\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]/g, ``);
+    return text.replace(/\\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]/g, '');
 }
 
 function capture() {
-    let text = ``;
+    let text = '';
     const hook = hookConsole(s => {
         if (!text) {
             text = s;
