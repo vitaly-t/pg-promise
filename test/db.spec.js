@@ -2324,9 +2324,8 @@ describe(`Task`, () => {
     describe(`with detached connection`, () => {
         let error, tsk;
         beforeEach(done => {
-            db.task(function () {
+            db.task(async function () {
                 tsk = this;
-                return promise.resolve();
             })
                 .then(() => {
                     // try use the task connection context outside of the task callback;
@@ -2412,10 +2411,10 @@ describe(`Task`, () => {
     describe(`with a simple promise result`, () => {
         let result, context, THIS;
         beforeEach(done => {
-            db.task(function (t) {
+            db.task(async function (t) {
                 THIS = this;
                 context = t;
-                return promise.resolve(`Ok`);
+                return `Ok`;
             })
                 .then(data => {
                     result = data;
@@ -2442,8 +2441,8 @@ describe(`Task`, () => {
                 event = e;
             };
 
-            function myTask() {
-                return promise.resolve(`success`);
+            async function myTask() {
+                return `success`;
             }
 
             db.task(`testTag`, myTask)

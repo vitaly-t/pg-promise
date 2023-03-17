@@ -181,9 +181,7 @@ describe(`Database Protocol`, () => {
 
         let connection;
         beforeEach(done => {
-            db.connect(t => {
-                return promise.resolve(t);
-            })
+            db.connect(async t => t)
                 .then(obj => {
                     connection = obj;
                 })
@@ -232,9 +230,7 @@ describe(`Database Protocol`, () => {
 
         let protocol;
         beforeEach(done => {
-            db.tx(t => {
-                return promise.resolve(t);
-            })
+            db.tx(async t => t)
                 .then(data => {
                     protocol = data;
                 })
@@ -275,9 +271,7 @@ describe(`Database Protocol`, () => {
 
         let protocol;
         beforeEach(done => {
-            db.task(t => {
-                return promise.resolve(t);
-            })
+            db.task(async t => t)
                 .then(data => {
                     protocol = data;
                 })

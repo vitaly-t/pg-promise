@@ -36,9 +36,9 @@ describe(`TransactionMode`, () => {
                 queries.push(e.query);
             };
 
-            function txNoParams() {
+            async function txNoParams() {
                 ctx = this.ctx.context;
-                return promise.resolve(`success`);
+                return `success`;
             }
 
             txNoParams.txMode = new TransactionMode();
@@ -72,9 +72,7 @@ describe(`TransactionMode`, () => {
 
             const mode = new TransactionMode({tiLevel: isolationLevel.serializable});
 
-            db.tx({mode}, () => {
-                return promise.resolve(`success`);
-            })
+            db.tx({mode}, async () => `success`)
                 .then(data => {
                     result = data;
                     done();
@@ -101,9 +99,7 @@ describe(`TransactionMode`, () => {
 
             const mode = new TransactionMode({readOnly: true});
 
-            db.tx({mode}, () => {
-                return promise.resolve(`success`);
-            })
+            db.tx({mode}, async () => `success`)
                 .then(data => {
                     result = data;
                     done();
@@ -130,9 +126,7 @@ describe(`TransactionMode`, () => {
 
             const mode = new TransactionMode({readOnly: false});
 
-            db.tx({mode}, () => {
-                return promise.resolve(`success`);
-            })
+            db.tx({mode}, async () => `success`)
                 .then(data => {
                     result = data;
                     done();
@@ -162,9 +156,7 @@ describe(`TransactionMode`, () => {
                 readOnly: true
             });
 
-            db.tx({mode}, () => {
-                return promise.resolve(`success`);
-            })
+            db.tx({mode}, async () => `success`)
                 .then(data => {
                     result = data;
                     done();
@@ -195,9 +187,7 @@ describe(`TransactionMode`, () => {
                 deferrable: true
             });
 
-            db.tx({mode}, () => {
-                return promise.resolve(`success`);
-            })
+            db.tx({mode}, async () => `success`)
                 .then(data => {
                     result = data;
                     done();
@@ -228,9 +218,7 @@ describe(`TransactionMode`, () => {
                 deferrable: false
             });
 
-            db.tx({mode}, () => {
-                return promise.resolve(`success`);
-            })
+            db.tx({mode}, async () => `success`)
                 .then(data => {
                     result = data;
                     done();
@@ -261,9 +249,7 @@ describe(`TransactionMode`, () => {
                 deferrable: false
             });
 
-            db.tx({mode}, () => {
-                return promise.resolve(`success`);
-            })
+            db.tx({mode}, async () => `success`)
                 .then(data => {
                     result = data;
                     done();

@@ -197,9 +197,7 @@ describe(`Start/Finish transaction events`, () => {
             }
             throw `### Testing error output in 'transact'. Please ignore. ###`;
         };
-        db.tx(`myTransaction`, () => {
-            return promise.resolve(`SUCCESS`);
-        })
+        db.tx(`myTransaction`, async () => `SUCCESS`)
             .then(data => {
                 result = data;
             })
