@@ -1,12 +1,11 @@
 const QueryStream = require('pg-query-stream');
 const JSONStream = require('JSONStream');
-
 const pgResult = require('pg/lib/result');
 const pgClient = require('pg/lib/client');
 
 const header = require('./db/header');
-
 const promise = header.defPromise;
+
 const options = {
     promiseLib: promise, // use Bluebird for testing;
     noWarnings: true

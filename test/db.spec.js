@@ -2283,7 +2283,7 @@ describe('Task', () => {
                 tsk = this;
             })
                 .then(() => {
-                    // try use the task connection context outside of the task callback;
+                    // try using the task connection context outside the task callback;
                     return tsk.query('select \'test\'');
                 })
                 .catch(err => {
@@ -2331,17 +2331,8 @@ describe('Task', () => {
     });
 
     describe('with a callback that returns a value', () => {
-        let result;
-        beforeEach(done => {
-            db.task(() => {
-                return 123;
-            })
-                .then(data => {
-                    result = data;
-                })
-                .finally(done);
-        });
-        it('must resolve with the value', () => {
+        it('must resolve with the value', async () => {
+            const result = await db.task(() => 123);
             expect(result).toBe(123);
         });
     });

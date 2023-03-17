@@ -9,6 +9,7 @@ const options = {
     promiseLib: promise,
     noWarnings: true
 };
+
 const dbHeader = header(options);
 const pgp = dbHeader.pgp;
 const db = dbHeader.db;
