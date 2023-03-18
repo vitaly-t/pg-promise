@@ -59,5 +59,5 @@ await db.task(async t => {
 For a comprehensive example, check out [pg-promise-demo].
 
 [pg-promise-demo]:https://github.com/vitaly-t/pg-promise-demo
-[extend]:http://vitaly-t.github.io/pg-promise/global.html#event:extend
+[extend]:https://vitaly-t.github.io/pg-promise/global.html#event:extend
 [pg-promise]:https://github.com/vitaly-t/pg-promise
