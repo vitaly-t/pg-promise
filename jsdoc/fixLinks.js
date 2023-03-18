@@ -37,7 +37,8 @@ const links = {
     'Symbol': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol',
     'Library de-initialization': 'https://github.com/vitaly-t/pg-promise#library-de-initialization',
     'Nested Transactions': 'https://github.com/vitaly-t/pg-promise#nested-transactions',
-    'changing the database or the role': 'https://stackoverflow.com/questions/2875610/permanently-set-postgresql-schema-path'
+    'changing the database or the role': 'https://stackoverflow.com/questions/2875610/permanently-set-postgresql-schema-path',
+    'Promise.allSettled': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled'
 };
 
 function fixLinks(source) {
