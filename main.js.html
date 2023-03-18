@@ -36,26 +36,26 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-const {PromiseAdapter} = require(`./promise-adapter`);
-const {DatabasePool} = require(`./database-pool`);
-const {PreparedStatement, ParameterizedQuery} = require(`./types`);
-const {QueryFile} = require(`./query-file`);
-const {queryResult} = require(`./query-result`);
-const {parsePromise} = require(`./promise-parser`);
-const {assert} = require(`./assert`);
+const {PromiseAdapter} = require('./promise-adapter');
+const {DatabasePool} = require('./database-pool');
+const {PreparedStatement, ParameterizedQuery} = require('./types');
+const {QueryFile} = require('./query-file');
+const {queryResult} = require('./query-result');
+const {parsePromise} = require('./promise-parser');
+const {assert} = require('./assert');
 
 const npm = {
-    path: require(`path`),
-    pg: require(`pg`),
-    minify: require(`pg-minify`),
-    formatting: require(`./formatting`),
-    helpers: require(`./helpers`),
-    errors: require(`./errors`),
-    utils: require(`./utils`),
-    pubUtils: require(`./utils/public`),
-    mode: require(`./tx-mode`),
-    package: require(`../package.json`),
-    text: require(`./text`)
+    path: require('path'),
+    pg: require('pg'),
+    minify: require('pg-minify'),
+    formatting: require('./formatting'),
+    helpers: require('./helpers'),
+    errors: require('./errors'),
+    utils: require('./utils'),
+    pubUtils: require('./utils/public'),
+    mode: require('./tx-mode'),
+    package: require('../package.json'),
+    text: require('./text')
 };
 
 let originalClientConnect;
@@ -65,7 +65,7 @@ let originalClientConnect;
  * @module pg-promise
  *
  * @description
- * ## pg-promise v11.0
+ * ## pg-promise v11.4
  * All documentation here is for the latest official release only.
  *
  * ### Initialization Options
@@ -207,8 +207,8 @@ let originalClientConnect;
  */
 function $main(options) {
 
-    options = assert(options, [`pgFormatting`, `pgNative`, `promiseLib`, `capSQL`, `noWarnings`,
-        `connect`, `disconnect`, `query`, `receive`, `task`, `transact`, `error`, `extend`, `schema`]);
+    options = assert(options, ['pgFormatting', 'pgNative', 'promiseLib', 'capSQL', 'noWarnings',
+        'connect', 'disconnect', 'query', 'receive', 'task', 'transact', 'error', 'extend', 'schema']);
 
     let pg = npm.pg;
     const p = parsePromise(options.promiseLib);
@@ -219,11 +219,11 @@ function $main(options) {
         promise: p.promise
     };
 
-    npm.utils.addReadProp(config, `$npm`, {}, true);
+    npm.utils.addReadProp(config, '$npm', {}, true);
 
     // Locking properties that cannot be changed later:
-    npm.utils.addReadProp(options, `promiseLib`, options.promiseLib);
-    npm.utils.addReadProp(options, `pgNative`, !!options.pgNative);
+    npm.utils.addReadProp(options, 'promiseLib', options.promiseLib);
+    npm.utils.addReadProp(options, 'pgNative', !!options.pgNative);
 
     config.options = options;
 
@@ -239,24 +239,24 @@ function $main(options) {
             originalClientConnect = pg.Client.prototype.connect;
             pg.Client.prototype.connect = function () {
                 const handler = msg => {
-                    if (msg.parameterName === `server_version`) {
+                    if (msg.parameterName === 'server_version') {
                         this.serverVersion = msg.parameterValue;
-                        this.connection.removeListener(`parameterStatus`, handler);
+                        this.connection.removeListener('parameterStatus', handler);
                     }
                 };
-                this.connection.on(`parameterStatus`, handler);
+                this.connection.on('parameterStatus', handler);
                 return originalClientConnect.call(this, ...arguments);
             };
         }
     }
 
-    const Database = require(`./database`)(config);
+    const Database = require('./database')(config);
 
     const inst = (cn, dc) => {
-        if (npm.utils.isText(cn) || (cn &amp;&amp; typeof cn === `object`)) {
+        if (npm.utils.isText(cn) || (cn &amp;&amp; typeof cn === 'object')) {
             return new Database(cn, dc, config);
         }
-        throw new TypeError(`Invalid connection details: ` + npm.utils.toJson(cn));
+        throw new TypeError('Invalid connection details: ' + npm.utils.toJson(cn));
     };
 
     npm.utils.addReadProperties(inst, rootNameSpace);
@@ -287,7 +287,7 @@ function $main(options) {
      *
      * For more details see $[Library de-initialization].
      */
-    npm.utils.addReadProp(inst, `end`, () => {
+    npm.utils.addReadProp(inst, 'end', () => {
         DatabasePool.shutDown();
     });
 
@@ -301,7 +301,7 @@ function $main(options) {
      *
      * @see {@link helpers}.
      */
-    npm.utils.addReadProp(inst, `helpers`, npm.helpers(config));
+    npm.utils.addReadProp(inst, 'helpers', npm.helpers(config));
 
     /**
      * @member {external:spex} spex
@@ -316,7 +316,7 @@ function $main(options) {
      * {@link Task#page},
      * {@link Task#sequence}
      */
-    npm.utils.addReadProp(inst, `spex`, config.$npm.spex);
+    npm.utils.addReadProp(inst, 'spex', config.$npm.spex);
 
     config.pgp = inst;
 

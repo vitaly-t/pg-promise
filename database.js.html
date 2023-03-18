@@ -36,20 +36,20 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-const {Events} = require(`./events`);
-const {assert} = require(`./assert`);
-const {resultQuery, multiResultQuery, streamQuery} = require(`./special-query`);
-const {ConnectionContext} = require(`./context`);
-const {DatabasePool} = require(`./database-pool`);
-const {queryResult} = require(`./query-result`);
+const {Events} = require('./events');
+const {assert} = require('./assert');
+const {resultQuery, multiResultQuery, streamQuery} = require('./special-query');
+const {ConnectionContext} = require('./context');
+const {DatabasePool} = require('./database-pool');
+const {queryResult} = require('./query-result');
 
 const npm = {
-    utils: require(`./utils`),
-    pubUtils: require(`./utils/public`),
-    connect: require(`./connect`),
-    query: require(`./query`),
-    task: require(`./task`),
-    text: require(`./text`)
+    utils: require('./utils'),
+    pubUtils: require('./utils/public'),
+    connect: require('./connect'),
+    query: require('./query'),
+    task: require('./task'),
+    text: require('./text')
 };
 
 /**
@@ -152,7 +152,7 @@ function Database(cn, dc, config) {
 
     const dbThis = this,
         $p = config.promise,
-        poolConnection = typeof cn === `string` ? {connectionString: cn} : cn,
+        poolConnection = typeof cn === 'string' ? {connectionString: cn} : cn,
         pool = new config.pgp.pg.Pool(poolConnection),
         endMethod = pool.end;
 
@@ -164,7 +164,7 @@ function Database(cn, dc, config) {
         return res;
     };
 
-    pool.on(`error`, onError);
+    pool.on('error', onError);
 
     /**
      * @method Database#connect
@@ -402,7 +402,7 @@ function Database(cn, dc, config) {
      *     // call either resolve(data) or reject(reason) here
      * });
      */
-    npm.utils.addReadProp(this, `$config`, config, true);
+    npm.utils.addReadProp(this, '$config', config, true);
 
     /**
      * @member {string|object} Database#$cn
@@ -414,7 +414,7 @@ function Database(cn, dc, config) {
      *
      * @see Database
      */
-    npm.utils.addReadProp(this, `$cn`, cn, true);
+    npm.utils.addReadProp(this, '$cn', cn, true);
 
     /**
      * @member {*} Database#$dc
@@ -426,7 +426,7 @@ function Database(cn, dc, config) {
      *
      * @see Database
      */
-    npm.utils.addReadProp(this, `$dc`, dc, true);
+    npm.utils.addReadProp(this, '$dc', dc, true);
 
     /**
      * @member {external:pg-pool} Database#$pool
@@ -457,7 +457,7 @@ function Database(cn, dc, config) {
      * .finally(db.$pool.end); // shutting down the pool
      *
      */
-    npm.utils.addReadProp(this, `$pool`, pool, true);
+    npm.utils.addReadProp(this, '$pool', pool, true);
 
     /**
      * @member {function} Database.$destroy
@@ -466,13 +466,13 @@ function Database(cn, dc, config) {
      * @description
      * Permanently shuts down the database object.
      */
-    npm.utils.addReadProp(this, `$destroy`, () => {
+    npm.utils.addReadProp(this, '$destroy', () => {
         if (!destroyed) {
             if (!pool.ending) {
                 endMethod.call(pool);
             }
             DatabasePool.unregister(dbThis);
-            pool.removeListener(`error`, onError);
+            pool.removeListener('error', onError);
             destroyed = true;
         }
     }, true);
@@ -487,7 +487,7 @@ function Database(cn, dc, config) {
 
     // Optional value-transformation helper:
     function transform(value, cb, thisArg) {
-        return typeof cb === `function` ? value.then(data => cb.call(thisArg, data)) : value;
+        return typeof cb === 'function' ? value.then(data => cb.call(thisArg, data)) : value;
     }
 
     ////////////////////////////////////////////////////
@@ -1010,7 +1010,7 @@ function Database(cn, dc, config) {
          * {@link Database#proc proc}
          */
         obj.func = function (funcName, values, qrm) {
-            return obj.query.call(this, {entity: funcName, type: `func`}, values, qrm);
+            return obj.query.call(this, {entity: funcName, type: 'func'}, values, qrm);
         };
 
         /**
@@ -1049,7 +1049,7 @@ function Database(cn, dc, config) {
         obj.proc = function (procName, values, cb, thisArg) {
             const v = obj.query.call(this, {
                 entity: procName,
-                type: `proc`
+                type: 'proc'
             }, values, queryResult.one | queryResult.none);
             return transform(v, cb, thisArg);
         };
@@ -1318,7 +1318,7 @@ function Database(cn, dc, config) {
          */
         obj.task = function () {
             const args = npm.pubUtils.taskArgs(arguments);
-            assert(args.options, [`tag`]);
+            assert(args.options, ['tag']);
             return taskProcessor.call(this, args, false);
         };
 
@@ -1376,11 +1376,11 @@ function Database(cn, dc, config) {
          */
         obj.taskIf = function () {
             const args = npm.pubUtils.taskArgs(arguments);
-            assert(args.options, [`tag`, `cnd`]);
+            assert(args.options, ['tag', 'cnd']);
             try {
                 let cnd = args.options.cnd;
-                if (`cnd` in args.options) {
-                    cnd = typeof cnd === `function` ? cnd.call(obj, obj) : !!cnd;
+                if ('cnd' in args.options) {
+                    cnd = typeof cnd === 'function' ? cnd.call(obj, obj) : !!cnd;
                 } else {
                     cnd = !obj.ctx; // create task, if it is the top level
                 }
@@ -1485,7 +1485,7 @@ function Database(cn, dc, config) {
          */
         obj.tx = function () {
             const args = npm.pubUtils.taskArgs(arguments);
-            assert(args.options, [`tag`, `mode`]);
+            assert(args.options, ['tag', 'mode']);
             return taskProcessor.call(this, args, true);
         };
 
@@ -1554,22 +1554,21 @@ function Database(cn, dc, config) {
          * {@link Database#taskIf Database.taskIf},
          * {@link Database#tx Database.tx},
          * {@link TaskContext}
-         *
          */
         obj.txIf = function () {
             const args = npm.pubUtils.taskArgs(arguments);
-            assert(args.options, [`tag`, `mode`, `cnd`, `reusable`]);
+            assert(args.options, ['tag', 'mode', 'cnd', 'reusable']);
             try {
                 let cnd;
-                if (`cnd` in args.options) {
+                if ('cnd' in args.options) {
                     cnd = args.options.cnd;
-                    cnd = typeof cnd === `function` ? cnd.call(obj, obj) : !!cnd;
+                    cnd = typeof cnd === 'function' ? cnd.call(obj, obj) : !!cnd;
                 } else {
                     cnd = !obj.ctx || !obj.ctx.inTransaction;
                 }
                 args.options.cnd = cnd;
                 const reusable = args.options.reusable;
-                args.options.reusable = !cnd &amp;&amp; obj.ctx &amp;&amp; typeof reusable === `function` ? reusable.call(obj, obj) : !!reusable;
+                args.options.reusable = !cnd &amp;&amp; obj.ctx &amp;&amp; typeof reusable === 'function' ? reusable.call(obj, obj) : !!reusable;
             } catch (e) {
                 return $p.reject(e);
             }
@@ -1580,8 +1579,8 @@ function Database(cn, dc, config) {
         // Resolves with result from the callback function;
         function taskProcessor(params, isTX) {
 
-            if (typeof params.cb !== `function`) {
-                return $p.reject(new TypeError(`Callback function is required.`));
+            if (typeof params.cb !== 'function') {
+                return $p.reject(new TypeError('Callback function is required.'));
             }
 
             if (params.options.reusable) {
@@ -1606,7 +1605,7 @@ function Database(cn, dc, config) {
 
             if (taskCtx.db) {
                 // reuse existing connection;
-                npm.utils.addReadProp(tsk.ctx, `useCount`, taskCtx.db.useCount);
+                npm.utils.addReadProp(tsk.ctx, 'useCount', taskCtx.db.useCount);
                 addServerVersion(tsk.ctx, taskCtx.db.client);
                 return config.$npm.task.execute(taskCtx, tsk, isTX, config);
             }
@@ -1615,7 +1614,7 @@ function Database(cn, dc, config) {
             return config.$npm.connect.pool(taskCtx, dbThis)
                 .then(db => {
                     taskCtx.connect(db);
-                    npm.utils.addReadProp(tsk.ctx, `useCount`, db.useCount);
+                    npm.utils.addReadProp(tsk.ctx, 'useCount', db.useCount);
                     addServerVersion(tsk.ctx, db.client);
                     return config.$npm.task.execute(taskCtx, tsk, isTX, config);
                 })
@@ -1633,7 +1632,7 @@ function Database(cn, dc, config) {
             // Exclude else-case from coverage, because it can only occur with Native Bindings.
             // istanbul ignore else
             if (client.serverVersion) {
-                npm.utils.addReadProp(target, `serverVersion`, client.serverVersion);
+                npm.utils.addReadProp(target, 'serverVersion', client.serverVersion);
             }
         }
 
