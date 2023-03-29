@@ -13,7 +13,7 @@
 
 // We use ES6 as static promise here, because generic promises are still not supported.
 // Follow the links below:
-// http://stackoverflow.com/questions/36593087/using-a-custom-promise-as-a-generic-type
+// https://stackoverflow.com/questions/36593087/using-a-custom-promise-as-a-generic-type
 // https://github.com/Microsoft/TypeScript/issues/1213
 type XPromise<T> = Promise<T>;
 
@@ -24,7 +24,7 @@ import * as spexLib from 'spex';
 // internal namespace for "txMode" property:
 declare namespace _txMode {
     // Transaction Isolation Level;
-    // API: http://vitaly-t.github.io/pg-promise/txMode.html#.isolationLevel
+    // API: https://vitaly-t.github.io/pg-promise/txMode.html#.isolationLevel
     enum isolationLevel {
         none = 0,
         serializable = 1,
@@ -33,7 +33,7 @@ declare namespace _txMode {
     }
 
     // TransactionMode class;
-    // API: http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
+    // API: https://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
     class TransactionMode {
         constructor(options?: { tiLevel?: isolationLevel, readOnly?: boolean, deferrable?: boolean })
 
@@ -42,7 +42,7 @@ declare namespace _txMode {
 }
 
 // Main protocol of the library;
-// API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
+// API: https://vitaly-t.github.io/pg-promise/module-pg-promise.html
 declare namespace pgPromise {
 
     interface IQueryFileOptions {
@@ -160,7 +160,7 @@ declare namespace pgPromise {
     type ValidSchema = string | string[] | null | void;
 
     // helpers.TableName class;
-    // API: http://vitaly-t.github.io/pg-promise/helpers.TableName.html
+    // API: https://vitaly-t.github.io/pg-promise/helpers.TableName.html
     class TableName {
         constructor(table: string | ITable)
 
@@ -173,7 +173,7 @@ declare namespace pgPromise {
     }
 
     // helpers.Column class;
-    // API: http://vitaly-t.github.io/pg-promise/helpers.Column.html
+    // API: https://vitaly-t.github.io/pg-promise/helpers.Column.html
     class Column<T = unknown> {
         constructor(col: string | IColumnConfig<T>);
 
@@ -194,7 +194,7 @@ declare namespace pgPromise {
     }
 
     // helpers.Column class;
-    // API: http://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html
+    // API: https://vitaly-t.github.io/pg-promise/helpers.ColumnSet.html
     class ColumnSet<T = unknown> {
         constructor(columns: Column<T>, options?: IColumnSetOptions)
         constructor(columns: Array<string | IColumnConfig<T> | Column<T>>, options?: IColumnSetOptions)
@@ -221,7 +221,7 @@ declare namespace pgPromise {
     const minify: typeof pgMinify;
 
     // Query Result Mask;
-    // API: http://vitaly-t.github.io/pg-promise/global.html#queryResult
+    // API: https://vitaly-t.github.io/pg-promise/global.html#queryResult
     enum queryResult {
         one = 1,
         many = 2,
@@ -230,7 +230,7 @@ declare namespace pgPromise {
     }
 
     // PreparedStatement class;
-    // API: http://vitaly-t.github.io/pg-promise/PreparedStatement.html
+    // API: https://vitaly-t.github.io/pg-promise/PreparedStatement.html
     class PreparedStatement {
 
         constructor(options?: IPreparedStatement)
@@ -251,7 +251,7 @@ declare namespace pgPromise {
     }
 
     // ParameterizedQuery class;
-    // API: http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
+    // API: https://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
     class ParameterizedQuery {
 
         constructor(options?: string | QueryFile | IParameterizedQuery)
@@ -270,7 +270,7 @@ declare namespace pgPromise {
     }
 
     // QueryFile class;
-    // API: http://vitaly-t.github.io/pg-promise/QueryFile.html
+    // API: https://vitaly-t.github.io/pg-promise/QueryFile.html
     class QueryFile {
         constructor(file: string, options?: IQueryFileOptions)
 
@@ -284,7 +284,7 @@ declare namespace pgPromise {
     }
 
     // PromiseAdapter class;
-    // API: http://vitaly-t.github.io/pg-promise/PromiseAdapter.html
+    // API: https://vitaly-t.github.io/pg-promise/PromiseAdapter.html
     class PromiseAdapter {
         constructor(api: IPromiseConfig)
     }
@@ -294,7 +294,7 @@ declare namespace pgPromise {
     const as: IFormatting;
 
     // Database full protocol;
-    // API: http://vitaly-t.github.io/pg-promise/Database.html
+    // API: https://vitaly-t.github.io/pg-promise/Database.html
     //
     // We export this interface only to be able to help IntelliSense cast extension types correctly,
     // which doesn't always work, depending on the version of IntelliSense being used.
@@ -318,7 +318,7 @@ declare namespace pgPromise {
     }
 
     // Post-initialization interface;
-    // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
+    // API: https://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface IMain<Ext = {}, C extends pg.IClient = pg.IClient> {
         <T = Ext, C extends pg.IClient = pg.IClient>(cn: string | pg.IConnectionParameters<C>, dc?: any): IDatabase<T, C> & T
 
@@ -340,64 +340,64 @@ declare namespace pgPromise {
     }
 
     // Additional methods available inside tasks + transactions;
-    // API: http://vitaly-t.github.io/pg-promise/Task.html
+    // API: https://vitaly-t.github.io/pg-promise/Task.html
     interface ITask<Ext> extends IBaseProtocol<Ext>, spexLib.ISpexBase {
         readonly ctx: ITaskContext
     }
 
     // Base database protocol
-    // API: http://vitaly-t.github.io/pg-promise/Database.html
+    // API: https://vitaly-t.github.io/pg-promise/Database.html
     interface IBaseProtocol<Ext> {
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#query
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#query
         query<T = any>(query: QueryParam, values?: any, qrm?: queryResult): XPromise<T>
 
         // result-specific methods;
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#none
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#none
         none(query: QueryParam, values?: any): XPromise<null>
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#one
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#one
         one<T = any>(query: QueryParam, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T>
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#oneOrNone
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#oneOrNone
         oneOrNone<T = any>(query: QueryParam, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T | null>
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#many
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#many
         many<T = any>(query: QueryParam, values?: any): XPromise<T[]>
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#manyOrNone
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#manyOrNone
         manyOrNone<T = any>(query: QueryParam, values?: any): XPromise<T[]>
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#any
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#any
         any<T = any>(query: QueryParam, values?: any): XPromise<T[]>
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#result
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#result
         result<T, R = IResultExt<T>>(query: QueryParam, values?: any, cb?: (value: IResultExt<T>) => R, thisArg?: any): XPromise<R>
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#multiResult
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#multiResult
         multiResult(query: QueryParam, values?: any): XPromise<pg.IResult[]>
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#multi
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#multi
         multi<T = any>(query: QueryParam, values?: any): XPromise<Array<T[]>>
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#stream
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#stream
         stream(qs: NodeJS.ReadableStream, init: (stream: NodeJS.ReadableStream) => void): XPromise<{ processed: number, duration: number }>
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#func
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#func
         func<T = any>(funcName: string, values?: any, qrm?: queryResult): XPromise<T>
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#proc
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#proc
         proc<T = any>(procName: string, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T | null>
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#map
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#map
         map<T = any>(query: QueryParam, values: any, cb: (row: any, index: number, data: any[]) => T, thisArg?: any): XPromise<T[]>
 
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#each
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#each
         each<T = any>(query: QueryParam, values: any, cb: (row: any, index: number, data: any[]) => void, thisArg?: any): XPromise<T[]>
 
         // Tasks;
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#task
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#task
         task<T = any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         task<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
@@ -405,7 +405,7 @@ declare namespace pgPromise {
         task<T = any>(options: { tag?: any }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Conditional Tasks;
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#taskIf
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#taskIf
         taskIf<T = any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         taskIf<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
@@ -413,7 +413,7 @@ declare namespace pgPromise {
         taskIf<T = any>(options: { tag?: any, cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Transactions;
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#tx
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#tx
         tx<T = any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         tx<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
@@ -421,7 +421,7 @@ declare namespace pgPromise {
         tx<T = any>(options: { tag?: any, mode?: _txMode.TransactionMode | null }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Conditional Transactions;
-        // API: http://vitaly-t.github.io/pg-promise/Database.html#txIf
+        // API: https://vitaly-t.github.io/pg-promise/Database.html#txIf
         txIf<T = any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         txIf<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
@@ -447,7 +447,7 @@ declare namespace pgPromise {
     }
 
     // Event context extension for tasks + transactions;
-    // See: http://vitaly-t.github.io/pg-promise/global.html#TaskContext
+    // See: https://vitaly-t.github.io/pg-promise/global.html#TaskContext
     interface ITaskContext {
 
         // these are set in the beginning of each task/transaction:
@@ -477,7 +477,7 @@ declare namespace pgPromise {
     }
 
     // Generic Event Context interface;
-    // See: http://vitaly-t.github.io/pg-promise/global.html#EventContext
+    // See: https://vitaly-t.github.io/pg-promise/global.html#EventContext
     interface IEventContext<C extends pg.IClient = pg.IClient> {
         client: C
         cn: any
@@ -488,10 +488,10 @@ declare namespace pgPromise {
     }
 
     // Errors namespace
-    // API: http://vitaly-t.github.io/pg-promise/errors.html
+    // API: https://vitaly-t.github.io/pg-promise/errors.html
     namespace errors {
         // QueryResultError interface;
-        // API: http://vitaly-t.github.io/pg-promise/errors.QueryResultError.html
+        // API: https://vitaly-t.github.io/pg-promise/errors.QueryResultError.html
         class QueryResultError extends Error {
 
             // standard error properties:
@@ -506,12 +506,12 @@ declare namespace pgPromise {
             query: string;
             values: any;
 
-            // API: http://vitaly-t.github.io/pg-promise/errors.QueryResultError.html#toString
+            // API: https://vitaly-t.github.io/pg-promise/errors.QueryResultError.html#toString
             toString(): string
         }
 
         // QueryFileError interface;
-        // API: http://vitaly-t.github.io/pg-promise/errors.QueryFileError.html
+        // API: https://vitaly-t.github.io/pg-promise/errors.QueryFileError.html
         class QueryFileError extends Error {
 
             // standard error properties:
@@ -528,7 +528,7 @@ declare namespace pgPromise {
         }
 
         // PreparedStatementError interface;
-        // API: http://vitaly-t.github.io/pg-promise/errors.PreparedStatementError.html
+        // API: https://vitaly-t.github.io/pg-promise/errors.PreparedStatementError.html
         class PreparedStatementError extends Error {
 
             // standard error properties:
@@ -543,7 +543,7 @@ declare namespace pgPromise {
         }
 
         // ParameterizedQueryError interface;
-        // API: http://vitaly-t.github.io/pg-promise/errors.ParameterizedQueryError.html
+        // API: https://vitaly-t.github.io/pg-promise/errors.ParameterizedQueryError.html
         class ParameterizedQueryError extends Error {
 
             // standard error properties:
@@ -558,7 +558,7 @@ declare namespace pgPromise {
         }
 
         // Query Result Error Code;
-        // API: http://vitaly-t.github.io/pg-promise/errors.html#.queryResultErrorCode
+        // API: https://vitaly-t.github.io/pg-promise/errors.html#.queryResultErrorCode
         enum queryResultErrorCode {
             noData = 0,
             notEmpty = 1,
@@ -567,7 +567,7 @@ declare namespace pgPromise {
     }
 
     // Library's Initialization Options
-    // API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
+    // API: https://vitaly-t.github.io/pg-promise/module-pg-promise.html
     interface IInitOptions<Ext = {}, C extends pg.IClient = pg.IClient> {
         noWarnings?: boolean
         pgFormatting?: boolean
@@ -594,7 +594,7 @@ declare namespace pgPromise {
         extend?(obj: IDatabase<Ext, C> & Ext, dc: any): void
     }
 
-    // API: http://vitaly-t.github.io/pg-promise/Database.html#$config
+    // API: https://vitaly-t.github.io/pg-promise/Database.html#$config
     interface ILibConfig<Ext, C extends pg.IClient = pg.IClient> {
         version: string
         promiseLib: any
@@ -611,7 +611,7 @@ declare namespace pgPromise {
     }
 
     // Query formatting namespace;
-    // API: http://vitaly-t.github.io/pg-promise/formatting.html
+    // API: https://vitaly-t.github.io/pg-promise/formatting.html
     interface IFormatting {
 
         ctf: { toPostgres: symbol, rawType: symbol }
@@ -650,7 +650,7 @@ declare namespace pgPromise {
     }
 
     // General-purpose functions
-    // API: http://vitaly-t.github.io/pg-promise/utils.html
+    // API: https://vitaly-t.github.io/pg-promise/utils.html
     interface IUtils {
         camelize(text: string): string
 
@@ -662,7 +662,7 @@ declare namespace pgPromise {
     }
 
     // Query Formatting Helpers
-    // API: http://vitaly-t.github.io/pg-promise/helpers.html
+    // API: https://vitaly-t.github.io/pg-promise/helpers.html
     interface IHelpers {
 
         concat(queries: Array<string | QueryFile | { query: string | QueryFile, values?: any, options?: IFormattingOptions }>): string
@@ -692,7 +692,7 @@ declare namespace pgPromise {
 }
 
 // Default library interface (before initialization)
-// API: http://vitaly-t.github.io/pg-promise/module-pg-promise.html
+// API: https://vitaly-t.github.io/pg-promise/module-pg-promise.html
 declare function pgPromise<Ext = {}, C extends pg.IClient = pg.IClient>(options?: pgPromise.IInitOptions<Ext, C>): pgPromise.IMain<Ext, C>
 
 export = pgPromise;
