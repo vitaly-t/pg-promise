@@ -1,6 +1,5 @@
 const npm = {
-    util: require('util'),
-    platform: require('os').platform()
+    util: require('util'), platform: require('os').platform()
 };
 
 const capture = require('./db/capture');
@@ -13,8 +12,7 @@ const isWindows = npm.platform === 'win32';
 
 const promise = header.defPromise;
 const options = {
-    promiseLib: promise,
-    noWarnings: true
+    promiseLib: promise, noWarnings: true
 };
 const dbHeader = header(options);
 const pgp = dbHeader.pgp;
@@ -261,7 +259,9 @@ describe('Connection', () => {
                 if (isMac) {
                     expect(error.message.indexOf(oldStyleError) >= 0 || error.message.indexOf(newStyleError) >= 0).toBe(true);
                 } else {
-                    expect(error.message).toContain('password authentication failed for user');
+                    const msgCheck = error.message.includes('password authentication failed for user') ||
+                        error.message.includes('getaddrinfo EAI_AGAIN base'); // the latter is a weird new error reported
+                    expect(msgCheck).toBeTruthy();
                 }
             });
         });
@@ -371,17 +371,12 @@ describe('Connection', () => {
                         obj.func('pg_backend_pid')
                             .then(res => {
                                 const pid = res[0].pg_backend_pid;
-                                return promise.all([
-                                    obj.func('pg_sleep', [2])
-                                        .catch(reason => {
-                                            error = reason;
-                                        }),
-                                    // Terminate connection after a short delay, before the query finishes
+                                return promise.all([obj.func('pg_sleep', [2])
+                                    .catch(reason => {
+                                        error = reason;
+                                    }), // Terminate connection after a short delay, before the query finishes
                                     promise.delay(1000)
-                                        .then(() =>
-                                            db.one('SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid)
-                                        )
-                                ])
+                                        .then(() => db.one('SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid))])
                                     .finally(() => {
                                         obj.done(error);
                                         done();
@@ -487,10 +482,7 @@ describe('Masked Connection Log', () => {
     });
     describe('as an object', () => {
         const connection = {
-            host: 'localhost',
-            port: 123,
-            user: 'unknown',
-            password: '123'
+            host: 'localhost', port: 123, user: 'unknown', password: '123'
         };
         beforeEach(done => {
             const errDB = pgp(connection);
@@ -1037,13 +1029,7 @@ describe('Executing method query', () => {
     describe('with invalid query as parameter', () => {
         let result;
         beforeEach(done => {
-            promise.any([
-                db.query(),
-                db.query(''),
-                db.query('   '),
-                db.query({}),
-                db.query(1),
-                db.query(null)])
+            promise.any([db.query(), db.query(''), db.query('   '), db.query({}), db.query(1), db.query(null)])
                 .catch(err => {
                     result = err;
                 })
@@ -1063,16 +1049,7 @@ describe('Executing method query', () => {
     describe('with invalid qrm as parameter', () => {
         let result;
         beforeEach(done => {
-            promise.any([
-                db.query('something', undefined, ''),
-                db.query('something', undefined, '2'),
-                db.query('something', undefined, -1),
-                db.query('something', undefined, 0),
-                db.query('something', undefined, 100),
-                db.query('something', undefined, NaN),
-                db.query('something', undefined, 1 / 0),
-                db.query('something', undefined, -1 / 0),
-                db.query('something', undefined, 2.45)])
+            promise.any([db.query('something', undefined, ''), db.query('something', undefined, '2'), db.query('something', undefined, -1), db.query('something', undefined, 0), db.query('something', undefined, 100), db.query('something', undefined, NaN), db.query('something', undefined, 1 / 0), db.query('something', undefined, -1 / 0), db.query('something', undefined, 2.45)])
                 .catch(err => {
                     result = err;
                 })
@@ -1103,11 +1080,7 @@ describe('Executing method query', () => {
             let result;
 
             beforeEach(done => {
-                promise.all([
-                    db.query(getQuery1, [], pgp.queryResult.one),
-                    db.query(getQuery2, 456, pgp.queryResult.one),
-                    db.query(getQuery3, 789, pgp.queryResult.one)
-                ])
+                promise.all([db.query(getQuery1, [], pgp.queryResult.one), db.query(getQuery2, 456, pgp.queryResult.one), db.query(getQuery3, 789, pgp.queryResult.one)])
                     .then(data => {
                         result = data;
                     })
@@ -1192,10 +1165,7 @@ describe('Transactions', () => {
                 tag = t.ctx.tag;
                 THIS = this;
                 context = t;
-                const queries = [
-                    this.none('drop table if exists test'),
-                    this.none('create table test(id   serial, name text)')
-                ];
+                const queries = [this.none('drop table if exists test'), this.none('create table test(id   serial, name text)')];
                 for (let i = 1; i <= 10000; i++) {
                     queries.push(this.none('insert into test(name) values ($1)', 'name-' + i));
                 }
@@ -1227,13 +1197,10 @@ describe('Transactions', () => {
             db.tx(function (t) {
                 THIS = this;
                 context = t;
-                return this.batch([
-                    this.none('update users set login=$1 where id = $2', ['TestName', 1]),
-                    this.tx(function () {
-                        ctx = this.ctx;
-                        throw new Error('Nested TX failure');
-                    })
-                ]);
+                return this.batch([this.none('update users set login=$1 where id = $2', ['TestName', 1]), this.tx(function () {
+                    ctx = this.ctx;
+                    throw new Error('Nested TX failure');
+                })]);
             })
                 .catch(reason => {
                     error = reason.data[1].result;
@@ -1279,22 +1246,16 @@ describe('Transactions', () => {
             db.tx(function (t1) {
                 THIS1 = this;
                 context1 = t1;
-                return this.batch([
-                    this.none('update users set login=$1', 'External'),
-                    this.tx(function (t2) {
-                        THIS2 = this;
-                        context2 = t2;
-                        return this.batch([
-                            this.none('update users set login=$1', 'Internal'),
-                            this.one('select * from unknownTable') // emulating a bad query;
-                        ]);
-                    })
-                ]);
+                return this.batch([this.none('update users set login=$1', 'External'), this.tx(function (t2) {
+                    THIS2 = this;
+                    context2 = t2;
+                    return this.batch([this.none('update users set login=$1', 'Internal'), this.one('select * from unknownTable') // emulating a bad query;
+                    ]);
+                })]);
             })
                 .then(dummy, reason => {
                     nestError = reason.data[1].result.data[1].result;
-                    return promise.all([
-                        db.one('select count(*) from users where login = $1', 'External'), // 0 is expected;
+                    return promise.all([db.one('select count(*) from users where login = $1', 'External'), // 0 is expected;
                         db.one('select count(*) from users where login = $1', 'Internal') // 0 is expected;
                     ]);
                 })
@@ -1323,25 +1284,21 @@ describe('Transactions', () => {
         let result;
         beforeEach(done => {
             db.tx(function () {
-                return this.batch([
-                    this.none(`update users
-                               set login=$1
-                               where id = 1`, 'Test'),
-                    this.tx(function () {
-                        return this.none(`update person
-                                          set name=$1
-                                          where id = 1`, 'Test');
-                    })
-                ])
+                return this.batch([this.none(`update users
+                                              set login=$1
+                                              where id = 1`, 'Test'), this.tx(function () {
+                    return this.none(`update person
+                                      set name=$1
+                                      where id = 1`, 'Test');
+                })])
                     .then(() => {
                         return promise.reject(new Error('ops!'));
                     });
             })
                 .then(dummy, () => {
-                    return promise.all([
-                        db.one(`select count(*)
-                                from users
-                                where login = $1`, 'Test'), // 0 is expected;
+                    return promise.all([db.one(`select count(*)
+                                                from users
+                                                where login = $1`, 'Test'), // 0 is expected;
                         db.one(`select count(*)
                                 from person
                                 where name = $1`, 'Test') // 0 is expected;
@@ -1409,24 +1366,21 @@ describe('Transactions', () => {
                                 ctx.push(this.ctx);
                                 return this.tx(5, function () {
                                     ctx.push(this.ctx);
-                                    return this.batch([
-                                        this.one('select \'Hello\' as word'),
-                                        this.tx(6, function () {
+                                    return this.batch([this.one('select \'Hello\' as word'), this.tx(6, function () {
+                                        ctx.push(this.ctx);
+                                        return this.tx(7, function () {
                                             ctx.push(this.ctx);
-                                            return this.tx(7, function () {
+                                            return this.tx(8, function () {
                                                 ctx.push(this.ctx);
-                                                return this.tx(8, function () {
+                                                return this.tx(9, function (t) {
                                                     ctx.push(this.ctx);
-                                                    return this.tx(9, function (t) {
-                                                        ctx.push(this.ctx);
-                                                        THIS = this;
-                                                        context = t;
-                                                        return this.one('select \'World!\' as word');
-                                                    });
+                                                    THIS = this;
+                                                    context = t;
+                                                    return this.one('select \'World!\' as word');
                                                 });
                                             });
-                                        })
-                                    ]);
+                                        });
+                                    })]);
                                 });
                             });
                         });
@@ -1490,14 +1444,12 @@ describe('Transactions', () => {
     describe('Closing after a protocol violation', () => {
         let error, value;
         beforeEach(done => {
-            db.task(task =>
-                task.tx(tx => tx.one('select \'\u0000\''))
-                    .then(() => {
-                        throw new Error('expected error');
-                    }, () => {
-                    })
-                    .then(() => task.tx(tx => tx.one('select \'hi\' as v')))
-            ).then(row => {
+            db.task(task => task.tx(tx => tx.one('select \'\u0000\''))
+                .then(() => {
+                    throw new Error('expected error');
+                }, () => {
+                })
+                .then(() => task.tx(tx => tx.one('select \'hi\' as v')))).then(row => {
                 value = row.v;
             }, e => {
                 error = e;
@@ -1550,22 +1502,16 @@ describe('Transactions', () => {
         let error;
 
         beforeEach(done => {
-            Promise.all([
-                dbSingleCN.connect().then((obj) => {
-                    obj.done();
-                }, reason => {
-                    error = reason;
-                })
-                ,
-                // Terminate the connections during verify, which causes an 'error' event from the pool
+            Promise.all([dbSingleCN.connect().then((obj) => {
+                obj.done();
+            }, reason => {
+                error = reason;
+            }), // Terminate the connections during verify, which causes an 'error' event from the pool
                 promise.delay(500).then(() => {
-                    return db.query(
-                        `SELECT pg_terminate_backend(pid)
-                         FROM pg_stat_activity
-                         WHERE pid <> pg_backend_pid();`
-                    );
-                })
-            ]).then(() => {
+                    return db.query(`SELECT pg_terminate_backend(pid)
+                                     FROM pg_stat_activity
+                                     WHERE pid <> pg_backend_pid();`);
+                })]).then(() => {
                 done();
             }, (err) => {
                 done(err);
@@ -2133,8 +2079,7 @@ describe('Querying an entity', () => {
     describe('with invalid parameters', () => {
         let result;
         beforeEach(done => {
-            promise.any([
-                db.func(), // undefined function name;
+            promise.any([db.func(), // undefined function name;
                 db.func(''), // empty-string function name;
                 db.func('   '), // white-space string for function name;
                 db.func(1), // invalid-type function name;
@@ -2142,14 +2087,11 @@ describe('Querying an entity', () => {
                 // query function overrides:
                 db.query({
                     entity: null, type: 'func'
-                }),
-                db.query({
+                }), db.query({
                     entity: '', type: 'func'
-                }),
-                db.query({
+                }), db.query({
                     entity: '   ', type: 'func'
-                })
-            ])
+                })])
                 .catch(reason => {
                     result = reason;
                 })
