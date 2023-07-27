@@ -2,8 +2,8 @@ pg-promise
 ==========
 
 [![Build Status](https://github.com/vitaly-t/pg-promise/workflows/ci/badge.svg?branch=master)](https://github.com/vitaly-t/pg-promise/actions?query=workflow%3Aci+branch%3Amaster)
-[![Node Version](https://img.shields.io/badge/nodejs-14-_18-green.svg?logo=node.js&style=flat)](https://nodejs.org)
-[![Postgres Version](https://img.shields.io/badge/postgresql-11-_15-green.svg?logo=postgresql&style=flat)](https://www.postgresql.org)
+[![Node Version](https://img.shields.io/badge/nodejs-14,_16,_18-green.svg?logo=node.js&style=flat)](https://nodejs.org)
+[![Postgres Version](https://img.shields.io/badge/postgresql-11,_12,_13,_14,_15-green.svg?logo=postgresql&style=flat)](https://www.postgresql.org)
 
 ---
 
