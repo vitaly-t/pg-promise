@@ -13,10 +13,10 @@ jobs:
      runs-on: ubuntu-latest
      steps:
        - uses: actions/checkout@v3
-       - name: Use Node.js 16
+       - name: Use Node.js 18
          uses: actions/setup-node@v3
          with:
-           node-version: 16
+           node-version: 18
        - name: Install Dependencies
          run: npm install
        - name: TypeScript Lint
@@ -30,33 +30,15 @@ jobs:
           - name: PostgreSQL 11, Node 14
             POSTGRES_IMAGE: postgres:11
             NODE_VERSION: 14
-          - name: PostgreSQL 11, Node 16
+          - name: PostgreSQL 11, Node 18
             POSTGRES_IMAGE: postgres:11
-            NODE_VERSION: 16
-          - name: PostgreSQL 12, Node 14
-            POSTGRES_IMAGE: postgres:12
+            NODE_VERSION: 18
+          - name: PostgreSQL 15, Node 14
+            POSTGRES_IMAGE: postgres:15
             NODE_VERSION: 14
-          - name: PostgreSQL 12, Node 16
-            POSTGRES_IMAGE: postgres:12
-            NODE_VERSION: 16
-          - name: PostgreSQL 13, Node 14
-            POSTGRES_IMAGE: postgres:13
-            NODE_VERSION: 14
-          - name: PostgreSQL 13, Node 16
-            POSTGRES_IMAGE: postgres:13
-            NODE_VERSION: 16
-#          - name: PostgreSQL 14, Node 14
-#            POSTGRES_IMAGE: postgres:14
-#            NODE_VERSION: 14
-#          - name: PostgreSQL 14, Node 16
-#            POSTGRES_IMAGE: postgres:14
-#            NODE_VERSION: 16
-#          - name: PostgreSQL 15, Node 14
-#            POSTGRES_IMAGE: postgres:15
-#            NODE_VERSION: 14
-#          - name: PostgreSQL 15, Node 16
-#            POSTGRES_IMAGE: postgres:15
-#            NODE_VERSION: 16
+          - name: PostgreSQL 15, Node 18
+            POSTGRES_IMAGE: postgres:15
+            NODE_VERSION: 18
       fail-fast: false
     name: ${{ matrix.name }}
     timeout-minutes: 15
