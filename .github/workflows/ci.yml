@@ -27,11 +27,11 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: PostgreSQL 11, Node 14
-            POSTGRES_IMAGE: postgres:11
+          - name: PostgreSQL 10, Node 14
+            POSTGRES_IMAGE: postgres:10
             NODE_VERSION: 14
-          - name: PostgreSQL 11, Node 18
-            POSTGRES_IMAGE: postgres:11
+          - name: PostgreSQL 10, Node 18
+            POSTGRES_IMAGE: postgres:10
             NODE_VERSION: 18
           - name: PostgreSQL 15, Node 14
             POSTGRES_IMAGE: postgres:15

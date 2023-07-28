@@ -3,7 +3,7 @@ pg-promise
 
 [![Build Status](https://github.com/vitaly-t/pg-promise/workflows/ci/badge.svg?branch=master)](https://github.com/vitaly-t/pg-promise/actions?query=workflow%3Aci+branch%3Amaster)
 [![Node Version](https://img.shields.io/badge/nodejs-14%20--%2020-green.svg?logo=node.js&style=flat)](https://nodejs.org)
-[![Postgres Version](https://img.shields.io/badge/postgresql-11%20--%2015-green.svg?logo=postgresql&style=flat)](https://www.postgresql.org)
+[![Postgres Version](https://img.shields.io/badge/postgresql-10%20--%2015-green.svg?logo=postgresql&style=flat)](https://www.postgresql.org)
 
 ---
 
