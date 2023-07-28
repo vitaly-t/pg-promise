@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "11.5.1",
+  "version": "11.5.2",
   "description": "PostgreSQL interface for Node.js",
   "main": "lib/index.js",
   "typings": "typescript/pg-promise.d.ts",
@@ -47,7 +47,7 @@
     "spex": "3.3.0"
   },
   "devDependencies": {
-    "@types/node": "20.4.4",
+    "@types/node": "20.4.5",
     "bluebird": "3.7.2",
     "coveralls": "3.1.1",
     "cspell": "6.31.2",
