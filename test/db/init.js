@@ -18,9 +18,17 @@ const header = dbHeader({
 const pgp = header.pgp;
 const db = header.db;
 
+async function getPgVersion() {
+    const c = await db.connect();
+    c.done(); // success, release connection
+    return c.client.serverVersion;
+}
+
 (async function () {
 
-    await db.tx(async t => {
+    const pgHighVersion = parseInt((await getPgVersion()).split('.')[0]);
+
+    await db.tx(`Init PG v${pgHighVersion}`, async t => {
 
         // drop all functions;
         await t.none('DROP FUNCTION IF EXISTS "findUser"(int)');
@@ -55,13 +63,16 @@ const db = header.db;
         await t.none('CREATE OR REPLACE FUNCTION get_users() RETURNS SETOF users AS $$ SELECT * FROM users $$ language \'sql\'');
 
         // adding procedures:
-        await t.none('CREATE OR REPLACE PROCEDURE empty_proc() LANGUAGE SQL AS $$ $$;');
-        await t.none(`CREATE OR REPLACE PROCEDURE output_proc(INOUT output1 boolean, INOUT output2 text)
+        if (pgHighVersion >= 11) {
+            // Postgresql v10 and earlier do not support procedures
+            await t.none('CREATE OR REPLACE PROCEDURE empty_proc() LANGUAGE SQL AS $$ $$;');
+            await t.none(`CREATE OR REPLACE PROCEDURE output_proc(INOUT output1 boolean, INOUT output2 text)
                             LANGUAGE plpgsql AS $$
                             BEGIN
                                 output1 := true;
                                 output2 := concat(output2, '-hello!');
                             END;$$;`);
+        }
     })
         .then(() => {
             // eslint-disable-next-line no-console
