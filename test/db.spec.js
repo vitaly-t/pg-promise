@@ -375,8 +375,8 @@ describe('Connection', () => {
                                     .catch(reason => {
                                         error = reason;
                                     }), // Terminate connection after a short delay, before the query finishes
-                                    promise.delay(1000)
-                                        .then(() => db.one('SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid))])
+                                promise.delay(1000)
+                                    .then(() => db.one('SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid))])
                                     .finally(() => {
                                         obj.done(error);
                                         done();
@@ -1299,7 +1299,7 @@ describe('Transactions', () => {
                     return promise.all([db.one(`select count(*)
                                                 from users
                                                 where login = $1`, 'Test'), // 0 is expected;
-                        db.one(`select count(*)
+                    db.one(`select count(*)
                                 from person
                                 where name = $1`, 'Test') // 0 is expected;
                     ]);
@@ -1507,11 +1507,11 @@ describe('Transactions', () => {
             }, reason => {
                 error = reason;
             }), // Terminate the connections during verify, which causes an 'error' event from the pool
-                promise.delay(500).then(() => {
-                    return db.query(`SELECT pg_terminate_backend(pid)
+            promise.delay(500).then(() => {
+                return db.query(`SELECT pg_terminate_backend(pid)
                                      FROM pg_stat_activity
                                      WHERE pid <> pg_backend_pid();`);
-                })]).then(() => {
+            })]).then(() => {
                 done();
             }, (err) => {
                 done(err);
