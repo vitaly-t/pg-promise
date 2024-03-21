@@ -122,7 +122,7 @@ describe('Method as.number', () => {
         expect(pgp.as.number(0)).toBe('0');
         expect(pgp.as.number(1)).toBe('1');
         expect(pgp.as.number(1234567890)).toBe('1234567890');
-        expect(pgp.as.number(-123.456)).toBe('-123.456');
+        expect(pgp.as.number(-123.456)).toBe('(-123.456)');
         expect(pgp.as.number(NaN)).toBe('\'NaN\'');
         expect(pgp.as.number(Number.NaN)).toBe('\'NaN\'');
         expect(pgp.as.number(1 / 0)).toBe('\'+Infinity\'');
@@ -326,8 +326,8 @@ describe('Method as.csv', () => {
 
         expect(pgp.as.csv(0)).toBe('0'); // test zero;
         expect(pgp.as.csv([0])).toBe('0'); // test zero in array;
-        expect(pgp.as.csv(-123.456)).toBe('-123.456'); // test a float;
-        expect(pgp.as.csv([-123.456])).toBe('-123.456'); // test a float in array;
+        expect(pgp.as.csv(-123.456)).toBe('(-123.456)'); // test a float;
+        expect(pgp.as.csv([-123.456])).toBe('(-123.456)'); // test a float in array;
 
         expect(pgp.as.csv(true)).toBe('true'); // test boolean True;
         expect(pgp.as.csv([true])).toBe('true'); // test boolean True in array;
@@ -678,7 +678,7 @@ describe('Method as.format', () => {
         expect(pgp.as.format('$1', [userObj])).toBe(pgp.as.text(JSON.stringify(userObj)));
         expect(pgp.as.format('$1^', [userObj])).toBe(JSON.stringify(userObj));
 
-        expect(pgp.as.format('$1, $2, $3, $4', [true, -12.34, 'text', dateSample])).toBe(`true, -12.34, 'text', '${$pgUtils.prepareValue(dateSample)}'`);
+        expect(pgp.as.format('$1, $2, $3, $4', [true, -12.34, 'text', dateSample])).toBe(`true, (-12.34), 'text', '${$pgUtils.prepareValue(dateSample)}'`);
 
         expect(pgp.as.format('$1 $1, $2 $2, $1', [1, 'two'])).toBe('1 1, \'two\' \'two\', 1'); // test for repeated variables;
 
@@ -970,7 +970,7 @@ describe('Named Parameters', () => {
             three: -123.45,
             four: dateSample,
             five: () => 'text'
-        })).toBe('null,true,-123.45,\'' + $pgUtils.prepareValue(dateSample) + '\',\'text\'');
+        })).toBe('null,true,(-123.45),\'' + $pgUtils.prepareValue(dateSample) + '\',\'text\'');
     });
 
     it('must treat null and undefined values equally', () => {

@@ -239,9 +239,6 @@ describe('Connection', () => {
     });
 
     if (!isWindows) {
-        /*
-          Disabled this test on 14/11/2020, since it started showing crypto-related issues on Windows;
-        */
         describe('for invalid connection', () => {
             const dbErr = pgp('bla-bla');
             let error;
@@ -268,9 +265,6 @@ describe('Connection', () => {
     }
 
     if (!isWindows) {
-        /*
-          Disabled this test on 14/11/2020, since it started showing crypto-related issues on Windows;
-        */
         describe('for invalid user name', () => {
             const errCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
             errCN.user = 'somebody';
@@ -354,10 +348,6 @@ describe('Connection', () => {
     });
 
     if (!isWindows) {
-        /*
-        This test has been known to be very flaky, especially on Windows, and keeps
-        getting in the way of testing the framework locally.
-        */
         describe('db side closing of the connection pool', () => {
             const singleCN = JSON.parse(JSON.stringify(dbHeader.cn)); // dumb connection cloning;
             singleCN.max = 1;
