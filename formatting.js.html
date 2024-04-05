@@ -868,7 +868,7 @@ const $as = {
      *   - `obj` - the formatting object, and is the same as `this` context
      *
      * - For $[Index Variables] formatting:
-     *   - `index` - element's index (starts with 1) that's outside of the input array
+     *   - `index` - element's index (starts with 1) that's outside the input array
      *   - `arr` - the formatting/input array, and is the same as `this` context
      *
      *   You can tell which type of call it is by checking the type of the first parameter.
@@ -913,7 +913,8 @@ const $to = {
     },
     number(num) {
         if (typeof num === 'bigint' || Number.isFinite(num)) {
-            return num.toString();
+            const s = num.toString();
+            return num &lt; 0 ? `(${s})` : s;
         }
         // Converting NaN/+Infinity/-Infinity according to Postgres documentation:
         // http://www.postgresql.org/docs/9.6/static/datatype-numeric.html#DATATYPE-FLOAT
