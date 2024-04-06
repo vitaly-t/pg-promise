@@ -7,7 +7,7 @@
     props.forEach(function(prop, i) {
         if (!prop) { return; }
         if ( parentProp && prop.name && prop.name.indexOf(parentProp.name + '.') === 0 ) {
-            prop.name = prop.name.substr(parentProp.name.length+1);
+            prop.name = prop.name.substring(parentProp.name.length + 1);
             parentProp.subprops = parentProp.subprops || [];
             parentProp.subprops.push(prop);
             props[i] = null;
