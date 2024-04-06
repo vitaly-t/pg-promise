@@ -51,7 +51,7 @@
     "bluebird": "3.7.2",
     "coveralls": "3.1.1",
     "cspell": "8.6.1",
-    "eslint": "9.0.0",
+    "eslint": "8.57.0",
     "istanbul": "0.4.5",
     "jasmine-node": "3.0.0",
     "jsdoc": "4.0.2",
