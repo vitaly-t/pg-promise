@@ -43,7 +43,7 @@
   "dependencies": {
     "assert-options": "0.8.1",
     "pg": "8.11.5",
-    "pg-minify": "1.6.3",
+    "pg-minify": "1.6.4",
     "spex": "3.3.0"
   },
   "devDependencies": {
