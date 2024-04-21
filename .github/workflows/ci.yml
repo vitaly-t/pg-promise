@@ -7,22 +7,24 @@ on:
     branches:
       - '**'
 jobs:
-  check-lint:
-     name: Lint
-     timeout-minutes: 15
+  check-pre-check:
+     name: PreCheck
+     timeout-minutes: 5
      runs-on: ubuntu-latest
      steps:
        - uses: actions/checkout@v3
-       - name: Use Node.js 18
+       - name: Use Node.js 20
          uses: actions/setup-node@v3
          with:
-           node-version: 18
+           node-version: 20
        - name: Install Dependencies
          run: npm install
        - name: TypeScript Lint
          run: npm run tslint
        - name: ESLint
          run: npm run lint
+       - name: Spelling Check
+         run: npm run spelling
   check-postgres:
     strategy:
       matrix:
