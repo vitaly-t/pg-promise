@@ -21,7 +21,7 @@ const cn = {
     user: 'myUser',
     password: 'myPassword',
 
-    // to auto-exit on idle, without having to shut-down the pool;
+    // to auto-exit on idle, without having to shut down the pool;
     // see https://github.com/vitaly-t/pg-promise#library-de-initialization
     allowExitOnIdle: true
 };
