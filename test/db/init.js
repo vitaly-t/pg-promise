@@ -8,7 +8,6 @@ const {ColorConsole} = require('../../lib/utils/color');
 
 const header = dbHeader({
     query(e) {
-        // eslint-disable-next-line no-console
         ColorConsole.info(e.query); // print all executed queries;
     },
     promiseLib: promise,
@@ -75,11 +74,9 @@ async function getPgVersion() {
         }
     })
         .then(() => {
-            // eslint-disable-next-line no-console
             ColorConsole.success.bright('*** SUCCESS ***');
         })
         .catch(error => {
-            // eslint-disable-next-line no-console
             ColorConsole.error.bright('FAILED:', error);
         })
         .finally(pgp.end);

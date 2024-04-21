@@ -47,11 +47,13 @@
     "spex": "3.3.0"
   },
   "devDependencies": {
+    "@eslint/js": "9.1.1",
     "@types/node": "20.12.5",
     "bluebird": "3.7.2",
     "coveralls": "3.1.1",
     "cspell": "8.6.1",
-    "eslint": "8.57.0",
+    "eslint": "9.0.0",
+    "globals": "15.0.0",
     "istanbul": "0.4.5",
     "jasmine-node": "3.0.0",
     "jsdoc": "4.0.2",
