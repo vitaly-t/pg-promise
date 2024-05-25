@@ -55,11 +55,11 @@ const npm = {
  *
  * Filter `:alias` is an alternative approach to splitting an SQL name into multiple ones.
  *
- * @param {string|object} table
+ * @param {string|Table} table
  * Table name details, depending on the type:
  *
  * - table name, if `table` is a string
- * - object `{table, [schema]}`
+ * - {@link Table} object
  *
  * @property {string} name
  * Formatted/escaped full table name, combining `schema` + `table`.
@@ -163,6 +163,8 @@ npm.utils.addInspection(TableName, function () {
  *
  * @property {string} [schema] - schema name, if specified
  * @property {string} table - table name
+ *
+ * @see {@link helpers.TableName TableName}, {@link helpers._TN _TN}
  */
 
 /**
@@ -182,6 +184,8 @@ npm.utils.addInspection(TableName, function () {
  * const cs2 = new ColumnSet(['id', 'name'], {table: _TN`${schema}.table`});
  *
  * @returns {Table}
+ *
+ * @see {@link helpers.TableName TableName}
  */
 function _TN(a, ...args) {
     if (Array.isArray(a) &amp;&amp; a.raw) {
