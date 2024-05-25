@@ -708,7 +708,7 @@ declare namespace pgPromise {
         ColumnSet: typeof ColumnSet
         TableName: typeof TableName
 
-        _TN: (data: TemplateStringsArray) => ITable
+        _TN: (data: TemplateStringsArray | string) => ITable
     }
 
     interface IGenericPromise {
