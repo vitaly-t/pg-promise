@@ -708,7 +708,8 @@ declare namespace pgPromise {
         ColumnSet: typeof ColumnSet
         TableName: typeof TableName
 
-        _TN: (data: TemplateStringsArray | string, ...args: Array<any>) => ITable
+        _TN(data: TemplateStringsArray, ...args: Array<any>): ITable
+        _TN(s: string) :ITable
     }
 
     interface IGenericPromise {
