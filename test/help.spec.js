@@ -982,5 +982,17 @@ describe('_TN', () => {
             expect(helpers._TN`${schema}.${table}`).toEqual({schema: 'ss', table: 'tt'});
             expect(helpers._TN`${schema}.${table}.`).toEqual({schema: 'ss', table: 'tt'});
         });
+        it('must support null parameters', () => {
+            const schema = null, table = null;
+            expect(helpers._TN`${schema}.${table}`).toEqual({table: ''});
+            expect(helpers._TN`ss.${table}`).toEqual({schema: 'ss', table: ''});
+            expect(helpers._TN`${schema}.tt`).toEqual({table: 'tt'});
+        });
+        it('must support undefined parameters', () => {
+            const schema = undefined, table = undefined;
+            expect(helpers._TN`${schema}.${table}`).toEqual({table: ''});
+            expect(helpers._TN`ss.${table}`).toEqual({schema: 'ss', table: ''});
+            expect(helpers._TN`${schema}.tt`).toEqual({table: 'tt'});
+        });
     });
 });
