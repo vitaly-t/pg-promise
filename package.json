@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "11.7.1",
+  "version": "11.7.2",
   "description": "PostgreSQL interface for Node.js",
   "main": "lib/index.js",
   "typings": "typescript/pg-promise.d.ts",
