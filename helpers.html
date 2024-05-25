@@ -372,7 +372,7 @@
 
 <div class="description">
     <p>Table-Name helper function, to convert any <code>&quot;schema.table&quot;</code> string
-into <code>{schema, table}</code> object.</p>
+into <code>{schema, table}</code> object. It also works as a template-tag function.</p>
 </div>
 
 
@@ -465,7 +465,7 @@ into <code>{schema, table}</code> object.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const {ColumnSet, _TN} = pgp.helpers;// Using as a regular function:const cs1 = new ColumnSet(['id', 'name'], {table: _TN('schema.table')});// Using as a template-tag function:const cs2 = new ColumnSet(['id', 'name'], {table: _TN`schema.table`});</code></pre>
+    <pre class="prettyprint"><code>const {ColumnSet, _TN} = pgp.helpers;// Using as a regular function:const cs1 = new ColumnSet(['id', 'name'], {table: _TN('schema.table')});// Using as a template-tag function:const schema = 'schema';const cs2 = new ColumnSet(['id', 'name'], {table: _TN`${schema}.table`});</code></pre>
 
 
 
