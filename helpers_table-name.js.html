@@ -168,18 +168,22 @@ npm.utils.addInspection(TableName, function () {
 /**
  * @function helpers._TN
  * @description
- * Table-Name template tag function, to convert any `"schema.table"` string
+ * Table-Name helper function, to convert any `"schema.table"` string
  * into `{schema, table}` object.
  *
  * @example
  * const {ColumnSet, _TN} = pgp.helpers;
  *
- * const cs = new ColumnSet(['id', 'name'], {table: _TN`schema.table`});
+ * // Using as a regular function:
+ * const cs1 = new ColumnSet(['id', 'name'], {table: _TN('schema.table')});
+ *
+ * // Using as a template-tag function:
+ * const cs2 = new ColumnSet(['id', 'name'], {table: _TN`schema.table`});
  *
  * @returns {Table}
  */
-function _TN(data) {
-    const [schema, table] = data[0].split('.');
+function _TN(s) {
+    const [schema, table] = (s.raw ? s[0] : s).split('.');
     return table === undefined ? {table: schema} : {schema, table};
 }
 

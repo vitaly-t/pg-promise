@@ -111,7 +111,7 @@
 
             
 
-            <td class="description last"><p><a href="helpers.html#._TN">_TN</a> Table-Name template tag function.</p></td>
+            <td class="description last"><p><a href="helpers.html#._TN">_TN</a> Table-Name conversion function.</p></td>
         </tr>
 
     
@@ -371,7 +371,7 @@
 
 
 <div class="description">
-    <p>Table-Name template tag function, to convert any <code>&quot;schema.table&quot;</code> string
+    <p>Table-Name helper function, to convert any <code>&quot;schema.table&quot;</code> string
 into <code>{schema, table}</code> object.</p>
 </div>
 
@@ -465,7 +465,7 @@ into <code>{schema, table}</code> object.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const {ColumnSet, _TN} = pgp.helpers;const cs = new ColumnSet(['id', 'name'], {table: _TN`schema.table`});</code></pre>
+    <pre class="prettyprint"><code>const {ColumnSet, _TN} = pgp.helpers;// Using as a regular function:const cs1 = new ColumnSet(['id', 'name'], {table: _TN('schema.table')});// Using as a template-tag function:const cs2 = new ColumnSet(['id', 'name'], {table: _TN`schema.table`});</code></pre>
 
 
 
