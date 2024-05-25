@@ -927,3 +927,60 @@ describe('method \'concat\'', () => {
         });
     });
 });
+
+describe('_TN', () => {
+    describe('for strings', () => {
+        it('must support empty', () => {
+            expect(helpers._TN('')).toEqual({table: ''});
+            expect(helpers._TN('.')).toEqual({table: ''});
+            expect(helpers._TN('...')).toEqual({table: ''});
+        });
+        it('must ignore extras', () => {
+            expect(helpers._TN('a.b.c')).toEqual({schema: 'a', table: 'b'});
+        });
+        it('must support full names', () => {
+            expect(helpers._TN('ss.tt')).toEqual({schema: 'ss', table: 'tt'});
+        });
+        it('must support table-only', () => {
+            expect(helpers._TN('t1')).toEqual({table: 't1'});
+            expect(helpers._TN('.t2')).toEqual({table: 't2'});
+        });
+        it('must support schema-only', () => {
+            expect(helpers._TN('ss.')).toEqual({schema: 'ss', table: ''});
+        });
+    });
+    describe('for templates', () => {
+        it('must support empty', () => {
+            expect(helpers._TN``).toEqual({table: ''});
+            expect(helpers._TN`.`).toEqual({table: ''});
+            expect(helpers._TN`...`).toEqual({table: ''});
+        });
+        it('must ignore extras', () => {
+            expect(helpers._TN`a.b.c`).toEqual({schema: 'a', table: 'b'});
+        });
+        it('must support full names', () => {
+            expect(helpers._TN`ss.tt`).toEqual({schema: 'ss', table: 'tt'});
+        });
+        it('must support table-only', () => {
+            expect(helpers._TN`t1`).toEqual({table: 't1'});
+            expect(helpers._TN`.t2`).toEqual({table: 't2'});
+        });
+        it('must support schema-only', () => {
+            expect(helpers._TN`ss.`).toEqual({schema: 'ss', table: ''});
+        });
+        it('must support schema-only parameter', () => {
+            const schema = 'ss';
+            expect(helpers._TN`${schema}.`).toEqual({schema: 'ss', table: ''});
+        });
+        it('must support table-only parameter', () => {
+            const table = 'tt';
+            expect(helpers._TN`${table}`).toEqual({table: 'tt'});
+            expect(helpers._TN`.${table}`).toEqual({table: 'tt'});
+        });
+        it('must support all parameters', () => {
+            const schema = 'ss', table = 'tt';
+            expect(helpers._TN`${schema}.${table}`).toEqual({schema: 'ss', table: 'tt'});
+            expect(helpers._TN`${schema}.${table}.`).toEqual({schema: 'ss', table: 'tt'});
+        });
+    });
+});
