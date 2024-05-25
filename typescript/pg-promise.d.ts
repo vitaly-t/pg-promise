@@ -130,8 +130,8 @@ declare namespace pgPromise {
     }
 
     interface ITable {
-        table: string
         schema?: string
+        table: string
     }
 
     interface IPromiseConfig {
@@ -207,7 +207,11 @@ declare namespace pgPromise {
 
         assign(source?: { source?: object, prefix?: string }): string
 
-        assignColumns(options?: { from?: string, to?: string, skip?: string | string[] | ((c: Column<T>) => boolean) }): string
+        assignColumns(options?: {
+            from?: string,
+            to?: string,
+            skip?: string | string[] | ((c: Column<T>) => boolean)
+        }): string
 
         extend<S>(columns: Column<T> | ColumnSet<T> | Array<string | IColumnConfig<T> | Column<T>>): ColumnSet<S>
 
@@ -382,7 +386,10 @@ declare namespace pgPromise {
         multi<T = any>(query: QueryParam, values?: any): XPromise<Array<T[]>>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#stream
-        stream(qs: NodeJS.ReadableStream, init: (stream: NodeJS.ReadableStream) => void): XPromise<{ processed: number, duration: number }>
+        stream(qs: NodeJS.ReadableStream, init: (stream: NodeJS.ReadableStream) => void): XPromise<{
+            processed: number,
+            duration: number
+        }>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#func
         func<T = any>(funcName: string, values?: any, qrm?: queryResult): XPromise<T>
@@ -410,7 +417,10 @@ declare namespace pgPromise {
 
         taskIf<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        taskIf<T = any>(options: { tag?: any, cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        taskIf<T = any>(options: {
+            tag?: any,
+            cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean)
+        }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Transactions;
         // API: https://vitaly-t.github.io/pg-promise/Database.html#tx
@@ -418,7 +428,10 @@ declare namespace pgPromise {
 
         tx<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        tx<T = any>(options: { tag?: any, mode?: _txMode.TransactionMode | null }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        tx<T = any>(options: {
+            tag?: any,
+            mode?: _txMode.TransactionMode | null
+        }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Conditional Transactions;
         // API: https://vitaly-t.github.io/pg-promise/Database.html#txIf
@@ -426,7 +439,12 @@ declare namespace pgPromise {
 
         txIf<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        txIf<T = any>(options: { tag?: any, mode?: _txMode.TransactionMode | null, reusable?: boolean | ((t: ITask<Ext> & Ext) => boolean), cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean) }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        txIf<T = any>(options: {
+            tag?: any,
+            mode?: _txMode.TransactionMode | null,
+            reusable?: boolean | ((t: ITask<Ext> & Ext) => boolean),
+            cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean)
+        }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
     }
 
     // Database object in connected state;
@@ -656,7 +674,10 @@ declare namespace pgPromise {
 
         camelizeVar(text: string): string
 
-        enumSql(dir: string, options?: { recursive?: boolean, ignoreErrors?: boolean }, cb?: (file: string, name: string, path: string) => any): any
+        enumSql(dir: string, options?: {
+            recursive?: boolean,
+            ignoreErrors?: boolean
+        }, cb?: (file: string, name: string, path: string) => any): any
 
         taskArgs<T = {}>(args: IArguments): ITaskArguments<T>
     }
@@ -665,11 +686,19 @@ declare namespace pgPromise {
     // API: https://vitaly-t.github.io/pg-promise/helpers.html
     interface IHelpers {
 
-        concat(queries: Array<string | QueryFile | { query: string | QueryFile, values?: any, options?: IFormattingOptions }>): string
+        concat(queries: Array<string | QueryFile | {
+            query: string | QueryFile,
+            values?: any,
+            options?: IFormattingOptions
+        }>): string
 
         insert(data: object | object[], columns?: QueryColumns<any> | null, table?: string | ITable | TableName): string
 
-        update(data: object | object[], columns?: QueryColumns<any> | null, table?: string | ITable | TableName, options?: { tableAlias?: string, valueAlias?: string, emptyUpdate?: any }): any
+        update(data: object | object[], columns?: QueryColumns<any> | null, table?: string | ITable | TableName, options?: {
+            tableAlias?: string,
+            valueAlias?: string,
+            emptyUpdate?: any
+        }): any
 
         values(data: object | object[], columns?: QueryColumns<any> | null): string
 
@@ -678,6 +707,8 @@ declare namespace pgPromise {
         Column: typeof Column
         ColumnSet: typeof ColumnSet
         TableName: typeof TableName
+
+        _TN: (data: TemplateStringsArray) => ITable
     }
 
     interface IGenericPromise {
