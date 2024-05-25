@@ -185,10 +185,10 @@ npm.utils.addInspection(TableName, function () {
  */
 function _TN(a, ...args) {
     if (Array.isArray(a) &amp;&amp; a.raw) {
-        a = a.map((b, i) => b + (i &lt; args.length ? args[i] : '')).join('');
+        a = a.map((b, i) => b + (i &lt; args.length ? args[i] ?? '' : '')).join('');
     } // else 'a' is a string
     const [schema, table] = a.split('.');
-    if(table === undefined) {
+    if (table === undefined) {
         return {table: schema};
     }
     return schema ? {schema, table} : {table};
