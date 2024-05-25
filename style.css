@@ -10,10 +10,6 @@ html, body, section {
     background-color: #F0F0F0;
 }
 
-section {
-    margin-left: 10px;
-}
-
 pre.prettyprint:not(pre.source) {
     width: auto;
     border: 1px solid lightgrey;
