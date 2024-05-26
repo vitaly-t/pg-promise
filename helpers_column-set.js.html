@@ -115,8 +115,9 @@ const npm = {
  * // 6. Property 'amount' needs to be set to 100, if it is 0
  * // 7. Property 'total' must be skipped during updates, if 'amount' was 0, plus its
  * //    column name is 'total-val'
+ * const {ColumnSet} = pgp.helpers;
  *
- * const cs = new pgp.helpers.ColumnSet([
+ * const cs = new ColumnSet([
  *     '?id', // ColumnConfig equivalent: {name: 'id', cnd: true}
  *     'list:csv', // ColumnConfig equivalent: {name: 'list', mod: ':csv'}
  *     {
@@ -415,14 +416,14 @@ ColumnSet.prototype.assign = function (options) {
  *
  * @example
  *
- * const cs = new pgp.helpers.ColumnSet(['id', 'city', 'street']);
+ * const cs = new ColumnSet(['id', 'city', 'street']);
  *
  * cs.assignColumns({from: 'EXCLUDED', skip: 'id'})
  * //=> "city"=EXCLUDED."city","street"=EXCLUDED."street"
  *
  * @example
  *
- * const cs = new pgp.helpers.ColumnSet(['?id', 'city', 'street']);
+ * const cs = new ColumnSet(['?id', 'city', 'street']);
  *
  * cs.assignColumns({from: 'source', to: 'target', skip: c => c.cnd})
  * //=> target."city"=source."city",target."street"=source."street"
@@ -524,8 +525,9 @@ ColumnSet.prototype.extend = function (columns) {
  * @example
  *
  * const pgp = require('pg-promise')();
+ * const {ColumnSet} = pgp.helpers;
  *
- * const cs = new pgp.helpers.ColumnSet(['?one', 'two:json'], {table: 'my-table'});
+ * const cs = new ColumnSet(['?one', 'two:json'], {table: 'my-table'});
  * console.log(cs);
  * //=>
  * // ColumnSet {

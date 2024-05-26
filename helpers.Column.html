@@ -497,7 +497,7 @@ It is ignored when property <code>init</code> is set.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const pgp = require('pg-promise')({    capSQL: true // if you want all generated SQL capitalized});const Column = pgp.helpers.Column;// creating a column from just a name:const col1 = new Column('colName');console.log(col1);//=>// Column {//    name: "colName"// }// creating a column from a name + modifier:const col2 = new Column('colName:csv');console.log(col2);//=>// Column {//    name: "colName"//    mod: ":csv"// }// creating a column from a configurator:const col3 = new Column({    name: 'colName', // required    prop: 'propName', // optional    mod: '^', // optional    def: 123 // optional});console.log(col3);//=>// Column {//    name: "colName"//    prop: "propName"//    mod: "^"//    def: 123// }</code></pre>
+    <pre class="prettyprint"><code>const pgp = require('pg-promise')({    capSQL: true // if you want all generated SQL capitalized});const {Column} = pgp.helpers;// creating a column from just a name:const col1 = new Column('colName');console.log(col1);//=>// Column {//    name: "colName"// }// creating a column from a name + modifier:const col2 = new Column('colName:csv');console.log(col2);//=>// Column {//    name: "colName"//    mod: ":csv"// }// creating a column from a configurator:const col3 = new Column({    name: 'colName', // required    prop: 'propName', // optional    mod: '^', // optional    def: 123 // optional});console.log(col3);//=>// Column {//    name: "colName"//    prop: "propName"//    mod: "^"//    def: 123// }</code></pre>
 
 
 
@@ -736,7 +736,7 @@ It is ignored when property <code>init</code> is set.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const cs = new pgp.helpers.ColumnSet([    'id',    'coordinate:json',    {        name: 'places',        mod: ':csv',        cast: 'int[]'    }]);// cs.columns[0].variable = ${id}// cs.columns[1].variable = ${coordinate:json}// cs.columns[2].variable = ${places:csv}::int[]</code></pre>
+    <pre class="prettyprint"><code>const cs = new ColumnSet([    'id',    'coordinate:json',    {        name: 'places',        mod: ':csv',        cast: 'int[]'    }]);// cs.columns[0].variable = ${id}// cs.columns[1].variable = ${coordinate:json}// cs.columns[2].variable = ${places:csv}::int[]</code></pre>
 
 
 

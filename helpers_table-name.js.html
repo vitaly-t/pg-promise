@@ -118,8 +118,8 @@ class TableName {
  * $[Custom Type Formatting], based on $[Symbolic CTF], i.e. the actual method is available only via {@link external:Symbol Symbol}:
  *
  * ```js
- * const ctf = pgp.as.ctf; // Custom Type Formatting symbols namespace
- * const fullName = tn[ctf.toPostgres]; // tn = an object of type TableName
+ * const {toPostgres} = pgp.as.ctf; // Custom Type Formatting symbols namespace
+ * const fullName = tn[toPostgres]; // tn = an object of type TableName
  * ```
  *
  * This is a raw formatting type (`rawType = true`), i.e. when used as a query-formatting parameter, type `TableName`

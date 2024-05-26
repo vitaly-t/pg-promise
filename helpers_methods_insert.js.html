@@ -91,29 +91,32 @@ const npm = {
  * const pgp = require('pg-promise')({
  *    capSQL: true // if you want all generated SQL capitalized
  * });
+ * const {insert} = pgp.helpers;
  *
  * const dataSingle = {val: 123, msg: 'hello'};
  * const dataMulti = [{val: 123, msg: 'hello'}, {val: 456, msg: 'world!'}];
  *
  * // Column details can be taken from the data object:
  *
- * pgp.helpers.insert(dataSingle, null, 'my-table');
+ * insert(dataSingle, null, 'my-table');
  * //=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello')
  *
  * @example
  *
  * // Column details are required for a multi-row `INSERT`:
+ * const {insert} = pgp.helpers;
  *
- * pgp.helpers.insert(dataMulti, ['val', 'msg'], 'my-table');
+ * insert(dataMulti, ['val', 'msg'], 'my-table');
  * //=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')
  *
  * @example
  *
  * // Column details from a reusable ColumnSet (recommended for performance):
+ * const {ColumnSet, insert} = pgp.helpers;
  *
- * const cs = new pgp.helpers.ColumnSet(['val', 'msg'], {table: 'my-table'});
+ * const cs = new ColumnSet(['val', 'msg'], {table: 'my-table'});
  *
- * pgp.helpers.insert(dataMulti, cs);
+ * insert(dataMulti, cs);
  * //=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')
  *
  */

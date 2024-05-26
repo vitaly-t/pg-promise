@@ -116,6 +116,7 @@ const npm = {
  * const pgp = require('pg-promise')({
  *    capSQL: true // if you want all generated SQL capitalized
  * });
+ * const {update} = pgp.helpers;
  *
  * const dataSingle = {id: 1, val: 123, msg: 'hello'};
  * const dataMulti = [{id: 1, val: 123, msg: 'hello'}, {id: 2, val: 456, msg: 'world!'}];
@@ -123,7 +124,7 @@ const npm = {
  * // Although column details can be taken from the data object, it is not
  * // a likely scenario for an update, unless updating the whole table:
  *
- * pgp.helpers.update(dataSingle, null, 'my-table');
+ * update(dataSingle, null, 'my-table');
  * //=> UPDATE "my-table" SET "id"=1,"val"=123,"msg"='hello'
  *
  * @example
@@ -133,7 +134,7 @@ const npm = {
  * // Dynamic conditions must be escaped/formatted properly:
  * const condition = pgp.as.format(' WHERE id = ${id}', dataSingle);
  *
- * pgp.helpers.update(dataSingle, ['val', 'msg'], 'my-table') + condition;
+ * update(dataSingle, ['val', 'msg'], 'my-table') + condition;
  * //=> UPDATE "my-table" SET "val"=123,"msg"='hello' WHERE id = 1
  *
  * @example
@@ -141,17 +142,18 @@ const npm = {
  * // Column details are required for a multi-row `UPDATE`;
  * // Adding '?' in front of a column name means it is only for a WHERE condition:
  *
- * pgp.helpers.update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v.id = t.id';
+ * update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v.id = t.id';
  * //=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))
  * //   AS v("id","val","msg") WHERE v.id = t.id
  *
  * @example
  *
  * // Column details from a reusable ColumnSet (recommended for performance):
+ * const {ColumnSet, update} = pgp.helpers;
  *
- * const cs = new pgp.helpers.ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});
+ * const cs = new ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});
  *
- * pgp.helpers.update(dataMulti, cs) + ' WHERE v.id = t.id';
+ * update(dataMulti, cs) + ' WHERE v.id = t.id';
  * //=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))
  * //   AS v("id","val","msg") WHERE v.id = t.id
  *
@@ -159,16 +161,17 @@ const npm = {
  *
  * // Using parameter `options` to change the default alias names:
  *
- * pgp.helpers.update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.id = X.id';
+ * update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.id = X.id';
  * //=> UPDATE "my-table" AS X SET "val"=Y."val","msg"=Y."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))
  * //   AS Y("id","val","msg") WHERE Y.id = X.id
  *
  * @example
  *
  * // Handling an empty update
+ * const {ColumnSet, update} = pgp.helpers;
  *
- * const cs = new pgp.helpers.ColumnSet(['?id', '?name'], {table: 'tt'}); // no actual update-able columns
- * const result = pgp.helpers.update(dataMulti, cs, null, {emptyUpdate: 123});
+ * const cs = new ColumnSet(['?id', '?name'], {table: 'tt'}); // no actual update-able columns
+ * const result = update(dataMulti, cs, null, {emptyUpdate: 123});
  * if(result === 123) {
  *    // We know the update is empty, i.e. no columns that can be updated;
  *    // And it didn't throw because we specified `emptyUpdate` option.

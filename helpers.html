@@ -974,11 +974,11 @@ will throw <a href="external-Error.html">Error</a> = <code>Table name is unknown
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>const pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});const dataSingle = {val: 123, msg: 'hello'};const dataMulti = [{val: 123, msg: 'hello'}, {val: 456, msg: 'world!'}];// Column details can be taken from the data object:pgp.helpers.insert(dataSingle, null, 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello')</code></pre>
+    <pre class="prettyprint"><code>const pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});const {insert} = pgp.helpers;const dataSingle = {val: 123, msg: 'hello'};const dataMulti = [{val: 123, msg: 'hello'}, {val: 456, msg: 'world!'}];// Column details can be taken from the data object:insert(dataSingle, null, 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello')</code></pre>
 
-    <pre class="prettyprint"><code>// Column details are required for a multi-row `INSERT`:pgp.helpers.insert(dataMulti, ['val', 'msg'], 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
+    <pre class="prettyprint"><code>// Column details are required for a multi-row `INSERT`:const {insert} = pgp.helpers;insert(dataMulti, ['val', 'msg'], 'my-table');//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
 
-    <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance):const cs = new pgp.helpers.ColumnSet(['val', 'msg'], {table: 'my-table'});pgp.helpers.insert(dataMulti, cs);//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
+    <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance):const {ColumnSet, insert} = pgp.helpers;const cs = new ColumnSet(['val', 'msg'], {table: 'my-table'});insert(dataMulti, cs);//=> INSERT INTO "my-table"("val","msg") VALUES(123,'hello'),(456,'world!')</code></pre>
 
 
 
@@ -1208,7 +1208,7 @@ to be used as part of a query.</p>
     
     <pre class="prettyprint"><code>const pgp = require('pg-promise')();const data = {id: 1, val: 123, msg: 'hello'};// Properties can be pulled automatically from the object:pgp.helpers.sets(data);//=> "id"=1,"val"=123,"msg"='hello'</code></pre>
 
-    <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance);// NOTE: Conditional columns (start with '?') are skipped:const cs = new pgp.helpers.ColumnSet(['?id','val', 'msg']);pgp.helpers.sets(data, cs);//=> "val"=123,"msg"='hello'</code></pre>
+    <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance);// NOTE: Conditional columns (start with '?') are skipped:const {ColumnSet, sets} = pgp.helpers;const cs = new ColumnSet(['?id','val', 'msg']);sets(data, cs);//=> "val"=123,"msg"='hello'</code></pre>
 
 
 
@@ -1669,17 +1669,17 @@ to which the option was set.</p>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>const pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});const dataSingle = {id: 1, val: 123, msg: 'hello'};const dataMulti = [{id: 1, val: 123, msg: 'hello'}, {id: 2, val: 456, msg: 'world!'}];// Although column details can be taken from the data object, it is not// a likely scenario for an update, unless updating the whole table:pgp.helpers.update(dataSingle, null, 'my-table');//=> UPDATE "my-table" SET "id"=1,"val"=123,"msg"='hello'</code></pre>
+    <pre class="prettyprint"><code>const pgp = require('pg-promise')({   capSQL: true // if you want all generated SQL capitalized});const {update} = pgp.helpers;const dataSingle = {id: 1, val: 123, msg: 'hello'};const dataMulti = [{id: 1, val: 123, msg: 'hello'}, {id: 2, val: 456, msg: 'world!'}];// Although column details can be taken from the data object, it is not// a likely scenario for an update, unless updating the whole table:update(dataSingle, null, 'my-table');//=> UPDATE "my-table" SET "id"=1,"val"=123,"msg"='hello'</code></pre>
 
-    <pre class="prettyprint"><code>// A typical single-object update:// Dynamic conditions must be escaped/formatted properly:const condition = pgp.as.format(' WHERE id = ${id}', dataSingle);pgp.helpers.update(dataSingle, ['val', 'msg'], 'my-table') + condition;//=> UPDATE "my-table" SET "val"=123,"msg"='hello' WHERE id = 1</code></pre>
+    <pre class="prettyprint"><code>// A typical single-object update:// Dynamic conditions must be escaped/formatted properly:const condition = pgp.as.format(' WHERE id = ${id}', dataSingle);update(dataSingle, ['val', 'msg'], 'my-table') + condition;//=> UPDATE "my-table" SET "val"=123,"msg"='hello' WHERE id = 1</code></pre>
 
-    <pre class="prettyprint"><code>// Column details are required for a multi-row `UPDATE`;// Adding '?' in front of a column name means it is only for a WHERE condition:pgp.helpers.update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
+    <pre class="prettyprint"><code>// Column details are required for a multi-row `UPDATE`;// Adding '?' in front of a column name means it is only for a WHERE condition:update(dataMulti, ['?id', 'val', 'msg'], 'my-table') + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
 
-    <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance):const cs = new pgp.helpers.ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});pgp.helpers.update(dataMulti, cs) + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
+    <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance):const {ColumnSet, update} = pgp.helpers;const cs = new ColumnSet(['?id', 'val', 'msg'], {table: 'my-table'});update(dataMulti, cs) + ' WHERE v.id = t.id';//=> UPDATE "my-table" AS t SET "val"=v."val","msg"=v."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS v("id","val","msg") WHERE v.id = t.id</code></pre>
 
-    <pre class="prettyprint"><code>// Using parameter `options` to change the default alias names:pgp.helpers.update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.id = X.id';//=> UPDATE "my-table" AS X SET "val"=Y."val","msg"=Y."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS Y("id","val","msg") WHERE Y.id = X.id</code></pre>
+    <pre class="prettyprint"><code>// Using parameter `options` to change the default alias names:update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.id = X.id';//=> UPDATE "my-table" AS X SET "val"=Y."val","msg"=Y."msg" FROM (VALUES(1,123,'hello'),(2,456,'world!'))//   AS Y("id","val","msg") WHERE Y.id = X.id</code></pre>
 
-    <pre class="prettyprint"><code>// Handling an empty updateconst cs = new pgp.helpers.ColumnSet(['?id', '?name'], {table: 'tt'}); // no actual update-able columnsconst result = pgp.helpers.update(dataMulti, cs, null, {emptyUpdate: 123});if(result === 123) {   // We know the update is empty, i.e. no columns that can be updated;   // And it didn't throw because we specified `emptyUpdate` option.}</code></pre>
+    <pre class="prettyprint"><code>// Handling an empty updateconst {ColumnSet, update} = pgp.helpers;const cs = new ColumnSet(['?id', '?name'], {table: 'tt'}); // no actual update-able columnsconst result = update(dataMulti, cs, null, {emptyUpdate: 123});if(result === 123) {   // We know the update is empty, i.e. no columns that can be updated;   // And it didn't throw because we specified `emptyUpdate` option.}</code></pre>
 
 
 
@@ -1922,7 +1922,7 @@ of objects, the method will throw <a href="external-TypeError.html">TypeError</a
 
     <pre class="prettyprint"><code>// Column details are required when using an array of objects:pgp.helpers.values(dataMulti, ['val', 'msg']);//=> (123,'hello'),(456,'world!')</code></pre>
 
-    <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance):const cs = new pgp.helpers.ColumnSet(['val', 'msg']);pgp.helpers.values(dataMulti, cs);//=> (123,'hello'),(456,'world!')</code></pre>
+    <pre class="prettyprint"><code>// Column details from a reusable ColumnSet (recommended for performance):const {ColumnSet, values} = pgp.helpers;const cs = new ColumnSet(['val', 'msg']);values(dataMulti, cs);//=> (123,'hello'),(456,'world!')</code></pre>
 
 
 
