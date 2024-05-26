@@ -156,7 +156,6 @@ npm.utils.addInspection(TableName, function () {
 });
 
 /**
- *
  * @interface Table
  * @description
  * Structure for any table name/path.
@@ -170,10 +169,18 @@ npm.utils.addInspection(TableName, function () {
  */
 
 /**
+ * @external TemplateStringsArray
+ * @see https://microsoft.github.io/PowerBI-JavaScript/interfaces/_node_modules_typedoc_node_modules_typescript_lib_lib_es5_d_.templatestringsarray.html
+ */
+
+/**
  * @function helpers._TN
  * @description
  * Table-Name helper function, to convert any `"schema.table"` string
  * into `{schema, table}` object. It also works as a template-tag function.
+ *
+ * @param {string|TemplateStringsArray} path
+ * Table-name path, as a simple string or a template string (with parameters).
  *
  * @example
  * const {ColumnSet, _TN} = pgp.helpers;
@@ -187,13 +194,13 @@ npm.utils.addInspection(TableName, function () {
  *
  * @returns {Table}
  *
- * @see {@link helpers.TableName TableName}
+ * @see {@link helpers.TableName TableName}, {@link external:TemplateStringsArray TemplateStringsArray}
  */
-function _TN(a, ...args) {
-    if (Array.isArray(a) &amp;&amp; a.raw) {
-        a = a.map((b, i) => b + (i &lt; args.length ? args[i] ?? '' : '')).join('');
-    } // else 'a' is a string
-    const [schema, table] = a.split('.');
+function _TN(path, ...args) {
+    if (Array.isArray(path) &amp;&amp; path.raw) {
+        path = path.map((b, i) => b + (i &lt; args.length ? args[i] ?? '' : '')).join('');
+    } // else 'path' is a string
+    const [schema, table] = path.split('.');
     if (table === undefined) {
         return {table: schema};
     }
