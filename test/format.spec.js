@@ -1350,32 +1350,32 @@ describe('Custom Type Formatting', () => {
     });
 
     describe('for pre-defined ctf symbols', () => {
-        const ctf = pgp.as.ctf;
+        const {toPostgres, rawType} = pgp.as.ctf;
         it('must recognize symbolic ctf', () => {
-            expect(pgp.as.format('$1', {[ctf.toPostgres]: () => 'ok'})).toBe('\'ok\'');
+            expect(pgp.as.format('$1', {[toPostgres]: () => 'ok'})).toBe('\'ok\'');
         });
         it('must recognize symbolic ctf for simple types', () => {
             const value = 0;
-            Number.prototype[ctf.toPostgres] = () => 'ok';
+            Number.prototype[toPostgres] = () => 'ok';
             expect(pgp.as.format('$1', value)).toBe('\'ok\'');
-            delete Number.prototype[ctf.toPostgres];
+            delete Number.prototype[toPostgres];
         });
         it('must support symbolic rawType', () => {
-            expect(pgp.as.format('$1', {[ctf.toPostgres]: () => 'ok', [ctf.rawType]: true})).toBe('ok');
+            expect(pgp.as.format('$1', {[toPostgres]: () => 'ok', [rawType]: true})).toBe('ok');
         });
         it('must ignore explicit rawType for symbolic ctf', () => {
-            expect(pgp.as.format('$1', {[ctf.toPostgres]: () => 'ok', rawType: true})).toBe('\'ok\'');
+            expect(pgp.as.format('$1', {[toPostgres]: () => 'ok', rawType: true})).toBe('\'ok\'');
         });
         it('must ignore symbolic rawType for explicit ctf', () => {
-            expect(pgp.as.format('$1', {toPostgres: () => 'ok', [ctf.rawType]: true})).toBe('\'ok\'');
+            expect(pgp.as.format('$1', {toPostgres: () => 'ok', [rawType]: true})).toBe('\'ok\'');
         });
     });
 
     describe('for global ctf symbols', () => {
-        const ctf = pgp.as.ctf;
+        const {toPostgres, rawType} = pgp.as.ctf;
         it('must be equal the pre-defined symbols', () => {
-            expect(Symbol.for('ctf.toPostgres')).toBe(ctf.toPostgres);
-            expect(Symbol.for('ctf.rawType')).toBe(ctf.rawType);
+            expect(Symbol.for('ctf.toPostgres')).toBe(toPostgres);
+            expect(Symbol.for('ctf.rawType')).toBe(rawType);
         });
     });
 
