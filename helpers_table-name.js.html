@@ -198,7 +198,8 @@ npm.utils.addInspection(TableName, function () {
  */
 function _TN(path, ...args) {
     if (Array.isArray(path) &amp;&amp; path.raw) {
-        path = path.map((b, i) => b + (i &lt; args.length ? args[i] ?? '' : '')).join('');
+        const v = i => i &lt; args.length ? args[i] ?? '' : '';
+        path = path.reduce((a, c, i) => a + c + v(i), '');
     } // else 'path' is a string
     const [schema, table] = path.split('.');
     if (table === undefined) {
