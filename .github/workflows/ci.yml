@@ -79,8 +79,8 @@ jobs:
         run: npm install
       - name: Initialize Database
         run: npm run test:init
-      - name: Test and Coverage
-        run: npm run coverage
+      - name: Tests
+        run: npm test
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
