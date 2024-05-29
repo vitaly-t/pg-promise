@@ -197,9 +197,8 @@ npm.utils.addInspection(TableName, function () {
  * @see {@link helpers.TableName TableName}, {@link external:TemplateStringsArray TemplateStringsArray}
  */
 function _TN(path, ...args) {
-    if (Array.isArray(path) &amp;&amp; path.raw) {
-        const v = i => i &lt; args.length ? args[i] ?? '' : '';
-        path = path.reduce((a, c, i) => a + c + v(i), '');
+    if (Array.isArray(path)) {
+        path = path.reduce((a, c, i) => a + c + (args[i] ?? ''), '');
     } // else 'path' is a string
     const [schema, table] = path.split('.');
     if (table === undefined) {
