@@ -1,5 +1,7 @@
 import * as pgPromise from '../../typescript/pg-promise';
 
+import {ITaskIfOptions, ITxIfOptions} from '../../typescript/pg-promise';
+
 const pgp: pgPromise.IMain = pgPromise();
 const db: pgPromise.IDatabase<any> = pgp('connection');
 
@@ -39,10 +41,21 @@ db.task<number>(t => {
     .then(data => {
     });
 
-db.taskIf<boolean>({cnd: true, tag: 123}, t => {
-    return true;
+const res = db.taskIf({cnd: true, tag: 123}, t => {
+    return 123;
 });
 
-db.txIf<boolean>({cnd: true, tag: 123, mode: null, reusable: true}, t => {
+type TestExt = {
+    bla(): any;
+}
+
+const txOpt: ITxIfOptions<TestExt> = {
+    cnd: ctx => {
+        return true
+    }, tag: 123, mode: null, reusable: true
+};
+
+const res1 = db.txIf(txOpt, async t => {
+    const w = t.bla();
     return true;
 });

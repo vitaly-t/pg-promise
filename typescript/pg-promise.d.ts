@@ -349,6 +349,16 @@ declare namespace pgPromise {
         readonly ctx: ITaskContext
     }
 
+    interface ITaskIfOptions<Ext = {}> {
+        cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean)
+        tag?: any
+    }
+
+    interface ITxIfOptions<Ext = {}> extends ITaskIfOptions<Ext> {
+        mode?: _txMode.TransactionMode | null
+        reusable?: boolean | ((t: ITask<Ext> & Ext) => boolean)
+    }
+
     // Base database protocol
     // API: https://vitaly-t.github.io/pg-promise/Database.html
     interface IBaseProtocol<Ext> {
@@ -405,46 +415,38 @@ declare namespace pgPromise {
 
         // Tasks;
         // API: https://vitaly-t.github.io/pg-promise/Database.html#task
-        task<T = any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        task<T>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        task<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        task<T>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        task<T = any>(options: { tag?: any }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        task<T>(options: { tag?: any }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Conditional Tasks;
         // API: https://vitaly-t.github.io/pg-promise/Database.html#taskIf
-        taskIf<T = any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        taskIf<T>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        taskIf<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        taskIf<T>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        taskIf<T = any>(options: {
-            tag?: any,
-            cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean)
-        }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        taskIf<T>(options: ITaskIfOptions<Ext>, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Transactions;
         // API: https://vitaly-t.github.io/pg-promise/Database.html#tx
-        tx<T = any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        tx<T>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        tx<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        tx<T>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        tx<T = any>(options: {
+        tx<T>(options: {
             tag?: any,
             mode?: _txMode.TransactionMode | null
         }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
         // Conditional Transactions;
         // API: https://vitaly-t.github.io/pg-promise/Database.html#txIf
-        txIf<T = any>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        txIf<T>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        txIf<T = any>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        txIf<T>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
 
-        txIf<T = any>(options: {
-            tag?: any,
-            mode?: _txMode.TransactionMode | null,
-            reusable?: boolean | ((t: ITask<Ext> & Ext) => boolean),
-            cnd?: boolean | ((t: ITask<Ext> & Ext) => boolean)
-        }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        txIf<T>(options: ITxIfOptions<Ext>, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
     }
 
     // Database object in connected state;
@@ -709,7 +711,8 @@ declare namespace pgPromise {
         TableName: typeof TableName
 
         _TN(path: TemplateStringsArray, ...args: Array<any>): ITable
-        _TN(path: string) :ITable
+
+        _TN(path: string): ITable
     }
 
     interface IGenericPromise {

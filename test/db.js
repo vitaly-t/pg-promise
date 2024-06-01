@@ -16,7 +16,7 @@ const options = {
 };
 const dbHeader = header(options);
 const pgp = dbHeader.pgp;
-const dbSpec = dbHeader.db;
+const db = dbHeader.db;
 
 const dummy = () => {
     // dummy/empty function;
@@ -59,7 +59,7 @@ describe('Connection', () => {
     describe('with default parameters', () => {
         let status = 'connecting', error, doneRes;
         beforeEach(done => {
-            dbSpec.connect()
+            db.connect()
                 .then(obj => {
                     status = 'success';
                     doneRes = obj.done(); // release connection;
@@ -83,7 +83,7 @@ describe('Connection', () => {
     describe('for regular queries', () => {
         let result, sco;
         beforeEach(done => {
-            dbSpec.connect()
+            db.connect()
                 .then(obj => {
                     sco = obj;
                     return sco.one('select count(*) from users');
@@ -115,7 +115,7 @@ describe('Connection', () => {
     describe('for raw queries', () => {
         let result, sco;
         beforeEach(done => {
-            dbSpec.connect()
+            db.connect()
                 .then(obj => {
                     sco = obj;
                     return sco.result('select * from users');
@@ -224,7 +224,7 @@ describe('Connection', () => {
     describe('direct end() call', () => {
         let txt;
         beforeEach(done => {
-            dbSpec.connect()
+            db.connect()
                 .then(obj => {
                     const c = capture();
                     obj.client.end(true);
@@ -292,7 +292,7 @@ describe('Connection', () => {
     describe('on repeated disconnection', () => {
         let error;
         beforeEach(done => {
-            dbSpec.connect()
+            db.connect()
                 .then(obj => {
                     obj.done(); // disconnecting;
                     try {
@@ -315,7 +315,7 @@ describe('Connection', () => {
     describe('when executing a disconnected query', () => {
         let error;
         beforeEach(done => {
-            dbSpec.connect()
+            db.connect()
                 .then(obj => {
                     obj.done(); // disconnecting;
                     return obj.query(); // invalid disconnected query;
@@ -366,7 +366,7 @@ describe('Connection', () => {
                                         error = reason;
                                     }), // Terminate connection after a short delay, before the query finishes
                                 promise.delay(1000)
-                                    .then(() => dbSpec.one('SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid))])
+                                    .then(() => db.one('SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid))])
                                     .finally(() => {
                                         obj.done(error);
                                         done();
@@ -406,7 +406,7 @@ describe('Direct Connection', () => {
     describe('successful connection', () => {
         let sco, doneRes;
         beforeEach(done => {
-            dbSpec.connect({direct: true})
+            db.connect({direct: true})
                 .then(obj => {
                     sco = obj;
                     doneRes = sco.done();
@@ -422,7 +422,7 @@ describe('Direct Connection', () => {
     describe('direct end() call', () => {
         let txt;
         beforeEach(done => {
-            dbSpec.connect({direct: true})
+            db.connect({direct: true})
                 .then(obj => {
                     const c = capture();
                     obj.client.end();
@@ -523,7 +523,7 @@ describe('Method \'map\'', () => {
     describe('positive:', () => {
         let pValue, pIndex, pArr, pData;
         beforeEach(done => {
-            dbSpec.map('SELECT 1 as value', null, (value, index, arr) => {
+            db.map('SELECT 1 as value', null, (value, index, arr) => {
                 pValue = value;
                 pIndex = index;
                 pArr = arr;
@@ -547,7 +547,7 @@ describe('Method \'map\'', () => {
         describe('with invalid parameters', () => {
             let err;
             beforeEach(done => {
-                dbSpec.map('SELECT 1')
+                db.map('SELECT 1')
                     .catch(error => {
                         err = error;
                     })
@@ -562,7 +562,7 @@ describe('Method \'map\'', () => {
         describe('with error thrown inside the callback', () => {
             let err;
             beforeEach(done => {
-                dbSpec.map('SELECT 1', null, () => {
+                db.map('SELECT 1', null, () => {
                     throw new Error('Ops!');
                 })
                     .catch(error => {
@@ -583,7 +583,7 @@ describe('Method \'each\'', () => {
     describe('positive:', () => {
         let pValue, pIndex, pArr, pData;
         beforeEach(done => {
-            dbSpec.each('SELECT 1 as value', null, (value, index, arr) => {
+            db.each('SELECT 1 as value', null, (value, index, arr) => {
                 pValue = value;
                 pIndex = index;
                 pArr = arr;
@@ -607,7 +607,7 @@ describe('Method \'each\'', () => {
         describe('with invalid parameters', () => {
             let err;
             beforeEach(done => {
-                dbSpec.each('SELECT 1')
+                db.each('SELECT 1')
                     .catch(error => {
                         err = error;
                     })
@@ -622,7 +622,7 @@ describe('Method \'each\'', () => {
         describe('with error thrown inside the callback', () => {
             let err;
             beforeEach(done => {
-                dbSpec.each('SELECT 1', null, () => {
+                db.each('SELECT 1', null, () => {
                     throw new Error('Ops!');
                 })
                     .catch(error => {
@@ -642,7 +642,7 @@ describe('Method \'none\'', () => {
 
     it('must resolve with \'null\'', () => {
         let result, error, finished;
-        dbSpec.none('select * from users where id = $1', 12345678)
+        db.none('select * from users where id = $1', 12345678)
             .then(data => {
                 result = data;
             })
@@ -663,7 +663,7 @@ describe('Method \'none\'', () => {
 
         it('must reject for a single query', () => {
             let result, error, finished;
-            dbSpec.none('select * from users')
+            db.none('select * from users')
                 .then(data => {
                     result = data;
                 })
@@ -685,7 +685,7 @@ describe('Method \'none\'', () => {
 
         it('must reject for multi-queries', () => {
             let result, error, finished;
-            dbSpec.none('select 1; select * from users')
+            db.none('select 1; select * from users')
                 .then(data => {
                     result = data;
                 })
@@ -713,7 +713,7 @@ describe('Method \'one\'', () => {
 
     it('must resolve with one object', () => {
         let result, error;
-        dbSpec.one('select 123 as value')
+        db.one('select 123 as value')
             .then(data => {
                 result = data;
             })
@@ -734,7 +734,7 @@ describe('Method \'one\'', () => {
     describe('value transformation', () => {
         let result, context;
         beforeEach(done => {
-            dbSpec.one('select count(*) from users', null, function (value) {
+            db.one('select count(*) from users', null, function (value) {
                 'use strict';
                 // NOTE: Outside the strict mode, only objects can be passed in as this context
                 context = this;
@@ -756,7 +756,7 @@ describe('Method \'one\'', () => {
 
         it('must reject for a single query', () => {
             let result, error, finished;
-            dbSpec.one('select * from users where id = $1', 12345678)
+            db.one('select * from users where id = $1', 12345678)
                 .then(data => {
                     result = data;
                 })
@@ -777,7 +777,7 @@ describe('Method \'one\'', () => {
 
         it('must reject for a multi-query', () => {
             let result, error, finished;
-            dbSpec.one('select 1; select * from users where id = $1', 12345678)
+            db.one('select 1; select * from users where id = $1', 12345678)
                 .then(data => {
                     result = data;
                 })
@@ -801,7 +801,7 @@ describe('Method \'one\'', () => {
     describe('When multiple rows are found', () => {
         it('must reject for a single query', () => {
             let result, error, finished;
-            dbSpec.one('select * from users')
+            db.one('select * from users')
                 .then(data => {
                     result = data;
                 })
@@ -821,7 +821,7 @@ describe('Method \'one\'', () => {
         });
         it('must reject for a multi-query', () => {
             let result, error, finished;
-            dbSpec.one('select 1; select * from users')
+            db.one('select 1; select * from users')
                 .then(data => {
                     result = data;
                 })
@@ -848,7 +848,7 @@ describe('Method \'oneOrNone\'', () => {
 
     it('must resolve with one object when found', () => {
         let result, error;
-        dbSpec.oneOrNone('select * from users where id = $1', 1)
+        db.oneOrNone('select * from users where id = $1', 1)
             .then(data => {
                 result = data;
             })
@@ -868,7 +868,7 @@ describe('Method \'oneOrNone\'', () => {
 
     it('must resolve with null when no data found', () => {
         let result, error, finished;
-        dbSpec.oneOrNone('select * from users where id = $1', 12345678)
+        db.oneOrNone('select * from users where id = $1', 12345678)
             .then(data => {
                 result = data;
                 finished = true;
@@ -888,7 +888,7 @@ describe('Method \'oneOrNone\'', () => {
     describe('value transformation', () => {
         let result, context;
         beforeEach(done => {
-            dbSpec.oneOrNone('select count(*) from users', null, function (value) {
+            db.oneOrNone('select count(*) from users', null, function (value) {
                 'use strict';
                 // NOTE: Outside strict mode, only objects can be passed in as this context
                 context = this;
@@ -908,7 +908,7 @@ describe('Method \'oneOrNone\'', () => {
 
     it('must reject when multiple rows are found', () => {
         let result, error, finished;
-        dbSpec.oneOrNone('select * from users')
+        db.oneOrNone('select * from users')
             .then(data => {
                 result = data;
                 finished = true;
@@ -932,7 +932,7 @@ describe('Method \'many\'', () => {
 
     it('must resolve with array of objects', () => {
         let result, error;
-        dbSpec.many('select * from users')
+        db.many('select * from users')
             .then(data => {
                 result = data;
             }, reason => {
@@ -951,7 +951,7 @@ describe('Method \'many\'', () => {
 
     it('must reject when no data found', () => {
         let result, error, finished;
-        dbSpec.many('select * from users where id = $1', 12345678)
+        db.many('select * from users where id = $1', 12345678)
             .then(data => {
                 result = data;
                 finished = true;
@@ -975,7 +975,7 @@ describe('Method \'manyOrNone\'', () => {
 
     it('must resolve with array of objects', () => {
         let result, error;
-        dbSpec.manyOrNone('select * from users')
+        db.manyOrNone('select * from users')
             .then(data => {
                 result = data;
             }, reason => {
@@ -994,7 +994,7 @@ describe('Method \'manyOrNone\'', () => {
 
     it('must resolve with an empty array when no data found', () => {
         let result, error, finished;
-        dbSpec.manyOrNone('select * from users where id = $1', 12345678)
+        db.manyOrNone('select * from users where id = $1', 12345678)
             .then(data => {
                 result = data;
                 finished = true;
@@ -1019,7 +1019,7 @@ describe('Executing method query', () => {
     describe('with invalid query as parameter', () => {
         let result;
         beforeEach(done => {
-            promise.any([dbSpec.query(), dbSpec.query(''), dbSpec.query('   '), dbSpec.query({}), dbSpec.query(1), dbSpec.query(null)])
+            promise.any([db.query(), db.query(''), db.query('   '), db.query({}), db.query(1), db.query(null)])
                 .catch(err => {
                     result = err;
                 })
@@ -1039,7 +1039,7 @@ describe('Executing method query', () => {
     describe('with invalid qrm as parameter', () => {
         let result;
         beforeEach(done => {
-            promise.any([dbSpec.query('something', undefined, ''), dbSpec.query('something', undefined, '2'), dbSpec.query('something', undefined, -1), dbSpec.query('something', undefined, 0), dbSpec.query('something', undefined, 100), dbSpec.query('something', undefined, NaN), dbSpec.query('something', undefined, 1 / 0), dbSpec.query('something', undefined, -1 / 0), dbSpec.query('something', undefined, 2.45)])
+            promise.any([db.query('something', undefined, ''), db.query('something', undefined, '2'), db.query('something', undefined, -1), db.query('something', undefined, 0), db.query('something', undefined, 100), db.query('something', undefined, NaN), db.query('something', undefined, 1 / 0), db.query('something', undefined, -1 / 0), db.query('something', undefined, 2.45)])
                 .catch(err => {
                     result = err;
                 })
@@ -1070,7 +1070,7 @@ describe('Executing method query', () => {
             let result;
 
             beforeEach(done => {
-                promise.all([dbSpec.query(getQuery1, [], pgp.queryResult.one), dbSpec.query(getQuery2, 456, pgp.queryResult.one), dbSpec.query(getQuery3, 789, pgp.queryResult.one)])
+                promise.all([db.query(getQuery1, [], pgp.queryResult.one), db.query(getQuery2, 456, pgp.queryResult.one), db.query(getQuery3, 789, pgp.queryResult.one)])
                     .then(data => {
                         result = data;
                     })
@@ -1094,7 +1094,7 @@ describe('Executing method query', () => {
                     query = e.query;
                     params = e.params;
                 };
-                dbSpec.query(throwError, 123)
+                db.query(throwError, 123)
                     .catch(err => {
                         error = err;
                     })
@@ -1121,7 +1121,7 @@ describe('Executing method query', () => {
                     query = e.query;
                     params = e.params;
                 };
-                dbSpec.query(invalidFunc, 123)
+                db.query(invalidFunc, 123)
                     .catch(err => {
                         error = err;
                     })
@@ -1151,7 +1151,7 @@ describe('Transactions', () => {
 
         let result, error, context, THIS, tag;
         beforeEach(done => {
-            dbSpec.tx('complex', function (t) {
+            db.tx('complex', function (t) {
                 tag = t.ctx.tag;
                 THIS = this;
                 context = t;
@@ -1184,7 +1184,7 @@ describe('Transactions', () => {
         let error, THIS, context, ctx;
         beforeEach(done => {
             options.capSQL = true;
-            dbSpec.tx(function (t) {
+            db.tx(function (t) {
                 THIS = this;
                 context = t;
                 return this.batch([this.none('update users set login=$1 where id = $2', ['TestName', 1]), this.tx(function () {
@@ -1212,7 +1212,7 @@ describe('Transactions', () => {
     describe('Detached Transaction', () => {
         let error;
         beforeEach(done => {
-            dbSpec.tx(t => {
+            db.tx(t => {
                 return t;
             })
                 .then(obj => {
@@ -1233,7 +1233,7 @@ describe('Transactions', () => {
     describe('bottom-level failure', () => {
         let result, nestError, THIS1, THIS2, context1, context2;
         beforeEach(done => {
-            dbSpec.tx(function (t1) {
+            db.tx(function (t1) {
                 THIS1 = this;
                 context1 = t1;
                 return this.batch([this.none('update users set login=$1', 'External'), this.tx(function (t2) {
@@ -1245,8 +1245,8 @@ describe('Transactions', () => {
             })
                 .then(dummy, reason => {
                     nestError = reason.data[1].result.data[1].result;
-                    return promise.all([dbSpec.one('select count(*) from users where login = $1', 'External'), // 0 is expected;
-                        dbSpec.one('select count(*) from users where login = $1', 'Internal') // 0 is expected;
+                    return promise.all([db.one('select count(*) from users where login = $1', 'External'), // 0 is expected;
+                        db.one('select count(*) from users where login = $1', 'Internal') // 0 is expected;
                     ]);
                 })
                 .then(data => {
@@ -1273,7 +1273,7 @@ describe('Transactions', () => {
     describe('top-level failure', () => {
         let result;
         beforeEach(done => {
-            dbSpec.tx(function () {
+            db.tx(function () {
                 return this.batch([this.none(`update users
                                               set login=$1
                                               where id = 1`, 'Test'), this.tx(function () {
@@ -1286,10 +1286,10 @@ describe('Transactions', () => {
                     });
             })
                 .then(dummy, () => {
-                    return promise.all([dbSpec.one(`select count(*)
+                    return promise.all([db.one(`select count(*)
                                                     from users
                                                     where login = $1`, 'Test'), // 0 is expected;
-                    dbSpec.one(`select count(*)
+                    db.one(`select count(*)
                                 from person
                                 where name = $1`, 'Test') // 0 is expected;
                     ]);
@@ -1311,7 +1311,7 @@ describe('Transactions', () => {
         describe('for a transaction', () => {
             let error;
             beforeEach(done => {
-                dbSpec.tx()
+                db.tx()
                     .catch(reason => {
                         error = reason;
                     })
@@ -1325,7 +1325,7 @@ describe('Transactions', () => {
         describe('for a task', () => {
             let error;
             beforeEach(done => {
-                dbSpec.task()
+                db.task()
                     .catch(reason => {
                         error = reason;
                     })
@@ -1344,7 +1344,7 @@ describe('Transactions', () => {
         const ctx = [];
         beforeEach(done => {
             options.capSQL = true;
-            dbSpec.tx(0, function () {
+            db.tx(0, function () {
                 ctx.push(this.ctx);
                 return this.tx(1, function () {
                     ctx.push(this.ctx);
@@ -1412,7 +1412,7 @@ describe('Transactions', () => {
             options.query = e => {
                 query = e.query;
             };
-            dbSpec.tx(() => {
+            db.tx(() => {
                 throw {
                     code: 'something'
                 };
@@ -1434,7 +1434,7 @@ describe('Transactions', () => {
     describe('Closing after a protocol violation', () => {
         let error, value;
         beforeEach(done => {
-            dbSpec.task(task => task.tx(tx => tx.one('select \'\u0000\''))
+            db.task(task => task.tx(tx => tx.one('select \'\u0000\''))
                 .then(() => {
                     throw new Error('expected error');
                 }, () => {
@@ -1457,7 +1457,7 @@ describe('Transactions', () => {
             options.query = e => {
                 query = e.query;
             };
-            dbSpec.tx(() => {
+            db.tx(() => {
                 throw {
                     code: 'ECONNRESET'
                 };
@@ -1498,7 +1498,7 @@ describe('Transactions', () => {
                 error = reason;
             }), // Terminate the connections during verify, which causes an 'error' event from the pool
             promise.delay(500).then(() => {
-                return dbSpec.query(`SELECT pg_terminate_backend(pid)
+                return db.query(`SELECT pg_terminate_backend(pid)
                                      FROM pg_stat_activity
                                      WHERE pid <> pg_backend_pid();`);
             })]).then(() => {
@@ -1529,7 +1529,7 @@ describe('Conditional Transaction', () => {
     describe('with default parameters', () => {
         let firstCtx, secondCtx;
         beforeEach(done => {
-            dbSpec.txIf(t => {
+            db.txIf(t => {
                 firstCtx = t.ctx;
                 return t.txIf(t2 => {
                     secondCtx = t2.ctx;
@@ -1547,7 +1547,7 @@ describe('Conditional Transaction', () => {
     describe('with condition simple override', () => {
         let firstCtx, secondCtx;
         beforeEach(done => {
-            dbSpec.txIf({cnd: false}, t => {
+            db.txIf({cnd: false}, t => {
                 firstCtx = t.ctx;
                 return t.txIf(t2 => {
                     secondCtx = t2.ctx;
@@ -1563,7 +1563,7 @@ describe('Conditional Transaction', () => {
     describe('with successful condition-function override', () => {
         let firstCtx, secondCtx;
         beforeEach(done => {
-            dbSpec.txIf({cnd: () => false}, t => {
+            db.txIf({cnd: () => false}, t => {
                 firstCtx = t.ctx;
                 return t.txIf({cnd: a => !a.ctx.inTransaction}, t2 => {
                     secondCtx = t2.ctx;
@@ -1584,7 +1584,7 @@ describe('Conditional Transaction', () => {
 
         let error;
         beforeEach(done => {
-            dbSpec.txIf({cnd: errorCondition}, () => {
+            db.txIf({cnd: errorCondition}, () => {
             })
                 .catch(err => {
                     error = err;
@@ -1601,7 +1601,7 @@ describe('Reusable Transaction', () => {
     describe('as value with default condition', () => {
         let ctx1, ctx2;
         beforeEach(done => {
-            dbSpec.tx(t1 => {
+            db.tx(t1 => {
                 ctx1 = t1.ctx;
                 return t1.txIf({reusable: true}, t2 => {
                     ctx2 = t2.ctx;
@@ -1616,7 +1616,7 @@ describe('Reusable Transaction', () => {
     describe('as value with true condition', () => {
         let ctx1, ctx2;
         beforeEach(done => {
-            dbSpec.tx('first', t1 => {
+            db.tx('first', t1 => {
                 ctx1 = t1.ctx;
                 return t1.txIf({tag: 'second', cnd: true, reusable: false}, t2 => {
                     ctx2 = t2.ctx;
@@ -1638,7 +1638,7 @@ describe('Reusable Transaction', () => {
 
         let ctx1, ctx2;
         beforeEach(done => {
-            dbSpec.tx(t1 => {
+            db.tx(t1 => {
                 ctx1 = t1.ctx;
                 return t1.txIf({reusable: getReusable}, t2 => {
                     ctx2 = t2.ctx;
@@ -1657,7 +1657,7 @@ describe('Reusable Transaction', () => {
 
         let error;
         beforeEach(done => {
-            dbSpec.tx(t => {
+            db.tx(t => {
                 return t.txIf({reusable: getReusable}, () => {
                 });
             })
@@ -1676,7 +1676,7 @@ describe('Conditional Task', () => {
     describe('with default parameters', () => {
         let firstCtx, secondCtx;
         beforeEach(done => {
-            dbSpec.taskIf(t => {
+            db.taskIf(t => {
                 firstCtx = t.ctx;
                 return t.taskIf(t2 => {
                     secondCtx = t2.ctx;
@@ -1691,7 +1691,7 @@ describe('Conditional Task', () => {
     describe('with successful condition-function override', () => {
         let firstCtx, secondCtx;
         beforeEach(done => {
-            dbSpec.taskIf({cnd: true}, t1 => {
+            db.taskIf({cnd: true}, t1 => {
                 firstCtx = t1.ctx;
                 return t1.taskIf({cnd: () => false}, t2 => {
                     secondCtx = t2.ctx;
@@ -1711,7 +1711,7 @@ describe('Conditional Task', () => {
 
         let error;
         beforeEach(done => {
-            dbSpec.taskIf({cnd: errorCondition}, () => {
+            db.taskIf({cnd: errorCondition}, () => {
             })
                 .catch(err => {
                     error = err;
@@ -1729,7 +1729,7 @@ describe('Return data from a query must match the request type', () => {
     describe('when no data returned', () => {
         let error;
         beforeEach(done => {
-            dbSpec.none(`select *
+            db.none(`select *
                          from person
                          where name = $1`, 'John')
                 .catch(err => {
@@ -1745,7 +1745,7 @@ describe('Return data from a query must match the request type', () => {
 
     it('method \'one\' must throw an error when there was no data returned', () => {
         let result, error;
-        dbSpec.one(`select *
+        db.one(`select *
                     from person
                     where name = $1`, 'Unknown')
             .then(data => {
@@ -1766,7 +1766,7 @@ describe('Return data from a query must match the request type', () => {
 
     it('method \'one\' must throw an error when more than one row was returned', () => {
         let result, error;
-        dbSpec.one(`select *
+        db.one(`select *
                     from person`)
             .then(data => {
                 result = data;
@@ -1786,7 +1786,7 @@ describe('Return data from a query must match the request type', () => {
 
     it('method \'oneOrNone\' must resolve into null when no data returned', () => {
         let result, error;
-        dbSpec.oneOrNone(`select *
+        db.oneOrNone(`select *
                           from person
                           where name = $1`, 'Unknown')
             .then(data => {
@@ -1806,7 +1806,7 @@ describe('Return data from a query must match the request type', () => {
 
     it('method \'any\' must return an empty array when no records found', () => {
         let result, error;
-        dbSpec.any(`select *
+        db.any(`select *
                     from person
                     where name = 'Unknown'`)
             .then(data => {
@@ -1830,7 +1830,7 @@ describe('Return data from a query must match the request type', () => {
 describe('Queries must not allow invalid QRM (Query Request Mask) combinations', () => {
     it('method \'query\' must throw an error when mask is one+many', () => {
         let result, error;
-        dbSpec.query(`select *
+        db.query(`select *
                       from person`, undefined, pgp.queryResult.one | pgp.queryResult.many)
             .then(data => {
                 result = data;
@@ -1849,7 +1849,7 @@ describe('Queries must not allow invalid QRM (Query Request Mask) combinations',
     });
     it('method \'query\' must throw an error when QRM is > 6', () => {
         let result, error;
-        dbSpec.query(`select *
+        db.query(`select *
                       from person`, undefined, 7)
             .then(data => {
                 result = data;
@@ -1868,7 +1868,7 @@ describe('Queries must not allow invalid QRM (Query Request Mask) combinations',
     });
     it('method \'query\' must throw an error when QRM is < 1', () => {
         let result, error;
-        dbSpec.query(`select *
+        db.query(`select *
                       from person`, undefined, 0)
             .then(data => {
                 result = data;
@@ -1889,7 +1889,7 @@ describe('Queries must not allow invalid QRM (Query Request Mask) combinations',
 
     it('method \'query\' must throw an error when QRM is of the wrong type', () => {
         let result, error;
-        dbSpec.query(`select *
+        db.query(`select *
                       from person`, undefined, 'wrong qrm')
             .then(data => {
                 result = data;
@@ -1915,7 +1915,7 @@ describe('Method \'result\'', () => {
     describe('for a single query', () => {
         let result;
         beforeEach(done => {
-            dbSpec.result('select 1 as one')
+            db.result('select 1 as one')
                 .then(data => {
                     result = data;
                     done();
@@ -1931,7 +1931,7 @@ describe('Method \'result\'', () => {
     describe('for a multi-query', () => {
         let result;
         beforeEach(done => {
-            dbSpec.result('select 1 as one;select 2 as two')
+            db.result('select 1 as one;select 2 as two')
                 .then(data => {
                     result = data;
                     done();
@@ -1951,7 +1951,7 @@ describe('Method \'multiResult\'', () => {
     describe('for a single query', () => {
         let result;
         beforeEach(done => {
-            dbSpec.multiResult('select 1 as one')
+            db.multiResult('select 1 as one')
                 .then(data => {
                     result = data;
                     done();
@@ -1967,7 +1967,7 @@ describe('Method \'multiResult\'', () => {
     describe('for a multi-query', () => {
         let result;
         beforeEach(done => {
-            dbSpec.multiResult(`select 1 as one;
+            db.multiResult(`select 1 as one;
             select 2 as two;
             select *
             from users
@@ -1993,7 +1993,7 @@ describe('Method \'multi\'', () => {
     describe('for a single query', () => {
         let result;
         beforeEach(done => {
-            dbSpec.multi('select 1 as one')
+            db.multi('select 1 as one')
                 .then(data => {
                     result = data;
                     done();
@@ -2009,7 +2009,7 @@ describe('Method \'multi\'', () => {
     describe('for a multi-query', () => {
         let result;
         beforeEach(done => {
-            dbSpec.multi(`select 1 as one;
+            db.multi(`select 1 as one;
             select 2 as two;
             select *
             from users
@@ -2036,7 +2036,7 @@ describe('Querying an entity', () => {
         let result;
         beforeEach(done => {
             options.capSQL = true;
-            dbSpec.func('get_users')
+            db.func('get_users')
                 .then(data => {
                     result = data;
                 })
@@ -2054,7 +2054,7 @@ describe('Querying an entity', () => {
     describe('single-row function', () => {
         let result;
         beforeEach(done => {
-            dbSpec.func('findUser', 1, pgp.queryResult.one)
+            db.func('findUser', 1, pgp.queryResult.one)
                 .then(data => {
                     result = data;
                 })
@@ -2069,17 +2069,17 @@ describe('Querying an entity', () => {
     describe('with invalid parameters', () => {
         let result;
         beforeEach(done => {
-            promise.any([dbSpec.func(), // undefined function name;
-                dbSpec.func(''), // empty-string function name;
-                dbSpec.func('   '), // white-space string for function name;
-                dbSpec.func(1), // invalid-type function name;
-                dbSpec.func(null), // null function name;
+            promise.any([db.func(), // undefined function name;
+                db.func(''), // empty-string function name;
+                db.func('   '), // white-space string for function name;
+                db.func(1), // invalid-type function name;
+                db.func(null), // null function name;
                 // query function overrides:
-                dbSpec.query({
+                db.query({
                     entity: null, type: 'func'
-                }), dbSpec.query({
+                }), db.query({
                     entity: '', type: 'func'
-                }), dbSpec.query({
+                }), db.query({
                     entity: '   ', type: 'func'
                 })])
                 .catch(reason => {
@@ -2102,7 +2102,7 @@ describe('Querying an entity', () => {
             options.error = function (err, e) {
                 errCtx = e;
             };
-            dbSpec.proc('camelCase', [() => {
+            db.proc('camelCase', [() => {
                 throw new Error('bad proc params');
             }])
                 .catch(reason => {
@@ -2127,7 +2127,7 @@ describe('Querying an entity', () => {
             options.error = function (err, e) {
                 errCtx = e;
             };
-            dbSpec.func('camelCase', [() => {
+            db.func('camelCase', [() => {
                 throw new Error('bad func params');
             }])
                 .catch(reason => {
@@ -2153,7 +2153,7 @@ describe('Querying an entity', () => {
                 errCtx = e;
             };
             options.capSQL = true;
-            dbSpec.proc('camelCase', () => {
+            db.proc('camelCase', () => {
                 throw new Error('bad proc name');
             })
                 .catch(reason => {
@@ -2176,15 +2176,15 @@ describe('Querying an entity', () => {
     describe('stored procedures', () => {
         describe('normal call', () => {
             it('must resolve with null', async () => {
-                const res = await dbSpec.proc('empty_proc');
+                const res = await db.proc('empty_proc');
                 expect(res).toBeNull();
             });
             it('must support output values', async () => {
-                const res = await dbSpec.proc('output_proc', [null, 'world']);
+                const res = await db.proc('output_proc', [null, 'world']);
                 expect(res).toEqual({output1: true, output2: 'world-hello!'});
             });
             it('must support transformation', async () => {
-                const res = await dbSpec.proc('output_proc', [null, 'world'], a => a.output2);
+                const res = await db.proc('output_proc', [null, 'world'], a => a.output2);
                 expect(res).toBe('world-hello!');
             });
         });
@@ -2192,7 +2192,7 @@ describe('Querying an entity', () => {
         describe('with invalid name', () => {
             let err;
             beforeEach(done => {
-                dbSpec.proc()
+                db.proc()
                     .catch(e => {
                         err = e.message;
                         done();
@@ -2211,7 +2211,7 @@ describe('Task', () => {
     describe('with detached connection', () => {
         let error, tsk;
         beforeEach(done => {
-            dbSpec.task(async function () {
+            db.task(async function () {
                 tsk = this;
             })
                 .then(() => {
@@ -2236,7 +2236,7 @@ describe('Task', () => {
     describe('inside a transaction', () => {
         let context;
         beforeEach(done => {
-            dbSpec.tx(tx => {
+            db.tx(tx => {
                 return tx.task(t => {
                     context = t;
                 });
@@ -2251,7 +2251,7 @@ describe('Task', () => {
     describe('with a callback that returns nothing', () => {
         let result;
         beforeEach(done => {
-            dbSpec.task(dummy)
+            db.task(dummy)
                 .then(data => {
                     result = data;
                 })
@@ -2264,7 +2264,7 @@ describe('Task', () => {
 
     describe('with a callback that returns a value', () => {
         it('must resolve with the value', async () => {
-            const result = await dbSpec.task(() => 123);
+            const result = await db.task(() => 123);
             expect(result).toBe(123);
         });
     });
@@ -2272,7 +2272,7 @@ describe('Task', () => {
     describe('with the callback throwing an error', () => {
         let result;
         beforeEach(done => {
-            dbSpec.task(() => {
+            db.task(() => {
                 throw new Error('test');
             })
                 .catch(reason => {
@@ -2289,7 +2289,7 @@ describe('Task', () => {
     describe('with a simple promise result', () => {
         let result, context, THIS;
         beforeEach(done => {
-            dbSpec.task(async function (t) {
+            db.task(async function (t) {
                 THIS = this;
                 context = t;
                 return 'Ok';
@@ -2323,7 +2323,7 @@ describe('Task', () => {
                 return 'success';
             }
 
-            dbSpec.task('testTag', myTask)
+            db.task('testTag', myTask)
                 .then(data => {
                     result = data;
                 })
@@ -2347,7 +2347,7 @@ describe('negative query formatting', () => {
     describe('with invalid property name', () => {
         let error;
         beforeEach(done => {
-            dbSpec.one('select ${invalid}', {})
+            db.one('select ${invalid}', {})
                 .catch(e => {
                     error = e;
                 })
@@ -2362,7 +2362,7 @@ describe('negative query formatting', () => {
     describe('with invalid variable index', () => {
         let error;
         beforeEach(done => {
-            dbSpec.one('select $1', [])
+            db.one('select $1', [])
                 .catch(e => {
                     error = e;
                 })
@@ -2378,7 +2378,7 @@ describe('negative query formatting', () => {
         let error;
         const err = new Error('ops!');
         beforeEach(done => {
-            dbSpec.one('select $1', [() => {
+            db.one('select $1', [() => {
                 throw err;
             }])
                 .catch(e => {
@@ -2396,7 +2396,7 @@ describe('negative query formatting', () => {
         let error;
         const err = 'ops!';
         beforeEach(done => {
-            dbSpec.one('select $1', [() => {
+            db.one('select $1', [() => {
                 throw err;
             }])
                 .catch(e => {
@@ -2415,7 +2415,7 @@ describe('negative query formatting', () => {
 describe('Multi-result queries', () => {
     let result;
     beforeEach(done => {
-        dbSpec.one('select 1 as one;select 2 as two')
+        db.one('select 1 as one;select 2 as two')
             .then(data => {
                 result = data;
             })
