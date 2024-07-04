@@ -15,6 +15,8 @@
 // Follow the links below:
 // https://stackoverflow.com/questions/36593087/using-a-custom-promise-as-a-generic-type
 // https://github.com/Microsoft/TypeScript/issues/1213
+import {ITypes} from "./pg-subset";
+
 type XPromise<T> = Promise<T>;
 
 import * as pg from './pg-subset';
@@ -79,6 +81,7 @@ declare namespace pgPromise {
         binary?: boolean
         rowMode?: 'array' | null | void
         rows?: number
+        types?: ITypes;
     }
 
     interface IParameterizedQuery {
@@ -86,6 +89,7 @@ declare namespace pgPromise {
         values?: any[]
         binary?: boolean
         rowMode?: void | 'array'
+        types?: ITypes;
     }
 
     interface IPreparedParsed {
@@ -248,6 +252,7 @@ declare namespace pgPromise {
         binary: boolean;
         rowMode: void | 'array';
         rows: number;
+        types: ITypes;
 
         parse(): IPreparedParsed | errors.PreparedStatementError
 
@@ -267,6 +272,7 @@ declare namespace pgPromise {
         // advanced properties:
         binary: boolean;
         rowMode: void | 'array';
+        types: ITypes;
 
         parse(): IParameterizedParsed | errors.ParameterizedQueryError
 
