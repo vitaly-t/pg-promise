@@ -557,9 +557,9 @@ Database object.</p>
 
 
 <div class="description">
-    <p>A <a href="https://github.com/brianc/node-pg-pool">pg-pool</a> object associated with the database object, as each <a href="Database.html">Database</a> creates its own <a href="https://github.com/brianc/node-pg-pool">pg-pool</a> instance.</p>
+    <p>A <a href="https://github.com/brianc/node-postgres/tree/master/packages/pg-pool">pg-pool</a> object associated with the database object, as each <a href="Database.html">Database</a> creates its own <a href="https://github.com/brianc/node-postgres/tree/master/packages/pg-pool">pg-pool</a> instance.</p>
 <p>This is a hidden property, primarily for integrating type <a href="Database.html">Database</a> with third-party libraries that support
-<a href="https://github.com/brianc/node-pg-pool">pg-pool</a> directly. Note however, that if you pass the pool object into a library that calls <code>pool.end()</code>, you will no longer be able
+<a href="https://github.com/brianc/node-postgres/tree/master/packages/pg-pool">pg-pool</a> directly. Note however, that if you pass the pool object into a library that calls <code>pool.end()</code>, you will no longer be able
 to use this <a href="Database.html">Database</a> object, and each query method will be rejecting with <a href="external-Error.html">Error</a> =
 <code>Connection pool of the database object has been destroyed.</code></p>
 <p>You can also use this object to shut down the pool, by calling <code>$pool.end()</code>.</p>
@@ -4906,7 +4906,7 @@ When specified, the returned value replaces the original one.</p>
 
 
 <div class="description">
-    <p>Custom data streaming, with the help of <a href="https://github.com/brianc/node-pg-query-stream">pg-query-stream</a>.</p>
+    <p>Custom data streaming, with the help of <a href="https://github.com/brianc/node-postgres/tree/master/packages/pg-query-stream">pg-query-stream</a>.</p>
 <p>This method doesn't work with the <a href="https://node-postgres.com/features/native">Native Bindings</a>, and if option <code>pgNative</code>
 is set, it will reject with <code>Streaming doesn't work with Native Bindings.</code></p>
 </div>
@@ -4960,7 +4960,7 @@ is set, it will reject with <code>Streaming doesn't work with Native Bindings.</
 
             
 
-            <td class="description last"><p>Stream object of type <a href="https://github.com/brianc/node-pg-query-stream/blob/master/index.js#L5">QueryStream</a>.</p></td>
+            <td class="description last"><p>Stream object of type <a href="https://github.com/brianc/node-postgres/blob/master/packages/pg-query-stream/src/index.ts">QueryStream</a>.</p></td>
         </tr>
 
     
