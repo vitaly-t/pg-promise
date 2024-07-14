@@ -43,16 +43,16 @@
   "dependencies": {
     "assert-options": "0.8.1",
     "pg": "8.12.0",
-    "pg-minify": "1.6.4",
+    "pg-minify": "1.6.5",
     "spex": "3.3.0"
   },
   "devDependencies": {
-    "@eslint/js": "9.6.0",
-    "@types/node": "20.14.9",
+    "@eslint/js": "9.7.0",
+    "@types/node": "20.14.10",
     "bluebird": "3.7.2",
     "coveralls": "3.1.1",
-    "cspell": "8.10.0",
-    "eslint": "9.6.0",
+    "cspell": "8.10.4",
+    "eslint": "9.7.0",
     "globals": "15.8.0",
     "istanbul": "0.4.5",
     "jasmine-node": "3.0.0",
