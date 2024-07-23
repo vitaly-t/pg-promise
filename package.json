@@ -48,10 +48,10 @@
   },
   "devDependencies": {
     "@eslint/js": "9.7.0",
-    "@types/node": "20.14.10",
+    "@types/node": "20.14.12",
     "bluebird": "3.7.2",
     "coveralls": "3.1.1",
-    "cspell": "8.10.4",
+    "cspell": "8.12.1",
     "eslint": "9.7.0",
     "globals": "15.8.0",
     "istanbul": "0.4.5",
@@ -60,6 +60,6 @@
     "JSONStream": "1.3.5",
     "pg-query-stream": "4.6.0",
     "tslint": "6.1.3",
-    "typescript": "5.5.3"
+    "typescript": "5.5.4"
   }
 }
