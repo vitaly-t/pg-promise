@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "11.10.0",
+  "version": "11.10.1",
   "description": "PostgreSQL interface for Node.js",
   "main": "lib/index.js",
   "typings": "typescript/pg-promise.d.ts",
@@ -44,7 +44,7 @@
     "assert-options": "0.8.2",
     "pg": "8.13.0",
     "pg-minify": "1.6.5",
-    "spex": "3.3.0"
+    "spex": "3.4.0"
   },
   "peerDependencies": {
     "pg-query-stream": "4.7.0"
@@ -54,7 +54,7 @@
     "@types/node": "22.7.5",
     "bluebird": "3.7.2",
     "coveralls": "3.1.1",
-    "cspell": "8.15.0",
+    "cspell": "8.15.1",
     "eslint": "9.12.0",
     "globals": "15.11.0",
     "istanbul": "0.4.5",
