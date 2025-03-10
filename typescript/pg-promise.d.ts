@@ -508,7 +508,9 @@ declare namespace pgPromise {
         cn: any
         dc: any
         query: any
-        params: any
+        params: any,
+        values: any,
+        queryFilePath?: string, 
         ctx: ITaskContext
     }
 
