@@ -120,6 +120,7 @@ declare namespace pg {
         types?: ITypeOverrides
         allowExitOnIdle?: boolean
         maxLifetimeSeconds?: number
+        enableChannelBinding?:boolean
     }
 
     // Type id-s supported by PostgreSQL, copied from:
