@@ -41,21 +41,21 @@
     "node": ">=14.0"
   },
   "dependencies": {
-    "assert-options": "0.8.2",
+    "assert-options": "0.8.3",
     "pg": "8.14.1",
     "pg-minify": "1.7.0",
-    "spex": "3.4.0"
+    "spex": "3.4.1"
   },
   "peerDependencies": {
     "pg-query-stream": "4.8.1"
   },
   "devDependencies": {
-    "@eslint/js": "9.22.0",
-    "@types/node": "22.13.10",
+    "@eslint/js": "9.23.0",
+    "@types/node": "22.13.11",
     "bluebird": "3.7.2",
     "coveralls": "3.1.1",
     "cspell": "8.17.5",
-    "eslint": "9.22.0",
+    "eslint": "9.23.0",
     "globals": "16.0.0",
     "istanbul": "0.4.5",
     "jasmine-node": "3.0.0",
