@@ -12,7 +12,6 @@ PostgreSQL interface for Node.js
 ---
 
 * [About](#about)
-* [Support & Sponsorship](#support--sponsorship)
 * [Documentation](#documentation)
 * [Contributing](#contributing) 
 * [Usage]
@@ -58,12 +57,6 @@ Built on top of [node-postgres], this library adds the following:
 At its inception in 2015, this library was only adding promises to the base driver, hence the name `pg-promise`.
 And while the original name was kept, the library's functionality was vastly extended, with promises now being
 only its tiny part.
-
-# Support & Sponsorship  
-
-I do free support here and on [StackOverflow](https://stackoverflow.com/questions/tagged/pg-promise).
-
-And if you want to help this project, I can accept Bitcoin: `1yki7MXMkuDw8qqe5icVdh1GJZSQSzKZp`
 
 # Documentation
 
