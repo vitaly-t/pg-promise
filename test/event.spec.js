@@ -134,6 +134,7 @@ describe('Query event', () => {
             expect(counter).toBe(1);
             expect(param.query).toBe('select 123');
             expect(param.params).toBeUndefined();
+            expect(param.values).toEqual([123]);
             expect(param.dc).toBe(testDC);
         });
     });
@@ -364,6 +365,7 @@ describe('Error event', () => {
             expect(errTxt.message).toBe('No data returned from the query.');
             expect(context.query).toBe('select * from users where id > 1000');
             expect(context.params).toBeUndefined();
+            expect(context.values).toEqual(1000);
             if (!options.pgNative) {
                 expect(context.client instanceof pgClient).toBe(true);
             }
@@ -403,6 +405,7 @@ describe('Error event', () => {
             expect(context.query).toBe('select * from users where(false)');
             expect(context.client).toBeUndefined();
             expect(context.params).toBeUndefined();
+            expect(context.values).toBe(false);
             expect(counter).toBe(1);
         });
     });
@@ -451,6 +454,7 @@ describe('Error event', () => {
             expect(error.message).toBe('Property \'test\' doesn\'t exist.');
             expect(context.query).toBe('${test}');
             expect(context.params).toBe(params);
+            expect(context.values).toBe(params);
             if (!options.pgNative) {
                 expect(context.client instanceof pgClient).toBe(true);
             }
@@ -482,6 +486,7 @@ describe('Receive event', () => {
             expect(counter).toBe(1);
             expect(ctx.query).toBe('select 123 as value');
             expect(ctx.params).toBeUndefined();
+            expect(ctx.values).toEqual([123]);
             expect(ctx.dc).toBe(testDC);
             expect(data).toEqual([{
                 value: 123
@@ -507,6 +512,7 @@ describe('Receive event', () => {
             expect(counter).toBe(1);
             expect(ctx.query).toBe('delete from users where id = 1234567890');
             expect(ctx.params).toBeUndefined();
+            expect(ctx.values).toBe(1234567890);
             expect(ctx.dc).toBe(testDC);
             expect(data).toEqual([]);
             expect(isResult(res)).toBe(true);
@@ -699,7 +705,9 @@ describe('pgFormatting', () => {
             // is done by PG, and not by pg-promise:
             //
             expect(ctx[0].params).toBeUndefined();
+            expect(ctx[0].values).toEqual([1]);
             expect(ctx[1].params).toEqual([1]);
+            expect(ctx[1].values).toEqual([1]);
         });
     });
 
