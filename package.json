@@ -42,12 +42,12 @@
   },
   "dependencies": {
     "assert-options": "0.8.3",
-    "pg": "8.15.6",
+    "pg": "8.14.1",
     "pg-minify": "1.7.0",
     "spex": "3.4.1"
   },
   "peerDependencies": {
-    "pg-query-stream": "4.9.6"
+    "pg-query-stream": "4.8.1"
   },
   "devDependencies": {
     "@eslint/js": "9.26.0",
