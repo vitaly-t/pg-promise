@@ -72,8 +72,11 @@ describe('QueryFile / Positive:', () => {
     });
 
     describe('non-minified query', () => {
-        let result;
+        let result, context;
         beforeEach(done => {
+            options.query = e => {
+                context = e;
+            };
             db.query(new QueryFile(sqlUsers, {noWarnings: true}))
                 .then(data => {
                     result = data;
@@ -83,12 +86,16 @@ describe('QueryFile / Positive:', () => {
         it('must resolve with data', () => {
             expect(Array.isArray(result)).toBe(true);
             expect(result.length > 0).toBe(true);
+            expect(context.queryFilePath).toBe(sqlUsers);
         });
     });
 
     describe('minified query', () => {
-        let result;
+        let result, context;
         beforeEach(done => {
+            options.query = e => {
+                context = e;
+            };
             db.query(new QueryFile(sqlUsers, {minify: true, noWarnings: true}))
                 .then(data => {
                     result = data;
@@ -98,12 +105,16 @@ describe('QueryFile / Positive:', () => {
         it('must resolve with data', () => {
             expect(Array.isArray(result)).toBe(true);
             expect(result.length > 0).toBe(true);
+            expect(context.queryFilePath).toBe(sqlUsers);
         });
     });
 
     describe('compressed query', () => {
-        let result, sql;
+        let result, sql, context;
         beforeEach(done => {
+            options.query = e => {
+                context = e;
+            };
             sql = new QueryFile(sqlUsers, {compress: true, noWarnings: true});
             db.query(sql)
                 .then(data => {
@@ -115,6 +126,7 @@ describe('QueryFile / Positive:', () => {
             expect(sql[QueryFile.$query]).toBe('select*from users');
             expect(Array.isArray(result)).toBe(true);
             expect(result.length > 0).toBe(true);
+            expect(context.queryFilePath).toBe(sqlUsers);
         });
     });
 
