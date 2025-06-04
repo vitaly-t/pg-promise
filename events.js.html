@@ -556,6 +556,13 @@ module.exports = {Events};
  * - there were no parameters passed into the query method;
  * - property `query` of this object already contains all the formatting values in it, so logging only the query is sufficient.
  *
+ * @property {*} values - The original parameter values passed into the query method.
+ * It is set for all events.
+ * 
+ * @property {string|undefined} queryFilePath
+ * Represents the file path of a {@link QueryFile} if the query is loaded from an external SQL file.
+ * This is set only when the query originates from a {@link QueryFile} and only for events {@link event:query query} and {@link event:error error}.
+ * 
  * @property {TaskContext} ctx
  * _Task/Transaction Context_ object.
  *
