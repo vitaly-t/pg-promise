@@ -7,17 +7,6 @@
  * Removal or modification of this copyright notice is prohibited.
  */
 
-/////////////////////////////////////////
-// Requires pg-promise v11.0.0 or later.
-/////////////////////////////////////////
-
-// We use ES6 as static promise here, because generic promises are still not supported.
-// Follow the links below:
-// https://stackoverflow.com/questions/36593087/using-a-custom-promise-as-a-generic-type
-// https://github.com/Microsoft/TypeScript/issues/1213
-
-type XPromise<T> = Promise<T>;
-
 import * as pg from './pg-subset';
 import * as pgMinify from 'pg-minify';
 import * as spexLib from 'spex';
@@ -138,13 +127,13 @@ declare namespace pgPromise {
     }
 
     interface IPromiseConfig {
-        create(resolve: (value?: any) => void, reject?: (reason?: any) => void): XPromise<any>
+        create(resolve: (value?: any) => void, reject?: (reason?: any) => void): Promise<any>
 
         resolve(value?: any): void
 
         reject(reason?: any): void
 
-        all(iterable: any): XPromise<any>
+        all(iterable: any): Promise<any>
     }
 
     type FormattingFilter = '^' | '~' | '#' | ':raw' | ':alias' | ':name' | ':json' | ':csv' | ':list' | ':value';
@@ -308,7 +297,7 @@ declare namespace pgPromise {
     // We export this interface only to be able to help IntelliSense cast extension types correctly,
     // which doesn't always work, depending on the version of IntelliSense being used.
     interface IDatabase<Ext, C extends pg.IClient = pg.IClient> extends IBaseProtocol<Ext> {
-        connect(options?: IConnectionOptions<C>): XPromise<IConnected<Ext, C>>
+        connect(options?: IConnectionOptions<C>): Promise<IConnected<Ext, C>>
 
         /////////////////////////////////////////////////////////////////////////////
         // Hidden, read-only properties, for integrating with third-party libraries:
@@ -369,89 +358,89 @@ declare namespace pgPromise {
     interface IBaseProtocol<Ext> {
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#query
-        query<T = any>(query: QueryParam, values?: any, qrm?: queryResult): XPromise<T>
+        query<T = any>(query: QueryParam, values?: any, qrm?: queryResult): Promise<T>
 
         // result-specific methods;
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#none
-        none(query: QueryParam, values?: any): XPromise<null>
+        none(query: QueryParam, values?: any): Promise<null>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#one
-        one<T = any>(query: QueryParam, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T>
+        one<T = any>(query: QueryParam, values?: any, cb?: (value: any) => T, thisArg?: any): Promise<T>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#oneOrNone
-        oneOrNone<T = any>(query: QueryParam, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T | null>
+        oneOrNone<T = any>(query: QueryParam, values?: any, cb?: (value: any) => T, thisArg?: any): Promise<T | null>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#many
-        many<T = any>(query: QueryParam, values?: any): XPromise<T[]>
+        many<T = any>(query: QueryParam, values?: any): Promise<T[]>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#manyOrNone
-        manyOrNone<T = any>(query: QueryParam, values?: any): XPromise<T[]>
+        manyOrNone<T = any>(query: QueryParam, values?: any): Promise<T[]>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#any
-        any<T = any>(query: QueryParam, values?: any): XPromise<T[]>
+        any<T = any>(query: QueryParam, values?: any): Promise<T[]>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#result
-        result<T, R = IResultExt<T>>(query: QueryParam, values?: any, cb?: (value: IResultExt<T>) => R, thisArg?: any): XPromise<R>
+        result<T, R = IResultExt<T>>(query: QueryParam, values?: any, cb?: (value: IResultExt<T>) => R, thisArg?: any): Promise<R>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#multiResult
-        multiResult(query: QueryParam, values?: any): XPromise<pg.IResult[]>
+        multiResult(query: QueryParam, values?: any): Promise<pg.IResult[]>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#multi
-        multi<T = any>(query: QueryParam, values?: any): XPromise<Array<T[]>>
+        multi<T = any>(query: QueryParam, values?: any): Promise<Array<T[]>>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#stream
-        stream(qs: NodeJS.ReadableStream, init: (stream: NodeJS.ReadableStream) => void): XPromise<{
+        stream(qs: NodeJS.ReadableStream, init: (stream: NodeJS.ReadableStream) => void): Promise<{
             processed: number,
             duration: number
         }>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#func
-        func<T = any>(funcName: string, values?: any, qrm?: queryResult): XPromise<T>
+        func<T = any>(funcName: string, values?: any, qrm?: queryResult): Promise<T>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#proc
-        proc<T = any>(procName: string, values?: any, cb?: (value: any) => T, thisArg?: any): XPromise<T | null>
+        proc<T = any>(procName: string, values?: any, cb?: (value: any) => T, thisArg?: any): Promise<T | null>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#map
-        map<T = any>(query: QueryParam, values: any, cb: (row: any, index: number, data: any[]) => T, thisArg?: any): XPromise<T[]>
+        map<T = any>(query: QueryParam, values: any, cb: (row: any, index: number, data: any[]) => T, thisArg?: any): Promise<T[]>
 
         // API: https://vitaly-t.github.io/pg-promise/Database.html#each
-        each<T = any>(query: QueryParam, values: any, cb: (row: any, index: number, data: any[]) => void, thisArg?: any): XPromise<T[]>
+        each<T = any>(query: QueryParam, values: any, cb: (row: any, index: number, data: any[]) => void, thisArg?: any): Promise<T[]>
 
         // Tasks;
         // API: https://vitaly-t.github.io/pg-promise/Database.html#task
-        task<T>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        task<T>(cb: (t: ITask<Ext> & Ext) => T | Promise<T>): Promise<T>
 
-        task<T>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        task<T>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | Promise<T>): Promise<T>
 
-        task<T>(options: { tag?: any }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        task<T>(options: { tag?: any }, cb: (t: ITask<Ext> & Ext) => T | Promise<T>): Promise<T>
 
         // Conditional Tasks;
         // API: https://vitaly-t.github.io/pg-promise/Database.html#taskIf
-        taskIf<T>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        taskIf<T>(cb: (t: ITask<Ext> & Ext) => T | Promise<T>): Promise<T>
 
-        taskIf<T>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        taskIf<T>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | Promise<T>): Promise<T>
 
-        taskIf<T>(options: ITaskIfOptions<Ext>, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        taskIf<T>(options: ITaskIfOptions<Ext>, cb: (t: ITask<Ext> & Ext) => T | Promise<T>): Promise<T>
 
         // Transactions;
         // API: https://vitaly-t.github.io/pg-promise/Database.html#tx
-        tx<T>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        tx<T>(cb: (t: ITask<Ext> & Ext) => T | Promise<T>): Promise<T>
 
-        tx<T>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        tx<T>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | Promise<T>): Promise<T>
 
         tx<T>(options: {
             tag?: any,
             mode?: _txMode.TransactionMode | null
-        }, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        }, cb: (t: ITask<Ext> & Ext) => T | Promise<T>): Promise<T>
 
         // Conditional Transactions;
         // API: https://vitaly-t.github.io/pg-promise/Database.html#txIf
-        txIf<T>(cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        txIf<T>(cb: (t: ITask<Ext> & Ext) => T | Promise<T>): Promise<T>
 
-        txIf<T>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        txIf<T>(tag: string | number, cb: (t: ITask<Ext> & Ext) => T | Promise<T>): Promise<T>
 
-        txIf<T>(options: ITxIfOptions<Ext>, cb: (t: ITask<Ext> & Ext) => T | XPromise<T>): XPromise<T>
+        txIf<T>(options: ITxIfOptions<Ext>, cb: (t: ITask<Ext> & Ext) => T | Promise<T>): Promise<T>
     }
 
     // Database object in connected state;
@@ -465,10 +454,10 @@ declare namespace pgPromise {
 
         // But for direct connections (connect({direct: true})), `kill` flag is ignored, because
         // the connection is always closed physically, which may take time, and so in this case
-        // the method returns a Promise, to indicate when the connection finished closing.
-        done(kill?: boolean): void | XPromise<void>;
+        // the method returns a Promise to indicate when the connection finished closing.
+        done(kill?: boolean): void | Promise<void>;
 
-        // Repeated calls are not allowed, and will throw an error.
+        // Repeated calls are not allowed and will throw an error.
     }
 
     // Event context extension for tasks + transactions;
@@ -510,7 +499,7 @@ declare namespace pgPromise {
         query: any
         params: any,
         values: any,
-        queryFilePath?: string, 
+        queryFilePath?: string,
         ctx: ITaskContext
     }
 
@@ -609,7 +598,7 @@ declare namespace pgPromise {
 
         query?(e: IEventContext<C>): void
 
-        // NOTE: result is undefined when data comes from QueryStream, i.e. via method Database.stream
+        // NOTE: The result is undefined when data comes from QueryStream, i.e. via method Database.stream
         receive?(e: { data: any[], result: IResultExt | void, ctx: IEventContext<C> }): void
 
         task?(e: IEventContext<C>): void
@@ -723,13 +712,13 @@ declare namespace pgPromise {
     }
 
     interface IGenericPromise {
-        (cb: (resolve: (value?: any) => void, reject: (reason?: any) => void) => void): XPromise<any>
+        (cb: (resolve: (value?: any) => void, reject: (reason?: any) => void) => void): Promise<any>
 
         resolve(value?: any): void
 
         reject(reason?: any): void
 
-        all(iterable: any): XPromise<any>
+        all(iterable: any): Promise<any>
     }
 }
 

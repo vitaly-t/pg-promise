@@ -30,7 +30,7 @@ declare namespace pg {
         oid: number
         dataTypeID: number
 
-        // NOTE: properties below are not available within Native Bindings:
+        // NOTE: The properties below are not available within Native Bindings:
 
         tableID: number
         columnID: number

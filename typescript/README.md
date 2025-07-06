@@ -21,7 +21,7 @@ const {value} = await db.one('SELECT 123 as value');
 #### With Extensions
 
 The library supports dynamic protocol extensions, via event [extend], which requires
-explicit extension interface to be declared and parameterized, as shown below.
+an explicit extension interface to be declared and parameterized, as shown below.
 
 ```ts
 import * as pgPromise from 'pg-promise';
