@@ -126,16 +126,6 @@ declare namespace pgPromise {
         table: string
     }
 
-    interface IPromiseConfig {
-        create(resolve: (value?: any) => void, reject?: (reason?: any) => void): Promise<any>
-
-        resolve(value?: any): void
-
-        reject(reason?: any): void
-
-        all(iterable: any): Promise<any>
-    }
-
     type FormattingFilter = '^' | '~' | '#' | ':raw' | ':alias' | ':name' | ':json' | ':csv' | ':list' | ':value';
 
     type QueryColumns<T> = Column<T> | ColumnSet<T> | Array<string | IColumnConfig<T> | Column<T>>;
@@ -281,12 +271,6 @@ declare namespace pgPromise {
         toString(level?: number): string
     }
 
-    // PromiseAdapter class;
-    // API: https://vitaly-t.github.io/pg-promise/PromiseAdapter.html
-    class PromiseAdapter {
-        constructor(api: IPromiseConfig)
-    }
-
     const txMode: typeof _txMode;
     const utils: IUtils;
     const as: IFormatting;
@@ -320,7 +304,6 @@ declare namespace pgPromise {
     interface IMain<Ext = {}, C extends pg.IClient = pg.IClient> {
         <T = Ext, C extends pg.IClient = pg.IClient>(cn: string | pg.IConnectionParameters<C>, dc?: any): IDatabase<T, C> & T
 
-        readonly PromiseAdapter: typeof PromiseAdapter
         readonly PreparedStatement: typeof PreparedStatement
         readonly ParameterizedQuery: typeof ParameterizedQuery
         readonly QueryFile: typeof QueryFile
@@ -464,7 +447,7 @@ declare namespace pgPromise {
     // See: https://vitaly-t.github.io/pg-promise/global.html#TaskContext
     interface ITaskContext {
 
-        // these are set in the beginning of each task/transaction:
+        // these are set at the beginning of each task/transaction:
         readonly context: any
         readonly parent: ITaskContext | null
         readonly connected: boolean
@@ -588,7 +571,6 @@ declare namespace pgPromise {
         noWarnings?: boolean
         pgFormatting?: boolean
         pgNative?: boolean
-        promiseLib?: any
         capSQL?: boolean
         schema?: ValidSchema | ((dc: any) => ValidSchema)
 
@@ -613,7 +595,6 @@ declare namespace pgPromise {
     // API: https://vitaly-t.github.io/pg-promise/Database.html#$config
     interface ILibConfig<Ext, C extends pg.IClient = pg.IClient> {
         version: string
-        promiseLib: any
         promise: IGenericPromise
         options: IInitOptions<Ext, C>
         pgp: IMain<Ext, C>

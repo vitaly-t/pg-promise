@@ -2,9 +2,7 @@ const PG = require('pg');
 const header = require('./db/header');
 const tools = require('./db/tools');
 
-const promise = header.defPromise;
 const options = {
-    promiseLib: promise,
     noWarnings: true
 };
 const testDC = 'test_DC_123';
@@ -50,10 +48,6 @@ describe('Library instance', () => {
         expect(pgpLib.errors.queryResultErrorCode instanceof Object).toBe(true);
         expect(pgpLib.errors.PreparedStatementError instanceof Function).toBe(true);
         expect(pgpLib.errors.ParameterizedQueryError instanceof Function).toBe(true);
-    });
-
-    it('must have function \'PromiseAdapter\'', () => {
-        expect(pgpLib.PromiseAdapter instanceof Function).toBe(true);
     });
 
     it('must have function \'PreparedStatement\'', () => {
@@ -103,10 +97,6 @@ describe('Initialized instance', () => {
         expect(pgp.errors.queryResultErrorCode instanceof Object).toBe(true);
         expect(pgp.errors.PreparedStatementError instanceof Function).toBe(true);
         expect(pgp.errors.ParameterizedQueryError instanceof Function).toBe(true);
-    });
-
-    it('must have function \'PromiseAdapter\'', () => {
-        expect(pgp.PromiseAdapter instanceof Function).toBe(true);
     });
 
     it('must have function \'PreparedStatement\'', () => {
@@ -163,11 +153,6 @@ describe('Database Protocol', () => {
 
         // must have a hidden configurator;
         expect(db.$config && typeof db.$config === 'object').toBeTruthy();
-        expect(typeof db.$config.promise).toBe('function');
-        expect(typeof db.$config.promise.resolve).toBe('function');
-        expect(typeof db.$config.promise.reject).toBe('function');
-        expect(typeof db.$config.promise.all).toBe('function');
-        expect(db.$config.promiseLib).toBeTruthy();
         expect(typeof db.$config.options).toBe('object');
         expect(typeof db.$config.pgp).toBe('function');
         expect(typeof db.$config.version).toBe('string');
@@ -315,7 +300,6 @@ describe('Protocol Extension', () => {
     describe('on database level', () => {
         let result, dcParam, THIS, ctx, counter = 0;
         const pgpTest = header({
-            promiseLib: header.defPromise,
             noWarnings: true,
             extend: function (obj, dc) {
                 dcParam = dc;
@@ -346,7 +330,6 @@ describe('Protocol Extension', () => {
     describe('on transaction level', () => {
         let result, THIS, ctx, counter = 0;
         const pgpTest = header({
-            promiseLib: header.defPromise,
             noWarnings: true,
             extend: function (obj) {
                 counter++;
