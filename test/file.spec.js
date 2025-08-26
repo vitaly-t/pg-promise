@@ -4,9 +4,7 @@ const header = require('./db/header');
 const utils = require('../lib/utils');
 const tools = require('./db/tools');
 
-const promise = header.defPromise;
 const options = {
-    promiseLib: promise,
     noWarnings: true
 };
 

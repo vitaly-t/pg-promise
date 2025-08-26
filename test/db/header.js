@@ -3,11 +3,6 @@
 //////////////////////////////////////////////////
 
 const pgpLib = require('../../lib/index');
-const defPromise = require('bluebird'); // default promise library;
-
-defPromise.config({
-    warnings: false
-});
 
 // Either match your local database configuration according to the details below,
 // or the other way round - change the details to match your local configuration.
@@ -19,6 +14,7 @@ const cn = {
     user: process.env.POSTGRES_USER || 'postgres', // username;
     password: process.env.POSTGRES_PASSWORD || 'postgres' //- add password, if needed;
 };
+
 pgpLib.suppressErrors = true; // suppress console output for error messages;
 
 function main(options, dc) {
@@ -44,7 +40,5 @@ function main(options, dc) {
     result.db = result.pgp(cn, dc);
     return result;
 }
-
-main.defPromise = defPromise;
 
 module.exports = main;

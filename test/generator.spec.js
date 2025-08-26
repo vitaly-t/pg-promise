@@ -1,9 +1,7 @@
 const header = require('./db/header');
-const promise = header.defPromise;
 
 const options = {
-    noWarnings: true,
-    promiseLib: promise
+    noWarnings: true
 };
 
 const dbHeader = header(options);

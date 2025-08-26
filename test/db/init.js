@@ -3,14 +3,12 @@
 ////////////////////////////////////////////////
 
 const dbHeader = require('./header');
-const promise = dbHeader.defPromise;
 const {ColorConsole} = require('../../lib/utils/color');
 
 const header = dbHeader({
     query(e) {
         ColorConsole.info(e.query); // print all executed queries;
     },
-    promiseLib: promise,
     capSQL: true
 });
 

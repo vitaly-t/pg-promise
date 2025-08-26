@@ -1,9 +1,7 @@
 const header = require('./db/header');
 const tools = require('./db/tools');
 
-const promise = header.defPromise;
 const options = {
-    promiseLib: promise,
     capSQL: false,
     noWarnings: true
 };

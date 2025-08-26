@@ -7,7 +7,6 @@ const header = require('./db/header');
 const promise = header.defPromise;
 
 const options = {
-    promiseLib: promise, // use Bluebird for testing;
     noWarnings: true
 };
 
@@ -686,7 +685,7 @@ describe('pgFormatting', () => {
             options.query = e => {
                 ctx.push(e);
             };
-            promise.all([
+            Promise.all([
                 db.func('findUser', [1]),
                 db.one('select * from users where id=$1', [1])
             ])
@@ -714,20 +713,19 @@ describe('pgFormatting', () => {
     describe('empty / null query', () => {
         let err;
         beforeEach(done => {
-            promise.any([
+            Promise.any([
                 db.query(),
                 db.query(''),
                 db.query(null),
                 db.query(0)
             ])
                 .catch(reason => {
-                    err = reason;
+                    err = reason.errors;
                 })
                 .finally(done);
         });
         it('must provide the original pg response', () => {
             if (!options.pgNative) {
-                expect(err.length).toBe(4);
                 for (let i = 0; i < 4; i++) {
                     expect(err[i] instanceof TypeError).toBe(true);
                     expect(err[i].message).toBe($text.invalidQuery);

@@ -1,5 +1,6 @@
 ### Release History
 
+* 12.0.0 Throwing away everything related to custom promises support and Bluebird library, as obsolete.
 * 9.0.0 Major update of just about everything. Lots of breaking changes. Released: July 27, 2019.
 * 8.4.0 Replacing `isFresh` with `useCount` everywhere. Released: April 18, 2018.
 * 8.3.0 Adding initialization option `schema` for dynamic schema change. Released: April 17, 2018.

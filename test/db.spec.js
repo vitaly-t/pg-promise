@@ -10,9 +10,12 @@ const tools = require('./db/tools');
 const isMac = npm.platform === 'darwin';
 const isWindows = npm.platform === 'win32';
 
-const promise = header.defPromise;
+const promiseDelay = ms => new Promise((resolve) => {
+    setTimeout(resolve, ms);
+});
+
 const options = {
-    promiseLib: promise, noWarnings: true
+    noWarnings: true
 };
 const dbHeader = header(options);
 const pgp = dbHeader.pgp;
@@ -92,7 +95,7 @@ describe('Connection', () => {
                 })
                 .catch(reason => {
                     result = null;
-                    return promise.reject(reason);
+                    return Promise.reject(reason);
                 })
                 .then(data => {
                     result = data;
@@ -124,7 +127,7 @@ describe('Connection', () => {
                 })
                 .catch(reason => {
                     result = null;
-                    return promise.reject(reason);
+                    return Promise.reject(reason);
                 })
                 .then(data => {
                     result = data;
@@ -373,12 +376,12 @@ describe('Connection', () => {
                         obj.func('pg_backend_pid')
                             .then(res => {
                                 const pid = res[0].pg_backend_pid;
-                                return promise.all([obj.func('pg_sleep', [2])
+                                return Promise.all([obj.func('pg_sleep', [2])
                                     .catch(reason => {
                                         error = reason;
                                     }), // Terminate connection after a short delay, before the query finishes
-                                promise.delay(1000)
-                                    .then(() => dbSpec.one('SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid))])
+                                    promiseDelay(1000)
+                                        .then(() => dbSpec.one('SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid))])
                                     .finally(() => {
                                         obj.done(error);
                                         done();
@@ -1035,9 +1038,9 @@ describe('Executing method query', () => {
     describe('with invalid query as parameter', () => {
         let result;
         beforeEach(done => {
-            promise.any([dbSpec.query(), dbSpec.query(''), dbSpec.query('   '), dbSpec.query({}), dbSpec.query(1), dbSpec.query(null)])
+            Promise.any([dbSpec.query(), dbSpec.query(''), dbSpec.query('   '), dbSpec.query({}), dbSpec.query(1), dbSpec.query(null)])
                 .catch(err => {
-                    result = err;
+                    result = err.errors;
                 })
                 .finally(done);
         });
@@ -1055,9 +1058,9 @@ describe('Executing method query', () => {
     describe('with invalid qrm as parameter', () => {
         let result;
         beforeEach(done => {
-            promise.any([dbSpec.query('something', undefined, ''), dbSpec.query('something', undefined, '2'), dbSpec.query('something', undefined, -1), dbSpec.query('something', undefined, 0), dbSpec.query('something', undefined, 100), dbSpec.query('something', undefined, NaN), dbSpec.query('something', undefined, 1 / 0), dbSpec.query('something', undefined, -1 / 0), dbSpec.query('something', undefined, 2.45)])
+            Promise.any([dbSpec.query('something', undefined, ''), dbSpec.query('something', undefined, '2'), dbSpec.query('something', undefined, -1), dbSpec.query('something', undefined, 0), dbSpec.query('something', undefined, 100), dbSpec.query('something', undefined, NaN), dbSpec.query('something', undefined, 1 / 0), dbSpec.query('something', undefined, -1 / 0), dbSpec.query('something', undefined, 2.45)])
                 .catch(err => {
-                    result = err;
+                    result = err.errors;
                 })
                 .finally(done);
         });
@@ -1086,7 +1089,7 @@ describe('Executing method query', () => {
             let result;
 
             beforeEach(done => {
-                promise.all([dbSpec.query(getQuery1, [], pgp.queryResult.one), dbSpec.query(getQuery2, 456, pgp.queryResult.one), dbSpec.query(getQuery3, 789, pgp.queryResult.one)])
+                Promise.all([dbSpec.query(getQuery1, [], pgp.queryResult.one), dbSpec.query(getQuery2, 456, pgp.queryResult.one), dbSpec.query(getQuery3, 789, pgp.queryResult.one)])
                     .then(data => {
                         result = data;
                     })
@@ -1261,7 +1264,7 @@ describe('Transactions', () => {
             })
                 .then(dummy, reason => {
                     nestError = reason.data[1].result.data[1].result;
-                    return promise.all([dbSpec.one('select count(*) from users where login = $1', 'External'), // 0 is expected;
+                    return Promise.all([dbSpec.one('select count(*) from users where login = $1', 'External'), // 0 is expected;
                         dbSpec.one('select count(*) from users where login = $1', 'Internal') // 0 is expected;
                     ]);
                 })
@@ -1298,16 +1301,16 @@ describe('Transactions', () => {
                                       where id = 1`, 'Test');
                 })])
                     .then(() => {
-                        return promise.reject(new Error('ops!'));
+                        return Promise.reject(new Error('ops!'));
                     });
             })
                 .then(dummy, () => {
-                    return promise.all([dbSpec.one(`select count(*)
+                    return Promise.all([dbSpec.one(`select count(*)
                                                     from users
                                                     where login = $1`, 'Test'), // 0 is expected;
-                    dbSpec.one(`select count(*)
-                                from person
-                                where name = $1`, 'Test') // 0 is expected;
+                        dbSpec.one(`select count(*)
+                                    from person
+                                    where name = $1`, 'Test') // 0 is expected;
                     ]);
                 })
                 .then(data => {
@@ -1513,11 +1516,11 @@ describe('Transactions', () => {
             }, reason => {
                 error = reason;
             }), // Terminate the connections during verify, which causes an 'error' event from the pool
-            promise.delay(500).then(() => {
-                return dbSpec.query(`SELECT pg_terminate_backend(pid)
-                                     FROM pg_stat_activity
-                                     WHERE pid <> pg_backend_pid();`);
-            })]).then(() => {
+                promiseDelay(500).then(() => {
+                    return dbSpec.query(`SELECT pg_terminate_backend(pid)
+                                         FROM pg_stat_activity
+                                         WHERE pid <> pg_backend_pid();`);
+                })]).then(() => {
                 done();
             }, (err) => {
                 done(err);
@@ -2085,7 +2088,7 @@ describe('Querying an entity', () => {
     describe('with invalid parameters', () => {
         let result;
         beforeEach(done => {
-            promise.any([dbSpec.func(), // undefined function name;
+            Promise.any([dbSpec.func(), // undefined function name;
                 dbSpec.func(''), // empty-string function name;
                 dbSpec.func('   '), // white-space string for function name;
                 dbSpec.func(1), // invalid-type function name;
@@ -2099,7 +2102,7 @@ describe('Querying an entity', () => {
                     entity: '   ', type: 'func'
                 })])
                 .catch(reason => {
-                    result = reason;
+                    result = reason.errors;
                 })
                 .finally(done);
         });
@@ -2446,7 +2449,7 @@ describe('Dynamic Schema', () => {
     describe('for an invalid value', () => {
         let result;
         beforeEach(done => {
-            const innerDb = header({schema: 123, noWarnings: true, promiseLib: promise}).db;
+            const innerDb = header({schema: 123, noWarnings: true}).db;
             innerDb.any(`select *
                          from users`)
                 .then(data => {
@@ -2462,7 +2465,7 @@ describe('Dynamic Schema', () => {
     describe('for a single schema', () => {
         let result;
         beforeEach(done => {
-            const innerDb = header({schema: 'test', noWarnings: true, promiseLib: promise}).db;
+            const innerDb = header({schema: 'test', noWarnings: true}).db;
             innerDb.any(`select *
                          from users`)
                 .catch(error => {
@@ -2477,7 +2480,7 @@ describe('Dynamic Schema', () => {
     describe('for multiple schemas', () => {
         let result;
         beforeEach(done => {
-            const innerDb = header({schema: ['first', 'second', 'public'], noWarnings: true, promiseLib: promise}).db;
+            const innerDb = header({schema: ['first', 'second', 'public'], noWarnings: true}).db;
             innerDb.any(`select *
                          from users`)
                 .then(data => {
@@ -2493,7 +2496,7 @@ describe('Dynamic Schema', () => {
         let result;
         beforeEach(done => {
             const schema = () => ['first', 'second', 'public'];
-            const innerDb = header({schema, noWarnings: true, promiseLib: promise}).db;
+            const innerDb = header({schema, noWarnings: true}).db;
             innerDb.any(`select *
                          from users`)
                 .then(data => {
