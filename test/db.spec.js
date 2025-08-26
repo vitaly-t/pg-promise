@@ -1040,11 +1040,12 @@ describe('Executing method query', () => {
         beforeEach(done => {
             Promise.any([dbSpec.query(), dbSpec.query(''), dbSpec.query('   '), dbSpec.query({}), dbSpec.query(1), dbSpec.query(null)])
                 .catch(err => {
-                    result = err;
+                    result = err.errors;
                 })
                 .finally(done);
         });
         it('must throw an error', () => {
+            expect(result.length).toBe(6);
             expect(result[0].message).toBe($text.invalidQuery); // reject to an undefined query;
             expect(result[1].message).toBe($text.invalidQuery); // reject to an empty-string query;
             expect(result[2].message).toBe($text.invalidQuery); // reject to a white-space query string;
@@ -1059,12 +1060,13 @@ describe('Executing method query', () => {
         beforeEach(done => {
             Promise.any([dbSpec.query('something', undefined, ''), dbSpec.query('something', undefined, '2'), dbSpec.query('something', undefined, -1), dbSpec.query('something', undefined, 0), dbSpec.query('something', undefined, 100), dbSpec.query('something', undefined, NaN), dbSpec.query('something', undefined, 1 / 0), dbSpec.query('something', undefined, -1 / 0), dbSpec.query('something', undefined, 2.45)])
                 .catch(err => {
-                    result = err;
+                    result = err.errors;
                 })
                 .finally(done);
         });
         it('must throw an error', () => {
             const error = 'Invalid Query Result Mask specified.';
+            expect(result.length).toBe(9);
             for (let i = 0; i < 9; i++) {
                 expect(result[i] instanceof TypeError).toBe(true);
                 expect(result[i].message).toBe(error);
@@ -2100,11 +2102,12 @@ describe('Querying an entity', () => {
                     entity: '   ', type: 'func'
                 })])
                 .catch(reason => {
-                    result = reason;
+                    result = reason.errors;
                 })
                 .finally(done);
         });
         it('must reject with the right error', () => {
+            expect(result.length).toBe(8);
             for (let i = 0; i < result.length; i++) {
                 expect(result[i] instanceof Error).toBe(true);
                 expect(result[i].message).toBe($text.invalidFunction);

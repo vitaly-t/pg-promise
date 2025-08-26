@@ -720,7 +720,7 @@ describe('pgFormatting', () => {
                 db.query(0)
             ])
                 .catch(reason => {
-                    err = reason;
+                    err = reason.errors;
                 })
                 .finally(done);
         });
