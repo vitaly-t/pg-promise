@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Table.html">Table</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Table.html">Table</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -151,7 +151,6 @@ const npm = {
 function Database(cn, dc, config) {
 
     const dbThis = this,
-        $p = config.promise,
         poolConnection = typeof cn === 'string' ? {connectionString: cn} : cn,
         pool = new config.pgp.pg.Pool(poolConnection),
         endMethod = pool.end;
@@ -278,7 +277,7 @@ function Database(cn, dc, config) {
         const self = {
             query(query, values, qrm) {
                 if (!ctx.db) {
-                    return $p.reject(new Error(npm.text.queryDisconnected));
+                    return Promise.reject(new Error(npm.text.queryDisconnected));
                 }
                 return config.$npm.query.call(this, ctx, query, values, qrm);
             },
@@ -367,7 +366,7 @@ function Database(cn, dc, config) {
             })
             .catch(error => {
                 ctx.disconnect();
-                return $p.reject(error);
+                return Promise.reject(error);
             });
     };
 
@@ -380,27 +379,8 @@ function Database(cn, dc, config) {
      * Properties available in the object:
      * - `pgp` - instance of the entire library after initialization
      * - `options` - the library's {@link module:pg-promise Initialization Options} object
-     * - `promiseLib` - instance of the promise library that's used
-     * - `promise` - generic promise interface that uses `promiseLib` via 4 basic methods:
-     *   - `promise((resolve, reject) => {})` - to create a new promise
-     *   - `promise.resolve(value)` - to resolve with a value
-     *   - `promise.reject(reason)` - to reject with a reason
-     *   - `promise.all(iterable)` - to resolve an iterable list of promises
      * - `version` - this library's version
      * - `$npm` _(hidden property)_ - internal module cache
-     *
-     * @example
-     *
-     * // Using the promise protocol as configured by pg-promise:
-     *
-     * const $p = db.$config.promise;
-     *
-     * const resolvedPromise = $p.resolve('some data');
-     * const rejectedPromise = $p.reject('some reason');
-     *
-     * const newPromise = $p((resolve, reject) => {
-     *     // call either resolve(data) or reject(reason) here
-     * });
      */
     npm.utils.addReadProp(this, '$config', config, true);
 
@@ -1382,12 +1362,12 @@ function Database(cn, dc, config) {
                 if ('cnd' in args.options) {
                     cnd = typeof cnd === 'function' ? cnd.call(obj, obj) : !!cnd;
                 } else {
-                    cnd = !obj.ctx; // create task, if it is the top level
+                    cnd = !obj.ctx; // create a task if it is the top level
                 }
-                // reusable only if condition fails, and not top-level:
+                // reusable only if the condition fails, and not top-level:
                 args.options.reusable = !cnd &amp;&amp; !!obj.ctx;
             } catch (e) {
-                return $p.reject(e);
+                return Promise.reject(e);
             }
             return taskProcessor.call(this, args, false);
         };
@@ -1570,17 +1550,17 @@ function Database(cn, dc, config) {
                 const reusable = args.options.reusable;
                 args.options.reusable = !cnd &amp;&amp; obj.ctx &amp;&amp; typeof reusable === 'function' ? reusable.call(obj, obj) : !!reusable;
             } catch (e) {
-                return $p.reject(e);
+                return Promise.reject(e);
             }
             return taskProcessor.call(this, args, args.options.cnd);
         };
 
         // Task method;
-        // Resolves with result from the callback function;
+        // Resolves with the result from the callback function;
         function taskProcessor(params, isTX) {
 
             if (typeof params.cb !== 'function') {
-                return $p.reject(new TypeError('Callback function is required.'));
+                return Promise.reject(new TypeError('Callback function is required.'));
             }
 
             if (params.options.reusable) {
@@ -1624,12 +1604,12 @@ function Database(cn, dc, config) {
                 })
                 .catch(error => {
                     taskCtx.disconnect();
-                    return $p.reject(error);
+                    return Promise.reject(error);
                 });
         }
 
         function addServerVersion(target, client) {
-            // Exclude else-case from coverage, because it can only occur with Native Bindings.
+            // Exclude else-case from the coverage because it can only occur with Native Bindings.
             // istanbul ignore else
             if (client.serverVersion) {
                 npm.utils.addReadProp(target, 'serverVersion', client.serverVersion);
@@ -1661,7 +1641,7 @@ function onError(err) {
 module.exports = config => {
     const npmLocal = config.$npm;
     npmLocal.connect = npmLocal.connect || npm.connect(config);
-    npmLocal.query = npmLocal.query || npm.query(config);
+    npmLocal.query = npmLocal.query || npm.query();
     npmLocal.task = npmLocal.task || npm.task(config);
     return Database;
 };

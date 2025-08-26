@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="PromiseAdapter.html">PromiseAdapter</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Table.html">Table</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pg-promise.html">pg-promise</a></li></ul><h3>Classes</h3><ul><li><a href="Database.html">Database</a></li><li><a href="ParameterizedQuery.html">ParameterizedQuery</a></li><li><a href="PreparedStatement.html">PreparedStatement</a></li><li><a href="QueryFile.html">QueryFile</a></li><li><a href="errors.ParameterizedQueryError.html">ParameterizedQueryError</a></li><li><a href="errors.PreparedStatementError.html">PreparedStatementError</a></li><li><a href="errors.QueryFileError.html">QueryFileError</a></li><li><a href="errors.QueryResultError.html">QueryResultError</a></li><li><a href="helpers.Column.html">Column</a></li><li><a href="helpers.ColumnSet.html">ColumnSet</a></li><li><a href="helpers.TableName.html">TableName</a></li><li><a href="txMode.TransactionMode.html">TransactionMode</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:connect">connect</a></li><li><a href="global.html#event:disconnect">disconnect</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:extend">extend</a></li><li><a href="global.html#event:query">query</a></li><li><a href="global.html#event:receive">receive</a></li><li><a href="global.html#event:task">task</a></li><li><a href="global.html#event:transact">transact</a></li></ul><h3>Namespaces</h3><ul><li><a href="errors.html">errors</a></li><li><a href="formatting.html">formatting</a></li><li><a href="formatting.ctf.html">ctf</a></li><li><a href="helpers.html">helpers</a></li><li><a href="txMode.html">txMode</a></li><li><a href="utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="Table.html">Table</a></li><li><a href="Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#queryResult">queryResult</a></li></ul>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/pg-promise">&lt;&lt; GitHub</a>
     </div>
@@ -90,8 +90,6 @@ const npm = {
  */
 function Task(ctx, tag, isTX, config) {
 
-    const $p = config.promise;
-
     /**
      * @member {TaskContext} Task#ctx
      * @readonly
@@ -141,7 +139,7 @@ function Task(ctx, tag, isTX, config) {
     // generic query method;
     this.query = function (query, values, qrm) {
         if (!ctx.db) {
-            return $p.reject(new Error(npm.text.looseQuery));
+            return Promise.reject(new Error(npm.text.looseQuery));
         }
         return config.$npm.query.call(this, ctx, query, values, qrm);
     };
@@ -220,9 +218,8 @@ function Task(ctx, tag, isTX, config) {
  * @param config
  * @returns {Promise.&lt;TResult>}
  */
-const callback = (ctx, obj, cb, config) => {
+const callback = (ctx, obj, cb) => {
 
-    const $p = config.promise;
     let result;
 
     try {
@@ -238,12 +235,12 @@ const callback = (ctx, obj, cb, config) => {
             dc: ctx.dc,
             ctx: ctx.ctx
         });
-        return $p.reject(err); // reject with the error;
+        return Promise.reject(err); // reject with the error;
     }
     if (result &amp;&amp; typeof result.then === 'function') {
         return result; // result is a valid promise object;
     }
-    return $p.resolve(result);
+    return Promise.resolve(result);
 };
 
 /**
@@ -258,8 +255,6 @@ const callback = (ctx, obj, cb, config) => {
  * @returns {Promise.&lt;TResult>}
  */
 const execute = (ctx, obj, isTX, config) => {
-
-    const $p = config.promise;
 
     // updates the task context and notifies the client;
     function update(start, success, result) {
@@ -305,7 +300,7 @@ const execute = (ctx, obj, isTX, config) => {
                         return cbData;
                     }
                     update(false, false, cbReason);
-                    return $p.reject(cbReason);
+                    return Promise.reject(cbReason);
                 },
                 err => {
                     // either COMMIT or ROLLBACK has failed, which is impossible
@@ -313,7 +308,7 @@ const execute = (ctx, obj, isTX, config) => {
                     // istanbul ignore next:
                     update(false, false, err);
                     // istanbul ignore next:
-                    return $p.reject(err);
+                    return Promise.reject(err);
                 }),
             err => {
                 // BEGIN has failed, which is impossible to replicate in a test
@@ -321,7 +316,7 @@ const execute = (ctx, obj, isTX, config) => {
                 // istanbul ignore next:
                 update(false, false, err);
                 // istanbul ignore next:
-                return $p.reject(err);
+                return Promise.reject(err);
             });
     }
 
@@ -355,7 +350,7 @@ const execute = (ctx, obj, isTX, config) => {
         })
         .catch(error => {
             update(false, false, error);
-            return $p.reject(error);
+            return Promise.reject(error);
         });
 };
 
@@ -365,8 +360,8 @@ module.exports = config => {
     // istanbul ignore next:
     // we keep 'npm.query' initialization here, even though it is always
     // pre-initialized by the 'database' module, for integrity purpose.
-    npmLocal.query = npmLocal.query || npm.query(config);
-    npmLocal.spex = npmLocal.spex || npm.spex(config.promiseLib);
+    npmLocal.query = npmLocal.query || npm.query();
+    npmLocal.spex = npmLocal.spex || npm.spex(Promise);
 
     return {
         Task, execute, callback
@@ -444,7 +439,6 @@ module.exports = config => {
  * Once the operation has finished, this property contains the result, depending on property `success`:
  * - data resolved by the operation, if `success = true`
  * - error / rejection reason, if `success = false`
- *
  */
 </code></pre>
         </article>
