@@ -52,7 +52,6 @@ Built on top of [node-postgres], this library adds the following:
 * Declarative approach to handling query results
 * Global events reporting for central handling
 * Extensive support for external SQL files
-* Support for all promise libraries
 
 At its inception in 2015, this library was only adding promises to the base driver, hence the name `pg-promise`.
 And while the original name was kept, the library's functionality was vastly extended, with promises now being
@@ -999,7 +998,7 @@ to force the pool to shut down all the connections it holds:
 db.$pool.end(); // shuts down the connection pool associated with the Database object
 ``` 
 
-For example, if you are using the [Bluebird] library, you can chain the last promise in the process like this:
+For example, you can chain the last promise in the process like this:
 
 ```js
 .finally(db.$pool.end);
@@ -1117,7 +1116,6 @@ See the relevant API: [pgp.end], [Database.$pool]
 <!-- External Links -->
 
 [node-postgres]:https://github.com/brianc/node-postgres
-[Bluebird]:https://github.com/petkaantonov/bluebird
 [SQL injection]:https://en.wikipedia.org/wiki/SQL_injection
 [Symbol]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
 [idleTimeoutMillis]:https://github.com/brianc/node-postgres/blob/master/packages/pg/lib/defaults.js
