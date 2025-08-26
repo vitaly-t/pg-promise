@@ -4,7 +4,6 @@ const pgResult = require('pg/lib/result');
 const pgClient = require('pg/lib/client');
 
 const header = require('./db/header');
-const promise = header.defPromise;
 
 const options = {
     noWarnings: true
