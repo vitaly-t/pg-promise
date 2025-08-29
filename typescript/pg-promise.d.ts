@@ -35,6 +35,17 @@ declare namespace _txMode {
 // API: https://vitaly-t.github.io/pg-promise/module-pg-promise.html
 declare namespace pgPromise {
 
+    interface ISpex {
+        batch: typeof spexLib.batch
+        page: typeof spexLib.page
+        sequence: typeof spexLib.sequence
+        errors: {
+            BatchError: spexLib.errors.BatchError,
+            PageError: spexLib.errors.PageError,
+            SequenceError: spexLib.errors.SequenceError
+        }
+    }
+
     interface IQueryFileOptions {
         debug?: boolean
         minify?: boolean | 'after'
@@ -309,7 +320,7 @@ declare namespace pgPromise {
         readonly QueryFile: typeof QueryFile
         readonly queryResult: typeof queryResult
         readonly minify: typeof pgMinify
-        readonly spex: spexLib.ISpex
+        readonly spex: ISpex
         readonly errors: typeof errors
         readonly utils: IUtils
         readonly txMode: typeof txMode
@@ -322,7 +333,7 @@ declare namespace pgPromise {
 
     // Additional methods available inside tasks + transactions;
     // API: https://vitaly-t.github.io/pg-promise/Task.html
-    interface ITask<Ext> extends IBaseProtocol<Ext>, spexLib.ISpexBase {
+    interface ITask<Ext> extends IBaseProtocol<Ext>, ISpex {
         readonly ctx: ITaskContext
     }
 
@@ -428,7 +439,7 @@ declare namespace pgPromise {
 
     // Database object in connected state;
     // API: https://vitaly-t.github.io/pg-promise/Database.html#connect
-    interface IConnected<Ext, C extends pg.IClient> extends IBaseProtocol<Ext>, spexLib.ISpexBase {
+    interface IConnected<Ext, C extends pg.IClient> extends IBaseProtocol<Ext>, ISpex {
         readonly client: C
 
         // Note that for normal connections (working with the pool), method `done` accepts `kill`

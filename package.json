@@ -44,7 +44,7 @@
     "assert-options": "0.8.3",
     "pg": "8.16.3",
     "pg-minify": "1.8.0",
-    "spex": "3.4.1"
+    "spex": "4.0.1"
   },
   "peerDependencies": {
     "pg-query-stream": "4.10.3"
