@@ -145,7 +145,6 @@ function Task(ctx, tag, isTX, config) {
     };
 
     /**
-     * @deprecated
      * Consider using &lt;b>async/await&lt;/b> syntax instead, or if you must have
      * pre-generated promises, then $[Promise.allSettled].
      *
@@ -153,7 +152,9 @@ function Task(ctx, tag, isTX, config) {
      * @description
      * Settles a predefined array of mixed values by redirecting to method $[spex.batch].
      *
-     * For complete method documentation see $[spex.batch].
+     * **NOTE:**
+     * Consider using `async/await` syntax instead, or if you must have
+     * pre-generated promises, then $[Promise.allSettled].
      *
      * @param {array} values
      * @param {Object} [options]
@@ -361,7 +362,7 @@ module.exports = config => {
     // we keep 'npm.query' initialization here, even though it is always
     // pre-initialized by the 'database' module, for integrity purpose.
     npmLocal.query = npmLocal.query || npm.query();
-    npmLocal.spex = npmLocal.spex || npm.spex(Promise);
+    npmLocal.spex = npmLocal.spex || npm.spex;
 
     return {
         Task, execute, callback

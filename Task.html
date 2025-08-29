@@ -233,7 +233,9 @@ However, when invoked inside another task or transaction, the method reuses the 
 
 <div class="description">
     <p>Settles a predefined array of mixed values by redirecting to method <a href="http://vitaly-t.github.io/spex/global.html#batch">spex.batch</a>.</p>
-<p>For complete method documentation see <a href="http://vitaly-t.github.io/spex/global.html#batch">spex.batch</a>.</p>
+<p><strong>NOTE:</strong>
+Consider using <code>async/await</code> syntax instead, or if you must have
+pre-generated promises, then <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled">Promise.allSettled</a>.</p>
 </div>
 
 
@@ -417,8 +419,6 @@ However, when invoked inside another task or transaction, the method reuses the 
 
     
 
-    
-        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>Consider using <b>async/await</b> syntax instead, or if you must havepre-generated promises, then <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled">Promise.allSettled</a>.</li></ul></dd>
     
 
     
@@ -737,7 +737,7 @@ However, when invoked inside another task or transaction, the method reuses the 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line140">line 140</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line141">line 141</a>
     </li></ul></dd>
     
 
@@ -1081,7 +1081,7 @@ However, when invoked inside another task or transaction, the method reuses the 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="task.js.html">task.js</a>, <a href="task.js.html#line159">line 159</a>
+        <a href="task.js.html">task.js</a>, <a href="task.js.html#line160">line 160</a>
     </li></ul></dd>
     
 
