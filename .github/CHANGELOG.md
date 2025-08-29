@@ -1,5 +1,6 @@
 ### Release History
 
+* 12.1.0 Upgrading to [spex] v4.0.1
 * 12.0.0 Throwing away everything related to custom promises support and Bluebird library, as obsolete.
 * 9.0.0 Major update of just about everything. Lots of breaking changes. Released: July 27, 2019.
 * 8.4.0 Replacing `isFresh` with `useCount` everywhere. Released: April 18, 2018.
@@ -35,7 +36,7 @@
 * 5.4.1 Now forwarding `Date` formatting into the `node-postgres` driver. Released: Nov 20, 2016.
 * 5.4.0 Breaking changes: improvements in the [helpers] namespace for the event handlers. Released: Nov 20, 2016.
 * 5.2.0 Integrating type [QueryFile] directly into the query-formatting engine. Released: July 15, 2016.
-* 5.0.0 Change over to the new version of [spex] 1.0, with new rejection protocol. Released: June 26, 2016.
+* 5.0.0 Change over to the new version of [spex] 1.0, with the new rejection protocol. Released: June 26, 2016.
 
 [Nested Named Parameters]:https://github.com/vitaly-t/pg-promise#nested-named-parameters
 [QueryStream]:https://github.com/brianc/node-pg-query-stream

@@ -2,6 +2,9 @@ import * as pgPromise from '../../typescript/pg-promise';
 import {IConnectionParameters} from '../../typescript/pg-subset';
 import {ILostContext} from "../../typescript/pg-promise";
 
+import {errors} from 'spex';
+import BatchError = errors.BatchError;
+
 const pgp: pgPromise.IMain = pgPromise({
     schema: ['public', 'mine'],
     capSQL: true,
@@ -47,7 +50,8 @@ db.connect()
         });
         const cn = ctx.client.connectionParameters;
         ctx.done();
-    });
+    }).catch((error: BatchError) => {
+});
 
 db.connect({});
 
