@@ -29,10 +29,13 @@ jobs:
     strategy:
       matrix:
         include:
-          # Note that we do keep Node v18 here, because v20 changes errors syntax for DB again,
+          # Note that we do keep Node v18 here, because v20+ changes the error syntax for DB again,
           # which requires refactoring corresponding tests again, and for no good reason at all.
           - name: PostgreSQL 10, Node 18
             POSTGRES_IMAGE: postgres:10
+            NODE_VERSION: 18
+          - name: PostgreSQL 14, Node 18
+            POSTGRES_IMAGE: postgres:14
             NODE_VERSION: 18
           - name: PostgreSQL 17, Node 18
             POSTGRES_IMAGE: postgres:17
