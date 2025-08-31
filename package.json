@@ -9,6 +9,7 @@
     "coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node --captureExceptions test",
     "doc": "jsdoc -c ./jsdoc/jsdoc.js ./jsdoc/README.md -t ./jsdoc/templates/custom",
     "lint": "eslint ./lib ./test/*.js ./test/db",
+    "lint:fix": "npm run lint -- --fix",
     "test": "jasmine-node --captureExceptions test",
     "test:init": "node test/db/init.js",
     "test:native": "jasmine-node test --config PG_NATIVE true"
