@@ -140,12 +140,15 @@ table.props {
         background-color: #151515;
     }
 
+    section article pre.prettyprint.source:not(.linenums) code {
+        padding: 20px;
+    }
+
     section article pre.prettyprint.source {
         border-color: #707070;
 
         code {
             background-color: #252525;
-            padding: 20px;
         }
     }
 
@@ -179,6 +182,7 @@ table.props {
             background-color: #24425C;
             color: #A0A0A0;
         }
+
         td {
             border-color: #707070;
         }
