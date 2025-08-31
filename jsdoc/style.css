@@ -104,7 +104,7 @@ table.props th:last-child {
 
 table.params th,
 table.props th {
-    padding:10px;
+    padding: 10px;
     border: none;
     border-right: 1px solid #F5F5F5;
 }
@@ -138,6 +138,15 @@ table.props {
     html, body, section {
         color: #A0A0A0;
         background-color: #151515;
+    }
+
+    section article pre.prettyprint.source {
+        border-color: #707070;
+
+        code {
+            background-color: #151515;
+            padding: 20px;
+        }
     }
 
     p {
@@ -198,7 +207,16 @@ table.props {
         color: rgb(136, 191, 190);
     }
 
+    pre.prettyprint:not(pre.source) {
+        border-color: #707070;
+    }
+
     pre.prettyprint code {
+
+        /*
+        :not(pre.source){
+            border:1px solid red;
+        }*/
 
         .pln, .pun {
             color: #D0D0D0;
@@ -211,6 +229,7 @@ table.props {
         .str {
             color: #619552;
         }
+
     }
 
     p > code, .description code {
