@@ -104,6 +104,7 @@ table.props th:last-child {
 
 table.params th,
 table.props th {
+    padding:10px;
     border: none;
     border-right: 1px solid #F5F5F5;
 }
@@ -114,14 +115,22 @@ table.props th {
     font-weight: normal;
 }
 
-table.params th {
-    background-color: SteelBlue;
-    color: White;
+table.params {
+    th {
+        background-color: SteelBlue;
+        color: White;
+    }
 }
 
-table.props th {
-    background-color: DarkCyan;
-    color: White;
+table.props {
+    th {
+        background-color: DarkCyan;
+        color: White;
+    }
+
+    td.default {
+        text-align: center;
+    }
 }
 
 /* Dark mode */
@@ -137,6 +146,10 @@ table.props th {
 
     h2 {
         color: #718c00;
+    }
+
+    h3 {
+        color: skyblue;
     }
 
     table.params {
@@ -166,7 +179,6 @@ table.props th {
 
         td.default {
             color: gold;
-            text-align: center;
         }
     }
 
@@ -186,8 +198,19 @@ table.props th {
         color: rgb(136, 191, 190);
     }
 
-    pre.prettyprint:not(pre.source) {
-        border: 2px solid grey;
+    pre.prettyprint code {
+
+        .pln, .pun {
+            color: #D0D0D0;
+        }
+
+        .com {
+            color: #707070;
+        }
+
+        .str {
+            color: #619552;
+        }
     }
 
     p > code, .description code {
