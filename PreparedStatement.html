@@ -50,7 +50,7 @@
 
 
 <div class="description">
-    <p>Constructs a new <a href="http://www.postgresql.org/docs/9.6/static/sql-prepare.html">Prepared Statement</a> object. All properties can also be set after the object's construction.</p>
+    <p>Constructs a new <a href="https://www.postgresql.org/docs/17/sql-prepare.html">Prepared Statement</a> object. All properties can also be set after the object's construction.</p>
 <p>This type extends the basic <code>{name, text, values}</code> object, i.e. when the basic object is used
 with a query method, a new <a href="PreparedStatement.html">PreparedStatement</a> object is created in its place.</p>
 <p>The type can be used in place of the <code>query</code> parameter, with any query method directly.</p>
@@ -431,7 +431,7 @@ with a query method, a new <a href="PreparedStatement.html">PreparedStatement</a
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="errors.PreparedStatementError.html">PreparedStatementError</a>,<a href="http://www.postgresql.org/docs/9.6/static/sql-prepare.html">PostgreSQL Prepared Statements</a></li>
+            <li><a href="errors.PreparedStatementError.html">PreparedStatementError</a>,<a href="https://www.postgresql.org/docs/17/sql-prepare.html">PostgreSQL Prepared Statements</a></li>
         </ul>
     </dd>
     
@@ -898,7 +898,7 @@ The default is 0, which means that all rows must be returned at once.</p>
 
 <div class="description">
     <p>A non-empty query string or a <a href="QueryFile.html">QueryFile</a> object.</p>
-<p>Only the basic variables (<code>$1</code>, <code>$2</code>, etc) can be used in the query, because <a href="http://www.postgresql.org/docs/9.6/static/sql-prepare.html">Prepared Statements</a>
+<p>Only the basic variables (<code>$1</code>, <code>$2</code>, etc) can be used in the query, because <a href="https://www.postgresql.org/docs/17/sql-prepare.html">Prepared Statements</a>
 are formatted on the server side.</p>
 <p>Changing this property for the same <a href="PreparedStatement.html#name">name</a> will have no effect, because queries
 for Prepared Statements are cached by the server, with <a href="PreparedStatement.html#name">name</a> being the cache key.</p>

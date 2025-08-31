@@ -42,7 +42,7 @@ const npm = {
     spex: require('spex'),
     utils: require('./utils'),
     mode: require('./tx-mode'),
-    query: require('./query'),
+    query: require('./query').query,
     text: require('./text')
 };
 
@@ -352,13 +352,8 @@ const execute = (ctx, obj, isTX, config) => {
 
 module.exports = config => {
     const npmLocal = config.$npm;
-
-    // istanbul ignore next:
-    // we keep 'npm.query' initialization here, even though it is always
-    // pre-initialized by the 'database' module, for integrity purpose.
-    npmLocal.query = npmLocal.query || npm.query();
+    npmLocal.query = npmLocal.query || npm.query;
     npmLocal.spex = npmLocal.spex || npm.spex;
-
     return {
         Task, execute, callback
     };
