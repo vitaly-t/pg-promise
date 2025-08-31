@@ -144,7 +144,7 @@ table.props {
         border-color: #707070;
 
         code {
-            background-color: #151515;
+            background-color: #252525;
             padding: 20px;
         }
     }
@@ -163,15 +163,24 @@ table.props {
 
     table.params {
         th {
+            border-color: #707070;
             background-color: #24425C;
             color: #A0A0A0;
+        }
+
+        td {
+            border-color: #707070;
         }
     }
 
     table.props {
         th {
+            border-color: #707070;
             background-color: #24425C;
             color: #A0A0A0;
+        }
+        td {
+            border-color: #707070;
         }
 
         td.name code {
@@ -193,7 +202,7 @@ table.props {
 
     table.params th,
     table.props th {
-        border: 1px solid #A0A0A0;
+        /*border: 1px solid #A0A0A0;*/
         color: #C0C0C0;
     }
 
@@ -209,14 +218,10 @@ table.props {
 
     pre.prettyprint:not(pre.source) {
         border-color: #707070;
+        background-color: #252525;
     }
 
     pre.prettyprint code {
-
-        /*
-        :not(pre.source){
-            border:1px solid red;
-        }*/
 
         .pln, .pun {
             color: #D0D0D0;
@@ -230,6 +235,9 @@ table.props {
             color: #619552;
         }
 
+        .kwd {
+            color: darkorange;
+        }
     }
 
     p > code, .description code {
