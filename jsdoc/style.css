@@ -16,7 +16,7 @@ pre.prettyprint:not(pre.source) {
     padding: 10px;
 }
 
-p>code, .description code {
+p > code, .description code {
     background-color: lightgray;
 }
 
@@ -104,6 +104,7 @@ table.props th:last-child {
 
 table.params th,
 table.props th {
+    padding:10px;
     border: none;
     border-right: 1px solid #F5F5F5;
 }
@@ -114,12 +115,108 @@ table.props th {
     font-weight: normal;
 }
 
-table.params th {
-    background-color: SteelBlue;
-    color: White;
+table.params {
+    th {
+        background-color: SteelBlue;
+        color: White;
+    }
 }
 
-table.props th {
-    background-color: DarkCyan;
-    color: White;
+table.props {
+    th {
+        background-color: DarkCyan;
+        color: White;
+    }
+
+    td.default {
+        text-align: center;
+    }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    html, body, section {
+        color: #A0A0A0;
+        background-color: #151515;
+    }
+
+    p {
+        color: #A0A0A0;
+    }
+
+    h2 {
+        color: #718c00;
+    }
+
+    h3 {
+        color: skyblue;
+    }
+
+    table.params {
+        th {
+            background-color: #24425C;
+            color: #A0A0A0;
+        }
+    }
+
+    table.props {
+        th {
+            background-color: #24425C;
+            color: #A0A0A0;
+        }
+
+        td.name code {
+            color: pink;
+        }
+
+        td.type {
+            color: yellowgreen;
+        }
+
+        td.attributes {
+            color: seagreen;
+        }
+
+        td.default {
+            color: gold;
+        }
+    }
+
+    table.params th,
+    table.props th {
+        border: 1px solid #A0A0A0;
+        color: #C0C0C0;
+    }
+
+    table.params td.name code,
+    table.params td.type {
+        color: pink;
+    }
+
+    h4.name {
+        background-color: #070707;
+        color: rgb(136, 191, 190);
+    }
+
+    pre.prettyprint code {
+
+        .pln, .pun {
+            color: #D0D0D0;
+        }
+
+        .com {
+            color: #707070;
+        }
+
+        .str {
+            color: #619552;
+        }
+    }
+
+    p > code, .description code {
+        background-color: transparent;
+        color: pink;
+        font-weight: normal;
+    }
+
 }
