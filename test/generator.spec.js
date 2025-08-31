@@ -9,10 +9,7 @@ const db = dbHeader.db;
 
 describe('ES6 Generators', () => {
 
-    // v9.0 dropped all generators support, and now it throws an error,
-    // if someone still tries to use them.
-
-    const errMsg = 'ES6 generator functions are no longer supported!';
+    const errMsg = 'ES6 generator functions are not supported!';
 
     describe('for tasks', () => {
         let error;
