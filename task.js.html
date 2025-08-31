@@ -145,9 +145,6 @@ function Task(ctx, tag, isTX, config) {
     };
 
     /**
-     * Consider using &lt;b>async/await&lt;/b> syntax instead, or if you must have
-     * pre-generated promises, then $[Promise.allSettled].
-     *
      * @method Task#batch
      * @description
      * Settles a predefined array of mixed values by redirecting to method $[spex.batch].
@@ -225,9 +222,7 @@ const callback = (ctx, obj, cb) => {
 
     try {
         if (cb.constructor.name === 'GeneratorFunction') {
-            // v9.0 dropped all support for ES6 generator functions;
-            // Clients should use the new ES7 async/await syntax.
-            throw new TypeError('ES6 generator functions are no longer supported!');
+            throw new TypeError('ES6 generator functions are not supported!');
         }
         result = cb.call(obj, obj); // invoking the callback function;
     } catch (err) {
@@ -238,7 +233,7 @@ const callback = (ctx, obj, cb) => {
         });
         return Promise.reject(err); // reject with the error;
     }
-    if (result &amp;&amp; typeof result.then === 'function') {
+    if (result instanceof Promise) {
         return result; // result is a valid promise object;
     }
     return Promise.resolve(result);
