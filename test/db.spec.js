@@ -30,7 +30,7 @@ const isLocalPC = process.env.NODE_ENV === 'development';
 function isResult(value) {
     if (options.pgNative) {
         // Impossible to test, because pg-native fails to export the Result type;
-        // See this issue: https://github.com/brianc/node-pg-native/issues/63
+        // See this issue: https://github.com/brianc/node-pg-native/issues/63,
         // So we are forced to skip the test for now:
         return true;
     }
