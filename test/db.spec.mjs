@@ -1,14 +1,13 @@
-const npm = {
-    util: require('util'), platform: require('os').platform()
-};
+import {inspect} from 'util';
+import {platform} from 'os';
 
-const capture = require('./db/capture');
-const pgResult = require('pg/lib/result');
-const header = require('./db/header');
+import {capture} from './db/capture.mjs';
+import pgResult from 'pg/lib/result';
+import * as header from './db/header.mjs';
 const tools = require('./db/tools');
 
-const isMac = npm.platform === 'darwin';
-const isWindows = npm.platform === 'win32';
+const isMac = platform === 'darwin';
+const isWindows = platform === 'win32';
 
 const promiseDelay = ms => new Promise((resolve) => {
     setTimeout(resolve, ms);
@@ -17,6 +16,7 @@ const promiseDelay = ms => new Promise((resolve) => {
 const options = {
     noWarnings: true
 };
+
 const dbHeader = header(options);
 const pgp = dbHeader.pgp;
 const dbSpec = dbHeader.db;
@@ -380,8 +380,8 @@ describe('Connection', () => {
                                     .catch(reason => {
                                         error = reason;
                                     }), // Terminate connection after a short delay, before the query finishes
-                                promiseDelay(1000)
-                                    .then(() => dbSpec.one('SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid))])
+                                    promiseDelay(1000)
+                                        .then(() => dbSpec.one('SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid = $1', pid))])
                                     .finally(() => {
                                         obj.done(error);
                                         done();
@@ -696,7 +696,7 @@ describe('Method \'none\'', () => {
             runs(() => {
                 expect(result).toBeUndefined();
                 expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-                expect(error.toString(1) != tools.inspect(error)).toBe(true);
+                expect(error.toString(1) != inspect(error)).toBe(true);
                 expect(error.message).toBe($text.notEmpty);
                 expect(error.result.rows.length).toBeGreaterThan(0);
             });
@@ -718,7 +718,7 @@ describe('Method \'none\'', () => {
             runs(() => {
                 expect(result).toBeUndefined();
                 expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-                expect(error.toString(1) != tools.inspect(error)).toBe(true);
+                expect(error.toString(1) != inspect(error)).toBe(true);
                 expect(error.message).toBe($text.notEmpty);
                 expect(error.result.rows.length).toBeGreaterThan(0);
             });
@@ -1308,7 +1308,7 @@ describe('Transactions', () => {
                     return Promise.all([dbSpec.one(`select count(*)
                                                     from users
                                                     where login = $1`, 'Test'), // 0 is expected;
-                    dbSpec.one(`select count(*)
+                        dbSpec.one(`select count(*)
                                     from person
                                     where name = $1`, 'Test') // 0 is expected;
                     ]);
@@ -1516,11 +1516,11 @@ describe('Transactions', () => {
             }, reason => {
                 error = reason;
             }), // Terminate the connections during verify, which causes an 'error' event from the pool
-            promiseDelay(500).then(() => {
-                return dbSpec.query(`SELECT pg_terminate_backend(pid)
+                promiseDelay(500).then(() => {
+                    return dbSpec.query(`SELECT pg_terminate_backend(pid)
                                          FROM pg_stat_activity
                                          WHERE pid <> pg_backend_pid();`);
-            })]).then(() => {
+                })]).then(() => {
                 done();
             }, (err) => {
                 done(err);

@@ -2,7 +2,7 @@
 // Database connection header used in every test;
 //////////////////////////////////////////////////
 
-const pgpLib = require('../../lib/index');
+import pgpLib from '../../src/index.mjs';
 
 // Either match your local database configuration according to the details below,
 // or the other way round - change the details to match your local configuration.
@@ -17,7 +17,7 @@ const cn = {
 
 pgpLib.suppressErrors = true; // suppress console output for error messages;
 
-function main(options, dc) {
+export function main(options, dc) {
     const pgNative = eval(process.env.PG_NATIVE);
     if (pgNative) {
         if (options && typeof options === 'object') {
@@ -41,4 +41,3 @@ function main(options, dc) {
     return result;
 }
 
-module.exports = main;

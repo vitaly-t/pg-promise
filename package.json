@@ -2,20 +2,21 @@
   "name": "pg-promise",
   "version": "12.1.2",
   "description": "PostgreSQL interface for Node.js",
-  "main": "lib/index.js",
+  "type": "module",
+  "main": "lib/index.mjs",
   "typings": "typescript/pg-promise.d.ts",
   "scripts": {
     "spelling": "cspell --config=.cspell.json \"**/*.{md,ts,js}\" --no-progress",
     "coverage": "istanbul cover ./node_modules/jasmine-node/bin/jasmine-node --captureExceptions test",
     "doc": "jsdoc -c ./jsdoc/jsdoc.js ./jsdoc/README.md -t ./jsdoc/templates/custom",
-    "lint": "eslint ./lib ./test/*.js ./test/db",
+    "lint": "eslint ./src ./test/*.mjs ./test/db",
     "lint:fix": "npm run lint -- --fix",
-    "test": "jasmine-node --captureExceptions test",
-    "test:init": "node test/db/init.js",
+    "test": "jasmine --config=./jasmine.mjs",
+    "test:init": "node test/db/init.mjs",
     "test:native": "jasmine-node test --config PG_NATIVE true"
   },
   "files": [
-    "lib",
+    "src",
     "typescript"
   ],
   "homepage": "https://github.com/vitaly-t/pg-promise",

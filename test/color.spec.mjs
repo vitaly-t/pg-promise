@@ -1,4 +1,4 @@
-const {ColorConsole} = require('../lib/utils/color');
+import {ColorConsole} from '../src/utils/color.mjs';
 
 describe('protocol', () => {
     it('must have the right signature', () => {

@@ -28,7 +28,7 @@ function removeColors(text) {
     return text.replace(/\\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]/g, '');
 }
 
-function capture() {
+export function capture() {
     let text = '';
     const hook = hookConsole(s => {
         if (!text) {
@@ -41,4 +41,3 @@ function capture() {
     };
 }
 
-module.exports = capture;

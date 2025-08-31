@@ -1,6 +1,6 @@
-const util = require('util');
+import {format} from 'util';
 
-class ColorConsole {
+export class ColorConsole {
 
     static log() {
         ColorConsole.writeNormal([...arguments], 39); // white
@@ -41,7 +41,7 @@ class ColorConsole {
     }
 
     static formatColor(args, color) {
-        return args.map(a => `\x1b[${color}m${util.format(a)}\x1b[0m`);
+        return args.map(a => `\x1b[${color}m${format(a)}\x1b[0m`);
     }
 }
 
@@ -65,4 +65,3 @@ ColorConsole.error.bright = function () {
     ColorConsole.writeError([...arguments], 91); // light red
 };
 
-module.exports = {ColorConsole};
