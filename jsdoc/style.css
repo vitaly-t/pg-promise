@@ -16,7 +16,7 @@ pre.prettyprint:not(pre.source) {
     padding: 10px;
 }
 
-p>code, .description code {
+p > code, .description code {
     background-color: lightgray;
 }
 
@@ -122,4 +122,51 @@ table.params th {
 table.props th {
     background-color: DarkCyan;
     color: White;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    html, body, section {
+        background-color: #151515;
+    }
+
+    p {
+        color: #A0A0A0;
+    }
+
+    h2{
+        color:green;
+    }
+
+    table.params th {
+        background-color: #24425C;
+        color: #A0A0A0;
+    }
+
+    table.props th {
+        background-color: DarkCyan;
+        color: White;
+    }
+
+    table.params th,
+    table.props th {
+        border: none;
+        border-right: 1px solid red;
+    }
+
+    h4.name {
+        background-color: rgb(16, 71, 70);
+        color: rgb(136, 191, 190);
+    }
+
+    pre.prettyprint:not(pre.source) {
+        border: 1px solid grey;
+    }
+
+    p > code, .description code {
+        background-color: transparent;
+        color: pink;
+        font-weight: normal;
+    }
+
 }
