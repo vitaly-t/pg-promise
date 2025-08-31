@@ -92,21 +92,10 @@ nav h2 {
     font-weight: bold;
 }
 
-table.params th:first-child,
-table.props th:first-child {
-    border-top-left-radius: 5px;
-}
-
-table.params th:last-child,
-table.props th:last-child {
-    border-top-right-radius: 5px;
-}
-
 table.params th,
 table.props th {
     padding: 10px;
-    border: none;
-    border-right: 1px solid #F5F5F5;
+    border: 1px solid #F5F5F5;
 }
 
 table.params th,
@@ -206,7 +195,6 @@ table.props {
 
     table.params th,
     table.props th {
-        /*border: 1px solid #A0A0A0;*/
         color: #C0C0C0;
     }
 
