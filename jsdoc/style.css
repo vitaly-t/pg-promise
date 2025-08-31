@@ -127,6 +127,7 @@ table.props th {
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
     html, body, section {
+        color: #A0A0A0;
         background-color: #151515;
     }
 
@@ -134,33 +135,59 @@ table.props th {
         color: #A0A0A0;
     }
 
-    h2{
-        color:green;
+    h2 {
+        color: #718c00;
     }
 
-    table.params th {
-        background-color: #24425C;
-        color: #A0A0A0;
+    table.params {
+        th {
+            background-color: #24425C;
+            color: #A0A0A0;
+        }
     }
 
-    table.props th {
-        background-color: DarkCyan;
-        color: White;
+    table.props {
+        th {
+            background-color: #24425C;
+            color: #A0A0A0;
+        }
+
+        td.name code {
+            color: pink;
+        }
+
+        td.type {
+            color: yellowgreen;
+        }
+
+        td.attributes {
+            color: seagreen;
+        }
+
+        td.default {
+            color: gold;
+            text-align: center;
+        }
     }
 
     table.params th,
     table.props th {
-        border: none;
-        border-right: 1px solid red;
+        border: 1px solid #A0A0A0;
+        color: #C0C0C0;
+    }
+
+    table.params td.name code,
+    table.params td.type {
+        color: pink;
     }
 
     h4.name {
-        background-color: rgb(16, 71, 70);
+        background-color: #070707;
         color: rgb(136, 191, 190);
     }
 
     pre.prettyprint:not(pre.source) {
-        border: 1px solid grey;
+        border: 2px solid grey;
     }
 
     p > code, .description code {
