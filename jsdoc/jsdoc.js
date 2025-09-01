@@ -1,5 +1,6 @@
 module.exports = {
     source: {
+        target: 'ES2020',
         include: [
             'lib'
         ]
