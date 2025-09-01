@@ -61,13 +61,11 @@ It is best to initialize the library and create [Database] in its own module, se
 * [PreparedStatement] - type for working with [Prepared Statements]
 * [ParameterizedQuery] - type for working with [Parameterized Queries]
 * [TransactionMode] - transaction configuration type
-* [PromiseAdapter] - adapter for using non-standard promise libraries
 
 [QueryFile]:http://vitaly-t.github.io/pg-promise/QueryFile.html
 [PreparedStatement]:http://vitaly-t.github.io/pg-promise/PreparedStatement.html
 [ParameterizedQuery]:http://vitaly-t.github.io/pg-promise/ParameterizedQuery.html
 [TransactionMode]:http://vitaly-t.github.io/pg-promise/txMode.TransactionMode.html
-[PromiseAdapter]:http://vitaly-t.github.io/pg-promise/PromiseAdapter.html
 [Prepared Statements]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#prepared-statements
 [Parameterized Queries]:https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#parameterized-queries
 
