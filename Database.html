@@ -5357,11 +5357,9 @@ it is expected to be an object with options as listed below.</p>
 
 
 
-    <h5>Examples</h5>
+    <h5>Example</h5>
     
-    <pre class="prettyprint"><code>db.task('my-task', t => {        // t.ctx = task context object        return t.one('SELECT id FROM Users WHERE name = $1', 'John')            .then(user => {                return t.any('SELECT * FROM Events WHERE userId = $1', user.id);            });    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
-
-    <pre class="prettyprint"><code>// using an ES7 syntax for the callback:db.task('my-task', async t {        // t.ctx = task context object        const user = await t.one('SELECT id FROM Users WHERE name = $1', 'John');        return t.any('SELECT * FROM Events WHERE userId = $1', user.id);    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>db.task('my-task', async t => {        // t.ctx = task context object        const user = await t.one('SELECT id FROM Users WHERE name = $1', ['John']);        return t.any('SELECT * FROM Events WHERE userId = $1', [user.id]);    })    .then(data => {        // success        // data = as returned from the task's callback    })    .catch(error => {        // error    });</code></pre>
 
 
 
@@ -5627,7 +5625,7 @@ It can be either a simple boolean, or a callback function that takes the task co
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1276">line 1276</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1257">line 1257</a>
     </li></ul></dd>
     
 
@@ -5950,7 +5948,7 @@ it is expected to be an object with options as listed below.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1346">line 1346</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1327">line 1327</a>
     </li></ul></dd>
     
 
@@ -6012,7 +6010,7 @@ it is expected to be an object with options as listed below.</p>
     
     <pre class="prettyprint"><code>db.tx('my-transaction', t => {        // t.ctx = transaction context object        return t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25])            .then(user => {                return t.batch([                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']),                    t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'login'])                ]);            });    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
 
-    <pre class="prettyprint"><code>// using an ES7 syntax for the callback:db.tx('my-transaction', async t {        // t.ctx = transaction context object        const user = await t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);        return t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
+    <pre class="prettyprint"><code>// using an ES7 syntax for the callback:db.tx('my-transaction', async t => {        // t.ctx = transaction context object        const user = await t.one('INSERT INTO Users(name, age) VALUES($1, $2) RETURNING id', ['Mike', 25]);        return t.none('INSERT INTO Events(userId, name) VALUES($1, $2)', [user.id, 'created']);    })    .then(data => {        // success        // data = as returned from the transaction's callback    })    .catch(error => {        // error    });</code></pre>
 
 
 
@@ -6374,7 +6372,7 @@ success or failure for the operation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1443">line 1443</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1423">line 1423</a>
     </li></ul></dd>
     
 
@@ -6546,7 +6544,7 @@ success or failure for the operation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1620">line 1620</a>
+        <a href="database.js.html">database.js</a>, <a href="database.js.html#line1600">line 1600</a>
     </li></ul></dd>
     
 
