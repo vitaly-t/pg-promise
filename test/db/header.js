@@ -9,7 +9,7 @@ const pgpLib = require('../../lib/index');
 const cn = {
     allowExitOnIdle: true,
     host: process.env.POSTGRES_HOST || 'localhost', // server name or IP address;
-    port: 5433, // default port;
+    port: 5432, // default port;
     database: process.env.POSTGRES_DB || 'pg_promise_test', // local database name for testing;
     user: process.env.POSTGRES_USER || 'postgres', // username;
     password: process.env.POSTGRES_PASSWORD || 'postgres' //- add password, if needed;
