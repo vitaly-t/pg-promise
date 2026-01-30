@@ -392,7 +392,7 @@ When a variable name ends with `:value`, or shorter syntax `#`, it is escaped as
 the trailing quotes are not added.
 
 Open values are primarily to be able to compose complete `LIKE`/`ILIKE` dynamic statements in external SQL files,
-without having to generate them in the code.
+without having to generate them in the code. They should not be used otherwise because they are not safe from SQL injection.
 
 i.e. you can either generate a filter like this in your code:
 
