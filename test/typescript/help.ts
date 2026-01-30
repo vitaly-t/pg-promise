@@ -71,8 +71,8 @@ const sets1: string = pgp.helpers.sets({});
 const sets2: string = pgp.helpers.sets([]);
 const sets3: string = pgp.helpers.sets({}, cs);
 
-const cs1: ColumnSet = cs.extend(['']);
-const cs2: ColumnSet = cs1.merge(cs);
+const cs1 = cs.extend(['']);
+const cs2 = cs1.merge(cs);
 
 const c1: string = pgp.helpers.concat(['first', {query: 'second'}]);
 const c2: string = pgp.helpers.concat(['first', new pgp.QueryFile(''), {
