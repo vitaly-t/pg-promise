@@ -206,9 +206,11 @@ declare namespace pgPromise {
             skip?: string | string[] | ((c: Column<T>) => boolean)
         }): string
 
-        extend<S>(columns: Column<T> | ColumnSet<T> | Array<string | IColumnConfig<T> | Column<T>>): ColumnSet<S>
+        extend<K extends string>(columns: K[]): ColumnSet<T & Record<K, unknown>>
+        extend<S>(columns: Column<S> | ColumnSet<S> | Array<IColumnConfig<S> | Column<S>>): ColumnSet<T & S>
 
-        merge<S>(columns: Column<T> | ColumnSet<T> | Array<string | IColumnConfig<T> | Column<T>>): ColumnSet<S>
+        merge<K extends string>(columns: K[]): ColumnSet<T & Record<K, unknown>>
+        merge<S>(columns: Column<S> | ColumnSet<S> | Array<IColumnConfig<S> | Column<S>>): ColumnSet<T & S>
 
         prepare(obj: object): object
 
