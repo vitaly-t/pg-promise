@@ -130,6 +130,7 @@ declare namespace pgPromise {
     interface IColumnSetOptions {
         table?: string | ITable | TableName
         inherit?: boolean
+        duplicate?: 'error' | 'skip' | 'replace'
     }
 
     interface ITable {
@@ -206,8 +207,12 @@ declare namespace pgPromise {
             skip?: string | string[] | ((c: Column<T>) => boolean)
         }): string
 
-        extend<K extends string>(columns: K[]): ColumnSet<T & Record<K, unknown>>
-        extend<S>(columns: Column<S> | ColumnSet<S> | Array<IColumnConfig<S> | Column<S>>): ColumnSet<T & S>
+        extend<K extends string>(columns: K[], opts?: {
+            skip?: boolean
+        }): ColumnSet<T & Record<K, unknown>>
+        extend<S>(columns: Column<S> | ColumnSet<S> | Array<IColumnConfig<S> | Column<S>>, opts?: {
+            skip?: boolean
+        }): ColumnSet<T & S>
 
         merge<K extends string>(columns: K[]): ColumnSet<T & Record<K, unknown>>
         merge<S>(columns: Column<S> | ColumnSet<S> | Array<IColumnConfig<S> | Column<S>>): ColumnSet<T & S>
