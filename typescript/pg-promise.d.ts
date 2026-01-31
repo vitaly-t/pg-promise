@@ -130,6 +130,7 @@ declare namespace pgPromise {
     interface IColumnSetOptions {
         table?: string | ITable | TableName
         inherit?: boolean
+        duplicate?: 'error' | 'skip' | 'replace'
     }
 
     interface ITable {
