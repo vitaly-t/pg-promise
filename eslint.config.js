@@ -1,5 +1,5 @@
-const js = require("@eslint/js");
-const globals = require("globals");
+const js = require('@eslint/js');
+const globals = require('globals');
 
 module.exports = [
     js.configs.recommended,
@@ -9,36 +9,36 @@ module.exports = [
                 ...globals.es6,
                 ...globals.node,
                 ...globals.jasmine,
-                ...globals.BigInt,
+                ...globals.BigInt
             },
             parserOptions: {
-                ecmaFeatures: { globalReturn: true },
+                ecmaFeatures: {globalReturn: true}
             },
-            sourceType: "commonjs",
-            ecmaVersion: 2022,
+            sourceType: 'commonjs',
+            ecmaVersion: 2022
         },
         rules: {
-            "no-var": "error",
-            "prefer-const": "error",
-            "prefer-arrow-callback": "error",
-            "no-else-return": "error",
-            "no-multi-spaces": "error",
-            "no-whitespace-before-property": "error",
-            camelcase: "error",
-            "new-cap": "error",
-            "no-console": "error",
-            "comma-dangle": "error",
-            "no-shadow": "error",
-            "object-shorthand": ["error", "properties"],
+            'no-var': 'error',
+            'prefer-const': 'error',
+            'prefer-arrow-callback': 'error',
+            'no-else-return': 'error',
+            'no-multi-spaces': 'error',
+            'no-whitespace-before-property': 'error',
+            camelcase: 'error',
+            'new-cap': 'error',
+            'no-console': 'error',
+            'comma-dangle': 'error',
+            'no-shadow': 'error',
+            'object-shorthand': ['error', 'properties'],
             indent: [
-                "error",
+                'error',
                 4,
                 {
-                    SwitchCase: 1,
-                },
+                    SwitchCase: 1
+                }
             ],
-            quotes: ["error", "single"],
-            semi: ["error", "always"],
-        },
-    },
+            quotes: ['error', 'single'],
+            semi: ['error', 'always']
+        }
+    }
 ];
