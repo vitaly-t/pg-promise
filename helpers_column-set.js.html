@@ -85,6 +85,12 @@ const npm = {
  *
  * By default, only the object's own properties are enumerated for column names.
  *
+ * @param {'error' | 'skip' | 'replace'} [options.duplicate = 'error']
+ * Strategy for processing duplicate columns:
+ * - `'error'` - throws {@link external:Error Error} = `Duplicate column name "name".` (Default)
+ * - `'skip'` - skips repeated columns (only the first will be used)
+ * - `'replace'` - replaces repeated columns (the last one will be used)
+ *
  * @returns {helpers.ColumnSet}
  *
  * @see
@@ -195,17 +201,17 @@ const npm = {
  */
 class ColumnSet extends InnerState {
 
-    constructor(columns, opt) {
+    constructor(columns, options) {
         super();
 
         if (!columns || typeof columns !== 'object') {
             throw new TypeError('Invalid parameter \'columns\' specified.');
         }
 
-        opt = assert(opt, ['table', 'inherit']);
+        options = assert(options, ['table', 'inherit', 'duplicate']);
 
-        if (!npm.utils.isNull(opt.table)) {
-            this.table = (opt.table instanceof TableName) ? opt.table : new TableName(opt.table);
+        if (!npm.utils.isNull(options.table)) {
+            this.table = (options.table instanceof TableName) ? options.table : new TableName(options.table);
         }
 
         /**
@@ -219,6 +225,7 @@ class ColumnSet extends InnerState {
          * - **secondary:** to be automatically written into the console (for logging purposes).
          */
 
+        this.columns = [];
 
         /**
          * @name helpers.ColumnSet#columns
@@ -228,22 +235,28 @@ class ColumnSet extends InnerState {
          * Array of {@link helpers.Column Column} objects.
          */
         if (Array.isArray(columns)) {
-            const colNames = {};
-            this.columns = columns.map(c => {
+            const duplicate = options.duplicate || 'error';
+            columns.forEach(c => {
                 const col = (c instanceof Column) ? c : new Column(c);
-                if (col.name in colNames) {
-                    throw new Error(`Duplicate column name "${col.name}".`);
+                const idx = this.columns.findIndex(a => a.name === col.name);
+                if (idx === -1) {
+                    this.columns.push(col);
+                } else {
+                    if (duplicate === 'replace') {
+                        this.columns[idx] = col;
+                        return;
+                    }
+                    if (duplicate !== 'skip') {
+                        throw new Error(`Duplicate column name "${col.name}".`);
+                    }
                 }
-                colNames[col.name] = true;
-                return col;
             });
         } else {
             if (columns instanceof Column) {
                 this.columns = [columns];
             } else {
-                this.columns = [];
                 for (const name in columns) {
-                    if (opt.inherit || Object.prototype.hasOwnProperty.call(columns, name)) {
+                    if (options.inherit || Object.prototype.hasOwnProperty.call(columns, name)) {
                         this.columns.push(new Column(name));
                     }
                 }
@@ -444,12 +457,17 @@ ColumnSet.prototype.assignColumns = function (options) {
  * @description
  * Creates a new {@link helpers.ColumnSet ColumnSet}, by joining the two sets of columns.
  *
- * If the two sets contain a column with the same `name` (case-sensitive), an error is thrown.
+ * If the two sets contain a column with the same `name` (case-sensitive), an error is thrown (unless `opts.skip` is set to `true`).
  *
  * @param {helpers.Column|helpers.ColumnSet|array} columns
  * Columns to be appended, of the same type as parameter `columns` during {@link helpers.ColumnSet ColumnSet} construction, except:
  * - it can also be of type {@link helpers.ColumnSet ColumnSet}
  * - it cannot be a simple object (properties enumeration is not supported here)
+ *
+ * @param {object} [options]
+ *
+ * @param {boolean} [options.skip = false]
+ * When set to `true`, it skips duplicate columns (by default, it throws an error).
  *
  * @returns {helpers.ColumnSet}
  * New {@link helpers.ColumnSet ColumnSet} object with the extended/concatenated list of columns.
@@ -494,13 +512,12 @@ ColumnSet.prototype.assignColumns = function (options) {
  * //    ]
  * // }
  */
-ColumnSet.prototype.extend = function (columns) {
-    let cs = columns;
-    if (!(cs instanceof ColumnSet)) {
-        cs = new ColumnSet(columns);
-    }
-    // Any duplicate column will throw Error = 'Duplicate column name "name".',
-    return new ColumnSet(this.columns.concat(cs.columns), {table: this.table});
+ColumnSet.prototype.extend = function (columns, options) {
+    options = assert(options, ['skip']);
+    const duplicate = options.skip ? 'skip' : 'error';
+    const cs = columns instanceof ColumnSet ? columns : new ColumnSet(columns, {duplicate});
+    const joinedCols = this.columns.concat(...cs.columns);
+    return new ColumnSet(joinedCols, {table: this.table, duplicate});
 };
 
 /**
@@ -565,23 +582,10 @@ ColumnSet.prototype.extend = function (columns) {
  *
  */
 ColumnSet.prototype.merge = function (columns) {
-    let cs = columns;
-    if (!(cs instanceof ColumnSet)) {
-        cs = new ColumnSet(columns);
-    }
-    const colNames = {}, cols = [];
-    this.columns.forEach((c, idx) => {
-        cols.push(c);
-        colNames[c.name] = idx;
-    });
-    cs.columns.forEach(c => {
-        if (c.name in colNames) {
-            cols[colNames[c.name]] = c;
-        } else {
-            cols.push(c);
-        }
-    });
-    return new ColumnSet(cols, {table: this.table});
+    const duplicate = 'replace';
+    const cs = columns instanceof ColumnSet ? columns : new ColumnSet(columns, {duplicate});
+    const joinedCols = this.columns.concat(...cs.columns);
+    return new ColumnSet(joinedCols, {table: this.table, duplicate});
 };
 
 /**

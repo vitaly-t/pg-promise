@@ -285,6 +285,56 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>duplicate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">'error'</span>
+|
+
+<span class="param-type">'skip'</span>
+|
+
+<span class="param-type">'replace'</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'error'
+                
+                </td>
+            
+
+            <td class="description last"><p>Strategy for processing duplicate columns:</p>
+<ul>
+<li><code>'error'</code> - throws <a href="external-Error.html">Error</a> = <code>Duplicate column name &quot;name&quot;.</code> (Default)</li>
+<li><code>'skip'</code> - skips repeated columns (only the first will be used)</li>
+<li><code>'replace'</code> - replaces repeated columns (the last one will be used)</li>
+</ul></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -463,7 +513,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line194">line 194</a>
+        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line201">line 201</a>
     </li></ul></dd>
     
 
@@ -535,7 +585,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line245">line 245</a>
+        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line258">line 258</a>
     </li></ul></dd>
     
 
@@ -616,7 +666,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line182">line 182</a>
+        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line188">line 188</a>
     </li></ul></dd>
     
 
@@ -688,7 +738,7 @@ On any duplicate column name (case-sensitive) it will throw <a href="external-Er
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line265">line 265</a>
+        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line278">line 278</a>
     </li></ul></dd>
     
 
@@ -940,7 +990,7 @@ and the rules defined in the <a href="helpers.ColumnSet.html">ColumnSet</a>. If,
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line289">line 289</a>
+        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line302">line 302</a>
     </li></ul></dd>
     
 
@@ -1259,7 +1309,7 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line364">line 364</a>
+        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line377">line 377</a>
     </li></ul></dd>
     
 
@@ -1324,7 +1374,7 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
     
 
     
-    <h4 class="name" id="extend"><span class="type-signature"></span>extend<span class="signature">(columns)</span><span class="type-signature"> &rarr; {<a href="helpers.ColumnSet.html">helpers.ColumnSet</a>}</span></h4>
+    <h4 class="name" id="extend"><span class="type-signature"></span>extend<span class="signature">(columns, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="helpers.ColumnSet.html">helpers.ColumnSet</a>}</span></h4>
     
 
     
@@ -1333,7 +1383,7 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
 
 <div class="description">
     <p>Creates a new <a href="helpers.ColumnSet.html">ColumnSet</a>, by joining the two sets of columns.</p>
-<p>If the two sets contain a column with the same <code>name</code> (case-sensitive), an error is thrown.</p>
+<p>If the two sets contain a column with the same <code>name</code> (case-sensitive), an error is thrown (unless <code>opts.skip</code> is set to <code>true</code>).</p>
 </div>
 
 
@@ -1356,6 +1406,8 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
 
         <th>Type</th>
 
+        
+        <th>Attributes</th>
         
 
         
@@ -1388,6 +1440,14 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -1396,6 +1456,108 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
 <li>it can also be of type <a href="helpers.ColumnSet.html">ColumnSet</a></li>
 <li>it cannot be a simple object (properties enumeration is not supported here)</li>
 </ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>skip</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>When set to <code>true</code>, it skips duplicate columns (by default, it throws an error).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -1436,7 +1598,7 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line413">line 413</a>
+        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line426">line 426</a>
     </li></ul></dd>
     
 
@@ -1618,7 +1780,7 @@ Aliases are set by using method <a href="formatting.html#.alias">as.alias</a>.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line477">line 477</a>
+        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line494">line 494</a>
     </li></ul></dd>
     
 
@@ -1793,7 +1955,7 @@ intended primarily for internal use by the library.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line558">line 558</a>
+        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line562">line 562</a>
     </li></ul></dd>
     
 
@@ -1975,7 +2137,7 @@ with all properties and values set according to the columns configuration.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line610">line 610</a>
+        <a href="helpers_column-set.js.html">helpers/column-set.js</a>, <a href="helpers_column-set.js.html#line614">line 614</a>
     </li></ul></dd>
     
 

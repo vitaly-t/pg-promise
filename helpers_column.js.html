@@ -393,7 +393,7 @@ npm.utils.addInspection(Column, function () {
  * Used by methods {@link helpers.update update} and {@link helpers.sets sets}, ignored by methods {@link helpers.insert insert} and
  * {@link helpers.values values}. It indicates that the column is reserved for a `WHERE` condition, not to be set or updated.
  *
- * It can be set from a string initialization, by adding `?` in front of the name.
+ * It can be set from a string initialization by adding `?` in front of the name.
  *
  * @property {*} [def]
  * Default value for the property, to be used only when the source object doesn't have the property.
@@ -408,7 +408,7 @@ npm.utils.addInspection(Column, function () {
  * Used by methods {@link helpers.update update} (for a single object) and {@link helpers.sets sets}, ignored by methods
  * {@link helpers.insert insert} and {@link helpers.values values}.
  *
- * It is also ignored when conditional flag `cnd` is set.
+ * It is also ignored when the conditional flag `cnd` is set.
  *
  */
 
