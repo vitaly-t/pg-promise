@@ -1,6 +1,7 @@
 .idea/
 node_modules/
 coverage/
+.nyc_output/
 API/
 typescript/*.js
 typescript/*.map

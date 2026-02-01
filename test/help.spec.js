@@ -517,6 +517,10 @@ describe('ColumnSet', () => {
             expect(cs.columns[0].name).toBe('val');
             expect(cs.columns[1].name).toBe('msg');
         });
+        it('must not ignore same columns when "skip" is set', () => {
+            const cs = new helpers.ColumnSet(['one', 'one'], {duplicate: 'skip'});
+            expect(cs.columns.length).toBe(1);
+        });
     });
 
     describe('property \'names\'', () => {
@@ -677,6 +681,10 @@ describe('ColumnSet', () => {
                 cs.extend(['two']);
             }).toThrow('Duplicate column name "two".');
         });
+        it('must ignore duplicates when "skip" is set', () => {
+            const cs = new helpers.ColumnSet(['one', 'two']);
+            expect(cs.extend(['one', 'two'], {skip: true}).columns.length).toBe(2);
+        });
     });
 
     describe('method \'merge\'', () => {
@@ -708,7 +716,6 @@ describe('ColumnSet', () => {
                 new helpers.ColumnSet(['one', 'one']);
             }).toThrow('Duplicate column name "one".');
         });
-
         it('must throw on invalid options', () => {
             expect(() => {
                 new helpers.ColumnSet({}, 123);
