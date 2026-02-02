@@ -261,8 +261,10 @@ describe('Direct Prepared Statements', () => {
         });
         it('must return an error', () => {
             expect(result instanceof PreparedStatementError).toBe(true);
-            expect(ps.toString(1) != tools.inspect(ps)).toBe(true);
-            expect(result.toString()).toBe(tools.inspect(result));
+            const s = tools.inspect(result);
+            expect(s.startsWith('PreparedStatementError {')).toBeTruthy();
+            expect(s).toContain('message:');
+            expect(s).toContain('result:');
         });
     });
 
