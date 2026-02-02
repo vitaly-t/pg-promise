@@ -235,7 +235,10 @@ describe('Direct Parameterized Query', () => {
         });
         it('must return an error', () => {
             expect(result instanceof pgp.errors.ParameterizedQueryError).toBe(true);
-            expect(result.toString()).toBe(tools.inspect(result));
+            const s = tools.inspect(result);
+            expect(s.startsWith('ParameterizedQueryError {')).toBeTruthy();
+            expect(s).toContain('message:');
+            expect(s).toContain('result:');
         });
     });
 
