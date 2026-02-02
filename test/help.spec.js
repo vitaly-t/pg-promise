@@ -1,5 +1,4 @@
 const header = require('./db/header');
-const tools = require('./db/tools');
 
 const options = {
     capSQL: false,
@@ -7,7 +6,6 @@ const options = {
 };
 const pgp = header(options).pgp;
 
-const os = require('os');
 const path = require('path');
 const utils = require('../lib/utils');
 const helpers = pgp.helpers;
