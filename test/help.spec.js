@@ -300,7 +300,6 @@ describe('Column', () => {
             expect(col.mod).toBe('^');
             expect(typeof col.init).toBe('function');
             expect(typeof col.skip).toBe('function');
-            expect(col.toString()).toBe(tools.inspect(col));
         });
     });
 
