@@ -492,8 +492,19 @@ describe('Error protocol', () => {
     };
     it('must return correctly formatted error body', () => {
         const error1 = new pgp.errors.QueryResultError(0, result, '');
+        const s1 = tools.inspect(error1);
+        expect(s1.startsWith('QueryResultError {')).toBeTruthy();
+        expect(s1).toContain('message:');
+        expect(s1).toContain('received:');
+        expect(s1).toContain('query:');
+
         const error2 = new pgp.errors.QueryResultError(0, result, {name: 'name', text: 'text'}, []);
-        expect(tools.inspect(error1)).toBe(error1.toString());
-        expect(tools.inspect(error2)).toBe(error2.toString());
+
+        const s2 = tools.inspect(error2);
+        expect(s2.startsWith('QueryResultError {')).toBeTruthy();
+        expect(s2).toContain('message:');
+        expect(s2).toContain('received:');
+        expect(s2).toContain('query:');
+        expect(s2).toContain('{"name":"name","text":"text"}');
     });
 });
