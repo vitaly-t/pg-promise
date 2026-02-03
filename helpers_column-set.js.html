@@ -88,7 +88,7 @@ const npm = {
  * @param {'error' | 'skip' | 'replace'} [options.duplicate = 'error']
  * Strategy for processing duplicate columns:
  * - `'error'` - throws {@link external:Error Error} = `Duplicate column name "name".` (Default)
- * - `'skip'` - skips repeated columns (only the first one will be used)
+ * - `'skip'` - skips repeated columns (only the first will be used)
  * - `'replace'` - replaces repeated columns (the last one will be used)
  *
  * @returns {helpers.ColumnSet}
@@ -639,45 +639,6 @@ function colDesc(column, source) {
     }
     return a;
 }
-
-/**
- * @method helpers.ColumnSet#toString
- * @description
- * Creates a well-formatted multi-line string that represents the object.
- *
- * It is called automatically when writing the object into the console.
- *
- * @param {number} [level=0]
- * Nested output level, to provide visual offset.
- *
- * @returns {string}
- */
-ColumnSet.prototype.toString = function (level) {
-    level = level > 0 ? parseInt(level) : 0;
-    const gap0 = npm.utils.messageGap(level),
-        gap1 = npm.utils.messageGap(level + 1),
-        lines = [
-            'ColumnSet {'
-        ];
-    if (this.table) {
-        lines.push(gap1 + 'table: ' + this.table);
-    }
-    if (this.columns.length) {
-        lines.push(gap1 + 'columns: [');
-        this.columns.forEach(c => {
-            lines.push(c.toString(2));
-        });
-        lines.push(gap1 + ']');
-    } else {
-        lines.push(gap1 + 'columns: []');
-    }
-    lines.push(gap0 + '}');
-    return lines.join(npm.os.EOL);
-};
-
-npm.utils.addInspection(ColumnSet, function () {
-    return this.toString();
-});
 
 module.exports = {ColumnSet};
 </code></pre>

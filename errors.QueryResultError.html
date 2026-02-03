@@ -322,7 +322,7 @@ Otherwise, the values are within the pre-formatted <code>query</code> string.</p
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="errors_query-result-error.js.html">errors/query-result-error.js</a>, <a href="errors_query-result-error.js.html#line44">line 44</a>
+        <a href="errors_query-result-error.js.html">errors/query-result-error.js</a>, <a href="errors_query-result-error.js.html#line45">line 45</a>
     </li></ul></dd>
     
 
@@ -360,7 +360,7 @@ Otherwise, the values are within the pre-formatted <code>query</code> string.</p
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const QueryResultError = pgp.errors.QueryResultError;const qrec = pgp.errors.queryResultErrorCode;const initOptions = {  // pg-promise initialization options...  error(err, e) {      if (err instanceof QueryResultError) {          // A query returned unexpected number of records, and thus rejected;                    // we can check the error code, if we want specifics:          if(err.code === qrec.noData) {              // expected some data, but received none;          }          // If you write QueryResultError into the console,          // you will get a nicely formatted output.          console.log(err);                    // See also: err, e.query, e.params, etc.      }  }};</code></pre>
+    <pre class="prettyprint"><code>const QueryResultError = pgp.errors.QueryResultError;const qrec = pgp.errors.queryResultErrorCode;const initOptions = {  // pg-promise initialization options...  error(err, e) {      if (err instanceof QueryResultError) {          // A query returned unexpected number of records, and thus rejected;          // we can check the error code, if we want specifics:          if(err.code === qrec.noData) {              // expected some data, but received none;          }          // If you write QueryResultError into the console,          // you will get a nicely formatted output.          console.log(err);          // See also: err, e.query, e.params, etc.      }  }};</code></pre>
 
 
 
@@ -392,186 +392,6 @@ Otherwise, the values are within the pre-formatted <code>query</code> string.</p
 
     
 
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="toString"><span class="type-signature"></span>toString<span class="signature">(level<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Creates a well-formatted multi-line string that represents the error.</p>
-<p>It is called automatically when writing the object into the console.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>level</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Nested output level, to provide visual offset.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="errors_query-result-error.js.html">errors/query-result-error.js</a>, <a href="errors_query-result-error.js.html#line140">line 140</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
     
 
     

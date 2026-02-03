@@ -319,55 +319,6 @@ function isValidVariable(name) {
 }
 
 /**
- * @method helpers.Column#toString
- * @description
- * Creates a well-formatted multi-line string that represents the object.
- *
- * It is called automatically when writing the object into the console.
- *
- * @param {number} [level=0]
- * Nested output level, to provide visual offset.
- *
- * @returns {string}
- */
-Column.prototype.toString = function (level) {
-    level = level > 0 ? parseInt(level) : 0;
-    const gap0 = npm.utils.messageGap(level),
-        gap1 = npm.utils.messageGap(level + 1),
-        lines = [
-            gap0 + 'Column {',
-            gap1 + 'name: ' + npm.utils.toJson(this.name)
-        ];
-    if ('prop' in this) {
-        lines.push(gap1 + 'prop: ' + npm.utils.toJson(this.prop));
-    }
-    if ('mod' in this) {
-        lines.push(gap1 + 'mod: ' + npm.utils.toJson(this.mod));
-    }
-    if ('cast' in this) {
-        lines.push(gap1 + 'cast: ' + npm.utils.toJson(this.cast));
-    }
-    if ('cnd' in this) {
-        lines.push(gap1 + 'cnd: ' + npm.utils.toJson(this.cnd));
-    }
-    if ('def' in this) {
-        lines.push(gap1 + 'def: ' + npm.utils.toJson(this.def));
-    }
-    if ('init' in this) {
-        lines.push(gap1 + 'init: [Function]');
-    }
-    if ('skip' in this) {
-        lines.push(gap1 + 'skip: [Function]');
-    }
-    lines.push(gap0 + '}');
-    return lines.join(npm.os.EOL);
-};
-
-npm.utils.addInspection(Column, function () {
-    return this.toString();
-});
-
-/**
  * @typedef helpers.ColumnConfig
  * @description
  * A simple structure with column details, to be passed into the {@link helpers.Column Column} constructor for initialization.

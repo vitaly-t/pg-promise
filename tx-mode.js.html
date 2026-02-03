@@ -37,8 +37,12 @@
  */
 
 const {InnerState} = require('./inner-state');
-const {addInspection} = require('./utils');
 const {assert} = require('./assert');
+
+const npm = {
+    addInspection: require('./utils').addInspection,
+    inspect: require('util').inspect
+};
 
 /**
  * @enum {number}
@@ -51,7 +55,7 @@ const {assert} = require('./assert');
  * @see $[Transaction Isolation]
  */
 const isolationLevel = {
-    /** Isolation level not specified. */
+    /** Isolation level isn't specified. */
     none: 0,
 
     /** `ISOLATION LEVEL SERIALIZABLE` */
@@ -190,8 +194,9 @@ class TransactionMode extends InnerState {
     }
 }
 
-addInspection(TransactionMode, function () {
-    return this.begin(true);
+npm.addInspection(TransactionMode, function () {
+    const obj = {SQL: this.begin(true)};
+    return 'TransactionMode ' + npm.inspect(obj, {breakLength: 100, depth: 5, colors: true});
 });
 
 /**
@@ -216,7 +221,6 @@ module.exports = {
     isolationLevel,
     TransactionMode
 };
-
 </code></pre>
         </article>
     </section>
