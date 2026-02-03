@@ -12,8 +12,7 @@
     "lint:fix": "npm run lint -- --fix",
     "test": "jasmine-node --captureExceptions test",
     "test:init": "node test/db/init.js",
-    "test:native": "jasmine-node test --config PG_NATIVE true",
-    "start": "node ./lib/start.js"
+    "test:native": "jasmine-node test --config PG_NATIVE true"
   },
   "files": [
     "lib",
