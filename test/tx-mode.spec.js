@@ -266,7 +266,8 @@ describe('TransactionMode', () => {
     describe('inspection', () => {
         const mode = new TransactionMode();
         it('must return an object with class name + SQL', () => {
-            expect(tools.inspect(mode)).toEqual({TransactionMode: mode.begin(true)});
+            expect(tools.inspect(mode).startsWith('TransactionMode {')).toBeTruthy();
+            expect(tools.inspect(mode)).toContain(mode.begin(true));
         });
     });
 });
