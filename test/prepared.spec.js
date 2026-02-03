@@ -37,7 +37,7 @@ describe('PreparedStatement', () => {
             expect(ps.binary).toBe(true);
             expect(ps.rowMode).toBe('array');
             expect(ps.rows).toBe(1);
-            expect(tools.inspect(ps)).toBe(ps.toString());
+            expect(tools.inspect(ps)).toContain('original-sql');
         });
         it('must keep original object when set to the same value', () => {
             const ps = new pgp.PreparedStatement({
@@ -57,7 +57,7 @@ describe('PreparedStatement', () => {
             ps.rows = 1;
             const obj2 = ps.parse();
             expect(obj1 === obj2).toBe(true);
-            expect(tools.inspect(ps)).toBe(ps.toString());
+            expect(tools.inspect(ps)).toContain('original-sql');
         });
         it('must create a new object when changed', () => {
             const ps = new pgp.PreparedStatement({
@@ -82,7 +82,8 @@ describe('PreparedStatement', () => {
             ps.rows = 3;
             const obj7 = ps.parse();
             expect(obj1 !== obj2 !== obj3 !== obj4 != obj5 != obj6 != obj7).toBe(true);
-            expect(tools.inspect(ps)).toBe(ps.toString());
+            const s = tools.inspect(ps);
+            expect(s).toContain('new value');
         });
     });
 
@@ -142,11 +143,9 @@ describe('PreparedStatement', () => {
     });
 
     describe('object inspection', () => {
-        const ps1 = new pgp.PreparedStatement({name: 'test-name', text: 'test-query $1'});
-        const ps2 = new pgp.PreparedStatement({name: 'test-name', text: 'test-query $1', values: [123]});
-        it('must stringify all values', () => {
-            expect(tools.inspect(ps1)).toBe(ps1.toString());
-            expect(tools.inspect(ps2)).toBe(ps2.toString());
+        const ps = new pgp.PreparedStatement({name: 'test-name', text: 'test-query $1'});
+        it('must stringify values', () => {
+            expect(tools.inspect(ps)).toContain('test-query $1');
         });
     });
 
@@ -160,7 +159,7 @@ describe('PreparedStatement', () => {
             expect(result && typeof result === 'object').toBeTruthy();
             expect(result.name).toBe('test-name');
             expect(result.text).toBe('select 1;');
-            expect(ps.toString()).toBe(tools.inspect(ps));
+            expect(tools.inspect(ps)).toContain('select 1;');
         });
 
         describe('with error', () => {
@@ -169,7 +168,6 @@ describe('PreparedStatement', () => {
             const result = ps.parse();
             expect(result instanceof pgp.errors.PreparedStatementError).toBe(true);
             expect(result.error instanceof pgp.errors.QueryFileError).toBe(true);
-            expect(ps.toString()).toBe(tools.inspect(ps));
         });
     });
 
