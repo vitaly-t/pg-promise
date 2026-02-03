@@ -1,6 +1,6 @@
 {
   "name": "pg-promise",
-  "version": "12.5.0",
+  "version": "12.6.0",
   "description": "PostgreSQL interface for Node.js",
   "main": "lib/index.js",
   "typings": "typescript/pg-promise.d.ts",
@@ -53,7 +53,7 @@
     "@eslint/js": "9.39.2",
     "@types/node": "25.2.0",
     "coveralls": "3.1.1",
-    "cspell": "9.6.2",
+    "cspell": "9.6.3",
     "eslint": "9.39.2",
     "globals": "17.3.0",
     "jasmine-node": "3.0.0",
