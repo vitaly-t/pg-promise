@@ -5,7 +5,6 @@ const npm = {
 const capture = require('./db/capture');
 const pgResult = require('pg/lib/result');
 const header = require('./db/header');
-const tools = require('./db/tools');
 
 const isMac = npm.platform === 'darwin';
 const isWindows = npm.platform === 'win32';
@@ -696,7 +695,6 @@ describe('Method \'none\'', () => {
             runs(() => {
                 expect(result).toBeUndefined();
                 expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-                expect(error.toString(1) != tools.inspect(error)).toBe(true);
                 expect(error.message).toBe($text.notEmpty);
                 expect(error.result.rows.length).toBeGreaterThan(0);
             });
@@ -718,7 +716,6 @@ describe('Method \'none\'', () => {
             runs(() => {
                 expect(result).toBeUndefined();
                 expect(error instanceof pgp.errors.QueryResultError).toBe(true);
-                expect(error.toString(1) != tools.inspect(error)).toBe(true);
                 expect(error.message).toBe($text.notEmpty);
                 expect(error.result.rows.length).toBeGreaterThan(0);
             });

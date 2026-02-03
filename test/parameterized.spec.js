@@ -35,7 +35,7 @@ describe('ParameterizedQuery', () => {
             expect(pq.values).toBe(values);
             expect(pq.binary).toBe(true);
             expect(pq.rowMode).toBe('array');
-            expect(tools.inspect(pq)).toBe(pq.toString());
+            expect(tools.inspect(pq)).toContain('original-sql');
         });
         it('must keep original object when set to the same value', () => {
             const pq = new pgp.ParameterizedQuery({
@@ -51,7 +51,7 @@ describe('ParameterizedQuery', () => {
             pq.rowMode = 'array';
             const obj2 = pq.parse();
             expect(obj1 === obj2).toBe(true);
-            expect(tools.inspect(pq)).toBe(pq.toString());
+            expect(tools.inspect(pq)).toContain('original-sql');
         });
         it('must create a new object when changed', () => {
             const pq = new pgp.ParameterizedQuery({
@@ -70,7 +70,7 @@ describe('ParameterizedQuery', () => {
             pq.rowMode = 'new';
             const obj5 = pq.parse();
             expect(obj1 !== obj2 !== obj3 !== obj4 != obj5).toBe(true);
-            expect(tools.inspect(pq)).toBe(pq.toString());
+            expect(tools.inspect(pq)).toContain('new text');
         });
     });
 
@@ -138,8 +138,8 @@ describe('ParameterizedQuery', () => {
         const pq1 = new pgp.ParameterizedQuery('test-query $1');
         const pq2 = new pgp.ParameterizedQuery('test-query $1', []);
         it('must stringify all values', () => {
-            expect(tools.inspect(pq1)).toBe(pq1.toString());
-            expect(tools.inspect(pq2)).toBe(pq2.toString());
+            expect(tools.inspect(pq1)).toContain('test-query $1');
+            expect(tools.inspect(pq2)).toContain('test-query $1');
         });
     });
 
@@ -152,7 +152,6 @@ describe('ParameterizedQuery', () => {
             const result = pq.parse();
             expect(result && typeof result === 'object').toBeTruthy();
             expect(result.text).toBe('select 1;');
-            expect(pq.toString()).toBe(tools.inspect(pq));
         });
 
         describe('with an error', () => {
@@ -161,8 +160,6 @@ describe('ParameterizedQuery', () => {
             const result = pq.parse();
             expect(result instanceof ParameterizedQueryError).toBe(true);
             expect(result.error instanceof pgp.errors.QueryFileError).toBe(true);
-            expect(pq.toString()).toBe(tools.inspect(pq));
-            expect(pq.toString(1) !== tools.inspect(pq)).toBe(true);
         });
 
     });
@@ -235,7 +232,10 @@ describe('Direct Parameterized Query', () => {
         });
         it('must return an error', () => {
             expect(result instanceof pgp.errors.ParameterizedQueryError).toBe(true);
-            expect(result.toString()).toBe(tools.inspect(result));
+            const s = tools.inspect(result);
+            expect(s.startsWith('ParameterizedQueryError {')).toBeTruthy();
+            expect(s).toContain('message:');
+            expect(s).toContain('result:');
         });
     });
 

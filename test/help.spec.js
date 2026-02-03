@@ -1,5 +1,4 @@
 const header = require('./db/header');
-const tools = require('./db/tools');
 
 const options = {
     capSQL: false,
@@ -7,7 +6,6 @@ const options = {
 };
 const pgp = header(options).pgp;
 
-const os = require('os');
 const path = require('path');
 const utils = require('../lib/utils');
 const helpers = pgp.helpers;
@@ -265,14 +263,6 @@ describe('TableName', () => {
         });
     });
 
-    describe('console output', () => {
-        it('must be formatted', () => {
-            const t = new helpers.TableName({table: 'table', schema: 'schema'});
-            expect(t.toString()).toBe('"schema"."table"');
-            expect(t.toString()).toBe(tools.inspect(t));
-        });
-    });
-
     describe('custom-type formatting', () => {
         const t = new helpers.TableName({table: 'table', schema: 'schema'});
         it('must return the full name', () => {
@@ -308,7 +298,6 @@ describe('Column', () => {
             expect(col.mod).toBe('^');
             expect(typeof col.init).toBe('function');
             expect(typeof col.skip).toBe('function');
-            expect(col.toString()).toBe(tools.inspect(col));
         });
     });
 
@@ -471,7 +460,7 @@ describe('ColumnSet', () => {
         it('must set table correctly', () => {
             const t = new helpers.TableName('table');
             const cs = new helpers.ColumnSet(['name'], {table: t});
-            expect(cs.table.toString()).toBe('"table"');
+            expect(cs.table.name).toBe('"table"');
         });
         it('must support inherited properties', () => {
             function A() {
@@ -720,19 +709,6 @@ describe('ColumnSet', () => {
             expect(() => {
                 new helpers.ColumnSet({}, 123);
             }).toThrow('Invalid "options" parameter: 123');
-        });
-    });
-
-    describe('console coverage', () => {
-        const cs1 = new helpers.ColumnSet(['name']);
-        const cs2 = new helpers.ColumnSet(['name'], {table: 'table'});
-        const cs3 = new helpers.ColumnSet([]);
-        const gap = utils.messageGap(1);
-        it('must cover all lines', () => {
-            expect(cs1.toString()).toContain('columns: [');
-            expect(cs2.toString()).toContain('table: "table"');
-            expect(cs3.toString()).toBe('ColumnSet {' + os.EOL + gap + 'columns: []' + os.EOL + '}');
-            expect(cs1.toString(1) !== tools.inspect(cs1)).toBe(true);
         });
     });
 

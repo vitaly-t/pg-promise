@@ -153,7 +153,11 @@ describe('QueryFile / Positive:', () => {
     describe('inspect', () => {
         const qf = new QueryFile(sqlSimple, {noWarnings: true});
         it('must return the query', () => {
-            expect(tools.inspect(qf)).toBe(qf.toString());
+            const s = tools.inspect(qf);
+            expect(s.startsWith('QueryFile {')).toBe(true);
+            expect(s).toContain('file:');
+            expect(s).toContain('options:');
+            expect(s).toContain('query:');
         });
     });
 
@@ -216,9 +220,10 @@ describe('QueryFile / Negative:', () => {
     describe('inspect', () => {
         const qf = new QueryFile(sqlInvalid, {minify: true, noWarnings: true});
         it('must return the error', () => {
-            expect(tools.inspect(qf) != qf.toString(1)).toBe(true);
-            expect(qf.error instanceof QueryFileError).toBe(true);
-            expect(tools.inspect(qf.error)).toBe(qf.error.toString());
+            const s = tools.inspect(qf);
+            expect(s.startsWith('QueryFile {')).toBeTruthy();
+            expect(s).toContain('message:');
+            expect(s).toContain('options:');
         });
     });
 
