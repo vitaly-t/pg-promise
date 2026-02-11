@@ -1160,12 +1160,12 @@ describe('Executing method query', () => {
 describe('Transactions', () => {
 
     // NOTE: The same test for 100,000 inserts works also the same.
-    // Inserting just 10,000 records to avoid exceeding memory quota on the test server.
+    // Inserting just 10,000 records to avoid exceeding the memory quota on the test server.
     // Also, the client shouldn't execute more than 10,000 queries within a single transaction,
     // huge transactions should  be throttled into smaller chunks.
     describe('A complex transaction with 10,000 inserts', () => {
 
-        let result, error, context, THIS, tag;
+        let result, context, THIS, tag;
         beforeEach(done => {
             dbSpec.tx('complex', function (t) {
                 tag = t.ctx.tag;
@@ -1186,12 +1186,11 @@ describe('Transactions', () => {
 
         it('must not fail', () => {
             expect(THIS === context).toBe(true);
-            expect(error).toBeUndefined();
             expect(Array.isArray(result)).toBe(true);
             expect(result.length).toBe(10003); // drop + create + insert x 10000 + select;
             const last = result[result.length - 1]; // result from the select;
             expect(typeof last).toBe('object');
-            expect(last.count).toBe('10000'); // last one must be the counter (as text);
+            expect(last.count).toBe('10000'); // the last one must be the counter (as text);
             expect(tag).toBe('complex');
         });
     });
@@ -1232,7 +1231,7 @@ describe('Transactions', () => {
                 return t;
             })
                 .then(obj => {
-                    // cannot use transaction context outside of transaction callback:
+                    // cannot use transaction context outside of the transaction callback:
                     return obj.query('select 123');
                 })
                 .catch(err => {
