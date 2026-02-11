@@ -230,6 +230,16 @@ describe('UPDATE', () => {
 
 describe('TableName', () => {
 
+    describe('Positive', () => {
+        const t = new helpers.TableName({table: 'tt', schema: 'ss'});
+        it('must correctly escape the table name', () => {
+            expect(t.name).toBe('"ss"."tt"');
+        });
+        it('must correctly serialize the table name', () => {
+            expect(t.toString()).toBe('"ss"."tt"');
+        });
+    });
+
     describe('Negative', () => {
 
         describe('invalid \'table\' parameter', () => {
