@@ -13,10 +13,10 @@ jobs:
      runs-on: ubuntu-latest
      steps:
        - uses: actions/checkout@v3
-       - name: Use Node.js 20
+       - name: Use Node.js 24
          uses: actions/setup-node@v3
          with:
-           node-version: 20
+           node-version: 24
        - name: Install Dependencies
          run: npm install
        - name: ESLint
