@@ -12,7 +12,7 @@ const cn = {
     port: 5432, // default port;
     database: process.env.POSTGRES_DB || 'pg_promise_test', // local database name for testing;
     user: process.env.POSTGRES_USER || 'postgres', // username;
-    password: process.env.POSTGRES_PASSWORD || 'Harmony1' //- add password, if needed;
+    password: process.env.POSTGRES_PASSWORD || 'postgres' //- add password, if needed;
 };
 
 pgpLib.suppressErrors = true; // suppress console output for error messages;
