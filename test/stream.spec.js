@@ -103,6 +103,34 @@ describe('Method stream', () => {
             });
         });
 
+        describe('with initialization callback throwing error on a result far larger than one batch', () => {
+            let res, next, single;
+            beforeEach(async done => {
+                single = dbHeader.pgp({...dbHeader.cn, max: 1}); // one connection, so it must be reused
+                try {
+                    await single.stream(new QueryStream('select generate_series(1, 5000000)'), () => {
+                        throw new Error('initialization error');
+                    });
+                } catch (e) {
+                    res = e;
+                }
+                try {
+                    next = await single.one('select 1 as value');
+                } catch (e) {
+                    next = e;
+                }
+                done();
+            }, 5000);
+            afterEach(() => single.$pool.end());
+            it('must reject with the error', () => {
+                expect(res instanceof Error).toBe(true);
+                expect(res.message).toBe('initialization error');
+            });
+            it('must leave the connection usable for the next query', () => {
+                expect(next).toEqual({value: 1});
+            });
+        });
+
         describe('throwing error during query notification', () => {
             let res;
             beforeEach(done => {
